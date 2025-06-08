@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-05-08 17:08+0200\n"
+"POT-Creation-Date: 2025-06-08 14:52+0200\n"
 "PO-Revision-Date: 2023-02-17 22:03+0200\n"
 "Last-Translator: Ossi Mäntylahti <ossiman@gmail.com>\n"
 "Language-Team: \n"
@@ -18,7 +18,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 3.2.2\n"
 
-#: admin/api/v1/serializers.py:41 admin/forms/domain.py:49
+#: admin/api/v1/serializers.py:41
 msgid ""
 "Quota shared between mailboxes. Can be expressed in KB, MB (default) or GB. "
 "A value of 0 means no quota."
@@ -33,127 +33,139 @@ msgstr ""
 "Postilaatikoihin sovellettava oletuskiintiö megatavuina. Arvo 0 tarkoittaa, "
 "ettei kiintiötä ole."
 
-#: admin/api/v1/serializers.py:96 admin/forms/domain.py:118
+#: admin/api/v1/serializers.py:90
+#, fuzzy
+msgid "domain alias with this name already exists"
+msgstr "Alias tällä nimellä on jo olemassa"
+
+#: admin/api/v1/serializers.py:100
 msgid "No authorized MX record found for this domain"
 msgstr "Tälle verkkotunnukselle ei löytynyt valtuutettua MX-tietuetta"
 
-#: admin/api/v1/serializers.py:114 admin/forms/domain.py:160
+#: admin/api/v1/serializers.py:118
 msgid "Cannot be greater than domain quota"
 msgstr "Ei voi olla suurempi kuin verkkotunnuksen kiintiö"
 
-#: admin/api/v1/serializers.py:160 admin/api/v1/serializers.py:385
-#: admin/api/v2/serializers.py:492 admin/models/alias.py:38
+#: admin/api/v1/serializers.py:164 admin/api/v1/serializers.py:359
+#: admin/api/v2/serializers.py:524 admin/models/alias.py:38
 msgid "Permission denied."
 msgstr "Lupa evätty."
 
-#: admin/api/v1/serializers.py:222 admin/api/v2/serializers.py:77
-#: admin/api/v2/serializers.py:424 admin/forms/alias.py:113
-#: admin/forms/alias.py:115 core/api/v2/serializers.py:224
-#: core/api/v2/serializers.py:226 core/api/v2/serializers.py:235
-#: core/app_settings.py:582 core/app_settings.py:584 core/app_settings.py:595
+#: admin/api/v1/serializers.py:226 admin/api/v2/serializers.py:89
+#: admin/api/v2/serializers.py:456 core/api/v2/serializers.py:225
+#: core/api/v2/serializers.py:227 core/api/v2/serializers.py:236
 #: transport/backends.py:40
 msgid "This field is required"
 msgstr "Tämä kenttä on pakollinen"
 
-#: admin/api/v1/serializers.py:234
+#: admin/api/v1/serializers.py:238
 msgid ""
 "List of administered domains (resellers and domain administrators only)."
 msgstr ""
 "Luettelo hallinnoiduista verkkotunnuksista (vain jälleenmyyjät ja "
 "verkkotunnusten ylläpitäjät)."
 
-#: admin/api/v1/serializers.py:358 admin/api/v2/serializers.py:474
+#: admin/api/v1/serializers.py:332 admin/api/v2/serializers.py:506
 msgid "Not allowed for this role."
 msgstr "Ei sallittu tässä roolissa."
 
-#: admin/api/v1/serializers.py:376
+#: admin/api/v1/serializers.py:350
 msgid "Must be equal to mailbox full_address"
 msgstr "Täytyy olla yhtä suuri kuin postilaatikon koko osoite"
 
-#: admin/api/v1/serializers.py:418 admin/api/v2/serializers.py:526
-#: admin/forms/account.py:186 admin/forms/account.py:188
-#: admin/forms/domain.py:174 admin/forms/domain.py:302
-#: admin/forms/domain.py:304 calendars/serializers.py:175
-#: calendars/serializers.py:177 core/forms.py:92 core/forms.py:95
-#: core/forms.py:97
+#: admin/api/v1/serializers.py:392 admin/api/v2/serializers.py:558
+#: calendars/serializers.py:175 calendars/serializers.py:177
 msgid "This field is required."
 msgstr "Tämä kenttä on pakollinen."
 
-#: admin/api/v1/serializers.py:430 admin/api/v2/serializers.py:543
+#: admin/api/v1/serializers.py:404 admin/api/v2/serializers.py:575
 msgid "Local domain {} does not exist"
 msgstr "Paikallista verkkotunnusta {} ei ole olemassa"
 
-#: admin/api/v1/serializers.py:516
+#: admin/api/v1/serializers.py:494
 msgid "A list of recipient"
 msgstr "Luettelo vastaanottajista"
 
-#: admin/api/v1/serializers.py:532 admin/api/v2/viewsets.py:271
+#: admin/api/v1/serializers.py:510 admin/api/v2/viewsets.py:271
 #, fuzzy
 #| msgid "User '%s' already exists"
 msgid "This alias already exists"
 msgstr "Käyttäjä '%s' on jo olemassa"
 
-#: admin/api/v1/serializers.py:568
+#: admin/api/v1/serializers.py:546
 msgid "You don't have access to this domain."
 msgstr "Sinulla ei ole pääsyä tähän verkkotunnukseen."
 
-#: admin/api/v1/serializers.py:577
+#: admin/api/v1/serializers.py:555
 msgid "You don't have access to this mailbox."
 msgstr "Sinulla ei ole pääsyä tähän postilaatikkoon."
 
-#: admin/api/v1/viewsets.py:183
+#: admin/api/v1/viewsets.py:184
 msgid "Here is your new Modoboa password: {}"
 msgstr "Tässä on uusi Modoboa-salasanasi: {}"
 
-#: admin/api/v2/serializers.py:103 admin/forms/domain.py:320
+#: admin/api/v2/serializers.py:81
+msgid "DKIM keys storage directory not configured"
+msgstr "DKIM-avainten tallennushakemistoa ei ole määritetty"
+
+#: admin/api/v2/serializers.py:93
+msgid "This field is valid when type is relaydomain"
+msgstr ""
+
+#: admin/api/v2/serializers.py:100
+msgid "You can't define an unlimited quota."
+msgstr "Et voi määritellä rajoittamatonta kiintiötä."
+
+#: admin/api/v2/serializers.py:134
 #, python-format
 msgid "User '%s' already exists"
 msgstr "Käyttäjä '%s' on jo olemassa"
 
-#: admin/api/v2/serializers.py:219 admin/api/v2/serializers.py:225
-#: admin/app_settings.py:230 admin/app_settings.py:236
-#: admin/forms/account.py:366
+#: admin/api/v2/serializers.py:249 admin/api/v2/serializers.py:255
 msgid "Must be a positive integer"
 msgstr "Täytyy olla positiivinen kokonaisluku"
 
-#: admin/api/v2/serializers.py:234 admin/app_settings.py:248
+#: admin/api/v2/serializers.py:264
 msgid "openssl not found, please make sure it is installed."
 msgstr "openssl ei löydy, varmista, että se on asennettu."
 
-#: admin/api/v2/serializers.py:246 admin/app_settings.py:261
+#: admin/api/v2/serializers.py:267 pdfcredentials/api/v2/serializers.py:79
+msgid "Directory not found."
+msgstr "Hakemistoa ei löydy."
+
+#: admin/api/v2/serializers.py:278
 msgid "This field only allows valid IP addresses (or networks)"
 msgstr ""
 
-#: admin/api/v2/serializers.py:259
+#: admin/api/v2/serializers.py:291
 msgid "Please disable imap migration before disabling this option."
 msgstr ""
 
-#: admin/api/v2/serializers.py:272 admin/app_settings.py:275
+#: admin/api/v2/serializers.py:304
 msgid "Define at least one authorized network / address"
 msgstr "Määritä vähintään yksi valtuutettu verkko/osoite"
 
-#: admin/api/v2/serializers.py:509
+#: admin/api/v2/serializers.py:541
 msgid "The left part of an email address can't be more than 64 characters."
 msgstr ""
 
-#: admin/api/v2/serializers.py:531
+#: admin/api/v2/serializers.py:563
 #, fuzzy
 #| msgid "A mailbox is required"
 msgid "A mailbox is required to create aliases."
 msgstr "Tarvitaan postilaatikko"
 
-#: admin/api/v2/serializers.py:694
+#: admin/api/v2/serializers.py:729
 #, fuzzy
 #| msgid "Unknown tag {}"
 msgid "Unknown status"
 msgstr "Tuntematon tunniste {}"
 
-#: admin/api/v2/viewsets.py:84 admin/forms/account.py:379
-#: admin/forms/account.py:386 admin/forms/alias.py:97
+#: admin/api/v2/viewsets.py:84
 msgid "You don't have access to this domain"
 msgstr "Sinulla ei ole pääsyä tähän verkkotunnukseen"
 
-#: admin/api/v2/viewsets.py:87 admin/views/domain.py:248
+#: admin/api/v2/viewsets.py:87
 msgid "You can't delete your own domain"
 msgstr "Et voi poistaa omaa verkkotunnustasi"
 
@@ -165,27 +177,24 @@ msgstr ""
 msgid "Received invalid alarm id(s)"
 msgstr ""
 
-#: admin/app_settings.py:23 admin/app_settings.py:287 admin/handlers.py:285
-#: admin/templates/admin/_global_statistics_widget.html:11
-#: admin/templates/admin/domains.html:5 limits/app_settings.py:36
-#: limits/app_settings.py:172 limits/constants.py:13
+#: admin/app_settings.py:19 limits/app_settings.py:38 limits/constants.py:13
 msgid "Domains"
 msgstr "Verkkotunnukset"
 
-#: admin/app_settings.py:26 admin/app_settings.py:293
+#: admin/app_settings.py:25
 msgid "Enable MX checks"
 msgstr "Ota MX-tarkistukset käyttöön"
 
-#: admin/app_settings.py:28 admin/app_settings.py:295
+#: admin/app_settings.py:27
 msgid "Check that every domain has a valid MX record"
 msgstr ""
 "Tarkista, että jokaisella verkkotunnuksella on voimassa oleva MX-tietue"
 
-#: admin/app_settings.py:32 admin/app_settings.py:302
+#: admin/app_settings.py:34
 msgid "Valid MXs"
 msgstr "Voimassa olevat MX:t"
 
-#: admin/app_settings.py:35 admin/app_settings.py:305
+#: admin/app_settings.py:37
 msgid ""
 "A list of IP or network address every MX record should match. A warning will "
 "be sent if a record does not respect it."
@@ -193,11 +202,11 @@ msgstr ""
 "Luettelo IP- tai verkko-osoitteista, joita jokaisen MX-tietueen pitäisi "
 "vastata. Varoitus lähetetään, jos tietue ei noudata sitä."
 
-#: admin/app_settings.py:43 admin/app_settings.py:315
+#: admin/app_settings.py:47
 msgid "New domains must use authorized MX(s)"
 msgstr "Uusien verkkotunnusten on käytettävä valtuutettuja MX:iä"
 
-#: admin/app_settings.py:46 admin/app_settings.py:319
+#: admin/app_settings.py:51
 msgid ""
 "Prevent the creation of a new domain if its MX record does not use one of "
 "the defined addresses."
@@ -205,76 +214,76 @@ msgstr ""
 "Estä uuden verkkotunnuksen luominen, jos sen MX-tietue ei käytä jotakin "
 "määritetyistä osoitteista."
 
-#: admin/app_settings.py:52 admin/app_settings.py:327
+#: admin/app_settings.py:59
 #, fuzzy
 #| msgid "Enable SPF checks"
 msgid "Enable IPV6 checks"
 msgstr "Ota SPF-tarkistukset käyttöön"
 
-#: admin/app_settings.py:54 admin/app_settings.py:330
+#: admin/app_settings.py:62
 msgid "Check if MX setup for ipv6 is valid"
 msgstr ""
 
-#: admin/app_settings.py:58 admin/app_settings.py:337
+#: admin/app_settings.py:69
 msgid "Enable SPF checks"
 msgstr "Ota SPF-tarkistukset käyttöön"
 
-#: admin/app_settings.py:60 admin/app_settings.py:339
+#: admin/app_settings.py:71
 msgid "Check if every domain has a valid SPF record"
 msgstr "Tarkista, onko jokaisella verkkotunnuksella voimassa oleva SPF-tietue"
 
-#: admin/app_settings.py:64 admin/app_settings.py:346
+#: admin/app_settings.py:78
 msgid "Enable DKIM checks"
 msgstr "Ota DKIM-tarkistukset käyttöön"
 
-#: admin/app_settings.py:67 admin/app_settings.py:348
+#: admin/app_settings.py:80
 msgid "Check if every domain with DKIM signin enabled has a valid DNS record"
 msgstr ""
 "Tarkista, onko jokaisella verkkotunnuksella, jossa DKIM-kirjautuminen on "
 "käytössä, voimassa oleva DNS-tietue"
 
-#: admin/app_settings.py:72 admin/app_settings.py:356
+#: admin/app_settings.py:88
 msgid "Enable DMARC checks"
 msgstr "Ota DMARC-tarkistukset käyttöön"
 
-#: admin/app_settings.py:74 admin/app_settings.py:358
+#: admin/app_settings.py:90
 msgid "Check if every domain has a valid DMARC record"
 msgstr ""
 "Tarkista, onko jokaisella verkkotunnuksella voimassa oleva DMARC-tietue"
 
-#: admin/app_settings.py:78 admin/app_settings.py:365
+#: admin/app_settings.py:97
 msgid "Enable autoconfig checks"
 msgstr "Ota käyttöön automaattisen määritysten tarkistus"
 
-#: admin/app_settings.py:81 admin/app_settings.py:367
+#: admin/app_settings.py:99
 msgid "Check if every domain has a valid records for autoconfiguration"
 msgstr ""
 "Tarkista, onko jokaisella verkkotunnuksella kelvolliset tietueet "
 "automaattista määritystä varten"
 
-#: admin/app_settings.py:86 admin/app_settings.py:375
+#: admin/app_settings.py:107
 msgid "Enable DNSBL checks"
 msgstr "Ota DNSBL-tarkistukset käyttöön"
 
-#: admin/app_settings.py:88 admin/app_settings.py:377
+#: admin/app_settings.py:109
 msgid "Check every domain against major DNSBL providers"
 msgstr ""
 "Tarkista jokainen verkkotunnus merkittävimmistä DNSBL-palveluntarjoajista"
 
-#: admin/app_settings.py:92 admin/app_settings.py:384
+#: admin/app_settings.py:116
 msgid "Custom DNS server"
 msgstr "Mukautettu DNS-palvelin"
 
-#: admin/app_settings.py:96 admin/app_settings.py:386
+#: admin/app_settings.py:118
 msgid "Use a custom DNS server instead of local server configuration"
 msgstr ""
 "Käytä mukautettua DNS-palvelinta paikallisen palvelinkonfiguraation sijasta"
 
-#: admin/app_settings.py:101 admin/app_settings.py:394
+#: admin/app_settings.py:126
 msgid "DKIM keys storage directory"
 msgstr "DKIM-avainten tallennushakemisto"
 
-#: admin/app_settings.py:104 admin/app_settings.py:396
+#: admin/app_settings.py:128
 msgid ""
 "Absolute path of the directory where DKIM private keys will be stored. Make "
 "sure this directory belongs to root user and is not readable by the outside "
@@ -284,19 +293,19 @@ msgstr ""
 "että tämä hakemisto kuuluu root-käyttäjälle eikä ole ulkomaailman "
 "luettavissa."
 
-#: admin/app_settings.py:112 admin/app_settings.py:405
+#: admin/app_settings.py:137
 msgid "Default DKIM key length"
 msgstr "DKIM-avaimen oletuspituus"
 
-#: admin/app_settings.py:115 admin/app_settings.py:407
+#: admin/app_settings.py:139
 msgid "Default length in bits for newly generated DKIM keys."
 msgstr "Uusien luotujen DKIM-avainten oletuspituus bitteinä."
 
-#: admin/app_settings.py:119 admin/app_settings.py:414
+#: admin/app_settings.py:146
 msgid "Default domain quota"
 msgstr "Verkkotunnuksen oletuskiintiö"
 
-#: admin/app_settings.py:122 admin/app_settings.py:416
+#: admin/app_settings.py:148
 msgid ""
 "Default quota (in MB) applied to freshly created domains with no value "
 "specified. A value of 0 means no quota."
@@ -304,11 +313,11 @@ msgstr ""
 "Oletuskiintiö (megatavua), jota sovelletaan juuri luotuihin toimialueisiin, "
 "joille ei ole määritetty arvoa. Arvo 0 tarkoittaa, että kiintiötä ei ole."
 
-#: admin/app_settings.py:128 admin/app_settings.py:424
+#: admin/app_settings.py:156
 msgid "Default domain sending limit"
 msgstr "Oletusarvo verkkotunnuksen lähetysrajalle"
 
-#: admin/app_settings.py:131 admin/app_settings.py:426
+#: admin/app_settings.py:158
 msgid ""
 "Number of messages freshly created domains will be allowed to send per day. "
 "Leave empty for no limit."
@@ -316,19 +325,16 @@ msgstr ""
 "Viestien määrä, jonka juuri luodut verkkotunnukset saavat lähettää päivässä. "
 "Jätä tyhjäksi, jos et halua rajoitusta."
 
-#: admin/app_settings.py:136 admin/app_settings.py:438
-#: admin/templates/admin/domain_detail.html:41 limits/app_settings.py:55
-#: limits/app_settings.py:111 limits/app_settings.py:195
-#: limits/app_settings.py:269 limits/constants.py:31 limits/constants.py:84
-#: sievefilters/forms.py:69
+#: admin/app_settings.py:170 limits/app_settings.py:61
+#: limits/app_settings.py:135 limits/constants.py:31 limits/constants.py:84
 msgid "Mailboxes"
 msgstr "Postilaatikot"
 
-#: admin/app_settings.py:139 admin/app_settings.py:444
+#: admin/app_settings.py:176
 msgid "Handle mailboxes on filesystem"
 msgstr "Käsittele postilaatikoita tiedostojärjestelmässä"
 
-#: admin/app_settings.py:142 admin/app_settings.py:446
+#: admin/app_settings.py:178
 msgid ""
 "Rename or remove mailboxes on the filesystem when they get renamed or "
 "removed within Modoboa"
@@ -336,63 +342,11 @@ msgstr ""
 "Nimeä uudelleen tai poista postilaatikot tiedostojärjestelmästä, kun ne "
 "nimetään uudelleen tai poistetaan Modoboassa"
 
-#: admin/app_settings.py:148 admin/app_settings.py:454 admin/forms/domain.py:54
-#: admin/models/domain.py:36 admin/templates/admin/domain_detail.html:64
+#: admin/app_settings.py:186 admin/models/domain.py:36
 msgid "Default mailbox quota"
 msgstr "Oletuspostilaatikkokiintiö"
 
-#: admin/app_settings.py:151
-msgid ""
-"Default mailbox quota (in MB) applied to freshly created mailboxes with no "
-"value specified. A value of 0 means no quota."
-msgstr ""
-"Oletuspostilaatikkokiintiö (megatavua), jota sovelletaan juuri luotuihin "
-"postilaatikoihin, joille ei ole määritetty arvoa. Arvo 0 tarkoittaa, ettei "
-"kiintiötä ole."
-
-#: admin/app_settings.py:157 admin/app_settings.py:465
-msgid "Default mailbox sending limit"
-msgstr "Oletuspostilaatikon lähetysraja"
-
-#: admin/app_settings.py:160 admin/app_settings.py:467
-msgid ""
-"Number of messages freshly created mailboxes will be allowed to send per "
-"day. Leave empty for no limit."
-msgstr ""
-"Viestien määrä, jonka juuri luodut postilaatikot saavat lähettää päivässä. "
-"Jätä tyhjäksi, jos et halua rajoitusta."
-
-#: admin/app_settings.py:166 admin/app_settings.py:475
-msgid "Automatic account removal"
-msgstr "Tilin automaattinen poistaminen"
-
-#: admin/app_settings.py:169 admin/app_settings.py:477
-msgid "When a mailbox is removed, also remove the associated account"
-msgstr "Kun postilaatikko poistetaan, poistetaan myös siihen liittyvä tili"
-
-#: admin/app_settings.py:174 admin/app_settings.py:486
-msgid "Automatic domain/mailbox creation"
-msgstr "Automaattinen verkkotunnuksen/sähköpostilaatikon luominen"
-
-#: admin/app_settings.py:177 admin/app_settings.py:489
-msgid "Create a domain and a mailbox when an account is automatically created."
-msgstr "Luo verkkotunnus ja postilaatikko, kun tili luodaan automaattisesti."
-
-#: admin/app_settings.py:182 admin/app_settings.py:498
-msgid "Create an alias when a mailbox is renamed"
-msgstr "Luo alias, kun postilaatikko nimetään uudelleen"
-
-#: admin/app_settings.py:185 admin/app_settings.py:501
-msgid "Create an alias using the old address when a mailbox is renamed."
-msgstr ""
-"Luo alias, joka käyttää vanhaa osoitetta, kun postilaatikko nimetään "
-"uudelleen."
-
-#: admin/app_settings.py:244 pdfcredentials/api/v2/serializers.py:59
-msgid "Directory not found."
-msgstr "Hakemistoa ei löydy."
-
-#: admin/app_settings.py:456
+#: admin/app_settings.py:188
 #, fuzzy
 #| msgid ""
 #| "Default mailbox quota (in MB) applied to freshly created mailboxes with "
@@ -405,14 +359,49 @@ msgstr ""
 "postilaatikoihin, joille ei ole määritetty arvoa. Arvo 0 tarkoittaa, ettei "
 "kiintiötä ole."
 
-#: admin/app_settings.py:520 admin/app_settings.py:525
-#: core/api/v2/viewsets.py:148
+#: admin/app_settings.py:197
+msgid "Default mailbox sending limit"
+msgstr "Oletuspostilaatikon lähetysraja"
+
+#: admin/app_settings.py:199
+msgid ""
+"Number of messages freshly created mailboxes will be allowed to send per "
+"day. Leave empty for no limit."
+msgstr ""
+"Viestien määrä, jonka juuri luodut postilaatikot saavat lähettää päivässä. "
+"Jätä tyhjäksi, jos et halua rajoitusta."
+
+#: admin/app_settings.py:207
+msgid "Automatic account removal"
+msgstr "Tilin automaattinen poistaminen"
+
+#: admin/app_settings.py:209
+msgid "When a mailbox is removed, also remove the associated account"
+msgstr "Kun postilaatikko poistetaan, poistetaan myös siihen liittyvä tili"
+
+#: admin/app_settings.py:218
+msgid "Automatic domain/mailbox creation"
+msgstr "Automaattinen verkkotunnuksen/sähköpostilaatikon luominen"
+
+#: admin/app_settings.py:221
+msgid "Create a domain and a mailbox when an account is automatically created."
+msgstr "Luo verkkotunnus ja postilaatikko, kun tili luodaan automaattisesti."
+
+#: admin/app_settings.py:230
+msgid "Create an alias when a mailbox is renamed"
+msgstr "Luo alias, kun postilaatikko nimetään uudelleen"
+
+#: admin/app_settings.py:233
+msgid "Create an alias using the old address when a mailbox is renamed."
+msgstr ""
+"Luo alias, joka käyttää vanhaa osoitetta, kun postilaatikko nimetään "
+"uudelleen."
+
+#: admin/app_settings.py:287 core/api/v2/viewsets.py:162
 msgid "Administration"
 msgstr "Hallinnointinäkymä"
 
-#: admin/constants.py:21 admin/forms/alias.py:43
-#: admin/templates/admin/_per_domain_statistics_widget.html:7
-#: admin/templates/admin/domains_quota_headers.html:2
+#: admin/constants.py:21
 msgid "Domain"
 msgstr "Verkkotunnus"
 
@@ -428,451 +417,67 @@ msgstr "Avattu"
 msgid "Closed"
 msgstr "Suljettu"
 
-#: admin/forms/account.py:29 admin/templates/admin/domain_detail.html:159
-#: pdfcredentials/documents.py:98
-msgid "Username"
-msgstr "Käyttäjätunnus"
-
-#: admin/forms/account.py:31
-msgid ""
-"The user's name. Must be a valid e-mail address for simple users or "
-"administrators with a mailbox."
-msgstr ""
-"Käyttäjän nimi. Yksinkertaisten käyttäjien tai ylläpitäjien, joilla on "
-"postilaatikko, on oltava voimassa oleva sähköpostiosoite."
-
-#: admin/forms/account.py:36 admin/templates/admin/account_detail.html:29
-#: core/templates/core/information.html:60
-msgid "Role"
-msgstr "Rooli"
-
-#: admin/forms/account.py:37
-msgid "Choose"
-msgstr "Valitse"
-
-#: admin/forms/account.py:38
-msgid "What level of permission this user will have"
-msgstr "Minkä tason oikeudet tällä käyttäjällä on"
-
-#: admin/forms/account.py:41 admin/forms/domain.py:262
-msgid "Random password"
-msgstr "Satunnainen salasana"
-
-#: admin/forms/account.py:43
-msgid ""
-"Generate a random password. If you're updating this account and check this "
-"box, a new password will be generated."
-msgstr ""
-"Luo satunnainen salasana. Jos päivität tätä tiliä ja valitset tämän, Modoboa "
-"luo uuden salasanan."
-
-#: admin/forms/account.py:49 pdfcredentials/documents.py:99
-msgid "Password"
-msgstr "Salasana"
-
-#: admin/forms/account.py:55 core/forms.py:36
-msgid "Confirmation"
-msgstr "Vahvistus"
-
-#: admin/forms/account.py:57
-msgid "Enter the same password as above, for verification."
-msgstr "Kirjoita varmuuden vuoksi sama salasana uudelleen."
-
-#: admin/forms/account.py:71
-msgid "Enabled"
-msgstr "Käytössä"
-
-#: admin/forms/account.py:175
-msgid "Only super administrators are allowed for this mode"
-msgstr "Tämä tila on sallittu vain pääylläpitäjille"
-
-#: admin/forms/account.py:193
-msgid "The two password fields didn't match."
-msgstr "Salasanakentät eivät vastanneet toisiaan."
-
-#: admin/forms/account.py:206
-msgid "You can't disable your own account"
-msgstr "Et voi poistaa omaa tiliäsi käytöstä"
-
-#: admin/forms/account.py:234
-msgid "E-mail"
-msgstr "Sähköpostiosoite"
-
-#: admin/forms/account.py:236
-msgid "Create an alias using the old address"
-msgstr "Luo alias käyttäen vanhaa osoitetta"
-
-#: admin/forms/account.py:241 admin/forms/domain.py:46
-#: admin/templates/admin/account_detail.html:45
-#: admin/templates/admin/domain_detail.html:49 limits/app_settings.py:73
-#: limits/app_settings.py:218 limits/constants.py:59
-msgid "Quota"
-msgstr "Kiintiö"
-
-#: admin/forms/account.py:244
-msgid ""
-"Quota for this mailbox, can be expressed in KB, MB (default) or GB. Define a "
-"custom value or use domain's default one. Leave empty to define an unlimited "
-"value (not allowed for domain administrators)."
-msgstr ""
-"Tämän postilaatikon kiintiö, joka voidaan ilmaista kilotavuina, megatavuina "
-"(oletus) tai gigatavuina. Määritä oma arvo tai käytä toimialueen "
-"oletusarvoa. Jätä tyhjäksi, jos haluat määrittää rajoittamattoman arvon (ei "
-"sallittu toimialueen ylläpitäjille)."
-
-#: admin/forms/account.py:254 admin/models/domain.py:39
-#: admin/models/mailbox.py:92 admin/templates/admin/account_detail.html:50
-#: admin/templates/admin/domain_detail.html:69
-msgid "Message sending limit"
-msgstr "Viestien lähetysraja"
-
-#: admin/forms/account.py:257 admin/models/mailbox.py:95
-msgid "Number of messages this mailbox can send per day"
-msgstr "Viestien määrä, jonka tämä postilaatikko voi lähettää päivässä"
-
-#: admin/forms/account.py:262
-msgid "Block IMAP connection and incoming mails for this mailbox"
-msgstr ""
-
-#: admin/forms/account.py:266 admin/forms/domain.py:35
-#: admin/templates/admin/domain_headers.html:4
-msgid "Alias(es)"
-msgstr "Alias(kset)"
-
-#: admin/forms/account.py:269
-msgid ""
-"Alias(es) of this mailbox. Indicate only one address per input, press ENTER "
-"to add a new input. To create a catchall alias, just enter the domain name "
-"(@domain.tld)."
-msgstr ""
-"Tämän postilaatikon aliakset. Ilmoita vain yksi osoite per syöttö, paina "
-"enter lisätäksesi uuden. Jos haluat luoda catchall-aliaksen, syötä vain "
-"verkkotunnus (@verkkotunnus.tld)."
-
-#: admin/forms/account.py:275
-msgid "Sender addresses"
-msgstr "Lähettäjän osoitteet"
-
-#: admin/forms/account.py:278
-msgid ""
-"Additional sender address(es) for this account. The user will be allowed to "
-"send emails using this address, even if it does not exist locally. Indicate "
-"one address per input. Press ENTER to add a new input."
-msgstr ""
-"Tämän tilin lisälähetysosoite(et). Käyttäjä saa lähettää sähköposteja "
-"käyttämällä tätä osoitetta, vaikka sitä ei olisikaan olemassa paikallisesti. "
-"Ilmoita yksi osoite per rivi. Lisää uusi rivi painamalla enter."
-
-#: admin/forms/account.py:339 admin/forms/alias.py:95
-#: admin/models/mailbox.py:308
-msgid "Domain does not exist"
-msgstr "Verkkotunnusta ei ole olemassa"
-
-#: admin/forms/account.py:376
-msgid "Local domain does not exist"
-msgstr "Paikallista verkkotunnusta ei ole olemassa"
-
-#: admin/forms/account.py:503
-msgid "Domain(s)"
-msgstr "Verkkotunnus(kset)"
-
-#: admin/forms/account.py:505
-msgid "Domain(s) that user administrates"
-msgstr "Käyttäjän hallinnoima verkkotunnus(kset)"
-
-#: admin/forms/account.py:552 admin/forms/account.py:652
-#: admin/forms/domain.py:373 admin/forms/domain.py:445 core/apps.py:19
-#: core/apps.py:24 imap_migration/app_settings.py:17
-#: imap_migration/app_settings.py:99 maillog/apps.py:14 maillog/forms.py:20
-#: pdfcredentials/app_settings.py:23 pdfcredentials/app_settings.py:195
-#: postfix_autoreply/app_settings.py:12 postfix_autoreply/forms.py:105
-#: sievefilters/forms.py:59 webmail/app_settings.py:11
-msgid "General"
-msgstr "Yleiset"
-
-#: admin/forms/account.py:560 core/templates/core/user_profile.html:3
-#: core/templatetags/core_tags.py:133
-msgid "Profile"
-msgstr "Profiili"
-
-#: admin/forms/account.py:566 admin/forms/account.py:659
-msgid "Mail"
-msgstr "Sähköposti"
-
-#: admin/forms/account.py:573
-msgid "Permissions"
-msgstr "Oikeudet"
-
-#: admin/forms/account.py:642
-msgid "Account updated"
-msgstr "Tili päivitetty"
-
-#: admin/forms/account.py:668
-msgid "New account"
-msgstr "Uusi tili"
-
-#: admin/forms/account.py:679
-msgid "Account created"
-msgstr "Tili luotu"
-
-#: admin/forms/alias.py:20
-msgid "Random address"
-msgstr "Satunnainen osoite"
-
-#: admin/forms/alias.py:23
-msgid "Email address"
-msgstr "Sähköpostiosoite"
-
-#: admin/forms/alias.py:25
-msgid ""
-"The alias address. To create a catchall alias, just enter the domain name "
-"(@domain.tld)."
-msgstr ""
-"Alias-osoite. Jos haluat luoda catchall-aliaksen, kirjoita vain verkkotunnus "
-"(@verkkotunnus.tld)."
-
-#: admin/forms/alias.py:31 admin/templates/admin/alias_detail.html:37
-msgid "Recipients"
-msgstr "Vastaanottajat"
-
-#: admin/forms/alias.py:34
-msgid ""
-"Addresses this alias will point to. Indicate only one address per input, "
-"press ENTER to add a new input."
-msgstr ""
-"Osoitteet, joihin tämä alias osoittaa. Ilmoita yksi osoite per rivi, paina "
-"enter lisätäksesi uuden rivin."
-
-#: admin/forms/alias.py:119
-msgid "No recipient defined"
-msgstr "Vastaanottajaa ei ole määritelty"
-
-#: admin/forms/domain.py:32
-#: admin/templates/admin/_global_statistics_widget.html:7
-msgid "Type"
-msgstr "Tyyppi"
-
-#: admin/forms/domain.py:38
-msgid ""
-"Alias(es) of this domain. Indicate only one name per input, press ENTER to "
-"add a new input."
-msgstr ""
-"Tämän verkkotunnuksen aliakset. Ilmoita vain yksi nimi per rivi, paina enter "
-"lisätäksesi uuden rivin."
-
-#: admin/forms/domain.py:43
-msgid "Key selector"
-msgstr "DKIM-avaimen valitsin-tietue (selector)"
-
-#: admin/forms/domain.py:57
-msgid ""
-"Default quota applied to mailboxes. Can be expressed in KB, MB (default) or "
-"GB. A value of 0 means no quota."
-msgstr ""
-"Postilaatikoihin sovellettava oletuskiintiö. Voidaan ilmaista kilotavuina, "
-"megatavuina (oletus) tai gigatavuina. Arvo 0 tarkoittaa, ettei kiintiötä ole."
-
-#: admin/forms/domain.py:106 admin/handlers.py:181
+#: admin/handlers.py:179
 msgid "domain alias"
 msgstr "verkkotunnuksen alias"
 
-#: admin/forms/domain.py:109 admin/forms/domain.py:185
-#: admin/forms/domain.py:192
-#, python-format
-msgid "A %s with this name already exists"
-msgstr "Nimellä %s on jo olemassa"
-
-#: admin/forms/domain.py:130
-msgid "DKIM keys storage directory not configured"
-msgstr "DKIM-avainten tallennushakemistoa ei ole määritetty"
-
-#: admin/forms/domain.py:166
-msgid "You can't define an unlimited quota."
-msgstr "Et voi määritellä rajoittamatonta kiintiötä."
-
-#: admin/forms/domain.py:185 admin/forms/domain.py:189 policyd/core.py:118
-msgid "domain"
-msgstr "domain"
-
-#: admin/forms/domain.py:246
-msgid "Create a domain administrator"
-msgstr "Luo verkkotunnuksen ylläpitäjä"
-
-#: admin/forms/domain.py:248
-msgid "Automatically create an administrator for this domain"
-msgstr "Luo automaattisesti järjestelmänvalvojan tälle verkkotunnukselle"
-
-#: admin/forms/domain.py:252 admin/templates/admin/domain_detail.html:159
-#: admin/templates/admin/domain_headers.html:3
-#: admin/templates/admin/identity_headers.html:2
-#: admin/templates/admin/mx_domain_detail.html:9
-#: core/templates/core/information.html:37
-#: core/templates/core/information.html:59
-msgid "Name"
-msgstr "Nimi"
-
-#: admin/forms/domain.py:255
-msgid ""
-"The administrator's name. Don't include the domain's name here, it will be "
-"automatically appended."
-msgstr ""
-"Ylläpitäjän nimi. Älä sisällytä verkkotunnuksen nimeä tähän, se liitetään "
-"automaattisesti."
-
-#: admin/forms/domain.py:264
-msgid "Generate a random password for the administrator."
-msgstr "Luo satunnainen salasana järjestelmänvalvojalle."
-
-#: admin/forms/domain.py:269
-msgid "With a mailbox"
-msgstr "Postilaatikolla"
-
-#: admin/forms/domain.py:271
-msgid "Create a mailbox for the administrator."
-msgstr "Luo ylläpitäjän postilaatikko."
-
-#: admin/forms/domain.py:276
-msgid "Create aliases"
-msgstr "Luo aliaksia"
-
-#: admin/forms/domain.py:278
-msgid "Automatically create standard aliases for this domain"
-msgstr "Luo tälle verkkotunnukselle automaattisesti aliaksia"
-
-#: admin/forms/domain.py:294
-msgid "Invalid format"
-msgstr "Virheellinen muoto"
-
-#: admin/forms/domain.py:433
-msgid "Domain modified"
-msgstr "Muutettu verkkotunnus"
-
-#: admin/forms/domain.py:458
-msgid "Options"
-msgstr "Vaihtoehdot"
-
-#: admin/forms/domain.py:467
-msgid "New domain"
-msgstr "Uusi verkkotunnus"
-
-#: admin/forms/domain.py:481
-msgid "Domain created"
-msgstr "Verkkotunnus luotu"
-
-#: admin/forms/export.py:9 admin/forms/import_.py:12
-msgid "Separator"
-msgstr "Erotin"
-
-#: admin/forms/forward.py:12
-msgid "Recipient(s)"
-msgstr "Vastaanottaja(t)"
-
-#: admin/forms/forward.py:15
-msgid "Indicate one or more recipients separated by a ','"
-msgstr "Ilmoita yksi tai useampi vastaanottaja erotettuna pilkulla (',')"
-
-#: admin/forms/forward.py:18
-msgid "Keep local copies"
-msgstr "Säilytä paikallisia kopioita"
-
-#: admin/forms/forward.py:21
-msgid "Forward messages and store copies into your local mailbox"
-msgstr "Välitä viestit ja tallenna kopiot paikalliseen postilaatikkoon"
-
-#: admin/forms/import_.py:10
-msgid "Select a file"
-msgstr "Valitse tiedosto"
-
-#: admin/forms/import_.py:18
-msgid "Continue on error"
-msgstr "Jatka virheestä"
-
-#: admin/forms/import_.py:20
-msgid "Don't treat duplicated objects as error"
-msgstr "Älä käsittele päällekkäisiä objekteja virheenä"
-
-#: admin/forms/import_.py:37
-msgid "Crypt passwords"
-msgstr "Salakirjoita salasanat"
-
-#: admin/forms/import_.py:40
-msgid "Check this option if passwords contained in your file are not crypted"
-msgstr ""
-"Valitse tämä vaihtoehto, jos tiedostosi sisältämiä salasanoja ei ole "
-"salakirjoitettu"
-
-#: admin/handlers.py:229
+#: admin/handlers.py:227
 #, python-format
 msgid "Account import failed (%s): domain does not exist"
 msgstr "Tilin tuonti epäonnistui (%s): verkkotunnusta ei ole olemassa"
 
-#: admin/handlers.py:244 admin/models/mailbox.py:340
+#: admin/handlers.py:242 admin/models/mailbox.py:340
 msgid "Mailbox {} already exists"
 msgstr "Postilaatikko {} on jo olemassa"
 
-#: admin/handlers.py:253
+#: admin/handlers.py:251
 #, python-format
 msgid "Account import failed (%s): wrong quota value"
 msgstr "Tilin tuonti epäonnistui (%s): väärä kiintiöarvo"
 
-#: admin/handlers.py:294
-#: admin/templates/admin/_global_statistics_widget.html:17
-#: admin/templates/admin/_per_domain_statistics_widget.html:8
-#: admin/templates/admin/identities.html:5
-msgid "Identities"
-msgstr "Identiteetit"
-
-#: admin/handlers.py:312 admin/templates/admin/forward.html:2
-msgid "Forward"
-msgstr "Välitä"
-
-#: admin/lib.py:47
-msgid "A mailbox is required"
-msgstr "Tarvitaan postilaatikko"
-
-#: admin/lib.py:141
+#: admin/lib.py:121
 msgid "You are not allowed to import domains"
 msgstr "Sinulla ei ole oikeutta tuoda verkkotunnuksia"
 
-#: admin/lib.py:150
+#: admin/lib.py:130
 msgid "You are not allowed to import domain aliases."
 msgstr "Sinulla ei ole oikeutta tuoda verkkotunnuksia."
 
-#: admin/lib.py:242 admin/tests/test_mx.py:154 admin/tests/test_mx.py:167
-#: admin/tests/test_mx.py:172
+#: admin/lib.py:222 admin/tests/test_mx.py:153 admin/tests/test_mx.py:166
+#: admin/tests/test_mx.py:171
 #, python-format
 msgid "No DNS record found for %s"
 msgstr "DNS-tietuetta ei löytynyt %s"
 
-#: admin/lib.py:245
+#: admin/lib.py:225
 #, python-format
 msgid "No %(type)s record for %(name)s"
 msgstr "Ei %(type)s-tietueelle %(name)s"
 
-#: admin/lib.py:249 admin/tests/test_mx.py:157
+#: admin/lib.py:229 admin/tests/test_mx.py:156
 msgid "No working name servers found"
 msgstr "Toimivia nimipalvelimia ei löytynyt"
 
-#: admin/lib.py:252 admin/tests/test_mx.py:161
+#: admin/lib.py:232 admin/tests/test_mx.py:160
 #, python-format
 msgid "DNS resolution timeout, unable to query %s at the moment"
 msgstr "DNS-kyselyn aikakatkaisu, kysely %s ei onnistu tällä hetkellä"
 
-#: admin/lib.py:256
+#: admin/lib.py:236
 msgid "DNS name is too long: {}"
 msgstr ""
 
-#: admin/lib.py:287
+#: admin/lib.py:267
 #, python-brace-format
 msgid "Invalid IP address format for {domain}; {addr}"
 msgstr "Virheellinen IP-osoiteformaatti {domain}; {addr}"
 
-#: admin/lib.py:360
+#: admin/lib.py:340
 #, python-format
 msgid "Object already exists: %s"
 msgstr "Kohde on jo olemassa: %s"
 
-#: admin/lib.py:364
+#: admin/lib.py:344
 #, python-format
 msgid "%d objects imported successfully"
 msgstr "%d objektit tuotu onnistuneesti"
@@ -957,12 +562,11 @@ msgstr "käytössä"
 msgid "Check to activate this alias"
 msgstr "Ota käyttöön tämän aliaksen aktivointi"
 
-#: admin/models/alias.py:102 admin/templates/admin/alias_detail.html:32
-#: core/templates/core/information.html:40
+#: admin/models/alias.py:102
 msgid "Description"
 msgstr "Kuvaus"
 
-#: admin/models/alias.py:103 admin/templates/admin/alias_detail.html:29
+#: admin/models/alias.py:103
 msgid "Expire at"
 msgstr "Vanhenee"
 
@@ -991,6 +595,10 @@ msgstr "nimi"
 #: admin/models/domain.py:30
 msgid "The domain name"
 msgstr "Verkkotunnus"
+
+#: admin/models/domain.py:39 admin/models/mailbox.py:92
+msgid "Message sending limit"
+msgstr "Viestien lähetysraja"
 
 #: admin/models/domain.py:42
 msgid "Number of messages this domain can send per day"
@@ -1022,30 +630,30 @@ msgstr ""
 msgid "Key length"
 msgstr "Avaimen pituus"
 
-#: admin/models/domain.py:366 admin/models/domain_alias.py:70
+#: admin/models/domain.py:321 admin/models/domain_alias.py:70
 #: core/models.py:353 relaydomains/lib.py:13
 msgid "Invalid line"
 msgstr "Virheellinen rivi"
 
-#: admin/models/domain.py:376
+#: admin/models/domain.py:331
 #, fuzzy
 #| msgid "No authorized MX record found for domain {}"
 msgid "{}: no authorized MX record found for domain"
 msgstr "Verkkotunnukselle {} ei löytynyt valtuutettua MX-tietuetta"
 
-#: admin/models/domain.py:382
+#: admin/models/domain.py:337
 #, fuzzy
 #| msgid "Invalid quota value for domain '{}'"
 msgid "{}: invalid quota value for domain"
 msgstr "Virheellinen kiintiö verkkotunnukselle '{}'"
 
-#: admin/models/domain.py:388
+#: admin/models/domain.py:343
 #, fuzzy
 #| msgid "Invalid default mailbox quota value for domain '{}'"
 msgid "{}: invalid default mailbox quota value for domain"
 msgstr "Virheellinen oletuspostilaatikon kiintiö verkkotunnukselle '{}'"
 
-#: admin/models/domain.py:395
+#: admin/models/domain.py:350
 #, fuzzy
 #| msgid "Default mailbox quota cannot be greater than domain quota"
 msgid "{}: default mailbox quota cannot be greater than domain quota"
@@ -1073,6 +681,10 @@ msgstr "Tuntematon verkkotunnus %s"
 msgid "Mailbox address (without the @domain.tld part)"
 msgstr "Postilaatikon osoite (ilman @domain.tld-osaa)"
 
+#: admin/models/mailbox.py:95
+msgid "Number of messages this mailbox can send per day"
+msgstr "Viestien määrä, jonka tämä postilaatikko voi lähettää päivässä"
+
 #: admin/models/mailbox.py:153
 #, python-format
 msgid "Failed to retrieve mailbox location (%s)"
@@ -1088,452 +700,9 @@ msgstr "Kiintiö on määritettävä"
 msgid "{}: domain quota exceeded"
 msgstr "Verkkotunnuksen kiintiö ylitetty"
 
-#: admin/templates/admin/_domain_dkim_key.html:6
-#: admin/templates/admin/_domain_dkim_key.html:20
-#: core/templates/core/user_security.html:83
-#: core/templates/core/user_security.html:99
-#: templates/common/generic_modal.html:6 templates/common/generic_modal.html:13
-#: templates/common/wizard_forms.html:6 templates/common/wizard_forms.html:27
-msgid "Close"
-msgstr "Sulje"
-
-#: admin/templates/admin/_domain_dkim_key.html:7
-#, python-format
-msgid "DKIM public key for %(domain)s"
-msgstr "Julkinen DKIM-avain verkkotunnukselle %(domain)s"
-
-#: admin/templates/admin/_domain_dkim_key.html:11
-msgid "Raw format. Click to copy"
-msgstr ""
-
-#: admin/templates/admin/_domain_dkim_key.html:15
-#, fuzzy
-#| msgid "Bind/named format"
-msgid "Bind/named format. Click to copy"
-msgstr "Bind/nimetty muoto"
-
-#: admin/templates/admin/_domain_dnschecks_status.html:4
-msgctxt "checks"
-msgid "Disabled"
-msgstr "Pois käytöstä"
-
-#: admin/templates/admin/_domain_dnschecks_status.html:6
-msgid "Awaiting checks"
-msgstr "Odottaa tarkastuksia"
-
-#: admin/templates/admin/_domain_dnschecks_status.html:16
-#: admin/templates/admin/_domain_dnschecks_status.html:26
-#: admin/templates/admin/_domain_dnschecks_status.html:34
-#: admin/templates/admin/_domain_dnschecks_status.html:42
-msgid "No record found"
-msgstr "Tietuetta ei löytynyt"
-
-#: admin/templates/admin/_domain_dnschecks_status.html:24
-msgid "Waiting for key to be generated"
-msgstr "Odotetaan avaimen luomista"
-
-#: admin/templates/admin/_global_statistics_widget.html:4
-msgid "Global statistics"
-msgstr "Maailmanlaajuiset tilastot"
-
-#: admin/templates/admin/_global_statistics_widget.html:8
-msgid "Quantity"
-msgstr "Määrä"
-
-#: admin/templates/admin/_global_statistics_widget.html:14
-#: admin/templates/admin/domain_detail.html:37
-#: admin/templates/admin/domain_detail.html:87 limits/app_settings.py:45
-#: limits/app_settings.py:101 limits/app_settings.py:183
-#: limits/app_settings.py:257 limits/constants.py:22 limits/constants.py:76
-msgid "Domain aliases"
-msgstr "Verkkotunnuksen aliakset"
-
-#: admin/templates/admin/_per_domain_statistics_widget.html:4
-msgid "Per-domain statistics"
-msgstr "Toimialuekohtaiset tilastot"
-
-#: admin/templates/admin/account_detail.html:16
-#: admin/templates/admin/alias_detail.html:16
-#: admin/templates/admin/domain_detail.html:19
-#: admin/templates/admin/identities_table.html:7
-msgid "(disabled)"
-msgstr "(ei käytössä)"
-
-#: admin/templates/admin/account_detail.html:22
-#: admin/templates/admin/alias_detail.html:22
-#: admin/templates/admin/domain_detail.html:25
-msgid "Summary"
-msgstr "Yhteenveto"
-
-#: admin/templates/admin/account_detail.html:26
-msgid "Full name"
-msgstr "Koko nimi"
-
-#: admin/templates/admin/account_detail.html:32
-#: admin/templates/admin/alias_detail.html:26
-msgid "Created"
-msgstr "Luotu"
-
-#: admin/templates/admin/account_detail.html:35
-#: core/templates/core/information.html:61
-msgid "Last login"
-msgstr "Viimeisin kirjautuminen"
-
-#: admin/templates/admin/account_detail.html:38 core/models.py:87
-msgid "Secondary email"
-msgstr "Toissijainen sähköpostiosoite"
-
-#: admin/templates/admin/account_detail.html:38
-#: admin/templates/admin/account_detail.html:41
-msgid "Not defined"
-msgstr "Ei määritelty"
-
-#: admin/templates/admin/account_detail.html:41 core/models.py:85
-msgid "Phone number"
-msgstr "Puhelinnumero"
-
-#: admin/templates/admin/account_detail.html:61
-msgid "Administered domains"
-msgstr "Hallinnoidut verkkotunnukset"
-
-#: admin/templates/admin/account_detail.html:67
-msgid "No domain defined."
-msgstr "Verkkotunnusta ei ole määritelty."
-
-#: admin/templates/admin/account_detail.html:81
-msgid "Aliases"
-msgstr "Aliakset"
-
-#: admin/templates/admin/account_detail.html:87
-msgid "No alias defined"
-msgstr "Aliasta ei ole määritelty"
-
-#: admin/templates/admin/account_detail.html:93
-msgid "Additional sender addresses"
-msgstr "Lisää lähettäjän osoitteita"
-
-#: admin/templates/admin/account_detail.html:99
-msgid "No sender address defined"
-msgstr "Lähettäjän osoitetta ei ole määritelty"
-
-#: admin/templates/admin/account_general_form.html:12
-#: admin/templates/admin/aliasform.html:13
-msgid "Domain is disabled"
-msgstr "Verkkotunnus on poistettu käytöstä"
-
-#: admin/templates/admin/alias_detail.html:16
-#: admin/templates/admin/identities.html:33
-msgid "Alias"
-msgstr "Alias"
-
-#: admin/templates/admin/alias_detail.html:27
-msgid "Modified"
-msgstr "Muokattu"
-
-#: admin/templates/admin/dnsbl_domain_detail.html:10
-msgid "Provider"
-msgstr "Palveluntarjoaja"
-
-#: admin/templates/admin/dnsbl_domain_detail.html:11
-#: admin/templates/admin/identities_quota_headers.html:2
-#: admin/templates/admin/mx_domain_detail.html:10
-msgid "Address"
-msgstr "Osoite"
-
-#: admin/templates/admin/dnsbl_domain_detail.html:12
-#: admin/templates/admin/domain_detail.html:114
-#: admin/templates/admin/domains_log_headers.html:6
-#: admin/templates/admin/messages_log_headers.html:6
-msgid "Status"
-msgstr "Tila"
-
-#: admin/templates/admin/dnsbl_domain_detail.html:21
-msgid "listed"
-msgstr "lueteltu"
-
-#: admin/templates/admin/dnsbl_domain_detail.html:29
-msgid "Everything is fine, this domain is not listed."
-msgstr "Kaikki on kunnossa, tätä verkkotunnusta ei ole listattu."
-
-#: admin/templates/admin/dnsbl_domain_detail.html:32
-msgid "No information available for this domain."
-msgstr "Tältä verkkotunnukselta ei ole saatavilla tietoja."
-
-#: admin/templates/admin/domain_alarms.html:19
-msgid "Opened alarms for"
-msgstr "Avatut hälytykset"
-
-#: admin/templates/admin/domain_alarms.html:25
-#: admin/templates/admin/domains_log_headers.html:3
-#: admin/templates/admin/messages_log_headers.html:3
-#: core/templates/core/logs.html:6 lib/templatetags/lib_tags.py:119
-#: webmail/lib/imapemail.py:306
-msgid "Date"
-msgstr "Päivämäärä"
-
-#: admin/templates/admin/domain_alarms.html:26 core/templates/core/logs.html:9
-msgid "Message"
-msgstr "Viesti"
-
-#: admin/templates/admin/domain_alarms.html:27
-msgid "Mailbox"
-msgstr "Postilaatikko"
-
-#: admin/templates/admin/domain_alarms.html:40
-msgid "No opened alarm"
-msgstr "Ei avattua hälytystä"
-
-#: admin/templates/admin/domain_detail.html:29
-msgid "Creation date"
-msgstr "Luontipäivä"
-
-#: admin/templates/admin/domain_detail.html:33
-msgid "Last modification date"
-msgstr "Viimeisin muutospäivä"
-
-#: admin/templates/admin/domain_detail.html:45 limits/app_settings.py:64
-#: limits/app_settings.py:120 limits/app_settings.py:207
-#: limits/app_settings.py:280 limits/constants.py:39 limits/constants.py:92
-msgid "Mailbox aliases"
-msgstr "Postilaatikon aliakset"
-
-#: admin/templates/admin/domain_detail.html:50
-#: admin/templates/admin/domain_detail.html:57
-#: admin/templates/admin/domain_detail.html:58
-#: admin/templates/admin/domain_detail.html:65
-#: admin/templates/admin/domains_quotas.html:11
-#: admin/templates/admin/domains_quotas.html:12
-#: admin/templates/admin/newdomainform.html:3
-msgid "MB"
-msgstr "Mt"
-
-#: admin/templates/admin/domain_detail.html:54
-#: admin/templates/admin/domain_detail.html:73
-msgid "Usage"
-msgstr "Käyttö"
-
-#: admin/templates/admin/domain_detail.html:57
-#: admin/templates/admin/domains_quotas.html:11
-msgctxt "quota"
-msgid "used"
-msgstr "käytetty"
-
-#: admin/templates/admin/domain_detail.html:58
-#: admin/templates/admin/domains_quotas.html:12
-msgid "allocated"
-msgstr "otettu käyttöön"
-
-#: admin/templates/admin/domain_detail.html:70
-msgid "per day"
-msgstr "per päivä"
-
-#: admin/templates/admin/domain_detail.html:76
-msgctxt "message count"
-msgid "used"
-msgstr "käytetty"
-
-#: admin/templates/admin/domain_detail.html:106
-msgid "DNS"
-msgstr "DNS"
-
-#: admin/templates/admin/domain_detail.html:121
-msgid "DKIM key"
-msgstr "DKIM-avain"
-
-#: admin/templates/admin/domain_detail.html:125
-msgid "Show key"
-msgstr "Näytä avain"
-
-#: admin/templates/admin/domain_detail.html:133
-msgid "Warning"
-msgstr ""
-
-#: admin/templates/admin/domain_detail.html:139
-msgid "DKIM keys already exist for this domain. Do you want to overwrite them?"
-msgstr ""
-
-#: admin/templates/admin/domain_detail.html:142 core/constants.py:53
-#: lib/form_utils.py:399
-msgid "No"
-msgstr "Ei"
-
-#: admin/templates/admin/domain_detail.html:143
-msgid "Generate new key"
-msgstr "Luo uusi avain"
-
-#: admin/templates/admin/domain_detail.html:143 lib/form_utils.py:399
-msgid "Yes"
-msgstr "Kyllä"
-
-#: admin/templates/admin/domain_detail.html:149
-msgid "Not generated"
-msgstr "Ei luotu"
-
-#: admin/templates/admin/domain_detail.html:156
-msgid "Administrators"
-msgstr "Ylläpitäjät"
-
-#: admin/templates/admin/domain_detail.html:168
-#: admin/templatetags/admin_tags.py:306
-msgid "Remove this permission"
-msgstr "Poista tämä lupa"
-
-#: admin/templates/admin/domain_detail.html:173
-msgid "No domain administrator defined yet."
-msgstr "Verkkotunnuksen ylläpitäjää ei ole vielä määritelty."
-
-#: admin/templates/admin/domain_headers.html:5
-#: admin/templates/admin/identity_headers.html:4
-msgid "Tags"
-msgstr "Tunnisteet"
-
-#: admin/templates/admin/domain_headers.html:7
-msgid "DNS status"
-msgstr "DNS-tila"
-
-#: admin/templates/admin/domain_headers.html:9
-#: admin/templates/admin/identity_headers.html:5
-msgid "Actions"
-msgstr "Toiminnot"
-
-#: admin/templates/admin/domain_options_form.html:10
-msgid "You can't create a new domain administrator"
-msgstr "Et voi luoda uutta verkkotunnuksen ylläpitäjää"
-
-#: admin/templates/admin/domains.html:28
-#: admin/templates/admin/identities.html:29
-msgid "Add"
-msgstr "Lisää"
-
-#: admin/templates/admin/domains_log_headers.html:2
-msgid "Queue ID"
-msgstr "Jonon ID"
-
-#: admin/templates/admin/domains_log_headers.html:4
-#: admin/templates/admin/messages_log_headers.html:4
-#: lib/templatetags/lib_tags.py:117 postfix_autoreply/forms.py:18
-msgid "From"
-msgstr "Lähde"
-
-#: admin/templates/admin/domains_log_headers.html:5
-#: admin/templates/admin/messages_log_headers.html:5
-#: lib/templatetags/lib_tags.py:118
-msgid "To"
-msgstr "Vastaanottaja"
-
-#: admin/templates/admin/domains_quota_headers.html:3
-#: admin/templates/admin/identities_quota_headers.html:4
-msgid "Limit"
-msgstr "Rajoitus"
-
-#: admin/templates/admin/domains_quota_headers.html:4
-msgid "Used"
-msgstr "Käytetty"
-
-#: admin/templates/admin/domains_quota_headers.html:5
-msgid "Allocated"
-msgstr "Jaettu"
-
-#: admin/templates/admin/domains_quota_headers.html:6
-#: admin/templates/admin/identities_quota_headers.html:5
-#, python-format
-msgid "Usage (%%)"
-msgstr "Käyttö (%%)"
-
-#: admin/templates/admin/domains_table.html:5
-msgid "disabled"
-msgstr "pois käytöstä"
-
-#: admin/templates/admin/forward.html:2
-msgid "Automatically forward emails to another address"
-msgstr "Lähetä sähköpostit automaattisesti eteenpäin toiseen osoitteeseen"
-
-#: admin/templates/admin/forward.html:9 admin/views/alias.py:84
-#: core/templates/core/api_access.html:35
-#: core/templates/core/user_profile.html:19 lib/form_utils.py:355
-#: postfix_autoreply/templates/modoboa_postfix_autoreply/autoreply.html:10
-msgid "Update"
-msgstr "Päivitä"
-
-#: admin/templates/admin/identities.html:32
-msgid "Account"
-msgstr "Tili"
-
-#: admin/templates/admin/identities_quota_headers.html:3
-msgid "Value"
-msgstr "Arvo"
-
-#: admin/templates/admin/identity_headers.html:3
-msgid "Fullname/Recipient"
-msgstr "Koko nimi/saaja"
-
-#: admin/templates/admin/import_domains_form.html:6
-msgid ""
-"Provide a CSV file where lines respect one of the following formats: <ul> "
-"<li><em>domain; name; quota; default mailbox quota; enabled</em></li> "
-"<li><em>domainalias; name; targeted domain; enabled</em></li> "
-"<li><em>relaydomain; name; target host; target port; service; enabled; "
-"verify recipients</em></li> </ul> <p>The first element of each line is "
-"mandatory and must be equal to one of the previous values.</p> <p>You can "
-"use a different character as separator.</p>"
-msgstr ""
-"Lähetä CSV-tiedosto, jonka rivit ovat jossakin seuraavista muodoista: <ul> "
-"<li><em>verkkotunnus; kiintiö; oletuspostilaatikon kiintiö; käytössä</em></"
-"li> <li><em>verkkotunnuksen alias; nimi; kohteena oleva verkkotunnus; "
-"käytössä</em></li> <li><em>välitysverkkotunnus; nimi; kohde-isäntä; kohde-"
-"portti; palvelu; käytössä; tarkista vastaanottajat</em></li> </ul><p>Kunkin "
-"rivin ensimmäinen elementti on pakollinen, ja sen on oltava yhtä suuri kuin "
-"jokin edellisistä arvoista.</p> <p>Voit käyttää erottimena eri merkkiä.</p>"
-
-#: admin/templates/admin/import_identities_form.html:6
-msgid ""
-"Provide a CSV file where lines respect one of the following formats: <ul> "
-"<li><em>account; loginname; password; first name; last name; enabled; group; "
-"address; quota; [, domain, ...]</em></li> <li><em>alias; address; enabled; "
-"recipient; recipient; ...</em></li> </ul> <p>The first element of each line "
-"is mandatory and must be equal to one of the previous values.</p> <p>You can "
-"use a different character as separator.</p>"
-msgstr ""
-"Lähetä CSV-tiedosto, jonka rivit ovat jossakin seuraavista muodoista: <ul> "
-"<li><em>tili; kirjautumistunnus; salasana; etunimi; sukunimi; käytössä; "
-"ryhmä; osoite; kiintiö; [, verkkotunnus, ...]</em></li> <li><em>alias; "
-"osoite; käytössä; vastaanottaja; vastaanottaja; ...</em></li> </ul><p>Kunkin "
-"rivin ensimmäinen elementti on pakollinen, ja sen on oltava yhtä suuri kuin "
-"jokin edellisistä arvoista.</p> <p>Voit käyttää erottimena eri merkkiä.</p>"
-
-#: admin/templates/admin/importform.html:6
-msgid "Help"
-msgstr "Ohje"
-
-#: admin/templates/admin/importform.html:13
-msgid "Importing..."
-msgstr "Tuodaan..."
-
-#: admin/templates/admin/mailboxes_raw.html:3
-msgid "Choose a value"
-msgstr "Valitse arvo"
-
-#: admin/templates/admin/mailform.html:7
-msgid "Use domain default value"
-msgstr "Käytä verkkotunnuksen oletusarvoa"
-
-#: admin/templates/admin/messages_log_headers.html:2
-msgid "ID"
-msgstr "Tunniste (ID)"
-
-#: admin/templates/admin/mx_domain_detail.html:11
-msgid "Updated"
-msgstr "Päivitetty"
-
-#: admin/templates/admin/mx_domain_detail.html:23
-msgid "This IP does not match any of the valid MXs defined in parameters"
-msgstr ""
-"Tämä IP-osoite ei vastaa mitään parametreissa määritellyistä kelvollisista "
-"MX-osoitteista"
-
-#: admin/templates/admin/mx_domain_detail.html:36
-msgid "No MX record found for this domain."
-msgstr "Tälle verkkotunnukselle ei löytynyt MX-tietuetta."
+#: admin/models/mailbox.py:308
+msgid "Domain does not exist"
+msgstr "Verkkotunnusta ei ole olemassa"
 
 #: admin/templates/admin/notifications/domain_in_dnsbl.html:3
 #, python-format
@@ -1561,149 +730,21 @@ msgstr ""
 "Modoboa havaitsi, että verkkotunnuksella %(domain)s ei ole voimassa olevaa "
 "MX-tietuetta:"
 
-#: admin/templates/admin/searchform.html:6
-msgid "Search"
-msgstr "Hae"
-
-#: admin/templatetags/admin_tags.py:18
-msgid "enabled_m"
-msgstr "enabled_m"
-
-#: admin/templatetags/admin_tags.py:18
-msgid "enabled_f"
-msgstr "enabled_f"
-
-#: admin/templatetags/admin_tags.py:46
-msgid "List domains"
-msgstr "Luettelo verkkotunnuksista"
-
-#: admin/templatetags/admin_tags.py:53 admin/templatetags/admin_tags.py:123
-msgid "List quotas"
-msgstr "Luettelo kiintiöistä"
-
-#: admin/templatetags/admin_tags.py:60
-msgid "Message logs"
-msgstr "Viestilokit"
-
-#: admin/templatetags/admin_tags.py:75 admin/templatetags/admin_tags.py:130
-#: admin/views/import_.py:50 admin/views/import_.py:71
-msgid "Import"
-msgstr "Tuonti"
-
-#: admin/templatetags/admin_tags.py:83 admin/templatetags/admin_tags.py:138
-#: admin/views/export.py:41 admin/views/export.py:70
-msgid "Export"
-msgstr "Viedä"
-
-#: admin/templatetags/admin_tags.py:116
-msgid "List identities"
-msgstr "Luettelo identiteeteistä"
-
-#: admin/templatetags/admin_tags.py:157
-msgid "View the domain's identities"
-msgstr "Näytä verkkotunnuksen identiteetit"
-
-#: admin/templatetags/admin_tags.py:166
-msgid "View domain's alarms"
-msgstr "Näytä verkkotunnuksen hälytykset"
-
-#: admin/templatetags/admin_tags.py:174 admin/templatetags/admin_tags.py:218
-#: admin/templatetags/admin_tags.py:235
-msgid "Edit {}"
-msgstr "Muokkaa {}"
-
-#: admin/templatetags/admin_tags.py:186 admin/templatetags/admin_tags.py:224
-#: admin/templatetags/admin_tags.py:241
-#, python-format
-msgid "Delete %s?"
-msgstr "Poistetaanko %s?"
-
-#: admin/tests/test_mx.py:156
+#: admin/tests/test_mx.py:155
 #, python-format
 msgid "No MX record for %s"
 msgstr "Ei MX-tietuetta %s"
 
-#: admin/tests/test_mx.py:177 admin/tests/test_mx.py:183
+#: admin/tests/test_mx.py:176 admin/tests/test_mx.py:182
 #, python-format
 msgid "Invalid IP address format for %(domain)s; %(addr)s"
 msgstr "Virheellinen IP-osoiteformaatti %(domain)s; %(addr)s"
 
-#: admin/tests/test_mx.py:200
+#: admin/tests/test_mx.py:199
 #, fuzzy, python-format
 #| msgid "No MX record for %s"
 msgid "No AAAA record for %s"
 msgstr "Ei MX-tietuetta %s"
-
-#: admin/views/alias.py:30
-msgid "Alias with this name already exists"
-msgstr "Alias tällä nimellä on jo olemassa"
-
-#: admin/views/alias.py:52
-msgid "Create"
-msgstr "Luo"
-
-#: admin/views/alias.py:64
-msgid "New alias"
-msgstr "Uusi alias"
-
-#: admin/views/alias.py:64
-msgid "Alias created"
-msgstr "Alias luotu"
-
-#: admin/views/alias.py:76
-msgid "Alias modified"
-msgstr "Alias muokattu"
-
-#: admin/views/alias.py:101
-msgid "Alias deleted"
-msgid_plural "Aliases deleted"
-msgstr[0] "Alias poistettu"
-msgstr[1] ""
-
-#: admin/views/dns.py:24
-msgid "MX records of {}"
-msgstr "MX-tietueet {}"
-
-#: admin/views/dns.py:42
-msgid "DNSBL summary for {}"
-msgstr "DNSBL-tiivistelmä {}"
-
-#: admin/views/domain.py:251
-msgid "Domain deleted"
-msgid_plural "Domains deleted"
-msgstr[0] "Verkkotunnus poistettu"
-msgstr[1] "Verkkotunnukset poistettu"
-
-#: admin/views/export.py:40
-msgid "Export identities"
-msgstr "Vie identiteetit"
-
-#: admin/views/export.py:69
-msgid "Export domains"
-msgstr "Vie verkkotunnukset"
-
-#: admin/views/identity.py:110 admin/views/identity.py:197
-#: admin/views/identity.py:202 lib/form_utils.py:110 lib/form_utils.py:113
-msgid "Invalid request"
-msgstr "Virheellinen pyyntö"
-
-#: admin/views/identity.py:187
-msgid "Account deleted"
-msgid_plural "Accounts deleted"
-msgstr[0] "Tili poistettu"
-msgstr[1] "Poistetut tilit"
-
-#: admin/views/import_.py:49
-msgid "Import domains"
-msgstr "Tuo verkkotunnuksia"
-
-#: admin/views/import_.py:70
-msgid "Import identities"
-msgstr "Tuo identiteetit"
-
-#: admin/views/user.py:51
-msgid "Forward updated"
-msgstr "Välitystieto päivitetty"
 
 #: calendars/app_settings.py:11
 #, fuzzy
@@ -1746,8 +787,7 @@ msgstr "Luo verkkotunnuksen ylläpitäjä"
 msgid "Allow domain administrators to manage user calendars (read and write)"
 msgstr "Salli tämän järjestelmänvalvojan pääsy käyttäjien postilaatikoihin"
 
-#: calendars/app_settings.py:60 core/app_settings.py:438
-#: core/app_settings.py:1255
+#: calendars/app_settings.py:60 core/app_settings.py:579
 msgid "Miscellaneous"
 msgstr "Sekalaiset"
 
@@ -1760,7 +800,7 @@ msgid ""
 "Maximum size in bytes of imported ICS files (or KB, MB, GB if specified)"
 msgstr ""
 
-#: calendars/app_settings.py:89 core/api/v2/viewsets.py:157
+#: calendars/app_settings.py:89 core/api/v2/viewsets.py:171
 msgid "Calendars"
 msgstr ""
 
@@ -1798,8 +838,7 @@ msgstr "LDAP-synkronointiasetukset"
 msgid "Interval in seconds between 2 synchronization requests"
 msgstr ""
 
-#: contacts/app_settings.py:51 contacts/templates/modoboa_contacts/index.html:6
-#: core/api/v2/viewsets.py:164
+#: contacts/app_settings.py:51 core/api/v2/viewsets.py:178
 #, fuzzy
 #| msgid "Domains"
 msgid "Contacts"
@@ -1843,104 +882,102 @@ msgstr "Näytettävien kohteiden määrä sivua kohti"
 msgid "Minimum allowed value is 60s"
 msgstr ""
 
-#: core/api/v1/serializers.py:21
+#: core/api/v1/serializers.py:68
 msgid "Invalid PIN code"
 msgstr "Virheellinen PIN-koodi"
 
-#: core/api/v1/serializers.py:27
+#: core/api/v1/serializers.py:74
 msgid "2FA is already enabled"
 msgstr "Kaksivaiheinen tunnistus (2FA) on jo käytössä"
 
-#: core/api/v1/serializers.py:40
+#: core/api/v1/serializers.py:87
 #, python-format
 msgid "Failed TFA settings editing attempt from '%s' as user '%s'"
 msgstr ""
 
-#: core/api/v1/serializers.py:44 core/api/v2/serializers.py:308
+#: core/api/v1/serializers.py:91 core/api/v2/serializers.py:415
 #, fuzzy
 #| msgid "Old password"
 msgid "Invalid password"
 msgstr "Vanha salasana"
 
-#: core/api/v1/viewsets.py:64 core/api/v1/viewsets.py:83
+#: core/api/v1/viewsets.py:45 core/api/v1/viewsets.py:64
 msgid "2FA is not enabled"
 msgstr "Kaksivaiheinen tunnistautuminen (2FA) ei ole käytössä"
 
-#: core/api/v2/serializers.py:68 core/app_settings.py:48
+#: core/api/v2/serializers.py:69
 msgid "Local"
 msgstr "Paikallinen"
 
-#: core/api/v2/serializers.py:164 core/app_settings.py:24
+#: core/api/v2/serializers.py:165 core/app_settings.py:17
 msgid "User profile"
 msgstr "Käyttäjäprofiili"
 
-#: core/api/v2/serializers.py:183 core/api/v2/serializers.py:190
-#: core/api/v2/serializers.py:197 core/app_settings.py:535
-#: core/app_settings.py:543 core/app_settings.py:551
-#: postfix_autoreply/forms.py:153
+#: core/api/v2/serializers.py:184 core/api/v2/serializers.py:191
+#: core/api/v2/serializers.py:198
 msgid "Invalid syntax"
 msgstr "Virheellinen syntaksi"
 
-#: core/api/v2/serializers.py:202 core/app_settings.py:557
+#: core/api/v2/serializers.py:203
 msgid "Invalid rounds number"
 msgstr "Virheellinen kierrosluku"
 
-#: core/api/v2/serializers.py:296 core/forms.py:201
+#: core/api/v2/serializers.py:403 core/forms.py:81
 msgid "This code is invalid"
 msgstr "Tämä koodi on virheellinen"
 
-#: core/api/v2/serializers.py:367 core/views/auth.py:199 core/views/auth.py:252
+#: core/api/v2/serializers.py:473 core/views/auth.py:194 core/views/auth.py:247
 msgid "Please use the following code to recover your Modoboa password: {}"
 msgstr "Käytä seuraavaa koodia saadaksesi takaisin Modoboa-salasanasi: {}"
 
-#: core/api/v2/viewsets.py:150
+#: core/api/v2/viewsets.py:164
 #, fuzzy
 #| msgid "Administration"
 msgid "Administration console"
 msgstr "Hallinnointinäkymä"
 
-#: core/api/v2/viewsets.py:159
+#: core/api/v2/viewsets.py:173
 msgid "Calendar"
 msgstr ""
 
-#: core/api/v2/viewsets.py:166
+#: core/api/v2/viewsets.py:180
 #, fuzzy
 #| msgid "Address"
 msgid "Address book"
 msgstr "Osoite"
 
-#: core/api/v2/viewsets.py:171 core/api/v2/viewsets.py:173
+#: core/api/v2/viewsets.py:185 core/api/v2/viewsets.py:187
 #: webmail/app_settings.py:258 webmail/app_settings.py:265
 #, fuzzy
 #| msgid "E-mail"
 msgid "Webmail"
 msgstr "Sähköpostiosoite"
 
-#: core/app_settings.py:44 core/app_settings.py:713
+#: core/app_settings.py:37
 msgid "Authentication"
 msgstr "Tunnistautuminen"
 
-#: core/app_settings.py:47 core/app_settings.py:719
+#: core/app_settings.py:43
 msgid "Authentication type"
 msgstr "Autentikointityyppi"
 
-#: core/app_settings.py:50 core/app_settings.py:721
+#: core/app_settings.py:45
 msgid "The backend used for authentication"
 msgstr "Tunnistautumiseen käytettävä taustajärjestelmä"
 
-#: core/app_settings.py:55 core/app_settings.py:728
+#: core/app_settings.py:52
 msgid "Default password scheme"
 msgstr "Oletussalasanojen järjestelmä"
 
-#: core/app_settings.py:58 core/app_settings.py:730
+#: core/app_settings.py:54
 msgid "Scheme used to crypt mailbox passwords"
 msgstr "Sähköpostilaatikon salasanojen salaamiseen käytetty järjestelmä"
 
-#: core/app_settings.py:62 core/app_settings.py:737
+#: core/app_settings.py:61
 msgid "Rounds"
 msgstr "Kierrokset"
 
-#: core/app_settings.py:65 core/app_settings.py:739
+#: core/app_settings.py:63
 msgid ""
 "Number of rounds to use (only used by sha256crypt and sha512crypt). Must be "
 "between 1000 and 999999999, inclusive."
@@ -1948,37 +985,37 @@ msgstr ""
 "Käytettävien kierrosten määrä (vain sha256crypt ja sha512crypt käyttävät). "
 "Arvon on oltava välillä 1000 ja 99999999999."
 
-#: core/app_settings.py:71 core/app_settings.py:749
+#: core/app_settings.py:73
 msgid "Update password scheme at login"
 msgstr "Päivitä salasanajärjestelmä kirjautumisen yhteydessä"
 
-#: core/app_settings.py:74 core/app_settings.py:752
+#: core/app_settings.py:76
 msgid "Update user password at login to use the default password scheme"
 msgstr ""
 "Päivitä käyttäjän salasana sisäänkirjautumisen yhteydessä käyttämään "
 "oletussalasanajärjestelmää"
 
-#: core/app_settings.py:79 core/app_settings.py:760
+#: core/app_settings.py:84
 msgid "Default password"
 msgstr "Oletussalasana"
 
-#: core/app_settings.py:81 core/app_settings.py:762
+#: core/app_settings.py:86
 msgid "Default password for automatically created accounts."
 msgstr "Automaattisesti luotujen tilien oletussalasana."
 
-#: core/app_settings.py:85 core/app_settings.py:769
+#: core/app_settings.py:93
 msgid "Random password length"
 msgstr "Satunnaisen salasanan pituus"
 
-#: core/app_settings.py:88 core/app_settings.py:771
+#: core/app_settings.py:95
 msgid "Length of randomly generated passwords."
 msgstr "Satunnaisesti luotujen salasanojen pituus."
 
-#: core/app_settings.py:92 core/app_settings.py:778
+#: core/app_settings.py:102
 msgid "Update password service URL"
 msgstr "Päivitä salasanapalvelun URL-osoite"
 
-#: core/app_settings.py:96 core/app_settings.py:780
+#: core/app_settings.py:104
 msgid ""
 "The URL of an external page where users will be able to update their "
 "password. It applies only to non local users, ie. those automatically "
@@ -1988,109 +1025,106 @@ msgstr ""
 "Koskee vain muita kuin paikallisia käyttäjiä. Eli niitä, jotka luodaan "
 "automaattisesti onnistuneen ulkoisen todennuksen jälkeen (LDAP, SMTP)."
 
-#: core/app_settings.py:104 core/app_settings.py:790
+#: core/app_settings.py:114
 msgid "Password recovery announcement"
 msgstr "Ilmoitus salasanan palautuksesta"
 
-#: core/app_settings.py:109 core/app_settings.py:792
+#: core/app_settings.py:116
 msgid "A temporary message that will be displayed on the reset password page."
 msgstr "Väliaikainen viesti, joka näytetään salasanan nollaussivulla."
 
-#: core/app_settings.py:114 core/app_settings.py:801
+#: core/app_settings.py:125
 msgid "Enable password recovery by SMS"
 msgstr "Ota salasanan palautus käyttöön tekstiviestillä"
 
-#: core/app_settings.py:117 core/app_settings.py:804
+#: core/app_settings.py:128
 msgid "Enable password recovery by SMS for users who filled a phone number."
 msgstr ""
 "Ota käyttöön salasanan palautus tekstiviestillä käyttäjille, jotka ovat "
 "täyttäneet puhelinnumeron."
 
-#: core/app_settings.py:122 core/app_settings.py:812
+#: core/app_settings.py:136
 msgid "SMS provider"
 msgstr "SMS-palveluntarjoaja"
 
-#: core/app_settings.py:124 core/app_settings.py:815
+#: core/app_settings.py:139
 msgid "Choose a provider to send password recovery SMS"
 msgstr ""
 "Valitse palveluntarjoaja, joka lähettää salasanan palautustekstiviestin"
 
-#: core/app_settings.py:129
-msgid "LDAP settings"
-msgstr "LDAP-asetukset"
+#: core/app_settings.py:151
+msgid "LDAP"
+msgstr ""
 
-#: core/app_settings.py:132 core/app_settings.py:833
-#: sievefilters/app_settings.py:18 sievefilters/app_settings.py:51
-#: sievefilters/forms.py:16 sievefilters/forms.py:38 webmail/app_settings.py:36
+#: core/app_settings.py:157 sievefilters/app_settings.py:18
+#: sievefilters/app_settings.py:51 webmail/app_settings.py:36
 #: webmail/app_settings.py:73
 msgid "Server address"
 msgstr "Palvelimen osoite"
 
-#: core/app_settings.py:134 core/app_settings.py:835
+#: core/app_settings.py:159
 msgid "The IP address or the DNS name of the LDAP server"
 msgstr "LDAP-palvelimen IP-osoite tai DNS-nimi"
 
-#: core/app_settings.py:138 core/app_settings.py:842
-#: sievefilters/app_settings.py:25 sievefilters/app_settings.py:67
-#: sievefilters/forms.py:23 sievefilters/forms.py:50 webmail/app_settings.py:54
+#: core/app_settings.py:166 sievefilters/app_settings.py:25
+#: sievefilters/app_settings.py:67 webmail/app_settings.py:54
 #: webmail/app_settings.py:91
 msgid "Server port"
 msgstr "Palvelimen portti"
 
-#: core/app_settings.py:140 core/app_settings.py:844
+#: core/app_settings.py:168
 msgid "The TCP port number used by the LDAP server"
 msgstr "LDAP-palvelimen käyttämän TCP-portin numero"
 
-#: core/app_settings.py:144 core/app_settings.py:852
+#: core/app_settings.py:176
 msgid "Enable secondary server (fallback)"
 msgstr "Toisen palvelimen käyttöönotto (varapalvelin)"
 
-#: core/app_settings.py:147 core/app_settings.py:855
+#: core/app_settings.py:179
 msgid ""
 "Enable a secondary LDAP server which will be used if the primary one fails"
 msgstr ""
 "Ota käyttöön toissijainen LDAP-palvelin, jota käytetään, jos ensisijainen "
 "palvelin ei toimi"
 
-#: core/app_settings.py:153 core/app_settings.py:863
+#: core/app_settings.py:187
 msgid "Secondary server address"
 msgstr "Toisen palvelimen osoite"
 
-#: core/app_settings.py:156 core/app_settings.py:866
+#: core/app_settings.py:190
 msgid "The IP address or the DNS name of the seondary LDAP server"
 msgstr "Toisen LDAP-palvelimen IP-osoite tai DNS-nimi"
 
-#: core/app_settings.py:161 core/app_settings.py:873
+#: core/app_settings.py:197
 msgid "Secondary server port"
 msgstr "Toisen palvelimen portti"
 
-#: core/app_settings.py:163 core/app_settings.py:876
+#: core/app_settings.py:200
 msgid "The TCP port number used by the LDAP secondary server"
 msgstr "LDAP:n toissijaisen palvelimen käyttämä TCP-portin numero"
 
-#: core/app_settings.py:167 core/app_settings.py:883
-#: sievefilters/app_settings.py:58 sievefilters/forms.py:44
+#: core/app_settings.py:207 sievefilters/app_settings.py:58
 #: webmail/app_settings.py:45
 msgid "Use a secured connection"
 msgstr "Käytä suojattua yhteyttä"
 
-#: core/app_settings.py:171 core/app_settings.py:885
+#: core/app_settings.py:209
 msgid "Use an SSL/STARTTLS connection to access the LDAP server"
 msgstr "Käytä SSL/STARTTLS-yhteyttä LDAP-palvelimen käyttämiseen"
 
-#: core/app_settings.py:176 core/app_settings.py:892
+#: core/app_settings.py:216
 msgid "Active Directory"
 msgstr "Active Directory"
 
-#: core/app_settings.py:178 core/app_settings.py:894
+#: core/app_settings.py:218
 msgid "Tell if the LDAP server is an Active Directory one"
 msgstr "Kerro, onko LDAP-palvelin Active Directory -palvelin"
 
-#: core/app_settings.py:182 core/app_settings.py:901
+#: core/app_settings.py:225
 msgid "Administrator groups"
 msgstr "Järjestelmänvalvojien ryhmät"
 
-#: core/app_settings.py:185 core/app_settings.py:903
+#: core/app_settings.py:227
 msgid ""
 "Members of those LDAP Posix groups will be created as domain administrators. "
 "Use ';' characters to separate groups."
@@ -2098,57 +1132,47 @@ msgstr ""
 "Näiden LDAP Posix -ryhmien jäsenet luodaan verkkotunnuksen "
 "järjestelmänvalvojiksi. Käytä ';'-merkkejä ryhmien erottamiseen."
 
-#: core/app_settings.py:192 core/app_settings.py:912
+#: core/app_settings.py:236
 msgid "Group type"
 msgstr "Ryhmän tyyppi"
 
-#: core/app_settings.py:195 core/app_settings.py:914
+#: core/app_settings.py:238
 msgid "The LDAP group type to use with your directory."
 msgstr "LDAP-ryhmän tyyppi, jota käytetään hakemiston kanssa."
 
-#: core/app_settings.py:199 core/app_settings.py:921
+#: core/app_settings.py:245
 msgid "Groups search base"
 msgstr "Ryhmien hakupohja"
 
-#: core/app_settings.py:202 core/app_settings.py:923
+#: core/app_settings.py:247
 msgid "The distinguished name of the search base used to find groups"
 msgstr "Ryhmien etsimiseen käytettävän hakupohjan erottuva nimi"
 
-#: core/app_settings.py:208 core/app_settings.py:931
+#: core/app_settings.py:255
 msgid "Password attribute"
 msgstr "Salasana-attribuutti"
 
-#: core/app_settings.py:210 core/app_settings.py:933
+#: core/app_settings.py:257
 msgid "The attribute used to store user passwords"
 msgstr "Määrite, jota käytetään käyttäjien salasanojen tallentamiseen"
 
-#: core/app_settings.py:214 core/app_settings.py:940
+#: core/app_settings.py:264
 msgid "LDAP authentication settings"
 msgstr "LDAP-todennusasetukset"
 
-#: core/app_settings.py:217 core/app_settings.py:948
+#: core/app_settings.py:272
 msgid "Authentication method"
 msgstr "Tunnistusmenetelmä"
 
-#: core/app_settings.py:219 core/constants.py:59
-msgid "Search and bind"
-msgstr "Etsi ja sido"
-
-#: core/app_settings.py:220 core/constants.py:60
-msgid "Direct bind"
-msgstr "Suora sidonta"
-
-#: core/app_settings.py:223 core/app_settings.py:951
+#: core/app_settings.py:275
 msgid "Choose the authentication method to use"
 msgstr "Valitse käytettävä todennusmenetelmä"
 
-#: core/app_settings.py:227 core/app_settings.py:279 core/app_settings.py:958
-#: core/app_settings.py:1021
+#: core/app_settings.py:282 core/app_settings.py:345
 msgid "Bind DN"
 msgstr "Sido DN"
 
-#: core/app_settings.py:230 core/app_settings.py:282 core/app_settings.py:960
-#: core/app_settings.py:1023
+#: core/app_settings.py:284 core/app_settings.py:347
 msgid ""
 "The distinguished name to use when binding to the LDAP server. Leave empty "
 "for an anonymous bind"
@@ -2156,35 +1180,29 @@ msgstr ""
 "Erotusnimi, jota käytetään LDAP-palvelimeen sitoutumisessa. Jätä tyhjäksi "
 "anonyymiä sidontaa varten"
 
-#: core/app_settings.py:237 core/app_settings.py:289 core/app_settings.py:969
-#: core/app_settings.py:1031
+#: core/app_settings.py:293 core/app_settings.py:355
 msgid "Bind password"
 msgstr "Sido salasana"
 
-#: core/app_settings.py:240 core/app_settings.py:292 core/app_settings.py:971
-#: core/app_settings.py:1033
+#: core/app_settings.py:295 core/app_settings.py:357
 msgid "The password to use when binding to the LDAP server (with 'Bind DN')"
 msgstr ""
 "Salasana, jota käytetään LDAP-palvelimeen sitoutumisessa (komennolla 'Bind "
 "DN')"
 
-#: core/app_settings.py:247 core/app_settings.py:335 core/app_settings.py:981
-#: core/app_settings.py:1086
+#: core/app_settings.py:305 core/app_settings.py:410
 msgid "Users search base"
 msgstr "Käyttäjien hakupohja"
 
-#: core/app_settings.py:250 core/app_settings.py:338 core/app_settings.py:983
-#: core/app_settings.py:1088
+#: core/app_settings.py:307 core/app_settings.py:412
 msgid "The distinguished name of the search base used to find users"
 msgstr "Käyttäjien etsimiseen käytettävän hakupohjan erisnimi"
 
-#: core/app_settings.py:256 core/app_settings.py:344 core/app_settings.py:992
-#: core/app_settings.py:1097
+#: core/app_settings.py:316 core/app_settings.py:421
 msgid "Search filter"
 msgstr "Etsi suodatin"
 
-#: core/app_settings.py:259 core/app_settings.py:347 core/app_settings.py:994
-#: core/app_settings.py:1099
+#: core/app_settings.py:318 core/app_settings.py:423
 msgid ""
 "An optional filter string (e.g. '(objectClass=person)'). In order to be "
 "valid, it must be enclosed in parentheses."
@@ -2192,11 +1210,11 @@ msgstr ""
 "Valinnainen suodatinmerkkijono (esim. '(objectClass=person)'). Tämän on "
 "oltava suluissa."
 
-#: core/app_settings.py:266 core/app_settings.py:1003
+#: core/app_settings.py:327
 msgid "User DN template"
 msgstr "Käyttäjän DN-malli"
 
-#: core/app_settings.py:269 core/app_settings.py:1005
+#: core/app_settings.py:329
 #, python-format
 msgid ""
 "The template used to construct a user's DN. It should contain one "
@@ -2205,26 +1223,26 @@ msgstr ""
 "Käyttäjän DN:n rakentamiseen käytettävä malli. Sen tulisi sisältää yksi "
 "paikanvaraaja (eli %(user)s)"
 
-#: core/app_settings.py:276 core/app_settings.py:1014
+#: core/app_settings.py:338
 msgid "LDAP synchronization settings"
 msgstr "LDAP-synkronointiasetukset"
 
-#: core/app_settings.py:299 core/app_settings.py:1042
+#: core/app_settings.py:366
 msgid "Enable export to LDAP"
 msgstr "Ota käyttöön vienti LDAP:iin"
 
-#: core/app_settings.py:302 core/app_settings.py:1044
+#: core/app_settings.py:368
 msgid ""
 "Enable automatic synchronization between local database and LDAP directory"
 msgstr ""
 "Ota käyttöön automaattinen synkronointi paikallisen tietokannan ja LDAP-"
 "hakemiston välillä"
 
-#: core/app_settings.py:308 core/app_settings.py:1053
+#: core/app_settings.py:377
 msgid "Delete remote LDAP account when local account is deleted"
 msgstr "Etäisen LDAP-tilin poistaminen, kun paikallinen tili poistetaan"
 
-#: core/app_settings.py:311 core/app_settings.py:1056
+#: core/app_settings.py:380
 msgid ""
 "Delete remote LDAP account when local account is deleted, otherwise it will "
 "be disabled."
@@ -2232,11 +1250,11 @@ msgstr ""
 "Poista etä-LDAP-tili, kun paikallinen tili poistetaan. Muuten se poistetaan "
 "käytöstä."
 
-#: core/app_settings.py:317 core/app_settings.py:1065
+#: core/app_settings.py:389
 msgid "Account DN template"
 msgstr "Tilin DN-malli"
 
-#: core/app_settings.py:320 core/app_settings.py:1067
+#: core/app_settings.py:391
 #, python-format
 msgid ""
 "The template used to construct an account's DN. It should contain one "
@@ -2245,140 +1263,134 @@ msgstr ""
 "Malli, jota käytetään tilin DN:n muodostamiseen. Sen tulisi sisältää yksi "
 "paikanvaraaja (eli %(user)s)"
 
-#: core/app_settings.py:327 core/app_settings.py:1076
+#: core/app_settings.py:400
 msgid "Enable import from LDAP"
 msgstr "Ota käyttöön tuonti LDAP:stä"
 
-#: core/app_settings.py:330 core/app_settings.py:1078
+#: core/app_settings.py:402
 msgid "Enable account synchronization from LDAP directory to local database"
 msgstr ""
 "Tilien synkronoinnin käyttöönotto LDAP-hakemistosta paikalliseen tietokantaan"
 
-#: core/app_settings.py:354 core/app_settings.py:1108
+#: core/app_settings.py:432
 msgid "Username attribute"
 msgstr "Käyttäjätunnus-määrite"
 
-#: core/app_settings.py:357 core/app_settings.py:1110
+#: core/app_settings.py:434
 msgid "The name of the LDAP attribute where the username can be found."
 msgstr "Sen LDAP-attribuutin nimi, josta käyttäjänimi löytyy."
 
-#: core/app_settings.py:362 core/app_settings.py:1119
+#: core/app_settings.py:443
 msgid "Enable Dovecot LDAP sync"
 msgstr "Ota Dovecot LDAP-synkronointi käyttöön"
 
-#: core/app_settings.py:365 core/app_settings.py:1121
+#: core/app_settings.py:445
 msgid "LDAP authentication settings will be applied to Dovecot configuration."
 msgstr "LDAP-todennusasetuksia sovelletaan Dovecot-konfiguraatioon."
 
-#: core/app_settings.py:370 core/app_settings.py:1129
+#: core/app_settings.py:453
 msgid "Dovecot LDAP config file"
 msgstr "Dovecot LDAP -asetustiedosto"
 
-#: core/app_settings.py:374 core/app_settings.py:1131
+#: core/app_settings.py:455
 msgid ""
 "Location of the configuration file which contains Dovecot LDAP settings."
 msgstr "Dovecotin LDAP-asetukset sisältävän määritystiedoston sijainti."
 
-#: core/app_settings.py:379 core/app_settings.py:1144
-#: core/templates/core/dashboard.html:5
+#: core/app_settings.py:468
 msgid "Dashboard"
 msgstr "Työpöytä"
 
-#: core/app_settings.py:382 core/app_settings.py:1150
+#: core/app_settings.py:474
 msgid "Custom RSS feed"
 msgstr "Mukautettu RSS-syöte"
 
-#: core/app_settings.py:385 core/app_settings.py:1152
+#: core/app_settings.py:476
 msgid "Display custom RSS feed to resellers and domain administrators"
 msgstr ""
 "Näytä mukautettu RSS-syöte jälleenmyyjille ja verkkotunnuksen ylläpitäjille"
 
-#: core/app_settings.py:390 core/app_settings.py:1160
+#: core/app_settings.py:484
 msgid "Hide features widget"
 msgstr "Piilota ominaisuudet-widget"
 
-#: core/app_settings.py:393 core/app_settings.py:1162
+#: core/app_settings.py:486
 msgid "Hide features widget for resellers and domain administrators"
 msgstr ""
 "Piilota ominaisuudet-widget jälleenmyyjiltä ja verkkotunnuksen ylläpitäjiltä"
 
-#: core/app_settings.py:397 core/app_settings.py:1174
+#: core/app_settings.py:498
 msgid "Notifications"
 msgstr "Ilmoitukset"
 
-#: core/app_settings.py:400 core/app_settings.py:1180
+#: core/app_settings.py:504
 msgid "Sender address"
 msgstr "Lähettäjän osoite"
 
-#: core/app_settings.py:402 core/app_settings.py:1182
+#: core/app_settings.py:506
 msgid "Email address used to send notifications."
 msgstr "Ilmoitusten lähettämiseen käytettävä sähköpostiosoite."
 
-#: core/app_settings.py:405 core/app_settings.py:1193
+#: core/app_settings.py:517
 msgid "Public API"
 msgstr "Julkinen API"
 
-#: core/app_settings.py:408 core/app_settings.py:1199
+#: core/app_settings.py:523
 msgid "Enable communication"
 msgstr "Ota viestintä käyttöön"
 
-#: core/app_settings.py:410
-msgid "Enable communication with Modoboa public API"
-msgstr "Ota käyttöön viestintä Modoboan julkisen API:n kanssa"
-
-#: core/app_settings.py:414 core/app_settings.py:1208
-msgid "Check new versions"
-msgstr "Tarkista uudet versiot"
-
-#: core/app_settings.py:416 core/app_settings.py:1201 core/app_settings.py:1211
+#: core/app_settings.py:525 core/app_settings.py:535
 msgid "Automatically checks if a newer version is available"
 msgstr "Tarkistaa automaattisesti, onko uudempi versio saatavana"
 
-#: core/app_settings.py:420 core/app_settings.py:1219
+#: core/app_settings.py:532
+msgid "Check new versions"
+msgstr "Tarkista uudet versiot"
+
+#: core/app_settings.py:543
 msgid "Send an email when new versions are found"
 msgstr "Lähetä sähköpostia, kun uusia versioita löytyy"
 
-#: core/app_settings.py:422 core/app_settings.py:1223
+#: core/app_settings.py:547
 msgid "Send an email to notify admins about new versions"
 msgstr ""
 "Lähetä sähköpostiviesti, joka ilmoittaa ylläpitäjille uusista versioista"
 
-#: core/app_settings.py:425 core/app_settings.py:1230
-#: sievefilters/constants.py:25
+#: core/app_settings.py:554 sievefilters/constants.py:25
 msgid "Recipient"
 msgstr "Vastaanottaja"
 
-#: core/app_settings.py:427 core/app_settings.py:1233
+#: core/app_settings.py:557
 msgid "Recipient of new versions notification emails."
 msgstr "Uusia versioita koskevien ilmoitussähköpostiviestien vastaanottaja."
 
-#: core/app_settings.py:431 core/app_settings.py:1240
+#: core/app_settings.py:564
 msgid "Send statistics"
 msgstr "Lähetä tilastot"
 
-#: core/app_settings.py:434 core/app_settings.py:1243
+#: core/app_settings.py:567
 msgid "Send statistics to Modoboa public API (counters and used extensions)"
 msgstr ""
 "Lähetä tilastoja Modoboan julkiseen API:han (laskurit ja käytetyt "
 "laajennukset)"
 
-#: core/app_settings.py:441 core/app_settings.py:1262
+#: core/app_settings.py:586
 #, fuzzy
 #| msgid "Inactive account threshold"
 msgid "Enable inactive account tracking"
 msgstr "Inaktiivisen tilin kynnysarvo"
 
-#: core/app_settings.py:444 core/app_settings.py:1265
+#: core/app_settings.py:589
 msgid ""
 "Allow the administrator to set a threshold (in days) beyond which an account "
 "is considered inactive if the user hasn't logged in"
 msgstr ""
 
-#: core/app_settings.py:451 core/app_settings.py:1274
+#: core/app_settings.py:598
 msgid "Inactive account threshold"
 msgstr "Inaktiivisen tilin kynnysarvo"
 
-#: core/app_settings.py:454 core/app_settings.py:1277
+#: core/app_settings.py:601
 msgid ""
 "An account with a last login date greater than this threshold (in days) will "
 "be considered as inactive"
@@ -2386,43 +1398,45 @@ msgstr ""
 "Tiliä, jonka viimeisin kirjautumispäivä on suurempi kuin tämä kynnysarvo "
 "(päivinä), pidetään inaktiivisena"
 
-#: core/app_settings.py:460 core/app_settings.py:1286
+#: core/app_settings.py:610
 msgid "Top notifications check interval"
 msgstr "Ylimpien ilmoitusten tarkistusväli"
 
-#: core/app_settings.py:462 core/app_settings.py:1289
+#: core/app_settings.py:613
 msgid "Interval between two top notification checks (in seconds)"
 msgstr "Kahden ylimmän ilmoituksen tarkistuksen välinen aika (sekunteina)"
 
-#: core/app_settings.py:466 core/app_settings.py:1296
+#: core/app_settings.py:620
 msgid "Maximum log record age"
 msgstr "Lokitiedoston enimmäisikä"
 
-#: core/app_settings.py:468 core/app_settings.py:1298
+#: core/app_settings.py:622
 msgid "The maximum age in days of a log record"
 msgstr "Lokitietueen enimmäisikä päivinä"
 
-#: core/app_settings.py:472 core/app_settings.py:1305
+#: core/app_settings.py:629
 msgid "Items per page"
 msgstr "Kohteita per sivu"
 
-#: core/app_settings.py:474 core/app_settings.py:1307
+#: core/app_settings.py:631
 msgid "Number of displayed items per page"
 msgstr "Näytettävien kohteiden määrä sivua kohti"
 
-#: core/app_settings.py:478 core/app_settings.py:1314
+#: core/app_settings.py:638
 msgid "Default top redirection"
 msgstr "Oletusarvoinen ylhäältä uudelleenohjaus"
 
-#: core/app_settings.py:482 core/app_settings.py:1316
+#: core/app_settings.py:640
 msgid "The default redirection used when no application is specified"
 msgstr ""
 "Oletusarvoinen uudelleenohjaus, jota käytetään, kun sovellusta ei ole "
 "määritetty"
 
-#: core/app_settings.py:827
-msgid "LDAP"
-msgstr ""
+#: core/apps.py:21 imap_migration/app_settings.py:13 maillog/apps.py:14
+#: pdfcredentials/app_settings.py:13 postfix_autoreply/app_settings.py:12
+#: webmail/app_settings.py:11
+msgid "General"
+msgstr "Yleiset"
 
 #: core/checks.py:13
 msgid ""
@@ -2464,6 +1478,18 @@ msgstr "Jälleenmyyjä"
 msgid "Super administrator"
 msgstr "Pääylläpitäjä"
 
+#: core/constants.py:53
+msgid "No"
+msgstr "Ei"
+
+#: core/constants.py:59
+msgid "Search and bind"
+msgstr "Etsi ja sido"
+
+#: core/constants.py:60
+msgid "Direct bind"
+msgstr "Suora sidonta"
+
 #: core/constants.py:109
 msgid "Choose a provider"
 msgstr "Valitse palveluntarjoaja"
@@ -2472,73 +1498,53 @@ msgstr "Valitse palveluntarjoaja"
 msgid "Dummy"
 msgstr "Harjoitus"
 
-#: core/forms.py:26
-msgid "Old password"
-msgstr "Vanha salasana"
-
-#: core/forms.py:31
-msgid "New password"
-msgstr "Uusi salasana"
-
-#: core/forms.py:70
-msgid "Old password mismatchs"
-msgstr "Vanhat salasanat eivät vastaa toisiaan"
-
-#: core/forms.py:83
-msgid "Passwords mismatch"
-msgstr "Salasanat eivät täsmää"
-
-#: core/forms.py:130
-msgid "Enable API access"
-msgstr "Ota API-yhteys käyttöön"
-
-#: core/forms.py:176
+#: core/forms.py:56
 msgid "Verification code"
 msgstr "Tarkistuskoodi"
 
-#: core/forms.py:187
+#: core/forms.py:67
 msgid "Invalid code"
 msgstr "Virheellinen koodi"
 
-#: core/handlers.py:37
+#: core/handlers.py:36
 msgid "added"
 msgstr "lisätty"
 
-#: core/handlers.py:40
+#: core/handlers.py:39
 msgid "modified"
 msgstr "muokattu"
 
-#: core/handlers.py:42
+#: core/handlers.py:41
 #, python-format
 msgid "%(object)s '%(name)s' %(action)s by user %(user)s"
 msgstr "%(object)s '%(name)s' %(action)s käyttäjältä %(user)s"
 
-#: core/handlers.py:65
+#: core/handlers.py:64
 #, python-format
 msgid "%(object)s '%(name)s' %(action)s by "
 msgstr "%(object)s '%(name)s' %(action)s tekijänä "
 
-#: core/handlers.py:68
+#: core/handlers.py:67
 msgid "deleted"
 msgstr "poistettu"
 
-#: core/handlers.py:72
+#: core/handlers.py:71
 msgid "user {}"
 msgstr "käyttäjä {}"
 
-#: core/handlers.py:74
+#: core/handlers.py:73
 msgid "management command"
 msgstr "hallintakomento"
 
-#: core/handlers.py:96
+#: core/handlers.py:95
 msgid "You can't delete your own account"
 msgstr "Et voi poistaa omaa tiliäsi"
 
-#: core/handlers.py:129
+#: core/handlers.py:127
 msgid "One or more updates are available"
 msgstr "Yksi tai useampi päivitys on saatavilla"
 
-#: core/handlers.py:141
+#: core/handlers.py:138
 #, python-format
 msgid "You are still using a deprecated password scheme (%s)"
 msgstr ""
@@ -2555,7 +1561,7 @@ msgstr "Salli postilaatikoiden käyttöoikeus"
 msgid "Allow this administrator to access user mailboxes"
 msgstr "Salli tämän järjestelmänvalvojan pääsy käyttäjien postilaatikoihin"
 
-#: core/models.py:76 core/templates/core/user_security.html:119
+#: core/models.py:76
 msgid "password"
 msgstr "salasana"
 
@@ -2566,6 +1572,14 @@ msgstr "kieli"
 #: core/models.py:83
 msgid "Prefered language to display pages."
 msgstr "Suositeltava kieli sivujen näyttämiseen."
+
+#: core/models.py:85
+msgid "Phone number"
+msgstr "Puhelinnumero"
+
+#: core/models.py:87
+msgid "Secondary email"
+msgstr "Toissijainen sähköpostiosoite"
 
 #: core/models.py:92
 msgid "An alternative e-mail address, can be used for recovery needs."
@@ -2679,140 +1693,6 @@ msgstr "Asiakkaan avain"
 msgid "Appication secret"
 msgstr "Sovelluksen salainen avain"
 
-#: core/templates/core/_current_features.html:6
-msgid "Features looking for sponsoring"
-msgstr "Ominaisuudet, jotka etsivät sponsoria"
-
-#: core/templates/core/_current_features.html:12
-msgid "Goal:"
-msgstr "Tavoite:"
-
-#: core/templates/core/_current_features.html:18
-msgid "More"
-msgstr "Lisää"
-
-#: core/templates/core/_current_features.html:22
-msgid "Nothing to sponsor yet."
-msgstr "Sponsoroitavaa ei löytynyt."
-
-#: core/templates/core/_latest_news_widget.html:5
-msgid "Latest news"
-msgstr "Ajankohtaista"
-
-#: core/templates/core/_latest_news_widget.html:19
-msgid ""
-"Visit the <a href=\"https://modoboa.org/blog/\" target=\"_blank\">official "
-"weblog</a> for more information."
-msgstr ""
-"Lisätietoja <a href=\"https://modoboa.org/blog/\" "
-"target=\"_blank\">virallisesta blogista</a>."
-
-#: core/templates/core/api_access.html:3
-msgid "API access"
-msgstr "API-pääsy"
-
-#: core/templates/core/api_access.html:3
-msgid "Control your access to Modoboa API"
-msgstr "Hallitse Modoboa API:n käyttöä"
-
-#: core/templates/core/api_access.html:7
-#, python-format
-msgid ""
-"A documentation of the API is available <strong><a href=\"%(url)s\" "
-"target=\"_blank\">here</a></strong>."
-msgstr ""
-"API:n dokumentaatio on saatavilla <strong><a href=\"%(url)s\" "
-"target=\"_blank\">täällä</a></strong>."
-
-#: core/templates/core/api_access.html:14
-msgid "API access token"
-msgstr "API-käyttötunniste"
-
-#: core/templates/core/dashboard.html:17
-#, python-format
-msgid "Hello %(user)s."
-msgstr "Hei %(user)s."
-
-#: core/templates/core/information.html:2 core/templatetags/core_tags.py:58
-msgid "Information"
-msgstr "Tiedot"
-
-#: core/templates/core/information.html:2
-msgid "Various information about Modoboa"
-msgstr "Tietoja Modoboasta"
-
-#: core/templates/core/information.html:5
-msgid "You are using a deprecated password scheme!"
-msgstr ""
-
-#: core/templates/core/information.html:6
-#, python-format
-msgid ""
-"The password scheme <strong>%(scheme)s</strong> has been deprecated and will "
-"be removed in the next minor version. The procedure to upgrade to a stronger "
-"scheme is as follows: <ul> <li>Go to <strong>Parameters > General</strong> "
-"section</li> <li>Change the value of <strong>Default password scheme</"
-"strong></li> <li>Make sure <strong>Update password scheme at login</strong> "
-"option is enabled</li> <li>Save your changes</li> <li>Logout / Login with "
-"your current account so its password gets updated</li> <li>Inform "
-"<strong>ALL</strong> your users that they must login to Modoboa to complete "
-"the operation</li> </ul>"
-msgstr ""
-
-#: core/templates/core/information.html:18
-msgid ""
-"You must apply this procedure <strong>BEFORE</strong> you install a newest "
-"version of Modoboa, otherwise <strong>you will be unable to connect to the "
-"web interface anymore</strong>."
-msgstr ""
-
-#: core/templates/core/information.html:23
-msgid ""
-"Please note that you will see this message until <strong>ALL</strong> user "
-"passwords have been converted using the new scheme."
-msgstr ""
-
-#: core/templates/core/information.html:28
-msgid "One or more updates are available!"
-msgstr "Yksi tai useampi päivitys on saatavilla!"
-
-#: core/templates/core/information.html:29
-msgid "Check the following list to find the component(s) that can be updated."
-msgstr ""
-"Tarkista seuraavasta luettelosta komponentti(t), jotka voidaan päivittää."
-
-#: core/templates/core/information.html:33
-msgid "Applications"
-msgstr "Sovellukset"
-
-#: core/templates/core/information.html:38
-msgid "Installed version"
-msgstr "Asennettu versio"
-
-#: core/templates/core/information.html:39
-msgid "Last version"
-msgstr "Viimeisin versio"
-
-#: core/templates/core/information.html:55
-msgid "Active users"
-msgstr "Aktiiviset käyttäjät"
-
-#: core/templates/core/logs.html:2 core/templatetags/core_tags.py:63
-msgid "Logs"
-msgstr "Lokit"
-
-#: core/templates/core/logs.html:2
-msgid "Previously on Modoboa..."
-msgstr "Aiemmin Modoboassa..."
-
-#: core/templates/core/logs.html:7
-msgid "Level"
-msgstr "Taso"
-
-#: core/templates/core/logs.html:8
-msgid "Logger"
-msgstr "Lokikirja"
-
 #: core/templates/core/notifications/update_available.html:3
 msgid ""
 "\n"
@@ -2827,213 +1707,48 @@ msgstr[1] ""
 "\n"
 "  Seuraavat päivitykset ovat saatavilla:\n"
 
-#: core/templates/core/parameters.html:2 core/templatetags/core_tags.py:70
-msgid "Parameters"
-msgstr "Parametrit"
-
-#: core/templates/core/parameters.html:2
-msgid "Configure Modoboa"
-msgstr "Modoboan määrittäminen"
-
-#: core/templates/core/parameters.html:6
-#: core/templates/core/user_preferences.html:10
-msgid "Save"
-msgstr "Tallenna"
-
-#: core/templates/core/settings_header.html:5
-msgid "Modoboa settings"
-msgstr "Modoboan asetukset"
-
-#: core/templates/core/user_index.html:4 core/templatetags/core_tags.py:95
-msgid "Settings"
-msgstr "Asetukset"
-
-#: core/templates/core/user_preferences.html:2
-#: core/templatetags/core_tags.py:139
-msgid "Preferences"
-msgstr "Asetukset"
-
-#: core/templates/core/user_preferences.html:2
-msgid "Customize Modoboa"
-msgstr "Mukauta Modoboaa"
-
-#: core/templates/core/user_preferences.html:14
-msgid "No preferences available."
-msgstr "Asetuksia ei ole saatavilla."
-
-#: core/templates/core/user_profile.html:3
-msgid "Update your personal information"
-msgstr "Päivitä henkilökohtaiset tietosi"
-
-#: core/templates/core/user_profile.html:13
-msgid "Click here to update your password"
-msgstr "Klikkaa tästä päivittääksesi salasanasi"
-
-#: core/templates/core/user_security.html:2 core/templatetags/core_tags.py:145
-msgid "Security"
-msgstr "Turvallisuus"
-
-#: core/templates/core/user_security.html:6
-msgid "Two-Factor authentication"
-msgstr "Kaksivaiheinen tunnistus"
-
-#: core/templates/core/user_security.html:17
-msgid ""
-"Install a soft token authenticator like FreeOTP or Google Authenticator from "
-"your application repository and use that app to scan this QR code."
-msgstr ""
-"Asenna soft token -autentikointiohjelma, kuten FreeOTP tai Google\n"
-"                Authenticator sovelluskaupasta ja käytä \n"
-"                sovellusta QR-koodin skannaamiseen."
-
-#: core/templates/core/user_security.html:25
-msgid "Pin code"
-msgstr "Pin-koodi"
-
-#: core/templates/core/user_security.html:28
-msgid "Register"
-msgstr "Rekisteröidy"
-
-#: core/templates/core/user_security.html:33
-msgid ""
-"Congratulations! Two-Factor Authentication is now enabled for your account."
-msgstr "Onnittelut! Kaksivaiheinen tunnistus on nyt käytössä tililläsi."
-
-#: core/templates/core/user_security.html:38
-#: core/templates/core/user_security.html:89
-msgid ""
-"The following recovery codes can be used one time each to let you regain "
-"access to your account, in case you lose your phone for example. Make sure "
-"to save them in a safe place, otherwise you won't be able to access your "
-"account anymore."
-msgstr ""
-"Näitä palautuskoodeja voidaan käyttää kutakin kerran. Näin voit\n"
-"        saada tilisi takaisin, jos esimerkiksi kadotat puhelimesi.\n"
-"        Varmista, että tallennat ne turvalliseen paikkaan. Muutoin\n"
-"        et pääse enää käyttämään tiliäsi."
-
-#: core/templates/core/user_security.html:53
-msgid "Two-Factor Authentication is enabled for your account."
-msgstr "Kaksivaiheinen tunnistautuminen on käytössä tililläsi."
-
-#: core/templates/core/user_security.html:57
-msgid "This will invalidate your registered application."
-msgstr ""
-
-#: core/templates/core/user_security.html:58
-msgid "Disable 2FA"
-msgstr "Poista kaksivaiheinen tunnistautuminen (2FA) käytöstä"
-
-#: core/templates/core/user_security.html:60
-msgid "This will regenerate your tokens."
-msgstr ""
-
-#: core/templates/core/user_security.html:61
-msgid "Reset recovery codes"
-msgstr ""
-
-#: core/templates/core/user_security.html:65
-msgid ""
-"Two-Factor Authentication (2FA) is not yet activated for your account. "
-"Enabling this feature will increase your account's security."
-msgstr ""
-"Kaksivaiheista tunnistusta (2FA) ei ole vielä aktivoitu tilillesi. Tämän "
-"ominaisuuden käyttöönotto lisää tilisi turvallisuutta."
-
-#: core/templates/core/user_security.html:73
-msgid "Enable 2FA"
-msgstr "Ota käyttöön kaksivaiheinen tunnistus (2FA)"
-
-#: core/templates/core/user_security.html:84
-msgid "New recovery codes"
-msgstr "Uudet palautuskoodit"
-
-#: core/templates/core/user_security.html:88
-msgid "Here are your new recovery codes. "
-msgstr "Tässä ovat uudet palautuskoodit. "
-
-#: core/templates/core/user_security.html:118
-#, fuzzy
-#| msgid "Crypt passwords"
-msgid "Confirm your password"
-msgstr "Salakirjoita salasanat"
-
-#: core/templatetags/core_tags.py:34
-msgid "Modoboa"
-msgstr "Modoboa"
-
-#: core/templatetags/core_tags.py:110
-msgid "Logout"
-msgstr "Kirjaudu ulos"
-
-#: core/templatetags/core_tags.py:154
-msgid "API"
-msgstr "API"
-
 #: core/utils.py:41
 msgid "The core part of Modoboa"
 msgstr "Modoboan ydinosa"
 
-#: core/views/admin.py:42
-msgid "Parameters saved"
-msgstr "Tallennetut parametrit"
-
-#: core/views/auth.py:70
+#: core/views/auth.py:65
 #, python-format
 msgid "User '%s' successfully logged in"
 msgstr "Käyttäjä '%s' kirjautui onnistuneesti sisään"
 
-#: core/views/auth.py:108
+#: core/views/auth.py:109
 #, python-format
 msgid "Password scheme mismatch. Updating %s password"
 msgstr "Salasanajärjestelmä ei vastaa toisiaan. Salasanan %s päivittäminen"
 
-#: core/views/auth.py:115
+#: core/views/auth.py:116
 #, python-format
 msgid "Password hash parameter missmatch. Updating %s password"
 msgstr "Salasanan hash-parametrit eivät täsmää. Salasanan %s päivittäminen"
 
-#: core/views/auth.py:159
+#: core/views/auth.py:154
 msgid "User '{}' successfully logged out"
 msgstr "Käyttäjä '{}' kirjautui onnistuneesti ulos"
 
-#: core/views/user.py:55
-msgid "Profile updated"
-msgstr "Profiili päivitetty"
-
-#: core/views/user.py:89
-msgid "Preferences saved"
-msgstr "Asetukset tallennettu"
-
-#: core/views/user.py:118
-msgid "Access updated"
-msgstr "Oikeudet päivitetty"
-
-#: dmarc/forms.py:36 dmarc/forms.py:50
+#: dmarc/forms.py:15
 #, fuzzy
 #| msgid "LDAP settings"
 msgid "DNS settings"
 msgstr "LDAP-asetukset"
 
-#: dmarc/forms.py:39 dmarc/forms.py:56
+#: dmarc/forms.py:21
 msgid "Enable reverse lookups"
 msgstr ""
 
-#: dmarc/forms.py:41 dmarc/forms.py:58
+#: dmarc/forms.py:23
 msgid "Enable reverse DNS lookups (reports will be longer to display)"
 msgstr ""
 
-#: dmarc/forms.py:74 dmarc/forms.py:78
+#: dmarc/forms.py:42
 msgid "DMARC"
 msgstr ""
 
-#: dmarc/handlers.py:21
-#, fuzzy
-#| msgid "No MX record for %s"
-msgid "Show DMARC report for {}"
-msgstr "Ei MX-tietuetta %s"
-
-#: dmarc/lib.py:294 dmarc/templatetags/dmarc_tags.py:61 dmarc/views.py:120
+#: dmarc/lib.py:294
 #, fuzzy
 #| msgid "Not defined"
 msgid "Not resolved"
@@ -3086,82 +1801,6 @@ msgstr ""
 
 #: dmarc/models.py:26
 msgid "Soft failure"
-msgstr ""
-
-#: dmarc/templates/dmarc/_result_detail.html:6
-msgid "Total"
-msgstr ""
-
-#: dmarc/templates/dmarc/domain_report.html:21
-#: dmarc/templates/dmarc/domain_report.html:27
-#, fuzzy
-#| msgid "Full name"
-msgid "Fully aligned"
-msgstr "Koko nimi"
-
-#: dmarc/templates/dmarc/domain_report.html:22
-#: dmarc/templates/dmarc/domain_report.html:28
-msgid "Partially aligned"
-msgstr ""
-
-#: dmarc/templates/dmarc/domain_report.html:23
-#: dmarc/templates/dmarc/domain_report.html:29
-#, fuzzy
-#| msgid "Forward"
-msgid "Forwarded"
-msgstr "Välitä"
-
-#: dmarc/templates/dmarc/domain_report.html:24
-#: dmarc/templates/dmarc/domain_report.html:30
-msgid "Failed"
-msgstr ""
-
-#: dmarc/templates/dmarc/domain_report.html:52
-msgid "DMARC report for"
-msgstr ""
-
-#: dmarc/templates/dmarc/domain_report.html:76
-msgid "processed"
-msgstr ""
-
-#: dmarc/templates/dmarc/domain_report.html:85
-msgid "fully aligned"
-msgstr ""
-
-#: dmarc/templates/dmarc/domain_report.html:94
-msgid "partially aligned"
-msgstr ""
-
-#: dmarc/templates/dmarc/domain_report.html:103
-#, fuzzy
-#| msgid "Forward"
-msgid "forwarded"
-msgstr "Välitä"
-
-#: dmarc/templates/dmarc/domain_report.html:112
-msgid "failed"
-msgstr ""
-
-#: dmarc/templates/dmarc/domain_report.html:122
-msgid "Display details"
-msgstr ""
-
-#: dmarc/templates/dmarc/domain_report.html:126
-#, fuzzy
-#| msgid "Resources"
-msgid "Trusted sources"
-msgstr "Resurssit"
-
-#: dmarc/templates/dmarc/domain_report.html:134
-msgid "Partially trusted sources / Forwarders"
-msgstr ""
-
-#: dmarc/templates/dmarc/domain_report.html:142
-msgid "Forwarders with ARC"
-msgstr ""
-
-#: dmarc/templates/dmarc/domain_report.html:150
-msgid "Unknown sources / Threats"
 msgstr ""
 
 #: dnstools/lib.py:82
@@ -3256,139 +1895,72 @@ msgstr "Puuttuu vaadittu p-tunniste"
 msgid "Public key mismatchs"
 msgstr "Julkiset avaimet eivät täsmää"
 
-#: dnstools/templates/dnstools/autoconfig_records_status.html:8
-msgid "autoconfig record (Mozilla) found: "
-msgstr "autoconfig-tietue (Mozilla) löytyi: "
-
-#: dnstools/templates/dnstools/autoconfig_records_status.html:12
-msgid "autoconfig record (Mozilla) not found."
-msgstr "autoconfig-tietuetta (Mozilla) ei löydy."
-
-#: dnstools/templates/dnstools/autoconfig_records_status.html:17
-msgid "autodiscover record (Microsoft) found: "
-msgstr "autodiscover-tietue (Microsoft) löytyi: "
-
-#: dnstools/templates/dnstools/autoconfig_records_status.html:21
-msgid "autodiscover record (Microsoft) not found."
-msgstr "autodiscover-tietuetta (Microsoft) ei löydy."
-
-#: dnstools/templates/dnstools/dns_record_detail.html:8
-msgid "A DNS record has been found and is valid."
-msgstr "DNS-tietue on löydetty ja se on voimassa."
-
-#: dnstools/templates/dnstools/dns_record_detail.html:12
-msgid "A DNS record has been found but its syntax is not valid:"
-msgstr "DNS-tietue on löydetty, mutta sen syntaksi ei ole oikein:"
-
-#: dnstools/templates/dnstools/domain_dns_configuration.html:7
-msgid ""
-"Here is an example of DNS configuration (bind format). Replace value between "
-"[ ] by the appropriate ones."
-msgstr ""
-"Tässä on esimerkki DNS-konfiguraatiosta (bind-muodossa). Korvaa [ ]:n "
-"välissä olevat arvot sopivilla arvoilla."
-
-#: dnstools/templates/dnstools/domain_dns_configuration.html:15
-msgid "IP address of your Modoboa server"
-msgstr "Modoboa-palvelimen IP-osoite"
-
-#: dnstools/templates/dnstools/domain_dns_configuration.html:28
-msgid "Auto configuration"
-msgstr "Automaattinen asetusten määrittäminen"
-
-#: dnstools/templates/dnstools/domain_dns_configuration.html:30
-#: dnstools/templates/dnstools/domain_dns_configuration.html:31
-msgid "hostname of your automx server"
-msgstr "automx-palvelimen nimi"
-
-#: dnstools/views.py:35
-msgid "{} record of {}"
-msgstr "{} tietueesta {}"
-
-#: dnstools/views.py:64
-msgid "Auto configuration records for {}"
-msgstr "Automaattisen määrityksen asetukset {}"
-
-#: dnstools/views.py:80
-msgid "DNS configuration for {}"
-msgstr "DNS-määritykset"
-
 #: imap_migration/api/v2/serializers.py:117
 #, fuzzy
 #| msgid "Access updated"
 msgid "Access denied"
 msgstr "Oikeudet päivitetty"
 
-#: imap_migration/app_settings.py:23 imap_migration/app_settings.py:102
+#: imap_migration/app_settings.py:19
 #, fuzzy
 #| msgid "Enable DKIM signing"
 msgid "Enable IMAP Migration"
 msgstr "Ota DKIM-allekirjoitus käyttöön"
 
-#: imap_migration/app_settings.py:24 imap_migration/app_settings.py:104
+#: imap_migration/app_settings.py:20
 #, fuzzy
 #| msgid "Enable DKIM signing"
 msgid "Enable IMAP Migration."
 msgstr "Ota DKIM-allekirjoitus käyttöön"
 
-#: imap_migration/app_settings.py:34
+#: imap_migration/app_settings.py:30
 msgid "OfflineIMAP"
 msgstr ""
 
-#: imap_migration/app_settings.py:40 imap_migration/app_settings.py:110
+#: imap_migration/app_settings.py:36
 msgid "Concurrent sync jobs"
 msgstr ""
 
-#: imap_migration/app_settings.py:42 imap_migration/app_settings.py:112
+#: imap_migration/app_settings.py:38
 msgid "The maximum number of concurrent synchronization jobs"
 msgstr ""
 
-#: imap_migration/app_settings.py:53
+#: imap_migration/app_settings.py:49
 msgid "OfflineIMAP Filter"
 msgstr ""
 
-#: imap_migration/app_settings.py:59 imap_migration/app_settings.py:118
+#: imap_migration/app_settings.py:55
 #, fuzzy
 #| msgid "Create aliases"
 msgid "Create Folders"
 msgstr "Luo aliaksia"
 
-#: imap_migration/app_settings.py:61 imap_migration/app_settings.py:120
+#: imap_migration/app_settings.py:57
 msgid "Allow Creation of missing folders during sync"
 msgstr ""
 
-#: imap_migration/app_settings.py:68 imap_migration/app_settings.py:125
+#: imap_migration/app_settings.py:64
 msgid "Folder Filter Exclusions"
 msgstr ""
 
-#: imap_migration/app_settings.py:70 imap_migration/app_settings.py:128
+#: imap_migration/app_settings.py:66
 msgid ""
 "Use a regular expression to explicitly include folders in sync. Example: "
 "^Trash$|Del"
 msgstr ""
 
-#: imap_migration/app_settings.py:78 imap_migration/app_settings.py:135
+#: imap_migration/app_settings.py:74
 msgid "Folder Filter Inclusions"
 msgstr ""
 
-#: imap_migration/app_settings.py:80 imap_migration/app_settings.py:138
+#: imap_migration/app_settings.py:76
 msgid ""
 "A comma seperated list of folders to explicitly include in sync even if "
 "filtered by the Folder Filter Exclusions. Example: debian.user, debian."
 "personal "
 msgstr ""
 
-#: imap_migration/app_settings.py:107
-#, fuzzy
-#| msgid "LDAP settings"
-msgid "OfflineIMAP settings"
-msgstr "LDAP-asetukset"
-
-#: imap_migration/app_settings.py:115
-msgid "OfflineIMAP Filter settings"
-msgstr ""
-
-#: imap_migration/apps.py:18 imap_migration/apps.py:23
+#: imap_migration/apps.py:20
 #, fuzzy
 #| msgid "Auto configuration"
 msgid "IMAP Migration"
@@ -3409,12 +1981,6 @@ msgstr ""
 msgid ""
 "Go to the online parameters panel (admin tab) and activate this feature."
 msgstr ""
-
-#: imap_migration/templates/imap_migration/index.html:6
-#, fuzzy
-#| msgid "Administration"
-msgid "IMAP migration"
-msgstr "Hallinnointinäkymä"
 
 #: ldapsync/lib.py:82
 msgid "Failed to create LDAP account: {}"
@@ -3439,12 +2005,6 @@ msgstr "LDAP-tilin poistaminen käytöstä epäonnistui: {}"
 msgid "Failed to communicate with public API: %s"
 msgstr "Ota käyttöön viestintä Modoboan julkisen API:n kanssa"
 
-#: lib/db_utils.py:22
-#, fuzzy
-#| msgid "Connection to database %s not configured"
-msgid "Connection to database {} not configured"
-msgstr "Yhteyttä tietokantaan %s ei ole määritetty"
-
 #: lib/email_utils.py:139 lib/email_utils.py:350
 msgid "unable to determine encoding of string"
 msgstr "ei pysty määrittämään merkkijonon koodausta"
@@ -3459,49 +2019,37 @@ msgstr "Lupa evätty: %s"
 msgid "Permission denied"
 msgstr "Lupa evätty"
 
-#: lib/fields.py:14 lib/validators.py:13
-msgid "Enter a valid domain name"
-msgstr "Syötä kelvollinen verkkotunnus"
-
-#: lib/fields.py:41 lib/fields.py:54
+#: lib/fields.py:13 lib/fields.py:26
 msgid "Enter a valid email address."
 msgstr "Syötä oikean muotoinen sähköpostiosoite."
-
-#: lib/form_utils.py:77 templates/registration/password_reset_confirm.html:25
-#: templates/registration/password_reset_confirm_code.html:27
-#: templates/registration/password_reset_form.html:23
-msgid "Submit"
-msgstr "Lähetä"
 
 #: lib/ldap_utils.py:126
 msgid "Failed to update password: {}"
 msgstr "Salasanan päivitys epäonnistui: {}"
 
-#: lib/templatetags/lib_tags.py:120 sievefilters/constants.py:23
-#: templates/common/email_searchbar.html:17 webmail/lib/imapemail.py:304
-msgid "Subject"
-msgstr "Aihe"
+#: lib/validators.py:13
+msgid "Enter a valid domain name"
+msgstr "Syötä kelvollinen verkkotunnus"
 
-#: limits/app_settings.py:17 limits/app_settings.py:147
+#: limits/app_settings.py:13
 msgid "Default per-admin limits"
 msgstr "Oletusarvoiset järjestelmänvalvojakohtaiset rajoitukset"
 
-#: limits/app_settings.py:20 limits/app_settings.py:153
+#: limits/app_settings.py:19
 msgid "Enable per-admin limits"
 msgstr "Ota käyttöön järjestelmänvalvojakohtaiset rajoitukset"
 
-#: limits/app_settings.py:22 limits/app_settings.py:154
+#: limits/app_settings.py:20
 msgid "Enable or disable per-admin limits"
 msgstr ""
 "Ota käyttöön tai poista käytöstä järjestelmänvalvojakohtaiset rajoitukset"
 
-#: limits/app_settings.py:26 limits/app_settings.py:91
-#: limits/app_settings.py:160 limits/app_settings.py:245 limits/constants.py:47
+#: limits/app_settings.py:26 limits/app_settings.py:111 limits/constants.py:47
 #: limits/constants.py:101
 msgid "Domain admins"
 msgstr "Verkkotunnuksen ylläpitäjät"
 
-#: limits/app_settings.py:29 limits/app_settings.py:163
+#: limits/app_settings.py:29
 msgid ""
 "Maximum number of allowed domain administrators for a new administrator. (0 "
 "to deny any creation, -1 to allow unlimited creations)"
@@ -3510,7 +2058,7 @@ msgstr ""
 "enimmäismäärä. (0 kieltää kaiken luomisen, -1 sallii rajoittamattoman määrän "
 "luomisen)"
 
-#: limits/app_settings.py:39 limits/app_settings.py:175
+#: limits/app_settings.py:41
 msgid ""
 "Maximum number of allowed domains for a new administrator. (0 to deny any "
 "creation, -1 to allow unlimited creations)"
@@ -3518,7 +2066,12 @@ msgstr ""
 "Uuden järjestelmänvalvojan sallittujen verkkotunnusten enimmäismäärä. (0 "
 "kieltää kaiken luomisen, -1 sallii rajoittamattoman määrän luomisen)"
 
-#: limits/app_settings.py:48 limits/app_settings.py:186
+#: limits/app_settings.py:49 limits/app_settings.py:123 limits/constants.py:22
+#: limits/constants.py:76
+msgid "Domain aliases"
+msgstr "Verkkotunnuksen aliakset"
+
+#: limits/app_settings.py:52
 msgid ""
 "Maximum number of allowed domain aliases for a new administrator. (0 to deny "
 "any creation, -1 to allow unlimited creations)"
@@ -3526,7 +2079,7 @@ msgstr ""
 "Uuden järjestelmänvalvojan sallittujen verkkotunnusten enimmäismäärä. (0 "
 "kieltää kaiken luomisen, -1 sallii rajoittamattoman määrän luomisen)"
 
-#: limits/app_settings.py:58 limits/app_settings.py:198
+#: limits/app_settings.py:64
 msgid ""
 "Maximum number of allowed mailboxes for a new administrator. (0 to deny any "
 "creation, -1 to allow unlimited creations)"
@@ -3534,7 +2087,12 @@ msgstr ""
 "Uuden järjestelmänvalvojan sallittujen postilaatikoiden enimmäismäärä. (0 "
 "kieltää kaiken luomisen, -1 sallii rajoittamattoman määrän luomisen)"
 
-#: limits/app_settings.py:67 limits/app_settings.py:210
+#: limits/app_settings.py:73 limits/app_settings.py:146 limits/constants.py:39
+#: limits/constants.py:92
+msgid "Mailbox aliases"
+msgstr "Postilaatikon aliakset"
+
+#: limits/app_settings.py:76
 msgid ""
 "Maximum number of allowed aliases for a new administrator. (0 to deny any "
 "creation, -1 to allow unlimited creations)"
@@ -3542,7 +2100,11 @@ msgstr ""
 "Uuden järjestelmänvalvojan sallittujen aliasten enimmäismäärä. (0 kieltää "
 "kaiken luomisen, -1 sallii rajoittamattoman määrän luomisen)"
 
-#: limits/app_settings.py:76 limits/app_settings.py:220
+#: limits/app_settings.py:84 limits/constants.py:59
+msgid "Quota"
+msgstr "Kiintiö"
+
+#: limits/app_settings.py:86
 msgid ""
 "The quota a reseller will be allowed to share between the domains he "
 "creates. (0 means no quota)"
@@ -3550,19 +2112,19 @@ msgstr ""
 "Kiintiö, jonka jälleenmyyjä saa jakaa luomiensa verkkotunnusten kesken. (0 "
 "tarkoittaa, ettei kiintiötä ole)"
 
-#: limits/app_settings.py:82 limits/app_settings.py:232
+#: limits/app_settings.py:98
 msgid "Default per-domain limits"
 msgstr "Oletusarvoiset verkkotunnuskohtaiset rajoitukset"
 
-#: limits/app_settings.py:85 limits/app_settings.py:238
+#: limits/app_settings.py:104
 msgid "Enable per-domain limits"
 msgstr "Ota käyttöön verkkotunnuskohtaiset rajoitukset"
 
-#: limits/app_settings.py:87 limits/app_settings.py:239
+#: limits/app_settings.py:105
 msgid "Enable or disable per-domain limits"
 msgstr "Ota käyttöön tai poista käytöstä verkkotunnuskohtaiset rajoitukset"
 
-#: limits/app_settings.py:94 limits/app_settings.py:248
+#: limits/app_settings.py:114
 msgid ""
 "Maximum number of allowed domain administrators for a new domain. (0 to deny "
 "any creation, -1 to allow unlimited creations)"
@@ -3570,7 +2132,7 @@ msgstr ""
 "Uuden verkkotunnuksen sallittujen ylläpitäjien enimmäismäärä. (0 kieltää "
 "kaiken luomisen, -1 sallii rajoittamattoman määrän luomisen)"
 
-#: limits/app_settings.py:104 limits/app_settings.py:260
+#: limits/app_settings.py:126
 msgid ""
 "Maximum number of allowed domain aliases for a new domain. (0 to deny any "
 "creation, -1 to allow unlimited creations)"
@@ -3578,7 +2140,7 @@ msgstr ""
 "Uuden verkkotunnuksen sallittujen aliasten enimmäismäärä. (0 kieltää kaiken "
 "luomisen, -1 sallii rajoittamattoman määrän luomisen)"
 
-#: limits/app_settings.py:114 limits/app_settings.py:272
+#: limits/app_settings.py:138
 msgid ""
 "Maximum number of allowed mailboxes for a new domain. (0 to deny any "
 "creation, -1 to allow unlimited creations)"
@@ -3586,7 +2148,7 @@ msgstr ""
 "Uuden verkkotunnuksen sallittujen postilaatikoiden enimmäismäärä. (0 kieltää "
 "kaiken luomisen, -1 sallii rajoittamattoman määrän luomisen)"
 
-#: limits/app_settings.py:123 limits/app_settings.py:283
+#: limits/app_settings.py:149
 msgid ""
 "Maximum number of allowed aliases for a new domain. (0 to deny any creation, "
 "-1 to allow unlimited creations)"
@@ -3594,7 +2156,7 @@ msgstr ""
 "Uuden verkkotunnuksen sallittujen aliasten enimmäismäärä. (0 kieltää kaiken "
 "luomisen, -1 sallii rajoittamattoman määrän luomisen)"
 
-#: limits/apps.py:13 limits/apps.py:17
+#: limits/apps.py:16
 msgid "Limits"
 msgstr "Rajoitukset"
 
@@ -3639,14 +2201,6 @@ msgstr "Tämän verkkotunnuksen postilaatikkoaliaksien enimmäismäärä."
 msgid "Maximum number of domain admins allowed for this domain."
 msgstr "Tämän verkkotunnuksen ylläpitäjien enimmäismäärä."
 
-#: limits/forms.py:38 limits/forms.py:88
-msgid "Invalid limit"
-msgstr "Virheellinen raja"
-
-#: limits/handlers.py:118 limits/handlers.py:151
-msgid "Resources"
-msgstr "Resurssit"
-
 #: limits/lib.py:19
 #, python-format
 msgid "%s: limit reached"
@@ -3664,40 +2218,35 @@ msgstr "Et saa määritellä rajoittamattomia arvoja"
 msgid "unlimited"
 msgstr "rajoittamaton"
 
-#: limits/templates/limits/poolusage.html:3
-#: limits/templates/limits/resources_widget.html:5
-msgid "Resources usage"
-msgstr "Resurssien käyttö"
-
 #: maillog/api/v2/serializers.py:35
 msgid "You must provide start and end dates when period is custom"
 msgstr ""
 
-#: maillog/apps.py:20 maillog/forms.py:23
+#: maillog/apps.py:20
 msgid "Path to the log file"
 msgstr "Polku lokitiedostoon"
 
-#: maillog/apps.py:22 maillog/forms.py:25
+#: maillog/apps.py:22
 msgid "Path to log file used to collect statistics"
 msgstr "Polku tilastojen keräämiseen käytettävään lokitiedostoon"
 
-#: maillog/apps.py:29 maillog/forms.py:30
+#: maillog/apps.py:29
 msgid "Directory to store RRD files"
 msgstr "Hakemisto, johon RRD-tiedostot tallennetaan"
 
-#: maillog/apps.py:31 maillog/forms.py:32
+#: maillog/apps.py:31
 msgid "Path to directory where RRD files are stored"
 msgstr "Polku hakemistoon, johon RRD-tiedostot on tallennettu"
 
-#: maillog/apps.py:38 maillog/forms.py:37
+#: maillog/apps.py:38
 msgid "Show greylisted messages"
 msgstr "Näytä harmaalle listalle merkityt viestit"
 
-#: maillog/apps.py:40 maillog/forms.py:40
+#: maillog/apps.py:40
 msgid "Differentiate between hard and soft rejects (greylisting)"
 msgstr "Kovien ja pehmeiden hylkäysten erottaminen toisistaan (greylisting)"
 
-#: maillog/apps.py:58 maillog/apps.py:62 maillog/handlers.py:20
+#: maillog/apps.py:60
 msgid "Statistics"
 msgstr "Tilastot"
 
@@ -3765,229 +2314,169 @@ msgstr "Uudet tilit"
 msgid "Accounts"
 msgstr "Tilit"
 
-#: maillog/templates/maillog/index.html:4
-msgid "Graphical statistics"
-msgstr "Graafiset tilastot"
-
-#: maillog/templates/maillog/index.html:44
-msgid "Search a domain"
-msgstr "Etsi verkkotunnusta"
-
-#: maillog/templates/maillog/index.html:77
-msgid "Apply"
-msgstr "Käytä"
-
-#: maillog/views.py:31
-msgid "No statistics available"
-msgstr "Tilastoja ei ole saatavilla"
-
-#: maillog/views.py:37
-msgid "Day"
-msgstr "Päivä"
-
-#: maillog/views.py:38
-msgid "Week"
-msgstr "Viikko"
-
-#: maillog/views.py:39
-msgid "Month"
-msgstr "Kuukausi"
-
-#: maillog/views.py:40
-msgid "Year"
-msgstr "Vuosi"
-
-#: maillog/views.py:41
-msgid "Custom"
-msgstr "Mukautettu"
-
-#: maillog/views.py:64
-msgid "Unknown graphic set"
-msgstr "Tuntematon graafinen sarja"
-
-#: maillog/views.py:69
-msgid "Unknown domain"
-msgstr "Tuntematon verkkotunnus %s"
-
-#: maillog/views.py:74
-msgid "Bad custom period"
-msgstr "Väärä mukautettu ajanjakso"
-
-#: pdfcredentials/api/v2/serializers.py:31 pdfcredentials/app_settings.py:236
-#: pdfcredentials/documents.py:60
+#: pdfcredentials/api/v2/serializers.py:35 pdfcredentials/documents.py:60
 #, fuzzy
 #| msgid "Update your personal information"
 msgid "Personal account information"
 msgstr "Päivitä henkilökohtaiset tietosi"
 
-#: pdfcredentials/api/v2/serializers.py:61
+#: pdfcredentials/api/v2/serializers.py:81
 #, fuzzy
 #| msgid "Directory not found."
 msgid "Directory is not writable"
 msgstr "Hakemistoa ei löydy."
 
-#: pdfcredentials/api/v2/serializers.py:82 pdfcredentials/views.py:26
+#: pdfcredentials/api/v2/serializers.py:102
 #, fuzzy
 #| msgid "No information available for this domain."
 msgid "No document available for this user"
 msgstr "Tältä verkkotunnukselta ei ole saatavilla tietoja."
 
-#: pdfcredentials/app_settings.py:29 pdfcredentials/app_settings.py:198
+#: pdfcredentials/app_settings.py:19
 #, fuzzy
 #| msgid "Enable SPF checks"
 msgid "Enable PDF credentials"
 msgstr "Ota SPF-tarkistukset käyttöön"
 
-#: pdfcredentials/app_settings.py:31 pdfcredentials/app_settings.py:200
+#: pdfcredentials/app_settings.py:21
 msgid "Enabled PDF credentials document generation on account creation."
 msgstr ""
 
-#: pdfcredentials/app_settings.py:42 pdfcredentials/app_settings.py:203
+#: pdfcredentials/app_settings.py:32
 msgid "Documents storage"
 msgstr ""
 
-#: pdfcredentials/app_settings.py:48 pdfcredentials/app_settings.py:206
+#: pdfcredentials/app_settings.py:38
 #, fuzzy
 #| msgid "Directory to store RRD files"
 msgid "Directory to save documents into"
 msgstr "Hakemisto, johon RRD-tiedostot tallennetaan"
 
-#: pdfcredentials/app_settings.py:50 pdfcredentials/app_settings.py:208
+#: pdfcredentials/app_settings.py:40
 #, fuzzy
 #| msgid "Path to directory where RRD files are stored"
 msgid "Path to a directory where PDF documents will be saved"
 msgstr "Polku hakemistoon, johon RRD-tiedostot on tallennettu"
 
-#: pdfcredentials/app_settings.py:61 pdfcredentials/app_settings.py:211
+#: pdfcredentials/app_settings.py:51
 #, fuzzy
 #| msgid "Security"
 msgid "Security options"
 msgstr "Turvallisuus"
 
-#: pdfcredentials/app_settings.py:67 pdfcredentials/app_settings.py:214
+#: pdfcredentials/app_settings.py:57
 msgid "Delete documents after the first download"
 msgstr ""
 
-#: pdfcredentials/app_settings.py:69 pdfcredentials/app_settings.py:217
+#: pdfcredentials/app_settings.py:59
 msgid ""
 "Automatically delete a document just after its first download from this "
 "interface"
 msgstr ""
 
-#: pdfcredentials/app_settings.py:78 pdfcredentials/app_settings.py:223
+#: pdfcredentials/app_settings.py:68
 msgid "Generate documents only at account creation"
 msgstr ""
 
-#: pdfcredentials/app_settings.py:81 pdfcredentials/app_settings.py:226
+#: pdfcredentials/app_settings.py:71
 msgid ""
 "Generate a new document only when a new account is created. If set to no, a "
 "new document will be created each time a password is updated."
 msgstr ""
 
-#: pdfcredentials/app_settings.py:94 pdfcredentials/app_settings.py:232
+#: pdfcredentials/app_settings.py:84
 msgid "Customization options"
 msgstr ""
 
-#: pdfcredentials/app_settings.py:100 pdfcredentials/app_settings.py:235
+#: pdfcredentials/app_settings.py:90
 msgid "Title"
 msgstr ""
 
-#: pdfcredentials/app_settings.py:101 pdfcredentials/app_settings.py:237
+#: pdfcredentials/app_settings.py:91
 msgid "The document's title"
 msgstr ""
 
-#: pdfcredentials/app_settings.py:107 pdfcredentials/app_settings.py:241
+#: pdfcredentials/app_settings.py:97
 msgid "Web panel url"
 msgstr ""
 
-#: pdfcredentials/app_settings.py:108 pdfcredentials/app_settings.py:241
+#: pdfcredentials/app_settings.py:98
 msgid "URL of the Modoboa web panel"
 msgstr ""
 
-#: pdfcredentials/app_settings.py:114 pdfcredentials/app_settings.py:245
+#: pdfcredentials/app_settings.py:104
 #, fuzzy
 #| msgid "spam messages"
 msgid "Custom message"
 msgstr "roskapostiviestit"
 
-#: pdfcredentials/app_settings.py:116 pdfcredentials/app_settings.py:246
+#: pdfcredentials/app_settings.py:106
 msgid "A custom message that will appear at the end of documents"
 msgstr ""
 
-#: pdfcredentials/app_settings.py:123 pdfcredentials/app_settings.py:251
+#: pdfcredentials/app_settings.py:113
 msgid "Include mail client connection settings"
 msgstr ""
 
-#: pdfcredentials/app_settings.py:125 pdfcredentials/app_settings.py:254
+#: pdfcredentials/app_settings.py:115
 msgid ""
 "Include required SMTP and IMAP connection information to configure a mail "
 "client, a tablet or a phone"
 msgstr ""
 
-#: pdfcredentials/app_settings.py:133 pdfcredentials/app_settings.py:260
-#: pdfcredentials/documents.py:133
+#: pdfcredentials/app_settings.py:123 pdfcredentials/documents.py:133
 #, fuzzy
 #| msgid "Server address"
 msgid "SMTP server address"
 msgstr "Palvelimen osoite"
 
-#: pdfcredentials/app_settings.py:136 pdfcredentials/app_settings.py:261
+#: pdfcredentials/app_settings.py:126
 msgid "Address of the SMTP server (hostname or IP)"
 msgstr ""
 
-#: pdfcredentials/app_settings.py:143 pdfcredentials/app_settings.py:265
-#: pdfcredentials/documents.py:134
+#: pdfcredentials/app_settings.py:133 pdfcredentials/documents.py:134
 #, fuzzy
 #| msgid "Server port"
 msgid "SMTP server port"
 msgstr "Palvelimen portti"
 
-#: pdfcredentials/app_settings.py:145 pdfcredentials/app_settings.py:267
+#: pdfcredentials/app_settings.py:135
 msgid "Listening port of the SMTP server"
 msgstr ""
 
-#: pdfcredentials/app_settings.py:151 pdfcredentials/app_settings.py:271
-#: pdfcredentials/documents.py:135
+#: pdfcredentials/app_settings.py:141 pdfcredentials/documents.py:135
 msgid "SMTP connection security"
 msgstr ""
 
-#: pdfcredentials/app_settings.py:153 pdfcredentials/app_settings.py:179
-#: pdfcredentials/app_settings.py:274 pdfcredentials/app_settings.py:292
+#: pdfcredentials/app_settings.py:143 pdfcredentials/app_settings.py:169
 msgid "Connection security mechanism"
 msgstr ""
 
-#: pdfcredentials/app_settings.py:159 pdfcredentials/app_settings.py:278
-#: pdfcredentials/documents.py:136
+#: pdfcredentials/app_settings.py:149 pdfcredentials/documents.py:136
 #, fuzzy
 #| msgid "Server address"
 msgid "IMAP server address"
 msgstr "Palvelimen osoite"
 
-#: pdfcredentials/app_settings.py:162 pdfcredentials/app_settings.py:279
+#: pdfcredentials/app_settings.py:152
 msgid "Address of the IMAP server (hostname or IP)"
 msgstr ""
 
-#: pdfcredentials/app_settings.py:169 pdfcredentials/app_settings.py:283
-#: pdfcredentials/documents.py:137
+#: pdfcredentials/app_settings.py:159 pdfcredentials/documents.py:137
 #, fuzzy
 #| msgid "Server port"
 msgid "IMAP server port"
 msgstr "Palvelimen portti"
 
-#: pdfcredentials/app_settings.py:171 pdfcredentials/app_settings.py:285
+#: pdfcredentials/app_settings.py:161
 msgid "Listening port of the IMAP server"
 msgstr ""
 
-#: pdfcredentials/app_settings.py:177 pdfcredentials/app_settings.py:289
-#: pdfcredentials/documents.py:138
+#: pdfcredentials/app_settings.py:167 pdfcredentials/documents.py:138
 msgid "IMAP connection security"
 msgstr ""
 
-#: pdfcredentials/apps.py:19
-msgid "PDF credentials"
-msgstr ""
-
-#: pdfcredentials/apps.py:24
+#: pdfcredentials/apps.py:21
 msgid "PDF Credentials"
 msgstr ""
 
@@ -4007,6 +2496,14 @@ msgstr ""
 #: pdfcredentials/documents.py:95
 msgid "Web panel:"
 msgstr ""
+
+#: pdfcredentials/documents.py:98
+msgid "Username"
+msgstr "Käyttäjätunnus"
+
+#: pdfcredentials/documents.py:99
+msgid "Password"
+msgstr "Salasana"
 
 #: pdfcredentials/documents.py:116
 msgid ""
@@ -4037,24 +2534,20 @@ msgid ""
 "the path."
 msgstr ""
 
-#: pdfcredentials/handlers.py:61
-msgid "Retrieve user's credentials as a PDF document"
-msgstr ""
-
-#: pdfcredentials/handlers.py:82
+#: pdfcredentials/handlers.py:64
 msgid "Download PDF credentials"
 msgstr ""
 
-#: pdfcredentials/lib.py:28
+#: pdfcredentials/lib.py:29
 msgid "Can't write to selected directory to store PDF documents"
 msgstr ""
 
-#: pdfcredentials/lib.py:34
+#: pdfcredentials/lib.py:35
 #, python-format
 msgid "Failed to create the directory that will contain PDF documents (%s)"
 msgstr ""
 
-#: pdfcredentials/lib.py:81
+#: pdfcredentials/lib.py:82
 msgid ""
 "Failed to create PDF_credentials file. Please check the permissions or the "
 "path."
@@ -4063,6 +2556,10 @@ msgstr ""
 #: policyd/core.py:99
 msgid "Daily sending limit reached"
 msgstr "Päivittäinen lähetysraja saavutettu"
+
+#: policyd/core.py:118
+msgid "domain"
+msgstr "domain"
 
 #: policyd/core.py:136
 msgid "[modoboa] Sending limit reached"
@@ -4073,99 +2570,47 @@ msgstr "[modoboa] Lähetysraja saavutettu"
 msgid "Daily limit of the following %(ltype)s has been reached: %(name)s."
 msgstr "Seuraavien %(ltype)s päivittäinen raja on saavutettu: %(name)s."
 
-#: postfix_autoreply/api/v2/serializers.py:42 postfix_autoreply/forms.py:86
+#: postfix_autoreply/api/v2/serializers.py:42
 #, fuzzy
 #| msgid "This code is invalid"
 msgid "This date is over"
 msgstr "Tämä koodi on virheellinen"
 
-#: postfix_autoreply/api/v2/serializers.py:45 postfix_autoreply/forms.py:88
+#: postfix_autoreply/api/v2/serializers.py:45
 #, fuzzy
 #| msgid "Cannot be greater than domain quota"
 msgid "Must be greater than start date"
 msgstr "Ei voi olla suurempi kuin verkkotunnuksen kiintiö"
 
-#: postfix_autoreply/app_settings.py:18 postfix_autoreply/forms.py:108
+#: postfix_autoreply/app_settings.py:18
 msgid "Automatic reply timeout"
 msgstr ""
 
-#: postfix_autoreply/app_settings.py:20 postfix_autoreply/forms.py:111
+#: postfix_autoreply/app_settings.py:20
 msgid "Timeout in seconds between two auto-replies to the same recipient"
 msgstr ""
 
 #: postfix_autoreply/app_settings.py:27 postfix_autoreply/app_settings.py:36
-#: postfix_autoreply/forms.py:117
 msgid "Default subject"
 msgstr ""
 
-#: postfix_autoreply/app_settings.py:29 postfix_autoreply/forms.py:120
+#: postfix_autoreply/app_settings.py:29
 msgid ""
 "Default subject used when an auto-reply message is created automatically"
 msgstr ""
 
-#: postfix_autoreply/app_settings.py:38 postfix_autoreply/forms.py:136
+#: postfix_autoreply/app_settings.py:38
 #, python-format
 msgid ""
 "Default content used when an auto-reply message is created automatically. "
 "The '%(name)s' macro will be replaced by the user's full name."
 msgstr ""
 
-#: postfix_autoreply/apps.py:14 postfix_autoreply/apps.py:20
-#: postfix_autoreply/forms.py:161
+#: postfix_autoreply/apps.py:15
 #, fuzzy
 #| msgid "Automatic account removal"
 msgid "Automatic replies"
 msgstr "Tilin automaattinen poistaminen"
-
-#: postfix_autoreply/forms.py:21
-msgid "Activate your auto reply from this date. Format : YYYY-MM-DD HH:mm:ss"
-msgstr ""
-
-#: postfix_autoreply/forms.py:26
-msgid "Until"
-msgstr ""
-
-#: postfix_autoreply/forms.py:29
-msgid "Activate your auto reply until this date. Format : YYYY-MM-DD HH:mm:ss"
-msgstr ""
-
-#: postfix_autoreply/forms.py:37
-#, python-format
-msgid ""
-"The content of your answer. You can use the following variables, which will "
-"be automatically replaced by the appropriate value: %(name)s, %(fromdate)s, "
-"%(untildate)s"
-msgstr ""
-
-#: postfix_autoreply/forms.py:118
-msgid "I'm off"
-msgstr ""
-
-#: postfix_autoreply/forms.py:127
-#, fuzzy
-#| msgid "Default domain quota"
-msgid "Default content"
-msgstr "Verkkotunnuksen oletuskiintiö"
-
-#: postfix_autoreply/forms.py:129
-#, python-format
-msgid ""
-"I'm currently off. I'll answer as soon as I come back.\n"
-"\n"
-"Best regards,\n"
-"%(name)s\n"
-msgstr ""
-
-#: postfix_autoreply/handlers.py:114
-#: postfix_autoreply/templates/modoboa_postfix_autoreply/autoreply.html:3
-#, fuzzy
-#| msgid "spam messages"
-msgid "Auto-reply message"
-msgstr "roskapostiviestit"
-
-#: postfix_autoreply/handlers.py:127
-msgid "Auto reply"
-msgstr ""
 
 #: postfix_autoreply/models.py:15
 #, fuzzy
@@ -4189,25 +2634,9 @@ msgstr ""
 msgid "Activate/Deactivate your auto reply"
 msgstr ""
 
-#: postfix_autoreply/templates/modoboa_postfix_autoreply/autoreply.html:3
-msgid "Define a message to automatically send when you are off"
-msgstr ""
-
-#: postfix_autoreply/views.py:28
-msgid "Auto reply message updated successfully."
-msgstr ""
-
 #: relaydomains/api/v1/serializers.py:24
 msgid "Unsupported service"
 msgstr "Ei tuettu palvelu"
-
-#: relaydomains/handlers.py:64
-msgid "Transport settings"
-msgstr "Kuljetusasetukset"
-
-#: relaydomains/handlers.py:89
-msgid "Transport"
-msgstr "Siirto"
 
 #: relaydomains/transport.py:16
 msgid "target host address"
@@ -4227,67 +2656,57 @@ msgstr "tarkistaa vastaanottajat"
 msgid "Filter %s already exists"
 msgstr "Käyttäjä '%s' on jo olemassa"
 
-#: sievefilters/app_settings.py:12 sievefilters/forms.py:13
+#: sievefilters/app_settings.py:12
 #, fuzzy
 #| msgid "LDAP settings"
 msgid "ManageSieve settings"
 msgstr "LDAP-asetukset"
 
-#: sievefilters/app_settings.py:19 sievefilters/forms.py:18
+#: sievefilters/app_settings.py:19
 #, fuzzy
 #| msgid "IP address of your Modoboa server"
 msgid "Address of your MANAGESIEVE server"
 msgstr "Modoboa-palvelimen IP-osoite"
 
-#: sievefilters/app_settings.py:27 sievefilters/forms.py:25
+#: sievefilters/app_settings.py:27
 msgid "Listening port of your MANAGESIEVE server"
 msgstr ""
 
-#: sievefilters/app_settings.py:34 sievefilters/forms.py:30
+#: sievefilters/app_settings.py:34
 msgid "Connect using STARTTLS"
 msgstr ""
 
-#: sievefilters/app_settings.py:35 sievefilters/forms.py:32
+#: sievefilters/app_settings.py:35
 msgid "Use the STARTTLS extension"
 msgstr ""
 
-#: sievefilters/app_settings.py:45 sievefilters/forms.py:35
-#: webmail/app_settings.py:30
+#: sievefilters/app_settings.py:45 webmail/app_settings.py:30
 #, fuzzy
 #| msgid "LDAP settings"
 msgid "IMAP settings"
 msgstr "LDAP-asetukset"
 
-#: sievefilters/app_settings.py:52 sievefilters/forms.py:40
-#: webmail/app_settings.py:38
+#: sievefilters/app_settings.py:52 webmail/app_settings.py:38
 #, fuzzy
 #| msgid "IP address of your Modoboa server"
 msgid "Address of your IMAP server"
 msgstr "Modoboa-palvelimen IP-osoite"
 
-#: sievefilters/app_settings.py:60 sievefilters/forms.py:46
-#: webmail/app_settings.py:47
+#: sievefilters/app_settings.py:60 webmail/app_settings.py:47
 #, fuzzy
 #| msgid "Use an SSL/STARTTLS connection to access the LDAP server"
 msgid "Use a secured connection to access IMAP server"
 msgstr "Käytä SSL/STARTTLS-yhteyttä LDAP-palvelimen käyttämiseen"
 
-#: sievefilters/app_settings.py:68 sievefilters/forms.py:52
-#: webmail/app_settings.py:56
+#: sievefilters/app_settings.py:68 webmail/app_settings.py:56
 msgid "Listening port of your IMAP server"
 msgstr ""
 
-#: sievefilters/apps.py:15 sievefilters/apps.py:20
+#: sievefilters/apps.py:15
 #, fuzzy
 #| msgid "Search filter"
 msgid "Sieve filters"
 msgstr "Etsi suodatin"
-
-#: sievefilters/apps.py:28
-#, fuzzy
-#| msgid "Message logs"
-msgid "Message filters"
-msgstr "Viestilokit"
 
 #: sievefilters/constants.py:10
 msgid "All of the following"
@@ -4320,6 +2739,10 @@ msgstr ""
 #: sievefilters/constants.py:19
 msgid "is not"
 msgstr ""
+
+#: sievefilters/constants.py:23 webmail/lib/imapemail.py:304
+msgid "Subject"
+msgstr "Aihe"
 
 #: sievefilters/constants.py:24
 #, fuzzy
@@ -4375,51 +2798,11 @@ msgstr "hylätyt viestit"
 msgid "Stop processing"
 msgstr ""
 
-#: sievefilters/forms.py:63
-msgid "Editor mode"
-msgstr ""
-
-#: sievefilters/forms.py:65
-msgid "Select the mode you want the editor to work in"
-msgstr ""
-
-#: sievefilters/forms.py:73 webmail/app_settings.py:182
-#, fuzzy
-#| msgid "Create aliases"
-msgid "Trash folder"
-msgstr "Luo aliaksia"
-
-#: sievefilters/forms.py:74 webmail/app_settings.py:184
-#, fuzzy
-#| msgid "rejected messages"
-msgid "Folder where deleted messages go"
-msgstr "hylätyt viestit"
-
-#: sievefilters/forms.py:79 webmail/app_settings.py:191
-#, fuzzy
-#| msgid "Create aliases"
-msgid "Sent folder"
-msgstr "Luo aliaksia"
-
-#: sievefilters/forms.py:80 webmail/app_settings.py:193
-msgid "Folder where copies of sent messages go"
-msgstr ""
-
-#: sievefilters/forms.py:85 webmail/app_settings.py:200
-#, fuzzy
-#| msgid "Create aliases"
-msgid "Drafts folder"
-msgstr "Luo aliaksia"
-
-#: sievefilters/forms.py:86 webmail/app_settings.py:201
-msgid "Folder where drafts go"
-msgstr ""
-
-#: sievefilters/lib.py:52
+#: sievefilters/lib.py:51
 msgid "Connection to MANAGESIEVE server failed, check your configuration"
 msgstr ""
 
-#: sievefilters/lib.py:79
+#: sievefilters/lib.py:78
 #, fuzzy
 #| msgid "Not enough resources"
 msgid "Not enough space on server"
@@ -4437,18 +2820,6 @@ msgstr "Pyydettyä sivua ei ole olemassa."
 msgid "An internal error occured."
 msgstr "Tapahtui sisäinen virhe."
 
-#: templates/common/email_searchbar.html:5
-msgid "Search..."
-msgstr "Etsi..."
-
-#: templates/common/email_searchbar.html:10
-msgid "From address"
-msgstr "Lähettäjän sähköpostiosoite"
-
-#: templates/common/email_searchbar.html:33
-msgid "Both"
-msgstr "Molemmat"
-
 #: templates/common/error.html:4
 msgid "Error:"
 msgstr "Virhe:"
@@ -4457,20 +2828,6 @@ msgstr "Virhe:"
 #: templates/common/generic_fields_group.html:8
 msgid "Help:"
 msgstr "Ohje:"
-
-#: templates/common/wizard_forms.html:31
-msgid "Previous"
-msgstr "Edellinen"
-
-#: templates/common/wizard_forms.html:32
-msgid "Next"
-msgstr "Seuraava"
-
-#: templates/nlayout.html:57
-#, fuzzy
-#| msgid "New domain"
-msgid "New admin"
-msgstr "Uusi verkkotunnus"
 
 #: templates/registration/base.html:8
 msgid "Welcome to Modoboa"
@@ -4508,6 +2865,12 @@ msgstr ""
 #: templates/registration/password_reset_confirm.html:8
 msgid "Change password"
 msgstr "Vaihda salasana"
+
+#: templates/registration/password_reset_confirm.html:25
+#: templates/registration/password_reset_confirm_code.html:27
+#: templates/registration/password_reset_form.html:23
+msgid "Submit"
+msgstr "Lähetä"
 
 #: templates/registration/password_reset_confirm.html:29
 msgid ""
@@ -4730,6 +3093,38 @@ msgstr ""
 msgid "Folders"
 msgstr "Luo aliaksia"
 
+#: webmail/app_settings.py:182
+#, fuzzy
+#| msgid "Create aliases"
+msgid "Trash folder"
+msgstr "Luo aliaksia"
+
+#: webmail/app_settings.py:184
+#, fuzzy
+#| msgid "rejected messages"
+msgid "Folder where deleted messages go"
+msgstr "hylätyt viestit"
+
+#: webmail/app_settings.py:191
+#, fuzzy
+#| msgid "Create aliases"
+msgid "Sent folder"
+msgstr "Luo aliaksia"
+
+#: webmail/app_settings.py:193
+msgid "Folder where copies of sent messages go"
+msgstr ""
+
+#: webmail/app_settings.py:200
+#, fuzzy
+#| msgid "Create aliases"
+msgid "Drafts folder"
+msgstr "Luo aliaksia"
+
+#: webmail/app_settings.py:201
+msgid "Folder where drafts go"
+msgstr ""
+
 #: webmail/app_settings.py:207
 #, fuzzy
 #| msgid "Create aliases"
@@ -4776,6 +3171,10 @@ msgstr ""
 msgid "Failed to remove attachment: "
 msgstr "LDAP-tilin luominen epäonnistui: {}"
 
+#: webmail/lib/imapemail.py:306
+msgid "Date"
+msgstr "Päivämäärä"
+
 #: webmail/lib/imaputils.py:222
 msgid "Failed to retrieve hierarchy delimiter"
 msgstr ""
@@ -4806,105 +3205,3 @@ msgstr ""
 #, python-format
 msgid "Attachment is too big (limit: %s)"
 msgstr ""
-
-#, fuzzy
-#~ msgid "Authentication mechanism"
-#~ msgstr "Tunnistusmenetelmä"
-
-#, fuzzy
-#~ msgid "Directory non-writable"
-#~ msgstr "Hakemistoa ei löydy."
-
-#~ msgid "Your username and password didn't match. Please try again."
-#~ msgstr "Käyttäjätunnuksesi ja salasanasi eivät täsmää. Yritä uudelleen."
-
-#, fuzzy
-#~ msgid "Check to activate this filters set"
-#~ msgstr "Ota käyttöön tämän aliaksen aktivointi"
-
-#, fuzzy
-#~ msgid "Conditions"
-#~ msgstr "Vahvistus"
-
-#, fuzzy
-#~ msgid "Active"
-#~ msgstr "Aktiiviset käyttäjät"
-
-#, fuzzy
-#~ msgid "No filter defined yet"
-#~ msgstr "Ei määritelty"
-
-#, fuzzy
-#~ msgid "New filter"
-#~ msgstr "Etsi suodatin"
-
-#, fuzzy
-#~ msgid "Save filters set"
-#~ msgstr "Etsi suodatin"
-
-#, fuzzy
-#~ msgid "Activate filters set"
-#~ msgstr "Aktiiviset käyttäjät"
-
-#, fuzzy
-#~ msgid "Remove filters set"
-#~ msgstr "Poista tämä lupa"
-
-#, fuzzy
-#~ msgid "Remove this filter"
-#~ msgstr "Poista tämä lupa"
-
-#, fuzzy
-#~ msgid "Move this filter down"
-#~ msgstr "Poista tämä lupa"
-
-#, fuzzy
-#~ msgid "Failed to retrieve filters set"
-#~ msgstr "Postilaatikon haku epäonnistui sijainnista (%s)"
-
-#, fuzzy
-#~ msgid "Filter created"
-#~ msgstr "Alias luotu"
-
-#, fuzzy
-#~ msgid "Filter modified"
-#~ msgstr "muokattu"
-
-#, fuzzy
-#~ msgid "Filters set saved"
-#~ msgstr "Tallennetut parametrit"
-
-#, fuzzy
-#~ msgid "Filters set created"
-#~ msgstr "Alias luotu"
-
-#, fuzzy
-#~ msgid "Filters set deleted"
-#~ msgstr "Alias poistettu"
-
-#, fuzzy
-#~ msgid "yes"
-#~ msgstr "Kyllä"
-
-#~ msgid "Please fill-in your primary email address"
-#~ msgstr "Täytä ensisijainen sähköpostiosoitteesi"
-
-#, fuzzy
-#~ msgid "An alias with this name already exists."
-#~ msgstr "Alias tällä nimellä on jo olemassa"
-
-#~ msgid "Mailboxes owner"
-#~ msgstr "Postilaatikoiden omistaja"
-
-#~ msgid "The UNIX account who owns mailboxes on the filesystem"
-#~ msgstr "UNIX-tili, joka omistaa postilaatikot tiedostojärjestelmässä"
-
-#, python-format
-#~ msgid "Domain '%s' does not exist"
-#~ msgstr "Verkkotunnusta '%s' ei ole olemassa"
-
-#~ msgid "Raw format"
-#~ msgstr "Raakamuoto"
-
-#~ msgid "Admin"
-#~ msgstr "Ylläpitäjä"

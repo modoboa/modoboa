@@ -68,6 +68,20 @@ class AccountViewSet(core_v1_viewsets.AccountViewSet):
         serializer.is_valid(raise_exception=True)
         return response.Response()
 
+    @action(
+        methods=["post"],
+        detail=False,
+        url_path="me/password/change",
+        serializer_class=core_v1_serializers.AccountPasswordSerializer,
+    )
+    def set_me_password(self, request):
+        serializer = core_v1_serializers.AccountPasswordSerializer(
+            instance=request.user, data=request.data, context={"request": request}
+        )
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return response.Response()
+
     @extend_schema(
         description="Get current API token",
         responses={200: serializers.UserAPITokenSerializer},

@@ -317,7 +317,7 @@ class Mailbox(mixins.MessageLimitMixin, AdminObject):
                 or user.has_perm("admin.add_domain")
                 and not user.userobjectlimit_set.get(name="quota").max_value
             )
-            self.set_quota(values["quota"], override_rules)
+            self.set_quota(values.get("quota"), override_rules)
         if "message_limit" in values:
             self.message_limit = values["message_limit"]
         if "is_send_only" in values:

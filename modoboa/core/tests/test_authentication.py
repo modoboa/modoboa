@@ -55,19 +55,9 @@ class AuthenticationTestCase(ModoTestCase):
         data = {"username": "user@test.com", "password": "toto"}
         response = self.client.post(reverse("core:login"), data)
         self.assertEqual(response.status_code, 302)
-        self.assertTrue(response.url.endswith(reverse("core:user_index")))
-        session = self.client.session
-        self.assertIn("password", session)
 
         response = self.client.post(reverse("core:logout"), {})
         self.assertEqual(response.status_code, 302)
-
-        data = {"username": "admin", "password": "password"}
-        response = self.client.post(reverse("core:login"), data)
-        self.assertEqual(response.status_code, 302)
-        self.assertTrue(response.url.endswith(reverse("core:dashboard")))
-        session = self.client.session
-        self.assertNotIn("password", session)
 
     @mock.patch("django_otp.match_token")
     @mock.patch("django_otp.login")
@@ -87,26 +77,17 @@ class AuthenticationTestCase(ModoTestCase):
         self.assertContains(response, "This code is invalid")
         response = self.client.post(url, data)
         self.assertEqual(response.status_code, 302)
-        session = self.client.session
-        self.assertIn("password", session)
 
     def test_open_redirect(self):
         """Check that open redirect is not allowed."""
         self.client.logout()
         data = {"username": "admin", "password": "password"}
 
-        # 1. Check valid redirection
-        url = "{}?next=/admin/".format(reverse("core:login"))
-        response = self.client.post(url, data)
-        self.assertEqual(response.status_code, 302)
-        self.assertTrue(response.url.endswith(reverse("admin:index")))
-        self.client.logout()
-
         # 2. Check bad redirection
         url = "{}?next=http://www.evil.com".format(reverse("core:login"))
         response = self.client.post(url, data)
         self.assertEqual(response.status_code, 302)
-        self.assertTrue(response.url.endswith(reverse("core:dashboard")))
+        self.assertEqual(response.url, "/")
 
     @override_settings(DOVEADM_LOOKUP_PATH=[DOVEADM_TEST_PATH])
     def test_password_schemes(self):
@@ -447,7 +428,7 @@ class SMTPAuthenticationTestCase(ModoTestCase):
         data = {"username": username, "password": password}
         response = self.client.post(reverse("core:login"), data)
         self.assertEqual(response.status_code, 302)
-        self.assertTrue(response.url.endswith(reverse("core:user_index")))
+        self.assertEqual(response.url, "/")
         mock_smtp.return_value.login.assert_called_once_with(username, password)
         self.assertTrue(models.User.objects.filter(username=username).exists())
 

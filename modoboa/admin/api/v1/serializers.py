@@ -85,6 +85,10 @@ class DomainSerializer(serializers.ModelSerializer):
 
     def validate_name(self, value):
         """Check name constraints."""
+        if models.DomainAlias.objects.filter(name=value).exists():
+            raise serializers.ValidationError(
+                _("domain alias with this name already exists")
+            )
         domains_must_have_authorized_mx = param_tools.get_global_parameter(
             "domains_must_have_authorized_mx"
         )
@@ -288,45 +292,12 @@ class AccountExistsSerializer(serializers.Serializer):
     exists = serializers.BooleanField()
 
 
-class AccountPasswordSerializer(serializers.ModelSerializer):
-    """A serializer used to change a user password."""
-
-    new_password = serializers.CharField()
-
-    class Meta:
-        model = core_models.User
-        fields = (
-            "password",
-            "new_password",
-        )
-
-    def validate_password(self, value):
-        """Check password."""
-        if not self.instance.check_password(value):
-            raise serializers.ValidationError("Password not correct")
-        return value
-
-    def validate_new_password(self, value):
-        """Check new password."""
-        try:
-            password_validation.validate_password(value, self.instance)
-        except ValidationError as exc:
-            raise serializers.ValidationError(exc.messages[0]) from None
-        return value
-
-    def update(self, instance, validated_data):
-        """Set new password."""
-        instance.set_password(validated_data["new_password"])
-        instance.save()
-        return instance
-
-
 class WritableAccountSerializer(AccountSerializer):
     """Serializer to create account."""
 
-    random_password = serializers.BooleanField(default=False)
+    random_password = serializers.BooleanField(default=False, write_only=True)
     role = serializers.ChoiceField(choices=core_constants.ROLES)
-    password = serializers.CharField(required=False)
+    password = serializers.CharField(required=False, write_only=True)
 
     class Meta(AccountSerializer.Meta):
         fields = AccountSerializer.Meta.fields + ("password", "random_password")
@@ -337,10 +308,6 @@ class WritableAccountSerializer(AccountSerializer):
         request = self.context.get("request")
         if not request:
             return
-        user = self.context["request"].user
-        self.fields["role"] = serializers.ChoiceField(
-            choices=permissions.get_account_roles(user)
-        )
         self.fields["domains"] = serializers.ListField(
             child=serializers.CharField(), allow_empty=False, required=False
         )
@@ -348,6 +315,13 @@ class WritableAccountSerializer(AccountSerializer):
     def validate_username(self, value):
         """Lower case username."""
         return value.lower()
+
+    def validate_role(self, value):
+        user = self.context["request"].user
+        allowed_values = permissions.get_account_roles(user, self.instance)
+        if value not in [role[0] for role in allowed_values]:
+            raise serializers.ValidationError("Invalid choice")
+        return value
 
     def validate(self, data):
         """Check constraints."""
@@ -439,7 +413,11 @@ class WritableAccountSerializer(AccountSerializer):
         mb = admin_models.Mailbox(
             user=account, address=self.address, domain=self.domain, **data
         )
-        mb.set_quota(quota, creator.has_perm("admin.add_domain"))
+        override_rules = (
+            creator.has_perm("admin.add_domain")
+            and not creator.userobjectlimit_set.get(name="quota").max_value
+        )
+        mb.set_quota(quota, override_rules)
         default_msg_limit = param_tools.get_global_parameter(
             "default_mailbox_message_limit"
         )
@@ -527,7 +505,7 @@ class AliasSerializer(serializers.ModelSerializer):
                 value, self.context["request"].user, instance=self.instance
             )
         except ValidationError as err:
-            raise serializers.ValidationError(err) from None
+            raise serializers.ValidationError(err.message) from None
         except AliasExists:
             raise serializers.ValidationError(_("This alias already exists")) from None
         return value.lower()

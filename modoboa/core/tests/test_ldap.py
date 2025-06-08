@@ -8,8 +8,8 @@ from django.urls import reverse
 from django.utils.functional import cached_property
 
 from modoboa.lib import exceptions
-from modoboa.lib.tests import NO_LDAP, ModoTestCase
-from .. import factories, models
+from modoboa.lib.tests import NO_LDAP, ModoTestCase, ModoAPITestCase
+from .. import models
 
 
 @skipIf(NO_LDAP, "No ldap module installed")
@@ -136,16 +136,8 @@ class LDAPAuthenticationTestCase(LDAPTestCaseMixin, ModoTestCase):
         self.check_created_user("mailadmin@example.com", "DomainAdmins", False)
 
 
-class ProfileTestCase(LDAPTestCaseMixin, ModoTestCase):
+class ProfileTestCase(LDAPTestCaseMixin, ModoAPITestCase):
     """Profile related tests."""
-
-    @classmethod
-    def setUpTestData(cls):  # NOQA:N802
-        """Create test data."""
-        super().setUpTestData()
-        cls.account = factories.UserFactory(
-            username="user@test.com", groups=("SimpleUsers",)
-        )
 
     @override_settings(
         AUTHENTICATION_BACKENDS=(
@@ -160,13 +152,10 @@ class ProfileTestCase(LDAPTestCaseMixin, ModoTestCase):
 
         username = "testuser@example.com"
         self.authenticate(username, "test")
-        self.ajax_post(
-            reverse("core:user_profile"),
-            {
-                "language": "en",
-                "oldpassword": "test",
-                "newpassword": "Toto1234",
-                "confirmation": "Toto1234",
-            },
+        response = self.client.post(
+            reverse("v2:account-set-me-password"),
+            {"password": "test", "new_password": "Toto1234"},
+            format="json",
         )
+        self.assertEqual(response.status_code, 200)
         self.authenticate(username, "Toto1234", False)

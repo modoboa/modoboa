@@ -4,14 +4,12 @@ from django.contrib.contenttypes.models import ContentType
 from django.core.management import call_command
 from django.db.models import signals
 from django.dispatch import receiver
-from django.urls import reverse
 from django.utils.translation import gettext as _
 
 import django_rq
 
 from modoboa.core import models as core_models, signals as core_signals
 from modoboa.lib import exceptions, permissions, signals as lib_signals
-from modoboa.lib.cryptutils import encrypt
 from modoboa.lib.email_utils import split_mailbox
 from modoboa.parameters import tools as param_tools
 from . import lib, models, postfix_maps, signals as admin_signals
@@ -271,57 +269,6 @@ def import_account_mailbox(sender, user, account, row, **kwargs):
             dom.add_admin(account)
 
 
-@receiver(core_signals.extra_admin_menu_entries)
-def admin_menu(sender, location, user, **kwargs):
-    """Add extra menu entries for admins."""
-    if location != "top_menu":
-        return []
-    entries = []
-    if user.has_perm("admin.view_domain"):
-        entries += [
-            {
-                "name": "domains",
-                "url": reverse("admin:domain_list"),
-                "label": _("Domains"),
-            }
-        ]
-    conditions = (user.has_perm("core.add_user"), user.has_perm("admin.add_alias"))
-    if any(conditions):
-        entries += [
-            {
-                "name": "identities",
-                "url": reverse("admin:identity_list"),
-                "label": _("Identities"),
-            },
-        ]
-    return entries
-
-
-@receiver(core_signals.extra_user_menu_entries)
-def user_menu(sender, location, user, **kwargs):
-    """Add extra menu entries for users."""
-    if location != "uprefs_menu":
-        return []
-    if not hasattr(user, "mailbox"):
-        return []
-    return [
-        {
-            "name": "forward",
-            "class": "ajaxnav",
-            "url": "forward/",
-            "label": _("Forward"),
-        }
-    ]
-
-
-@receiver(core_signals.user_login)
-def user_logged_in(sender, user, password, **kwargs):
-    """Store user password in session."""
-    request = lib_signals.get_request()
-    if hasattr(user, "mailbox"):
-        request.session["password"] = encrypt(password)
-
-
 @receiver(core_signals.account_role_changed)
 def grant_access_to_all_objects(sender, account, role, **kwargs):
     """Grant all permissions if new role is SuperAdmin."""
@@ -340,25 +287,6 @@ def grant_access_to_all_objects(sender, account, role, **kwargs):
         )
 
 
-@receiver(core_signals.extra_admin_dashboard_widgets)
-def add_widgets_to_admin_dashboard(sender, user, **kwargs):
-    """Add admin widgets to dashboard."""
-    if user.is_superuser:
-        context = {
-            "domains_counter": models.Domain.objects.count(),
-            "domain_aliases_counter": models.DomainAlias.objects.count(),
-            "identities_counter": (
-                core_models.User.objects.count()
-                + models.Alias.objects.filter(internal=False).count()
-            ),
-        }
-        template = "admin/_global_statistics_widget.html"
-    else:
-        context = {"domains": models.Domain.objects.get_for_admin(user)}
-        template = "admin/_per_domain_statistics_widget.html"
-    return [{"column": "left", "template": template, "context": context}]
-
-
 @receiver(admin_signals.import_object)
 def get_import_func(sender, objtype, **kwargs):
     """Return function used to import objtype."""
@@ -375,3 +303,14 @@ def get_import_func(sender, objtype, **kwargs):
     elif objtype == "dlist":
         return lib.import_dlist
     return None
+
+
+@receiver(signals.post_save, sender=core_models.User)
+def disable_aliases_on_account_disabled(sender, instance, created, **kwargs):
+    """Make sure aliases of a disabled account are also disabled."""
+    if created or not hasattr(instance, "mailbox"):
+        return
+    for alr in instance.mailbox.aliasrecipient_set.all().select_related("alias"):
+        if alr.alias.recipients_count == 1:
+            alr.alias.enabled = False
+            alr.alias.save()

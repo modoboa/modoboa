@@ -6,7 +6,6 @@ import ipaddress
 import logging
 import random
 import string
-from functools import wraps
 from itertools import chain
 
 import dns.resolver
@@ -30,25 +29,6 @@ from modoboa.parameters import tools as param_tools
 
 from . import signals
 from .models import Alias, Domain, DomainAlias
-
-
-def needs_mailbox():
-    """Check if the current user owns at least one mailbox
-
-    Some applications (the webmail for example) need a mailbox to
-    work.
-    """
-
-    def decorator(f):
-        @wraps(f)
-        def wrapped_f(request, *args, **kwargs):
-            if hasattr(request.user, "mailbox"):
-                return f(request, *args, **kwargs)
-            raise PermDeniedException(_("A mailbox is required"))
-
-        return wrapped_f
-
-    return decorator
 
 
 def get_identities(user, searchquery=None, idtfilter=None, grpfilter=None):
