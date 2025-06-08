@@ -18,8 +18,7 @@ Modoboa is developed with modularity in mind, expanding it is really
 easy. Actually, all current features are extensions.
 
 It is written in Python 3 and uses the `Django
-<https://www.djangoproject.com>`_, `jQuery <http://jquery.com>`_ and
-`Bootstrap <http://getbootstrap.com/>`_
+<https://www.djangoproject.com>`_ and `Vue <https://vuejs.org/>`_
 frameworks.
 
 *************
@@ -73,17 +72,6 @@ If you have any questions, you can get help through the following platforms:
 
 * `Discord <https://discord.gg/WuQ3v3PXGR>`_
 * Github: open an issue if you found a bug
-
-*************
-External code
-*************
-
-The following external libraries are provided with Modoboa:
-
-* `jQuery version 1.9.1 <http://www.jquery.org/>`_
-* `jQuery-UI 1.10+ <http://jqueryui.com/>`_
-* `Bootstrap version 3.3.7 <http://getbootstrap.com/>`_
-* `Bootstrap datetimepicker <http://eonasdan.github.io/bootstrap-datetimepicker/>`_
 
 .. |latest-version| image:: https://img.shields.io/pypi/v/modoboa.svg
    :target: https://pypi.python.org/pypi/modoboa/
