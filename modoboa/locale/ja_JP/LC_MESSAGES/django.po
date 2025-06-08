@@ -1,7 +1,7 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# 
+#
 # Translators:
 # cwatanab <chihiro.watanabe@live.jp>, 2016
 # Ian Moone, 2014
@@ -12,21 +12,24 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-06-08 14:52+0200\n"
+"POT-Creation-Date: 2025-06-08 15:32+0200\n"
 "PO-Revision-Date: 2011-07-01 08:15+0000\n"
 "Last-Translator: INOUE Daisuke, 2025\n"
-"Language-Team: Japanese (Japan) (http://app.transifex.com/tonio/modoboa/language/ja_JP/)\n"
+"Language-Team: Japanese (Japan) (http://app.transifex.com/tonio/modoboa/"
+"language/ja_JP/)\n"
+"Language: ja_JP\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: ja_JP\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #: admin/api/v1/serializers.py:41
 msgid ""
 "Quota shared between mailboxes. Can be expressed in KB, MB (default) or GB. "
 "A value of 0 means no quota."
-msgstr "すべてのメールボックス全体の容量制限。KB、MB（デフォルト）または GB で指定します。値を 0 にすると容量制限しないことを意味します。"
+msgstr ""
+"すべてのメールボックス全体の容量制限。KB、MB（デフォルト）または GB で指定し"
+"ます。値を 0 にすると容量制限しないことを意味します。"
 
 #: admin/api/v1/serializers.py:48
 msgid "Default quota in MB applied to mailboxes. A value of 0 means no quota."
@@ -276,7 +279,9 @@ msgid ""
 "Absolute path of the directory where DKIM private keys will be stored. Make "
 "sure this directory belongs to root user and is not readable by the outside "
 "world."
-msgstr "DKIM プライベートキーを保存するディレクトリーの絶対パス。このディレクトリーが root ユーザー所有で、外の世界からは読めないことを確認してください。"
+msgstr ""
+"DKIM プライベートキーを保存するディレクトリーの絶対パス。このディレクトリー"
+"が root ユーザー所有で、外の世界からは読めないことを確認してください。"
 
 #: admin/app_settings.py:137
 msgid "Default DKIM key length"
@@ -443,7 +448,7 @@ msgid "DNS resolution timeout, unable to query %s at the moment"
 msgstr ""
 "DNS 名前解決でタイムアウトが発生し、今のところ %s の問い合わせはできません"
 
-#: admin/lib.py:256
+#: admin/lib.py:236
 msgid "DNS name is too long: {}"
 msgstr "DNS 名が長すぎます : {}"
 
@@ -685,7 +690,10 @@ msgid ""
 "The domain's reputation will be affected and there is a chance that emails "
 "coming from it are considered as spam. You should contact those providers "
 "and ask them to unlist detected IP address(es)."
-msgstr "ドメインの格付けが影響を与え、このドメインからのメールが SPAM とみなされる可能性があります。DNSBL 提供元に連絡し、検出された IP アドレスのリストからの削除を依頼する必要があります。"
+msgstr ""
+"ドメインの格付けが影響を与え、このドメインからのメールが SPAM とみなされる可"
+"能性があります。DNSBL 提供元に連絡し、検出された IP アドレスのリストからの削"
+"除を依頼する必要があります。"
 
 #: admin/templates/admin/notifications/domain_invalid_mx.html:3
 #, python-format
@@ -922,7 +930,9 @@ msgstr "ラウンド"
 msgid ""
 "Number of rounds to use (only used by sha256crypt and sha512crypt). Must be "
 "between 1000 and 999999999, inclusive."
-msgstr "ラウンド数 ( sha256crypt と sha512crypt のみ使用 ) 。1000 ～ 999999999 の間で設定してください。"
+msgstr ""
+"ラウンド数 ( sha256crypt と sha512crypt のみ使用 ) 。1000 ～ 999999999 の間で"
+"設定してください。"
 
 #: core/app_settings.py:73
 msgid "Update password scheme at login"
@@ -959,7 +969,10 @@ msgid ""
 "The URL of an external page where users will be able to update their "
 "password. It applies only to non local users, ie. those automatically "
 "created after a successful external authentication (LDAP, SMTP)."
-msgstr "ユーザがパスワードを更新するための外部ページの URL。ローカルユーザー以外のユーザー、つまり外部認証 ( LDAP、SMTP ) が成功した後に自動作成されるユーザにのみ適用されます。"
+msgstr ""
+"ユーザがパスワードを更新するための外部ページの URL。ローカルユーザー以外の"
+"ユーザー、つまり外部認証 ( LDAP、SMTP ) が成功した後に自動作成されるユーザに"
+"のみ適用されます。"
 
 #: core/app_settings.py:114
 msgid "Password recovery announcement"
@@ -1058,9 +1071,11 @@ msgstr "管理者グループ"
 
 #: core/app_settings.py:227
 msgid ""
-"Members of those LDAP Posix groups will be created as domain administrators."
-" Use ';' characters to separate groups."
-msgstr "ここで指定する LDAP の Posix グループのメンバーをドメイン管理者として作成します。複数のグループを指定する際は「;」で区切ってください。"
+"Members of those LDAP Posix groups will be created as domain administrators. "
+"Use ';' characters to separate groups."
+msgstr ""
+"ここで指定する LDAP の Posix グループのメンバーをドメイン管理者として作成しま"
+"す。複数のグループを指定する際は「;」で区切ってください。"
 
 #: core/app_settings.py:236
 msgid "Group type"
@@ -1361,7 +1376,9 @@ msgid ""
 "You have USE_TZ set to False, this may result in issues during transitions "
 "between summer/winter time (ie the same local time occuring twice due to "
 "clock change)."
-msgstr "USE_TZ を False にすると、夏時間・冬時間の移行の際に問題となる可能性があります ( 例 : 時計が変更されることで、同じローカル時刻が 2 度発生します )。"
+msgstr ""
+"USE_TZ を False にすると、夏時間・冬時間の移行の際に問題となる可能性がありま"
+"す ( 例 : 時計が変更されることで、同じローカル時刻が 2 度発生します )。"
 
 #: core/checks.py:17
 msgid "Set `USE_TZ = True` in settings.py"
@@ -1601,7 +1618,9 @@ msgid ""
 msgid_plural ""
 "\n"
 "  The following updates are available:\n"
-msgstr[0] "\n  以下の更新が用意されています :\n"
+msgstr[0] ""
+"\n"
+"  以下の更新が用意されています :\n"
 
 #: core/utils.py:41
 msgid "The core part of Modoboa"
@@ -2345,7 +2364,14 @@ msgid ""
 "Dear %s, this document contains the credentials you will need\n"
 "to connect to Modoboa. Learn the content and destroy\n"
 "the document as soon as possible.\n"
-msgstr "\n%s 様、この文書には Modoboa メールサーバーへの接続に必要な認証情報を記しています。\n認証情報が第三者に漏れれば、メールの内容をすべて読み取られるほか、なりすましによるメール送信も可能になります。\n内容を理解し必要な設定を終えたら、厳重に管理する・廃棄するなど、対応をおねがいします。\n"
+msgstr ""
+"\n"
+"%s 様、この文書には Modoboa メールサーバーへの接続に必要な認証情報を記してい"
+"ます。\n"
+"認証情報が第三者に漏れれば、メールの内容をすべて読み取られるほか、なりすまし"
+"によるメール送信も可能になります。\n"
+"内容を理解し必要な設定を終えたら、厳重に管理する・廃棄するなど、対応をおねが"
+"いします。\n"
 
 #: pdfcredentials/documents.py:95
 msgid "Web panel:"
@@ -2364,7 +2390,10 @@ msgid ""
 "\n"
 "Here you can view your emails anytime online, create filters or manage\n"
 "your contacts.\n"
-msgstr "\nこの画面からあなたのメールをオンラインで確認できるほか、表示フィルターを\n作成したり、連絡先を管理することができます。\n"
+msgstr ""
+"\n"
+"この画面からあなたのメールをオンラインで確認できるほか、表示フィルターを\n"
+"作成したり、連絡先を管理することができます。\n"
 
 #: pdfcredentials/documents.py:126
 msgid "Please change your password!"
@@ -2386,6 +2415,7 @@ msgstr ""
 "PDF_credentials ディレクトリーの作成に失敗しました。権限またはパスを確認して"
 "ください。"
 
+#: pdfcredentials/handlers.py:64
 msgid "Download PDF credentials"
 msgstr "認証情報 PDF をダウンロード"
 
@@ -2686,7 +2716,9 @@ msgstr "送信"
 msgid ""
 "The password reset link was invalid, possibly because it has already been "
 "used. Please request a new password reset."
-msgstr "パスワードの再設定リンクが無効です。おそらくこのリンクからはすでに操作を終えたものと思われます。もう一度「パスワード再設定」の操作をしてください。"
+msgstr ""
+"パスワードの再設定リンクが無効です。おそらくこのリンクからはすでに操作を終え"
+"たものと思われます。もう一度「パスワード再設定」の操作をしてください。"
 
 #: templates/registration/password_reset_confirm_code.html:22
 msgid "Enter the code you've just received by SMS"
@@ -2706,7 +2738,11 @@ msgid ""
 "exists with the email you entered. You should receive them shortly.</p> "
 "<p>If you don't receive an email, please make sure you've entered your "
 "primary address, and check your spam folder.</p>"
-msgstr "<p>入力したメールアドレスが登録済みのものであれば、パスワード設定方法を記載したメールが届きます。</p> <p>メールが届かなければ、入力したアドレスが正しいものだったかどうか、または SPAM フォルダーに配信されていないかを確認してください。</p>"
+msgstr ""
+"<p>入力したメールアドレスが登録済みのものであれば、パスワード設定方法を記載し"
+"たメールが届きます。</p> <p>メールが届かなければ、入力したアドレスが正しいも"
+"のだったかどうか、または SPAM フォルダーに配信されていないかを確認してくださ"
+"い。</p>"
 
 #: templates/registration/password_reset_email.html:4
 #: templates/registration/password_reset_email_v2.html:4
@@ -2714,7 +2750,9 @@ msgstr "<p>入力したメールアドレスが登録済みのものであれば
 msgid ""
 "To initiate the password reset process for your %(username)s Modoboa "
 "account, click the link below:"
-msgstr "パスワードの再設定処理をはじめます。対象のアカウントは %(username)s でよろしいですか？　よろしければ以下のリンクをクリックしてください : "
+msgstr ""
+"パスワードの再設定処理をはじめます。対象のアカウントは %(username)s でよろし"
+"いですか？　よろしければ以下のリンクをクリックしてください : "
 
 #: templates/registration/password_reset_email.html:10
 #: templates/registration/password_reset_email_v2.html:10
@@ -2752,9 +2790,11 @@ msgstr "ワンタイム パスワード"
 
 #: templates/registration/twofactor_code_verify.html:35
 msgid ""
-"Enter the code from the two-factor app on your mobile device. If you've lost"
-" your device, you may enter one of your recovery codes."
-msgstr "あなたのスマートフォンの 2 要素認証アプリのコードを入力してください。スマートフォンをなくしているなどの場合は、再設定コードのいずれかを入力してください。"
+"Enter the code from the two-factor app on your mobile device. If you've lost "
+"your device, you may enter one of your recovery codes."
+msgstr ""
+"あなたのスマートフォンの 2 要素認証アプリのコードを入力してください。スマート"
+"フォンをなくしているなどの場合は、再設定コードのいずれかを入力してください。"
 
 #: templates/registration/twofactor_code_verify.html:42
 msgid "Verify code"
@@ -2791,7 +2831,8 @@ msgstr "最大添付サイズ"
 
 #: webmail/app_settings.py:19
 msgid "Maximum attachment size in bytes (or KB, MB, GB if specified)"
-msgstr "添付ファイルの最大サイズをバイトで ( 必要に応じて KB, MB, GB も指定可 ) "
+msgstr ""
+"添付ファイルの最大サイズをバイトで ( 必要に応じて KB, MB, GB も指定可 ) "
 
 #: webmail/app_settings.py:67
 msgid "SMTP settings"
