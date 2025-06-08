@@ -66,8 +66,6 @@ INSTALLED_APPS = (
     "django.contrib.sites",
     "django.contrib.staticfiles",
     "reversion",
-    "ckeditor",
-    "ckeditor_uploader",
     "oauth2_provider",
     "corsheaders",
     "rest_framework",
@@ -327,40 +325,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-# CKeditor
-
-CKEDITOR_UPLOAD_PATH = "uploads/"
-
-CKEDITOR_IMAGE_BACKEND = "pillow"
-
-CKEDITOR_RESTRICT_BY_USER = True
-
-CKEDITOR_BROWSE_SHOW_DIRS = True
-
-CKEDITOR_ALLOW_NONIMAGE_FILES = False
-
-CKEDITOR_CONFIGS = {
-    "default": {
-        "allowedContent": True,
-        "toolbar": "Modoboa",
-        "width": None,
-        "toolbar_Modoboa": [
-            ["Bold", "Italic", "Underline"],
-            ["JustifyLeft", "JustifyCenter", "JustifyRight", "JustifyBlock"],
-            ["BidiLtr", "BidiRtl", "Language"],
-            ["NumberedList", "BulletedList", "-", "Outdent", "Indent"],
-            ["Undo", "Redo"],
-            ["Link", "Unlink", "Anchor", "-", "Smiley"],
-            ["TextColor", "BGColor", "-", "Source"],
-            ["Font", "FontSize"],
-            [
-                "Image",
-            ],
-            ["SpellChecker"],
-        ],
-    },
-}
-
 # Logging configuration
 
 LOGGING = {
@@ -415,7 +379,6 @@ LOGGING = {
 
 SILENCED_SYSTEM_CHECKS = [
     "security.W019",  # modoboa uses iframes to display e-mails
-    "ckeditor.W001",  # CKEditor 4.22.1 warning
 ]
 
 DISABLE_DASHBOARD_EXTERNAL_QUERIES = False
