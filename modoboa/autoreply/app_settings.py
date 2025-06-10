@@ -1,10 +1,10 @@
-"""Postfix autoreply forms."""
+"""Autoreply settings."""
 
 import collections
 
 from django.utils.translation import gettext_lazy as _
 
-POSTFIX_AUTOREPLY_PARAMETERS_STRUCT = collections.OrderedDict(
+AUTOREPLY_PARAMETERS_STRUCT = collections.OrderedDict(
     [
         (
             "general",
@@ -13,11 +13,11 @@ POSTFIX_AUTOREPLY_PARAMETERS_STRUCT = collections.OrderedDict(
                 "params": collections.OrderedDict(
                     [
                         (
-                            "autoreplies_timeout",
+                            "tracking_period",
                             {
-                                "label": _("Automatic reply timeout"),
+                                "label": _("Period between two auto-replies"),
                                 "help_text": _(
-                                    "Timeout in seconds between two auto-replies to the same recipient"
+                                    "Number of days to wait before sending a new auto-reply to the same recipient"
                                 ),
                             },
                         ),
