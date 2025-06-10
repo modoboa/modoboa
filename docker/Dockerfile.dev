@@ -25,7 +25,7 @@ FROM base AS run
 COPY docker/doveadm /usr/local/bin
 RUN chmod +x /usr/local/bin/doveadm
 COPY --from=build $VIRTUAL_ENV $VIRTUAL_ENV
-RUN apk add --no-cache --update openssl librrd libxslt libjpeg libressl git rrdtool libmagic sudo \
+RUN apk add --no-cache --update openssl librrd libxslt libjpeg libressl git rrdtool libmagic sudo sqlite \
     && rm -rf /var/cache/apk/*
 RUN mkdir /code
 WORKDIR /code

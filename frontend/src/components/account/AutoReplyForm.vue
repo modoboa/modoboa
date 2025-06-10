@@ -20,7 +20,11 @@
           <label class="m-label">{{ $gettext('Content') }}</label>
           <v-textarea
             v-model="form.content"
-            :hint="$gettext('The content of your answer. You can use the following variables, which will be automatically replaced by the appropriate value: %(name)s, %(fromdate)s, %(untildate)s')"
+            :hint="
+              $gettext(
+                'The content of your answer. You can use the following variables, which will be automatically replaced by the appropriate value: %(name)s, %(fromdate)s, %(untildate)s'
+              )
+            "
             persistent-hint
             variant="outlined"
             rows="3"
@@ -78,15 +82,26 @@ async function submit() {
     return
   }
   loading.value = true
-  accountApi.setARMessage(form.value).then(() => {
-    busStore.displayNotification({ msg: $gettext('Auto-reply message updated') })
-    loading.value = false
-  }).catch(() => {
-    loading.value = false
-  })
+  if (form.value.fromdate === '') {
+    form.value.fromdate = null
+  }
+  if (form.value.untildate === '') {
+    form.value.untildate = null
+  }
+  accountApi
+    .setARMessage(form.value)
+    .then(() => {
+      busStore.displayNotification({
+        msg: $gettext('Auto-reply message updated'),
+      })
+      loading.value = false
+    })
+    .catch(() => {
+      loading.value = false
+    })
 }
 
-accountApi.getARMessage().then(resp => {
+accountApi.getARMessage().then((resp) => {
   form.value = resp.data
   if (form.value.fromdate) {
     form.value.fromdate = form.value.fromdate.slice(0, -4)

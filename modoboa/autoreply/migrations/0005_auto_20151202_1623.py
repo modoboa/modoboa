@@ -1,20 +1,15 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-
 from django.db import migrations
 
 
 def remove_useless_aliases(apps, schema_editor):
     """Remove aliases linked to disabled messages."""
-    ARmessage = apps.get_model("postfix_autoreply", "ARmessage")
+    ARmessage = apps.get_model("autoreply", "ARmessage")
     AliasRecipient = apps.get_model("admin", "AliasRecipient")
     qset = ARmessage.objects.select_related("mbox", "mbox__domain").filter(
         enabled=False
     )
     for armessage in qset:
-        alr_address = "{0}@{1}@autoreply.{1}".format(
-            armessage.mbox.address, armessage.mbox.domain
-        )
+        alr_address = f"{armessage.mbox.address}@{armessage.mbox.domain}@autoreply.{armessage.mbox.domain}"
         try:
             alr = AliasRecipient.objects.get(address=alr_address)
         except AliasRecipient.DoesNotExist:
@@ -28,7 +23,7 @@ def remove_useless_aliases(apps, schema_editor):
 class Migration(migrations.Migration):
 
     dependencies = [
-        ("postfix_autoreply", "0004_delete_alias"),
+        ("autoreply", "0004_delete_alias"),
     ]
 
     operations = [

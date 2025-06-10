@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-
 from django.db import models, migrations
 import django.utils.timezone
 
@@ -122,9 +119,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name="arhistoric",
             name="armessage",
-            field=models.ForeignKey(
-                to="postfix_autoreply.ARmessage", on_delete=models.CASCADE
-            ),
+            field=models.ForeignKey(to="autoreply.ARmessage", on_delete=models.CASCADE),
             preserve_default=True,
         ),
         migrations.AlterUniqueTogether(

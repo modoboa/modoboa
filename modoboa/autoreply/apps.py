@@ -11,20 +11,19 @@ def load_settings():
 
     param_tools.registry.add2(
         "global",
-        "postfix_autoreply",
+        "autoreply",
         gettext_lazy("Automatic replies"),
-        app_settings.POSTFIX_AUTOREPLY_PARAMETERS_STRUCT,
-        serializers.PostfixAutoreplySettingsSerializer,
+        app_settings.AUTOREPLY_PARAMETERS_STRUCT,
+        serializers.AutoreplySettingsSerializer,
         False,
     )
 
 
-class PostfixAutoreplyConfig(AppConfig):
+class AutoreplyConfig(AppConfig):
     """App configuration."""
 
-    name = "modoboa.postfix_autoreply"
-    verbose_name = "Auto-reply functionality using Postfix"
+    name = "modoboa.autoreply"
+    verbose_name = "Auto-reply functionality"
 
     def ready(self):
         load_settings()
-        from . import handlers  # NOQA:F401
