@@ -1,6 +1,6 @@
 """Sievefilters serializers."""
 
-from typing import List, Self, Tuple
+from typing import List, Tuple
 
 from sievelib import commands
 from sievelib.factory import Filter
@@ -61,7 +61,7 @@ class FilterSerializer(serializers.Serializer):
     actions = ActionSerializer(many=True)
 
     @staticmethod
-    def from_filters(filters: List[Filter]) -> Self:
+    def from_filters(filters: List[Filter]) -> "FilterSerializer":
         result = []
         for fobj in filters:
             if fobj["name"] == "autoreply":
