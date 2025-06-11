@@ -92,7 +92,7 @@ MODOBOA_APPS = (
     'modoboa.pdfcredentials',
     'modoboa.dmarc',
     'modoboa.imap_migration',
-    'modoboa.postfix_autoreply',
+    'modoboa.autoreply',
     'modoboa.sievefilters',
     'modoboa.contacts',
     'modoboa.calendars',

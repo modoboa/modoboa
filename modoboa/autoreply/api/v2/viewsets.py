@@ -7,9 +7,10 @@ from rest_framework.decorators import action
 
 from modoboa.admin import models as admin_models
 from modoboa.lib.email_utils import split_mailbox
+from modoboa.lib.viewsets import HasMailbox
 from modoboa.parameters import tools as param_tools
 
-from modoboa.postfix_autoreply import models
+from modoboa.autoreply import models
 from . import serializers
 
 
@@ -61,7 +62,10 @@ class ARMessageViewSet(
 class AccountARMessageViewSet(viewsets.ViewSet):
     """A viewset dedicated to connected account."""
 
-    permission_classes = (permissions.IsAuthenticated,)
+    permission_classes = (
+        permissions.IsAuthenticated,
+        HasMailbox,
+    )
     serializer_class = serializers.AccountARMessageSerializer
 
     @extend_schema(
@@ -76,7 +80,7 @@ class AccountARMessageViewSet(viewsets.ViewSet):
     def armessage(self, request):
         if not hasattr(request.user, "mailbox"):
             return response.Response(status=404)
-        params = dict(param_tools.get_global_parameters("postfix_autoreply"))
+        params = dict(param_tools.get_global_parameters("autoreply"))
         armessage, created = models.ARmessage.objects.get_or_create(
             mbox=self.request.user.mailbox,
             defaults={
@@ -88,7 +92,7 @@ class AccountARMessageViewSet(viewsets.ViewSet):
             serializer = serializers.AccountARMessageSerializer(armessage)
             return response.Response(serializer.data)
         serializer = serializers.AccountARMessageSerializer(
-            armessage, data=request.data
+            armessage, data=request.data, context={"request": request}
         )
         serializer.is_valid(raise_exception=True)
         serializer.save()

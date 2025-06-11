@@ -18,7 +18,7 @@ urlpatterns = [
     path("", include("modoboa.maillog.api.v2.urls")),
     path("", include("modoboa.transport.api.v2.urls")),
     path("", include("modoboa.pdfcredentials.api.v2.urls")),
-    path("", include("modoboa.postfix_autoreply.api.v2.urls")),
+    path("", include("modoboa.autoreply.api.v2.urls")),
     path("", include("modoboa.sievefilters.api.v2.urls")),
     path("", include("modoboa.contacts.urls")),
     path("", include("modoboa.calendars.urls")),
