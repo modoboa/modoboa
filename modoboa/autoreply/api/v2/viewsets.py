@@ -7,6 +7,7 @@ from rest_framework.decorators import action
 
 from modoboa.admin import models as admin_models
 from modoboa.lib.email_utils import split_mailbox
+from modoboa.lib.viewsets import HasMailbox
 from modoboa.parameters import tools as param_tools
 
 from modoboa.autoreply import models
@@ -61,7 +62,10 @@ class ARMessageViewSet(
 class AccountARMessageViewSet(viewsets.ViewSet):
     """A viewset dedicated to connected account."""
 
-    permission_classes = (permissions.IsAuthenticated,)
+    permission_classes = (
+        permissions.IsAuthenticated,
+        HasMailbox,
+    )
     serializer_class = serializers.AccountARMessageSerializer
 
     @extend_schema(
