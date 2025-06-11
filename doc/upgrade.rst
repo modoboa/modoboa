@@ -194,6 +194,7 @@ Required changes to :file:`settings.py`
          'modoboa.lib.middleware.RequestCatcherMiddleware',
       )
 
+- Remove ``NEW_ADMIN_URL`` variable
 
 
 Version 2.3.3
