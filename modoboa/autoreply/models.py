@@ -35,30 +35,25 @@ class ARmessage(models.Model):
 
     def update_sieve_rule(self, request, fset):
         context = {"name": self.mbox.user.fullname}
-        if not self.fromdate:
-            condition = [("Subject", ":matches", "*")]
-        else:
-            days = request.localconfig.parameters.get_value("tracking_period")
-            context["fromdate"] = localize(self.fromdate)
-            fromdate = self.fromdate.isoformat()
-            fromdate, tz = fromdate.split("+")
-            tz = f"+{tz.replace(':', '')}"
-            condition = [
-                ("currentdate", ":zone", tz, ":value", "ge", "iso8601", fromdate)
-            ]
-            if self.untildate:
-                context["untildate"] = localize(self.untildate)
-                condition.append(
-                    (
-                        "currentdate",
-                        ":zone",
-                        tz,
-                        ":value",
-                        "lt",
-                        "iso8601",
-                        self.untildate.isoformat().split("+")[0],
-                    )
+        days = request.localconfig.parameters.get_value("tracking_period")
+        context["fromdate"] = localize(self.fromdate)
+        fromdate = self.fromdate.isoformat()
+        fromdate, tz = fromdate.split("+")
+        tz = f"+{tz.replace(':', '')}"
+        condition = [("currentdate", ":zone", tz, ":value", "ge", "iso8601", fromdate)]
+        if self.untildate:
+            context["untildate"] = localize(self.untildate)
+            condition.append(
+                (
+                    "currentdate",
+                    ":zone",
+                    tz,
+                    ":value",
+                    "lt",
+                    "iso8601",
+                    self.untildate.isoformat().split("+")[0],
                 )
+            )
         content = self.content % context
         name = "autoreply"
         action = [("vacation", ":subject", self.subject, ":days", days, content)]
