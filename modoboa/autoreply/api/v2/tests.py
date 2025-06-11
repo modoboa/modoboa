@@ -6,10 +6,11 @@ from dateutil.relativedelta import relativedelta
 from modoboa.admin import factories as admin_factories
 from modoboa.core.models import User
 from modoboa.lib.tests import ModoAPITestCase
-from modoboa.postfix_autoreply import factories, models
+from modoboa.sievefilters.api.v2.tests import PatcherMixin
+from modoboa.autoreply import factories, models
 
 
-class ARMessageViewSetTestCase(ModoAPITestCase):
+class ARMessageViewSetTestCase(PatcherMixin, ModoAPITestCase):
     """API test case."""
 
     @classmethod
@@ -20,6 +21,23 @@ class ARMessageViewSetTestCase(ModoAPITestCase):
         cls.account2 = User.objects.get(username="user@test2.com")
         cls.arm = factories.ARmessageFactory(mbox=cls.account.mailbox)
         cls.arm2 = factories.ARmessageFactory(mbox=cls.account2.mailbox)
+
+    def test_update_global_settings(self):
+        data = {
+            "tracking_period": 7,
+            "default_subject": "Je suis parti",
+            "default_content": "Je reviendrai peut-être",
+        }
+        url = reverse("v2:parameter-global-detail", args=["autoreply"])
+        resp = self.client.put(url, data, format="json")
+        self.assertEqual(resp.status_code, 200)
+
+        data["tracking_period"] = 0
+        resp = self.client.put(url, data, format="json")
+        self.assertEqual(resp.status_code, 400)
+        self.assertEqual(
+            resp.json()["tracking_period"][0], "Value can't be less than 1 day"
+        )
 
     def test_retrieve_armessage(self):
         url = reverse("api:armessage-list")
@@ -124,7 +142,7 @@ class ARMessageViewSetTestCase(ModoAPITestCase):
         )
 
 
-class AccountARMessageViewSetTestCase(ModoAPITestCase):
+class AccountARMessageViewSetTestCase(PatcherMixin, ModoAPITestCase):
     """API test case."""
 
     @classmethod
@@ -136,7 +154,7 @@ class AccountARMessageViewSetTestCase(ModoAPITestCase):
     def test_get_armessage(self):
         url = reverse("api:account_armessage-armessage")
         response = self.client.get(url)
-        self.assertEqual(response.status_code, 404)
+        self.assertEqual(response.status_code, 403)
         self.client.logout()
         self.client.force_login(self.account)
         self.assertFalse(

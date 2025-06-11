@@ -64,6 +64,8 @@ class FilterSerializer(serializers.Serializer):
     def from_filters(filters: List[Filter]) -> "FilterSerializer":
         result = []
         for fobj in filters:
+            if fobj["name"] == "autoreply":
+                continue
             test = (
                 fobj["content"].children[0] if not fobj["enabled"] else fobj["content"]
             )

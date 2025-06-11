@@ -61,7 +61,7 @@ class ManagesieveClientMock:
         }
 
     def connect(self, username, password, **kwargs):
-        return username == "user@test.com"
+        return True
 
     def logout(self):
         return True

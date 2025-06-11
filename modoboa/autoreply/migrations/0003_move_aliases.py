@@ -1,12 +1,9 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-
 from django.db import migrations
 
 
 def move_aliases(apps, schema_editor):
     """Move exising aliases to the main table."""
-    OldAlias = apps.get_model("postfix_autoreply", "Alias")
+    OldAlias = apps.get_model("autoreply", "Alias")
     Alias = apps.get_model("admin", "Alias")
     AliasRecipient = apps.get_model("admin", "AliasRecipient")
     try:
@@ -31,7 +28,7 @@ def move_aliases(apps, schema_editor):
 class Migration(migrations.Migration):
 
     dependencies = [
-        ("postfix_autoreply", "0002_auto_20150728_1236"),
+        ("autoreply", "0002_auto_20150728_1236"),
     ]
 
     operations = [migrations.RunPython(move_aliases)]

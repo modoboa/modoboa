@@ -18,7 +18,23 @@ Application = get_application_model()
 AccessToken = get_access_token_model()
 
 
-class FilterSetViewSetTestCase(ModoAPITestCase):
+class PatcherMixin:
+    """Mixin to patch external dependencies."""
+
+    def setUp(self):
+        super().setUp()
+        patcher = mock.patch("sievelib.managesieve.Client")
+        self.mock_client = patcher.start()
+        self.mock_client.return_value = mocks.ManagesieveClientMock()
+        self.addCleanup(patcher.stop)
+
+        patcher = mock.patch("imaplib.IMAP4")
+        self.mock_imap4 = patcher.start()
+        self.mock_imap4.return_value = IMAP4Mock()
+        self.addCleanup(patcher.stop)
+
+
+class FilterSetViewSetTestCase(PatcherMixin, ModoAPITestCase):
     @classmethod
     def setUpTestData(cls):
         """Create some users."""
@@ -41,19 +57,6 @@ class FilterSetViewSetTestCase(ModoAPITestCase):
             token="secret-access-token-key",
             application=cls.application,
         )
-
-    def setUp(self):
-        """Connect with a simpler user."""
-        super().setUp()
-        patcher = mock.patch("sievelib.managesieve.Client")
-        self.mock_client = patcher.start()
-        self.mock_client.return_value = mocks.ManagesieveClientMock()
-        self.addCleanup(patcher.stop)
-
-        patcher = mock.patch("imaplib.IMAP4")
-        self.mock_imap4 = patcher.start()
-        self.mock_imap4.return_value = IMAP4Mock()
-        self.addCleanup(patcher.stop)
 
     def authenticate(self, username: str = "user@test.com"):
         self.client.credentials(Authorization="Bearer " + self.access_token.token)

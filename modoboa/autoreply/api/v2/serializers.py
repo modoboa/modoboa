@@ -5,14 +5,14 @@ from django.utils.translation import gettext as _
 
 from rest_framework import serializers
 
-from modoboa.postfix_autoreply import models
+from modoboa.autoreply import models
 
 
-class PostfixAutoreplySettingsSerializer(serializers.Serializer):
+class AutoreplySettingsSerializer(serializers.Serializer):
     """A serializer for global parameters."""
 
     # General
-    autoreplies_timeout = serializers.IntegerField(default=86400)
+    tracking_period = serializers.IntegerField(default=7)
     default_subject = serializers.CharField(default="I'm off")
     default_content = serializers.CharField(
         default="""I'm currently off. I'll answer as soon as I come back.
@@ -21,6 +21,11 @@ Best regards,
 %(name)s
 """
     )
+
+    def validate_tracking_period(self, value):
+        if value < 1:
+            raise serializers.ValidationError(_("Value can't be less than 1 day"))
+        return value
 
 
 class ARMessageSerializer(serializers.ModelSerializer):
@@ -45,6 +50,16 @@ class ARMessageSerializer(serializers.ModelSerializer):
                     {"untildate": _("Must be greater than start date")}
                 )
         return data
+
+    def create(self, validated_data):
+        instance = super().create(validated_data)
+        instance.manage_sieve_rule(self.context["request"])
+        return instance
+
+    def update(self, instance, validated_data):
+        instance = super().update(instance, validated_data)
+        instance.manage_sieve_rule(self.context["request"])
+        return instance
 
 
 class AccountARMessageSerializer(ARMessageSerializer):

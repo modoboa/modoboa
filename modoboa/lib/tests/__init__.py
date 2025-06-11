@@ -145,7 +145,7 @@ SETTINGS_SAMPLE = {
         "max_sync_accounts": 2,
         "create_folders": True,
     },
-    "postfix_autoreply": {
+    "autoreply": {
         "autoreplies_timeout": 86400,
         "default_subject": "I'm off",
         "default_content": "I'm off",
