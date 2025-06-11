@@ -204,19 +204,6 @@ relative URL of your logo under ``MEDIA_URL``. For example::
 Then copy your logo file into the directory indicated by
 ``MEDIA_ROOT``.
 
-Custom new admin sub-url
-========================
-
-You can edit the new admin sub-url (by default it is `/new-admin`).
-
-To do so, open the :file:`settings.py` file and add (or uncomment)
-``NEW_ADMIN_URL`` variable. This variable must contain a relative url
-without initial and last `'/'`. For example::
-
-    NEW_ADMIN_URL = 'test_admin'
-
-You will need to change you web server accordingly and rebuild the frontend.
-
 ******************
 Host configuration
 ******************
