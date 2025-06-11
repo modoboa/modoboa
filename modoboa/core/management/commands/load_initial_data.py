@@ -113,8 +113,7 @@ class Command(BaseCommand):
             if not allowed_host:
                 allowed_host = "localhost"
         frontend_application = app_model.objects.filter(name="modoboa_frontend")
-        frontend_path = getattr(settings, "NEW_ADMIN_URL", "new-admin")
-        base_uri = f"https://{allowed_host}/{frontend_path}"
+        base_uri = f"https://{allowed_host}"
         redirect_uri = f"{base_uri}/login/logged"
         client_id = ""
         if not frontend_application.exists():
@@ -136,7 +135,11 @@ class Command(BaseCommand):
                 "authorization-code",
             )
         else:
-            client_id = frontend_application.first().client_id
+            app = frontend_application.first()
+            app.redirect_uris = redirect_uri
+            app.post_logout_redirect_urls = base_uri
+            app.save()
+            client_id = app.client_id
 
         base_frontend_dir = os.path.join(
             os.path.dirname(__file__), "../../../frontend_dist/"
