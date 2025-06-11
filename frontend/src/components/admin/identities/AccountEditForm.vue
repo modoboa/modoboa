@@ -2,7 +2,7 @@
   <LoadingData v-if="!accountsStore.accountsLoaded || working" />
   <div v-else>
     <v-expansion-panels v-model="panel" :multiple="formErrors">
-      <v-expansion-panel eager value="roleForm">
+      <v-expansion-panel v-if="canSetRole" eager value="roleForm">
         <v-expansion-panel-title v-slot="{ expanded }">
           <v-row no-gutters>
             <v-col cols="4">
@@ -198,7 +198,7 @@
 </template>
 
 <script setup lang="js">
-import { useAccountsStore, useIdentitiesStore } from '@/stores'
+import { useAccountsStore, useAuthStore, useIdentitiesStore } from '@/stores'
 import AccountGeneralForm from './form_steps/AccountGeneralForm.vue'
 import AccountMailboxForm from './form_steps/AccountMailboxForm.vue'
 import AccountAliasForm from './form_steps/AccountAliasForm.vue'
@@ -206,17 +206,18 @@ import AccountRoleForm from './form_steps/AccountRoleForm.vue'
 import ResourcesForm from '@/components/tools/ResourcesForm.vue'
 import LoadingData from '@/components/tools/LoadingData.vue'
 import parametersApi from '@/api/parameters'
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
 import { useGettext } from 'vue3-gettext'
-import { onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { watch } from 'vue'
+import { usePermissions } from '@/composables/permissions'
 
 const { $gettext } = useGettext()
 const accountsStore = useAccountsStore()
+const authStore = useAuthStore()
 const identitiesStore = useIdentitiesStore()
 const route = useRoute()
 const router = useRouter()
+const { canSetRole } = usePermissions()
 
 const editedAccount = ref({ pk: route.params.id })
 
@@ -290,8 +291,9 @@ async function save() {
     } else {
       delete data.mailbox.full_address
     }
-    if (!data.password) {
-      delete data.password
+    if (data.new_password) {
+      data.password = data.new_password
+      delete data.new_password
       delete data.password_confirmation
     }
     if (needsResources.value && resourcesForm.value !== null) {
@@ -299,6 +301,13 @@ async function save() {
     }
     if (data.aliases === null) {
       delete data.aliases
+    }
+    if (!canSetRole.value) {
+      if (editedAccount.value.pk === authStore.authUser.pk) {
+        data.role = authStore.authUser.role
+      } else {
+        data.role = 'SimpleUsers'
+      }
     }
     identitiesStore.updateIdentity('account', data).then(() => {
       router.push({
@@ -316,9 +325,11 @@ onMounted(() => {
     .getAccount(route.params.id)
     .then((response) => (editedAccount.value = { ...response.data }))
 
-  parametersApi.getGlobalApplication('limits').then((response) => {
-    limitsConfig.value = response.data
-  })
+  if (canSetRole.value) {
+    parametersApi.getGlobalApplication('limits').then((response) => {
+      limitsConfig.value = response.data
+    })
+  }
 })
 
 watch(

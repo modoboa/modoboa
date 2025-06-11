@@ -3,14 +3,15 @@
     <template v-if="withPasswordCheck">
       <label class="m-label">{{ $gettext('Current password') }}</label>
       <v-text-field
-        v-model="account.currentPassword"
+        v-model="account.password"
         autocomplete="new-password"
         variant="outlined"
         type="password"
         density="compact"
         validate-on="submit"
-        :rules="disabled ? [] : [rules.required, validPassword]"
+        :rules="disabled ? [] : [rules.required]"
         :disabled="disabled"
+        :error-messages="props.formErrors ? props.formErrors.password : []"
       />
     </template>
     <v-row justify="center">
@@ -32,7 +33,7 @@
           class="ml-6"
           density="compact"
         >
-          <span class="text-white mr-4">{{ account.password }}</span>
+          <span class="text-white mr-4">{{ account.new_password }}</span>
           <v-btn
             size="small"
             color="white"
@@ -48,7 +49,7 @@
     </v-row>
     <template v-if="!account.random_password">
       <v-text-field
-        v-model="account.password"
+        v-model="account.new_password"
         variant="outlined"
         :label="$gettext('Password')"
         type="password"
@@ -65,9 +66,7 @@
         density="compact"
         :disabled="disabled"
         :rules="isRuleActive ? [rules.required, passwordConfirmationRules] : []"
-        :error-messages="
-          formErrors && formErrors.value ? formErrors.value.password : []
-        "
+        :error-messages="props.formErrors ? props.formErrors.new_password : []"
       />
     </template>
   </div>
@@ -76,7 +75,6 @@
 <script setup lang="js">
 import { useBusStore } from '@/stores'
 import accountsApi from '@/api/accounts'
-import accountApi from '@/api/account'
 import { computed } from 'vue'
 import rules from '@/plugins/rules'
 import { useGettext } from 'vue3-gettext'
@@ -98,10 +96,10 @@ const isRuleActive = computed(
 )
 
 const passwordConfirmationRules = (value) =>
-  value === account.value.password || $gettext('Password mismatch')
+  value === account.value.new_password || $gettext('Password mismatch')
 
 function copyPassword() {
-  navigator.clipboard.writeText(account.value.password).then(() => {
+  navigator.clipboard.writeText(account.value.new_password).then(() => {
     busStore.displayNotification({
       msg: $gettext('Password copied to clipboard'),
     })
@@ -111,21 +109,11 @@ function copyPassword() {
 function updatePassword(value) {
   if (value) {
     accountsApi.getRandomPassword().then((resp) => {
-      account.value.password = resp.data.password
+      account.value.new_password = resp.data.password
     })
   } else {
-    account.value.password = null
+    account.value.new_password = null
     account.value.password_confirmation = null
   }
-}
-
-async function validPassword(value) {
-  if (value) {
-    return accountApi
-      .checkPassword(value)
-      .then(() => true)
-      .catch(() => $gettext('Invalid password'))
-  }
-  return true
 }
 </script>

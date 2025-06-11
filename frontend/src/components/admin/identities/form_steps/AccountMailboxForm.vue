@@ -122,7 +122,7 @@ function cleanQuota(value) {
 
 function cleanMessageLimit(value) {
   if (value === '') {
-    delete form.value.mailbox.message_limit
+    form.value.mailbox.message_limit = null
   }
 }
 

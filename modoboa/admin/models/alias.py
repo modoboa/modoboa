@@ -2,6 +2,7 @@
 
 import hashlib
 import random
+from typing import Optional
 
 from django.core.exceptions import ValidationError
 from django.db import models
@@ -27,8 +28,13 @@ from .mailbox import Mailbox
 
 
 def validate_alias_address(
-    address, creator, internal=False, instance=None, ignore_existing=False
-):
+    address: str,
+    creator,
+    internal: bool = False,
+    instance: Optional["Alias"] = None,
+    ignore_existing: bool = False,
+    check_limits: bool = True,
+) -> tuple[str, Domain]:
     """Check if the given alias address can be created by creator."""
     local_part, domain = split_mailbox(address.lower())
     domain = Domain.objects.filter(name=domain).first()
@@ -41,7 +47,7 @@ def validate_alias_address(
         condition = alias.exists() and not ignore_existing
         if condition:
             raise AliasExists(alias.first().pk)
-    if instance is None:
+    if instance is None and check_limits:
         try:
             # Check creator limits
             core_signals.can_create_object.send(

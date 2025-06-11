@@ -217,8 +217,8 @@ class IdentityViewSet(GetThrottleViewsetMixin, viewsets.ViewSet):
     """Viewset for identities."""
 
     permission_classes = (permissions.IsAuthenticated,)
-    serializer_class = None
 
+    @extend_schema(responses=serializers.IdentitySerializer(many=True))
     def list(self, request, **kwargs):
         """Return all identities."""
         serializer = serializers.IdentitySerializer(
