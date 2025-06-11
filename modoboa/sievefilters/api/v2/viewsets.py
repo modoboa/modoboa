@@ -10,7 +10,7 @@ from django.utils.translation import gettext as _
 
 from drf_spectacular.types import OpenApiTypes
 from drf_spectacular.utils import extend_schema, OpenApiParameter
-from rest_framework import response, viewsets
+from rest_framework import permissions, response, viewsets
 from rest_framework.decorators import action
 
 from modoboa.lib.viewsets import HasMailbox
@@ -33,7 +33,10 @@ FILTER_SET_ID = OpenApiParameter(
 
 
 class FilterSetViewSet(viewsets.ViewSet):
-    permission_classes = (HasMailbox,)
+    permission_classes = (
+        permissions.IsAuthenticated,
+        HasMailbox,
+    )
     serializer_class = serializers.FilterSetSerializer
 
     def get_sieve_client(self, request):
