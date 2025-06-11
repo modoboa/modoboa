@@ -148,6 +148,54 @@ Rebuild Virtual Environment
 Specific instructions
 *********************
 
+Version 2.4.0
+=============
+
+Legacy web interface has been removed and all extensions have been
+integrated to the core Modoboa package.
+
+Pre update
+----------
+
+-  If you are using Postegresql (default option with the installer),
+   run as a root user:
+
+   .. sourcecode:: bash
+
+       > sudo -u postgres -i psql -d "modoboa" -c "UPDATE django_content_type SET app_label='autoreply' WHERE app_label='postfix_autoreply'"
+       > sudo -u postgres -i psql -d "modoboa" -c "UPDATE django_migrations SET app='autoreply' WHERE app='postfix_autoreply'"
+
+-   If you are using Mysql, run as a root user:
+
+    .. sourcecode:: bash
+
+       > echo "UPDATE django_content_type SET app_label='autoreply' WHERE app_label='postfix_autoreply'" |  mysql -u root -p modoboa
+       > echo "UPDATE django_migrations SET app='autoreply' WHERE app='postfix_autoreply'" | mysql -u root -p modoboa
+
+Required changes to :file:`settings.py`
+---------------------------------------
+
+- Remove ``AjaxLoginRedirect`` from ``MIDDLEWARE`` variable:
+
+   .. sourcecode:: python
+
+      MIDDLEWARE = (
+         'django.contrib.sessions.middleware.SessionMiddleware',
+         'django.middleware.locale.LocaleMiddleware',
+         'x_forwarded_for.middleware.XForwardedForMiddleware',
+         'corsheaders.middleware.CorsMiddleware',
+         'django.middleware.common.CommonMiddleware',
+         'django.middleware.csrf.CsrfViewMiddleware',
+         'django.contrib.auth.middleware.AuthenticationMiddleware',
+         'django.contrib.messages.middleware.MessageMiddleware',
+         'django.middleware.clickjacking.XFrameOptionsMiddleware',
+         'modoboa.core.middleware.LocalConfigMiddleware',
+         'modoboa.lib.middleware.CommonExceptionCatcher',
+         'modoboa.lib.middleware.RequestCatcherMiddleware',
+      )
+
+
+
 Version 2.3.3
 =============
 
