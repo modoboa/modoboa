@@ -2343,7 +2343,7 @@ msgstr ""
 #: src/components/calendars/CalendarDetail.vue:19
 #: src/components/contacts/AddressBookInfo.vue:19
 msgid "The credentials are the same than the ones you use to access Modoboa."
-msgstr "認証情報は、Modoboa を開く際に利用しているものと同じものです。"
+msgstr "認証情報は Modoboa を開く際に利用したものと同じです。"
 
 #: src/components/tools/ImportForm.vue:16
 msgid ""
