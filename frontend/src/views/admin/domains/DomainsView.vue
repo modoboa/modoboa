@@ -6,7 +6,7 @@
 
     <DomainList>
       <template #extraActions>
-        <v-menu offset-y>
+        <v-menu v-if="canAddDomain" offset-y>
           <template #activator="{ props }">
             <v-btn
               color="primary"
@@ -28,6 +28,7 @@
           </v-list>
         </v-menu>
         <v-btn
+          v-if="canAddDomain"
           class="mr-2"
           :title="$gettext('Import domains and aliases from CSV file')"
           variant="flat"
@@ -82,6 +83,7 @@
 import { ref } from 'vue'
 import domainApi from '@/api/domains'
 import { useGettext } from 'vue3-gettext'
+import { usePermissions } from '@/composables/permissions'
 import DomainAliasForm from '@/components/admin/domains/DomainAliasForm'
 import DomainCreationForm from '@/components/admin/domains/DomainCreationForm'
 import DomainList from '@/components/admin/domains/DomainList'
@@ -93,6 +95,7 @@ const showDomainWizard = ref(false)
 const showImportForm = ref(false)
 
 const { $gettext } = useGettext()
+const { canAddDomain } = usePermissions()
 
 const importForm = ref()
 

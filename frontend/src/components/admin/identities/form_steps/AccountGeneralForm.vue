@@ -31,11 +31,15 @@
     />
 
     <AccountPasswordSubForm
+      v-if="authStore.authUser.pk !== account.pk"
       ref="passwordForm"
       v-model="account"
       :editing="editing"
       :form-errors="formErrors"
     />
+    <v-alert v-else type="info" variant="tonal" class="py-2">
+      {{ $gettext('You can update your password from the Account section') }}
+    </v-alert>
 
     <v-switch
       v-model="account.is_active"
@@ -51,9 +55,12 @@ import AccountPasswordSubForm from './AccountPasswordSubForm.vue'
 import EmailField from '@/components/tools/EmailField.vue'
 import { ref, computed } from 'vue'
 import { useGettext } from 'vue3-gettext'
+import { useAuthStore } from '@/stores'
 import rules from '@/plugins/rules'
 
 const { $gettext } = useGettext()
+const authStore = useAuthStore()
+
 const props = defineProps({
   modelValue: { type: Object, default: null },
   editing: { type: Boolean, default: false },

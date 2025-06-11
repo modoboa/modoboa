@@ -43,7 +43,7 @@
                 :title="$gettext('Copy to clipboard')"
                 @click="copyPassword"
               >
-                {{ account.password }}
+                {{ account.new_password }}
               </v-btn>
             </v-col>
           </v-row>
@@ -72,8 +72,10 @@ import AccountAliasForm from './form_steps/AccountAliasForm.vue'
 import { useGettext } from 'vue3-gettext'
 import { ref, computed, onMounted } from 'vue'
 import { useBusStore, useDomainsStore, useIdentitiesStore } from '@/stores'
+import { usePermissions } from '@/composables/permissions'
 
 const { $gettext } = useGettext()
+const { canSetRole } = usePermissions()
 const busStore = useBusStore()
 const domainsStore = useDomainsStore()
 const identitiesStore = useIdentitiesStore()
@@ -157,16 +159,17 @@ const summarySections = computed(() => {
 })
 
 const steps = computed(() => {
-  const result = [
-    {
+  const result = []
+  if (canSetRole.value) {
+    result.push({
       name: 'role',
       title: $gettext('Role'),
-    },
-    {
-      name: 'identification',
-      title: $gettext('Identification'),
-    },
-  ]
+    })
+  }
+  result.push({
+    name: 'identification',
+    title: $gettext('Identification'),
+  })
   if (needsMailbox.value) {
     return result.concat([
       {
@@ -206,7 +209,7 @@ const formStepsComponents = {
 }
 
 function copyPassword() {
-  navigator.clipboard.writeText(account.value.password).then(() => {
+  navigator.clipboard.writeText(account.value.new_password).then(() => {
     busStore.displayNotification({
       msg: $gettext('Password copied to clipboard'),
     })
@@ -254,6 +257,9 @@ function close() {
 
 function submit() {
   const data = preparePayload({ ...account.value })
+  data.password = data.new_password
+  delete data.new_password
+  delete data.password_confirmation
   identitiesStore.createIdentity('account', data).then(() => {
     emit('created')
     close()

@@ -36,6 +36,7 @@
       <v-text-field
         v-model="alias.address"
         :label="$gettext('Generated address')"
+        variant="outlined"
         readonly
       >
         <template #append-inner>

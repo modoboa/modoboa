@@ -43,6 +43,7 @@
 import { ref, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { useAccountsStore } from '@/stores'
+import { usePermissions } from '@/composables/permissions'
 import parametersApi from '@/api/parameters'
 import AccountAliases from '@/components/admin/identities/AccountAliases.vue'
 import AccountSenderAddresses from '@/components/admin/identities/AccountSenderAddresses.vue'
@@ -52,6 +53,7 @@ import ResourcesView from '@/components/tools/ResourcesView.vue'
 
 const route = useRoute()
 const accountsStore = useAccountsStore()
+const { canSetRole } = usePermissions()
 
 const account = computed(() => {
   if (accountsStore.accounts[route.params.id] !== undefined) {
@@ -62,9 +64,11 @@ const account = computed(() => {
 })
 const limitsConfig = ref({})
 
-parametersApi.getGlobalApplication('limits').then((resp) => {
-  limitsConfig.value = resp.data
-})
+if (canSetRole.value) {
+  parametersApi.getGlobalApplication('limits').then((resp) => {
+    limitsConfig.value = resp.data
+  })
+}
 
 function refreshAccount() {
   accountsStore.getAccount(route.params.id)

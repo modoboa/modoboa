@@ -106,7 +106,7 @@
           <td>
             <v-progress-linear v-model="item.allocated_quota_in_percent" />
           </td>
-          <td>
+          <td v-if="canSetRole">
             <div class="text-right">
               <v-menu offset-y>
                 <template #activator="{ props }">
@@ -181,9 +181,10 @@
 </template>
 
 <script setup lang="js">
-import { useBusStore, useDomainsStore } from '@/stores'
+import { useAuthStore, useBusStore, useDomainsStore } from '@/stores'
 import { useGettext } from 'vue3-gettext'
 import { useRouter } from 'vue-router'
+import { usePermissions } from '@/composables/permissions'
 import DomainAdminList from './DomainAdminList.vue'
 import ConfirmDialog from '@/components/tools/ConfirmDialog.vue'
 import DNSStatusChip from './DNSStatusChip.vue'
@@ -195,6 +196,7 @@ import { computed, ref, onMounted } from 'vue'
 const { $gettext } = useGettext()
 const router = useRouter()
 
+const { canSetRole } = usePermissions()
 const busStore = useBusStore()
 const domainStore = useDomainsStore()
 const domains = computed(() => domainStore.domains)
@@ -211,13 +213,16 @@ const domainHeaders = [
   },
   { title: $gettext('Sending limit'), key: 'message_limit' },
   { title: $gettext('Quota'), key: 'allocated_quota_in_percent' },
-  {
+]
+
+if (canSetRole.value) {
+  domainHeaders.push({
     title: $gettext('Actions'),
     value: 'actions',
     sortable: false,
     align: 'end',
-  },
-]
+  })
+}
 
 const confirm = ref()
 const keepDomainFolder = ref(false)
