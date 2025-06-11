@@ -154,7 +154,7 @@ class AccountARMessageViewSetTestCase(PatcherMixin, ModoAPITestCase):
     def test_get_armessage(self):
         url = reverse("api:account_armessage-armessage")
         response = self.client.get(url)
-        self.assertEqual(response.status_code, 404)
+        self.assertEqual(response.status_code, 403)
         self.client.logout()
         self.client.force_login(self.account)
         self.assertFalse(
