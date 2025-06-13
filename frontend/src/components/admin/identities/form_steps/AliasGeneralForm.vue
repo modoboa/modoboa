@@ -21,7 +21,7 @@
       <label class="m-label">{{ $gettext('Domain') }}</label>
       <v-select
         v-model="alias.domain"
-        :items="Object.values(domains)"
+        :items="domains"
         item-title="name"
         return-object
         variant="outlined"
@@ -36,6 +36,7 @@
       <v-text-field
         v-model="alias.address"
         :label="$gettext('Generated address')"
+        variant="outlined"
         readonly
       >
         <template #append-inner>
@@ -68,16 +69,14 @@
 import aliasesApi from '@/api/aliases'
 import EmailField from '@/components/tools/EmailField'
 import { ref, computed } from 'vue'
-import { useDomainsStore } from '@/stores'
 import rules from '@/plugins/rules'
+import domainsApi from '@/api/domains'
 
-const domainsStore = useDomainsStore()
 const props = defineProps({ modelValue: { type: Object, default: null } })
 
 const alias = computed(() => props.modelValue)
 
-const domains = computed(() => domainsStore.domains)
-
+const domains = ref([])
 const vFormRef = ref()
 
 function copyAlias() {
@@ -92,6 +91,10 @@ async function updateAddress() {
       alias.value.address = `${resp.data.address}@${alias.value.domain.name}`
     })
 }
+
+domainsApi.getDomains().then((resp) => {
+  domains.value = resp.data
+})
 
 defineExpose({ vFormRef })
 </script>

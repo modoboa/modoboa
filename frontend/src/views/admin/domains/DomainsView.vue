@@ -4,9 +4,9 @@
       <v-toolbar-title>{{ $gettext('Domains') }}</v-toolbar-title>
     </v-toolbar>
 
-    <DomainList>
+    <DomainList ref="domainList">
       <template #extraActions>
-        <v-menu offset-y>
+        <v-menu v-if="canAddDomain" offset-y>
           <template #activator="{ props }">
             <v-btn
               color="primary"
@@ -28,6 +28,7 @@
           </v-list>
         </v-menu>
         <v-btn
+          v-if="canAddDomain"
           class="mr-2"
           :title="$gettext('Import domains and aliases from CSV file')"
           variant="flat"
@@ -48,7 +49,7 @@
       <DomainCreationForm @close="showDomainWizard = false" />
     </v-dialog>
     <v-dialog v-model="showAliasForm" persistent max-width="800px">
-      <DomainAliasForm @close="showAliasForm = false" />
+      <DomainAliasForm @close="closeAliasForm()" />
     </v-dialog>
     <v-dialog v-model="showImportForm" persistent max-width="800px">
       <ImportForm
@@ -82,17 +83,20 @@
 import { ref } from 'vue'
 import domainApi from '@/api/domains'
 import { useGettext } from 'vue3-gettext'
+import { usePermissions } from '@/composables/permissions'
 import DomainAliasForm from '@/components/admin/domains/DomainAliasForm'
 import DomainCreationForm from '@/components/admin/domains/DomainCreationForm'
 import DomainList from '@/components/admin/domains/DomainList'
 import ImportForm from '@/components/tools/ImportForm'
 import { importExportMixin } from '@/mixins/importExport'
 
+const domainList = ref()
 const showAliasForm = ref(false)
 const showDomainWizard = ref(false)
 const showImportForm = ref(false)
 
 const { $gettext } = useGettext()
+const { canAddDomain } = usePermissions()
 
 const importForm = ref()
 
@@ -106,6 +110,11 @@ function exportDomains() {
 
 function importDomains(data) {
   importContent(domainApi, data, importForm, $gettext)
+}
+
+const closeAliasForm = () => {
+  showAliasForm.value = false
+  domainList.value.reloadDomains()
 }
 </script>
 

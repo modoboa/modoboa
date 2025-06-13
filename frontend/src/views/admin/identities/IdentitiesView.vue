@@ -4,7 +4,7 @@
       <v-toolbar-title>{{ $gettext('Identities') }}</v-toolbar-title>
     </v-toolbar>
 
-    <IdentityList>
+    <IdentityList ref="idList">
       <template #extraActions>
         <v-menu offset-y>
           <template #activator="{ props }">
@@ -50,11 +50,17 @@
       scrollable
       z-index="10"
     >
-      <AliasCreationForm @close="showAliasCreationWizard = false" />
+      <AliasCreationForm
+        @created="idList.fetchIdentities()"
+        @close="showAliasCreationWizard = false"
+      />
     </v-dialog>
 
     <v-dialog v-model="showCreationWizard" fullscreen scrollable z-index="10">
-      <AccountCreationForm @close="showCreationWizard = false" />
+      <AccountCreationForm
+        @created="idList.fetchIdentities()"
+        @close="showCreationWizard = false"
+      />
     </v-dialog>
 
     <v-dialog v-model="showImportForm" persistent max-width="800px">
@@ -115,6 +121,7 @@ const showCreationWizard = ref(false)
 const showAliasCreationWizard = ref(false)
 const showImportForm = ref(false)
 const importForm = ref()
+const idList = ref()
 
 function exportIdentities() {
   identitiesApi.exportAll().then((resp) => {

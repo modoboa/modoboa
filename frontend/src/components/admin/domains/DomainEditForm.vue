@@ -1,5 +1,5 @@
 <template>
-  <LoadingData v-if="!domainsStore.domainsLoaded || working" />
+  <LoadingData v-if="working" />
   <div v-else>
     <v-expansion-panels v-model="panel" :multiple="formErrors">
       <v-expansion-panel eager value="generalForm">
@@ -181,13 +181,13 @@ import parametersApi from '@/api/parameters'
 import ResourcesForm from '@/components/tools/ResourcesForm.vue'
 import { computed, ref, onMounted } from 'vue'
 import { useGettext } from 'vue3-gettext'
-import { useAuthStore, useDomainsStore } from '@/stores'
+import { useAuthStore } from '@/stores'
 import { useRouter } from 'vue-router'
+import domainsApi from '@/api/domains'
 
 const router = useRouter()
 const { $gettext } = useGettext()
 const authStore = useAuthStore()
-const domainsStore = useDomainsStore()
 
 const props = defineProps({ domain: { type: Object, default: null } })
 
@@ -253,8 +253,13 @@ async function save() {
     if (data.type === 'relaydomain') {
       transportForm.value.checkSettingTypes(data)
     }
-    domainsStore.updateDomain(data).then(() => {
-      router.go(-1)
+    if (data.message_limit === '') {
+      data.message_limit = null
+    }
+    await domainsApi.updateDomain(editedDomain.value.pk, data)
+    router.push({
+      name: 'DomainDetail',
+      params: { id: editedDomain.value.pk },
     })
   } finally {
     working.value = false

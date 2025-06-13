@@ -35,6 +35,7 @@
           'Number of messages this domain can send per day. Leave empty for no limit.'
         )
       "
+      type="number"
       persistent-hint
       variant="outlined"
       :rules="[rules.numericOrNull]"

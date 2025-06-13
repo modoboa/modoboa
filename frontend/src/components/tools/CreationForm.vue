@@ -164,6 +164,10 @@ function create() {
   working.value = true
   emit('create')
 }
+
+defineExpose({
+  working,
+})
 </script>
 
 <style lang="scss">
