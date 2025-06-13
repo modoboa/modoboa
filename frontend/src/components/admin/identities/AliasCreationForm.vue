@@ -20,7 +20,7 @@
 </template>
 
 <script setup lang="js">
-import { useBusStore, useIdentitiesStore } from '@/stores'
+import { useBusStore } from '@/stores'
 import { ref, computed } from 'vue'
 import { useGettext } from 'vue3-gettext'
 import { useRouter } from 'vue-router'
@@ -33,12 +33,12 @@ import CreationForm from '@/components/tools/CreationForm.vue'
 
 const { $gettext } = useGettext()
 const busStore = useBusStore()
-const identitiesStore = useIdentitiesStore()
 const router = useRouter()
 
 const emit = defineEmits(['close', 'created'])
 
 //Forms refs
+const form = ref()
 const general = ref()
 const recipients = ref()
 
@@ -139,13 +139,17 @@ function validateAlias() {
   return validation
 }
 
-function submit() {
+async function submit() {
   if (alias.value.domain !== undefined) {
     delete alias.value.domain
   }
-  identitiesStore.createIdentity('alias', alias.value).then(() => {
+
+  try {
+    await aliasesApi.create(alias.value)
     emit('created')
     close()
-  })
+  } finally {
+    form.value.working = false
+  }
 }
 </script>

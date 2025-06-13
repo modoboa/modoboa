@@ -165,29 +165,30 @@ class AccountViewSet(core_v1_viewsets.AccountViewSet):
                     "url": "/admin",
                 }
             )
-        apps += [
-            {
-                "name": "calendar",
-                "label": _("Calendars"),
-                "icon": "mdi-calendar",
-                "description": _("Calendar"),
-                "url": "/user/calendars",
-            },
-            {
-                "name": "contacts",
-                "label": _("Contacts"),
-                "icon": "mdi-contacts-outline",
-                "description": _("Address book"),
-                "url": "/user/contacts",
-            },
-            {
-                "name": "webmail",
-                "label": _("Webmail"),
-                "icon": "mdi-at",
-                "description": _("Webmail"),
-                "url": "/user/webmail",
-            },
-        ]
+        if hasattr(request.user, "mailbox"):
+            apps += [
+                {
+                    "name": "calendar",
+                    "label": _("Calendars"),
+                    "icon": "mdi-calendar",
+                    "description": _("Calendar"),
+                    "url": "/user/calendars",
+                },
+                {
+                    "name": "contacts",
+                    "label": _("Contacts"),
+                    "icon": "mdi-contacts-outline",
+                    "description": _("Address book"),
+                    "url": "/user/contacts",
+                },
+                {
+                    "name": "webmail",
+                    "label": _("Webmail"),
+                    "icon": "mdi-at",
+                    "description": _("Webmail"),
+                    "url": "/user/webmail",
+                },
+            ]
         apps += exts_pool.get_available_apps()
         serializer = serializers.ModoboaApplicationSerializer(apps, many=True)
         return response.Response(serializer.data)

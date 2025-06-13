@@ -38,6 +38,7 @@ modoboa.kdev4
 test_project/cert.crt
 test_project/cert.key
 test_project/envfile
+test_project/media
 
 # Docker
 docker/collections

@@ -19,6 +19,7 @@
             v-model="selectedAccount"
             :label="$gettext('Select an account')"
             :items="accounts"
+            variant="outlined"
             item-title="username"
             class="mt-5"
             return-object

@@ -9,6 +9,11 @@ export default {
   checkPassword(value) {
     return repository.post(`/${resource}/me/password/`, { password: value })
   },
+  setPassword(data) {
+    return repository.post(`/${resource}/me/password/change/`, data, {
+      ignoreErrors: true,
+    })
+  },
   verifyTFACode(code) {
     const payload = { code }
     return repository.post(`${resource}/tfa/verify/`, payload)

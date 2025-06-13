@@ -352,12 +352,9 @@ class IdentitySerializer(serializers.Serializer):
     identity = serializers.CharField()
     name_or_rcpt = serializers.CharField()
     tags = TagSerializer(many=True)
+    possible_actions = serializers.SerializerMethodField()
 
-    def __init__(self, instance=None, data=..., **kwargs):
-        super().__init__(instance, data, **kwargs)
-        self.fields["possible_actions"] = serializers.SerializerMethodField()
-
-    def get_possible_actions(self, identity):
+    def get_possible_actions(self, identity) -> list[IdPossibleActionsSerializer]:
         if not isinstance(identity, core_models.User):
             # Return empty action list if identity type is an alias
             # (not used for now)
@@ -478,21 +475,31 @@ class WritableAccountSerializer(v1_serializers.WritableAccountSerializer):
         fields = tuple(
             field
             for field in v1_serializers.WritableAccountSerializer.Meta.fields
-            if field != "random_password"
+            if field not in ["random_password", "domains"]
         ) + ("aliases",)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         if not param_tools.get_global_parameter("enable_admin_limits", app="limits"):
             return
-        self.fields["resources"] = WritableResourceSerializer(many=True, required=False)
+        del self.fields["domains"]
+        if self.context["request"].user.role in ["Resellers", "SuperAdmins"]:
+            self.fields["resources"] = WritableResourceSerializer(
+                many=True, required=False
+            )
 
     def validate_aliases(self, value):
         """Check if required domains are locals and user can access them."""
         aliases = []
+        existing_aliases = (
+            self.instance.mailbox.alias_addresses if self.instance else []
+        )
         for alias in value:
             localpart, domain = models.validate_alias_address(
-                alias, self.context["request"].user, ignore_existing=True
+                alias,
+                self.context["request"].user,
+                ignore_existing=True,
+                check_limits=alias not in existing_aliases,
             )
             aliases.append({"localpart": localpart, "domain": domain})
         return aliases
@@ -609,7 +616,6 @@ class WritableAccountSerializer(v1_serializers.WritableAccountSerializer):
         """Update account and associated objects."""
         mailbox_data = validated_data.pop("mailbox", None)
         password = validated_data.pop("password", None)
-        domains = validated_data.pop("domains", [])
         aliases = validated_data.pop("aliases", None)
         for key, value in validated_data.items():
             setattr(instance, key, value)
@@ -657,7 +663,6 @@ class WritableAccountSerializer(v1_serializers.WritableAccountSerializer):
                     allocate_resources_from_user(limit, owner, resource["max_value"])
                 limit.max_value = resource["max_value"]
                 limit.save()
-        self.set_permissions(instance, domains)
         return instance
 
 

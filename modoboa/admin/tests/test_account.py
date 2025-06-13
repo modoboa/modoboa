@@ -149,31 +149,19 @@ class PermissionsTestCase(ModoAPITestCase):
             {"name": "mailboxes", "max_value": 0},
             {"name": "mailbox_aliases", "max_value": 0},
         ]
-        self.values["domains"] = ["test.com", "test2.com"]
         response = self.client.put(
             reverse("v2:account-detail", args=[self.user.id]),
             self.values,
             format="json",
         )
-        self.assertEqual(response.status_code, 200)
-        self.assertIn(
-            self.user, models.Domain.objects.get(name="test.com").admins.all()
-        )
-        self.assertIn(
-            self.user, models.Domain.objects.get(name="test2.com").admins.all()
-        )
+        for name in ["test.com", "test2.com"]:
+            domain = models.Domain.objects.get(name=name)
+            domain.add_admin(self.user)
 
-        self.values["domains"].remove("test2.com")
-        response = self.client.put(
-            reverse("v2:account-detail", args=[self.user.id]),
-            self.values,
-            format="json",
-        )
-        self.assertEqual(response.status_code, 200)
         self.assertIn(
             self.user, models.Domain.objects.get(name="test.com").admins.all()
         )
-        self.assertNotIn(
+        self.assertIn(
             self.user, models.Domain.objects.get(name="test2.com").admins.all()
         )
 

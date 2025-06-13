@@ -170,6 +170,10 @@ export const useAuthStore = defineStore('auth', () => {
     })
   }
 
+  async function updatePassword(data) {
+    return accountApi.setPassword(data)
+  }
+
   function finalizeTFASetup(pinCode) {
     return accountApi.finalizeTFASetup(pinCode).then((response) => {
       const cookie = Cookies.withAttributes({ sameSite: 'strict' })
@@ -198,6 +202,7 @@ export const useAuthStore = defineStore('auth', () => {
     login,
     $reset,
     updateAccount,
+    updatePassword,
     finalizeTFASetup,
   }
 })

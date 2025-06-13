@@ -70,7 +70,11 @@
       </v-expansion-panel-title>
       <v-expansion-panel-text>
         <v-form ref="passwordForm" @submit.prevent="updatePassword">
-          <AccountPasswordForm v-model="form" with-password-check />
+          <AccountPasswordForm
+            v-model="form"
+            :form-errors="passwordFormErrors"
+            with-password-check
+          />
           <v-btn color="success" type="submit" :loading="loadingPasswordUpdate">
             {{ $gettext('Update Password') }}
           </v-btn>
@@ -97,6 +101,7 @@ const account = computed(() => authStore.authUser)
 const form = ref({})
 const profileForm = ref()
 const passwordForm = ref()
+const passwordFormErrors = ref({})
 const languages = ref([])
 const panel = ref(0)
 const loadingUpdateProfile = ref(false)
@@ -136,12 +141,20 @@ async function updatePassword() {
     return
   }
   loadingPasswordUpdate.value = true
-  authStore
-    .updateAccount({ password: form.value.password })
-    .then(() => {
-      busStore.displayNotification({ msg: $gettext('Password updated') })
+  try {
+    await authStore.updatePassword({
+      password: form.value.password,
+      new_password: form.value.new_password,
     })
-    .finally(() => (loadingPasswordUpdate.value = false))
+    busStore.displayNotification({ msg: $gettext('Password updated') })
+    passwordForm.value.reset()
+  } catch (err) {
+    if (err.status === 400) {
+      passwordFormErrors.value = err.response.data
+    }
+  } finally {
+    loadingPasswordUpdate.value = false
+  }
 }
 
 onMounted(() => {
