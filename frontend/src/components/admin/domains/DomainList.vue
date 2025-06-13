@@ -4,12 +4,12 @@
       v-model="selected"
       :expanded="expanded"
       :headers="domainHeaders"
-      :items="Object.values(domains)"
+      :items="domains"
       item-value="name"
       :search="search"
       show-select
       expand-on-click
-      :loading="!domainsLoaded"
+      :loading="loading"
     >
       <template #top>
         <v-toolbar color="white" flat>
@@ -19,7 +19,6 @@
             :placeholder="$gettext('Search')"
             variant="outlined"
             single-line
-            flat
             hide-details
             density="compact"
             class="flex-grow-0 w-33 mr-4"
@@ -149,7 +148,7 @@
               <a href="#" class="mr-2" @click="editDomainAlias(item, alias)">{{
                 alias.name
               }}</a>
-              <v-chip variant="elevated" size="x-small" color="success"
+              <v-chip variant="flat" size="x-small" color="success"
                 >DNS OK</v-chip
               >
             </span>
@@ -181,7 +180,7 @@
 </template>
 
 <script setup lang="js">
-import { useAuthStore, useBusStore, useDomainsStore } from '@/stores'
+import { useBusStore } from '@/stores'
 import { useGettext } from 'vue3-gettext'
 import { useRouter } from 'vue-router'
 import { usePermissions } from '@/composables/permissions'
@@ -190,18 +189,15 @@ import ConfirmDialog from '@/components/tools/ConfirmDialog.vue'
 import DNSStatusChip from './DNSStatusChip.vue'
 import DomainAliasForm from './DomainAliasForm.vue'
 import MenuItems from '@/components/tools/MenuItems.vue'
+import domainsApi from '@/api/domains'
 
-import { computed, ref, onMounted } from 'vue'
+import { ref, onMounted } from 'vue'
 
 const { $gettext } = useGettext()
 const router = useRouter()
 
 const { canSetRole } = usePermissions()
 const busStore = useBusStore()
-const domainStore = useDomainsStore()
-const domains = computed(() => domainStore.domains)
-const domainsLoaded = computed(() => domainStore.domainsLoaded)
-const aliases = computed(() => domainStore.domainAliases)
 
 const domainHeaders = [
   { title: $gettext('Name'), key: 'name' },
@@ -224,8 +220,11 @@ if (canSetRole.value) {
   })
 }
 
+const aliases = ref({})
 const confirm = ref()
+const domains = ref([])
 const keepDomainFolder = ref(false)
+const loading = ref(false)
 const selectedDomain = ref(null)
 const selectedDomainAlias = ref(null)
 const showAdminList = ref(false)
@@ -234,8 +233,15 @@ const search = ref('')
 const selected = ref([])
 const expanded = ref([])
 
-function reloadDomains() {
-  domainStore.getDomains()
+async function reloadDomains() {
+  aliases.value = {}
+  loading.value = true
+  try {
+    const resp = await domainsApi.getDomains()
+    domains.value = resp.data
+  } finally {
+    loading.value = false
+  }
 }
 
 function closeDomainAliasForm() {
@@ -260,10 +266,10 @@ async function deleteDomain(domain) {
     return
   }
   const data = { keep_folder: keepDomainFolder.value }
-  domainStore.deleteDomain({ id: domain.pk, data }).then(() => {
-    busStore.displayNotification({ msg: $gettext('Domain deleted') })
-    keepDomainFolder.value = false
-  })
+  await domainsApi.deleteDomain(domain.pk, data)
+  reloadDomains()
+  busStore.displayNotification({ msg: $gettext('Domain deleted') })
+  keepDomainFolder.value = false
 }
 
 function editDomain(domain) {
@@ -282,7 +288,8 @@ function loadAliases(item, internalItem, isItemExpanded, toggleExpand) {
     toggleExpand(internalItem)
     return
   }
-  domainStore.getAliases(item.name).then(() => {
+  domainsApi.getDomainAliases(item.name).then((resp) => {
+    aliases.value[item.name] = resp.data
     toggleExpand(internalItem)
   })
 }
@@ -324,6 +331,10 @@ function getDomainMenuItems(domain) {
 
 onMounted(() => {
   reloadDomains()
+})
+
+defineExpose({
+  reloadDomains,
 })
 </script>
 

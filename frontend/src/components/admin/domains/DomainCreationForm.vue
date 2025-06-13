@@ -69,7 +69,8 @@
 </template>
 
 <script setup lang="js">
-import ParametersApi from '@/api/parameters.js'
+import domainsApi from '@/api/domains'
+import ParametersApi from '@/api/parameters'
 import CreationForm from '@/components/tools/CreationForm.vue'
 import DomainGeneralForm from './form_steps/DomainGeneralForm.vue'
 import DomainDNSForm from './form_steps/DomainDNSForm.vue'
@@ -78,15 +79,14 @@ import DomainOptionsForm from './form_steps/DomainOptionsForm.vue'
 import DomainTransportForm from './form_steps/DomainTransportForm.vue'
 import { useGettext } from 'vue3-gettext'
 import { ref, computed, onMounted } from 'vue'
-import { useBusStore, useDomainsStore } from '@/stores'
+import { useBusStore } from '@/stores'
 import { useRouter } from 'vue-router'
 
 const { $gettext } = useGettext()
 const busStore = useBusStore()
-const domainsStore = useDomainsStore()
 const router = useRouter()
 
-const emit = defineEmits(['close'])
+const emit = defineEmits(['close', 'created'])
 
 const defaultDomain = {
   name: '',
@@ -123,6 +123,7 @@ onMounted(() => {
 const createAdmin = ref(false)
 
 // Reference to steps components
+const form = ref()
 const general = ref()
 const dns = ref()
 const limitations = ref()
@@ -298,7 +299,7 @@ function updateCreateAdmin(value) {
   createAdmin.value = value
 }
 
-function submit() {
+async function submit() {
   const data = JSON.parse(JSON.stringify(domain.value))
   if (!createAdmin.value) {
     delete data.domain_admin
@@ -311,11 +312,14 @@ function submit() {
   } else {
     delete data.transport
   }
-  domainsStore.createDomain(data).then((resp) => {
+  try {
+    const resp = await domainsApi.createDomain(data)
     router.push({ name: 'DomainDetail', params: { id: resp.data.pk } })
     busStore.displayNotification({ msg: $gettext('Domain created') })
     close()
-  })
+  } finally {
+    form.value.working = false
+  }
 }
 </script>
 

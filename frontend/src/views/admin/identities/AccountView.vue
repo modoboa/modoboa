@@ -42,8 +42,8 @@
 <script setup lang="js">
 import { ref, computed } from 'vue'
 import { useRoute } from 'vue-router'
-import { useAccountsStore } from '@/stores'
 import { usePermissions } from '@/composables/permissions'
+import accountsApi from '@/api/accounts'
 import parametersApi from '@/api/parameters'
 import AccountAliases from '@/components/admin/identities/AccountAliases.vue'
 import AccountSenderAddresses from '@/components/admin/identities/AccountSenderAddresses.vue'
@@ -52,17 +52,16 @@ import DomainAdminDomains from '@/components/admin/identities/DomainAdminDomains
 import ResourcesView from '@/components/tools/ResourcesView.vue'
 
 const route = useRoute()
-const accountsStore = useAccountsStore()
 const { canSetRole } = usePermissions()
 
-const account = computed(() => {
-  if (accountsStore.accounts[route.params.id] !== undefined) {
-    return accountsStore.accounts[route.params.id]
-  }
-  refreshAccount()
-  return { pk: route.params.id }
-})
+const account = ref({ pk: route.params.id })
 const limitsConfig = ref({})
+
+function refreshAccount() {
+  accountsApi.get(route.params.id).then((resp) => {
+    account.value = resp.data
+  })
+}
 
 if (canSetRole.value) {
   parametersApi.getGlobalApplication('limits').then((resp) => {
@@ -70,9 +69,7 @@ if (canSetRole.value) {
   })
 }
 
-function refreshAccount() {
-  accountsStore.getAccount(route.params.id)
-}
+refreshAccount()
 </script>
 
 <style scoped>

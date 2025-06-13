@@ -1,5 +1,5 @@
 <template>
-  <LoadingData v-if="!aliasesStore.aliasesLoaded || working" />
+  <LoadingData v-if="working" />
   <div v-else>
     <v-expansion-panels v-model="panel" :multiple="formErrors">
       <v-expansion-panel eager value="generalForm">
@@ -81,24 +81,22 @@
 </template>
 
 <script setup lang="js">
-import { useIdentitiesStore, useAliasesStore } from '@/stores'
 import AliasGeneralForm from './form_steps/AliasGeneralForm.vue'
 import AliasRecipientForm from './form_steps/AliasRecipientForm'
 import LoadingData from '@/components/tools/LoadingData.vue'
 import { useGettext } from 'vue3-gettext'
 import { ref, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import aliasesApi from '@/api/aliases'
 
 const { $gettext } = useGettext()
-const identitiesStore = useIdentitiesStore()
-const aliasesStore = useAliasesStore()
 const route = useRoute()
 const router = useRouter()
 
 const editedAlias = ref({ pk: route.params.id })
 
 const panel = ref(0)
-const working = ref(false)
+const working = ref(true)
 const formErrors = ref(false)
 
 // refs
@@ -126,20 +124,21 @@ async function save() {
 
   working.value = true
 
-  identitiesStore
-    .updateIdentity('alias', editedAlias.value)
-    .then(() =>
-      router.push({
-        name: 'AliasDetail',
-        params: { id: route.params.id },
-      })
-    )
-    .finally(() => (working.value = false))
+  try {
+    await aliasesApi.patch(route.params.id, editedAlias.value)
+    router.push({
+      name: 'AliasDetail',
+      params: { id: route.params.id },
+    })
+  } finally {
+    working.value = false
+  }
 }
 
 onMounted(() => {
-  aliasesStore.getAlias(route.params.id).then((response) => {
-    editedAlias.value = { ...response.data }
+  aliasesApi.get(route.params.id).then((response) => {
+    editedAlias.value = response.data
+    working.value = false
   })
 })
 </script>
