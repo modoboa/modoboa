@@ -34,13 +34,13 @@ const userSettingsMenuItems = computed(() => {
       to: { name: 'AccountFilters' },
       icon: 'mdi-filter',
     })
-  }
-  for (const app of applications.value) {
-    result.push({
-      icon: appIcons[app.name],
-      text: app.label,
-      to: { name: 'AccountParametersEdit', params: { app: app.name } },
-    })
+    for (const app of applications.value) {
+      result.push({
+        icon: appIcons[app.name],
+        text: app.label,
+        to: { name: 'AccountParametersEdit', params: { app: app.name } },
+      })
+    }
   }
   return result
 })
