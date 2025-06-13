@@ -21,7 +21,7 @@ class AddressBookViewSet(viewsets.GenericViewSet):
         """Return default user address book."""
         abook = request.user.addressbook_set.first()
         if not abook:
-            return response.Response(status_code=404)
+            return response.Response(status=404)
         serializer = serializers.AddressBookSerializer(abook)
         return response.Response(serializer.data)
 

@@ -5,7 +5,7 @@
       :headers="headers"
       :items="identities"
       :search="search"
-      :loading="!identitiesLoaded"
+      :loading="loading"
       item-value="identity"
       class="elevation-0"
       show-select
@@ -77,7 +77,7 @@
             item.possible_actions.length !== 0
           "
         >
-          <v-icon size="2.5em" color="blue">mdi-circle-small</v-icon>
+          <v-icon size="large" color="blue">mdi-circle-small</v-icon>
         </template>
         <v-menu location="bottom">
           <template #activator="{ props }">
@@ -107,13 +107,14 @@
 <script setup lang="js">
 import { ref, computed, onMounted } from 'vue'
 import { useGettext } from 'vue3-gettext'
-import { useIdentitiesStore } from '@/stores'
 import MenuItems from '@/components/tools/MenuItems.vue'
 import ConfirmDialog from '@/components/tools/ConfirmDialog.vue'
 import { useRouter } from 'vue-router'
+import accountsApi from '@/api/accounts'
+import aliasesApi from '@/api/aliases'
+import identitiesApi from '@/api/identities'
 
 const { $gettext } = useGettext()
-const identitiesStore = useIdentitiesStore()
 const router = useRouter()
 
 const headers = ref([
@@ -128,18 +129,23 @@ const headers = ref([
   },
 ])
 
-const identities = computed(() => identitiesStore.identities)
-const identitiesLoaded = computed(() => identitiesStore.identitiesLoaded)
+const identities = ref([])
+const loading = ref(false)
 const search = ref('')
 const selected = ref([])
 const keepAccountFolder = ref(false)
 const confirmAlias = ref()
 const confirmAccount = ref()
 
-function fetchIdentities() {
-  identitiesStore.getIdentities().then(() => {
+async function fetchIdentities() {
+  loading.value = true
+  try {
+    const resp = await identitiesApi.getAll()
+    identities.value = resp.data
     selected.value = []
-  })
+  } finally {
+    loading.value = false
+  }
 }
 
 function getMenuItems(item) {
@@ -214,13 +220,14 @@ async function deleteAccount(account) {
   if (!result) {
     return
   }
-  identitiesStore
-    .deleteIdentity(account.type, account.pk, {
-      keepdir: keepAccountFolder.value,
-    })
-    .then(() => {
-      keepAccountFolder.value = false
-    })
+
+  loading.value = false
+  try {
+    await accountsApi.delete(account.pk, { keepdir: keepAccountFolder.value })
+    fetchIdentities()
+  } finally {
+    loading.value = false
+  }
 }
 
 function editAlias() {}
@@ -240,12 +247,20 @@ async function deleteAlias(alias) {
   if (!result) {
     return
   }
-  identitiesStore.deleteIdentity(alias.type, alias.pk)
+  loading.value = false
+  try {
+    await aliasesApi.delete(alias.pk)
+    fetchIdentities()
+  } finally {
+    loading.value = false
+  }
 }
 
 onMounted(() => {
-  if (identities.value.length < 1) {
-    fetchIdentities()
-  }
+  fetchIdentities()
+})
+
+defineExpose({
+  fetchIdentities,
 })
 </script>

@@ -53,7 +53,10 @@ import rules from '@/plugins/rules'
 const { $gettext } = useGettext()
 const emit = defineEmits(['update:modelValue'])
 const props = defineProps({ modelValue: { type: Object, default: null } })
+
 const domainsStore = useDomainsStore()
+
+const domains = computed(() => domainsStore.domains)
 
 const vFormRef = ref()
 const form = ref({
@@ -94,7 +97,9 @@ watch(
 const domainQuota = computed(() => {
   const email = form.value.mailbox.full_address
   if (email && email.indexOf('@') !== -1) {
-    const domain = domainsStore.getDomainByName(email.split('@')[1])
+    const domain = domains.value.find(
+      (item) => item.name === email.split('@')[1]
+    )
     if (domain) {
       return parseInt(domain.default_mailbox_quota)
     }

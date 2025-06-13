@@ -1,5 +1,6 @@
 <template>
-  <div>
+  <LoadingData v-if="!domain" />
+  <div v-else>
     <v-toolbar flat>
       <v-toolbar-title>
         {{ $gettext('Domain') }} {{ domain.name }}
@@ -83,31 +84,28 @@ import DomainAdminList from '@/components/admin/domains/DomainAdminList.vue'
 import DmarcAligmentChart from '@/components/admin/dmarc/DmarcAligmentChart.vue'
 import DNSDetail from '@/components/admin/domains/DNSDetail.vue'
 import DomainSummary from '@/components/admin/domains/DomainSummary.vue'
-import { useDomainsStore } from '@/stores'
+import LoadingData from '@/components/tools/LoadingData.vue'
 import ResourcesForm from '@/components/tools/ResourcesForm.vue'
 import TimeSerieChart from '@/components/tools/TimeSerieChart.vue'
 import { useGettext } from 'vue3-gettext'
-import { ref, computed } from 'vue'
+import { ref } from 'vue'
 import { useRoute } from 'vue-router'
+import domainsApi from '@/api/domains'
 
 const { $gettext } = useGettext()
 const route = useRoute()
-const domainsStore = useDomainsStore()
 
-const domain = computed(() => {
-  if (domainsStore.domains[route.params.id] !== undefined) {
-    return domainsStore.domains[route.params.id]
-  }
-  refreshDomain()
-  return { pk: route.params.id }
-})
-
+const domain = ref(null)
 const limitsConfig = ref({})
 const tab = ref(null)
 
 function refreshDomain() {
-  domainsStore.getDomain(route.params.id)
+  domainsApi.getDomain(route.params.id).then((resp) => {
+    domain.value = resp.data
+  })
 }
+
+refreshDomain()
 </script>
 
 <style scoped>

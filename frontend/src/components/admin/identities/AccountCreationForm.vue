@@ -70,15 +70,14 @@ import AccountMailboxForm from './form_steps/AccountMailboxForm.vue'
 import AccountAliasForm from './form_steps/AccountAliasForm.vue'
 
 import { useGettext } from 'vue3-gettext'
-import { ref, computed, onMounted } from 'vue'
-import { useBusStore, useDomainsStore, useIdentitiesStore } from '@/stores'
+import { ref, computed } from 'vue'
+import { useBusStore, useDomainsStore } from '@/stores'
 import { usePermissions } from '@/composables/permissions'
 
 const { $gettext } = useGettext()
 const { canSetRole } = usePermissions()
 const busStore = useBusStore()
 const domainsStore = useDomainsStore()
-const identitiesStore = useIdentitiesStore()
 const emit = defineEmits(['close', 'created'])
 
 const needsMailbox = computed(
@@ -196,6 +195,7 @@ const account = ref({
 })
 
 // Form refs
+const form = ref()
 const role = ref()
 const identification = ref()
 const mailbox = ref()
@@ -255,20 +255,21 @@ function close() {
   emit('close')
 }
 
-function submit() {
+async function submit() {
   const data = preparePayload({ ...account.value })
   data.password = data.new_password
   delete data.new_password
   delete data.password_confirmation
-  identitiesStore.createIdentity('account', data).then(() => {
+  try {
+    await accountsApi.create(data)
     emit('created')
     close()
-  })
+  } finally {
+    form.value.working = false
+  }
 }
 
-onMounted(() => {
-  domainsStore.getDomains()
-})
+domainsStore.getDomains()
 </script>
 
 <style lang="scss">

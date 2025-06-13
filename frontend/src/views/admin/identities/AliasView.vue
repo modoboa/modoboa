@@ -24,25 +24,22 @@
 import AliasRecipientsSummary from '@/components/admin/identities/AliasRecipientsSummary.vue'
 import AliasSummary from '@/components/admin/identities/AliasSummary.vue'
 import { useGettext } from 'vue3-gettext'
-import { computed } from 'vue'
-import { useAliasesStore } from '@/stores'
+import { ref } from 'vue'
 import { useRoute } from 'vue-router'
+import aliasesApi from '@/api/aliases'
 
 const { $gettext } = useGettext()
-const aliasesStore = useAliasesStore()
 const route = useRoute()
 
-const alias = computed(() => {
-  if (aliasesStore.aliases[route.params.id] !== undefined) {
-    return aliasesStore.aliases[route.params.id]
-  }
-  refreshAlias()
-  return { pk: route.params.id }
-})
+const alias = ref({ pk: route.params.id })
 
 function refreshAlias() {
-  aliasesStore.getAlias(route.params.id)
+  aliasesApi.get(route.params.id).then((resp) => {
+    alias.value = resp.data
+  })
 }
+
+refreshAlias()
 </script>
 
 <style scoped>

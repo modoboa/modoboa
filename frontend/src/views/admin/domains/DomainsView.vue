@@ -4,7 +4,7 @@
       <v-toolbar-title>{{ $gettext('Domains') }}</v-toolbar-title>
     </v-toolbar>
 
-    <DomainList>
+    <DomainList ref="domainList">
       <template #extraActions>
         <v-menu v-if="canAddDomain" offset-y>
           <template #activator="{ props }">
@@ -49,7 +49,7 @@
       <DomainCreationForm @close="showDomainWizard = false" />
     </v-dialog>
     <v-dialog v-model="showAliasForm" persistent max-width="800px">
-      <DomainAliasForm @close="showAliasForm = false" />
+      <DomainAliasForm @close="closeAliasForm()" />
     </v-dialog>
     <v-dialog v-model="showImportForm" persistent max-width="800px">
       <ImportForm
@@ -90,6 +90,7 @@ import DomainList from '@/components/admin/domains/DomainList'
 import ImportForm from '@/components/tools/ImportForm'
 import { importExportMixin } from '@/mixins/importExport'
 
+const domainList = ref()
 const showAliasForm = ref(false)
 const showDomainWizard = ref(false)
 const showImportForm = ref(false)
@@ -109,6 +110,11 @@ function exportDomains() {
 
 function importDomains(data) {
   importContent(domainApi, data, importForm, $gettext)
+}
+
+const closeAliasForm = () => {
+  showAliasForm.value = false
+  domainList.value.reloadDomains()
 }
 </script>
 

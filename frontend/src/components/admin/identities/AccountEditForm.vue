@@ -1,5 +1,5 @@
 <template>
-  <LoadingData v-if="!accountsStore.accountsLoaded || working" />
+  <LoadingData v-if="working" />
   <div v-else>
     <v-expansion-panels v-model="panel" :multiple="formErrors">
       <v-expansion-panel v-if="canSetRole" eager value="roleForm">
@@ -12,7 +12,7 @@
               <v-fade-transition leave-absolute>
                 <span v-if="expanded"></span>
                 <v-row v-else no-gutters style="width: 100%">
-                  <v-col cols="6">
+                  <v-col v-if="roleForm" cols="6">
                     {{ roleForm.roleLabel }}
                   </v-col>
                 </v-row>
@@ -30,7 +30,7 @@
             <v-col cols="4">
               {{ $gettext('Identification') }}
             </v-col>
-            <v-col cols="8" class="text-secondary">
+            <v-col cols="8" class="">
               <v-fade-transition leave-absolute>
                 <span v-if="expanded"></span>
                 <v-row v-else no-gutters style="width: 100%">
@@ -68,7 +68,7 @@
             <v-col cols="4">
               {{ $gettext('Mailbox') }}
             </v-col>
-            <v-col cols="8" class="text-secondary">
+            <v-col cols="8" class="">
               <v-fade-transition leave-absolute>
                 <span v-if="expanded"></span>
                 <v-row v-else no-gutters style="width: 100%">
@@ -115,14 +115,13 @@
             <v-col cols="4">
               {{ $gettext('Alias') }}
             </v-col>
-            <v-col cols="8" class="text-secondary">
+            <v-col cols="8" class="">
               <v-fade-transition leave-absolute>
                 <span v-if="expanded"></span>
                 <v-row v-else no-gutters style="width: 100%">
                   <template v-if="editedAccount.aliases">
                     <v-col cols="6">
                       <div class="mr-2">
-                        {{ $gettext('Aliases:') }}
                         {{ $gettext('Number of associated alias:') }}
                         {{ editedAccount.aliases.length }}
                       </div>
@@ -143,7 +142,7 @@
             <v-col cols="4">
               {{ $gettext('Resources') }}
             </v-col>
-            <v-col cols="8" class="text-secondary">
+            <v-col cols="8" class="">
               <v-fade-transition leave-absolute>
                 <span v-if="expanded"></span>
                 <v-row v-else no-gutters style="width: 100%">
@@ -155,14 +154,12 @@
                   >
                     <v-col cols="6">
                       <div class="mr-2">
-                        {{ $gettext('Mailbox:') }}
                         {{ $gettext('Number of allowed mailboxes:') }}
                         {{ editedAccount.resources[0].max_value }}
                       </div>
                     </v-col>
                     <v-col cols="6">
                       <div class="mr-2">
-                        {{ $gettext('Mailbox aliases:') }}
                         {{ $gettext('Number of allowed mailbox aliases:') }}
                         {{ editedAccount.resources[1].max_value }}
                       </div>
@@ -182,12 +179,13 @@
       </v-expansion-panel>
     </v-expansion-panels>
     <div class="mt-4 d-flex justify-end">
-      <v-btn :loading="working" @click="$router.go(-1)">
+      <v-btn :loading="working" variant="outlined" @click="$router.go(-1)">
         {{ $gettext('Cancel') }}
       </v-btn>
       <v-btn
         class="ml-4"
         color="primary darken-1"
+        variant="outlined"
         :loading="working"
         @click="save"
       >
@@ -198,13 +196,14 @@
 </template>
 
 <script setup lang="js">
-import { useAccountsStore, useAuthStore, useIdentitiesStore } from '@/stores'
+import { useAuthStore } from '@/stores'
 import AccountGeneralForm from './form_steps/AccountGeneralForm.vue'
 import AccountMailboxForm from './form_steps/AccountMailboxForm.vue'
 import AccountAliasForm from './form_steps/AccountAliasForm.vue'
 import AccountRoleForm from './form_steps/AccountRoleForm.vue'
 import ResourcesForm from '@/components/tools/ResourcesForm.vue'
 import LoadingData from '@/components/tools/LoadingData.vue'
+import accountsApi from '@/api/accounts.js'
 import parametersApi from '@/api/parameters'
 import { ref, computed, onMounted, watch } from 'vue'
 import { useGettext } from 'vue3-gettext'
@@ -212,9 +211,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { usePermissions } from '@/composables/permissions'
 
 const { $gettext } = useGettext()
-const accountsStore = useAccountsStore()
 const authStore = useAuthStore()
-const identitiesStore = useIdentitiesStore()
 const route = useRoute()
 const router = useRouter()
 const { canSetRole } = usePermissions()
@@ -309,11 +306,10 @@ async function save() {
         data.role = 'SimpleUsers'
       }
     }
-    identitiesStore.updateIdentity('account', data).then(() => {
-      router.push({
-        name: 'AccountDetail',
-        params: { id: route.params.id },
-      })
+    await accountsApi.patch(editedAccount.value.pk, data)
+    router.push({
+      name: 'AccountDetail',
+      params: { id: route.params.id },
     })
   } finally {
     working.value = false
@@ -321,9 +317,10 @@ async function save() {
 }
 
 onMounted(() => {
-  accountsStore
-    .getAccount(route.params.id)
-    .then((response) => (editedAccount.value = { ...response.data }))
+  accountsApi.get(route.params.id).then((response) => {
+    editedAccount.value = response.data
+    working.value = false
+  })
 
   if (canSetRole.value) {
     parametersApi.getGlobalApplication('limits').then((response) => {
