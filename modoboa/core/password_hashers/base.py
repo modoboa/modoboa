@@ -5,11 +5,7 @@ Contains weak hashers (the original ones) available with Modoboa.
 """
 
 import base64
-
-import crypt
 import hashlib
-from random import Random
-import string
 from typing import Optional
 
 from django.utils.crypto import constant_time_compare
@@ -53,7 +49,7 @@ class PasswordHasher(metaclass=MetaHasher):
     def __init__(self, target="local"):
         self._target = target
 
-    def _encrypt(self, clearvalue: str, salt: Optional[str] = None) -> str:
+    def _encrypt(self, clearvalue: str, salt: Optional[str] = None) -> str:  # NOQA
         raise NotImplementedError
 
     def _b64encode(self, pwhash):
@@ -127,26 +123,6 @@ class PLAINHasher(PasswordHasher):
 
     def _encrypt(self, clearvalue, salt=None):
         return clearvalue
-
-
-class CRYPTHasher(PasswordHasher):
-    """
-    crypt password hasher.
-
-    Uses python `crypt` standard module.
-    """
-
-    _weak = True
-    deprecated = True
-
-    @property
-    def scheme(self):
-        return "{CRYPT}"
-
-    def _encrypt(self, clearvalue: str, salt: Optional[str] = None) -> str:
-        if salt is None:
-            salt = "".join(Random().sample(string.ascii_letters + string.digits, 2))
-        return crypt.crypt(clearvalue, salt)
 
 
 class MD5Hasher(PasswordHasher):
