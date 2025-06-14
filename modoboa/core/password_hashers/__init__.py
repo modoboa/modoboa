@@ -9,7 +9,6 @@ from modoboa.core.password_hashers.advanced import (  # NOQA:F401
     SSHAHasher,
 )
 from modoboa.core.password_hashers.base import (  # NOQA:F401
-    CRYPTHasher,
     MD5Hasher,
     PLAINHasher,
     SHA256Hasher,

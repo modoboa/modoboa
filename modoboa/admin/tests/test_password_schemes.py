@@ -52,8 +52,5 @@ class PasswordSchemesTestCase(ModoAPITestCase):
     def test_md5_scheme(self):
         self._test_scheme("md5", "{MD5}")
 
-    def test_crypt(self):
-        self._test_scheme("crypt", "{CRYPT}")
-
     def test_plain(self):
         self._test_scheme("plain", "{PLAIN}")
