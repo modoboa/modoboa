@@ -30,6 +30,7 @@ class DeployTest(unittest.TestCase):
             f"modoboa-admin.py deploy --collectstatic "
             f"--dburl {dburl} --domain localhost --admin-username admin {self.projname}"
         )
+        print(cmd)
         code, output = exec_cmd(cmd, cwd=self.workdir)
         print(output)
         self.assertEqual(code, 0)
