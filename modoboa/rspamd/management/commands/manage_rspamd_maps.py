@@ -10,8 +10,8 @@ class Command(BaseCommand):
     """Command class."""
 
     def load_files(self):
-        config = dict(param_tools.get_global_parameters("modoboa.rspamd"))
-        if not config["key_map_path"] or not config["selector_map_path"]:
+        self.config = dict(param_tools.get_global_parameters("rspamd"))
+        if not self.config["key_map_path"] or not self.config["selector_map_path"]:
             raise CommandError(
                 "path map path and/or selector map path "
                 "not set in modoboa rspamd settings."
@@ -19,7 +19,7 @@ class Command(BaseCommand):
 
         self.dkim_path_map = {}
         try:
-            with open(config["key_map_path"], "r") as f:
+            with open(self.config["key_map_path"]) as f:
                 for line in f:
                     domain_name, path = line.split()
                     self.dkim_path_map[domain_name] = path.replace("\n", "")
@@ -27,7 +27,7 @@ class Command(BaseCommand):
             pass
         self.selector_map = {}
         try:
-            with open(config["selector_map_path"], "r") as f:
+            with open(self.config["selector_map_path"]) as f:
                 for line in f:
                     domain_name, selector = line.split()
                     self.selector_map[domain_name] = selector
@@ -89,13 +89,12 @@ class Command(BaseCommand):
             qset = models.Domain.objects.all()
             for domain in qset:
                 self.manage_domain(domain)
-        config = dict(param_tools.get_global_parameters("modoboa.rspamd"))
 
         if self.modified_selector_file:
-            with open(config["selector_map_path"], "w") as f:
+            with open(self.config["selector_map_path"], "w") as f:
                 for domain_name, selector in self.selector_map.items():
                     f.write(f"{domain_name} {selector}\n")
         if self.modified_key_path_file:
-            with open(config["key_map_path"], "w") as f:
+            with open(self.config["key_map_path"], "w") as f:
                 for domain_name, key_path in self.dkim_path_map.items():
                     f.write(f"{domain_name} {key_path}\n")
