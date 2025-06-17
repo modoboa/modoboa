@@ -233,17 +233,9 @@ class AuthenticationTestCase(ModoTestCase):
         supported_schemes = get_dovecot_schemes()[0]
         self.assertEqual(supported_schemes, ["{MD5-CRYPT}", "{PLAIN}"])
 
-    def test_deprecated_password_scheme(self):
-        hasher = get_password_hasher("crypt")
-        self.assertEqual(hasher.label, "crypt (weak, deprecated)")
-
     def test_is_password_scheme_in_use(self):
         hasher = get_password_hasher("plain")
         self.assertTrue(
-            models.User.objects.is_password_scheme_in_use(hasher),
-        )
-        hasher = get_password_hasher("crypt")
-        self.assertFalse(
             models.User.objects.is_password_scheme_in_use(hasher),
         )
 
