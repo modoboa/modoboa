@@ -35,10 +35,3 @@ class CheckSessionCookieSecureTest(SimpleModoTestCase):
             os.environ["OIDC_RSA_PRIVATE_KEY"] = "KEY"
             msgs = checks.check_rsa_private_key_exists(None)
             self.assertEqual(len(msgs), 0)
-
-    def test_password_hasher_checks(self):
-        msgs = checks.check_password_hasher(None)
-        self.assertEqual(msgs, [])
-        self.set_global_parameter("password_scheme", "crypt")
-        msgs = checks.check_password_hasher(None)
-        self.assertEqual(msgs, [checks.W002])

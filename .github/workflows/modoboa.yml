@@ -29,7 +29,7 @@ jobs:
     environment: test
     services:
       postgres:
-        image: postgres:12
+        image: postgres:14
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
@@ -72,7 +72,7 @@ jobs:
     strategy:
       matrix:
         database: ['postgres', 'mysql']
-        python-version: [3.9, '3.10', '3.11', '3.12']
+        python-version: ['3.10', '3.11', '3.12', '3.13']
       fail-fast: false
 
     steps:

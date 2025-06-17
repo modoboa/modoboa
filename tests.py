@@ -15,7 +15,7 @@ else:
 
 class DeployTest(unittest.TestCase):
     dbtype = DB
-    dbhost = "localhost"
+    dbhost = "127.0.0.1"
     dbport = PORT
     projname = "modoboa_test"
     dbuser = DB == "mysql" and "modoboa" or "postgres"
@@ -25,20 +25,13 @@ class DeployTest(unittest.TestCase):
         self.workdir = tempfile.mkdtemp()
 
     def test_silent(self):
-        dburl = "default:%s://%s:%s@%s:%s/%s" % (
-            self.dbtype,
-            self.dbuser,
-            self.dbpassword,
-            self.dbhost,
-            self.dbport,
-            "modoboa",
-        )
+        dburl = f"default:{self.dbtype}://{self.dbuser}:{self.dbpassword}@{self.dbhost}:{self.dbport}/modoboa"
         cmd = (
-            "modoboa-admin.py deploy --collectstatic "
-            "--dburl %s --domain %s --admin-username admin %s"
-            % (dburl, "localhost", self.projname)
+            f"modoboa-admin.py deploy --collectstatic "
+            f"--dburl {dburl} --domain localhost --admin-username admin {self.projname}"
         )
         code, output = exec_cmd(cmd, cwd=self.workdir)
+        print(output)
         self.assertEqual(code, 0)
 
 
