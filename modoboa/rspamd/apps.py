@@ -1,8 +1,5 @@
-# -*- coding: utf-8 -*-
 from django.apps import AppConfig
 from django.utils.translation import gettext_lazy
-
-from .utils import check_rspamd_installed
 
 
 def load_rspamd_settings():
@@ -15,9 +12,6 @@ def load_rspamd_settings():
     from . import app_settings
     from .api.v2 import serializers
 
-    param_tools.registry.add(
-        "global", app_settings.ParametersForm, gettext_lazy("Rspamd")
-    )
     param_tools.registry.add2(
         "global",
         "rspamd",
@@ -32,7 +26,6 @@ class ModoboaRspamdConfig(AppConfig):
     verbose_name = "Modoboa connector for Rspamd."
 
     def ready(self):
-        if check_rspamd_installed():
-            from . import handlers  # NOQA:F401
+        from . import handlers  # NOQA:F401
 
-            load_rspamd_settings()
+        load_rspamd_settings()

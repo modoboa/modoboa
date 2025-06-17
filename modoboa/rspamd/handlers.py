@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """Modoboa rspamd handlers."""
 
 from django.core.management import call_command

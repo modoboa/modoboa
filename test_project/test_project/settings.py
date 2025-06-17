@@ -260,7 +260,6 @@ SPECTACULAR_SETTINGS = {
 # DOVECOT_LOOKUP_PATH = ('/path/to/dovecot', )
 DOVECOT_USER = "root"
 
-
 MODOBOA_API_URL = "https://api.modoboa.org/1/"
 
 PID_FILE_STORAGE_PATH = "/tmp"

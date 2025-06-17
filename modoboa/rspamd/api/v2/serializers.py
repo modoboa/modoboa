@@ -7,7 +7,7 @@ from django.utils.translation import gettext_lazy as _
 from rest_framework import serializers
 
 
-def validate_file_path(value):
+def validate_file_path(value: str) -> None:
     if value:
         if os.path.isfile(value):
             if not os.access(value, os.W_OK):
