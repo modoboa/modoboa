@@ -15,7 +15,7 @@ else:
 
 class DeployTest(unittest.TestCase):
     dbtype = DB
-    dbhost = "localhost"
+    dbhost = "127.0.0.1"
     dbport = PORT
     projname = "modoboa_test"
     dbuser = DB == "mysql" and "modoboa" or "postgres"
@@ -30,7 +30,6 @@ class DeployTest(unittest.TestCase):
             f"modoboa-admin.py deploy --collectstatic "
             f"--dburl {dburl} --domain localhost --admin-username admin {self.projname}"
         )
-        print(cmd)
         code, output = exec_cmd(cmd, cwd=self.workdir)
         print(output)
         self.assertEqual(code, 0)
