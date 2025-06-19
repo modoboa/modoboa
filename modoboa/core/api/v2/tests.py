@@ -534,3 +534,12 @@ class FIDOViewSetTestCase(ModoAPITestCase):
         resp = self.client.post(url, data, format="json")
         self.assertEqual(resp.status_code, 200)
         self.assertIn("tokens", resp.json())
+
+
+class CapabilitiesAPITestCase(ModoAPITestCase):
+
+    def test_get(self):
+        url = reverse("v2:capabilities")
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertIn("rspamd", response.json()["capabilities"])
