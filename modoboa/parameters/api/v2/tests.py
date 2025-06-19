@@ -18,7 +18,7 @@ class GlobalParametersAPITestCase(ModoAPITestCase):
         resp = self.client.get(url)
         self.assertEqual(resp.status_code, 200)
         # core, admin, limits, pdf credentials, ...
-        self.assertEqual(len(resp.json()), 11)
+        self.assertEqual(len(resp.json()), 12)
 
     def test_get_structure(self):
         url = reverse("v2:parameter-global-structure")
