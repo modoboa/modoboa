@@ -99,6 +99,7 @@ MODOBOA_APPS = (
     "modoboa.imap_migration",
     "modoboa.autoreply",
     "modoboa.sievefilters",
+    "modoboa.rspamd",
     # Modoboa extensions here.
     "modoboa.contacts",
     "modoboa.calendars",
@@ -258,7 +259,6 @@ SPECTACULAR_SETTINGS = {
 
 # DOVECOT_LOOKUP_PATH = ('/path/to/dovecot', )
 DOVECOT_USER = "root"
-
 
 MODOBOA_API_URL = "https://api.modoboa.org/1/"
 
