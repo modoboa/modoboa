@@ -19,26 +19,44 @@ class ManagementCommandTestCase(ModoAPITestCase):
         """Reset test env."""
         shutil.rmtree(self.workdir)
 
-    def setUp(self):
-        super().setUp()
+    def configure(self):
         self.key_map_path = f"{self.workdir}/keys.map"
         self.set_global_parameter("key_map_path", self.key_map_path)
         self.selector_map_path = f"{self.workdir}/selectors.map"
         self.set_global_parameter("selector_map_path", self.selector_map_path)
 
+    def unconfigure(self):
+        self.set_global_parameter("key_map_path", "")
+        self.set_global_parameter("selector_map_path", "")
+
     def test_command(self):
+        self.unconfigure()
+        with self.assertRaises(management.CommandError):
+            management.call_command("manage_rspamd_maps")
+
+        self.configure()
         management.call_command("manage_rspamd_maps")
         self.assertFalse(os.path.exists(self.key_map_path))
         self.assertFalse(os.path.exists(self.selector_map_path))
 
         domain = admin_models.Domain.objects.get(name="test.com")
         domain.enable_dkim = True
+        domain.dkim_private_key_path = "xxx"
         domain.save()
         management.call_command("manage_rspamd_maps")
         self.assertTrue(os.path.exists(self.key_map_path))
         self.assertTrue(os.path.exists(self.selector_map_path))
 
+        # Now, empty map files
+        domain.enable_dkim = False
+        domain.save()
+        management.call_command("manage_rspamd_maps")
+        with open(self.key_map_path) as fp:
+            content = fp.read()
+        self.assertNotIn(domain.name, content)
+
     def test_command_with_arg(self):
+        self.configure()
         domain = admin_models.Domain.objects.get(name="test.com")
         domain.enable_dkim = True
         domain.save()
