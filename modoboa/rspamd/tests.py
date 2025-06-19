@@ -2,6 +2,7 @@ import os
 import shutil
 
 from django.core import management
+from django.urls import reverse
 
 from modoboa.admin import factories as admin_factories, models as admin_models
 from modoboa.lib.tests import ModoAPITestCase
@@ -44,3 +45,16 @@ class ManagementCommandTestCase(ModoAPITestCase):
         management.call_command("manage_rspamd_maps", "--domain", "test.com")
         self.assertTrue(os.path.exists(self.key_map_path))
         self.assertTrue(os.path.exists(self.selector_map_path))
+
+
+class ParametersAPITestCase(ModoAPITestCase):
+
+    def test_update_settings(self):
+        url = reverse("v2:parameter-global-detail", args=["rspamd"])
+        data = {
+            "key_map_path": f"{self.workdir}/key.map",
+            "selector_map_path": f"{self.workdir}/selector.map",
+            "rspamd_dashboard_location": "/rspamd",
+        }
+        response = self.client.put(url, data, format="json")
+        self.assertEqual(response.status_code, 200)
