@@ -3,15 +3,21 @@
 </template>
 
 <script setup>
-import { computed, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useGettext } from 'vue3-gettext'
+import { useRouter } from 'vue-router'
 import { useAuthStore, useParametersStore } from '@/stores'
 import parametersApi from '@/api/parameters'
+import capabilitiesApi from '@/api/capabilities'
 import ConnectedLayout from '@/layouts/connected/ConnectedLayout.vue'
 
 const { $gettext } = useGettext()
+const router = useRouter()
 const authStore = useAuthStore()
 const parametersStore = useParametersStore()
+
+const isRspamdVisible = ref(false)
+const rspamdUrl = ref('/rspamd')
 
 const authUser = computed(() => authStore.authUser)
 const imapMigrationEnabled = computed(
@@ -90,6 +96,13 @@ const adminMenuItems = [
     roles: ['SuperAdmins'],
   },
   {
+    icon: 'mdi-email-check-outline',
+    text: 'Rspamd',
+    action: openRspamdDashboard,
+    roles: ['SuperAdmins'],
+    condition: () => isRspamdVisible.value,
+  },
+  {
     icon: 'mdi-information',
     text: $gettext('Information'),
     roles: ['SuperAdmins'],
@@ -114,6 +127,17 @@ onMounted(() => {
           response.data.params.enabled_imapmigration
       })
     }
+    capabilitiesApi.getCapabilities().then((response) => {
+      isRspamdVisible.value = 'rspamd' in response.data.capabilities
+      if (isRspamdVisible.value) {
+        rspamd_url.value =
+          response.data.capabilities.rspamd.location || '/rspamd'
+      }
+    })
   }
 })
+
+const openRspamdDashboard = () => {
+  router.push(rspamdUrl.value)
+}
 </script>

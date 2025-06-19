@@ -8,11 +8,13 @@ from typing import Optional
 from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.primitives.asymmetric import rsa
 
+from django.conf import settings
 from django.utils.translation import gettext as _
 
 from modoboa.core.extensions import exts_pool
 from modoboa.core.password_hashers import get_configured_password_hasher, PasswordHasher
 from modoboa.lib.api_client import ModoAPIClient
+from modoboa.rspamd.utils import get_rspamd_options
 
 
 def parse_map_file(path):
@@ -89,7 +91,7 @@ def generate_rsa_private_key(storage_path: str) -> bool:
     return True
 
 
-def check_for_deprecated_password_schemes() -> Optional[type[PasswordHasher]]:
+def check_for_deprecated_password_schemes() -> Optional[type[PasswordHasher]]:  # NOQA
     """Check if deprecated password scheme is still in use."""
     from modoboa.core import models
 
@@ -101,3 +103,14 @@ def check_for_deprecated_password_schemes() -> Optional[type[PasswordHasher]]:
         if models.User.objects.is_password_scheme_in_use(dhasher):
             return dhasher
     return None
+
+
+def get_capabilities():
+    """Return the list of capabilities of this modoboa instance."""
+    capabilities = {}
+    # Rspamd
+    is_rspamd_installed = "modoboa.rspamd" in settings.MODOBOA_APPS
+    if is_rspamd_installed:
+        rspamd_options = get_rspamd_options()
+        capabilities.update({"rspamd": rspamd_options})
+    return capabilities

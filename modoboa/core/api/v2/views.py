@@ -11,7 +11,7 @@ from rest_framework import permissions, response
 from rest_framework.views import APIView
 
 from modoboa.core import signals
-from modoboa.core.utils import check_for_updates
+from modoboa.core.utils import check_for_updates, get_capabilities
 from modoboa.lib.permissions import IsSuperUser
 from modoboa.lib.throttle import (
     UserLesserDdosUser,
@@ -161,3 +161,13 @@ class NotificationsAPIView(APIView):
         )
         serializer = serializers.NotificationSerializer(notifications, many=True)
         return response.Response(serializer.data)
+
+
+class CapabilitiesAPIView(APIView):
+    """Return the capability of this Modoboa instance."""
+    permission_classes = [permissions.IsAuthenticated]
+    throttle_classes = [UserLesserDdosUser]
+
+    def get(self, *args, **kwargs):
+        return response.Response({"capabilities": get_capabilities()})
+
