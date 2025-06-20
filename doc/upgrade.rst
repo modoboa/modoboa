@@ -164,6 +164,10 @@ Pre update
 
        > sudo -u postgres -i psql -d "modoboa" -c "UPDATE django_content_type SET app_label='autoreply' WHERE app_label='postfix_autoreply'"
        > sudo -u postgres -i psql -d "modoboa" -c "UPDATE django_migrations SET app='autoreply' WHERE app='postfix_autoreply'"
+       > sudo -u postgres -i psql -d "modoboa" -c "UPDATE django_content_type SET app_label='contacts' WHERE app_label='modoboa_contacts'"
+       > sudo -u postgres -i psql -d "modoboa" -c "UPDATE django_migrations SET app='contacts' WHERE app='modoboa_contacts'"
+       > sudo -u postgres -i psql -d "modoboa" -c "UPDATE django_content_type SET app_label='calendars' WHERE app_label='modoboa_radicale'"
+       > sudo -u postgres -i psql -d "modoboa" -c "UPDATE django_migrations SET app='calendars' WHERE app='modoboa_radicale'"
 
 -   If you are using Mysql, run as a root user:
 
@@ -174,6 +178,15 @@ Pre update
 
 Required changes to :file:`settings.py`
 ---------------------------------------
+
+- Rename the following extensions:
+
+  - modoboa.postfix_autoreply -> modoboa.autoreply
+  - modoboa_contacts -> modoboa.contacts
+  - modoboa_radicale -> modoboa.calendars
+  - modoboa_webmail -> modoboa.webmail
+
+- Remove configuration blocks related to modoboa_contacts and modoboa_radicale plugins
 
 - Remove ``AjaxLoginRedirect`` from ``MIDDLEWARE`` variable:
 
@@ -196,6 +209,11 @@ Required changes to :file:`settings.py`
 
 - Remove ``NEW_ADMIN_URL`` variable
 
+- Remove ``new_admin_url`` context processor
+
+- Remove ckeditor related apps from ``INSTALLED_APPS`` variable
+
+- Remove ``STATICFILE_DIRS`` variable
 
 Version 2.3.3
 =============
