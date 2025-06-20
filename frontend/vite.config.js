@@ -33,7 +33,7 @@ export default defineConfig({
       },
     }),
   ],
-  base: process.env.NODE_ENV === 'production' ? '/new-admin/' : '/',
+  base: '/',
   define: { 'process.env': {}, __VUE_OPTIONS_API__: false },
   resolve: {
     alias: {
