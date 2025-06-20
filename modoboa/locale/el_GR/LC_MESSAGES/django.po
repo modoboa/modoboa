@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-06-08 14:52+0200\n"
+"POT-Creation-Date: 2025-06-20 16:45+0200\n"
 "PO-Revision-Date: 2017-10-12 19:37+0000\n"
 "Last-Translator: Kostas Moumouris <moumouriskostas@gmail.com>\n"
 "Language-Team: Greek (Greece) (http://www.transifex.com/tonio/modoboa/"
@@ -51,12 +51,12 @@ msgid "Cannot be greater than domain quota"
 msgstr "Δεν μπορεί να είναι μεγαλύτερο από το domain quota."
 
 #: admin/api/v1/serializers.py:164 admin/api/v1/serializers.py:359
-#: admin/api/v2/serializers.py:524 admin/models/alias.py:38
+#: admin/api/v2/serializers.py:531 admin/models/alias.py:44
 msgid "Permission denied."
 msgstr "Η άδεια απορρίφθηκε."
 
 #: admin/api/v1/serializers.py:226 admin/api/v2/serializers.py:89
-#: admin/api/v2/serializers.py:456 core/api/v2/serializers.py:225
+#: admin/api/v2/serializers.py:453 core/api/v2/serializers.py:225
 #: core/api/v2/serializers.py:227 core/api/v2/serializers.py:236
 #: transport/backends.py:40
 msgid "This field is required"
@@ -69,7 +69,7 @@ msgstr ""
 "Λίστα διαχειριζόμενων domains (αφορά μόνο μεταπωλητές και διαχειριστές "
 "domain)"
 
-#: admin/api/v1/serializers.py:332 admin/api/v2/serializers.py:506
+#: admin/api/v1/serializers.py:332 admin/api/v2/serializers.py:513
 msgid "Not allowed for this role."
 msgstr "Δεν επιτρέπεται για αυτόν τον ρόλο."
 
@@ -77,12 +77,12 @@ msgstr "Δεν επιτρέπεται για αυτόν τον ρόλο."
 msgid "Must be equal to mailbox full_address"
 msgstr "Πρέπει να είναι ίσο με την full_address του γραμματοκιβωτίου"
 
-#: admin/api/v1/serializers.py:392 admin/api/v2/serializers.py:558
+#: admin/api/v1/serializers.py:392 admin/api/v2/serializers.py:565
 #: calendars/serializers.py:175 calendars/serializers.py:177
 msgid "This field is required."
 msgstr "Αυτό το πεδίο απαιτείτε."
 
-#: admin/api/v1/serializers.py:404 admin/api/v2/serializers.py:575
+#: admin/api/v1/serializers.py:404 admin/api/v2/serializers.py:582
 msgid "Local domain {} does not exist"
 msgstr "Το τοπικός domain {} δεν υπάρχει"
 
@@ -155,17 +155,17 @@ msgstr ""
 msgid "Define at least one authorized network / address"
 msgstr "Ορίστε τουλάχιστον μια εξουσιοδοτημένη διεύθυνση / δίκτυο"
 
-#: admin/api/v2/serializers.py:541
+#: admin/api/v2/serializers.py:548
 msgid "The left part of an email address can't be more than 64 characters."
 msgstr ""
 
-#: admin/api/v2/serializers.py:563
+#: admin/api/v2/serializers.py:570
 #, fuzzy
 #| msgid "A mailbox is required"
 msgid "A mailbox is required to create aliases."
 msgstr "Απαιτείται γραμματοκιβώτιο"
 
-#: admin/api/v2/serializers.py:729
+#: admin/api/v2/serializers.py:734
 #, fuzzy
 #| msgid "Unknown"
 msgid "Unknown status"
@@ -565,48 +565,48 @@ msgstr "[modoboa] MX ζήτημα(τα) για το domain {}"
 msgid "[modoboa] DNSBL issue(s) for domain {}"
 msgstr "[modoboa] DNSBL ζήτημα(τα) για το domain {}"
 
-#: admin/models/alias.py:36
+#: admin/models/alias.py:42
 msgid "Domain not found."
 msgstr "To domain δεν βρέθηκε."
 
-#: admin/models/alias.py:91 admin/models/mailbox.py:85
+#: admin/models/alias.py:97 admin/models/mailbox.py:85
 msgid "address"
 msgstr "διεύθυνση"
 
-#: admin/models/alias.py:93
+#: admin/models/alias.py:99
 msgid "The alias address."
 msgstr "Η εναλλακτική διεύθυνση."
 
-#: admin/models/alias.py:97 admin/models/domain.py:45
-#: admin/models/domain_alias.py:45 postfix_autoreply/models.py:23
+#: admin/models/alias.py:103 admin/models/domain.py:45
+#: admin/models/domain_alias.py:45 autoreply/models.py:25
 msgid "enabled"
 msgstr "ενεργοποιημένο"
 
-#: admin/models/alias.py:98 admin/models/domain_alias.py:46
+#: admin/models/alias.py:104 admin/models/domain_alias.py:46
 msgid "Check to activate this alias"
 msgstr "Επιλέξτε για να ενεργοποιήσετε αυτό το ψευδώνυμο"
 
-#: admin/models/alias.py:102
+#: admin/models/alias.py:108
 msgid "Description"
 msgstr "Περιγραφή"
 
-#: admin/models/alias.py:103
+#: admin/models/alias.py:109
 msgid "Expire at"
 msgstr "Λήγει την "
 
-#: admin/models/alias.py:144
+#: admin/models/alias.py:150
 msgid "alias"
 msgstr "Ψευδώνυμο"
 
-#: admin/models/alias.py:177
+#: admin/models/alias.py:183
 msgid "Invalid address"
 msgstr "Λάθος διεύθυνση"
 
-#: admin/models/alias.py:196
+#: admin/models/alias.py:202
 msgid "Local recipient {}@{} not found"
 msgstr "Ο τοπικός παραλήπτης {}@{} δεν βρέθηκε"
 
-#: admin/models/alias.py:245
+#: admin/models/alias.py:251
 #, fuzzy
 #| msgid "Invalid line: %s"
 msgid "Invalid line: {}"
@@ -772,6 +772,93 @@ msgstr ""
 msgid "No AAAA record for %s"
 msgstr "Έγραφες MX από{}"
 
+#: autoreply/api/v2/serializers.py:27
+msgid "Value can't be less than 1 day"
+msgstr ""
+
+#: autoreply/api/v2/serializers.py:47
+#, fuzzy
+#| msgid "This field is required"
+msgid "This date is over"
+msgstr "Αυτή η ημερομηνία έχει παρέλθει"
+
+#: autoreply/api/v2/serializers.py:50
+#, fuzzy
+#| msgid "Cannot be greater than domain quota"
+msgid "Must be greater than start date"
+msgstr "Πρέπει να είναι μεγαλύτερη από την ημερομηνία έναρξης"
+
+#: autoreply/app_settings.py:12 core/apps.py:21
+#: imap_migration/app_settings.py:13 maillog/apps.py:14
+#: pdfcredentials/app_settings.py:13 webmail/app_settings.py:11
+msgid "General"
+msgstr "Γενικά"
+
+#: autoreply/app_settings.py:18
+#, fuzzy
+#| msgid "Timeout in seconds between two auto-replies to the same recipient"
+msgid "Period between two auto-replies"
+msgstr ""
+"Χρονικό όριο λήξης σε δευτερόλεπτα μεταξύ δύο αυτόματων απαντήσεων προς τον "
+"ίδιο παραλήπτη"
+
+#: autoreply/app_settings.py:20
+#, fuzzy
+#| msgid "Timeout in seconds between two auto-replies to the same recipient"
+msgid ""
+"Number of days to wait before sending a new auto-reply to the same recipient"
+msgstr ""
+"Χρονικό όριο λήξης σε δευτερόλεπτα μεταξύ δύο αυτόματων απαντήσεων προς τον "
+"ίδιο παραλήπτη"
+
+#: autoreply/app_settings.py:27 autoreply/app_settings.py:36
+msgid "Default subject"
+msgstr "Προεπιλεγμένος τίτλος"
+
+#: autoreply/app_settings.py:29
+msgid ""
+"Default subject used when an auto-reply message is created automatically"
+msgstr ""
+"Προκαθορισμένο θέμα που θα χρησιμοποιείται όταν δημιουργούνται αυτόματες "
+"απαντήσεις μηνυμάτων"
+
+#: autoreply/app_settings.py:38
+#, python-format
+msgid ""
+"Default content used when an auto-reply message is created automatically. "
+"The '%(name)s' macro will be replaced by the user's full name."
+msgstr ""
+"Το προεπιλεγμένο κείμενο που θα χρησιμοποιείται στις αυτόματες απαντήσεις. "
+"Το macro '%(name)s' αντικαθίσταται από το όνομα του χρήστη. "
+
+#: autoreply/apps.py:15
+#, fuzzy
+#| msgid "Automatic account removal"
+msgid "Automatic replies"
+msgstr "Αυτόματες απαντήσεις"
+
+#: autoreply/models.py:17
+#, fuzzy
+#| msgid "Subject"
+msgid "subject"
+msgstr "τίτλος"
+
+#: autoreply/models.py:19
+msgid "The subject that will appear in sent emails"
+msgstr "Ο τίτλος που θα φαίνεται στα απεσταλμένα email"
+
+#: autoreply/models.py:22
+msgid "content"
+msgstr "περιεχόμενο"
+
+#: autoreply/models.py:22
+msgid "The content that will appear in sent emails"
+msgstr "Το κείμενο που θα φαίνεται στα απεσταλμένα email"
+
+#: autoreply/models.py:25
+msgid "Activate/Deactivate your auto reply"
+msgstr "Ενεργοποίηση/Απενεργοποίηση της αυτόματης απάντησης"
+
 #: calendars/app_settings.py:11
 #, fuzzy
 #| msgid "DNS settings"
@@ -816,6 +903,7 @@ msgstr ""
 "χρηστών"
 
 #: calendars/app_settings.py:60 core/app_settings.py:579
+#: rspamd/app_settings.py:45
 msgid "Miscellaneous"
 msgstr "Διάφορα"
 
@@ -828,7 +916,7 @@ msgid ""
 "Maximum size in bytes of imported ICS files (or KB, MB, GB if specified)"
 msgstr ""
 
-#: calendars/app_settings.py:89 core/api/v2/viewsets.py:171
+#: calendars/app_settings.py:89 core/api/v2/viewsets.py:172
 msgid "Calendars"
 msgstr ""
 
@@ -866,7 +954,7 @@ msgstr "Ρυθμίσεις LDAP"
 msgid "Interval in seconds between 2 synchronization requests"
 msgstr ""
 
-#: contacts/app_settings.py:51 core/api/v2/viewsets.py:178
+#: contacts/app_settings.py:51 core/api/v2/viewsets.py:179
 #, fuzzy
 #| msgid "Domains"
 msgid "Contacts"
@@ -966,17 +1054,17 @@ msgstr ""
 msgid "Administration console"
 msgstr "Διαχείριση"
 
-#: core/api/v2/viewsets.py:173
+#: core/api/v2/viewsets.py:174
 msgid "Calendar"
 msgstr ""
 
-#: core/api/v2/viewsets.py:180
+#: core/api/v2/viewsets.py:181
 #, fuzzy
 #| msgid "Address"
 msgid "Address book"
 msgstr "Διεύθυνση"
 
-#: core/api/v2/viewsets.py:185 core/api/v2/viewsets.py:187
+#: core/api/v2/viewsets.py:186 core/api/v2/viewsets.py:188
 #: webmail/app_settings.py:258 webmail/app_settings.py:265
 #, fuzzy
 #| msgid "E-mail"
@@ -1473,12 +1561,6 @@ msgstr ""
 "Προκαθορισμένες αναδρομολογήσεις που χρησιμοποιούνται όταν δεν υπάρχουν "
 "προκαθορισμένες εφαρμογές"
 
-#: core/apps.py:21 imap_migration/app_settings.py:13 maillog/apps.py:14
-#: pdfcredentials/app_settings.py:13 postfix_autoreply/app_settings.py:12
-#: webmail/app_settings.py:11
-msgid "General"
-msgstr "Γενικά"
-
 #: core/checks.py:13
 msgid ""
 "You have USE_TZ set to False, this may result in issues during transitions "
@@ -1760,7 +1842,7 @@ msgid_plural ""
 msgstr[0] "Υπάρχουν διαθέσιμες ενημερώσεις"
 msgstr[1] "Υπάρχουν διαθέσιμες ενημερώσεις"
 
-#: core/utils.py:41
+#: core/utils.py:43
 msgid "The core part of Modoboa"
 msgstr "Το βασικό μέρος του Modoboa"
 
@@ -2640,76 +2722,6 @@ msgstr "%s: χρήση ορίου"
 msgid "Daily limit of the following %(ltype)s has been reached: %(name)s."
 msgstr ""
 
-#: postfix_autoreply/api/v2/serializers.py:42
-#, fuzzy
-#| msgid "This field is required"
-msgid "This date is over"
-msgstr "Αυτή η ημερομηνία έχει παρέλθει"
-
-#: postfix_autoreply/api/v2/serializers.py:45
-#, fuzzy
-#| msgid "Cannot be greater than domain quota"
-msgid "Must be greater than start date"
-msgstr "Πρέπει να είναι μεγαλύτερη από την ημερομηνία έναρξης"
-
-#: postfix_autoreply/app_settings.py:18
-msgid "Automatic reply timeout"
-msgstr "Χρονικό όριο λήξης αυτόματης απάντησης"
-
-#: postfix_autoreply/app_settings.py:20
-msgid "Timeout in seconds between two auto-replies to the same recipient"
-msgstr ""
-"Χρονικό όριο λήξης σε δευτερόλεπτα μεταξύ δύο αυτόματων απαντήσεων προς τον "
-"ίδιο παραλήπτη"
-
-#: postfix_autoreply/app_settings.py:27 postfix_autoreply/app_settings.py:36
-msgid "Default subject"
-msgstr "Προεπιλεγμένος τίτλος"
-
-#: postfix_autoreply/app_settings.py:29
-msgid ""
-"Default subject used when an auto-reply message is created automatically"
-msgstr ""
-"Προκαθορισμένο θέμα που θα χρησιμοποιείται όταν δημιουργούνται αυτόματες "
-"απαντήσεις μηνυμάτων"
-
-#: postfix_autoreply/app_settings.py:38
-#, python-format
-msgid ""
-"Default content used when an auto-reply message is created automatically. "
-"The '%(name)s' macro will be replaced by the user's full name."
-msgstr ""
-"Το προεπιλεγμένο κείμενο που θα χρησιμοποιείται στις αυτόματες απαντήσεις. "
-"Το macro '%(name)s' αντικαθίσταται από το όνομα του χρήστη. "
-
-#: postfix_autoreply/apps.py:15
-#, fuzzy
-#| msgid "Automatic account removal"
-msgid "Automatic replies"
-msgstr "Αυτόματες απαντήσεις"
-
-#: postfix_autoreply/models.py:15
-#, fuzzy
-#| msgid "Subject"
-msgid "subject"
-msgstr "τίτλος"
-
-#: postfix_autoreply/models.py:17
-msgid "The subject that will appear in sent emails"
-msgstr "Ο τίτλος που θα φαίνεται στα απεσταλμένα email"
-
-#: postfix_autoreply/models.py:20
-msgid "content"
-msgstr "περιεχόμενο"
-
-#: postfix_autoreply/models.py:20
-msgid "The content that will appear in sent emails"
-msgstr "Το κείμενο που θα φαίνεται στα απεσταλμένα email"
-
-#: postfix_autoreply/models.py:23
-msgid "Activate/Deactivate your auto reply"
-msgstr "Ενεργοποίηση/Απενεργοποίηση της αυτόματης απάντησης"
-
 #: relaydomains/api/v1/serializers.py:24
 msgid "Unsupported service"
 msgstr ""
@@ -2726,7 +2738,62 @@ msgstr "Θύρα κεντρικού host"
 msgid "verify recipients"
 msgstr "επιβεβαίωση παραληπτών"
 
-#: sievefilters/api/v2/viewsets.py:190
+#: rspamd/api/v2/serializers.py:15
+#, fuzzy
+#| msgid "Domain not found."
+msgid "Provided path is not writable."
+msgstr "To domain δεν βρέθηκε."
+
+#: rspamd/api/v2/serializers.py:18
+msgid "Please create the parent directory for the files"
+msgstr ""
+
+#: rspamd/api/v2/serializers.py:22
+msgid "Unable to write to the directory."
+msgstr ""
+
+#: rspamd/app_settings.py:13
+#, fuzzy
+#| msgid "LDAP settings"
+msgid "DKIM signing settings"
+msgstr "Ρυθμίσεις IMAP"
+
+#: rspamd/app_settings.py:19
+msgid "Key map path"
+msgstr ""
+
+#: rspamd/app_settings.py:21
+msgid ""
+"Absolute path of the file which contains paths to DKIM private keys. Must be "
+"readable by _rspamd group or user."
+msgstr ""
+
+#: rspamd/app_settings.py:30
+msgid "Selector map path"
+msgstr ""
+
+#: rspamd/app_settings.py:32
+msgid ""
+"Absolute path of the file which contains names of DKIM selectors. Must be "
+"readable by _rspamd group or user."
+msgstr ""
+
+#: rspamd/app_settings.py:51
+msgid "Rspamd dashboard location"
+msgstr ""
+
+#: rspamd/app_settings.py:53
+msgid ""
+"Location of the rspamd dashboard. Can either be a relative URL (eg. '/"
+"rspamd') or a full URL (eg. 'https://rspamd.domain.tld/').Only use for "
+"guidance on the Super-Admin dashboard."
+msgstr ""
+
+#: rspamd/apps.py:18
+msgid "Rspamd"
+msgstr ""
+
+#: sievefilters/api/v2/viewsets.py:193
 #, fuzzy, python-format
 #| msgid "User '%s' already exists"
 msgid "Filter %s already exists"
@@ -3273,3 +3340,6 @@ msgstr "Σκουπιδοτενεκές"
 #, python-format
 msgid "Attachment is too big (limit: %s)"
 msgstr "Το συνημμένο είναι πολύ μεγάλο (όριο: %s)"
+
+#~ msgid "Automatic reply timeout"
+#~ msgstr "Χρονικό όριο λήξης αυτόματης απάντησης"

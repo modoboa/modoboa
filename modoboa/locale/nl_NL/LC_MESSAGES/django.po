@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-06-08 14:52+0200\n"
+"POT-Creation-Date: 2025-06-20 16:45+0200\n"
 "PO-Revision-Date: 2024-07-17 11:46+0200\n"
 "Last-Translator: J Rosier <vertalen@tagora.nl>\n"
 "Language-Team: Dutch (Netherlands) (http://www.transifex.com/tonio/modoboa/"
@@ -57,12 +57,12 @@ msgid "Cannot be greater than domain quota"
 msgstr "Kan niet groter zijn dan domeinquotum"
 
 #: admin/api/v1/serializers.py:164 admin/api/v1/serializers.py:359
-#: admin/api/v2/serializers.py:524 admin/models/alias.py:38
+#: admin/api/v2/serializers.py:531 admin/models/alias.py:44
 msgid "Permission denied."
 msgstr "Toegang geweigerd."
 
 #: admin/api/v1/serializers.py:226 admin/api/v2/serializers.py:89
-#: admin/api/v2/serializers.py:456 core/api/v2/serializers.py:225
+#: admin/api/v2/serializers.py:453 core/api/v2/serializers.py:225
 #: core/api/v2/serializers.py:227 core/api/v2/serializers.py:236
 #: transport/backends.py:40
 msgid "This field is required"
@@ -73,7 +73,7 @@ msgid ""
 "List of administered domains (resellers and domain administrators only)."
 msgstr "Lijst van beheerde domeinen (alleen resellers en domeinbeheerders)."
 
-#: admin/api/v1/serializers.py:332 admin/api/v2/serializers.py:506
+#: admin/api/v1/serializers.py:332 admin/api/v2/serializers.py:513
 msgid "Not allowed for this role."
 msgstr "Niet toegestaan voor deze rol."
 
@@ -81,12 +81,12 @@ msgstr "Niet toegestaan voor deze rol."
 msgid "Must be equal to mailbox full_address"
 msgstr "Moet gelijk zijn aan de mailbox full_address"
 
-#: admin/api/v1/serializers.py:392 admin/api/v2/serializers.py:558
+#: admin/api/v1/serializers.py:392 admin/api/v2/serializers.py:565
 #: calendars/serializers.py:175 calendars/serializers.py:177
 msgid "This field is required."
 msgstr "Dit veld is verplicht."
 
-#: admin/api/v1/serializers.py:404 admin/api/v2/serializers.py:575
+#: admin/api/v1/serializers.py:404 admin/api/v2/serializers.py:582
 msgid "Local domain {} does not exist"
 msgstr "Lokaal domein {} bestaat niet"
 
@@ -153,15 +153,15 @@ msgstr ""
 msgid "Define at least one authorized network / address"
 msgstr "Definieer ten minste 1 geautoriseerd netwerk / adres"
 
-#: admin/api/v2/serializers.py:541
+#: admin/api/v2/serializers.py:548
 msgid "The left part of an email address can't be more than 64 characters."
 msgstr ""
 
-#: admin/api/v2/serializers.py:563
+#: admin/api/v2/serializers.py:570
 msgid "A mailbox is required to create aliases."
 msgstr "Er is een mailbox vereist om een alias te creëren"
 
-#: admin/api/v2/serializers.py:729
+#: admin/api/v2/serializers.py:734
 #, fuzzy
 #| msgid "Unknown tag {}"
 msgid "Unknown status"
@@ -539,48 +539,48 @@ msgstr "[modoboa] MX problemen voor domein {}"
 msgid "[modoboa] DNSBL issue(s) for domain {}"
 msgstr "[modoboa] DNSBL problemen voor domein {}"
 
-#: admin/models/alias.py:36
+#: admin/models/alias.py:42
 msgid "Domain not found."
 msgstr "Domein niet gevonden."
 
-#: admin/models/alias.py:91 admin/models/mailbox.py:85
+#: admin/models/alias.py:97 admin/models/mailbox.py:85
 msgid "address"
 msgstr "adres"
 
-#: admin/models/alias.py:93
+#: admin/models/alias.py:99
 msgid "The alias address."
 msgstr "Het alias adres"
 
-#: admin/models/alias.py:97 admin/models/domain.py:45
-#: admin/models/domain_alias.py:45 postfix_autoreply/models.py:23
+#: admin/models/alias.py:103 admin/models/domain.py:45
+#: admin/models/domain_alias.py:45 autoreply/models.py:25
 msgid "enabled"
 msgstr "actief"
 
-#: admin/models/alias.py:98 admin/models/domain_alias.py:46
+#: admin/models/alias.py:104 admin/models/domain_alias.py:46
 msgid "Check to activate this alias"
 msgstr "Selecteer om deze alias te activeren"
 
-#: admin/models/alias.py:102
+#: admin/models/alias.py:108
 msgid "Description"
 msgstr "Beschrijving"
 
-#: admin/models/alias.py:103
+#: admin/models/alias.py:109
 msgid "Expire at"
 msgstr "Verloop op"
 
-#: admin/models/alias.py:144
+#: admin/models/alias.py:150
 msgid "alias"
 msgstr "alias"
 
-#: admin/models/alias.py:177
+#: admin/models/alias.py:183
 msgid "Invalid address"
 msgstr "Ongeldig adres"
 
-#: admin/models/alias.py:196
+#: admin/models/alias.py:202
 msgid "Local recipient {}@{} not found"
 msgstr "Lokale ontvanger {}@{} niet gevonden"
 
-#: admin/models/alias.py:245
+#: admin/models/alias.py:251
 msgid "Invalid line: {}"
 msgstr "Ongeldige regel: {}"
 
@@ -732,6 +732,92 @@ msgstr "Onjuist IP adres voor %(domain)s: %(addr)s"
 msgid "No AAAA record for %s"
 msgstr "Geen MX record voor %s"
 
+#: autoreply/api/v2/serializers.py:27
+msgid "Value can't be less than 1 day"
+msgstr ""
+
+#: autoreply/api/v2/serializers.py:47
+#, fuzzy
+#| msgid "This field is required"
+msgid "This date is over"
+msgstr "Deze datum is over"
+
+#: autoreply/api/v2/serializers.py:50
+#, fuzzy
+#| msgid "Cannot be greater than domain quota"
+msgid "Must be greater than start date"
+msgstr "Moet na de startdatum liggen"
+
+#: autoreply/app_settings.py:12 core/apps.py:21
+#: imap_migration/app_settings.py:13 maillog/apps.py:14
+#: pdfcredentials/app_settings.py:13 webmail/app_settings.py:11
+msgid "General"
+msgstr "Algemeen"
+
+#: autoreply/app_settings.py:18
+#, fuzzy
+#| msgid "Timeout in seconds between two auto-replies to the same recipient"
+msgid "Period between two auto-replies"
+msgstr ""
+"Minimale tijd in seconden tussen twee auto-antwoorden naar dezelfde afzender"
+
+#: autoreply/app_settings.py:20
+#, fuzzy
+#| msgid "Timeout in seconds between two auto-replies to the same recipient"
+msgid ""
+"Number of days to wait before sending a new auto-reply to the same recipient"
+msgstr ""
+"Minimale tijd in seconden tussen twee auto-antwoorden naar dezelfde afzender"
+
+#: autoreply/app_settings.py:27 autoreply/app_settings.py:36
+msgid "Default subject"
+msgstr "Standaard onderwerp"
+
+#: autoreply/app_settings.py:29
+msgid ""
+"Default subject used when an auto-reply message is created automatically"
+msgstr ""
+"Standaard onderwerp gebruikt wanneer een automatisch antwoord automatisch is "
+"aangemaakt"
+
+#: autoreply/app_settings.py:38
+#, python-format
+msgid ""
+"Default content used when an auto-reply message is created automatically. "
+"The '%(name)s' macro will be replaced by the user's full name."
+msgstr ""
+"Standaard inhoud gebruikt wanneer een automatisch antwoord bericht "
+"automatisch is aangemaakt. De '%(name)s' macro zal vervangen worden door de "
+"naam van de gebruiker."
+
+#: autoreply/apps.py:15
+#, fuzzy
+#| msgid "Automatic account removal"
+msgid "Automatic replies"
+msgstr "Automatische antwoorden"
+
+#: autoreply/models.py:17
+#, fuzzy
+#| msgid "Subject"
+msgid "subject"
+msgstr "onderwerp"
+
+#: autoreply/models.py:19
+msgid "The subject that will appear in sent emails"
+msgstr "Het onderwerp dat zal verschijnen in verstuurde mails"
+
+#: autoreply/models.py:22
+msgid "content"
+msgstr "inhoud"
+
+#: autoreply/models.py:22
+msgid "The content that will appear in sent emails"
+msgstr "De inhoud die zal verschijnen in versuurde mails"
+
+#: autoreply/models.py:25
+msgid "Activate/Deactivate your auto reply"
+msgstr "Activeer/Deactiveer uw auto-antwoord"
+
 #: calendars/app_settings.py:11
 #, fuzzy
 #| msgid "Connection settings"
@@ -774,6 +860,7 @@ msgid "Allow domain administrators to manage user calendars (read and write)"
 msgstr "Sta deze beheerder toe om mailboxen van gebruikers te benaderen"
 
 #: calendars/app_settings.py:60 core/app_settings.py:579
+#: rspamd/app_settings.py:45
 msgid "Miscellaneous"
 msgstr "Diversen"
 
@@ -786,7 +873,7 @@ msgid ""
 "Maximum size in bytes of imported ICS files (or KB, MB, GB if specified)"
 msgstr ""
 
-#: calendars/app_settings.py:89 core/api/v2/viewsets.py:171
+#: calendars/app_settings.py:89 core/api/v2/viewsets.py:172
 msgid "Calendars"
 msgstr ""
 
@@ -824,7 +911,7 @@ msgstr "LDAP synchronisatie-instellingen"
 msgid "Interval in seconds between 2 synchronization requests"
 msgstr ""
 
-#: contacts/app_settings.py:51 core/api/v2/viewsets.py:178
+#: contacts/app_settings.py:51 core/api/v2/viewsets.py:179
 #, fuzzy
 #| msgid "Domains"
 msgid "Contacts"
@@ -924,17 +1011,17 @@ msgstr "Gebruik de volgende code om het Modoboa wachtwoord te herstellen: {}"
 msgid "Administration console"
 msgstr "Beheer"
 
-#: core/api/v2/viewsets.py:173
+#: core/api/v2/viewsets.py:174
 msgid "Calendar"
 msgstr ""
 
-#: core/api/v2/viewsets.py:180
+#: core/api/v2/viewsets.py:181
 #, fuzzy
 #| msgid "Address"
 msgid "Address book"
 msgstr "Adres"
 
-#: core/api/v2/viewsets.py:185 core/api/v2/viewsets.py:187
+#: core/api/v2/viewsets.py:186 core/api/v2/viewsets.py:188
 #: webmail/app_settings.py:258 webmail/app_settings.py:265
 #, fuzzy
 #| msgid "E-mail"
@@ -1414,12 +1501,6 @@ msgstr ""
 "De standaard omleiding die gebruikt wordt als er geen andere applicatie is "
 "opgegeven"
 
-#: core/apps.py:21 imap_migration/app_settings.py:13 maillog/apps.py:14
-#: pdfcredentials/app_settings.py:13 postfix_autoreply/app_settings.py:12
-#: webmail/app_settings.py:11
-msgid "General"
-msgstr "Algemeen"
-
 #: core/checks.py:13
 msgid ""
 "You have USE_TZ set to False, this may result in issues during transitions "
@@ -1689,7 +1770,7 @@ msgstr[1] ""
 "\n"
 "De volgende updates zijn beschikbaar:\n"
 
-#: core/utils.py:41
+#: core/utils.py:43
 msgid "The core part of Modoboa"
 msgstr "Het hoofdonderdeel van Modoboa"
 
@@ -2565,76 +2646,6 @@ msgstr "%s: limiet bereikt"
 msgid "Daily limit of the following %(ltype)s has been reached: %(name)s."
 msgstr ""
 
-#: postfix_autoreply/api/v2/serializers.py:42
-#, fuzzy
-#| msgid "This field is required"
-msgid "This date is over"
-msgstr "Deze datum is over"
-
-#: postfix_autoreply/api/v2/serializers.py:45
-#, fuzzy
-#| msgid "Cannot be greater than domain quota"
-msgid "Must be greater than start date"
-msgstr "Moet na de startdatum liggen"
-
-#: postfix_autoreply/app_settings.py:18
-msgid "Automatic reply timeout"
-msgstr "Automatisch antwoorden timeout"
-
-#: postfix_autoreply/app_settings.py:20
-msgid "Timeout in seconds between two auto-replies to the same recipient"
-msgstr ""
-"Minimale tijd in seconden tussen twee auto-antwoorden naar dezelfde afzender"
-
-#: postfix_autoreply/app_settings.py:27 postfix_autoreply/app_settings.py:36
-msgid "Default subject"
-msgstr "Standaard onderwerp"
-
-#: postfix_autoreply/app_settings.py:29
-msgid ""
-"Default subject used when an auto-reply message is created automatically"
-msgstr ""
-"Standaard onderwerp gebruikt wanneer een automatisch antwoord automatisch is "
-"aangemaakt"
-
-#: postfix_autoreply/app_settings.py:38
-#, python-format
-msgid ""
-"Default content used when an auto-reply message is created automatically. "
-"The '%(name)s' macro will be replaced by the user's full name."
-msgstr ""
-"Standaard inhoud gebruikt wanneer een automatisch antwoord bericht "
-"automatisch is aangemaakt. De '%(name)s' macro zal vervangen worden door de "
-"naam van de gebruiker."
-
-#: postfix_autoreply/apps.py:15
-#, fuzzy
-#| msgid "Automatic account removal"
-msgid "Automatic replies"
-msgstr "Automatische antwoorden"
-
-#: postfix_autoreply/models.py:15
-#, fuzzy
-#| msgid "Subject"
-msgid "subject"
-msgstr "onderwerp"
-
-#: postfix_autoreply/models.py:17
-msgid "The subject that will appear in sent emails"
-msgstr "Het onderwerp dat zal verschijnen in verstuurde mails"
-
-#: postfix_autoreply/models.py:20
-msgid "content"
-msgstr "inhoud"
-
-#: postfix_autoreply/models.py:20
-msgid "The content that will appear in sent emails"
-msgstr "De inhoud die zal verschijnen in versuurde mails"
-
-#: postfix_autoreply/models.py:23
-msgid "Activate/Deactivate your auto reply"
-msgstr "Activeer/Deactiveer uw auto-antwoord"
-
 #: relaydomains/api/v1/serializers.py:24
 msgid "Unsupported service"
 msgstr ""
@@ -2655,7 +2666,62 @@ msgstr "doel host"
 msgid "verify recipients"
 msgstr "controleer ontvangers"
 
-#: sievefilters/api/v2/viewsets.py:190
+#: rspamd/api/v2/serializers.py:15
+#, fuzzy
+#| msgid "Directory not found."
+msgid "Provided path is not writable."
+msgstr "Map niet gevonden."
+
+#: rspamd/api/v2/serializers.py:18
+msgid "Please create the parent directory for the files"
+msgstr ""
+
+#: rspamd/api/v2/serializers.py:22
+msgid "Unable to write to the directory."
+msgstr ""
+
+#: rspamd/app_settings.py:13
+#, fuzzy
+#| msgid "LDAP settings"
+msgid "DKIM signing settings"
+msgstr "IMAP instellingen"
+
+#: rspamd/app_settings.py:19
+msgid "Key map path"
+msgstr ""
+
+#: rspamd/app_settings.py:21
+msgid ""
+"Absolute path of the file which contains paths to DKIM private keys. Must be "
+"readable by _rspamd group or user."
+msgstr ""
+
+#: rspamd/app_settings.py:30
+msgid "Selector map path"
+msgstr ""
+
+#: rspamd/app_settings.py:32
+msgid ""
+"Absolute path of the file which contains names of DKIM selectors. Must be "
+"readable by _rspamd group or user."
+msgstr ""
+
+#: rspamd/app_settings.py:51
+msgid "Rspamd dashboard location"
+msgstr ""
+
+#: rspamd/app_settings.py:53
+msgid ""
+"Location of the rspamd dashboard. Can either be a relative URL (eg. '/"
+"rspamd') or a full URL (eg. 'https://rspamd.domain.tld/').Only use for "
+"guidance on the Super-Admin dashboard."
+msgstr ""
+
+#: rspamd/apps.py:18
+msgid "Rspamd"
+msgstr ""
+
+#: sievefilters/api/v2/viewsets.py:193
 #, fuzzy, python-format
 #| msgid "User '%s' already exists"
 msgid "Filter %s already exists"
@@ -3192,3 +3258,6 @@ msgstr "Prullenbak"
 #, python-format
 msgid "Attachment is too big (limit: %s)"
 msgstr "Bijlage is te groot (maximaal toegestane grootte: %s)"
+
+#~ msgid "Automatic reply timeout"
+#~ msgstr "Automatisch antwoorden timeout"

@@ -26,7 +26,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-06-08 14:52+0200\n"
+"POT-Creation-Date: 2025-06-20 16:45+0200\n"
 "PO-Revision-Date: 2011-07-01 08:15+0000\n"
 "Last-Translator: Rafael Barretto Alves <ch3yd@hotmail.com>, "
 "2013,2015-2017,2025\n"
@@ -68,12 +68,12 @@ msgid "Cannot be greater than domain quota"
 msgstr "Não pode ser maior que a cota de domínio"
 
 #: admin/api/v1/serializers.py:164 admin/api/v1/serializers.py:359
-#: admin/api/v2/serializers.py:524 admin/models/alias.py:38
+#: admin/api/v2/serializers.py:531 admin/models/alias.py:44
 msgid "Permission denied."
 msgstr "Permissão negada."
 
 #: admin/api/v1/serializers.py:226 admin/api/v2/serializers.py:89
-#: admin/api/v2/serializers.py:456 core/api/v2/serializers.py:225
+#: admin/api/v2/serializers.py:453 core/api/v2/serializers.py:225
 #: core/api/v2/serializers.py:227 core/api/v2/serializers.py:236
 #: transport/backends.py:40
 msgid "This field is required"
@@ -86,7 +86,7 @@ msgstr ""
 "Lista de domínios administrados (somente revendedores e administradores de "
 "domínio)."
 
-#: admin/api/v1/serializers.py:332 admin/api/v2/serializers.py:506
+#: admin/api/v1/serializers.py:332 admin/api/v2/serializers.py:513
 msgid "Not allowed for this role."
 msgstr "Não é permitido para esta função."
 
@@ -94,12 +94,12 @@ msgstr "Não é permitido para esta função."
 msgid "Must be equal to mailbox full_address"
 msgstr "Deve ser igual a full_address de caixa de correio"
 
-#: admin/api/v1/serializers.py:392 admin/api/v2/serializers.py:558
+#: admin/api/v1/serializers.py:392 admin/api/v2/serializers.py:565
 #: calendars/serializers.py:175 calendars/serializers.py:177
 msgid "This field is required."
 msgstr "Este campo é obrigatório."
 
-#: admin/api/v1/serializers.py:404 admin/api/v2/serializers.py:575
+#: admin/api/v1/serializers.py:404 admin/api/v2/serializers.py:582
 msgid "Local domain {} does not exist"
 msgstr "Domínio local {} não existe"
 
@@ -164,17 +164,17 @@ msgstr "Desative a migração imap antes de desativar esta opção."
 msgid "Define at least one authorized network / address"
 msgstr "Defina pelo menos uma rede/endereço autorizado"
 
-#: admin/api/v2/serializers.py:541
+#: admin/api/v2/serializers.py:548
 msgid "The left part of an email address can't be more than 64 characters."
 msgstr ""
 "A parte à esquerda de um endereço de e-mail não pode ter mais de 64 "
 "caracteres."
 
-#: admin/api/v2/serializers.py:563
+#: admin/api/v2/serializers.py:570
 msgid "A mailbox is required to create aliases."
 msgstr "Uma caixa de correio é necessária para criar apelidos."
 
-#: admin/api/v2/serializers.py:729
+#: admin/api/v2/serializers.py:734
 msgid "Unknown status"
 msgstr "Status desconhecido"
 
@@ -554,48 +554,48 @@ msgstr "[modoboa] Problema(s) de MX para o domínio {}"
 msgid "[modoboa] DNSBL issue(s) for domain {}"
 msgstr "[modoboa] Problema(s) de DNSBL para o domínio {}"
 
-#: admin/models/alias.py:36
+#: admin/models/alias.py:42
 msgid "Domain not found."
 msgstr "Domínio não encontrado."
 
-#: admin/models/alias.py:91 admin/models/mailbox.py:85
+#: admin/models/alias.py:97 admin/models/mailbox.py:85
 msgid "address"
 msgstr "endereço"
 
-#: admin/models/alias.py:93
+#: admin/models/alias.py:99
 msgid "The alias address."
 msgstr "O endereço do apelido."
 
-#: admin/models/alias.py:97 admin/models/domain.py:45
-#: admin/models/domain_alias.py:45 postfix_autoreply/models.py:23
+#: admin/models/alias.py:103 admin/models/domain.py:45
+#: admin/models/domain_alias.py:45 autoreply/models.py:25
 msgid "enabled"
 msgstr "habilitado"
 
-#: admin/models/alias.py:98 admin/models/domain_alias.py:46
+#: admin/models/alias.py:104 admin/models/domain_alias.py:46
 msgid "Check to activate this alias"
 msgstr "Marque para ativar este apelido"
 
-#: admin/models/alias.py:102
+#: admin/models/alias.py:108
 msgid "Description"
 msgstr "Descrição"
 
-#: admin/models/alias.py:103
+#: admin/models/alias.py:109
 msgid "Expire at"
 msgstr "Expirar em"
 
-#: admin/models/alias.py:144
+#: admin/models/alias.py:150
 msgid "alias"
 msgstr "apelido"
 
-#: admin/models/alias.py:177
+#: admin/models/alias.py:183
 msgid "Invalid address"
 msgstr "Endereço inválido"
 
-#: admin/models/alias.py:196
+#: admin/models/alias.py:202
 msgid "Local recipient {}@{} not found"
 msgstr "Destinatário {}@{} local não encontrado"
 
-#: admin/models/alias.py:245
+#: admin/models/alias.py:251
 msgid "Invalid line: {}"
 msgstr "Linha inválida: {}"
 
@@ -746,6 +746,86 @@ msgstr "Formato de endereço IP inválido para %(domain)s; %(addr)s"
 msgid "No AAAA record for %s"
 msgstr "Nenhum registro AAAA para %s"
 
+#: autoreply/api/v2/serializers.py:27
+msgid "Value can't be less than 1 day"
+msgstr ""
+
+#: autoreply/api/v2/serializers.py:47
+msgid "This date is over"
+msgstr "Esta data acabou"
+
+#: autoreply/api/v2/serializers.py:50
+msgid "Must be greater than start date"
+msgstr "Deve ser maior que a data de início"
+
+#: autoreply/app_settings.py:12 core/apps.py:21
+#: imap_migration/app_settings.py:13 maillog/apps.py:14
+#: pdfcredentials/app_settings.py:13 webmail/app_settings.py:11
+msgid "General"
+msgstr "Geral"
+
+#: autoreply/app_settings.py:18
+#, fuzzy
+#| msgid "Timeout in seconds between two auto-replies to the same recipient"
+msgid "Period between two auto-replies"
+msgstr ""
+"Tempo limite, em segundos, entre duas respostas automáticas para o mesmo "
+"destinatário"
+
+#: autoreply/app_settings.py:20
+#, fuzzy
+#| msgid "Timeout in seconds between two auto-replies to the same recipient"
+msgid ""
+"Number of days to wait before sending a new auto-reply to the same recipient"
+msgstr ""
+"Tempo limite, em segundos, entre duas respostas automáticas para o mesmo "
+"destinatário"
+
+#: autoreply/app_settings.py:27 autoreply/app_settings.py:36
+msgid "Default subject"
+msgstr "Assunto padrão"
+
+#: autoreply/app_settings.py:29
+msgid ""
+"Default subject used when an auto-reply message is created automatically"
+msgstr ""
+"Assunto padrão usado quando uma mensagem de resposta automática é criada "
+"automaticamente"
+
+#: autoreply/app_settings.py:38
+#, python-format
+msgid ""
+"Default content used when an auto-reply message is created automatically. "
+"The '%(name)s' macro will be replaced by the user's full name."
+msgstr ""
+"Conteúdo padrão usado quando uma mensagem de resposta automática é criada "
+"automaticamente. A macro '%(name)s' será substituída pelo nome completo do "
+"usuário."
+
+#: autoreply/apps.py:15
+msgid "Automatic replies"
+msgstr "Respostas automáticas"
+
+#: autoreply/models.py:17
+msgid "subject"
+msgstr "assunto"
+
+#: autoreply/models.py:19
+msgid "The subject that will appear in sent emails"
+msgstr "O assunto que aparecerá nos e-mails enviados"
+
+#: autoreply/models.py:22
+msgid "content"
+msgstr "conteúdo"
+
+#: autoreply/models.py:22
+msgid "The content that will appear in sent emails"
+msgstr "O conteúdo que aparecerá nos e-mails enviados"
+
+#: autoreply/models.py:25
+msgid "Activate/Deactivate your auto reply"
+msgstr "Ativar/Desativar sua resposta automática"
+
 #: calendars/app_settings.py:11
 msgid "Server settings"
 msgstr "Configurações do servidor"
@@ -784,6 +864,7 @@ msgstr ""
 "(leitura e escrita)"
 
 #: calendars/app_settings.py:60 core/app_settings.py:579
+#: rspamd/app_settings.py:45
 msgid "Miscellaneous"
 msgstr "Diversos"
 
@@ -798,7 +879,7 @@ msgstr ""
 "Tamanho máximo em bytes dos arquivos ICS importados (ou KB, MB, GB se "
 "especificado)"
 
-#: calendars/app_settings.py:89 core/api/v2/viewsets.py:171
+#: calendars/app_settings.py:89 core/api/v2/viewsets.py:172
 msgid "Calendars"
 msgstr "Calendários"
 
@@ -834,7 +915,7 @@ msgstr "Frequência de sincronização"
 msgid "Interval in seconds between 2 synchronization requests"
 msgstr "Intervalo, em segundos, entre 2 pedidos de sincronização"
 
-#: contacts/app_settings.py:51 core/api/v2/viewsets.py:178
+#: contacts/app_settings.py:51 core/api/v2/viewsets.py:179
 msgid "Contacts"
 msgstr "Contatos"
 
@@ -927,15 +1008,15 @@ msgstr ""
 msgid "Administration console"
 msgstr "Console de administração"
 
-#: core/api/v2/viewsets.py:173
+#: core/api/v2/viewsets.py:174
 msgid "Calendar"
 msgstr "Calendário"
 
-#: core/api/v2/viewsets.py:180
+#: core/api/v2/viewsets.py:181
 msgid "Address book"
 msgstr "Catálogo de endereço"
 
-#: core/api/v2/viewsets.py:185 core/api/v2/viewsets.py:187
+#: core/api/v2/viewsets.py:186 core/api/v2/viewsets.py:188
 #: webmail/app_settings.py:258 webmail/app_settings.py:265
 #, fuzzy
 #| msgid "E-mail"
@@ -1421,12 +1502,6 @@ msgid "The default redirection used when no application is specified"
 msgstr ""
 "O redirecionamento padrão usado quando nenhuma aplicação é especificada"
 
-#: core/apps.py:21 imap_migration/app_settings.py:13 maillog/apps.py:14
-#: pdfcredentials/app_settings.py:13 postfix_autoreply/app_settings.py:12
-#: webmail/app_settings.py:11
-msgid "General"
-msgstr "Geral"
-
 #: core/checks.py:13
 msgid ""
 "You have USE_TZ set to False, this may result in issues during transitions "
@@ -1701,7 +1776,7 @@ msgstr[2] ""
 "\n"
 "As seguintes atualizações estão disponíveis:\n"
 
-#: core/utils.py:41
+#: core/utils.py:43
 msgid "The core part of Modoboa"
 msgstr "Core do Modoboa"
 
@@ -2548,69 +2623,6 @@ msgstr "[modoboa] Limite de envio atingido"
 msgid "Daily limit of the following %(ltype)s has been reached: %(name)s."
 msgstr "O limite diário dos seguintes %(ltype)s foi atingido: %(name)s."
 
-#: postfix_autoreply/api/v2/serializers.py:42
-msgid "This date is over"
-msgstr "Esta data acabou"
-
-#: postfix_autoreply/api/v2/serializers.py:45
-msgid "Must be greater than start date"
-msgstr "Deve ser maior que a data de início"
-
-#: postfix_autoreply/app_settings.py:18
-msgid "Automatic reply timeout"
-msgstr "Tempo limite de resposta automática"
-
-#: postfix_autoreply/app_settings.py:20
-msgid "Timeout in seconds between two auto-replies to the same recipient"
-msgstr ""
-"Tempo limite, em segundos, entre duas respostas automáticas para o mesmo "
-"destinatário"
-
-#: postfix_autoreply/app_settings.py:27 postfix_autoreply/app_settings.py:36
-msgid "Default subject"
-msgstr "Assunto padrão"
-
-#: postfix_autoreply/app_settings.py:29
-msgid ""
-"Default subject used when an auto-reply message is created automatically"
-msgstr ""
-"Assunto padrão usado quando uma mensagem de resposta automática é criada "
-"automaticamente"
-
-#: postfix_autoreply/app_settings.py:38
-#, python-format
-msgid ""
-"Default content used when an auto-reply message is created automatically. "
-"The '%(name)s' macro will be replaced by the user's full name."
-msgstr ""
-"Conteúdo padrão usado quando uma mensagem de resposta automática é criada "
-"automaticamente. A macro '%(name)s' será substituída pelo nome completo do "
-"usuário."
-
-#: postfix_autoreply/apps.py:15
-msgid "Automatic replies"
-msgstr "Respostas automáticas"
-
-#: postfix_autoreply/models.py:15
-msgid "subject"
-msgstr "assunto"
-
-#: postfix_autoreply/models.py:17
-msgid "The subject that will appear in sent emails"
-msgstr "O assunto que aparecerá nos e-mails enviados"
-
-#: postfix_autoreply/models.py:20
-msgid "content"
-msgstr "conteúdo"
-
-#: postfix_autoreply/models.py:20
-msgid "The content that will appear in sent emails"
-msgstr "O conteúdo que aparecerá nos e-mails enviados"
-
-#: postfix_autoreply/models.py:23
-msgid "Activate/Deactivate your auto reply"
-msgstr "Ativar/Desativar sua resposta automática"
-
 #: relaydomains/api/v1/serializers.py:24
 msgid "Unsupported service"
 msgstr "Serviço não suportado"
@@ -2627,7 +2639,62 @@ msgstr "porta do host de destino"
 msgid "verify recipients"
 msgstr "verificar destinatários"
 
-#: sievefilters/api/v2/viewsets.py:190
+#: rspamd/api/v2/serializers.py:15
+#, fuzzy
+#| msgid "Directory is not writable"
+msgid "Provided path is not writable."
+msgstr "O diretório não é gravável"
+
+#: rspamd/api/v2/serializers.py:18
+msgid "Please create the parent directory for the files"
+msgstr ""
+
+#: rspamd/api/v2/serializers.py:22
+msgid "Unable to write to the directory."
+msgstr ""
+
+#: rspamd/app_settings.py:13
+#, fuzzy
+#| msgid "IMAP settings"
+msgid "DKIM signing settings"
+msgstr "Configurações IMAP"
+
+#: rspamd/app_settings.py:19
+msgid "Key map path"
+msgstr ""
+
+#: rspamd/app_settings.py:21
+msgid ""
+"Absolute path of the file which contains paths to DKIM private keys. Must be "
+"readable by _rspamd group or user."
+msgstr ""
+
+#: rspamd/app_settings.py:30
+msgid "Selector map path"
+msgstr ""
+
+#: rspamd/app_settings.py:32
+msgid ""
+"Absolute path of the file which contains names of DKIM selectors. Must be "
+"readable by _rspamd group or user."
+msgstr ""
+
+#: rspamd/app_settings.py:51
+msgid "Rspamd dashboard location"
+msgstr ""
+
+#: rspamd/app_settings.py:53
+msgid ""
+"Location of the rspamd dashboard. Can either be a relative URL (eg. '/"
+"rspamd') or a full URL (eg. 'https://rspamd.domain.tld/').Only use for "
+"guidance on the Super-Admin dashboard."
+msgstr ""
+
+#: rspamd/apps.py:18
+msgid "Rspamd"
+msgstr ""
+
+#: sievefilters/api/v2/viewsets.py:193
 #, python-format
 msgid "Filter %s already exists"
 msgstr "O filtro %s já existe"
@@ -3138,3 +3205,6 @@ msgstr ""
 #, python-format
 msgid "Attachment is too big (limit: %s)"
 msgstr "Anexo muito grande (limite: %s)"
+
+#~ msgid "Automatic reply timeout"
+#~ msgstr "Tempo limite de resposta automática"
