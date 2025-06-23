@@ -61,7 +61,7 @@ def get_dovecot_schemes():
     return [f"{{{smart_str(scheme)}}}" for scheme in schemes.split()], status
 
 
-def cache_available_password_hasher(bypass_cache=False):
+def cache_available_password_hasher(bypass_cache: bool = False):
     available_schemes, status = get_dovecot_schemes()
     password_scheme_choice = [
         (hasher.name, hasher.label)
