@@ -24,6 +24,10 @@ const imapMigrationEnabled = computed(
   () => parametersStore.imapMigrationEnabled
 )
 
+const openRspamdDashboard = () => {
+  router.push(rspamdUrl.value)
+}
+
 const settings = []
 const adminMenuItems = [
   {
@@ -136,8 +140,4 @@ onMounted(() => {
     })
   }
 })
-
-const openRspamdDashboard = () => {
-  router.push(rspamdUrl.value)
-}
 </script>
