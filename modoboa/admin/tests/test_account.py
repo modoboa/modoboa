@@ -5,7 +5,7 @@ from django.test import override_settings
 from django.urls import reverse
 
 from modoboa.core import factories as core_factories
-from modoboa.core.models import User, LocalConfig
+from modoboa.core.models import User
 from modoboa.core.tests import test_ldap
 from modoboa.lib.tests import NO_LDAP, ModoAPITestCase
 from modoboa.limits import utils as limits_utils
@@ -45,6 +45,32 @@ class AccountTestCase(ModoAPITestCase):
         """Create test data."""
         super().setUpTestData()
         factories.populate_database()
+
+    def test_random_password(self):
+        # Setting allow_special_characters to False
+        self.localconfig.parameters.set_value("allow_special_characters", False, "core")
+        random_password_length = self.localconfig.parameters.get_value(
+            "random_password_length", "core"
+        )
+        self.localconfig.save()
+
+        random_password = lib.make_password()
+        self.assertEqual(len(random_password), random_password_length)
+        self.assertEqual(
+            len([char for char in random_password if char in list(string.punctuation)]),
+            0,
+        )
+
+        # And with allow_special_characters to True
+        self.localconfig.parameters.set_value("allow_special_characters", True, "core")
+        self.localconfig.save()
+
+        random_password = lib.make_password()
+        self.assertEqual(len(random_password), random_password_length)
+        self.assertNotEqual(
+            len([char for char in random_password if char in list(string.punctuation)]),
+            0,
+        )
 
     def test_aliases_update_on_disable(self):
         """Check if aliases are disabled when account is disabled."""
