@@ -211,9 +211,16 @@ Required changes to :file:`settings.py`
 
 - Remove ``new_admin_url`` context processor
 
-- Remove ckeditor related apps from ``INSTALLED_APPS`` variable
+- Remove ``ckeditor`` related apps from ``INSTALLED_APPS`` variable
 
 - Remove ``STATICFILE_DIRS`` variable
+
+Post update
+-----------
+
+Run the following command::
+
+  $ python manage.py load_initial_data
 
 Version 2.3.3
 =============
