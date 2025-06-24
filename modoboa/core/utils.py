@@ -2,7 +2,7 @@
 
 import environ
 import os
-from pkg_resources import parse_version
+from packaging.version import parse
 from typing import Optional
 
 from cryptography.hazmat.primitives import serialization
@@ -51,9 +51,7 @@ def check_for_updates():
             if api_extension["name"] != pkgname:
                 continue
             extension["last_version"] = api_extension["version"]
-            if parse_version(api_extension["version"]) > parse_version(
-                extension["version"]
-            ):
+            if parse(api_extension["version"]) > parse(extension["version"]):
                 extension["update"] = True
                 extension["changelog_url"] = api_extension["url"]
                 update_avail = True

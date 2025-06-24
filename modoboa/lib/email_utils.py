@@ -5,6 +5,7 @@ import time
 from email.header import Header
 from email.mime.text import MIMEText
 from email.utils import formataddr, formatdate, getaddresses, make_msgid
+from importlib.metadata import version
 
 import chardet
 import lxml.html
@@ -379,15 +380,11 @@ def set_email_headers(msg, subject, sender, rcpt):
 
     Subject, From, To, Message-ID, User-Agent, Date
     """
-    import pkg_resources
-
     msg["Subject"] = Header(subject, "utf8")
     msg["From"] = sender
     msg["To"] = prepare_addresses(rcpt)
     msg["Message-ID"] = make_msgid()
-    msg["User-Agent"] = "Modoboa {}".format(
-        pkg_resources.get_distribution("modoboa").version
-    )
+    msg["User-Agent"] = "Modoboa {}".format(version("modoboa"))
     msg["Date"] = formatdate(time.time(), True)
 
 
