@@ -1,9 +1,9 @@
 """A client for Modoboa's public API."""
 
+from importlib.metadata import version, PackageNotFoundError
 import logging
 import os
 
-import pkg_resources
 import requests
 from requests.exceptions import RequestException
 
@@ -43,10 +43,8 @@ class ModoAPIClient:
         """Return the version installed locally."""
         if self._local_core_version is None:
             try:
-                self._local_core_version = pkg_resources.get_distribution(
-                    "modoboa"
-                ).version
-            except pkg_resources.DistributionNotFound:
+                self._local_core_version = version("modoboa")
+            except PackageNotFoundError:
                 self._local_core_version = "unknown"
         return self._local_core_version
 

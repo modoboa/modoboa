@@ -1,7 +1,8 @@
 from email.header import Header
 from email.mime.image import MIMEImage
+from importlib.metadata import version
 import os
-import pkg_resources
+
 import smtplib
 from urllib.parse import unquote, urlparse
 
@@ -90,11 +91,7 @@ def format_sender_address(user: core_models.User, address: str) -> str:
 
 
 def create_message(user: core_models.User, attributes: dict, attachments: list):
-    headers = {
-        "User-Agent": "Modoboa {}".format(
-            pkg_resources.get_distribution("modoboa").version
-        )
-    }
+    headers = {"User-Agent": "Modoboa {}".format(version("modoboa"))}
     origmsgid = attributes.get("in_reply_to")
     if origmsgid:
         headers.update({"References": origmsgid, "In-Reply-To": origmsgid})

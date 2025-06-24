@@ -58,6 +58,7 @@ dependencies = [
 	"chardet",
 	"ovh",
 	"oath",
+        "packaging",
 	"redis>=4.2.0rc1",
 	"rrdtool-bindings>=0.2.0",
 	"qrcode",
