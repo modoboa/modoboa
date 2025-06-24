@@ -94,8 +94,8 @@ export default {
     }
     return repository.post('/webmail/emails/flag/', body)
   },
-  sendEmail(body) {
-    return repository.post('/webmail/emails/send/', body)
+  sendEmailFromComposeSession(uid, body) {
+    return repository.post(`/webmail/compose-sessions/${uid}/send/`, body)
   },
   getComposeSession(uid) {
     return repository.get(`/webmail/compose-sessions/${uid}/`)

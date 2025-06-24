@@ -1,7 +1,6 @@
 """Parameters management."""
 
 import copy
-from typing import Optional
 
 from rest_framework.fields import empty
 
@@ -102,7 +101,7 @@ class Registry:
             raise NotDefined(app)
         return self._registry2[level][app]["serializer_class"]
 
-    def get_structure(self, level: str, for_app: Optional[str] = None) -> list:
+    def get_structure(self, level: str, for_app: str | None = None) -> list:
         """Return fields structure."""
         result = []
         for app, fields in list(self._registry2[level].items()):
@@ -141,7 +140,7 @@ class Registry:
                 result.append(item)
         return result
 
-    def exists(self, level: str, app: str, parameter: Optional[str] = None) -> bool:
+    def exists(self, level: str, app: str, parameter: str | None = None) -> bool:
         """Check if parameter exists."""
         parameters = self._registry2[level]
         result = app in parameters
@@ -193,7 +192,7 @@ class Manager:
             return self._parameters[app].get(parameter, default)
         return default
 
-    def get_values(self, app: Optional[str] = None):
+    def get_values(self, app: str | None = None):
         """Return all values for the given level/app."""
         if app is None:
             app = guess_extension_name()
@@ -225,7 +224,7 @@ class Manager:
             )
         self._parameters[app][parameter] = value
 
-    def set_values(self, values: dict, app: Optional[str] = None) -> None:
+    def set_values(self, values: dict, app: str | None = None) -> None:
         """Set/update values for the given app."""
         if app is None:
             app = guess_extension_name()

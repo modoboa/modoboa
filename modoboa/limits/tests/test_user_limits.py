@@ -1,7 +1,5 @@
 """Test cases for the limits extension."""
 
-from typing import Optional
-
 from django.urls import reverse
 
 from modoboa.admin.factories import populate_database
@@ -76,7 +74,7 @@ class ResourceTestCase(lib_tests.ModoAPITestCase):
         self.assertEqual(response.status_code, status)
         return response
 
-    def _create_alias(self, email, rcpt: Optional[list] = None, status=201):
+    def _create_alias(self, email, rcpt: list | None = None, status=201):
         if rcpt is None:
             rcpt = ["user@test.com"]
         values = {"address": email, "recipients": rcpt, "enabled": True}

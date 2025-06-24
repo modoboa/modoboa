@@ -3,7 +3,6 @@ from email.mime.base import MIMEBase
 import json
 import os
 from tempfile import NamedTemporaryFile
-from typing import Optional
 import uuid
 
 import six
@@ -81,7 +80,7 @@ def save_attachment(request, session_uid: str, f) -> dict:
         fp = NamedTemporaryFile(dir=get_storage_path(""), delete=False)
     except Exception as e:
         raise InternalError(str(e)) from None
-    if isinstance(f, (six.binary_type, six.text_type)):
+    if isinstance(f, six.binary_type | six.text_type):
         fp.write(smart_bytes(f))
     else:
         for chunk in f.chunks():
@@ -100,7 +99,7 @@ def save_attachment(request, session_uid: str, f) -> dict:
     return attachment
 
 
-def remove_attachment(request, session_uid: str, name: str) -> Optional[str]:
+def remove_attachment(request, session_uid: str, name: str) -> str | None:
     manager = ComposeSessionManager(request.user.username)
     session = manager.get_content(session_uid)
     for att in session["attachments"]:

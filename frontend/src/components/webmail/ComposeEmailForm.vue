@@ -263,7 +263,7 @@ const submit = async () => {
     body.bcc = bcc
   }
   try {
-    await api.sendEmail(body)
+    await api.sendEmailFromComposeSession(route.query.uid, body)
     router.push({ name: 'MailboxView' })
     displayNotification({ msg: $gettext('Email sent') })
   } catch (error) {

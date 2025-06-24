@@ -209,7 +209,7 @@ Required changes to :file:`settings.py`
 
 - Remove ``NEW_ADMIN_URL`` variable
 
-- Remove ``new_admin_url`` context processor
+- Remove ``new_admin_url`` and ``top_notifications`` context processors
 
 - Remove ``ckeditor`` related apps from ``INSTALLED_APPS`` variable
 

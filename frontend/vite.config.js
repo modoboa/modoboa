@@ -34,7 +34,7 @@ export default defineConfig({
     }),
   ],
   base: '/',
-  define: { 'process.env': {}, __VUE_OPTIONS_API__: false },
+  define: { 'process.env': {} },
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),

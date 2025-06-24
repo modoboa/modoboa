@@ -3,7 +3,6 @@ from email.mime.image import MIMEImage
 import os
 import pkg_resources
 import smtplib
-from typing import Optional, Tuple
 from urllib.parse import unquote, urlparse
 
 import lxml
@@ -20,7 +19,7 @@ from modoboa.webmail.lib.utils import html2plaintext
 from . import get_imapconnector
 
 
-def make_body_images_inline(body: str) -> Tuple[str, list]:
+def make_body_images_inline(body: str) -> tuple[str, list]:
     """Look for images inside the body and make them inline.
 
     Before sending a message in HTML format, it is necessary to find
@@ -117,9 +116,7 @@ def create_message(user: core_models.User, attributes: dict, attachments: list):
     return msg
 
 
-def send_mail(
-    request, attributes: dict, attachments: list
-) -> Tuple[bool, Optional[str]]:
+def send_mail(request, attributes: dict, attachments: list) -> tuple[bool, str | None]:
     """
     Send a new email.
 

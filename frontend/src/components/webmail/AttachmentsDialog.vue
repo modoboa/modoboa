@@ -90,7 +90,7 @@ const removeAttachment = async (attachment) => {
   attachments.value.splice(index, 1)
 }
 
-api.getUploadedAttachments(props.sessionUid).then((resp) => {
-  attachments.value = resp.data
+api.getComposeSession(props.sessionUid).then((resp) => {
+  attachments.value = resp.data.attachments
 })
 </script>

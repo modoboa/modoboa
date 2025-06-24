@@ -1,7 +1,5 @@
 """Extension management."""
 
-from typing import Dict, Optional
-
 from django.conf import settings
 from django.urls import include
 from django.urls import re_path
@@ -22,8 +20,8 @@ class ModoExtension:
     description: str = ""
     needs_media: bool = False
     always_active: bool = False
-    url: Optional[str] = None
-    topredirection_url: Optional[str] = None
+    url: str | None = None
+    topredirection_url: str | None = None
 
     def get_available_apps(self) -> list:
         return []
@@ -59,7 +57,7 @@ class ExtensionsPool:
     """The extensions manager"""
 
     def __init__(self) -> None:
-        self.extensions: Dict[str, Dict] = {}
+        self.extensions: dict[str, dict] = {}
 
     def register_extension(self, ext: ModoExtension, show: bool = True) -> None:
         """Register an extension.
@@ -69,7 +67,7 @@ class ExtensionsPool:
         """
         self.extensions[ext.name] = {"cls": ext, "show": show}
 
-    def get_extension(self, name: str) -> Optional[ModoExtension]:
+    def get_extension(self, name: str) -> ModoExtension | None:
         """Retrieve the current instance of an extension."""
         if name not in self.extensions:
             return None

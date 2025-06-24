@@ -5,7 +5,6 @@ import imaplib
 import re
 import ssl
 import time
-from typing import Optional
 
 from django.conf import settings
 from django.utils.translation import gettext as _
@@ -108,7 +107,7 @@ class BodyStructure:
         self.attachments += [params]
 
     def load_from_definition(
-        self, definition: list, multisubtype: Optional[str] = None
+        self, definition: list, multisubtype: str | None = None
     ) -> None:
         for mp in definition:
             if isinstance(mp, list):
@@ -148,11 +147,11 @@ class IMAPconnector:
     unseen_pattern = re.compile(r"[^\(]+\(UNSEEN (\d+)\)")
 
     def __init__(self, user: str, password: str, with_namespaces: bool = True) -> None:
-        self.__hdelimiter: Optional[str] = None
+        self.__hdelimiter: str | None = None
         self.__ns_prefixes: dict = {}
         self.quota_usage: int = -1
-        self.quota_limit: Optional[int] = None
-        self.quota_current: Optional[int] = None
+        self.quota_limit: int | None = None
+        self.quota_current: int | None = None
         self.criterions: list = []
         self.conf = dict(param_tools.get_global_parameters("webmail"))
         self.address = self.conf["imap_server"]
@@ -170,7 +169,7 @@ class IMAPconnector:
     def __exit__(self, *args):
         self.logout()
 
-    def _cmd(self, name: str, *args, **kwargs) -> Optional[list]:
+    def _cmd(self, name: str, *args, **kwargs) -> list | None:
         """IMAP command wrapper.
 
         To simplify errors handling, this wrapper calls the
@@ -240,7 +239,8 @@ class IMAPconnector:
         except (OSError, imaplib.IMAP4.error, ssl.SSLError) as error:
             raise ImapError(_(f"Connection to IMAP server failed: {error}")) from None
 
-        if not settings.WEBMAIL_DEV_MODE:
+        dev_mode = getattr(settings, "WEBMAIL_DEV_MODE", False)
+        if not dev_mode:
             token = oauth2.build_oauthbearer_string(user, rawtoken)
             data = self._cmd("AUTHENTICATE", b"OAUTHBEARER", token)
         else:
@@ -600,7 +600,7 @@ class IMAPconnector:
         self.select_mailbox(mbox, False)
         self._cmd("EXPUNGE")
 
-    def create_folder(self, name: str, parent: Optional[str] = None) -> bool:
+    def create_folder(self, name: str, parent: str | None = None) -> bool:
         if parent is not None:
             name = f"{parent}{self.hdelimiter}{name}"
         typ, data = self.m.create(self._encode_mbox_name(name))
@@ -675,7 +675,7 @@ class IMAPconnector:
         return attdef, data[int(uid)][f"BODY[{partnum}]"]
 
     def fetch(
-        self, start: int, stop: Optional[int] = None, mbox: Optional[str] = None
+        self, start: int, stop: int | None = None, mbox: str | None = None
     ) -> list:
         """Retrieve information about messages from the server.
 
@@ -748,7 +748,7 @@ class IMAPconnector:
         return data[int(mailid)]
 
 
-def separate_mailbox(fullname: str, sep: str = ".") -> tuple[str, Optional[str]]:
+def separate_mailbox(fullname: str, sep: str = ".") -> tuple[str, str | None]:
     """Split a mailbox name.
 
     If a separator is found in ``fullname``, this function returns the

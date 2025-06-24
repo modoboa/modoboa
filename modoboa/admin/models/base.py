@@ -48,7 +48,7 @@ class AdminObject(models.Model):
     def from_db(cls, db, field_names, values):
         """Store loaded values."""
         instance = super().from_db(db, field_names, values)
-        instance._loaded_values = dict(zip(field_names, values))
+        instance._loaded_values = dict(zip(field_names, values, strict=False))
         return instance
 
     @property

@@ -1,7 +1,5 @@
 """Internal tools."""
 
-from typing import Optional, Tuple, Union
-
 from sievelib.factory import FiltersSet
 from sievelib import managesieve
 from sievelib.parser import Parser
@@ -27,7 +25,7 @@ class SieveClient:
 
     msc: managesieve.Client
 
-    def __init__(self, user: Optional[str] = None, password: Optional[str] = None):
+    def __init__(self, user: str | None = None, password: str | None = None):
         if user and password:
             try:
                 ret, msg = self.login(user, password)
@@ -36,9 +34,9 @@ class SieveClient:
             if not ret:
                 raise SieveClientError(msg)
 
-    def login(self, user: str, password: str) -> Tuple[bool, Union[str, None]]:
+    def login(self, user: str, password: str) -> tuple[bool, str | None]:
         conf = dict(param_tools.get_global_parameters("sievefilters"))
-        self.msc = managesieve.Client(conf["server"], conf["port"], debug=True)
+        self.msc = managesieve.Client(conf["server"], conf["port"], debug=False)
         try:
             ret = self.msc.connect(
                 user, password, starttls=conf["starttls"], authmech="OAUTHBEARER"
@@ -59,7 +57,7 @@ class SieveClient:
     def listscripts(self):
         return self.msc.listscripts()
 
-    def getscript(self, name: str, format: str = "raw") -> Union[FiltersSet, str, None]:
+    def getscript(self, name: str, format: str = "raw") -> FiltersSet | str | None:
         content = self.msc.getscript(name)
         if content is None:
             raise SieveClientError(self.msc.errmsg.decode())
