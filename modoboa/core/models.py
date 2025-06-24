@@ -2,7 +2,6 @@
 
 import re
 from email.header import Header
-from typing import Optional
 
 from django.core.serializers.json import DjangoJSONEncoder
 from django.conf import settings
@@ -132,7 +131,7 @@ class User(AbstractUser):
         raw_value = smart_bytes(raw_value)
         return get_password_hasher(scheme.upper())().encrypt(raw_value)
 
-    def set_password(self, raw_value: str, curvalue: Optional[str] = None) -> None:
+    def set_password(self, raw_value: str, curvalue: str | None = None) -> None:
         """Password update.
 
         Update the current mailbox's password with the given clear

@@ -56,7 +56,7 @@ class ARmessage(models.Model):
             )
         content = self.content % context
         name = "autoreply"
-        action = [("vacation", ":subject", self.subject, ":days", days, content)]
+        action = [("vacation", ":subject", self.subject, ":days", str(days), content)]
         if not fset.getfilter(name):
             fset.addfilter(name, condition, action)
         else:

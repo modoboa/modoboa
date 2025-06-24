@@ -1,5 +1,4 @@
 import csv
-from typing import Optional
 
 from modoboa.contacts.importer.backends.outlook import OutlookBackend
 
@@ -29,7 +28,7 @@ def import_csv_file(
     backend_name: str,
     csv_filename: str,
     delimiter: str,
-    carddav_password: Optional[str] = None,
+    carddav_password: str | None = None,
 ):
     with open(csv_filename) as fp:
         backend, rows = get_import_backend(fp, delimiter, backend_name)

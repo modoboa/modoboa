@@ -1,6 +1,6 @@
 """Value loading functions."""
 
-from typing import List, Optional, TypedDict
+from typing import TypedDict
 
 from modoboa.webmail.lib import imaputils
 
@@ -13,9 +13,9 @@ class UserMailbox(TypedDict):
 
 
 def __build_folders_list(
-    folders: list, user, imapc: imaputils.IMAPconnector, parentmb: Optional[str] = None
-) -> List[UserMailbox]:
-    ret: List[UserMailbox] = []
+    folders: list, user, imapc: imaputils.IMAPconnector, parentmb: str | None = None
+) -> list[UserMailbox]:
+    ret: list[UserMailbox] = []
     for fd in folders:
         value = fd["path"] if "path" in fd else fd["name"]
         if parentmb:
@@ -33,7 +33,7 @@ def __build_folders_list(
     return ret
 
 
-def user_mailboxes(request) -> List[UserMailbox]:
+def user_mailboxes(request) -> list[UserMailbox]:
     """Retrieve list of available mailboxes for given user."""
     with imaputils.get_imapconnector(request, with_namespaces=False) as mbc:
         ret = mbc.getmboxes(request.user)

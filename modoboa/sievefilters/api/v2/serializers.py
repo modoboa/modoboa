@@ -1,7 +1,5 @@
 """Sievefilters serializers."""
 
-from typing import List, Tuple
-
 from sievelib import commands
 from sievelib.factory import Filter
 
@@ -61,7 +59,7 @@ class FilterSerializer(serializers.Serializer):
     actions = ActionSerializer(many=True)
 
     @staticmethod
-    def from_filters(filters: List[Filter]) -> "FilterSerializer":
+    def from_filters(filters: list[Filter]) -> "FilterSerializer":
         result = []
         for fobj in filters:
             if fobj["name"] == "autoreply":
@@ -117,9 +115,9 @@ class FilterSerializer(serializers.Serializer):
             result.append(item)
         return FilterSerializer(result, many=True)
 
-    def to_filter(self) -> Tuple[str, List, List]:
+    def to_filter(self) -> tuple[str, list, list]:
         """Convert serializer data to filter representation."""
-        conditions: List[Tuple] = []
+        conditions: list[tuple] = []
         actions = []
         match_type = self.validated_data["match_type"]
         if match_type == "all":

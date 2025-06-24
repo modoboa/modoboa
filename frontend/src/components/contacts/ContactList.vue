@@ -46,6 +46,12 @@
           <v-spacer></v-spacer>
         </v-toolbar>
       </template>
+      <template #[`item.display_name`]="{ item }">
+        <template v-if="item.display_name">
+          {{ item.display_name }}
+        </template>
+        <template v-else> {{ item.fist_name }} {{ item.last_name }} </template>
+      </template>
       <template #[`item.emails`]="{ item }">
         {{ displayEmails(item.emails) }}
       </template>

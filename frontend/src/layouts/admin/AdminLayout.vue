@@ -134,7 +134,7 @@ onMounted(() => {
     capabilitiesApi.getCapabilities().then((response) => {
       isRspamdVisible.value = 'rspamd' in response.data.capabilities
       if (isRspamdVisible.value) {
-        rspamd_url.value =
+        rspamdUrl.value =
           response.data.capabilities.rspamd.location || '/rspamd'
       }
     })

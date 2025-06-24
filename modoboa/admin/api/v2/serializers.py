@@ -2,7 +2,6 @@
 
 import ipaddress
 import os
-from typing import List
 
 from django.conf import settings
 from django.core.exceptions import ValidationError
@@ -388,7 +387,7 @@ class AccountMeSerializer(v1_serializers.AccountSerializer):
     class Meta(v1_serializers.AccountSerializer.Meta):
         fields = v1_serializers.AccountSerializer.Meta.fields + ("permissions",)
 
-    def get_permissions(self, user) -> List[str]:
+    def get_permissions(self, user) -> list[str]:
         """Return available permissions for given user."""
         permissions = (
             user.user_permissions.all() | Permission.objects.filter(group__user=user)
@@ -412,7 +411,7 @@ class AccountSerializer(v1_serializers.AccountSerializer):
             return
         self.fields["resources"] = serializers.SerializerMethodField()
 
-    def get_resources(self, account) -> List[AccountResourceSerializer]:
+    def get_resources(self, account) -> list[AccountResourceSerializer]:
         if account.role == "SimpleUsers":
             return []
         resources = []
