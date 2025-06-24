@@ -76,7 +76,7 @@ dependencies = [
         # User
         "drf-nested-routers",
         "vobject",
-        "caldav==2.0.0"
+        "caldav==2.0.1"
 ]
 [project.optional-dependencies]
 dev = [
