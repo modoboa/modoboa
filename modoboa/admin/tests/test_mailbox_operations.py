@@ -4,11 +4,14 @@ import os
 import shutil
 from unittest import mock
 
-from django.core.management import call_command
 from django.test import override_settings
 from django.urls import reverse
 
+from django_rq import get_worker
+from rq import SimpleWorker
+
 from modoboa.lib.tests import ModoAPITestCase
+
 from .. import factories, models
 
 
@@ -45,7 +48,7 @@ class MailboxOperationTestCase(ModoAPITestCase):
         self.client.post(
             reverse("v2:account-delete", args=[mb.user.pk]), {}, format="json"
         )
-        call_command("handle_mailbox_operations")
+        get_worker("dovecot", worker_class=SimpleWorker).work(burst=True)
         self.assertFalse(models.MailboxOperation.objects.exists())
         self.assertFalse(os.path.exists(mb.mail_home))
 
@@ -71,7 +74,7 @@ class MailboxOperationTestCase(ModoAPITestCase):
         self.assertEqual(response.status_code, 200)
         path = f"{self.workdir}/test.com/admin2"
         mail_home_mock.__get__ = mock.Mock(return_value=path)
-        call_command("handle_mailbox_operations")
+        get_worker("dovecot", worker_class=SimpleWorker).work(burst=True)
         self.assertFalse(models.MailboxOperation.objects.exists())
         self.assertTrue(os.path.exists(mb.mail_home))
 
@@ -84,6 +87,6 @@ class MailboxOperationTestCase(ModoAPITestCase):
         self.client.post(
             reverse("v2:domain-delete", args=[domain.pk]), {}, format="json"
         )
-        call_command("handle_mailbox_operations")
+        get_worker("dovecot", worker_class=SimpleWorker).work(burst=True)
         self.assertFalse(models.MailboxOperation.objects.exists())
         self.assertFalse(os.path.exists(path))
