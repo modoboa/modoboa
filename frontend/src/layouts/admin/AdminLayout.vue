@@ -25,7 +25,7 @@ const imapMigrationEnabled = computed(
 )
 
 const openRspamdDashboard = () => {
-  router.push(rspamdUrl.value)
+  window.location = rspamdUrl.value
 }
 
 const settings = []

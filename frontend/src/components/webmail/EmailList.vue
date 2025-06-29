@@ -170,7 +170,7 @@
 </template>
 
 <script setup>
-import { onMounted, onUnmounted, ref, watch } from 'vue'
+import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useGettext } from 'vue3-gettext'
 import { useBusStore } from '@/stores'
@@ -198,13 +198,16 @@ const working = ref(false)
 
 let intervalId = null
 
+const currentMailbox = computed(() => {
+  return route.query.mailbox || 'INBOX'
+})
+
 const openEmail = (emailid) => {
   router.push({
     name: 'EmailView',
     query: { mailbox: props.mailbox, mailid: emailid },
   })
 }
-const emit = defineEmits(['reloadContent'])
 
 const fetchEmails = () => {
   emails.value = {}
@@ -222,7 +225,6 @@ const fetchEmails = () => {
 
 const autoRefreshContent = () => {
   fetchEmails()
-  emit('refreshContent')
 }
 
 const submitSearch = () => {
@@ -244,7 +246,7 @@ const deleteSelection = () => {
     return
   }
   working.value = true
-  api.deleteSelection(route.query.mailbox, selection.value).then(() => {
+  api.deleteSelection(currentMailbox.value, selection.value).then(() => {
     working.value = false
     displayNotification({ msg: $gettext('Message(s) deleted') })
     fetchEmails()
@@ -257,7 +259,7 @@ const markSelectionAsJunk = () => {
     return
   }
   working.value = true
-  api.markSelectionAsJunk(route.query.mailbox, selection.value).then(() => {
+  api.markSelectionAsJunk(currentMailbox.value, selection.value).then(() => {
     working.value = false
     displayNotification({ msg: $gettext('Message(s) marked as junk') })
     autoRefreshContent()
@@ -269,7 +271,7 @@ const markSelectionAsNotJunk = () => {
     return
   }
   working.value = true
-  api.markSelectionAsNotJunk(route.query.mailbox, selection.value).then(() => {
+  api.markSelectionAsNotJunk(currentMailbox.value, selection.value).then(() => {
     working.value = false
     displayNotification({ msg: $gettext('Message(s) marked as not junk') })
     autoRefreshContent()
@@ -281,7 +283,7 @@ const flagSelection = (status) => {
     return
   }
   working.value = true
-  api.flagSelection(route.query.mailbox, selection.value, status).then(() => {
+  api.flagSelection(currentMailbox.value, selection.value, status).then(() => {
     working.value = false
     selection.value = []
     displayNotification({ msg: $gettext('Message(s) flagged') })
@@ -292,7 +294,7 @@ const flagSelection = (status) => {
 
 const emptyMailbox = () => {
   loading.value = true
-  api.emptyUserMailbox(route.query.mailbox).then(() => {
+  api.emptyUserMailbox(currentMailbox.value).then(() => {
     emails.value = {}
     loading.value = false
     reloadMailboxCounters()
@@ -301,7 +303,7 @@ const emptyMailbox = () => {
 
 const toggleFollowState = async (email) => {
   const flag = email.flagged ? 'unflagged' : 'flagged'
-  await api.flagSelection(route.query.mailbox, [email.imapid], flag)
+  await api.flagSelection(currentMailbox.value, [email.imapid], flag)
   email.flagged = flag === 'flagged'
 }
 

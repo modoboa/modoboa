@@ -1,8 +1,10 @@
 <template>
   <div class="pa-4">
-    <div class="text-h6 font-weight-regular mb-4">{{ $gettext('Message filters') }}</div>
+    <div class="text-h6 font-weight-regular mb-4">
+      {{ $gettext('Message filters') }}
+    </div>
 
-    <v-toolbar dense floating color="white">
+    <v-toolbar color="white" flat>
       <v-autocomplete
         v-model="currentFilterSet"
         :label="$gettext('Select a filter set')"
@@ -20,11 +22,11 @@
         icon="mdi-plus"
         size="small"
         class="mx-4"
-        @click="showFilterSetForm = true"
         :title="$gettext('Add filter set')"
+        @click="showFilterSetForm = true"
       />
       <v-menu v-if="currentFilterSet">
-        <template v-slot:activator="{ props }">
+        <template #activator="{ props }">
           <v-btn
             icon="mdi-dots-vertical"
             v-bind="props"
@@ -33,10 +35,7 @@
           >
           </v-btn>
         </template>
-        <MenuItems
-          :items="getFilterSetActions()"
-          :obj="currentFilterSet"
-        />
+        <MenuItems :items="getFilterSetActions()" :obj="currentFilterSet" />
       </v-menu>
 
       <v-switch
@@ -49,17 +48,14 @@
       />
     </v-toolbar>
 
-    <div
-      v-if="currentFilterSet"
-      class="bg-white mt-4 pa-2"
-    >
+    <div v-if="currentFilterSet" class="bg-white mt-4 pa-2">
       <template v-if="!rawMode">
         <div class="d-flex align-center">
           <v-btn
             color="primary"
             :title="$gettext('Add new filter')"
-            @click="showFilterForm = true"
             class="mx-auto"
+            @click="showFilterForm = true"
           >
             <v-icon icon="mdi-plus" />
             {{ $gettext('Add') }}
@@ -76,11 +72,7 @@
           <template #[`item.filter_actions`]="{ index, item }">
             <v-menu offset-y>
               <template #activator="{ props }">
-                <v-btn
-                  icon="mdi-dots-horizontal"
-                  variant="text"
-                  v-bind="props"
-                >
+                <v-btn icon="mdi-dots-horizontal" variant="text" v-bind="props">
                 </v-btn>
               </template>
               <MenuItems :items="getFilterActions(item, index)" :obj="item" />
@@ -100,28 +92,20 @@
         </v-form>
         <v-btn
           color="success"
-          @click="saveFilterSet"
           :loading="saving"
           class="mt-2"
+          @click="saveFilterSet"
         >
           {{ $gettext('Save') }}
         </v-btn>
       </template>
     </div>
   </div>
-  <v-dialog
-    v-model="showFilterSetForm"
-    max-width="600"
-  >
-    <FilterSetForm
-      @close="closeFilterSetForm"
-    />
+  <v-dialog v-model="showFilterSetForm" max-width="600">
+    <FilterSetForm @close="closeFilterSetForm" />
   </v-dialog>
 
-  <v-dialog
-    v-model="showFilterForm"
-    max-width="800"
-  >
+  <v-dialog v-model="showFilterForm" max-width="800">
     <FilterForm
       v-if="currentFilterSet"
       :filter-set="currentFilterSet.name"
@@ -163,7 +147,7 @@ const showFilterForm = ref(false)
 const headers = [
   { title: $gettext('Name'), key: 'name' },
   { title: $gettext('Active'), key: 'enabled' },
-  { title: '', key: 'filter_actions', align: 'end' }
+  { title: '', key: 'filter_actions', align: 'end' },
 ]
 
 watch(currentFilterSet, (value) => {
@@ -171,7 +155,8 @@ watch(currentFilterSet, (value) => {
     fetchFilters(value.name)
     if (route.params.filterset !== value.name) {
       router.push({
-        name: 'AccountFilters', params: { filterset: value.name }
+        name: 'AccountFilters',
+        params: { filterset: value.name },
       })
     }
   } else {
@@ -181,7 +166,7 @@ watch(currentFilterSet, (value) => {
 
 watch(rawMode, (value) => {
   if (value) {
-    accountApi.downloadFilterSet(currentFilterSet.value.name).then(resp => {
+    accountApi.downloadFilterSet(currentFilterSet.value.name).then((resp) => {
       filterSetRawContent.value = resp.data
     })
   } else {
@@ -199,8 +184,7 @@ function getFilterSetName(filterSet) {
   let result = filterSet.name
   if (filterSet.active) {
     result += ' (' + $gettext('active') + ')'
-  }
-  else {
+  } else {
     result += ' (' + $gettext('inactive') + ')'
   }
   return result
@@ -218,8 +202,12 @@ function closeFilterForm() {
 }
 
 function fetchFilterSets() {
-  accountApi.getFilterSets().then(resp => {
-    if (resp.data.length > 0 && resp.data[0].active && resp.data[0].name === null) {
+  accountApi.getFilterSets().then((resp) => {
+    if (
+      resp.data.length > 0 &&
+      resp.data[0].active &&
+      resp.data[0].name === null
+    ) {
       // No filter is active
       filterSets.value = resp.data.slice(1)
     } else {
@@ -238,16 +226,23 @@ function fetchFilterSets() {
 
 function fetchFilters(filterSetName) {
   loadingFilters.value = true
-  accountApi.getFilters(filterSetName).then(resp => {
-    filters.value = resp.data
-    loadingFilters.value = false
-  }).catch(error => {
-    if (error.response.status === 518) { // Server is a teapot (sieve file contains custom code or is broken)
-      // Let the user see with rawmode
-      rawMode.value = true
-      busStore.displayNotification({ msg: $gettext('Failed to display template. Using raw mode'), type: 'warning' })
-    }
-  })
+  accountApi
+    .getFilters(filterSetName)
+    .then((resp) => {
+      filters.value = resp.data
+      loadingFilters.value = false
+    })
+    .catch((error) => {
+      if (error.response.status === 518) {
+        // Server is a teapot (sieve file contains custom code or is broken)
+        // Let the user see with rawmode
+        rawMode.value = true
+        busStore.displayNotification({
+          msg: $gettext('Failed to display template. Using raw mode'),
+          type: 'warning',
+        })
+      }
+    })
 }
 
 function editFilter(filter) {
@@ -263,10 +258,12 @@ function enableFilter(filter) {
 }
 
 function disableFilter(filter) {
-  accountApi.disableFilter(currentFilterSet.value.name, filter.name).then(() => {
-    filter.enabled = false
-    busStore.displayNotification({ msg: $gettext('Filter disabled') })
-  })
+  accountApi
+    .disableFilter(currentFilterSet.value.name, filter.name)
+    .then(() => {
+      filter.enabled = false
+      busStore.displayNotification({ msg: $gettext('Filter disabled') })
+    })
 }
 
 function deleteFilter(filter) {
@@ -331,14 +328,14 @@ const filterActions = [
   {
     label: $gettext('Edit'),
     icon: 'mdi-circle-edit-outline',
-    onClick: editFilter
+    onClick: editFilter,
   },
   {
     label: $gettext('Delete'),
     icon: 'mdi-delete-outline',
     onClick: deleteFilter,
-    color: 'red'
-  }
+    color: 'red',
+  },
 ]
 
 function getFilterActions(filter, index) {
@@ -348,28 +345,28 @@ function getFilterActions(filter, index) {
       label: $gettext('Disable'),
       icon: 'mdi-stop',
       color: 'red',
-      onClick: disableFilter
+      onClick: disableFilter,
     })
   } else {
     result.push({
       label: $gettext('Enable'),
       icon: 'mdi-check',
       color: 'success',
-      onClick: enableFilter
+      onClick: enableFilter,
     })
   }
   if (index !== filters.value.length - 1) {
     result.push({
       label: $gettext('Move down'),
       icon: 'mdi-arrow-down',
-      onClick: moveFilterDown
+      onClick: moveFilterDown,
     })
   }
   if (index !== 0) {
     result.push({
       label: $gettext('Move up'),
       icon: 'mdi-arrow-up',
-      onClick: moveFilterUp
+      onClick: moveFilterUp,
     })
   }
   return result
@@ -379,14 +376,14 @@ const filterSetActions = [
   {
     label: $gettext('Download filter set'),
     icon: 'mdi-download',
-    onClick: downloadFilterSet
+    onClick: downloadFilterSet,
   },
   {
     label: $gettext('Delete filter set'),
     color: 'error',
     icon: 'mdi-trash-can',
-    onClick: deleteFilterSet
-  }
+    onClick: deleteFilterSet,
+  },
 ]
 
 function getFilterSetActions() {
@@ -396,7 +393,7 @@ function getFilterSetActions() {
       label: $gettext('Activate filter set'),
       color: 'success',
       icon: 'mdi-check',
-      onClick: activateFilterSet
+      onClick: activateFilterSet,
     })
   }
   return result.concat(filterSetActions)
