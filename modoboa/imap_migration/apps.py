@@ -14,7 +14,7 @@ def load_imapmigration_settings():
     from . import app_settings
     from .api.v2 import serializers
 
-    param_tools.registry.add2(
+    param_tools.registry.add(
         "global",
         "imap_migration",
         gettext_lazy("IMAP Migration"),

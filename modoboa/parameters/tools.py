@@ -30,7 +30,7 @@ class Registry:
         """Constructor."""
         self._registry2 = {"global": {}, "user": {}}
 
-    def add2(
+    def add(
         self,
         level: str,
         app: str,

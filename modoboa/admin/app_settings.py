@@ -281,7 +281,7 @@ def load_admin_settings():
     from .api.v2 import serializers
 
     structure = init_structure()
-    param_tools.registry.add2(
+    param_tools.registry.add(
         "global",
         "admin",
         gettext_lazy("Administration"),

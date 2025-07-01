@@ -54,7 +54,7 @@ def load_maillog_settings():
     from modoboa.maillog.api.v2 import serializers
     from modoboa.parameters import tools as param_tools
 
-    param_tools.registry.add2(
+    param_tools.registry.add(
         "global",
         "maillog",
         gettext("Statistics"),

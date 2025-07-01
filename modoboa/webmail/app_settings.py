@@ -252,14 +252,14 @@ def load_settings():
     from modoboa.parameters import tools as param_tools
     from modoboa.webmail import serializers
 
-    param_tools.registry.add2(
+    param_tools.registry.add(
         "global",
         "webmail",
         gettext_lazy("Webmail"),
         GLOBAL_PARAMETERS_STRUCT,
         serializers.GlobalParametersSerializer,
     )
-    param_tools.registry.add2(
+    param_tools.registry.add(
         "user",
         "webmail",
         gettext_lazy("Webmail"),
