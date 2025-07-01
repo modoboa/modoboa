@@ -45,7 +45,7 @@ def load_settings():
     from modoboa.parameters import tools as param_tools
     from modoboa.contacts import serializers
 
-    param_tools.registry.add2(
+    param_tools.registry.add(
         "user",
         "contacts",
         gettext_lazy("Contacts"),

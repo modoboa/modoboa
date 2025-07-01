@@ -36,7 +36,7 @@ def load_settings():
     """Load app settings."""
     from modoboa.parameters import tools as param_tools
 
-    param_tools.registry.add2(
+    param_tools.registry.add(
         "global",
         "dmarc",
         _("DMARC"),

@@ -83,7 +83,7 @@ def load_settings():
     from modoboa.parameters import tools as param_tools
     from modoboa.calendars import serializers
 
-    param_tools.registry.add2(
+    param_tools.registry.add(
         "global",
         "calendars",
         gettext_lazy("Calendars"),

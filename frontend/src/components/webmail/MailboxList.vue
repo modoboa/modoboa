@@ -14,7 +14,13 @@
         @mouseleave="setHover(mailbox, false)"
       >
         <v-icon :icon="iconByMailboxType[mailbox.type]" class="mr-4" />
-        <template v-if="props.unseenCounters && mailbox.unseen > 0">
+        <template
+          v-if="
+            props.unseenCounters &&
+            mailbox.unseen > 0 &&
+            currentMailboxUnseen > 0
+          "
+        >
           <span
             v-if="mailbox.name === route.query.mailbox"
             class="font-weight-bold"
