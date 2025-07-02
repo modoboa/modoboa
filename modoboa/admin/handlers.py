@@ -308,7 +308,7 @@ def get_import_func(sender, objtype, **kwargs):
 @receiver(signals.post_save, sender=core_models.User)
 def disable_aliases_on_account_disabled(sender, instance, created, **kwargs):
     """Make sure aliases of a disabled account are also disabled."""
-    if created or not hasattr(instance, "mailbox"):
+    if created or not hasattr(instance, "mailbox") or instance.is_active:
         return
     for alr in instance.mailbox.aliasrecipient_set.all().select_related("alias"):
         if alr.alias.recipients_count == 1:
