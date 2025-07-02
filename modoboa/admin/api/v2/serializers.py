@@ -467,7 +467,7 @@ class WritableAccountSerializer(v1_serializers.WritableAccountSerializer):
     """Add support for aliases and sender addresses."""
 
     aliases = serializers.ListField(
-        child=lib_fields.DRFEmailFieldUTF8(), required=False
+        child=lib_fields.DRFEmailFieldUTF8AndEmptyUser(), required=False
     )
     mailbox = MailboxSerializer(required=False)
 
