@@ -12,6 +12,16 @@
         <v-col cols="6">{{ $gettext('Modified') }}</v-col>
         <v-col cols="6">{{ $date(alias.last_modification) }}</v-col>
       </v-row>
+      <v-row>
+        <v-col cols="6">{{ $gettext('Enabled') }}</v-col>
+        <v-col cols="6">
+          <v-icon
+            :color="alias.enabled ? 'success' : 'error'"
+            :icon="alias.enabled ? 'mdi-check-circle' : 'mdi-close-circle'"
+            variant="flat"
+          />
+        </v-col>
+      </v-row>
       <v-row v-if="alias.expiry">
         <v-col cols="6">{{ $gettext('Expire at') }}</v-col>
         <v-col cols="6"></v-col>

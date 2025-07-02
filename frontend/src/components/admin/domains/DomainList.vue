@@ -80,9 +80,13 @@
             >
               {{ $gettext('Relay') }}
             </v-chip>
-            <span v-if="!item.enabled" class="ml-2">
-              ({{ $gettext('disabled') }})
-            </span>
+          </td>
+          <td>
+            <v-icon
+              :color="item.enabled ? 'success' : 'error'"
+              :icon="item.enabled ? 'mdi-check-circle' : 'mdi-close-circle'"
+              variant="flat"
+            />
           </td>
           <td>
             {{ item.domainalias_count }} aliases
@@ -201,6 +205,7 @@ const busStore = useBusStore()
 
 const domainHeaders = [
   { title: $gettext('Name'), key: 'name' },
+  { title: $gettext('Enabled'), key: 'enabled', width: '5%' },
   { title: $gettext('Aliases'), key: 'domainalias_count' },
   {
     title: $gettext('DNS status'),

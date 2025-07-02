@@ -351,6 +351,7 @@ class IdentitySerializer(serializers.Serializer):
     identity = serializers.CharField()
     name_or_rcpt = serializers.CharField()
     tags = TagSerializer(many=True)
+    enabled = serializers.BooleanField()
     possible_actions = serializers.SerializerMethodField()
 
     def get_possible_actions(self, identity) -> list[IdPossibleActionsSerializer]:
