@@ -15,7 +15,7 @@
               prepend-icon="mdi-plus"
               class="mr-4"
             >
-              {{ $gettext('New') }}
+              {{ $pgettext('male', 'New') }}
             </v-btn>
           </template>
           <v-list density="compact">
@@ -114,7 +114,7 @@ import AccountCreationForm from '@/components/admin/identities/AccountCreationFo
 import ImportForm from '@/components/tools/ImportForm'
 import { importExportMixin } from '@/mixins/importExport'
 
-const { $gettext } = useGettext()
+const { $gettext, $pgettext } = useGettext()
 const { importContent, exportContent } = importExportMixin()
 
 const showCreationWizard = ref(false)

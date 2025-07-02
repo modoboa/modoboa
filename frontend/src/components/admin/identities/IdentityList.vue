@@ -59,6 +59,13 @@
           </router-link>
         </template>
       </template>
+      <template #[`item.enabled`]="{ item }">
+        <v-icon
+          :color="item.enabled ? 'success' : 'error'"
+          :icon="item.enabled ? 'mdi-check-circle' : 'mdi-close-circle'"
+          variant="flat"
+        />
+      </template>
       <template #[`item.tags`]="{ item }">
         <v-chip
           v-for="(tag, index) in item.tags"
@@ -105,7 +112,7 @@
 </template>
 
 <script setup lang="js">
-import { ref, computed, onMounted } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useGettext } from 'vue3-gettext'
 import MenuItems from '@/components/tools/MenuItems.vue'
 import ConfirmDialog from '@/components/tools/ConfirmDialog.vue'
@@ -114,11 +121,12 @@ import accountsApi from '@/api/accounts'
 import aliasesApi from '@/api/aliases'
 import identitiesApi from '@/api/identities'
 
-const { $gettext } = useGettext()
+const { $gettext, $pgettext } = useGettext()
 const router = useRouter()
 
 const headers = ref([
   { title: $gettext('Name'), key: 'identity' },
+  { title: $pgettext('female', 'Enabled'), key: 'enabled', width: '5%' },
   { title: $gettext('Fullname/recipient'), key: 'name_or_rcpt' },
   { title: $gettext('Tags'), key: 'tags' },
   {

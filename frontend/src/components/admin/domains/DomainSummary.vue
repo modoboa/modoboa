@@ -40,6 +40,16 @@
         <v-col cols="6">{{ $gettext('Aliases') }}</v-col>
         <v-col cols="6">{{ domain.mbalias_count }}</v-col>
       </v-row>
+      <v-row>
+        <v-col cols="6">{{ $gettext('Enabled') }}</v-col>
+        <v-col cols="6">
+          <v-icon
+            :color="domain.enabled ? 'success' : 'error'"
+            :icon="domain.enabled ? 'mdi-check-circle' : 'mdi-close-circle'"
+            variant="flat"
+          />
+        </v-col>
+      </v-row>
     </v-card-text>
   </v-card>
 </template>

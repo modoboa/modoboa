@@ -31,6 +31,16 @@
         <v-col cols="6">{{ $gettext('Phone number') }}</v-col>
         <v-col cols="6">{{ account.phone_number }}</v-col>
       </v-row>
+      <v-row>
+        <v-col cols="6">{{ $gettext('Enabled') }}</v-col>
+        <v-col cols="6">
+          <v-icon
+            :color="account.is_active ? 'success' : 'error'"
+            :icon="account.is_active ? 'mdi-check-circle' : 'mdi-close-circle'"
+            variant="flat"
+          />
+        </v-col>
+      </v-row>
       <template v-if="account.mailbox">
         <v-row>
           <v-col cols="6">{{ $gettext('Quota') }} </v-col>
