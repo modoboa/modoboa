@@ -234,6 +234,9 @@ Your uwsgi configuration should be::
     processes = 4
     vhost = true
     no-default-app = true
+    buffer-size = 8192
+    max-requests = 5000
+    single-interpreter = true
 
 The plugins directive should be turned on if you use a uwsgi
 installation that requires it. If uwsgi was installed from pip, it

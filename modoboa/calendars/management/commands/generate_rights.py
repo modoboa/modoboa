@@ -27,16 +27,16 @@ class Command(BaseCommand):
             help="Force generation of rights file",
         )
 
-    def _generate_acr(self, name, user, collection, perm="rw", comment=None):
+    def _generate_acr(self, name, user, collection, perm="RrWw", comment=None):
         """Write a new access control rule to the config file."""
         if comment is not None:
             self._cfgfile.write(f"\n# {comment}")
         self._cfgfile.write(
             f"""
 [{name}]
-user = {user}
-collection = {collection}
-permissions = {perm}
+user: {user}
+collection: {collection}
+permissions: {perm}
 """
         )
 
@@ -46,9 +46,9 @@ permissions = {perm}
             section = f"{acr.mailbox}-to-{acr.calendar}-acr"
             permission = ""
             if acr.read:
-                permission += "r"
+                permission += "Rr"
             if acr.write:
-                permission += "w"
+                permission += "Ww"
             self._generate_acr(
                 section,
                 acr.mailbox.full_address,
@@ -65,7 +65,7 @@ permissions = {perm}
                     section,
                     calendar.access_token,
                     calendar._path,
-                    perm="r",
+                    perm="Rr",
                     comment="Read-only access using a token",
                 )
 
