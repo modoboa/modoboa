@@ -43,17 +43,17 @@ following content inside::
       Require all granted
     </Directory>
 
-    Alias /new-admin <modoboa_instance_path>/frontend
-    <Directory <modoboa_instance_path>/frontend>
-      Options FollowSymLinks
-      Require all granted
-    </Directory>
-
-    WSGIScriptAlias / <modoboa_instance_path>/instance/wsgi.py
+    WSGIScriptAliasMatch ^/(api|accounts) <modoboa_instance_path>/instance/wsgi.py
     WSGIApplicationGroup %{GLOBAL}
 
     # Pass Authorization header to enable API usage:
     WSGIPassAuthorization On
+
+    Alias / <modoboa_instance_path>/frontend
+    <Directory <modoboa_instance_path>/frontend>
+      Options FollowSymLinks
+      Require all granted
+    </Directory>
 
     LogLevel info
   </VirtualHost>
@@ -157,7 +157,13 @@ Here is a sample nginx configuration::
           try_files $uri $uri/ =404;
       }
 
-      location ^~ /new-admin {
+      location ~ ^/(api|accounts) {
+          include uwsgi_params;
+          uwsgi_param UWSGI_SCRIPT instance.wsgi:application;
+          uwsgi_pass modoboa;
+      }
+
+      location / {
           alias  <modoboa_instance_path>/frontend/;
           index  index.html;
 
@@ -167,13 +173,6 @@ Here is a sample nginx configuration::
 
           try_files $uri $uri/ /index.html = 404;
       }
-
-      location / {
-          include uwsgi_params;
-          uwsgi_param UWSGI_SCRIPT instance.wsgi:application;
-          uwsgi_pass modoboa;
-      }
-      %{extra_config}
   }
 
 ``<modoboa instance name>``, ``<hostname>``, ``<modoboa_instance_path>`` and ``<ssl...>`` must be replaced by the value you used.

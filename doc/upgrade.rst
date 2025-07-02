@@ -151,7 +151,13 @@ Specific instructions
 Version 2.4.0
 =============
 
-Legacy web interface has been removed and all extensions have been
+.. warning::
+
+   The ``modoboa-amavis`` extension has not been migrated into the
+   core Modoboa package yet. If you are using it, **you cannot install
+   version 2.4.0 yet**.
+
+Legacy web interface has been removed and almost all extensions have been
 integrated to the core Modoboa package.
 
 Pre update
@@ -175,18 +181,22 @@ Pre update
 
        > echo "UPDATE django_content_type SET app_label='autoreply' WHERE app_label='postfix_autoreply'" |  mysql -u root -p modoboa
        > echo "UPDATE django_migrations SET app='autoreply' WHERE app='postfix_autoreply'" | mysql -u root -p modoboa
+       > echo "UPDATE django_content_type SET app_label='contacts' WHERE app_label='modoboa_contacts'" |  mysql -u root -p modoboa
+       > echo "UPDATE django_migrations SET app='contacts' WHERE app='modoboa_contacts'" | mysql -u root -p modoboa
+       > echo "UPDATE django_content_type SET app_label='calendars' WHERE app_label='modoboa_radicale'" |  mysql -u root -p modoboa
+       > echo "UPDATE django_migrations SET app='calendars' WHERE app='modoboa_radicale'" | mysql -u root -p modoboa
 
 Required changes to :file:`settings.py`
 ---------------------------------------
 
-- Rename the following extensions:
+- Rename the following extensions in the ``MODOBOA_APPS`` variable:
 
-  - modoboa.postfix_autoreply -> modoboa.autoreply
-  - modoboa_contacts -> modoboa.contacts
-  - modoboa_radicale -> modoboa.calendars
-  - modoboa_webmail -> modoboa.webmail
+  - ``modoboa.postfix_autoreply`` -> ``modoboa.autoreply``
+  - ``modoboa_contacts`` -> ``modoboa.contacts``
+  - ``modoboa_radicale`` -> ``modoboa.calendars``
+  - ``modoboa_webmail`` -> ``modoboa.webmail``
 
-- Remove configuration blocks related to modoboa_contacts and modoboa_radicale plugins
+- Remove configuration blocks related to ``modoboa_contacts`` and ``modoboa_radicale`` plugins
 
 - Remove ``AjaxLoginRedirect`` from ``MIDDLEWARE`` variable:
 
@@ -218,9 +228,15 @@ Required changes to :file:`settings.py`
 Post update
 -----------
 
-Run the following command::
+- Run the following command::
 
   $ python manage.py load_initial_data
+
+- Update your :ref:`webserver <webserver>` configuration
+
+- Remove ``autoreply`` service definition from postfix`s :file:`master.cf` file if you were using it
+
+- Then proceed with regular upgrade instructions
 
 Version 2.3.3
 =============
