@@ -14,27 +14,23 @@
         @mouseleave="setHover(mailbox, false)"
       >
         <v-icon :icon="iconByMailboxType[mailbox.type]" class="mr-4" />
-        <template
-          v-if="
-            props.unseenCounters &&
-            mailbox.unseen > 0 &&
-            currentMailboxUnseen > 0
-          "
-        >
-          <span
-            v-if="mailbox.name === route.query.mailbox"
-            class="font-weight-bold"
-          >
+        <template v-if="mailbox.name === route.query.mailbox">
+          <span v-if="currentMailboxUnseen > 0" class="font-weight-bold">
             {{ getMailboxLabel(mailbox) }} ({{
               getCurrentMailboxUnseen(mailbox)
             }})
           </span>
-          <span v-else class="font-weight-bold">
-            {{ getMailboxLabel(mailbox) }} ({{ mailbox.unseen }})
+          <span v-else>
+            {{ getMailboxLabel(mailbox) }}
           </span>
         </template>
         <template v-else>
-          {{ getMailboxLabel(mailbox) }}
+          <span v-if="mailbox.unseen > 0" class="font-weight-bold">
+            {{ getMailboxLabel(mailbox) }} ({{ mailbox.unseen }})
+          </span>
+          <span v-else>
+            {{ getMailboxLabel(mailbox) }}
+          </span>
         </template>
         <v-spacer />
         <v-btn
