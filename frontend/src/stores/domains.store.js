@@ -5,7 +5,7 @@ import domainApi from '@/api/domains'
 
 export const useDomainsStore = defineStore('domains', () => {
   const domainsLoaded = ref(false)
-  const domains = ref({})
+  const domains = ref([])
 
   async function $reset() {
     domainsLoaded.value = false

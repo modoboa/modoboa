@@ -14,7 +14,7 @@
 </template>
 
 <script setup>
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { useGettext } from 'vue3-gettext'
 import { useRoute } from 'vue-router'
 import ParametersForm from '@/components/tools/ParametersForm'
@@ -38,6 +38,10 @@ function loadParams(app) {
     label.value = response.data.label
   })
 }
+
+watch(route, (toRoute) => {
+  loadParams(toRoute.params.app)
+})
 
 loadParams(route.params.app)
 </script>

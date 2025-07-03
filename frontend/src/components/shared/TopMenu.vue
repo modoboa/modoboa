@@ -78,9 +78,13 @@ const { $gettext } = useGettext()
 const applications = ref([])
 
 const userInitials = computed(() => {
-  return props.user.first_name && props.user.last_name
-    ? `${props.user.first_name[0].toUpperCase()}${props.user.last_name[0].toUpperCase()}`
-    : props.user.username.slice(0, 2).toUpperCase()
+  if (props.user.first_name && props.user.last_name) {
+    return `${props.user.first_name[0].toUpperCase()}${props.user.last_name[0].toUpperCase()}`
+  }
+  if (props.user.username) {
+    props.user.username.slice(0, 2).toUpperCase()
+  }
+  return ''
 })
 
 const userMenuItems = computed(() => {

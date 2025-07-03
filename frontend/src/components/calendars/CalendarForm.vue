@@ -34,8 +34,8 @@
       </v-card-text>
       <v-card-actions>
         <v-spacer />
-        <v-btn @click="close">{{ $gettext('Close') }}</v-btn>
-        <v-btn color="primary" type="submit">
+        <v-btn :loading="working" @click="close">{{ $gettext('Close') }}</v-btn>
+        <v-btn color="primary" type="submit" :loading="working">
           {{ submitLabel }}
         </v-btn>
       </v-card-actions>
@@ -64,14 +64,17 @@ const { $gettext } = useGettext()
 const busStore = useBusStore()
 
 onMounted(() => {
-  calendar.value = { ...props.initialCalendar }
-  shared.value = props.initialCalendar.domain !== undefined
+  if (props.initialCalendar) {
+    calendar.value = { ...props.initialCalendar }
+    shared.value = props.initialCalendar.domain !== undefined
+  }
 })
 
 const calendar = ref({})
 const shared = ref(false)
 const formErrors = ref({})
 const formRef = ref()
+const working = ref(false)
 
 const submitLabel = computed(() => {
   if (calendar.value.pk) {
@@ -93,19 +96,27 @@ async function submit() {
     return
   }
   let msg
-  if (calendar.value.pk) {
-    await calendarsApi.updateUserCalendar(calendar.value.pk, calendar.value)
-    msg = $gettext('Calendar updated')
-  } else {
-    await calendarsApi.createUserCalendar(calendar.value)
-    msg = $gettext('Calendar created')
+  working.value = true
+  try {
+    if (calendar.value.pk) {
+      await calendarsApi.updateUserCalendar(calendar.value.pk, calendar.value)
+      msg = $gettext('Calendar updated')
+    } else {
+      await calendarsApi.createUserCalendar(calendar.value)
+      msg = $gettext('Calendar created')
+    }
+    if (
+      props.initialCalendar &&
+      props.initialCalendar.color !== calendar.value.color
+    ) {
+      emit('colorChanged', calendar.value)
+    }
+    close()
+    busStore.displayNotification({
+      msg,
+    })
+  } finally {
+    working.value = false
   }
-  if (props.initialCalendar.color !== calendar.value.color) {
-    emit('colorChanged', calendar.value)
-  }
-  close()
-  busStore.displayNotification({
-    msg,
-  })
 }
 </script>

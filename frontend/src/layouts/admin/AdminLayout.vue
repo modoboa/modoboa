@@ -5,14 +5,12 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
 import { useGettext } from 'vue3-gettext'
-import { useRouter } from 'vue-router'
 import { useAuthStore, useParametersStore } from '@/stores'
 import parametersApi from '@/api/parameters'
 import capabilitiesApi from '@/api/capabilities'
 import ConnectedLayout from '@/layouts/connected/ConnectedLayout.vue'
 
 const { $gettext } = useGettext()
-const router = useRouter()
 const authStore = useAuthStore()
 const parametersStore = useParametersStore()
 
