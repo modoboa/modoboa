@@ -25,6 +25,9 @@ const routes = [
   {
     path: '/admin',
     component: () => import('@/layouts/admin/AdminLayout.vue'),
+    meta: {
+      allowedRoles: ['DomainAdmins', 'Resellers', 'SuperAdmins'],
+    },
     children: [
       {
         path: '',
@@ -287,6 +290,7 @@ const routes = [
         component: () => import('@/layouts/user/UserLayout.vue'),
         meta: {
           requiresAuth: true,
+          requiresMailbox: true,
         },
         children: [
           {
@@ -304,6 +308,7 @@ const routes = [
         component: () => import('@/layouts/user/UserLayout.vue'),
         meta: {
           requiresAuth: true,
+          requiresMailbox: true,
         },
         children: [
           {
@@ -312,6 +317,7 @@ const routes = [
             component: () => import('@/views/calendars/CalendarView.vue'),
             meta: {
               requiresAuth: true,
+              requiresMailbox: true,
             },
           },
         ],
@@ -321,6 +327,7 @@ const routes = [
         component: () => import('@/layouts/webmail/WebmailLayout.vue'),
         meta: {
           requiresAuth: true,
+          requiresMailbox: true,
         },
         children: [
           {
@@ -329,6 +336,7 @@ const routes = [
             component: () => import('@/views/webmail/MailboxView.vue'),
             meta: {
               requiresAuth: true,
+              requiresMailbox: true,
             },
           },
           {
@@ -337,6 +345,7 @@ const routes = [
             component: () => import('@/views/webmail/EmailView.vue'),
             meta: {
               requiresAuth: true,
+              requiresMailbox: true,
             },
           },
           {
@@ -345,6 +354,7 @@ const routes = [
             component: () => import('@/views/webmail/ComposeEmailView.vue'),
             meta: {
               requiresAuth: true,
+              requiresMailbox: true,
             },
           },
           {
@@ -353,6 +363,7 @@ const routes = [
             component: () => import('@/views/webmail/ReplyEmailView.vue'),
             meta: {
               requiresAuth: true,
+              requiresMailbox: true,
             },
           },
           {
@@ -361,6 +372,7 @@ const routes = [
             component: () => import('@/views/webmail/ForwardEmailView.vue'),
             meta: {
               requiresAuth: true,
+              requiresMailbox: true,
             },
           },
         ],
@@ -391,7 +403,7 @@ router.beforeEach(async (to, from, next) => {
     if (isAuth) {
       if (to.meta.allowedRoles !== undefined) {
         if (to.meta.allowedRoles.indexOf(authStore.authUser.role) === -1) {
-          next({ name: 'Dashboard' })
+          next({ name: 'AccountSettings' })
           return
         }
       }

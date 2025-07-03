@@ -11,12 +11,15 @@ import DomainEditForm from '@/components/admin/domains/DomainEditForm'
 import { useRoute } from 'vue-router'
 import { ref } from 'vue'
 import domainsApi from '@/api/domains'
+import { useDomainsStore } from '@/stores'
 
 const { $gettext } = useGettext()
 const route = useRoute()
+const domainsStore = useDomainsStore()
 
 const domain = ref({})
 
+domainsStore.getDomains()
 domainsApi.getDomain(route.params.id).then((resp) => {
   domain.value = resp.data
 })

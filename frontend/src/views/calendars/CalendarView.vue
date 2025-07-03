@@ -252,8 +252,9 @@ async function deleteCalendar(calendarPk) {
   }
   await api.deleteUserCalendar(calendarPk)
   const fullc = calendarRef.value.getApi()
-  const evtSource = fullc.getEventSourceById(`user-${calendar.pk}`)
+  const evtSource = fullc.getEventSourceById(`user-${calendarPk}`)
   evtSource.remove()
+  fetchUserCalendars()
   busStore.displayNotification({ msg: $gettext('Calendar deleted') })
 }
 

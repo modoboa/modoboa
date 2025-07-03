@@ -82,8 +82,8 @@
       </v-card-text>
       <v-card-actions>
         <v-spacer />
-        <v-btn @click="close">{{ $gettext('Close') }}</v-btn>
-        <v-btn color="primary" type="submit">
+        <v-btn :loading="working" @click="close">{{ $gettext('Close') }}</v-btn>
+        <v-btn color="primary" type="submit" :loading="working">
           {{ $gettext('Save') }}
         </v-btn>
       </v-card-actions>
@@ -119,6 +119,7 @@ const userCalendars = ref([])
 const form = ref({})
 const formErrors = ref({})
 const formRef = ref()
+const working = ref(false)
 
 const title = computed(() => {
   return props.event ? $gettext('Edit event') : $gettext('New event')
@@ -148,7 +149,6 @@ watch(
         'yyyy-MM-dd HH:mm'
       )
       form.value.end = DateTime.fromISO(value.end).toFormat('yyyy-MM-dd HH:mm')
-      console.log(form.value)
       api.getAttendees().then((resp) => {
         attendees.value = resp.data
       })
@@ -166,17 +166,22 @@ async function saveEvent() {
   if (!valid) {
     return
   }
-  var data = JSON.parse(JSON.stringify(form.value))
-  if (!props.event) {
-    api.createUserEvent(form.value.calendar, data).then(() => {
-      busStore.displayNotification({ msg: $gettext('Event added') })
-      close()
-    })
-  } else {
-    api.patchUserEvent(form.value.calendar, props.event.id, data).then(() => {
-      busStore.displayNotification({ msg: $gettext('Event updated') })
-      close()
-    })
+  working.value = true
+  try {
+    var data = JSON.parse(JSON.stringify(form.value))
+    if (!props.event) {
+      api.createUserEvent(form.value.calendar, data).then(() => {
+        busStore.displayNotification({ msg: $gettext('Event added') })
+        close()
+      })
+    } else {
+      api.patchUserEvent(form.value.calendar, props.event.id, data).then(() => {
+        busStore.displayNotification({ msg: $gettext('Event updated') })
+        close()
+      })
+    }
+  } finally {
+    working.value = false
   }
 }
 

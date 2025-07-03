@@ -14,7 +14,7 @@ def cleanup_and_rename(apps, schema_editor):
     # Rename parameters
     LocalConfig = apps.get_model("core", "LocalConfig")
     cfg = LocalConfig.objects.first()
-    if not cfg:
+    if not cfg or "postfix_autoreply" not in cfg._parameters:
         return
     cfg._parameters["autoreply"] = copy.deepcopy(cfg._parameters["postfix_autoreply"])
     del cfg._parameters["postfix_autoreply"]
