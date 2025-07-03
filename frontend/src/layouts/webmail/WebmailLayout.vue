@@ -149,11 +149,10 @@ function openMailbox(mailbox) {
   })
 }
 
-const fetchUserMailboxes = () => {
-  api.getUserMailboxes().then((resp) => {
-    userMailboxes.value = resp.data.mailboxes
-    hdelimiter.value = resp.data.hdelimiter
-  })
+const fetchUserMailboxes = async () => {
+  const resp = await api.getUserMailboxes()
+  userMailboxes.value = resp.data.mailboxes
+  hdelimiter.value = resp.data.hdelimiter
 }
 
 const openComposeForm = () => {
@@ -213,8 +212,7 @@ watch(
   }
 )
 
-fetchUserMailboxes()
-api.getUserMailboxQuota(route.query.mailbox || 'INBOX').then((resp) => {
-  mailboxQuota.value = resp.data
-})
+await fetchUserMailboxes()
+const resp = await api.getUserMailboxQuota(route.query.mailbox || 'INBOX')
+mailboxQuota.value = resp.data
 </script>
