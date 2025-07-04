@@ -84,7 +84,7 @@ async function sendFile() {
       response.data.counter
     )
     busStore.displayNotification({ msg })
-    emit('eventsImported', props.calendar)
+    emit('eventsImported', props.calendar.pk)
   } catch (err) {
     onSendError(err.response)
   } finally {

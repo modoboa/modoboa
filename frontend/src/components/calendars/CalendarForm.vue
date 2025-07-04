@@ -109,7 +109,7 @@ async function submit() {
       props.initialCalendar &&
       props.initialCalendar.color !== calendar.value.color
     ) {
-      emit('colorChanged', calendar.value)
+      emit('colorChanged', calendar.value.pk)
     }
     close()
     busStore.displayNotification({

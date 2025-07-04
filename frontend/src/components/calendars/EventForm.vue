@@ -81,6 +81,14 @@
         </template>
       </v-card-text>
       <v-card-actions>
+        <v-btn
+          v-if="props.event"
+          :loading="working"
+          color="error"
+          @click="deleteEvent"
+        >
+          {{ $gettext('Delete') }}
+        </v-btn>
         <v-spacer />
         <v-btn :loading="working" @click="close">{{ $gettext('Close') }}</v-btn>
         <v-btn color="primary" type="submit" :loading="working">
@@ -109,7 +117,7 @@ const props = defineProps({
     default: null,
   },
 })
-const emit = defineEmits(['close'])
+const emit = defineEmits(['close', 'refreshCalendar'])
 
 const { $gettext } = useGettext()
 const busStore = useBusStore()
@@ -170,16 +178,26 @@ async function saveEvent() {
   try {
     var data = JSON.parse(JSON.stringify(form.value))
     if (!props.event) {
-      api.createUserEvent(form.value.calendar, data).then(() => {
-        busStore.displayNotification({ msg: $gettext('Event added') })
-        close()
-      })
+      await api.createUserEvent(form.value.calendar, data)
+      busStore.displayNotification({ msg: $gettext('Event added') })
     } else {
-      api.patchUserEvent(form.value.calendar, props.event.id, data).then(() => {
-        busStore.displayNotification({ msg: $gettext('Event updated') })
-        close()
-      })
+      await api.patchUserEvent(form.value.calendar, props.event.id, data)
+      busStore.displayNotification({ msg: $gettext('Event updated') })
     }
+    emit('refreshCalendar', data.calendar)
+    close()
+  } finally {
+    working.value = false
+  }
+}
+
+async function deleteEvent() {
+  working.value = true
+  try {
+    await api.deleteUserEvent(form.value.calendar, props.event.id)
+    busStore.displayNotification({ msg: $gettext('Event deleted') })
+    emit('refreshCalendar', form.value.calendar)
+    close()
   } finally {
     working.value = false
   }
