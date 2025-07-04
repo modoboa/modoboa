@@ -51,7 +51,9 @@ export default {
       data
     )
   },
-
+  deleteUserEvent(calendarPk, eventId) {
+    return repository.delete(`/user-calendars/${calendarPk}/events/${eventId}/`)
+  },
   getAttendees() {
     return repository.get('/attendees/')
   },
