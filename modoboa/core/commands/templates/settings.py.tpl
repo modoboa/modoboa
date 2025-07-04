@@ -198,7 +198,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 OAUTH2_PROVIDER = {
     'OIDC_ENABLED': True,
     'OIDC_RP_INITIATED_LOGOUT_ENABLED': True,
-    'OIDC_RP_INITIATED_LOGOUT_ALWAYS_PROMPT': True,
+    'OIDC_RP_INITIATED_LOGOUT_ALWAYS_PROMPT': False,
     'OIDC_RSA_PRIVATE_KEY': env.str('OIDC_RSA_PRIVATE_KEY', multiline=True),
     'SCOPES': {
         'openid': 'OpenID Connect scope',

@@ -18,6 +18,7 @@
     <EventForm
       :info="selectInfo"
       :event="selectedEvent"
+      @refresh-calendar="refreshCalendarEvents"
       @close="closeEventForm"
     />
   </v-dialog>
@@ -183,9 +184,9 @@ function fetchUserCalendars() {
   })
 }
 
-function refreshCalendarEvents(calendar) {
+function refreshCalendarEvents(calendarPk) {
   const fullc = calendarRef.value.getApi()
-  const evtSource = fullc.getEventSourceById(`user-${calendar.pk}`)
+  const evtSource = fullc.getEventSourceById(`user-${calendarPk}`)
   evtSource.refetch()
 }
 
