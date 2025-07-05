@@ -64,12 +64,12 @@ msgstr ""
 msgid "Absolute time range"
 msgstr "Absolut tidsintervall"
 
-#: src/views/calendars/CalendarView.vue:103
+#: src/views/calendars/CalendarView.vue:104
 msgid "Access rules"
 msgstr "Åtkomstregler"
 
 #: src/components/calendars/CalendarAccessRulesForm.vue:42
-#: src/components/shared/TopMenu.vue:89
+#: src/components/shared/TopMenu.vue:93
 #: src/views/admin/identities/AccountView.vue:4
 #: src/views/admin/identities/IdentitiesView.vue:23
 msgid "Account"
@@ -229,7 +229,7 @@ msgid "Alarm re-opened"
 msgstr "Larm öppnat på nytt"
 
 #: src/components/admin/domains/DomainList.vue:328
-#: src/layouts/admin/AdminLayout.vue:52
+#: src/layouts/admin/AdminLayout.vue:50
 msgid "Alarms"
 msgstr "Larm"
 
@@ -342,7 +342,7 @@ msgstr "Försöker logga in dig."
 msgid "Attendees"
 msgstr "Deltagare"
 
-#: src/layouts/admin/AdminLayout.vue:67
+#: src/layouts/admin/AdminLayout.vue:65
 #: src/views/admin/monitoring/AuditTrailView.vue:3
 msgid "Audit trail"
 msgstr "Verifieringskedja"
@@ -406,11 +406,11 @@ msgstr "Födelsedatum"
 msgid "Calendar"
 msgstr "Kalender"
 
-#: src/components/calendars/CalendarForm.vue:101
+#: src/components/calendars/CalendarForm.vue:106
 msgid "Calendar created"
 msgstr "Kalender skapad"
 
-#: src/views/calendars/CalendarView.vue:257
+#: src/views/calendars/CalendarView.vue:259
 msgid "Calendar deleted"
 msgstr "Kalender raderad"
 
@@ -422,7 +422,7 @@ msgstr "Kalenderinformation"
 msgid "Calendar sharing"
 msgstr "Kalenderdelning"
 
-#: src/components/calendars/CalendarForm.vue:98
+#: src/components/calendars/CalendarForm.vue:103
 msgid "Calendar updated"
 msgstr "Kalender uppdaterad"
 
@@ -506,7 +506,7 @@ msgstr "Klicka här för att kopiera nyckeln"
 #: src/components/calendars/CalendarAccessRulesForm.vue:77
 #: src/components/calendars/CalendarDetail.vue:37
 #: src/components/calendars/CalendarForm.vue:37
-#: src/components/calendars/EventForm.vue:85
+#: src/components/calendars/EventForm.vue:93
 #: src/components/calendars/ImportEventsForm.vue:27
 #: src/components/contacts/AddressBookInfo.vue:27
 #: src/components/contacts/CategoryForm.vue:22
@@ -608,7 +608,7 @@ msgstr "Land"
 
 #: src/components/account/FilterForm.vue:195
 #: src/components/account/FilterSetForm.vue:30
-#: src/components/calendars/CalendarForm.vue:80
+#: src/components/calendars/CalendarForm.vue:83
 #: src/components/webmail/MailboxForm.vue:79
 msgid "Create"
 msgstr "Skapa"
@@ -670,7 +670,7 @@ msgstr "Daglig sändningsgräns för meddelanden"
 msgid "Daily sending limit"
 msgstr "Daglig sändningsgräns"
 
-#: src/layouts/admin/AdminLayout.vue:34
+#: src/layouts/admin/AdminLayout.vue:32
 msgid "Dashboard"
 msgstr "Instrumentbräda"
 
@@ -706,10 +706,11 @@ msgstr ""
 #: src/components/admin/identities/IdentityList.vue:206
 #: src/components/admin/imap_migration/MigrationsList.vue:123
 #: src/components/admin/imap_migration/ProvidersList.vue:124
+#: src/components/calendars/EventForm.vue:90
 #: src/components/contacts/CategoryForm.vue:18
 #: src/components/contacts/ContactList.vue:143
 #: src/views/account/FiltersView.vue:334
-#: src/views/calendars/CalendarView.vue:108
+#: src/views/calendars/CalendarView.vue:109
 msgid "Delete"
 msgstr "Radera"
 
@@ -721,7 +722,7 @@ msgstr "Ta bort filteruppsättning"
 msgid "Delete this mailbox"
 msgstr "Ta bort den här brevlådan"
 
-#: src/layouts/webmail/WebmailLayout.vue:194
+#: src/layouts/webmail/WebmailLayout.vue:193
 msgid "Delete this mailbox?"
 msgstr "Ta bort den här brevlådan?"
 
@@ -867,7 +868,7 @@ msgstr "Ta inte bort domänmappen"
 msgid "Do you really want to delete the domain %{ domain }?"
 msgstr "Vill du verkligen ta bort domänen %{ domain }?"
 
-#: src/views/calendars/CalendarView.vue:247
+#: src/views/calendars/CalendarView.vue:248
 msgid "Do you really want to delete this calendar?"
 msgstr "Vill du verkligen ta bort den här kalendern?"
 
@@ -919,7 +920,7 @@ msgstr "Domännamn (ex: domain.tld)"
 msgid "domain's default value"
 msgstr "domänens standardvärde"
 
-#: src/layouts/admin/AdminLayout.vue:40
+#: src/layouts/admin/AdminLayout.vue:38
 #: src/views/admin/domains/DomainsView.vue:4
 msgid "Domains"
 msgstr "Domäner"
@@ -942,7 +943,7 @@ msgstr "E-post"
 #: src/components/admin/imap_migration/ProvidersList.vue:130
 #: src/components/contacts/ContactList.vue:138
 #: src/views/account/FiltersView.vue:329
-#: src/views/calendars/CalendarView.vue:98
+#: src/views/calendars/CalendarView.vue:99
 msgid "Edit"
 msgstr "Redigera"
 
@@ -974,7 +975,7 @@ msgstr "Redigera domän"
 msgid "Edit domain alias"
 msgstr "Redigera domänalias"
 
-#: src/components/calendars/EventForm.vue:124
+#: src/components/calendars/EventForm.vue:133
 msgid "Edit event"
 msgstr "Redigera händelse"
 
@@ -1010,7 +1011,7 @@ msgstr "E-post"
 msgid "Email address"
 msgstr "E-postadress"
 
-#: src/layouts/admin/AdminLayout.vue:85
+#: src/layouts/admin/AdminLayout.vue:83
 msgid "Email providers"
 msgstr "E-postleverantörer"
 
@@ -1071,12 +1072,17 @@ msgstr "Ange ett enkelt användarnamn eller en e-postadress"
 msgid "Enter an email address"
 msgstr "Ange en e-postadress"
 
-#: src/components/calendars/EventForm.vue:172
+#: src/components/calendars/EventForm.vue:182
 msgid "Event added"
 msgstr "Event added"
 
-#: src/components/calendars/EventForm.vue:177
-#: src/views/calendars/CalendarView.vue:224
+#: src/components/calendars/EventForm.vue:198
+#, fuzzy
+msgid "Event deleted"
+msgstr "Händelse uppdaterad"
+
+#: src/components/calendars/EventForm.vue:185
+#: src/views/calendars/CalendarView.vue:225
 msgid "Event updated"
 msgstr "Händelse uppdaterad"
 
@@ -1271,7 +1277,7 @@ msgstr ""
 msgid "Identification"
 msgstr "Identifikation"
 
-#: src/layouts/admin/AdminLayout.vue:46
+#: src/layouts/admin/AdminLayout.vue:44
 #: src/views/admin/identities/IdentitiesView.vue:4
 msgid "Identities"
 msgstr "Identiteter"
@@ -1292,7 +1298,7 @@ msgstr ""
 "Om du konfigurerade det nyligen, vänta tills den första rapporten tas emot "
 "och behandlas."
 
-#: src/layouts/admin/AdminLayout.vue:80
+#: src/layouts/admin/AdminLayout.vue:78
 msgid "IMAP Migration"
 msgstr "IMAP migrering"
 
@@ -1301,7 +1307,7 @@ msgid "IMAP Port"
 msgstr "IMAP port"
 
 #: src/components/tools/ImportForm.vue:54
-#: src/views/calendars/CalendarView.vue:113
+#: src/views/calendars/CalendarView.vue:114
 msgid "Import"
 msgstr "Importera"
 
@@ -1345,8 +1351,8 @@ msgstr ""
 "Informera <strong>ALLA</strong> dina användare att de måste logga in på "
 "Modoboa för att slutföra operationen"
 
-#: src/layouts/admin/AdminLayout.vue:111 src/views/admin/InformationView.vue:4
-#: src/views/calendars/CalendarView.vue:93
+#: src/layouts/admin/AdminLayout.vue:109 src/views/admin/InformationView.vue:4
+#: src/views/calendars/CalendarView.vue:94
 msgid "Information"
 msgstr "Information"
 
@@ -1445,7 +1451,7 @@ msgstr "Lokal domän (valfritt)§"
 msgid "Logger"
 msgstr "Logger"
 
-#: src/components/shared/TopMenu.vue:96
+#: src/components/shared/TopMenu.vue:100
 msgid "Logout"
 msgstr "Logga ut"
 
@@ -1461,7 +1467,7 @@ msgstr ""
 msgid "Mailbox"
 msgstr "Brevlåda"
 
-#: src/layouts/webmail/WebmailLayout.vue:188
+#: src/layouts/webmail/WebmailLayout.vue:187
 msgid "Mailbox compressed"
 msgstr "Brevlåda komprimerad"
 
@@ -1469,7 +1475,7 @@ msgstr "Brevlåda komprimerad"
 msgid "Mailbox created"
 msgstr "Brevlåda skapad"
 
-#: src/layouts/webmail/WebmailLayout.vue:205
+#: src/layouts/webmail/WebmailLayout.vue:204
 msgid "Mailbox deleted"
 msgstr "Brevlåda raderad"
 
@@ -1560,7 +1566,7 @@ msgstr "Meddelande(n) markerade som inte skräp"
 msgid "messages"
 msgstr "meddelanden"
 
-#: src/layouts/admin/AdminLayout.vue:72
+#: src/layouts/admin/AdminLayout.vue:70
 msgid "Messages"
 msgstr "Meddelanden"
 
@@ -1568,7 +1574,7 @@ msgstr "Meddelanden"
 msgid "Migration deleted"
 msgstr "Migrering raderad"
 
-#: src/layouts/admin/AdminLayout.vue:90
+#: src/layouts/admin/AdminLayout.vue:88
 #: src/views/admin/imap_migration/MigrationsView.vue:4
 msgid "Migrations"
 msgstr "Migreringar"
@@ -1585,7 +1591,7 @@ msgstr "Ändrad"
 msgid "Modify"
 msgstr "Ändra"
 
-#: src/layouts/admin/AdminLayout.vue:58
+#: src/layouts/admin/AdminLayout.vue:56
 msgid "Monitoring"
 msgstr "Monitoring"
 
@@ -1613,7 +1619,7 @@ msgstr "Måste vara ett numeriskt värde eller tomt"
 msgid "MX records"
 msgstr "MX poster"
 
-#: src/views/calendars/CalendarView.vue:84
+#: src/views/calendars/CalendarView.vue:85
 msgid "My calendars"
 msgstr "Mina kalendrar"
 
@@ -1680,7 +1686,7 @@ msgid "New alias"
 msgstr "Nytt alias"
 
 #: src/components/calendars/CalendarForm.vue:8
-#: src/views/calendars/CalendarView.vue:80
+#: src/views/calendars/CalendarView.vue:81
 msgid "New calendar"
 msgstr "Ny kalender"
 
@@ -1696,7 +1702,7 @@ msgstr "Nytt enhetsnamn"
 msgid "New domain"
 msgstr "Ny domän"
 
-#: src/components/calendars/EventForm.vue:124
+#: src/components/calendars/EventForm.vue:133
 msgid "New event"
 msgstr "Ny händelse"
 
@@ -1727,7 +1733,7 @@ msgstr "nej"
 #: src/components/admin/identities/IdentityList.vue:226
 #: src/components/admin/identities/IdentityList.vue:253
 #: src/components/tools/CreationForm.vue:136
-#: src/layouts/webmail/WebmailLayout.vue:198
+#: src/layouts/webmail/WebmailLayout.vue:197
 msgid "No"
 msgstr "Nej"
 
@@ -2137,7 +2143,7 @@ msgstr "Roll"
 #: src/components/admin/identities/AccountEditForm.vue:192
 #: src/components/admin/identities/AliasEditForm.vue:77
 #: src/components/admin/imap_migration/ProviderForm.vue:61
-#: src/components/calendars/EventForm.vue:87
+#: src/components/calendars/EventForm.vue:95
 #: src/views/account/FiltersView.vue:99
 msgid "Save"
 msgstr "Spara"
@@ -2238,7 +2244,7 @@ msgid "Service: "
 msgstr "Service:"
 
 #: src/layouts/account/AccountLayout.vue:27
-#: src/layouts/admin/AdminLayout.vue:98
+#: src/layouts/admin/AdminLayout.vue:96
 msgid "Settings"
 msgstr "Inställningar"
 
@@ -2275,7 +2281,7 @@ msgstr "Börja skriva ett namn här..."
 msgid "State/Province"
 msgstr "Stat/Provins"
 
-#: src/layouts/admin/AdminLayout.vue:62
+#: src/layouts/admin/AdminLayout.vue:60
 #: src/views/admin/domains/DomainView.vue:25
 #: src/views/admin/monitoring/StatisticsView.vue:3
 msgid "Statistics"
@@ -2471,7 +2477,7 @@ msgstr "Tills"
 #: src/components/account/FilterForm.vue:195
 #: src/components/account/ForwardForm.vue:25
 #: src/components/admin/domains/DomainAliasForm.vue:71
-#: src/components/calendars/CalendarForm.vue:78
+#: src/components/calendars/CalendarForm.vue:81
 #: src/components/contacts/CategoryForm.vue:60
 #: src/components/contacts/ContactCategoriesForm.vue:24
 #: src/components/contacts/ContactForm.vue:185
@@ -2536,8 +2542,8 @@ msgstr "varning"
 #: src/components/admin/identities/IdentityList.vue:221
 #: src/components/admin/identities/IdentityList.vue:248
 #: src/components/tools/CreationForm.vue:129
-#: src/layouts/webmail/WebmailLayout.vue:193
-#: src/views/calendars/CalendarView.vue:246
+#: src/layouts/webmail/WebmailLayout.vue:192
+#: src/views/calendars/CalendarView.vue:247
 msgid "Warning"
 msgstr "Varning"
 
@@ -2585,7 +2591,7 @@ msgstr "ja"
 #: src/components/admin/identities/IdentityList.vue:225
 #: src/components/admin/identities/IdentityList.vue:252
 #: src/components/tools/CreationForm.vue:135
-#: src/layouts/webmail/WebmailLayout.vue:197
+#: src/layouts/webmail/WebmailLayout.vue:196
 msgid "Yes"
 msgstr "Ja"
 
