@@ -68,12 +68,12 @@ msgstr ""
 msgid "Absolute time range"
 msgstr "Intervalo de tempo absoluto"
 
-#: src/views/calendars/CalendarView.vue:103
+#: src/views/calendars/CalendarView.vue:104
 msgid "Access rules"
 msgstr "Regras de acesso"
 
 #: src/components/calendars/CalendarAccessRulesForm.vue:42
-#: src/components/shared/TopMenu.vue:89
+#: src/components/shared/TopMenu.vue:93
 #: src/views/admin/identities/AccountView.vue:4
 #: src/views/admin/identities/IdentitiesView.vue:23
 msgid "Account"
@@ -234,7 +234,7 @@ msgid "Alarm re-opened"
 msgstr "Alarme reaberto"
 
 #: src/components/admin/domains/DomainList.vue:328
-#: src/layouts/admin/AdminLayout.vue:52
+#: src/layouts/admin/AdminLayout.vue:50
 msgid "Alarms"
 msgstr "Alarmes"
 
@@ -347,7 +347,7 @@ msgstr "Tentando fazer login."
 msgid "Attendees"
 msgstr "Participantes"
 
-#: src/layouts/admin/AdminLayout.vue:67
+#: src/layouts/admin/AdminLayout.vue:65
 #: src/views/admin/monitoring/AuditTrailView.vue:3
 msgid "Audit trail"
 msgstr "Trilha de auditoria"
@@ -411,11 +411,11 @@ msgstr "Data de nascimento"
 msgid "Calendar"
 msgstr "Calendário"
 
-#: src/components/calendars/CalendarForm.vue:101
+#: src/components/calendars/CalendarForm.vue:106
 msgid "Calendar created"
 msgstr "Calendário criado"
 
-#: src/views/calendars/CalendarView.vue:257
+#: src/views/calendars/CalendarView.vue:259
 msgid "Calendar deleted"
 msgstr "Calendário excluído"
 
@@ -427,7 +427,7 @@ msgstr "Informação do calendário"
 msgid "Calendar sharing"
 msgstr "Compartilhamento de calendário"
 
-#: src/components/calendars/CalendarForm.vue:98
+#: src/components/calendars/CalendarForm.vue:103
 msgid "Calendar updated"
 msgstr "Calendário atualizado"
 
@@ -512,7 +512,7 @@ msgstr "Clique aqui para copiar a chave"
 #: src/components/calendars/CalendarAccessRulesForm.vue:77
 #: src/components/calendars/CalendarDetail.vue:37
 #: src/components/calendars/CalendarForm.vue:37
-#: src/components/calendars/EventForm.vue:85
+#: src/components/calendars/EventForm.vue:93
 #: src/components/calendars/ImportEventsForm.vue:27
 #: src/components/contacts/AddressBookInfo.vue:27
 #: src/components/contacts/CategoryForm.vue:22
@@ -616,7 +616,7 @@ msgstr "País"
 
 #: src/components/account/FilterForm.vue:195
 #: src/components/account/FilterSetForm.vue:30
-#: src/components/calendars/CalendarForm.vue:80
+#: src/components/calendars/CalendarForm.vue:83
 #: src/components/webmail/MailboxForm.vue:79
 msgid "Create"
 msgstr "Criar"
@@ -680,7 +680,7 @@ msgstr "Limite diário de envio de mensagens"
 msgid "Daily sending limit"
 msgstr "Limite diário de envio"
 
-#: src/layouts/admin/AdminLayout.vue:34
+#: src/layouts/admin/AdminLayout.vue:32
 msgid "Dashboard"
 msgstr "Painel"
 
@@ -716,10 +716,11 @@ msgstr ""
 #: src/components/admin/identities/IdentityList.vue:206
 #: src/components/admin/imap_migration/MigrationsList.vue:123
 #: src/components/admin/imap_migration/ProvidersList.vue:124
+#: src/components/calendars/EventForm.vue:90
 #: src/components/contacts/CategoryForm.vue:18
 #: src/components/contacts/ContactList.vue:143
 #: src/views/account/FiltersView.vue:334
-#: src/views/calendars/CalendarView.vue:108
+#: src/views/calendars/CalendarView.vue:109
 msgid "Delete"
 msgstr "Remover"
 
@@ -732,7 +733,7 @@ msgstr "Remover conjunto de filtros"
 msgid "Delete this mailbox"
 msgstr "Com caixa de correio"
 
-#: src/layouts/webmail/WebmailLayout.vue:194
+#: src/layouts/webmail/WebmailLayout.vue:193
 #, fuzzy
 msgid "Delete this mailbox?"
 msgstr "Com caixa de correio"
@@ -882,7 +883,7 @@ msgstr "Não remover pasta do domínio"
 msgid "Do you really want to delete the domain %{ domain }?"
 msgstr "Você tem certeza que deseja remover o domínio %{ domain }?"
 
-#: src/views/calendars/CalendarView.vue:247
+#: src/views/calendars/CalendarView.vue:248
 msgid "Do you really want to delete this calendar?"
 msgstr "Tem certeza que deseja excluir esse calendário?"
 
@@ -934,7 +935,7 @@ msgstr "Nome do domínio (ex: domain.tld)"
 msgid "domain's default value"
 msgstr "Valor padrão do domínio "
 
-#: src/layouts/admin/AdminLayout.vue:40
+#: src/layouts/admin/AdminLayout.vue:38
 #: src/views/admin/domains/DomainsView.vue:4
 msgid "Domains"
 msgstr "Domínios"
@@ -957,7 +958,7 @@ msgstr "E-mail"
 #: src/components/admin/imap_migration/ProvidersList.vue:130
 #: src/components/contacts/ContactList.vue:138
 #: src/views/account/FiltersView.vue:329
-#: src/views/calendars/CalendarView.vue:98
+#: src/views/calendars/CalendarView.vue:99
 msgid "Edit"
 msgstr "Editar"
 
@@ -989,7 +990,7 @@ msgstr "Editar domínio"
 msgid "Edit domain alias"
 msgstr "Editar apelido de domínio"
 
-#: src/components/calendars/EventForm.vue:124
+#: src/components/calendars/EventForm.vue:133
 msgid "Edit event"
 msgstr "Editar evento"
 
@@ -1027,7 +1028,7 @@ msgstr "E-mail"
 msgid "Email address"
 msgstr "Endereço de e-mail"
 
-#: src/layouts/admin/AdminLayout.vue:85
+#: src/layouts/admin/AdminLayout.vue:83
 msgid "Email providers"
 msgstr "Provedores de e-mail"
 
@@ -1091,12 +1092,17 @@ msgstr "Digite um simples nome de usuário ou um endereço de e-mail"
 msgid "Enter an email address"
 msgstr "Digite seu endereço de e-mail"
 
-#: src/components/calendars/EventForm.vue:172
+#: src/components/calendars/EventForm.vue:182
 msgid "Event added"
 msgstr "Evento adicionado"
 
-#: src/components/calendars/EventForm.vue:177
-#: src/views/calendars/CalendarView.vue:224
+#: src/components/calendars/EventForm.vue:198
+#, fuzzy
+msgid "Event deleted"
+msgstr "Evento atualizado"
+
+#: src/components/calendars/EventForm.vue:185
+#: src/views/calendars/CalendarView.vue:225
 msgid "Event updated"
 msgstr "Evento atualizado"
 
@@ -1291,7 +1297,7 @@ msgstr ""
 msgid "Identification"
 msgstr "Identificação"
 
-#: src/layouts/admin/AdminLayout.vue:46
+#: src/layouts/admin/AdminLayout.vue:44
 #: src/views/admin/identities/IdentitiesView.vue:4
 msgid "Identities"
 msgstr "Identidades"
@@ -1312,7 +1318,7 @@ msgstr ""
 "Se você o configurou recentemente, aguarde o primeiro relatório ser recebido "
 "e processado."
 
-#: src/layouts/admin/AdminLayout.vue:80
+#: src/layouts/admin/AdminLayout.vue:78
 msgid "IMAP Migration"
 msgstr "Migração IMAP"
 
@@ -1321,7 +1327,7 @@ msgid "IMAP Port"
 msgstr "Porta IMAP"
 
 #: src/components/tools/ImportForm.vue:54
-#: src/views/calendars/CalendarView.vue:113
+#: src/views/calendars/CalendarView.vue:114
 msgid "Import"
 msgstr "Importar"
 
@@ -1365,8 +1371,8 @@ msgstr ""
 "Informe a <strong>TODOS</strong> os seus usuários que eles devem efetuar "
 "login no Modoboa para concluir a operação"
 
-#: src/layouts/admin/AdminLayout.vue:111 src/views/admin/InformationView.vue:4
-#: src/views/calendars/CalendarView.vue:93
+#: src/layouts/admin/AdminLayout.vue:109 src/views/admin/InformationView.vue:4
+#: src/views/calendars/CalendarView.vue:94
 msgid "Information"
 msgstr "Informação"
 
@@ -1465,7 +1471,7 @@ msgstr "Domínio local (opcional)"
 msgid "Logger"
 msgstr "Registrador"
 
-#: src/components/shared/TopMenu.vue:96
+#: src/components/shared/TopMenu.vue:100
 msgid "Logout"
 msgstr "Sair"
 
@@ -1481,7 +1487,7 @@ msgstr ""
 msgid "Mailbox"
 msgstr "Caixa de e-mail"
 
-#: src/layouts/webmail/WebmailLayout.vue:188
+#: src/layouts/webmail/WebmailLayout.vue:187
 #, fuzzy
 msgid "Mailbox compressed"
 msgstr "Caixas de e-mail"
@@ -1491,7 +1497,7 @@ msgstr "Caixas de e-mail"
 msgid "Mailbox created"
 msgstr "Domínio criado"
 
-#: src/layouts/webmail/WebmailLayout.vue:205
+#: src/layouts/webmail/WebmailLayout.vue:204
 #, fuzzy
 msgid "Mailbox deleted"
 msgstr "Migração removida"
@@ -1587,7 +1593,7 @@ msgstr ""
 msgid "messages"
 msgstr "mensagens"
 
-#: src/layouts/admin/AdminLayout.vue:72
+#: src/layouts/admin/AdminLayout.vue:70
 msgid "Messages"
 msgstr "Mensagens"
 
@@ -1595,7 +1601,7 @@ msgstr "Mensagens"
 msgid "Migration deleted"
 msgstr "Migração removida"
 
-#: src/layouts/admin/AdminLayout.vue:90
+#: src/layouts/admin/AdminLayout.vue:88
 #: src/views/admin/imap_migration/MigrationsView.vue:4
 msgid "Migrations"
 msgstr "MIgrações"
@@ -1612,7 +1618,7 @@ msgstr "Modificado"
 msgid "Modify"
 msgstr "Modificar"
 
-#: src/layouts/admin/AdminLayout.vue:58
+#: src/layouts/admin/AdminLayout.vue:56
 msgid "Monitoring"
 msgstr "Monitoramento"
 
@@ -1640,7 +1646,7 @@ msgstr "Deve ser um valor numérico ou vazio"
 msgid "MX records"
 msgstr "Registros MX"
 
-#: src/views/calendars/CalendarView.vue:84
+#: src/views/calendars/CalendarView.vue:85
 msgid "My calendars"
 msgstr "Meus calendários"
 
@@ -1707,7 +1713,7 @@ msgid "New alias"
 msgstr "Novo apelido"
 
 #: src/components/calendars/CalendarForm.vue:8
-#: src/views/calendars/CalendarView.vue:80
+#: src/views/calendars/CalendarView.vue:81
 msgid "New calendar"
 msgstr "Novo calendário"
 
@@ -1723,7 +1729,7 @@ msgstr "Novo nome de dispositivo"
 msgid "New domain"
 msgstr "Novo domínio"
 
-#: src/components/calendars/EventForm.vue:124
+#: src/components/calendars/EventForm.vue:133
 msgid "New event"
 msgstr "Novo evento"
 
@@ -1754,7 +1760,7 @@ msgstr "não"
 #: src/components/admin/identities/IdentityList.vue:226
 #: src/components/admin/identities/IdentityList.vue:253
 #: src/components/tools/CreationForm.vue:136
-#: src/layouts/webmail/WebmailLayout.vue:198
+#: src/layouts/webmail/WebmailLayout.vue:197
 msgid "No"
 msgstr "Não"
 
@@ -2169,7 +2175,7 @@ msgstr "Papel"
 #: src/components/admin/identities/AccountEditForm.vue:192
 #: src/components/admin/identities/AliasEditForm.vue:77
 #: src/components/admin/imap_migration/ProviderForm.vue:61
-#: src/components/calendars/EventForm.vue:87
+#: src/components/calendars/EventForm.vue:95
 #: src/views/account/FiltersView.vue:99
 msgid "Save"
 msgstr "Salvar"
@@ -2271,7 +2277,7 @@ msgid "Service: "
 msgstr "Serviço: "
 
 #: src/layouts/account/AccountLayout.vue:27
-#: src/layouts/admin/AdminLayout.vue:98
+#: src/layouts/admin/AdminLayout.vue:96
 msgid "Settings"
 msgstr "Configurações"
 
@@ -2308,7 +2314,7 @@ msgstr "Comece a digitar um nome aqui..."
 msgid "State/Province"
 msgstr "Estado/Província"
 
-#: src/layouts/admin/AdminLayout.vue:62
+#: src/layouts/admin/AdminLayout.vue:60
 #: src/views/admin/domains/DomainView.vue:25
 #: src/views/admin/monitoring/StatisticsView.vue:3
 msgid "Statistics"
@@ -2504,7 +2510,7 @@ msgstr "Até"
 #: src/components/account/FilterForm.vue:195
 #: src/components/account/ForwardForm.vue:25
 #: src/components/admin/domains/DomainAliasForm.vue:71
-#: src/components/calendars/CalendarForm.vue:78
+#: src/components/calendars/CalendarForm.vue:81
 #: src/components/contacts/CategoryForm.vue:60
 #: src/components/contacts/ContactCategoriesForm.vue:24
 #: src/components/contacts/ContactForm.vue:185
@@ -2570,8 +2576,8 @@ msgstr "atenção"
 #: src/components/admin/identities/IdentityList.vue:221
 #: src/components/admin/identities/IdentityList.vue:248
 #: src/components/tools/CreationForm.vue:129
-#: src/layouts/webmail/WebmailLayout.vue:193
-#: src/views/calendars/CalendarView.vue:246
+#: src/layouts/webmail/WebmailLayout.vue:192
+#: src/views/calendars/CalendarView.vue:247
 msgid "Warning"
 msgstr "Atenção"
 
@@ -2620,7 +2626,7 @@ msgstr "sim"
 #: src/components/admin/identities/IdentityList.vue:225
 #: src/components/admin/identities/IdentityList.vue:252
 #: src/components/tools/CreationForm.vue:135
-#: src/layouts/webmail/WebmailLayout.vue:197
+#: src/layouts/webmail/WebmailLayout.vue:196
 msgid "Yes"
 msgstr "Sim"
 
