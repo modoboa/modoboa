@@ -1,11 +1,15 @@
 """Tests for core application."""
 
 from io import StringIO
+import json
+import pathlib
+import shutil
 
 import httmock
 from dateutil.relativedelta import relativedelta
 from oauth2_provider.models import get_application_model
 
+from django.conf import settings
 from django.core import mail
 from django.core import management
 from django.urls import reverse
@@ -44,6 +48,11 @@ class AuthenticationTestCase(ModoTestCase):
 class ManagementCommandsTestCase(SimpleModoTestCase):
     """Test management commands."""
 
+    def tearDown(self):
+        frontend_dir = pathlib.Path(settings.BASE_DIR) / "frontend"
+        if frontend_dir.exists():
+            shutil.rmtree(frontend_dir)
+
     def test_change_default_admin(self):
         """Use dedicated option."""
         management.call_command("load_initial_data", "--admin-username", "modoadmin")
@@ -58,14 +67,39 @@ class ManagementCommandsTestCase(SimpleModoTestCase):
         management.call_command("cleanlogs")
         self.assertEqual(models.Log.objects.count(), 1)
 
-    def test_non_duplicate_client_creation(self):
-        """Test that the load_initial_data command do not create duplicates
+    def test_init_data_non_duplicate_client_creation(self):
+        """Test that the load_initial_data command does not create duplicates
         client for the frontend deployment."""
         app_model = get_application_model()
         management.call_command("load_initial_data")
         self.assertEqual(1, app_model.objects.filter(name="modoboa_frontend").count())
         management.call_command("load_initial_data")
         self.assertEqual(1, app_model.objects.filter(name="modoboa_frontend").count())
+
+    def test_init_data_frontend_dir_creation(self):
+        """Test that the load_initial_data command creates a frontend directory
+        with symlinks to the shipped frontend files."""
+        # Create our own dummy frontend directory if `vite` hasn’t been invoked yet
+        frontend_src = pathlib.Path(__file__).parent.parent.parent / "frontend_dist"
+        if not frontend_src.is_dir():
+            (frontend_src / "dummy").mkdir(parents=True)
+            self.addCleanup(shutil.rmtree, frontend_src)
+
+        frontend_dir = pathlib.Path(settings.BASE_DIR) / "frontend"
+        self.assertFalse(frontend_dir.exists(), f"frontend directory {frontend_dir} doesn’t exist before load_initial_data")
+        management.call_command("load_initial_data")
+        self.assertTrue(frontend_dir.is_dir(), f"frontend directory {frontend_dir} is directory after load_initial_data")
+        for entry in frontend_dir.iterdir():
+            if entry.name == "config.json":
+                self.assertTrue(entry.is_file() and not entry.is_symlink(), f"frontend directory entry {entry} is regular file")
+                try:
+                    content = json.loads(entry.read_text("utf-8"))
+                except (ValueError, UnicodeDecodeError):
+                    self.fail(f"frontend directory entry {entry} is not UTF-8 encoded JSON")
+                for key_name in ("API_BASE_URL", "OAUTH_AUTHORITY_URL", "OAUTH_CLIENT_ID", "OAUTH_REDIRECT_URI", "OAUTH_POST_REDIRECT_URI"):
+                    self.assertIn(key_name, content)
+            else:
+                self.assertTrue(entry.is_symlink(), f"frontend directory entry {entry} is symlink")
 
     def test_clean_inactive_accounts(self):
         """Run clean_inactive_accounts command."""

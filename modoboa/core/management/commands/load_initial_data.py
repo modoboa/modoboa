@@ -145,9 +145,14 @@ class Command(BaseCommand):
             os.path.dirname(__file__), "../../../frontend_dist/"
         )
         frontend_target_dir = f"{settings.BASE_DIR}/frontend"
-        if os.path.exists(base_frontend_dir):
+        if os.path.isdir(base_frontend_dir):
             shutil.rmtree(frontend_target_dir, ignore_errors=True)
-            shutil.copytree(base_frontend_dir, frontend_target_dir)
+            os.makedirs(frontend_target_dir, exist_ok=True)
+            for entry in os.scandir(base_frontend_dir):
+                if entry.name != "config.json":
+                    os.symlink(f"{base_frontend_dir}/{entry.name}",
+                               f"{frontend_target_dir}/{entry.name}",
+                               target_is_directory=entry.is_dir())
             with open(f"{frontend_target_dir}/config.json", "w") as fp:
                 fp.write(
                     f"""{{
