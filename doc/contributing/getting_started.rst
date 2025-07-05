@@ -79,33 +79,6 @@ You're ready to go! You should be able to access Modoboa at
 Frontend
 ========
 
-Legacy interface
-----------------
-
-The Django templates and views are used to render this interface, which
-is served by the uWSGI application - or the local server in development.
-`bower <http://bower.io/>`_  is used to manage the CSS and JavaScript
-dependencies - i.e. Boostrap, jQuery - thanks to `django-bower
-<https://github.com/nvbn/django-bower>`_.
-
-Those dependencies are listed in a file called :file:`dev_settings.py`
-located inside the :file:`<path_to_local_copy>/modoboa/core`
-directory.
-
-If you want to add a new dependency, just complete the
-``BOWER_INSTALLED_APPS`` parameter and run the following command::
-
-  $ python manage.py bower install
-
-It will download and store the required files into the
-:file:`<path_to_local_copy>/modoboa/bower_components` directory.
-
-.. note::
-  Don't forget to regenerate the localization files when you add strings. See :ref:`the translation page <translation>`
-
-New Vue.js interface
---------------------
-
 The 2.0 version of Modoboa introduces a completely new interface written
 with the `Vue.js <https://vuejs.org/>`_ framework. The source files are
 located in the :file:`frontend/` directory.
@@ -156,16 +129,3 @@ To build it and see the result, run::
 
   $ tox -e doc
   $ open .tox/doc/tmp/html/index.html
-
-FAQ
-===
-
-bower command is missing in manage.py
--------------------------------------
-
-*bower* command is missing in *manage.py* if you don't use the
-``--devel`` option of the ``modoboa-admin.py deploy`` command.
-
-To fix it, regenerate your instance or update your ``settings.py``
-file manually. Look at ``devmode`` in
-https://github.com/tonioo/modoboa/blob/master/modoboa/core/commands/templates/settings.py.tpl
