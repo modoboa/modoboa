@@ -32,15 +32,6 @@ And it is extensible by nature and comes with a lot of additional extensions:
 |`modoboa-pfxadmin-migrate                                |A tool to migrate from   |https://github.com/modoboa/modoboa-pfxadmin-migrate   |
 |<https://github.com/modoboa/modoboa-pfxadmin-migrate>`_  |Postfixadmin             |                                                      |
 +---------------------------------------------------------+-------------------------+------------------------------------------------------+
-|`modoboa-radicale                                        |A frontend for `Radicale |https://modoboa-radicale.readthedocs.io               |
-|<https://github.com/modoboa/modoboa-radicale>`_          |<http://radicale.org>`_  |                                                      |
-+---------------------------------------------------------+-------------------------+------------------------------------------------------+
-|`modoboa-sievefilters                                    |A Sieve filters (rules)  |https://modoboa-sievefilters.readthedocs.io           |
-|<https://github.com/modoboa/modoboa-sievefilters>`_      |editor                   |                                                      |
-+---------------------------------------------------------+-------------------------+------------------------------------------------------+
-|`modoboa-webmail                                         |A simple webmail         |https://modoboa-webmail.readthedocs.io                |
-|<https://github.com/modoboa/modoboa-webmail>`_           |                         |                                                      |
-+---------------------------------------------------------+-------------------------+------------------------------------------------------+
 
 Table of contents
 -----------------
