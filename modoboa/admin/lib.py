@@ -178,14 +178,14 @@ def get_authoritative_server(domain, resolver=None):
 
     while True:
         try:
-            answers = dns.resolver.resolve(dnsname, "NS")
+            answers = resolver.resolve(dnsname, "NS")
             if answers:
                 first_answer = answers[0]
                 if hasattr(first_answer, "target"):
                     return str(first_answer.target)
                 if hasattr(first_answer, "address"):
                     return str(first_answer.address)
-        except dns.resolver.NoAnswer:
+        except (dns.resolver.NoAnswer, dns.resolver.NXDOMAIN):
             dnsname = dnsname.parent()
         else:
             dnsname = dnsname.parent()
@@ -298,7 +298,7 @@ def make_password():
     allow_special_characters = bool(
         param_tools.get_global_parameter("allow_special_characters", app="core")
     )
-    for i in range(10):  # limit tries
+    for _i in range(10):  # limit tries
         all_possible_chars = ""
         possible_chars_types = [string.ascii_letters, string.digits]
         certain_chars = ""
