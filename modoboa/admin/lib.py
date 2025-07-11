@@ -178,7 +178,7 @@ def get_authoritative_server(domain, resolver=None):
 
     while True:
         try:
-            answers = dns.resolver.resolve(dnsname, "NS")
+            answers = resolver.resolve(dnsname, "NS")
             if answers:
                 first_answer = answers[0]
                 if hasattr(first_answer, "target"):
