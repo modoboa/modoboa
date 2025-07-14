@@ -19,7 +19,7 @@ from rest_framework.decorators import action
 from rest_framework.exceptions import PermissionDenied
 
 from modoboa.admin.api.v1 import viewsets as v1_viewsets
-from modoboa.core import models as core_models
+from modoboa.core import constants as core_constants, models as core_models
 from modoboa.lib import pagination
 from modoboa.lib import renderers as lib_renderers
 from modoboa.lib import viewsets as lib_viewsets
@@ -153,14 +153,16 @@ class AccountFilterSet(dj_filters.FilterSet):
         queryset=lambda request: models.Domain.objects.get_for_admin(request.user),
         field_name="mailbox__domain",
     )
-    role = dj_filters.CharFilter(method="filter_role")
+    role = dj_filters.MultipleChoiceFilter(
+        choices=core_constants.ROLES, method="filter_role"
+    )
 
     class Meta:
         model = core_models.User
         fields = ["domain", "role"]
 
     def filter_role(self, queryset, name, value):
-        return queryset.filter(groups__name=value)
+        return queryset.filter(groups__name__in=value)
 
 
 class AccountViewSet(v1_viewsets.AccountViewSet):

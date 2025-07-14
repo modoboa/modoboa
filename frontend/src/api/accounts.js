@@ -4,7 +4,12 @@ const resource = 'accounts'
 
 export default {
   getAll({ domain, role }) {
-    return repository.get(`/${resource}/`, { params: { domain, role } })
+    return repository.get(`/${resource}/`, {
+      params: { domain, role },
+      paramsSerializer: {
+        indexes: null,
+      },
+    })
   },
   get(accountId) {
     return repository.get(`${resource}/${accountId}/`)

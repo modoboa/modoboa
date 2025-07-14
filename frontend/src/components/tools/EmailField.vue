@@ -25,17 +25,16 @@
   </div>
 </template>
 
-<script setup lang="js">
+<script setup>
 import { ref, computed, onMounted, onUnmounted, onUpdated, nextTick } from 'vue'
 import { useDomainsStore } from '@/stores'
-import { useGettext } from 'vue3-gettext'
+import constants from '@/constants.json'
 
-const { $gettext } = useGettext()
 const domainsStore = useDomainsStore()
 const props = defineProps({
   modelValue: { type: String, default: '' },
   allowAdd: { type: Boolean, default: false },
-  role: { type: String, default: 'SimpleUsers' },
+  role: { type: String, default: constants.USER },
   errorMsg: { type: Array, default: () => [] },
 })
 const emit = defineEmits(['domain-selected', 'update:model-value'])
@@ -47,15 +46,11 @@ const input = computed({
   set(value) {
     errors.value = []
     if (value.indexOf('@') !== -1) {
-      if (props.role !== 'SuperAdmins') {
-        domainSearch.value = value.split('@')[1]
-        if (props.allowAdd) {
-          showMenu.value = filteredDomains.value.length > 0
-        } else {
-          showMenu.value = true
-        }
+      domainSearch.value = value.split('@')[1]
+      if (props.allowAdd) {
+        showMenu.value = filteredDomains.value.length > 0
       } else {
-        errors.value = [$gettext('SuperAdmins cannot own a mailbox')]
+        showMenu.value = true
       }
     } else {
       showMenu.value = false
@@ -87,10 +82,6 @@ const inputRef = ref()
 const localErrors = ref([])
 
 function onKeyDown(e) {
-  if (props.role === 'SuperAdmins') {
-    // No mailbox for SuperAdmins
-    return
-  }
   const keyCode = e.keyCode
   if (keyCode === 40 || keyCode === 34) {
     // on arrow down or page down

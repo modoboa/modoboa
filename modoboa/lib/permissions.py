@@ -152,3 +152,10 @@ class IsSuperUser(permissions.BasePermission):
 
     def has_permission(self, request, view):
         return request.user.is_superuser
+
+
+class CanCreateDomain(permissions.BasePermission):
+    """Permissions class to allow users with add_domain right."""
+
+    def has_permission(self, request, view):
+        return request.user.has_perm("admin.add_domain")
