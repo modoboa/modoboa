@@ -209,6 +209,7 @@ import { ref, computed, onMounted, watch } from 'vue'
 import { useGettext } from 'vue3-gettext'
 import { useRoute, useRouter } from 'vue-router'
 import { usePermissions } from '@/composables/permissions'
+import constants from '@/constants.json'
 
 const { $gettext } = useGettext()
 const authStore = useAuthStore()
@@ -229,8 +230,8 @@ const needsResources = computed(() => {
   const isNeeded =
     limitsConfig.value.params &&
     limitsConfig.value.params.enable_admin_limits &&
-    editedAccount.value.role !== 'SimpleUsers' &&
-    editedAccount.value.role !== 'SuperAdmins'
+    editedAccount.value.role !== constants.USER &&
+    editedAccount.value.role !== constants.SUPER_ADMIN
   if (isNeeded === undefined) {
     return false
   }
@@ -285,7 +286,7 @@ async function save() {
     const data = { ...editedAccount.value }
     if (usernameIsEmail.value) {
       data.mailbox.full_address = data.username
-    } else {
+    } else if (data.mailbox) {
       delete data.mailbox.full_address
     }
     if (data.new_password) {
@@ -303,7 +304,7 @@ async function save() {
       if (editedAccount.value.pk === authStore.authUser.pk) {
         data.role = authStore.authUser.role
       } else {
-        data.role = 'SimpleUsers'
+        data.role = constants.USER
       }
     }
     await accountsApi.patch(editedAccount.value.pk, data)

@@ -14,7 +14,7 @@
     <v-col cols="6">
       <AccountSummary :account="account" />
       <DomainAdminDomains
-        v-if="account.role === 'DomainAdmins'"
+        v-if="account.role === constants.DOMAIN_ADMIN"
         class="mt-2"
         :account="account"
       />
@@ -24,8 +24,8 @@
         v-if="
           limitsConfig.params &&
           limitsConfig.params.enable_admin_limits &&
-          account.role !== 'SimpleUsers' &&
-          account.role !== 'SuperAdmins'
+          account.role !== constants.USER &&
+          account.role !== constants.SUPER_ADMIN
         "
         :resources="account.resources"
       />
@@ -40,7 +40,7 @@
 </template>
 
 <script setup lang="js">
-import { ref, computed } from 'vue'
+import { ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { usePermissions } from '@/composables/permissions'
 import accountsApi from '@/api/accounts'
@@ -50,6 +50,7 @@ import AccountSenderAddresses from '@/components/admin/identities/AccountSenderA
 import AccountSummary from '@/components/admin/identities/AccountSummary.vue'
 import DomainAdminDomains from '@/components/admin/identities/DomainAdminDomains.vue'
 import ResourcesView from '@/components/tools/ResourcesView.vue'
+import constants from '@/constants.json'
 
 const route = useRoute()
 const { canSetRole } = usePermissions()

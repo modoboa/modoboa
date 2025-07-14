@@ -1,15 +1,20 @@
 import { computed } from 'vue'
 import { useAuthStore } from '@/stores'
+import constants from '@/constants.json'
 
 export function usePermissions() {
   const authStore = useAuthStore()
 
   const canSetRole = computed(() => {
-    return ['Resellers', 'SuperAdmins'].includes(authStore.authUser.role)
+    return [constants.RESELLER, constants.SUPER_ADMIN].includes(
+      authStore.authUser.role
+    )
   })
 
   const canAddDomain = computed(() => {
-    return ['Resellers', 'SuperAdmins'].includes(authStore.authUser.role)
+    return [constants.RESELLER, constants.SUPER_ADMIN].includes(
+      authStore.authUser.role
+    )
   })
 
   return {

@@ -80,6 +80,7 @@
 <script setup>
 import accountApi from '@/api/accounts'
 import domainApi from '@/api/domains'
+import constants from '@/constants.json'
 import { useBusStore } from '@/stores'
 import { useGettext } from 'vue3-gettext'
 import { ref, onMounted } from 'vue'
@@ -128,13 +129,15 @@ function fetchAdministrators(domain) {
 }
 
 function fetchAccounts() {
-  accountApi.getAll({ role: 'DomainAdmins' }).then((resp) => {
-    accounts.value = resp.data.filter(
-      (account) =>
-        administrators.value.find((admin) => admin.id === account.pk) ===
-        undefined
-    )
-  })
+  accountApi
+    .getAll({ role: [constants.RESELLER, constants.DOMAIN_ADMIN] })
+    .then((resp) => {
+      accounts.value = resp.data.filter(
+        (account) =>
+          administrators.value.find((admin) => admin.id === account.pk) ===
+          undefined
+      )
+    })
 }
 function addAdministrator() {
   domainApi

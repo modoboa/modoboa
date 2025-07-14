@@ -1,4 +1,5 @@
 import { useAuthStore } from '@/stores'
+import constants from '@/constants.json'
 
 export default {
   install: (app) => {
@@ -8,7 +9,7 @@ export default {
       const permission = binding.value
       if (authStore.authUser) {
         if (
-          authUser.authUser.role !== 'SuperAdmins' &&
+          authUser.authUser.role !== constants.SUPER_ADMIN &&
           authStore.authUser.permissions.indexOf(permission) === -1
         ) {
           el.style.display = 'none'
@@ -21,7 +22,7 @@ export default {
         return false
       }
       if (
-        authStore.authUser.role === 'SuperAdmins' ||
+        authStore.authUser.role === constants.SUPER_ADMIN ||
         authStore.authUser.permissions.indexOf(permission) !== -1
       ) {
         return true

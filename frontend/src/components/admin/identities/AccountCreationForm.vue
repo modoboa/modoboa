@@ -68,6 +68,7 @@ import AccountRoleForm from './form_steps/AccountRoleForm.vue'
 import AccountGeneralForm from './form_steps/AccountGeneralForm.vue'
 import AccountMailboxForm from './form_steps/AccountMailboxForm.vue'
 import AccountAliasForm from './form_steps/AccountAliasForm.vue'
+import constants from '@/constants.json'
 
 import { useGettext } from 'vue3-gettext'
 import { ref, computed } from 'vue'
@@ -81,10 +82,7 @@ const domainsStore = useDomainsStore()
 const emit = defineEmits(['close', 'created'])
 
 const needsMailbox = computed(
-  () =>
-    account.value.role !== 'SuperAdmins' &&
-    account.value.username &&
-    account.value.username.indexOf('@') !== -1
+  () => account.value.username && account.value.username.indexOf('@') !== -1
 )
 
 const summarySections = computed(() => {
@@ -187,7 +185,7 @@ const steps = computed(() => {
 const account = ref({
   aliases: [],
   is_active: true,
-  role: 'SimpleUsers',
+  role: constants.USER,
   mailbox: {
     use_domain_quota: true,
   },
@@ -234,19 +232,33 @@ function setFormErrors(step, errors) {
 function preparePayload(payload) {
   const cleaned_payload = { ...payload }
   if (
-    cleaned_payload.role === 'SuperAdmins' &&
+    [constants.RESELLER, constants.SUPER_ADMIN].includes(
+      cleaned_payload.role
+    ) &&
     cleaned_payload.username &&
     cleaned_payload.username.indexOf('@') === -1
   ) {
     delete cleaned_payload.mailbox
   }
-  if (cleaned_payload.mailbox && cleaned_payload.mailbox.message_limit === '') {
-    cleaned_payload.mailbox.message_limit = null
+  if (cleaned_payload.mailbox) {
+    if (cleaned_payload.mailbox.message_limit === '') {
+      cleaned_payload.mailbox.message_limit = null
+    }
+    if (
+      cleaned_payload.mailbox.quota === undefined ||
+      cleaned_payload.mailbox.quota === null
+    ) {
+      cleaned_payload.mailbox.quota = 0
+    }
   }
   return cleaned_payload
 }
 
-function validateAccount() {
+function validateAccount(step) {
+  if (step === 1) {
+    // No validation after role selection
+    return true
+  }
   const payload = preparePayload({ ...account.value })
   return accountsApi.validate(payload)
 }

@@ -25,11 +25,12 @@
   </v-form>
 </template>
 
-<script setup lang="js">
+<script setup>
 import ChoiceField from '@/components/tools/ChoiceField'
 import { computed, ref } from 'vue'
 import { useAuthStore } from '@/stores'
 import { useGettext } from 'vue3-gettext'
+import constants from '@/constants.json'
 
 const authStore = useAuthStore()
 const { $gettext } = useGettext()
@@ -59,16 +60,16 @@ const roleHelp = computed(() => {
 })
 
 const accountRoles = computed(() => {
-  if (authUser.value.role === 'SuperAdmins') {
+  if (authUser.value.role === constants.SUPER_ADMIN) {
     return [
+      ...simpleUserRole,
       ...domainAdminsRole,
       ...resellerRole,
-      ...simpleUserRole,
       ...superAdminsRole,
     ]
-  } else if (authUser.value.role === 'DomainAdmins') {
+  } else if (authUser.value.role === constants.DOMAIN_ADMIN) {
     return [...simpleUserRole]
-  } else if (authUser.value.role === 'Resellers') {
+  } else if (authUser.value.role === constants.RESELLER) {
     return [...domainAdminsRole, ...simpleUserRole]
   } else {
     return []
@@ -78,7 +79,7 @@ const accountRoles = computed(() => {
 const simpleUserRole = [
   {
     label: $gettext('Simple user'),
-    value: 'SimpleUsers',
+    value: constants.USER,
     help: $gettext(
       'A user with no privileges but with a mailbox. He will be allowed to use all end-user features: webmail, calendar, contacts, filters.'
     ),
@@ -88,7 +89,7 @@ const simpleUserRole = [
 const domainAdminsRole = [
   {
     label: $gettext('Domain administrator'),
-    value: 'DomainAdmins',
+    value: constants.DOMAIN_ADMIN,
     help: $gettext(
       'A user with privileges on one or more domain. He will be allowed to administer mailboxes and he can also have a mailbox.'
     ),
@@ -97,14 +98,16 @@ const domainAdminsRole = [
 const resellerRole = [
   {
     label: $gettext('Reseller'),
-    value: 'Resellers',
-    help: $gettext('help'),
+    value: constants.RESELLER,
+    help: $gettext(
+      'An intermediate user who has the same privileges than a Domain administrator, plus the possibility to create domains and to assign resources.'
+    ),
   },
 ]
 const superAdminsRole = [
   {
     label: $gettext('Super administrator'),
-    value: 'SuperAdmins',
+    value: constants.SUPER_ADMIN,
     help: $gettext(
       "A user with all privileges, can do anything. By default, such a user does not have a mailbox so he can't access end-user features."
     ),
