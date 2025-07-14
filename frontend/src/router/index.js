@@ -1,6 +1,6 @@
-// Composables
 import { createRouter, createWebHistory } from 'vue-router'
 import { useAuthStore } from '@/stores'
+import constants from '@/constants.json'
 
 const routes = [
   {
@@ -26,7 +26,11 @@ const routes = [
     path: '/admin',
     component: () => import('@/layouts/admin/AdminLayout.vue'),
     meta: {
-      allowedRoles: ['DomainAdmins', 'Resellers', 'SuperAdmins'],
+      allowedRoles: [
+        constants.DOMAIN_ADMIN,
+        constants.RESELLER,
+        constants.SUPER_ADMIN,
+      ],
     },
     children: [
       {
@@ -42,7 +46,11 @@ const routes = [
         component: () => import('@/layouts/empty/EmptyLayout.vue'),
         meta: {
           requiresAuth: true,
-          allowedRoles: ['DomainAdmins', 'Resellers', 'SuperAdmins'],
+          allowedRoles: [
+            constants.DOMAIN_ADMIN,
+            constants.RESELLER,
+            constants.SUPER_ADMIN,
+          ],
         },
         children: [
           {
@@ -51,7 +59,11 @@ const routes = [
             component: () => import('@/views/admin/domains/DomainsView.vue'),
             meta: {
               requiresAuth: true,
-              allowedRoles: ['DomainAdmins', 'Resellers', 'SuperAdmins'],
+              allowedRoles: [
+                constants.DOMAIN_ADMIN,
+                constants.RESELLER,
+                constants.SUPER_ADMIN,
+              ],
             },
           },
           {
@@ -59,7 +71,11 @@ const routes = [
             name: 'DomainDetail',
             meta: {
               requiresAuth: true,
-              allowedRoles: ['DomainAdmins', 'Resellers', 'SuperAdmins'],
+              allowedRoles: [
+                constants.DOMAIN_ADMIN,
+                constants.RESELLER,
+                constants.SUPER_ADMIN,
+              ],
             },
             component: () => import('@/views/admin/domains/DomainView.vue'),
           },
@@ -68,7 +84,11 @@ const routes = [
             name: 'DomainEdit',
             meta: {
               requiresAuth: true,
-              allowedRoles: ['DomainAdmins', 'Resellers', 'SuperAdmins'],
+              allowedRoles: [
+                constants.DOMAIN_ADMIN,
+                constants.RESELLER,
+                constants.SUPER_ADMIN,
+              ],
             },
             component: () => import('@/views/admin/domains/DomainEditView.vue'),
           },
@@ -79,7 +99,11 @@ const routes = [
         component: () => import('@/layouts/empty/EmptyLayout.vue'),
         meta: {
           requiresAuth: true,
-          allowedRoles: ['DomainAdmins', 'Resellers', 'SuperAdmins'],
+          allowedRoles: [
+            constants.DOMAIN_ADMIN,
+            constants.RESELLER,
+            constants.SUPER_ADMIN,
+          ],
         },
         children: [
           {
@@ -89,7 +113,7 @@ const routes = [
               import('@/views/admin/imap_migration/MigrationsView.vue'),
             meta: {
               requiresAuth: true,
-              allowedRoles: ['Resellers', 'SuperAdmins'],
+              allowedRoles: [constants.RESELLER, constants.SUPER_ADMIN],
             },
           },
           {
@@ -97,7 +121,7 @@ const routes = [
             component: () => import('@/layouts/empty/EmptyLayout.vue'),
             meta: {
               requiresAuth: true,
-              allowedRoles: ['Resellers', 'SuperAdmins'],
+              allowedRoles: [constants.RESELLER, constants.SUPER_ADMIN],
             },
             children: [
               {
@@ -107,7 +131,7 @@ const routes = [
                   import('@/views/admin/imap_migration/ProvidersView.vue'),
                 meta: {
                   requiresAuth: true,
-                  allowedRoles: ['Resellers', 'SuperAdmins'],
+                  allowedRoles: [constants.RESELLER, constants.SUPER_ADMIN],
                 },
               },
               {
@@ -117,7 +141,7 @@ const routes = [
                   import('@/views/admin/imap_migration/ProviderEditView.vue'),
                 meta: {
                   requiresAuth: true,
-                  allowedRoles: ['Resellers', 'SuperAdmins'],
+                  allowedRoles: [constants.RESELLER, constants.SUPER_ADMIN],
                 },
               },
             ],
@@ -129,7 +153,11 @@ const routes = [
         component: () => import('@/layouts/empty/EmptyLayout.vue'),
         meta: {
           requiresAuth: true,
-          allowedRoles: ['DomainAdmins', 'Resellers', 'SuperAdmins'],
+          allowedRoles: [
+            constants.DOMAIN_ADMIN,
+            constants.RESELLER,
+            constants.SUPER_ADMIN,
+          ],
         },
         children: [
           {
@@ -139,7 +167,11 @@ const routes = [
               import('@/views/admin/identities/IdentitiesView.vue'),
             meta: {
               requiresAuth: true,
-              allowedRoles: ['DomainAdmins', 'Resellers', 'SuperAdmins'],
+              allowedRoles: [
+                constants.DOMAIN_ADMIN,
+                constants.RESELLER,
+                constants.SUPER_ADMIN,
+              ],
             },
           },
           {
@@ -148,7 +180,11 @@ const routes = [
             component: () => import('@/views/admin/identities/AccountView.vue'),
             meta: {
               requiresAuth: true,
-              allowedRoles: ['DomainAdmins', 'Resellers', 'SuperAdmins'],
+              allowedRoles: [
+                constants.DOMAIN_ADMIN,
+                constants.RESELLER,
+                constants.SUPER_ADMIN,
+              ],
             },
           },
           {
@@ -158,7 +194,11 @@ const routes = [
               import('@/views/admin/identities/AccountEditView.vue'),
             meta: {
               requiresAuth: true,
-              allowedRoles: ['DomainAdmins', 'Resellers', 'SuperAdmins'],
+              allowedRoles: [
+                constants.DOMAIN_ADMIN,
+                constants.RESELLER,
+                constants.SUPER_ADMIN,
+              ],
             },
           },
           {
@@ -167,7 +207,11 @@ const routes = [
             component: () => import('@/views/admin/identities/AliasView.vue'),
             meta: {
               requiresAuth: true,
-              allowedRoles: ['DomainAdmins', 'Resellers', 'SuperAdmins'],
+              allowedRoles: [
+                constants.DOMAIN_ADMIN,
+                constants.RESELLER,
+                constants.SUPER_ADMIN,
+              ],
             },
           },
           {
@@ -177,7 +221,11 @@ const routes = [
               import('@/views/admin/identities/AliasEditView.vue'),
             meta: {
               requiresAuth: true,
-              allowedRoles: ['DomainAdmins', 'Resellers', 'SuperAdmins'],
+              allowedRoles: [
+                constants.DOMAIN_ADMIN,
+                constants.RESELLER,
+                constants.SUPER_ADMIN,
+              ],
             },
           },
         ],
@@ -188,7 +236,7 @@ const routes = [
         component: () => import('@/views/admin/ParametersView.vue'),
         meta: {
           requiresAuth: true,
-          allowedRoles: ['SuperAdmins'],
+          allowedRoles: [constants.SUPER_ADMIN],
         },
       },
       {
@@ -205,7 +253,7 @@ const routes = [
         component: () => import('@/views/admin/monitoring/StatisticsView.vue'),
         meta: {
           requiresAuth: true,
-          allowedRoles: ['SuperAdmins'],
+          allowedRoles: [constants.SUPER_ADMIN],
         },
       },
       {
@@ -214,7 +262,7 @@ const routes = [
         component: () => import('@/views/admin/monitoring/AuditTrailView.vue'),
         meta: {
           requiresAuth: true,
-          allowedRoles: ['SuperAdmins'],
+          allowedRoles: [constants.SUPER_ADMIN],
         },
       },
       {
@@ -223,7 +271,7 @@ const routes = [
         component: () => import('@/views/admin/monitoring/MessagesView.vue'),
         meta: {
           requiresAuth: true,
-          allowedRoles: ['DomainAdmins', 'SuperAdmins'],
+          allowedRoles: [constants.DOMAIN_ADMIN, constants.SUPER_ADMIN],
         },
       },
       {
@@ -232,7 +280,7 @@ const routes = [
         component: () => import('@/views/admin/InformationView.vue'),
         meta: {
           requiresAuth: true,
-          allowedRoles: ['SuperAdmins'],
+          allowedRoles: [constants.SUPER_ADMIN],
         },
       },
     ],

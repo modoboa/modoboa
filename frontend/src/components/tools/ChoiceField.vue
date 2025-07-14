@@ -8,7 +8,7 @@
   <div
     v-for="(lineChoices, index1) in formatedChoices"
     :key="index1"
-    class="d-flex"
+    class="d-flex flex-grow-0"
   >
     <div
       v-for="(choice, index2) in lineChoices"
