@@ -44,11 +44,12 @@
   </v-form>
 </template>
 
-<script setup lang="js">
+<script setup>
 import { ref, computed, watch } from 'vue'
 import { useGettext } from 'vue3-gettext'
 import { useDomainsStore } from '@/stores'
 import rules from '@/plugins/rules'
+import constants from '@/constants.json'
 
 const { $gettext } = useGettext()
 const emit = defineEmits(['update:modelValue'])
@@ -68,7 +69,7 @@ watch(
   (value) => {
     if (value) {
       form.value = { ...value }
-      if (form.value.role === 'SimpleUsers') {
+      if (form.value.role === constants.USER) {
         if (!form.value.mailbox) {
           form.value.mailbox = {}
         }

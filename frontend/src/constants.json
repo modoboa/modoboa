@@ -1,4 +1,8 @@
 {
-  "ALARM_OPENED": 1,
-  "ALARM_CLOSED": 2
+    "ALARM_OPENED": 1,
+    "ALARM_CLOSED": 2,
+    "SUPER_ADMIN": "SuperAdmins",
+    "RESELLER": "Resellers",
+    "DOMAIN_ADMIN": "DomainAdmins",
+    "USER": "SimpleUsers"
 }

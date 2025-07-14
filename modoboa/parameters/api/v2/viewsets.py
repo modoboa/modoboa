@@ -4,7 +4,7 @@ from drf_spectacular.utils import extend_schema, OpenApiParameter
 from rest_framework import permissions, response, viewsets
 from rest_framework.decorators import action
 
-from modoboa.lib.permissions import IsSuperUser
+from modoboa.lib.permissions import CanCreateDomain, IsSuperUser
 from modoboa.lib.throttle import GetThrottleViewsetMixin
 
 from . import serializers
@@ -90,7 +90,11 @@ class GlobalParametersViewSet(BaseParametersViewSet):
     """Parameter viewset, global level."""
 
     level = "global"
-    permission_classes = [permissions.IsAuthenticated, IsSuperUser]
+
+    def get_permissions(self):
+        if self.action == "retrieve":
+            return [permissions.IsAuthenticated(), CanCreateDomain()]
+        return [permissions.IsAuthenticated(), IsSuperUser()]
 
     def _get_parameter_values(self, request, app: str) -> dict:
         return request.localconfig.parameters.get_values_dict(app)

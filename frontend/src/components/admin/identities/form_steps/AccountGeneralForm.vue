@@ -57,6 +57,7 @@ import { ref, computed } from 'vue'
 import { useGettext } from 'vue3-gettext'
 import { useAuthStore } from '@/stores'
 import rules from '@/plugins/rules'
+import constants from '@/constants.json'
 
 const { $gettext } = useGettext()
 const authStore = useAuthStore()
@@ -72,21 +73,18 @@ const formErrors = ref({})
 const account = computed(() => props.modelValue)
 
 const usernamePlaceholder = computed(() => {
-  if (account.value.role === 'SimpleUsers') {
+  if (account.value.role === constants.USER) {
     return $gettext('Enter an email address')
   }
   return $gettext('Enter a simple username or an email address')
 })
 
 const usernameInputType = computed(() => {
-  return account.value.role === 'SimpleUsers' ? 'email' : 'text'
+  return account.value.role === constants.USER ? 'email' : 'text'
 })
 
 function updateUsername() {
-  if (
-    account.value.role != 'SuperAdmins' &&
-    account.value.username.indexOf('@') !== -1
-  ) {
+  if (account.value.username.indexOf('@') !== -1) {
     account.value.mailbox.full_address = account.value.username
     account.value.mailbox.message_limit = null
   }

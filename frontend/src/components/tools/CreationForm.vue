@@ -150,7 +150,7 @@ async function goToNextStep(current, next) {
     }
     if (props.validateObject) {
       try {
-        await props.validateObject()
+        await props.validateObject(current)
       } catch (error) {
         emit('validationError', current, error.response.data)
         return

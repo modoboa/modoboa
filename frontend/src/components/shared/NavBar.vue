@@ -94,6 +94,7 @@
 import { useRouter } from 'vue-router'
 import { ref, computed, onMounted } from 'vue'
 import { useGlobalStore, useAuthStore, useLayoutStore } from '@/stores'
+import constants from '@/constants.json'
 
 const props = defineProps({
   color: {
@@ -141,7 +142,7 @@ function displayMenuItem(item) {
 }
 
 onMounted(() => {
-  if (authUser.value.role === 'SuperAdmins') {
+  if (authUser.value.role === constants.SUPER_ADMIN) {
     globalStore.fetchNotifications()
   }
 })

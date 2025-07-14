@@ -16,7 +16,10 @@
       <v-tab v-if="authStore.userHasMailbox" value="autoreply">
         {{ $gettext('Auto-reply message') }}
       </v-tab>
-      <v-tab v-if="authStore.authUser.role === 'SuperAdmins'" value="api">
+      <v-tab
+        v-if="authStore.authUser.role === constants.SUPER_ADMIN"
+        value="api"
+      >
         {{ $gettext('API access') }}
       </v-tab>
     </v-tabs>
@@ -36,7 +39,7 @@
         <AutoReplyForm />
       </v-tabs-window-item>
       <v-tabs-window-item
-        v-if="authStore.authUser.role === 'SuperAdmins'"
+        v-if="authStore.authUser.role === constants.SUPER_ADMIN"
         value="api"
       >
         <APISetupForm />
@@ -55,6 +58,7 @@ import AutoReplyForm from '@/components/account/AutoReplyForm.vue'
 import APISetupForm from '@/components/account/APISetupForm.vue'
 import FidoAuthForm from '@/components/account/FidoAuthForm.vue'
 import { useAuthStore } from '@/stores'
+import constants from '@/constants.json'
 
 const authStore = useAuthStore()
 const tab = ref()

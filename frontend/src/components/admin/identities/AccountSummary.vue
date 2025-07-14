@@ -50,7 +50,7 @@
           <v-col v-else cols="6">
             <v-progress-linear
               :color="account.mailbox.quota_usage < 80 ? 'primary' : 'warning'"
-              :value="account.mailbox.quota_usage"
+              :model-value="account.mailbox.quota_usage"
               height="25"
               class="white--text"
             >

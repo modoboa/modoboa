@@ -138,7 +138,8 @@
         v-if="
           limitsConfig.params &&
           limitsConfig.params.enable_domain_limits &&
-          (authUser.role === 'SuperAdmins' || authUser.role === 'Resellers')
+          (authUser.role === constants.SUPER_ADMIN ||
+            authUser.role === constants.RESELLER)
         "
         value="resourcesForm"
         eager
@@ -184,6 +185,7 @@ import { useGettext } from 'vue3-gettext'
 import { useAuthStore } from '@/stores'
 import { useRouter } from 'vue-router'
 import domainsApi from '@/api/domains'
+import constants from '@/constants.json'
 
 const router = useRouter()
 const { $gettext } = useGettext()
@@ -219,8 +221,8 @@ const formMap = computed(() => {
   if (
     limitsConfig.value.params &&
     limitsConfig.value.params.enable_domain_limits &&
-    (authUser.value.role === 'SuperAdmins' ||
-      authUser.value.role === 'Resellers')
+    (authUser.value.role === constants.SUPER_ADMIN ||
+      authUser.value.role === constants.RESELLER)
   ) {
     map.resourcesForm = resourcesForm
   }
