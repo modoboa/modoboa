@@ -6,18 +6,10 @@ from fido2.webauthn import (
 )
 from fido2.server import Fido2Server
 from fido2.utils import websafe_decode, websafe_encode
-import fido2.features
 
 from django.utils import timezone
 
 from modoboa.core.models import User, UserFidoKey
-
-
-def set_json_mapping():
-    try:
-        fido2.features.webauthn_json_mapping.enabled = True
-    except ValueError:
-        pass
 
 
 def create_fido2_server(rp_id: str) -> Fido2Server:
@@ -33,7 +25,6 @@ def get_creds_from_user(user_id: int) -> dict:
 
 
 def begin_registration(request):
-    set_json_mapping()
     server = create_fido2_server(request.localconfig.site.domain)
     options, state = server.register_begin(
         PublicKeyCredentialUserEntity(
@@ -50,7 +41,6 @@ def begin_registration(request):
 
 
 def end_registration(request):
-    set_json_mapping()
     server = create_fido2_server(request.localconfig.site.domain)
     auth_data = server.register_complete(
         request.session.pop("fido2_state"), request.data
@@ -59,13 +49,11 @@ def end_registration(request):
 
 
 def begin_authentication(request, user_id: int):
-    set_json_mapping()
     server = create_fido2_server(request.localconfig.site.domain)
     return server.authenticate_begin(list(get_creds_from_user(user_id).values()))
 
 
 def end_authentication(user: User, state: str, data: dict, rp_id: str):
-    set_json_mapping()
     server = create_fido2_server(rp_id)
     credentials = get_creds_from_user(user.pk)
     result = server.authenticate_complete(
