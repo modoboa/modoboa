@@ -2,9 +2,9 @@
   <div>
     <div class="text-h6">
       {{ title }}
-      <span :class="text - `${color}-lighten-2`">{{ total }}</span>
+      <span :class="`text-${color}-lighten-2`">{{ total }}</span>
     </div>
-    <v-simple-table>
+    <v-table>
       <tbody>
         <template v-for="(source, name) in sources" :key="name">
           <tr>
@@ -35,13 +35,15 @@
           </tr>
         </template>
       </tbody>
-    </v-simple-table>
+    </v-table>
   </div>
 </template>
 
-<script setup lang="js">
+<script setup>
 import { useGettext } from 'vue3-gettext'
+
 const { $gettext } = useGettext()
+
 defineProps({
   title: { type: String, default: '' },
   color: { type: String, default: '' },
