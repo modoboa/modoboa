@@ -5,7 +5,6 @@ coverage:
     - "**/migrations/*"
     - "**/tests/*"
     - "**/tests.py"
-    - "modoboa/core/dev_settings.py"
     - "modoboa/test_settings.py"
   status:
     patch:

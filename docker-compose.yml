@@ -13,7 +13,7 @@ services:
       dockerfile: docker/Dockerfile.dev
     environment:
       DB: "SQLITE"
-      DEBUG: "True"
+      DEBUG: 1
       REDIS_HOST: redis
       PYTHONPATH: ".."
       PYTHONUNBUFFERED: 1
@@ -35,7 +35,7 @@ services:
       - test_project/envfile
     environment:
       DB: "SQLITE"
-      DEBUG: "True"
+      DEBUG: 1
       REDIS_HOST: redis
       PYTHONPATH: ".."
       PYTHONUNBUFFERED: 1
@@ -64,7 +64,7 @@ services:
       - test_project/oidc_key
     environment:
       DB: "SQLITE"
-      DEBUG: "True"
+      DEBUG: 0
       REDIS_HOST: redis
       PYTHONPATH: ".."
       PYTHONUNBUFFERED: 1
@@ -125,7 +125,7 @@ services:
       - test_project/oidc_key
     environment:
       DB: "SQLITE"
-      DEBUG: "True"
+      DEBUG: 1
       REDIS_HOST: redis
       PYTHONPATH: ".."
       PYTHONUNBUFFERED: 1

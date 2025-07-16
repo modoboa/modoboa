@@ -3,24 +3,16 @@
 <html lang="{{ LANGUAGE_CODE }}">
   <head>
     <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <title>{% block pagetitle %}{% endblock %}</title>
     <link rel="icon" type="image/png" href="{% static 'css/logo-icon.png' %}" />
-    <link rel="stylesheet" type="text/css" href="{% static 'bootstrap/dist/css/bootstrap.min.css' %}" />
-    <script src="{% static 'bootstrap/dist/js/bootstrap.min.js' %}" type="text/javascript"></script>
-    <script src="{% static 'eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js' %}" type="text/javascript"></script>
-    <script type="text/javascript" src="{% url 'javascript-catalog' %}"></script>
-    <style>
-      body {
-          padding-top: 60px;
-      }
-    </style>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/offline.css' %}" />
   </head>
 
   <body>
-    <div class="container-fluid">
-      <div class="row-fluid">
-        {% block content %}{% endblock %}
-      </div>
+    <div class="column">
+      {% block content %}{% endblock %}
     </div>
   </body>
 </html>

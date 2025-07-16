@@ -11,10 +11,6 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 from logging.handlers import SysLogHandler
 import os
 import environ
-{% if devmode %}
-
-from modoboa.core.dev_settings import *  # noqa
-{% endif %}
 
 env = environ.Env()
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
