@@ -4,6 +4,10 @@ from functools import reduce
 import logging
 from smtplib import SMTPException
 
+from dateutil import parser
+import feedparser
+
+from django.conf import settings
 from django.utils.datastructures import MultiValueDictKeyError
 
 from drf_spectacular.utils import extend_schema
@@ -12,7 +16,7 @@ from rest_framework.views import APIView
 
 from modoboa.core import signals
 from modoboa.core.utils import check_for_updates, get_capabilities
-from modoboa.lib.permissions import IsSuperUser
+from modoboa.lib.permissions import IsSuperUser, IsPrivilegedUser
 from modoboa.lib.throttle import (
     UserLesserDdosUser,
     PasswordResetApplyThrottle,
@@ -23,6 +27,8 @@ from modoboa.lib.throttle import (
 from . import serializers
 
 logger = logging.getLogger("modoboa.auth")
+
+MODOBOA_WEBSITE_URL = "https://modoboa.org/"
 
 
 def delete_cache_key(class_target, throttles: list, request) -> None:
@@ -165,9 +171,34 @@ class NotificationsAPIView(APIView):
 
 class CapabilitiesAPIView(APIView):
     """Return the capability of this Modoboa instance."""
+
     permission_classes = [permissions.IsAuthenticated]
     throttle_classes = [UserLesserDdosUser]
 
     def get(self, *args, **kwargs):
         return response.Response({"capabilities": get_capabilities()})
 
+
+class NewsFeedAPIView(APIView):
+    """Return list of latest news from configured RSS feed."""
+
+    permission_classes = [permissions.IsAuthenticated, IsPrivilegedUser]
+    throttle_classes = [UserLesserDdosUser]
+
+    @extend_schema(responses=serializers.NewsFeedEntrySerializer(many=True))
+    def get(self, request, *args, **kwargs):
+        lang = "fr" if request.user.language == "fr" else "en"
+        feed_url = f"{MODOBOA_WEBSITE_URL}{lang}/weblog/feeds/"
+        if request.user.role != "SuperAdmins":
+            custom_feed_url = request.localconfig.parameters.get_value("rss_feed_url")
+            if custom_feed_url:
+                feed_url = custom_feed_url
+        entries = []
+        if not settings.DISABLE_DASHBOARD_EXTERNAL_QUERIES:
+            posts = feedparser.parse(feed_url)
+            for entry in posts["entries"][:5]:
+                entry["published"] = parser.parse(entry["published"])
+                entries.append(entry)
+
+        serializer = serializers.NewsFeedEntrySerializer(entries, many=True)
+        return response.Response(serializer.data)
