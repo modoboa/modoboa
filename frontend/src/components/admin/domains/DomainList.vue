@@ -270,11 +270,16 @@ async function deleteDomain(domain) {
   if (!result) {
     return
   }
-  const data = { keep_folder: keepDomainFolder.value }
-  await domainsApi.deleteDomain(domain.pk, data)
-  reloadDomains()
-  busStore.displayNotification({ msg: $gettext('Domain deleted') })
-  keepDomainFolder.value = false
+  loading.value = true
+  try {
+    const data = { keep_folder: keepDomainFolder.value }
+    await domainsApi.deleteDomain(domain.pk, data)
+    reloadDomains()
+    busStore.displayNotification({ msg: $gettext('Domain deleted') })
+    keepDomainFolder.value = false
+  } finally {
+    loading.value = false
+  }
 }
 
 function editDomain(domain) {
