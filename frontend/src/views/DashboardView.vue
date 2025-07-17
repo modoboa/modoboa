@@ -2,24 +2,17 @@
   <v-toolbar flat>
     <v-toolbar-title>{{ $gettext('Welcome to Modoboa') }}</v-toolbar-title>
   </v-toolbar>
-  <v-alert type="info" border="top" colored-border elevation="2" class="mt-10">
-    <p>{{ $gettext('This page is still under construction.') }}</p>
-    <p>
-      {{
-        $gettext(
-          "It will present a summary of your Modoboa server's status and some useful information about the product."
-        )
-      }}
-    </p>
-    <p>
-      Your feedback would be really appreciated, you can use
-      <a href="https://github.com/modoboa/modoboa/discussions"
-        >Github discussions</a
-      >
-      to share your ideas and/or comments.
-    </p>
-  </v-alert>
+
+  <v-row>
+    <v-col sm="12" md="6">
+      <NewsFeedWidget />
+    </v-col>
+  </v-row>
 </template>
+
+<script setup>
+import NewsFeedWidget from '@/components/admin/dashboard/NewsFeedWidget'
+</script>
 
 <style scoped>
 .v-toolbar {

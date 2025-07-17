@@ -647,3 +647,10 @@ class ModoboaApplicationSerializer(serializers.Serializer):
     icon = serializers.CharField()
     url = serializers.CharField()
     description = serializers.CharField(required=False)
+
+
+class NewsFeedEntrySerializer(serializers.Serializer):
+
+    title = serializers.CharField()
+    link = serializers.CharField()
+    published = serializers.DateTimeField()
