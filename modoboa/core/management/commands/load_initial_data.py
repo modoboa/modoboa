@@ -139,7 +139,7 @@ class Command(BaseCommand):
         else:
             app = frontend_application.first()
             app.redirect_uris = redirect_uris
-            app.post_logout_redirect_urls = base_uris
+            app.post_logout_redirect_uris = base_uris
             app.save()
             client_id = app.client_id
 
