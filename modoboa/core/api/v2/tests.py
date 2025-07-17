@@ -547,13 +547,19 @@ class CapabilitiesAPITestCase(ModoAPITestCase):
 
 class NewsFeedAPIViewTestCase(ModoAPITestCase):
 
+    @classmethod
+    def setUpTestData(cls):
+        """Create test data."""
+        super().setUpTestData()
+        factories.populate_database()
+
     def test_get(self):
         url = reverse("v2:news-feed")
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.json()), 5)
 
-    @override_settings(DISABLE_DASHBOARD_EXTERNAL_QUERIES=False)
+    @override_settings(DISABLE_DASHBOARD_EXTERNAL_QUERIES=True)
     def test_if_disabling_from_settings_works(self):
         url = reverse("v2:news-feed")
         response = self.client.get(url)
