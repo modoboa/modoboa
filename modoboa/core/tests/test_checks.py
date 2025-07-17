@@ -56,9 +56,9 @@ class CheckSessionCookieSecureTest(SimpleModoTestCase):
         msgs = checks.check_dovecot_oauth_app()
         self.assertEqual(len(msgs), 0)
 
-    def test_redicale_oauth_app_exists(self):
+    def test_radicale_oauth_app_exists(self):
         get_application_model().objects.filter(name="Radicale").delete()
-        msgs = checks.check_dovecot_oauth_app()
+        msgs = checks.check_radicale_oauth_app()
         self.assertEqual(len(msgs), 1)
         client_secret = str(uuid.uuid4())
         call_command(
@@ -70,5 +70,5 @@ class CheckSessionCookieSecureTest(SimpleModoTestCase):
             "confidential",
             "client-credentials",
         )
-        msgs = checks.check_dovecot_oauth_app()
+        msgs = checks.check_radicale_oauth_app()
         self.assertEqual(len(msgs), 0)
