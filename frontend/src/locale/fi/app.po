@@ -34,7 +34,7 @@ msgid ""
 "A new key will be generated soon. Refresh the page in a moment to see it."
 msgstr "Uusi avain luodaan pian. Päivitä sivu hetken kuluttua nähdäksesi sen."
 
-#: src/components/admin/identities/form_steps/AccountRoleForm.vue:108
+#: src/components/admin/identities/form_steps/AccountRoleForm.vue:111
 msgid ""
 "A user with all privileges, can do anything. By default, such a user does "
 "not have a mailbox so he can't access end-user features."
@@ -43,7 +43,7 @@ msgstr ""
 "tällaisella käyttäjällä ei ole postilaatikkoa, joten hän ei voi käyttää "
 "loppukäyttäjän ominaisuuksia."
 
-#: src/components/admin/identities/form_steps/AccountRoleForm.vue:82
+#: src/components/admin/identities/form_steps/AccountRoleForm.vue:83
 msgid ""
 "A user with no privileges but with a mailbox. He will be allowed to use all "
 "end-user features: webmail, calendar, contacts, filters."
@@ -52,7 +52,7 @@ msgstr ""
 "käyttää kaikkia loppukäyttäjän ominaisuuksia: webmail, kalenteri, "
 "yhteystiedot, suodattimet."
 
-#: src/components/admin/identities/form_steps/AccountRoleForm.vue:92
+#: src/components/admin/identities/form_steps/AccountRoleForm.vue:93
 msgid ""
 "A user with privileges on one or more domain. He will be allowed to "
 "administer mailboxes and he can also have a mailbox."
@@ -76,6 +76,11 @@ msgstr ""
 msgid "Account"
 msgstr "Tili"
 
+#: src/components/admin/identities/IdentityList.vue:239
+#, fuzzy
+msgid "Account deleted"
+msgstr "Tili luotu"
+
 #: src/views/account/SettingsView.vue:3
 #, fuzzy
 msgid "Account settings"
@@ -87,7 +92,7 @@ msgstr "Päivitä asetukset"
 #: src/components/admin/alarms/AlarmList.vue:98
 #: src/components/admin/domains/DomainList.vue:221
 #: src/components/admin/domains/DomainList.vue:35
-#: src/components/admin/identities/IdentityList.vue:134
+#: src/components/admin/identities/IdentityList.vue:136
 #: src/components/admin/identities/IdentityList.vue:35
 #: src/components/admin/imap_migration/MigrationsList.vue:23
 #: src/components/admin/imap_migration/MigrationsList.vue:83
@@ -205,7 +210,7 @@ msgstr "Yleiset tiedot"
 msgid "Administered domains"
 msgstr "Hallinnoidut verkkotunnukset"
 
-#: src/components/admin/domains/DomainAdminList.vue:150
+#: src/components/admin/domains/DomainAdminList.vue:153
 msgid "Administrator added"
 msgstr "Järjestelmänvalvoja lisäsi"
 
@@ -213,12 +218,12 @@ msgstr "Järjestelmänvalvoja lisäsi"
 msgid "Administrator name"
 msgstr "Järjestelmänvalvojan nimi"
 
-#: src/components/admin/domains/DomainAdminList.vue:159
+#: src/components/admin/domains/DomainAdminList.vue:162
 msgid "Administrator removed"
 msgstr "Järjestelmänvalvoja poistettu"
 
 #: src/components/admin/domains/DomainAdminList.vue:9
-#: src/components/admin/domains/DomainList.vue:310
+#: src/components/admin/domains/DomainList.vue:315
 msgid "Administrators"
 msgstr "Ylläpitäjät"
 
@@ -242,8 +247,8 @@ msgstr "Verkkotunnuksen alias poistettu"
 msgid "Alarm re-opened"
 msgstr "Verkkotunnuksen alias poistettu"
 
-#: src/components/admin/domains/DomainList.vue:328
-#: src/layouts/admin/AdminLayout.vue:50
+#: src/components/admin/domains/DomainList.vue:333
+#: src/layouts/admin/AdminLayout.vue:51
 msgid "Alarms"
 msgstr "Hälytykset"
 
@@ -268,6 +273,11 @@ msgstr "Alias luotu"
 msgid "Alias already exists, redirecting to edit page"
 msgstr ""
 
+#: src/components/admin/identities/IdentityList.vue:266
+#, fuzzy
+msgid "Alias deleted"
+msgstr "Verkkotunnuksen alias poistettu"
+
 #: src/components/admin/identities/form_steps/AccountAliasForm.vue:8
 #: src/components/admin/identities/form_steps/AliasRecipientForm.vue:8
 msgid ""
@@ -280,9 +290,9 @@ msgstr ""
 #: src/components/admin/domains/DomainList.vue:209
 #: src/components/admin/domains/DomainSummary.vue:40
 #: src/components/admin/identities/AccountAliases.vue:4
-#: src/components/admin/identities/AccountCreationForm.vue:146
-#: src/components/admin/identities/AccountCreationForm.vue:149
-#: src/components/admin/identities/AccountCreationForm.vue:180
+#: src/components/admin/identities/AccountCreationForm.vue:144
+#: src/components/admin/identities/AccountCreationForm.vue:147
+#: src/components/admin/identities/AccountCreationForm.vue:178
 msgid "Aliases"
 msgstr "Aliakset"
 
@@ -299,11 +309,18 @@ msgstr "viestit"
 msgid "All of the following"
 msgstr ""
 
+#: src/components/admin/identities/form_steps/AccountRoleForm.vue:102
+msgid ""
+"An intermediate user who has the same privileges than a Domain "
+"administrator, plus the possibility to create domains and to assign "
+"resources."
+msgstr ""
+
 #: src/components/account/FilterForm.vue:17
 msgid "Any of the following"
 msgstr ""
 
-#: src/views/account/SettingsView.vue:20
+#: src/views/account/SettingsView.vue:23
 msgid "API access"
 msgstr "API-pääsy"
 
@@ -323,12 +340,12 @@ msgstr "API-tunniste poistettu"
 msgid "Apply"
 msgstr "Käytä"
 
-#: src/components/admin/identities/IdentityList.vue:249
+#: src/components/admin/identities/IdentityList.vue:252
 #, fuzzy
 msgid "Are you sure you want to delete this alias?"
 msgstr "Haluatko todella poistaa aliaksen %{ alias }?"
 
-#: src/components/admin/identities/IdentityList.vue:222
+#: src/components/admin/identities/IdentityList.vue:224
 #, fuzzy
 msgid "Are you sure you want to delete this identity ?"
 msgstr "Haluatko todella poistaa aliaksen %{ alias }?"
@@ -363,7 +380,7 @@ msgstr ""
 msgid "Attendees"
 msgstr ""
 
-#: src/layouts/admin/AdminLayout.vue:65
+#: src/layouts/admin/AdminLayout.vue:66
 #: src/views/admin/monitoring/AuditTrailView.vue:3
 msgid "Audit trail"
 msgstr "Tarkastusketju"
@@ -456,7 +473,7 @@ msgstr "Profiili päivitetty"
 #: src/components/account/FidoAuthForm.vue:204
 #: src/components/account/FilterForm.vue:147
 #: src/components/account/FilterSetForm.vue:24
-#: src/components/admin/domains/DomainEditForm.vue:160
+#: src/components/admin/domains/DomainEditForm.vue:161
 #: src/components/admin/identities/AccountEditForm.vue:183
 #: src/components/admin/identities/AliasEditForm.vue:69
 #: src/components/admin/imap_migration/ProviderForm.vue:58
@@ -686,6 +703,11 @@ msgstr "Luo verkkotunnuksen tavanomaiset aliakset."
 msgid "Creation date"
 msgstr "Luontipäivä"
 
+#: src/components/tools/ResourcesView.vue:39
+#, fuzzy
+msgid "Creation denied"
+msgstr "Luontipäivä"
+
 #: src/views/admin/identities/IdentitiesView.vue:91
 msgid "Crypt passwords"
 msgstr "Salakirjoita salasanat"
@@ -707,7 +729,7 @@ msgstr "Päivittäinen viestien lähetysraja"
 msgid "Daily sending limit"
 msgstr "Päivittäinen lähetysraja"
 
-#: src/layouts/admin/AdminLayout.vue:32
+#: src/layouts/admin/AdminLayout.vue:33
 msgid "Dashboard"
 msgstr "Työpöytä"
 
@@ -737,10 +759,10 @@ msgstr ""
 #: src/components/admin/alarms/AlarmList.vue:109
 #: src/components/admin/alarms/AlarmList.vue:126
 #: src/components/admin/domains/DomainAliasForm.vue:39
-#: src/components/admin/domains/DomainList.vue:320
-#: src/components/admin/identities/IdentityList.vue:181
-#: src/components/admin/identities/IdentityList.vue:193
-#: src/components/admin/identities/IdentityList.vue:206
+#: src/components/admin/domains/DomainList.vue:325
+#: src/components/admin/identities/IdentityList.vue:183
+#: src/components/admin/identities/IdentityList.vue:195
+#: src/components/admin/identities/IdentityList.vue:208
 #: src/components/admin/imap_migration/MigrationsList.vue:123
 #: src/components/admin/imap_migration/ProvidersList.vue:124
 #: src/components/calendars/EventForm.vue:90
@@ -934,7 +956,7 @@ msgstr "Haluatko todella poistaa aliaksen %{ alias }?"
 msgid "Domain"
 msgstr "Verkkotunnus"
 
-#: src/components/admin/identities/form_steps/AccountRoleForm.vue:90
+#: src/components/admin/identities/form_steps/AccountRoleForm.vue:91
 msgid "Domain administrator"
 msgstr "Luo verkkotunnuksen ylläpitäjä"
 
@@ -954,11 +976,11 @@ msgstr "Verkkotunnuksen alias päivitetty"
 msgid "Domain created"
 msgstr "Verkkotunnus luotu"
 
-#: src/components/admin/identities/AccountCreationForm.vue:131
+#: src/components/admin/identities/AccountCreationForm.vue:129
 msgid "Domain default value"
 msgstr "Verkkotunnuksen oletusarvo"
 
-#: src/components/admin/domains/DomainList.vue:276
+#: src/components/admin/domains/DomainList.vue:278
 msgid "Domain deleted"
 msgstr ""
 
@@ -970,7 +992,7 @@ msgstr "Verkkotunnus (esim. domain.tld)"
 msgid "domain's default value"
 msgstr "verkkotunnuksen oletusarvo"
 
-#: src/layouts/admin/AdminLayout.vue:38
+#: src/layouts/admin/AdminLayout.vue:39
 #: src/views/admin/domains/DomainsView.vue:4
 msgid "Domains"
 msgstr "Sinulla ei ole oikeutta tuoda verkkotunnuksia"
@@ -988,9 +1010,9 @@ msgstr ""
 msgid "E-mail"
 msgstr "Sähköposti"
 
-#: src/components/admin/domains/DomainList.vue:315
-#: src/components/admin/identities/IdentityList.vue:176
-#: src/components/admin/identities/IdentityList.vue:188
+#: src/components/admin/domains/DomainList.vue:320
+#: src/components/admin/identities/IdentityList.vue:178
+#: src/components/admin/identities/IdentityList.vue:190
 #: src/components/admin/imap_migration/ProvidersList.vue:130
 #: src/components/contacts/ContactList.vue:138
 #: src/views/account/FiltersView.vue:329
@@ -1064,7 +1086,7 @@ msgstr "Sähköpostiosoite"
 msgid "Edition"
 msgstr "Muokkaa"
 
-#: src/components/admin/identities/AccountCreationForm.vue:125
+#: src/components/admin/identities/AccountCreationForm.vue:123
 msgid "Email"
 msgstr "Sähköposti"
 
@@ -1072,7 +1094,7 @@ msgstr "Sähköposti"
 msgid "Email address"
 msgstr "Sähköpostiosoite"
 
-#: src/layouts/admin/AdminLayout.vue:83
+#: src/layouts/admin/AdminLayout.vue:88
 #, fuzzy
 msgid "Email providers"
 msgstr "Sähköpostiosoite"
@@ -1116,7 +1138,7 @@ msgstr "Käytössä"
 #: src/components/admin/domains/DomainList.vue:208
 #: src/components/admin/domains/DomainSummary.vue:44
 #: src/components/admin/domains/form_steps/DomainGeneralForm.vue:20
-#: src/components/admin/identities/AccountCreationForm.vue:112
+#: src/components/admin/identities/AccountCreationForm.vue:110
 #: src/components/admin/identities/AccountEditForm.vue:45
 #: src/components/admin/identities/AccountSummary.vue:35
 #: src/components/admin/identities/AliasEditForm.vue:21
@@ -1130,11 +1152,11 @@ msgstr "Käytössä"
 msgid "Enter a name to register a new webauthn device."
 msgstr ""
 
-#: src/components/admin/identities/form_steps/AccountGeneralForm.vue:78
+#: src/components/admin/identities/form_steps/AccountGeneralForm.vue:79
 msgid "Enter a simple username or an email address"
 msgstr "Anna yksinkertainen käyttäjätunnus tai sähköpostiosoite"
 
-#: src/components/admin/identities/form_steps/AccountGeneralForm.vue:76
+#: src/components/admin/identities/form_steps/AccountGeneralForm.vue:77
 msgid "Enter an email address"
 msgstr "Syötä oikean muotoinen sähköpostiosoite"
 
@@ -1236,7 +1258,7 @@ msgid "Filters"
 msgstr ""
 
 #: src/components/account/ProfileForm.vue:9
-#: src/components/admin/identities/AccountCreationForm.vue:101
+#: src/components/admin/identities/AccountCreationForm.vue:99
 #: src/components/admin/identities/form_steps/AccountGeneralForm.vue:18
 #: src/components/contacts/ContactForm.vue:12
 msgid "First name"
@@ -1281,7 +1303,7 @@ msgstr "Sähköpostiosoite"
 msgid "Full name"
 msgstr "Koko nimi"
 
-#: src/components/admin/identities/IdentityList.vue:131
+#: src/components/admin/identities/IdentityList.vue:133
 msgid "Fullname/recipient"
 msgstr "Koko nimi/saaja"
 
@@ -1332,10 +1354,6 @@ msgstr "Lähettäjän osoitteet"
 msgid "Go to <strong>Settings > General</strong> section"
 msgstr ""
 
-#: src/components/admin/identities/form_steps/AccountRoleForm.vue:101
-msgid "help"
-msgstr "ohje"
-
 #: src/components/account/APISetupForm.vue:46
 #: src/components/account/ProfileForm.vue:28
 msgid "here"
@@ -1349,13 +1367,13 @@ msgstr ""
 "Tässä on esimerkki DNS-määrityksistä (bind-muodossa). Korvaa [ ]:n välissä "
 "olevat arvot sopivilla arvoilla."
 
-#: src/components/admin/identities/AccountCreationForm.vue:170
-#: src/components/admin/identities/AccountCreationForm.vue:97
+#: src/components/admin/identities/AccountCreationForm.vue:168
+#: src/components/admin/identities/AccountCreationForm.vue:95
 #: src/components/admin/identities/AccountEditForm.vue:31
 msgid "Identification"
 msgstr "Tunniste"
 
-#: src/layouts/admin/AdminLayout.vue:44
+#: src/layouts/admin/AdminLayout.vue:45
 #: src/views/admin/identities/IdentitiesView.vue:4
 msgid "Identities"
 msgstr "Identiteetit"
@@ -1372,7 +1390,7 @@ msgid ""
 "received and processed."
 msgstr ""
 
-#: src/layouts/admin/AdminLayout.vue:78
+#: src/layouts/admin/AdminLayout.vue:83
 #, fuzzy
 msgid "IMAP Migration"
 msgstr "Automaattinen asetusten määrittäminen"
@@ -1428,7 +1446,7 @@ msgid ""
 "complete the operation"
 msgstr ""
 
-#: src/layouts/admin/AdminLayout.vue:109 src/views/admin/InformationView.vue:4
+#: src/layouts/admin/AdminLayout.vue:114 src/views/admin/InformationView.vue:4
 #: src/views/calendars/CalendarView.vue:94
 #, fuzzy
 msgid "Information"
@@ -1462,15 +1480,6 @@ msgstr "Virheellinen salasana"
 msgid "Is the IMAP connection secured using SSL/TLS or StartTLS"
 msgstr ""
 
-#: src/views/DashboardView.vue:9
-#, fuzzy
-msgid ""
-"It will present a summary of your Modoboa server's status and some useful "
-"information about the product."
-msgstr ""
-"Esittää yhteenvedon Modoboa-palvelimesi tilasta sekä\n"
-"      hyödyllisiä tietoja tuotteesta."
-
 #: src/components/account/ForwardForm.vue:16
 msgid "Keep local copies"
 msgstr "Säilytä paikallisia kopioita"
@@ -1492,7 +1501,7 @@ msgid "Last modification date"
 msgstr "Viimeisin muutospäivä"
 
 #: src/components/account/ProfileForm.vue:15
-#: src/components/admin/identities/AccountCreationForm.vue:104
+#: src/components/admin/identities/AccountCreationForm.vue:102
 #: src/components/admin/identities/form_steps/AccountGeneralForm.vue:25
 #: src/components/contacts/ContactForm.vue:22
 msgid "Last name"
@@ -1502,6 +1511,11 @@ msgstr "Sukunimi"
 #, fuzzy
 msgid "Last Used"
 msgstr "Sukunimi"
+
+#: src/components/admin/dashboard/NewsFeedWidget.vue:2
+#, fuzzy
+msgid "Latest news"
+msgstr "Asennettu versio"
 
 #: src/views/admin/InformationView.vue:147
 #, fuzzy
@@ -1544,8 +1558,8 @@ msgid "Logout / Login with your current account so its password gets updated"
 msgstr ""
 
 #: src/components/admin/alarms/AlarmList.vue:95
-#: src/components/admin/identities/AccountCreationForm.vue:122
-#: src/components/admin/identities/AccountCreationForm.vue:176
+#: src/components/admin/identities/AccountCreationForm.vue:120
+#: src/components/admin/identities/AccountCreationForm.vue:174
 #: src/components/admin/identities/AccountEditForm.vue:69
 msgid "Mailbox"
 msgstr "Postilaatikko"
@@ -1629,7 +1643,7 @@ msgstr ""
 
 #: src/components/admin/domains/DomainCreationForm.vue:197
 #: src/components/admin/domains/form_steps/DomainLimitationsForm.vue:32
-#: src/components/admin/identities/AccountCreationForm.vue:135
+#: src/components/admin/identities/AccountCreationForm.vue:133
 msgid "Message sending limit"
 msgstr "Viestien lähetysraja"
 
@@ -1655,7 +1669,7 @@ msgstr ""
 msgid "messages"
 msgstr "viestit"
 
-#: src/layouts/admin/AdminLayout.vue:70
+#: src/layouts/admin/AdminLayout.vue:71
 msgid "Messages"
 msgstr "Viestit"
 
@@ -1664,7 +1678,7 @@ msgstr "Viestit"
 msgid "Migration deleted"
 msgstr "Luontipäivä"
 
-#: src/layouts/admin/AdminLayout.vue:88
+#: src/layouts/admin/AdminLayout.vue:93
 #: src/views/admin/imap_migration/MigrationsView.vue:4
 #, fuzzy
 msgid "Migrations"
@@ -1682,7 +1696,7 @@ msgstr "Muokattu"
 msgid "Modify"
 msgstr "Muokkaa"
 
-#: src/layouts/admin/AdminLayout.vue:56
+#: src/layouts/admin/AdminLayout.vue:57
 msgid "Monitoring"
 msgstr ""
 
@@ -1723,12 +1737,12 @@ msgstr "Käyttäjätunnus"
 #: src/components/account/FilterForm.vue:7
 #: src/components/account/FilterSetForm.vue:9
 #: src/components/admin/domains/DNSDetail.vue:170
-#: src/components/admin/domains/DomainAdminList.vue:108
+#: src/components/admin/domains/DomainAdminList.vue:109
 #: src/components/admin/domains/DomainAliasForm.vue:8
 #: src/components/admin/domains/DomainCreationForm.vue:164
 #: src/components/admin/domains/DomainList.vue:207
 #: src/components/admin/domains/form_steps/DomainOptionsForm.vue:11
-#: src/components/admin/identities/IdentityList.vue:129
+#: src/components/admin/identities/IdentityList.vue:131
 #: src/components/admin/imap_migration/ProviderCreationForm.vue:53
 #: src/components/admin/imap_migration/ProvidersList.vue:96
 #: src/components/calendars/CalendarForm.vue:15
@@ -1830,8 +1844,8 @@ msgstr "ei"
 #: src/components/admin/domains/DNSDetail.vue:223
 #: src/components/admin/domains/DNSDetail.vue:243
 #: src/components/admin/domains/DomainList.vue:266
-#: src/components/admin/identities/IdentityList.vue:226
-#: src/components/admin/identities/IdentityList.vue:253
+#: src/components/admin/identities/IdentityList.vue:228
+#: src/components/admin/identities/IdentityList.vue:256
 #: src/components/tools/CreationForm.vue:136
 #: src/layouts/webmail/WebmailLayout.vue:197
 msgid "No"
@@ -1853,6 +1867,11 @@ msgstr ""
 #: src/components/webmail/EmailList.vue:165
 msgid "No message yet in this mailbox"
 msgstr ""
+
+#: src/components/tools/ResourcesView.vue:37
+#, fuzzy
+msgid "No quota"
+msgstr "Verkkotunnuksen oletuskiintiö"
 
 #: src/components/admin/identities/AccountSenderAddresses.vue:10
 msgid "No sender address defined for this account"
@@ -1977,7 +1996,7 @@ msgid "Password"
 msgstr "Salasana"
 
 #: src/components/admin/domains/DomainCreationForm.vue:284
-#: src/components/admin/identities/AccountCreationForm.vue:214
+#: src/components/admin/identities/AccountCreationForm.vue:212
 #: src/components/admin/identities/form_steps/AccountPasswordSubForm.vue:104
 msgid "Password copied to clipboard"
 msgstr "Salasana kopioitu leikepöydälle"
@@ -2105,7 +2124,7 @@ msgstr "Jonon ID"
 #: src/components/admin/domains/DomainList.vue:216
 #: src/components/admin/domains/DomainSummary.vue:16
 #: src/components/admin/domains/form_steps/DomainLimitationsForm.vue:5
-#: src/components/admin/identities/AccountCreationForm.vue:129
+#: src/components/admin/identities/AccountCreationForm.vue:127
 #: src/components/admin/identities/AccountSummary.vue:46
 #: src/components/admin/identities/form_steps/AccountMailboxForm.vue:3
 msgid "Quota"
@@ -2144,7 +2163,7 @@ msgid "Random address"
 msgstr "Satunnainen osoite"
 
 #: src/components/admin/domains/DomainCreationForm.vue:256
-#: src/components/admin/identities/AccountCreationForm.vue:107
+#: src/components/admin/identities/AccountCreationForm.vue:105
 #: src/components/admin/identities/form_steps/AccountPasswordSubForm.vue:21
 msgid "Random password"
 msgstr "Satunnainen salasana"
@@ -2233,7 +2252,7 @@ msgstr ""
 msgid "Reply all"
 msgstr ""
 
-#: src/components/admin/identities/form_steps/AccountRoleForm.vue:99
+#: src/components/admin/identities/form_steps/AccountRoleForm.vue:100
 msgid "Reseller"
 msgstr "Jälleenmyyjä"
 
@@ -2242,7 +2261,7 @@ msgstr "Jälleenmyyjä"
 msgid "Reset recovery codes"
 msgstr "Uudet palautuskoodit"
 
-#: src/components/admin/domains/DomainEditForm.vue:149
+#: src/components/admin/domains/DomainEditForm.vue:150
 #: src/components/admin/identities/AccountEditForm.vue:143
 msgid "Resources"
 msgstr "Resurssit"
@@ -2251,16 +2270,16 @@ msgstr "Resurssit"
 msgid "Resources usage"
 msgstr "Resurssien käyttö"
 
-#: src/components/admin/identities/AccountCreationForm.vue:165
-#: src/components/admin/identities/AccountCreationForm.vue:93
-#: src/components/admin/identities/AccountCreationForm.vue:94
+#: src/components/admin/identities/AccountCreationForm.vue:163
+#: src/components/admin/identities/AccountCreationForm.vue:91
+#: src/components/admin/identities/AccountCreationForm.vue:92
 #: src/components/admin/identities/AccountEditForm.vue:9
 #: src/components/admin/identities/AccountSummary.vue:23
 msgid "Role"
 msgstr "Rooli"
 
 #: src/components/account/FidoAuthForm.vue:205
-#: src/components/admin/domains/DomainEditForm.vue:168
+#: src/components/admin/domains/DomainEditForm.vue:169
 #: src/components/admin/identities/AccountEditForm.vue:192
 #: src/components/admin/identities/AliasEditForm.vue:77
 #: src/components/admin/imap_migration/ProviderForm.vue:61
@@ -2332,7 +2351,7 @@ msgstr "Valitse tili"
 msgid "Send only"
 msgstr "Valitse tili"
 
-#: src/components/admin/identities/AccountCreationForm.vue:139
+#: src/components/admin/identities/AccountCreationForm.vue:137
 #: src/components/admin/identities/form_steps/AccountMailboxForm.vue:40
 #, fuzzy
 msgid "Send only account"
@@ -2374,7 +2393,7 @@ msgid "Service: "
 msgstr "Palvelu:"
 
 #: src/layouts/account/AccountLayout.vue:27
-#: src/layouts/admin/AdminLayout.vue:96
+#: src/layouts/admin/AdminLayout.vue:101
 msgid "Settings"
 msgstr "Asetukset"
 
@@ -2387,7 +2406,7 @@ msgstr "Palvelu"
 msgid "Show key"
 msgstr "Näytä avain"
 
-#: src/components/admin/identities/form_steps/AccountRoleForm.vue:80
+#: src/components/admin/identities/form_steps/AccountRoleForm.vue:81
 msgid "Simple user"
 msgstr "Yksinkertainen käyttäjä"
 
@@ -2412,7 +2431,7 @@ msgstr "Aloita nimen kirjoittaminen tästä..."
 msgid "State/Province"
 msgstr ""
 
-#: src/layouts/admin/AdminLayout.vue:60
+#: src/layouts/admin/AdminLayout.vue:61
 #: src/views/admin/domains/DomainView.vue:25
 #: src/views/admin/monitoring/StatisticsView.vue:3
 #, fuzzy
@@ -2434,13 +2453,9 @@ msgstr ""
 msgid "Summary"
 msgstr "Yhteenveto"
 
-#: src/components/admin/identities/form_steps/AccountRoleForm.vue:106
+#: src/components/admin/identities/form_steps/AccountRoleForm.vue:109
 msgid "Super administrator"
 msgstr "Pääylläpitäjä"
-
-#: src/components/tools/EmailField.vue:58
-msgid "SuperAdmins cannot own a mailbox"
-msgstr ""
 
 #: src/components/contacts/ContactList.vue:202
 msgid "Synchronization started"
@@ -2450,7 +2465,7 @@ msgstr ""
 msgid "Synchronize contacts with address book"
 msgstr ""
 
-#: src/components/admin/identities/IdentityList.vue:132
+#: src/components/admin/identities/IdentityList.vue:134
 msgid "Tags"
 msgstr "Tunnisteet"
 
@@ -2499,10 +2514,6 @@ msgstr ""
 #: src/components/account/ProfileForm.vue:34
 msgid "there"
 msgstr ""
-
-#: src/views/DashboardView.vue:6
-msgid "This page is still under construction."
-msgstr "Tämä sivu on vielä rakenteilla."
 
 #: src/components/calendars/EventForm.vue:12
 msgid "Title"
@@ -2585,13 +2596,14 @@ msgstr "Tuntematon"
 msgid "Unknown sources / Threats"
 msgstr ""
 
-#: src/components/admin/identities/form_steps/AccountMailboxForm.vue:114
+#: src/components/admin/identities/form_steps/AccountMailboxForm.vue:115
 msgid "unlimited"
 msgstr "rajoittamaton"
 
 #: src/components/admin/domains/DomainSummary.vue:18
 #: src/components/admin/domains/DomainSummary.vue:25
 #: src/components/admin/identities/AccountSummary.vue:48
+#: src/components/tools/ResourcesView.vue:9
 #, fuzzy
 msgid "Unlimited"
 msgstr "rajoittamaton"
@@ -2638,12 +2650,12 @@ msgstr "Päivitetty"
 msgid "Use count"
 msgstr "Uusi tili"
 
-#: src/components/admin/identities/form_steps/AccountMailboxForm.vue:111
+#: src/components/admin/identities/form_steps/AccountMailboxForm.vue:112
 msgid "Use domain default value"
 msgstr "Käytä verkkotunnuksen oletusarvoa"
 
-#: src/components/admin/domains/DomainAdminList.vue:107
-#: src/components/admin/identities/AccountCreationForm.vue:99
+#: src/components/admin/domains/DomainAdminList.vue:108
+#: src/components/admin/identities/AccountCreationForm.vue:97
 #: src/components/admin/identities/form_steps/AccountGeneralForm.vue:3
 msgid "Username"
 msgstr "Käyttäjätunnus"
@@ -2660,6 +2672,10 @@ msgstr "Kelvollinen"
 msgid "Value"
 msgstr ""
 
+#: src/components/admin/dashboard/NewsFeedWidget.vue:21
+msgid "Visit the official weblog for more information"
+msgstr ""
+
 #: src/components/admin/domains/DNSDetail.vue:217
 #, fuzzy
 msgid "warning"
@@ -2669,8 +2685,8 @@ msgstr "Varoitus"
 #: src/components/account/FidoAuthForm.vue:178
 #: src/components/admin/domains/DNSDetail.vue:237
 #: src/components/admin/domains/DomainList.vue:260
-#: src/components/admin/identities/IdentityList.vue:221
-#: src/components/admin/identities/IdentityList.vue:248
+#: src/components/admin/identities/IdentityList.vue:223
+#: src/components/admin/identities/IdentityList.vue:251
 #: src/components/tools/CreationForm.vue:129
 #: src/layouts/webmail/WebmailLayout.vue:192
 #: src/views/calendars/CalendarView.vue:247
@@ -2719,8 +2735,8 @@ msgstr "kyllä"
 #: src/components/admin/domains/DNSDetail.vue:224
 #: src/components/admin/domains/DNSDetail.vue:244
 #: src/components/admin/domains/DomainList.vue:267
-#: src/components/admin/identities/IdentityList.vue:225
-#: src/components/admin/identities/IdentityList.vue:252
+#: src/components/admin/identities/IdentityList.vue:227
+#: src/components/admin/identities/IdentityList.vue:255
 #: src/components/tools/CreationForm.vue:135
 #: src/layouts/webmail/WebmailLayout.vue:196
 msgid "Yes"
@@ -2784,7 +2800,7 @@ msgstr ""
 msgid "Zip code"
 msgstr "Pin-koodi"
 
-#: src/components/admin/identities/IdentityList.vue:130
+#: src/components/admin/identities/IdentityList.vue:132
 #, fuzzy
 msgctxt "female"
 msgid "Enabled"
@@ -2796,6 +2812,20 @@ msgctxt "male"
 msgid "New"
 msgstr "Uusi"
 
+#~ msgid "help"
+#~ msgstr "ohje"
+
+#, fuzzy
+#~ msgid ""
+#~ "It will present a summary of your Modoboa server's status and some useful "
+#~ "information about the product."
+#~ msgstr ""
+#~ "Esittää yhteenvedon Modoboa-palvelimesi tilasta sekä\n"
+#~ "      hyödyllisiä tietoja tuotteesta."
+
+#~ msgid "This page is still under construction."
+#~ msgstr "Tämä sivu on vielä rakenteilla."
+
 #, fuzzy
 #~ msgid "disabled"
 #~ msgstr "(ei käytössä)"
@@ -2803,9 +2833,6 @@ msgstr "Uusi"
 #, fuzzy
 #~ msgid "account"
 #~ msgstr "Tili"
-
-#~ msgid "Account created"
-#~ msgstr "Tili luotu"
 
 #, fuzzy
 #~ msgid "Account successfully deleted"
