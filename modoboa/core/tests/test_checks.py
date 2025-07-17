@@ -1,15 +1,18 @@
 import os
 import shutil
 import tempfile
+import uuid
 
+from django.core.management import call_command
 from django.test.utils import override_settings
+
+from oauth2_provider.models import get_application_model
 
 from modoboa.core import checks
 from modoboa.lib.tests import SimpleModoTestCase
 
 
 class CheckSessionCookieSecureTest(SimpleModoTestCase):
-
     def setUp(self):
         self.workdir = tempfile.mkdtemp()
 
@@ -35,3 +38,37 @@ class CheckSessionCookieSecureTest(SimpleModoTestCase):
             os.environ["OIDC_RSA_PRIVATE_KEY"] = "KEY"
             msgs = checks.check_rsa_private_key_exists(None)
             self.assertEqual(len(msgs), 0)
+
+    def test_dovecot_oauth_app_exists(self):
+        get_application_model().objects.filter(name="Dovecot").delete()
+        msgs = checks.check_dovecot_oauth_app()
+        self.assertEqual(len(msgs), 1)
+        client_secret = str(uuid.uuid4())
+        call_command(
+            "createapplication",
+            "--name=Dovecot",
+            "--skip-authorization",
+            "--client-id=dovecot",
+            f"--client-secret={client_secret}",
+            "confidential",
+            "client-credentials",
+        )
+        msgs = checks.check_dovecot_oauth_app()
+        self.assertEqual(len(msgs), 0)
+
+    def test_redicale_oauth_app_exists(self):
+        get_application_model().objects.filter(name="Radicale").delete()
+        msgs = checks.check_dovecot_oauth_app()
+        self.assertEqual(len(msgs), 1)
+        client_secret = str(uuid.uuid4())
+        call_command(
+            "createapplication",
+            "--name=Radicale",
+            "--skip-authorization",
+            "--client-id=radicale",
+            f"--client-secret={client_secret}",
+            "confidential",
+            "client-credentials",
+        )
+        msgs = checks.check_dovecot_oauth_app()
+        self.assertEqual(len(msgs), 0)
