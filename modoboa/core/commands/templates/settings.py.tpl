@@ -92,6 +92,7 @@ MODOBOA_APPS = (
     'modoboa.sievefilters',
     'modoboa.contacts',
     'modoboa.calendars',
+    'modoboa.webmail',
     # Modoboa extensions here.
 {% for extension in extensions %}    '{{ extension }}',
 {% endfor %}
