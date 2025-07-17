@@ -106,15 +106,17 @@ class Command(BaseCommand):
 
         app_model = get_application_model()
         allowed_host = getattr(settings, "ALLOWED_HOSTS", None)
-        if allowed_host is not None:
-            allowed_host = allowed_host[0]
-        else:
+        if allowed_host is None:
             allowed_host = input("What will be the hostname used to access Modoboa? ")
             if not allowed_host:
                 allowed_host = "localhost"
         frontend_application = app_model.objects.filter(name="modoboa_frontend")
-        base_uri = f"https://{allowed_host}"
-        redirect_uri = f"{base_uri}/login/logged"
+        # TODO : improve support for multiple allowed_host for frontend
+        base_uris_list = [f"https://{host}" for host in allowed_host]
+        base_uris = " ".join(base_uris_list)
+        base_uri = base_uris_list[0]
+        redirect_uris = " ".join([f"{uri}/login/logged" for uri in base_uris_list])
+        redirect_uri = redirect_uris.split(" ")[0]
         client_id = ""
         if not frontend_application.exists():
             if options["dev"]:
@@ -126,18 +128,18 @@ class Command(BaseCommand):
             call_command(
                 "createapplication",
                 "--algorithm=RS256",
-                f"--redirect-uris={redirect_uri}",
+                f"--redirect-uris={redirect_uris}",
                 "--name=modoboa_frontend",
                 f"--client-id={client_id}",
-                f"--post-logout-redirect-uris={base_uri}",
+                f"--post-logout-redirect-uris={base_uris}",
                 "--skip-authorization",
                 "public",
                 "authorization-code",
             )
         else:
             app = frontend_application.first()
-            app.redirect_uris = redirect_uri
-            app.post_logout_redirect_urls = base_uri
+            app.redirect_uris = redirect_uris
+            app.post_logout_redirect_urls = base_uris
             app.save()
             client_id = app.client_id
 
@@ -150,9 +152,11 @@ class Command(BaseCommand):
             os.makedirs(frontend_target_dir, exist_ok=True)
             for entry in os.scandir(base_frontend_dir):
                 if entry.name != "config.json":
-                    os.symlink(f"{base_frontend_dir}/{entry.name}",
-                               f"{frontend_target_dir}/{entry.name}",
-                               target_is_directory=entry.is_dir())
+                    os.symlink(
+                        f"{base_frontend_dir}/{entry.name}",
+                        f"{frontend_target_dir}/{entry.name}",
+                        target_is_directory=entry.is_dir(),
+                    )
             with open(f"{frontend_target_dir}/config.json", "w") as fp:
                 fp.write(
                     f"""{{
