@@ -117,12 +117,14 @@ import { useGettext } from 'vue3-gettext'
 import MenuItems from '@/components/tools/MenuItems.vue'
 import ConfirmDialog from '@/components/tools/ConfirmDialog.vue'
 import { useRouter } from 'vue-router'
+import { useBusStore } from '@/stores'
 import accountsApi from '@/api/accounts'
 import aliasesApi from '@/api/aliases'
 import identitiesApi from '@/api/identities'
 
 const { $gettext, $pgettext } = useGettext()
 const router = useRouter()
+const { displayNotification } = useBusStore()
 
 const headers = ref([
   { title: $gettext('Name'), key: 'identity' },
@@ -233,6 +235,7 @@ async function deleteAccount(account) {
   try {
     await accountsApi.delete(account.pk, { keepdir: keepAccountFolder.value })
     fetchIdentities()
+    displayNotification({ msg: $gettext('Account deleted') })
   } finally {
     loading.value = false
   }
@@ -259,6 +262,7 @@ async function deleteAlias(alias) {
   try {
     await aliasesApi.delete(alias.pk)
     fetchIdentities()
+    displayNotification({ msg: $gettext('Alias deleted') })
   } finally {
     loading.value = false
   }
