@@ -85,24 +85,6 @@ If some error appears, you may try this:
 
    > git reset --hard origin/master
 
-
-New-admin interface
-*******************
-
-.. note::
-   You don't need to perform these actions if you use the installer to upgrade your instance.
-
-New admin interface won't update by itself. Run the following commands to update it:
-
-.. sourcecode:: bash
-
-   > sudo -u <modoboa_user> -i bash
-   > cd <modoboa_instance_dir>
-   > cp frontend/config.json ./
-   > rm -rf frontend
-   > cp -R <virtuenv_path>/lib/pythonX.X/site-packages/modoboa/frontend_dist/ frontend/
-   > cp ./config.json frontend/config.json
-
 Extensions
 **********
 
@@ -195,8 +177,9 @@ Required changes to :file:`settings.py`
   - ``modoboa_contacts`` -> ``modoboa.contacts``
   - ``modoboa_radicale`` -> ``modoboa.calendars``
   - ``modoboa_webmail`` -> ``modoboa.webmail``
+  - ``modoboa_rspamd`` -> ``modoboa.rspamd``
 
-- Remove configuration blocks related to ``modoboa_contacts`` and ``modoboa_radicale`` plugins
+- Remove configuration blocks related to ``modoboa_contacts`` and ``modoboa_radicale`` plugins (these should be at the end of the file)
 
 - Remove ``AjaxLoginRedirect`` from ``MIDDLEWARE`` variable:
 
@@ -217,11 +200,11 @@ Required changes to :file:`settings.py`
          'modoboa.lib.middleware.RequestCatcherMiddleware',
       )
 
-- Remove ``NEW_ADMIN_URL`` variable
+- Remove ``NEW_ADMIN_URL`` variable if found
 
 - Remove ``new_admin_url`` and ``top_notifications`` context processors
 
-- Remove ``ckeditor`` related apps from ``INSTALLED_APPS`` variable
+- Remove ``ckeditor`` related apps from ``INSTALLED_APPS`` variable and ``CKEDITOR_*`` settings
 
 - Remove ``STATICFILE_DIRS`` variable
 
