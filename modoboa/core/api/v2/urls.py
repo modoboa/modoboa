@@ -37,5 +37,10 @@ urlpatterns += [
         views.NotificationsAPIView.as_view(),
         name="notifications",
     ),
+    path(
+        "admin/news_feed/",
+        views.NewsFeedAPIView.as_view(),
+        name="news-feed",
+    ),
     path("capabilities/", views.CapabilitiesAPIView.as_view(), name="capabilities"),
 ]

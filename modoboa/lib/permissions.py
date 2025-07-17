@@ -154,6 +154,13 @@ class IsSuperUser(permissions.BasePermission):
         return request.user.is_superuser
 
 
+class IsPrivilegedUser(permissions.BasePermission):
+    """Permission class to allow any privileged user."""
+
+    def has_permission(self, request, view):
+        return request.user.role != core_constants.SIMPLEUSERS_ROLE[0]
+
+
 class CanCreateDomain(permissions.BasePermission):
     """Permissions class to allow users with add_domain right."""
 
