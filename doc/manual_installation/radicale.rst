@@ -6,7 +6,7 @@ Radicale
 
 This page is currently being written.
 
-.. _dovecot_oauth2:
+.. _radicale_oauth2:
 
 OAuth 2 authentication
 ======================
