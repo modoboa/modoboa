@@ -7,4 +7,7 @@ export default {
   getNotifications() {
     return repository.get('/admin/notifications/')
   },
+  getNewsFeed() {
+    return repository.get('/admin/news_feed/')
+  },
 }
