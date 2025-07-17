@@ -28,11 +28,11 @@ Main features
 * Administration panel
 * Reputation protection: `DNSBL <https://en.wikipedia.org/wiki/DNSBL>`_ checks, `DMARC <https://dmarc.org/>`_ `reports <https://github.com/modoboa/modoboa-dmarc>`_ and more
 * `Amavis <http://www.amavis.org>`_ `frontend <https://github.com/modoboa/modoboa-amavis>`_
-* `Webmail <https://github.com/modoboa/modoboa-webmail>`_
-* `Calendar <https://github.com/modoboa/modoboa-radicale>`_
-* `Address book <https://github.com/modoboa/modoboa-contacts>`_
+* Webmail 
+* Calendar
+* Address book
 * Per-user Sieve filters
-* Autoreply messages for Postfix
+* Autoreply messages 
 * Graphical statistics about email traffic
 
 ************
