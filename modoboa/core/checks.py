@@ -42,7 +42,8 @@ E002 = Error(
         " Calendar and some other features won't be available."
     ),
     hint=_(
-        "Visit :  https://modoboa.readthedocs.io/en/latest/manual_installation/radicale.html#radicale-oauth2")
+        "Visit :  https://modoboa.readthedocs.io/en/latest/manual_installation/radicale.html#radicale-oauth2"
+    ),
     id="modoboa.core.E002",
 )
 
