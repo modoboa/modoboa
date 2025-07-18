@@ -11,21 +11,23 @@ RUN apk add --update openssl librrd python3-dev libffi-dev  \
                      gcc g++ musl-dev libxml2-dev libxslt-dev \
                      libressl-dev jpeg-dev rrdtool-dev file make \
                      gettext freetype-dev cairo-dev cargo git \
+                     openldap-dev \
     && rm -rf /var/cache/apk/*
 RUN python3 -m venv $VIRTUAL_ENV
 WORKDIR /tmp
 COPY . /tmp
 RUN python -m pip install -U pip pip-tools ruff
 RUN pip-compile --output-file=requirements.txt pyproject.toml
+RUN pip-compile --extra=ldap --output-file=ldap-requirements.txt pyproject.toml
 RUN pip-compile --extra=dev --output-file=dev-requirements.txt pyproject.toml
 RUN pip-compile --extra=test --output-file=test-requirements.txt pyproject.toml
-RUN pip install -r requirements.txt -r test-requirements.txt -r dev-requirements.txt
+RUN pip install -r requirements.txt -r ldap-requirements.txt -r test-requirements.txt -r dev-requirements.txt
 
 FROM base AS run
 COPY docker/doveadm /usr/local/bin
 RUN chmod +x /usr/local/bin/doveadm
 COPY --from=build $VIRTUAL_ENV $VIRTUAL_ENV
-RUN apk add --no-cache --update openssl librrd libxslt libjpeg libressl git rrdtool libmagic sudo sqlite \
+RUN apk add --no-cache --update openssl librrd libxslt libjpeg libressl git rrdtool libmagic sudo sqlite libldap \
     && rm -rf /var/cache/apk/*
 RUN mkdir /code
 WORKDIR /code
