@@ -161,8 +161,8 @@ class Command(BaseCommand):
             with open(f"{frontend_target_dir}/config.json", "w") as fp:
                 fp.write(
                     f"""{{
-  "API_BASE_URL": "https://{allowed_host}/api/v2",
-  "OAUTH_AUTHORITY_URL": "https://{allowed_host}/api/o",
+  "API_BASE_URL": "{base_uri}/api/v2",
+  "OAUTH_AUTHORITY_URL": "{base_uri}/api/o",
   "OAUTH_CLIENT_ID": "{client_id}",
   "OAUTH_REDIRECT_URI": "{redirect_uri}",
   "OAUTH_POST_REDIRECT_URI": "{base_uri}"
