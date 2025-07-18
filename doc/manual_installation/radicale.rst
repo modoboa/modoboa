@@ -11,6 +11,25 @@ This page is currently being written.
 OAuth 2 authentication
 ======================
 
+..  note::
+
+  These steps are automatic if you use an up-to-date modoboa-installer to install/upgrade.
+
+Installing radicale oauth plugin
+--------------------------------
+
+You need to install ``radicale-modoboa-auth-oauth2`` python package inside radicale venv.
+If you used the installer you can use the following commands:
+
+.. sourcecode:: bash
+
+  > sudo -u radicale -i bash
+  > cd ~
+  > env/bin/pip install radicale-modoboa-auth-oauth2
+
+Oauth application creation
+--------------------------
+
 You first need to register Radicale as an authorized consumer of the
 OAuth2 authentication service provided by Modoboa. To do so, create an
 application with the following commands:

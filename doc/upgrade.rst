@@ -211,8 +211,8 @@ Required changes to :file:`settings.py`
 Radicale configuration changes
 -----------------------------
 
-You must enable oauth2 authentication in Radicale to make the calendard
-and contact work. Follow this :ref:`guide <radicale_oauth2>`.
+You must enable oauth2 authentication in Radicale to make the calendar
+and contact feature work. Follow this :ref:`guide <radicale_oauth2>`.
 
 Post update
 -----------
