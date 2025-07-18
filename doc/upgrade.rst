@@ -168,6 +168,16 @@ Pre update
        > echo "UPDATE django_content_type SET app_label='calendars' WHERE app_label='modoboa_radicale'" |  mysql -u root -p modoboa
        > echo "UPDATE django_migrations SET app='calendars' WHERE app='modoboa_radicale'" | mysql -u root -p modoboa
 
+.. warning::
+
+   MariaDB 10.7+ users might have login issues.
+   For those impacted, run the followed SQL queries:
+
+   .. sourcecode:: bash
+
+      > echo "ALTER TABLE `oauth2_provider_idtoken` MODIFY `jti` uuid;" |  mysql -u root -p modoboa
+      > echo "ALTER TABLE `oauth2_provider_refreshtoken` MODIFY `token_family` uuid;" |  mysql -u root -p modoboa
+
 Required changes to :file:`settings.py`
 ---------------------------------------
 
