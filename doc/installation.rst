@@ -72,6 +72,7 @@ specific part, here are the steps you must follow:
    manual_installation/dovecot
    manual_installation/postfix
    manual_installation/opendkim
+   manual_installation/radicale
 
 Extensions
 ----------
