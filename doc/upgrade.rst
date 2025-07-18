@@ -219,6 +219,8 @@ Post update
 
 - Remove ``autoreply`` service definition from postfix`s :file:`master.cf` file if you were using it
 
+- Make sure :file:`/etc/uwsgi/sites-enabled/<modoboa_conf_file>` contains `max-requests=5000` and that `process` is superior or equal to 4. Don't forget to restart uwsgi service after the configuration change.
+
 - Then proceed with regular upgrade instructions
 
 Version 2.3.3
