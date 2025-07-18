@@ -7,6 +7,15 @@ services:
     volumes:
       - ./docker/redis:/data
 
+  ldap:
+    image: docker.pkg.github.com/modoboa/docker-openldap/docker-openldap
+    ports:
+      - 389/tcp
+    environment:
+      LDAP_DOMAIN: example.com
+      LDAP_ADMIN_PASSWORD: test
+    profiles: [ldap]
+
   rq:
     build:
       context: .
