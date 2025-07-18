@@ -110,6 +110,7 @@ class Command(BaseCommand):
             allowed_host = input("What will be the hostname used to access Modoboa? ")
             if not allowed_host:
                 allowed_host = "localhost"
+            allowed_host = [allowed_host]
         frontend_application = app_model.objects.filter(name="modoboa_frontend")
         # TODO : improve support for multiple allowed_host for frontend
         base_uris_list = [f"https://{host}" for host in allowed_host]
