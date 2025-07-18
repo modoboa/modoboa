@@ -100,6 +100,12 @@ class LDAPAuthenticationTestCase(LDAPTestCaseMixin, ModoTestCase):
     def test_searchbind_authentication(self):
         """Test the bind&search method."""
         self.searchbind_mode()
+        self.set_global_parameters(
+            {
+                "ldap_admin_groups": "",
+                "ldap_groups_search_base": "",
+            }
+        )
         username = "testuser@example.com"
         self.authenticate(username, "test")
         self.check_created_user(username)

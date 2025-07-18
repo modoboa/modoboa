@@ -77,11 +77,12 @@ try:
             ldap_user.attrs contains all of their LDAP attributes.
             """
             group = "SimpleUsers"
-            admin_groups = self.global_params["ldap_admin_groups"].split(";")
-            for grp in admin_groups:
-                if grp.strip() in ldap_user.group_names:
-                    group = "DomainAdmins"
-                    break
+            admin_groups = self.global_params["ldap_admin_groups"]
+            if admin_groups:
+                for grp in admin_groups.split(";"):
+                    if grp.strip() in ldap_user.group_names:
+                        group = "DomainAdmins"
+                        break
             lpart, domain = split_mailbox(username)
             if domain is None:
                 # Try to find associated email
