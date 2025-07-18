@@ -208,6 +208,12 @@ Required changes to :file:`settings.py`
 
 - Remove ``STATICFILE_DIRS`` variable
 
+Radicale configuration changes
+-----------------------------
+
+You must enable oauth2 authentication in Radicale to make the calendard
+and contact work. Follow this :ref:`guide <radicale_oauth2>`.
+
 Post update
 -----------
 

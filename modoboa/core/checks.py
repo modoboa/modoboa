@@ -41,6 +41,8 @@ E002 = Error(
         "Oauth2 application for radicale has not been found."
         " Calendar and some other features won't be available."
     ),
+    hint=_(
+        "Visit :  https://modoboa.readthedocs.io/en/latest/manual_installation/radicale.html#radicale-oauth2")
     id="modoboa.core.E002",
 )
 
