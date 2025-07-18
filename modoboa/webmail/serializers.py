@@ -125,13 +125,19 @@ class EmailHeadersSerializer(serializers.Serializer):
     style = serializers.CharField(required=False)
 
     def get_subject(self, obj) -> str:
-        return imapheader.parse_subject(obj["Subject"])
+        if "Subject" in obj:
+            return imapheader.parse_subject(obj["Subject"])
+        return ""
 
     def get_from_address(self, obj):
-        return imapheader.parse_address(obj["From"])
+        if "From" in obj:
+            return imapheader.parse_address(obj["From"])
+        return ""
 
     def get_date(self, obj) -> str:
-        return imapheader.parse_date(obj["Date"])
+        if "Date" in obj:
+            return imapheader.parse_date(obj["Date"])
+        return ""
 
 
 class PaginatedEmailListSerializer(serializers.Serializer):
