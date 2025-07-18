@@ -1,7 +1,9 @@
 from django.db.utils import ProgrammingError, OperationalError
-from django.core.checks import register, Info, Warning
+from django.core.checks import register, Info, Warning, Error
 from django.conf import settings
 from django.utils.translation import gettext as _
+
+from oauth2_provider.models import get_application_model
 
 from modoboa.core.utils import (
     check_for_deprecated_password_schemes,
@@ -15,13 +17,40 @@ W001 = Warning(
         "twice due to clock change)."
     ),
     hint=_("Set `USE_TZ = True` in settings.py"),
-    id="modoboa.W001",
+    id="modoboa.core.W001",
 )
 W002 = Warning(
     _("The password scheme you are using is deprecated."),
     hint=_("Upgrade your password scheme to a stronger one"),
-    id="modoboa.W002",
+    id="modoboa.core.W002",
 )
+
+E001 = Error(
+    _(
+        "Oauth2 application for dovecot has not been found."
+        " Webmail and some other features won't be available."
+    ),
+    hint=_(
+        "Visit : https://modoboa.readthedocs.io/en/latest/manual_installation/dovecot.html#dovecot-oauth2"
+    ),
+    id="modoboa.core.E001",
+)
+
+E002 = Error(
+    _(
+        "Oauth2 application for radicale has not been found."
+        " Calendar and some other features won't be available."
+    ),
+    hint=_(
+        "Visit :  https://modoboa.readthedocs.io/en/latest/manual_installation/radicale.html#radicale-oauth2"
+    ),
+    id="modoboa.core.E002",
+)
+
+
+def oauth_app_exists(app_name):
+    oauth_application = get_application_model().objects.filter(name=app_name)
+    return oauth_application.exists()
 
 
 @register(deploy=True)
@@ -59,3 +88,19 @@ def check_password_hasher(app_configs, **kwargs):
     if hasher:
         msgs.append(W002)
     return msgs
+
+
+@register(deploy=True)
+def check_dovecot_oauth_app(*args, **kwargs):
+    error = []
+    if not oauth_app_exists("Dovecot"):
+        error.append(E001)
+    return error
+
+
+@register(deploy=True)
+def check_radicale_oauth_app(*args, **kwargs):
+    error = []
+    if not oauth_app_exists("Radicale"):
+        error.append(E002)
+    return error
