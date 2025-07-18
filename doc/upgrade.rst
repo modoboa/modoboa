@@ -130,6 +130,19 @@ Rebuild Virtual Environment
 Specific instructions
 *********************
 
+Version 2.4.2
+=============
+
+Changes to :file:`settings.py`
+---------------------------------------
+
+- Make sure ``MODOBOA_APPS`` variable contains the following line:
+
+  .. sourcecode:: python
+
+     'modoboa.webmail'
+
+
 Version 2.4.0
 =============
 
@@ -170,7 +183,7 @@ Pre update
 
 .. warning::
 
-   MariaDB 10.7+ users might have login issues.
+   MariaDB 10.7+ users might have login issues (see this `discussion <https://github.com/modoboa/modoboa/discussions/3582>`_).
    For those impacted, run the followed SQL queries:
 
    .. sourcecode:: bash
