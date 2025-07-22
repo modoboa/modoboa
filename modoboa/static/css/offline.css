@@ -72,7 +72,7 @@ h2 {
 }
 
 .input-group input {
-    width: calc(100% - 20px);
+    width: calc(100% - 22px);
     padding: 10px;
     border: 1px solid #ddd;
     border-radius: 5px;
