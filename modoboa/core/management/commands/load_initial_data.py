@@ -122,7 +122,9 @@ class Command(BaseCommand):
         if not frontend_application.exists():
             if options["dev"]:
                 base_uri = "https://localhost:3000/"
+                base_uris = base_uri
                 redirect_uri = "https://localhost:3000/login/logged"
+                redirect_uris = redirect_uri
                 client_id = "LVQbfIIX3khWR3nDvix1u9yEGHZUxcx53bhJ7FlD"
             else:
                 client_id = str(uuid.uuid4())
