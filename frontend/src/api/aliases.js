@@ -3,8 +3,8 @@ import repository from './repository'
 const resource = 'aliases'
 
 export default {
-  getAll() {
-    return repository.get(`${resource}/`)
+  getAll(params) {
+    return repository.get(`${resource}/`, { params })
   },
   get(aliasId) {
     return repository.get(`${resource}/${aliasId}/`)

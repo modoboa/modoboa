@@ -168,7 +168,13 @@ class AccountFilterSet(dj_filters.FilterSet):
 class AccountViewSet(v1_viewsets.AccountViewSet):
     """ViewSet for User/Mailbox."""
 
-    filter_backends = (filters.SearchFilter, dj_filters.DjangoFilterBackend)
+    filter_backends = (
+        filters.OrderingFilter,
+        filters.SearchFilter,
+        dj_filters.DjangoFilterBackend,
+    )
+    search_fields = ["^first_name", "^last_name", "^email", "username"]
+    pagination_class = pagination.CustomPageNumberPagination
     filterset_class = AccountFilterSet
 
     def get_serializer_class(self):
@@ -258,6 +264,13 @@ class IdentityViewSet(GetThrottleViewsetMixin, viewsets.ViewSet):
 class AliasViewSet(v1_viewsets.AliasViewSet):
     """Viewset for Alias."""
 
+    filter_backends = (
+        filters.OrderingFilter,
+        filters.SearchFilter,
+        dj_filters.DjangoFilterBackend,
+    )
+    pagination_class = pagination.CustomPageNumberPagination
+    search_fields = ["address"]
     serializer_class = serializers.AliasSerializer
 
     @action(methods=["post"], detail=False)

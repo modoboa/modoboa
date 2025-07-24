@@ -1,14 +1,19 @@
 <template>
   <v-card class="mt-6">
-    <v-data-table
+    <v-data-table-server
       v-model="selected"
       :headers="headers"
       :items="identities"
       :search="search"
       :loading="loading"
-      item-value="identity"
-      class="elevation-0"
+      :items-length="totalIdentities"
+      :page="currentPage"
+      :items-per-page="itemsPerPageR"
+      item-value="key"
+      elevation="0"
       show-select
+      :sort-by="sortByR"
+      @update:options="updatedOptions"
     >
       <template #top>
         <v-toolbar flat color="white">
@@ -44,11 +49,35 @@
             icon="mdi-reload"
             @click="fetchIdentities"
           ></v-btn>
+          <v-radio-group
+            v-model="identityType"
+            inline
+            @update:model-value="updateType"
+            :readonly="loading"
+          >
+            <v-radio
+              color="primary"
+              :label="$gettext('Accounts')"
+              value="account"
+            ></v-radio>
+            <v-radio
+              color="primary"
+              :label="$gettext('Alias')"
+              value="alias"
+            ></v-radio>
+          </v-radio-group>
+          <v-combobox
+            v-model="columns"
+            :items="currentAvailableColumns"
+            multiple
+            return-object
+          >
+          </v-combobox>
           <v-spacer></v-spacer>
         </v-toolbar>
       </template>
       <template #[`item.identity`]="{ item }">
-        <template v-if="item.type === 'account'">
+        <template v-if="identityType === 'account'">
           <router-link :to="{ name: 'AccountDetail', params: { id: item.pk } }">
             {{ item.identity }}
           </router-link>
@@ -99,7 +128,7 @@
           <MenuItems :items="getMenuItems(item)" :obj="item" />
         </v-menu>
       </template>
-    </v-data-table>
+    </v-data-table-server>
     <ConfirmDialog ref="confirmAlias" />
     <ConfirmDialog ref="confirmAccount">
       <v-checkbox
@@ -112,7 +141,7 @@
 </template>
 
 <script setup lang="js">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import { useGettext } from 'vue3-gettext'
 import MenuItems from '@/components/tools/MenuItems.vue'
 import ConfirmDialog from '@/components/tools/ConfirmDialog.vue'
@@ -120,25 +149,109 @@ import { useRouter } from 'vue-router'
 import { useBusStore } from '@/stores'
 import accountsApi from '@/api/accounts'
 import aliasesApi from '@/api/aliases'
-import identitiesApi from '@/api/identities'
+import debounce from 'debounce'
+// import identitiesApi from '@/api/identities'
 
 const { $gettext, $pgettext } = useGettext()
 const router = useRouter()
 const { displayNotification } = useBusStore()
 
-const headers = ref([
-  { title: $gettext('Name'), key: 'identity' },
-  { title: $pgettext('female', 'Enabled'), key: 'enabled', width: '5%' },
-  { title: $gettext('Fullname/recipient'), key: 'name_or_rcpt' },
-  { title: $gettext('Tags'), key: 'tags' },
-  {
-    title: $gettext('Actions'),
-    key: 'actions',
-    sortable: false,
-    align: 'end',
+const availableAliasesColumns = {
+  address: { title: $gettext('Address'), key: 'address', value: 'address' },
+  enabled: { title: $gettext('Enabled'), key: 'enabled', value: 'enabled' },
+  recipients: {
+    title: $gettext('Recipients'),
+    key: 'recipients',
+    value: 'recipients',
   },
-])
+  expire_at: {
+    title: $gettext('Expire at'),
+    key: 'expire_at',
+    value: 'expire_at',
+  },
+  description: {
+    title: $gettext('Description'),
+    key: 'description',
+    value: 'description',
+  },
+  creation: {
+    title: $gettext('Creation date'),
+    key: 'creation',
+    value: 'creation',
+  },
+  last_modification: {
+    title: $gettext('Last modification'),
+    key: 'last_modification',
+    value: 'last_modification',
+  },
+}
 
+const defaultAliasColumns = [
+  availableAliasesColumns.address,
+  availableAliasesColumns.enabled,
+  availableAliasesColumns.recipients,
+]
+
+const availableAccountsColumns = {
+  username: { title: $gettext('Name'), key: 'username', value: 'username' },
+  first_name: {
+    title: $gettext('First name'),
+    key: 'first_name',
+    value: 'first_name',
+  },
+  last_name: {
+    title: $gettext('Last Name'),
+    key: 'last_name',
+    value: 'last_name',
+  },
+  is_active: { title: $gettext('Enabled'), key: 'enabled', value: 'is_active' },
+  role: { title: $gettext('Role'), key: 'role', value: 'role' },
+  language: { title: $gettext('Language'), key: 'language', value: 'language' },
+  phone_number: {
+    title: $gettext('Phone number'),
+    key: 'phone_number',
+    value: 'phone_number',
+  },
+  secondary_email: {
+    title: $gettext('Secondary email'),
+    key: 'secondary_email',
+    value: 'secondary_email',
+  },
+  tfa_enabled: {
+    title: $gettext('TFA enabled'),
+    key: 'tfa_enabled',
+    value: 'tfa_enabled',
+  },
+  totp_enabled: {
+    title: $gettext('TOTP enabled'),
+    key: 'totp_enabled',
+    value: 'totp_enabled',
+  },
+  webauth_enabled: {
+    title: $gettext('WebAutn enabled'),
+    key: 'webauth_enabled',
+    value: 'webauth_enabled',
+  },
+  date_joined: {
+    title: $gettext('Created date'),
+    key: 'date_joined',
+    value: 'date_joined',
+  },
+  last_login: {
+    title: $gettext('Last login'),
+    key: 'last_login',
+    value: 'last_login',
+  },
+}
+
+const defaultAccountsColumns = [
+  availableAccountsColumns.username,
+  availableAccountsColumns.is_active,
+  availableAccountsColumns.role,
+]
+
+const identityType = ref('account')
+const totalIdentities = ref(0)
 const identities = ref([])
 const loading = ref(false)
 const search = ref('')
@@ -146,12 +259,70 @@ const selected = ref([])
 const keepAccountFolder = ref(false)
 const confirmAlias = ref()
 const confirmAccount = ref()
+const currentPage = ref(1)
+const itemsPerPageR = ref(10)
+const sortByR = ref([])
+const columns = ref(defaultAccountsColumns)
+
+const headers = computed(() => {
+  const result = columns.value
+  return result.concat([
+    {
+      title: $gettext('Actions'),
+      key: 'actions',
+      sortable: false,
+      align: 'end',
+    },
+  ])
+})
+
+const currentAvailableColumns = computed(() => {
+  if (identityType.value === 'account') {
+    return Object.values(availableAccountsColumns)
+  } else {
+    return Object.values(availableAliasesColumns)
+  }
+})
+
+async function updateType(value) {
+  loading.value = true
+  sortByR.value = []
+  if (value === 'account') {
+    columns.value = defaultAccountsColumns
+  } else {
+    columns.value = defaultAliasColumns
+  }
+  fetchIdentities()
+}
+
+async function updatedOptions({ page, itemsPerPage, sortBy }) {
+  currentPage.value = page
+  itemsPerPageR.value = itemsPerPage
+  sortByR.value = sortBy
+  fetchIdentities()
+}
 
 async function fetchIdentities() {
   loading.value = true
+  const params = {
+    page: currentPage.value || 1,
+    page_size: itemsPerPageR.value || 10,
+  }
+  if (sortByR.value && sortByR.value.length) {
+    params.ordering = sortByR.value
+      .map((item) => (item.order !== 'asc' ? `-${item.key}` : item.key))
+      .join(',')
+  }
+  if (search.value !== '') {
+    params.search = search.value
+  }
   try {
-    const resp = await identitiesApi.getAll()
-    identities.value = resp.data
+    const resp =
+      identityType.value === 'account'
+        ? await accountsApi.getAllParams(params)
+        : await aliasesApi.getAll(params)
+    identities.value = resp.data.results
+    totalIdentities.value = resp.data.count
     selected.value = []
   } finally {
     loading.value = false
@@ -160,7 +331,7 @@ async function fetchIdentities() {
 
 function getMenuItems(item) {
   const result = []
-  if (item.type === 'account') {
+  if (identityType === 'account') {
     item.possible_actions.forEach((element) => {
       result.push({
         label: element.label,
@@ -184,7 +355,7 @@ function getMenuItems(item) {
       onClick: deleteAccount,
       color: 'red',
     })
-  } else if (item.type === 'alias') {
+  } else if (identityType === 'alias') {
     result.push({
       label: $gettext('Edit'),
       icon: 'mdi-circle-edit-outline',
@@ -275,4 +446,6 @@ onMounted(() => {
 defineExpose({
   fetchIdentities,
 })
+
+fetchIdentities = debounce(fetchIdentities, 500)
 </script>
