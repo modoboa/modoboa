@@ -2,7 +2,6 @@ from django.db import models, migrations
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("core", "0003_user_master_user"),
     ]
@@ -42,8 +41,11 @@ class Migration(migrations.Migration):
             ),
             preserve_default=True,
         ),
-        migrations.AlterIndexTogether(
-            name="user",
-            index_together=set([("email", "is_active")]),
+        migrations.AddConstraint(
+            model_name="user",
+            constraint=models.UniqueConstraint(
+                fields=("email", "is_active"),
+                name="core_user_email_c0c03f_idx",
+            ),
         ),
     ]

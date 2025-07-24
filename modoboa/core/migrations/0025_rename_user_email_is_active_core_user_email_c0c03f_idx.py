@@ -2,6 +2,8 @@
 
 from django.db import migrations
 
+# Due to a bug, this migration has been changed...
+
 
 class Migration(migrations.Migration):
     dependencies = [
@@ -9,9 +11,9 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.RenameIndex(
-            model_name="user",
-            new_name="core_user_email_c0c03f_idx",
-            old_fields=("email", "is_active"),
-        ),
+        # migrations.RenameIndex(
+        #     model_name="user",
+        #     new_name="core_user_email_c0c03f_idx",
+        #     old_fields=("email", "is_active"),
+        # ),
     ]
