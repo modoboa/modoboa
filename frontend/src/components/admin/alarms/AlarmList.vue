@@ -17,7 +17,7 @@
           <v-text-field
             v-model="search"
             prepend-inner-icon="mdi-magnify"
-            placeholder="Search"
+            :placeholder="$gettext('Search')"
             density="compact"
             variant="outlined"
             hide-details

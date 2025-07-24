@@ -11,6 +11,9 @@ export default {
       },
     })
   },
+  getAllParams(params) {
+    return repository.get(`${resource}/`, { params })
+  },
   get(accountId) {
     return repository.get(`${resource}/${accountId}/`)
   },
