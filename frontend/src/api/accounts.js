@@ -3,16 +3,13 @@ import repository from './repository'
 const resource = 'accounts'
 
 export default {
-  getAll({ domain, role }) {
+  getAll(params) {
     return repository.get(`/${resource}/`, {
-      params: { domain, role },
+      params,
       paramsSerializer: {
         indexes: null,
       },
     })
-  },
-  getAllParams(params) {
-    return repository.get(`${resource}/`, { params })
   },
   get(accountId) {
     return repository.get(`${resource}/${accountId}/`)
