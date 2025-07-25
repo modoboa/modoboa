@@ -130,9 +130,12 @@ function fetchAdministrators(domain) {
 
 function fetchAccounts() {
   accountApi
-    .getAll({ role: [constants.RESELLER, constants.DOMAIN_ADMIN] })
+    .getAll({
+      role: [constants.RESELLER, constants.DOMAIN_ADMIN],
+      page_size: 50,
+    })
     .then((resp) => {
-      accounts.value = resp.data.filter(
+      accounts.value = resp.data.results.filter(
         (account) =>
           administrators.value.find((admin) => admin.id === account.pk) ===
           undefined

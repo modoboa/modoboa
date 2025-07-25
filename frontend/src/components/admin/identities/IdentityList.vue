@@ -329,7 +329,7 @@ async function fetchIdentities() {
   try {
     const resp =
       identityType.value === 'account'
-        ? await accountsApi.getAllParams(params)
+        ? await accountsApi.getAll(params)
         : await aliasesApi.getAll(params)
     identities.value = resp.data.results
     totalIdentities.value = resp.data.count
