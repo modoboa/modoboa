@@ -1,14 +1,19 @@
 <template>
   <v-card class="mt-6">
-    <v-data-table
+    <v-data-table-server
       v-model="selected"
       :headers="headers"
       :items="identities"
       :search="search"
       :loading="loading"
-      item-value="identity"
-      class="elevation-0"
+      :items-length="totalIdentities"
+      :page="currentPage"
+      :items-per-page="itemsPerPageR"
+      item-value="pk"
+      elevation="0"
       show-select
+      :sort-by="sortByR"
+      @update:options="updatedOptions"
     >
       <template #top>
         <v-toolbar flat color="white">
@@ -24,7 +29,13 @@
             class="flex-grow-0 w-33 mr-4"
           ></v-text-field>
           <slot name="extraActions" />
-          <v-menu location="bottom">
+          <v-btn
+            variant="text"
+            icon="mdi-format-columns"
+            :title="$gettext('Customize displayed columns')"
+            @click="showColumnsForm = true"
+          ></v-btn>
+          <v-menu v-if="selected.length > 1" location="bottom">
             <template #activator="{ props }">
               <v-btn
                 append-icon="mdi-chevron-down"
@@ -44,20 +55,45 @@
             icon="mdi-reload"
             @click="fetchIdentities"
           ></v-btn>
-          <v-spacer></v-spacer>
+
+          <template #extension>
+            <v-radio-group
+              v-model="identityType"
+              inline
+              :readonly="loading"
+              hide-details
+              @update:model-value="updateType"
+            >
+              <v-radio
+                color="primary"
+                :label="$gettext('Accounts')"
+                value="account"
+              ></v-radio>
+              <v-radio
+                color="primary"
+                :label="$gettext('Alias')"
+                value="alias"
+              ></v-radio>
+            </v-radio-group>
+          </template>
         </v-toolbar>
       </template>
-      <template #[`item.identity`]="{ item }">
-        <template v-if="item.type === 'account'">
-          <router-link :to="{ name: 'AccountDetail', params: { id: item.pk } }">
-            {{ item.identity }}
-          </router-link>
-        </template>
-        <template v-else>
-          <router-link :to="{ name: 'AliasDetail', params: { id: item.pk } }">
-            {{ item.identity }}
-          </router-link>
-        </template>
+      <template #[`item.username`]="{ item }">
+        <router-link :to="{ name: 'AccountDetail', params: { id: item.pk } }">
+          {{ item.username }}
+        </router-link>
+      </template>
+      <template #[`item.address`]="{ item }">
+        <router-link :to="{ name: 'AliasDetail', params: { id: item.pk } }">
+          {{ item.address }}
+        </router-link>
+      </template>
+      <template #[`item.is_active`]="{ item }">
+        <v-icon
+          :color="item.is_active ? 'success' : 'error'"
+          :icon="item.is_active ? 'mdi-check-circle' : 'mdi-close-circle'"
+          variant="flat"
+        />
       </template>
       <template #[`item.enabled`]="{ item }">
         <v-icon
@@ -66,15 +102,24 @@
           variant="flat"
         />
       </template>
-      <template #[`item.tags`]="{ item }">
-        <v-chip
-          v-for="(tag, index) in item.tags"
-          :key="tag.name"
-          :color="tag.type !== 'idt' ? 'primary' : 'default'"
-          :class="index > 0 ? 'ml-2' : ''"
-          size="small"
-        >
-          {{ tag.label }}
+      <template #[`item.recipients`]="{ item }">
+        {{ displayRecipients(item) }}
+      </template>
+      <template #[`item.date_joined`]="{ item }">
+        {{ $date(item.date_joined) }}
+      </template>
+      <template #[`item.creation`]="{ item }">
+        {{ $date(item.creation) }}
+      </template>
+      <template #[`item.last_modification`]="{ item }">
+        {{ $date(item.last_modification) }}
+      </template>
+      <template #[`item.last_login`]="{ item }">
+        {{ $date(item.last_login) }}
+      </template>
+      <template #[`item.role`]="{ item }">
+        <v-chip color="default" size="small">
+          {{ item.role }}
         </v-chip>
       </template>
       <template #[`item.actions`]="{ item }">
@@ -99,7 +144,7 @@
           <MenuItems :items="getMenuItems(item)" :obj="item" />
         </v-menu>
       </template>
-    </v-data-table>
+    </v-data-table-server>
     <ConfirmDialog ref="confirmAlias" />
     <ConfirmDialog ref="confirmAccount">
       <v-checkbox
@@ -108,37 +153,115 @@
         hide-details
       />
     </ConfirmDialog>
+    <v-dialog v-model="showColumnsForm" max-width="500">
+      <ChooseColumnsForm
+        :columns="columns"
+        :available-columns="currentAvailableColumns"
+        :mandatory-columns="mandatoryColumns"
+        @apply="updateDisplayedColumns"
+      />
+    </v-dialog>
   </v-card>
 </template>
 
 <script setup lang="js">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import { useGettext } from 'vue3-gettext'
 import MenuItems from '@/components/tools/MenuItems.vue'
 import ConfirmDialog from '@/components/tools/ConfirmDialog.vue'
+import ChooseColumnsForm from '@/components/tools/ChooseColumnsForm.vue'
 import { useRouter } from 'vue-router'
 import { useBusStore } from '@/stores'
 import accountsApi from '@/api/accounts'
 import aliasesApi from '@/api/aliases'
-import identitiesApi from '@/api/identities'
+import debounce from 'debounce'
 
-const { $gettext, $pgettext } = useGettext()
+const { $gettext } = useGettext()
 const router = useRouter()
 const { displayNotification } = useBusStore()
 
-const headers = ref([
-  { title: $gettext('Name'), key: 'identity' },
-  { title: $pgettext('female', 'Enabled'), key: 'enabled', width: '5%' },
-  { title: $gettext('Fullname/recipient'), key: 'name_or_rcpt' },
-  { title: $gettext('Tags'), key: 'tags' },
-  {
-    title: $gettext('Actions'),
-    key: 'actions',
-    sortable: false,
-    align: 'end',
+const availableAliasesColumns = {
+  address: { title: $gettext('Address'), key: 'address' },
+  enabled: { title: $gettext('Enabled'), key: 'enabled' },
+  recipients: {
+    title: $gettext('Recipients'),
+    key: 'recipients',
   },
-])
+  expire_at: {
+    title: $gettext('Expire at'),
+    key: 'expire_at',
+  },
+  description: {
+    title: $gettext('Description'),
+    key: 'description',
+  },
+  creation: {
+    title: $gettext('Creation date'),
+    key: 'creation',
+  },
+  last_modification: {
+    title: $gettext('Last modification'),
+    key: 'last_modification',
+  },
+}
 
+const defaultAliasColumns = [
+  availableAliasesColumns.address,
+  availableAliasesColumns.enabled,
+  availableAliasesColumns.recipients,
+]
+
+const availableAccountsColumns = {
+  username: { title: $gettext('Name'), key: 'username' },
+  first_name: {
+    title: $gettext('First name'),
+    key: 'first_name',
+  },
+  last_name: {
+    title: $gettext('Last Name'),
+    key: 'last_name',
+  },
+  is_active: { title: $gettext('Enabled'), key: 'is_active' },
+  role: { title: $gettext('Role'), key: 'role' },
+  language: { title: $gettext('Language'), key: 'language' },
+  phone_number: {
+    title: $gettext('Phone number'),
+    key: 'phone_number',
+  },
+  secondary_email: {
+    title: $gettext('Secondary email'),
+    key: 'secondary_email',
+  },
+  tfa_enabled: {
+    title: $gettext('TFA enabled'),
+    key: 'tfa_enabled',
+  },
+  totp_enabled: {
+    title: $gettext('TOTP enabled'),
+    key: 'totp_enabled',
+  },
+  webauth_enabled: {
+    title: $gettext('WebAutn enabled'),
+    key: 'webauth_enabled',
+  },
+  date_joined: {
+    title: $gettext('Creation date'),
+    key: 'date_joined',
+  },
+  last_login: {
+    title: $gettext('Last login'),
+    key: 'last_login',
+  },
+}
+
+const defaultAccountsColumns = [
+  availableAccountsColumns.username,
+  availableAccountsColumns.is_active,
+  availableAccountsColumns.role,
+]
+
+const identityType = ref('account')
+const totalIdentities = ref(0)
 const identities = ref([])
 const loading = ref(false)
 const search = ref('')
@@ -146,21 +269,95 @@ const selected = ref([])
 const keepAccountFolder = ref(false)
 const confirmAlias = ref()
 const confirmAccount = ref()
+const currentPage = ref(1)
+const itemsPerPageR = ref(10)
+const sortByR = ref([])
+const columns = ref(defaultAccountsColumns)
+const showColumnsForm = ref(false)
+
+const headers = computed(() => {
+  const result = columns.value
+  return result.concat([
+    {
+      title: $gettext('Actions'),
+      key: 'actions',
+      sortable: false,
+      align: 'end',
+    },
+  ])
+})
+
+const currentAvailableColumns = computed(() => {
+  if (identityType.value === 'account') {
+    return Object.values(availableAccountsColumns)
+  } else {
+    return Object.values(availableAliasesColumns)
+  }
+})
+
+const mandatoryColumns = computed(() => {
+  if (identityType.value === 'account') {
+    return ['username']
+  }
+  return ['address']
+})
+
+async function updateType(value) {
+  loading.value = true
+  identities.value = []
+  sortByR.value = []
+  if (value === 'account') {
+    columns.value = defaultAccountsColumns
+  } else {
+    columns.value = defaultAliasColumns
+  }
+  await fetchIdentities()
+}
+
+async function updatedOptions({ page, itemsPerPage, sortBy }) {
+  currentPage.value = page
+  itemsPerPageR.value = itemsPerPage
+  sortByR.value = sortBy
+  fetchIdentities()
+}
 
 async function fetchIdentities() {
   loading.value = true
+  const params = {
+    page: currentPage.value || 1,
+    page_size: itemsPerPageR.value || 10,
+  }
+  if (sortByR.value && sortByR.value.length) {
+    params.ordering = sortByR.value
+      .map((item) => (item.order !== 'asc' ? `-${item.key}` : item.key))
+      .join(',')
+  }
+  if (search.value !== '') {
+    params.search = search.value
+  }
   try {
-    const resp = await identitiesApi.getAll()
-    identities.value = resp.data
+    const resp =
+      identityType.value === 'account'
+        ? await accountsApi.getAll(params)
+        : await aliasesApi.getAll(params)
+    identities.value = resp.data.results
+    totalIdentities.value = resp.data.count
     selected.value = []
   } finally {
     loading.value = false
   }
 }
 
+function updateDisplayedColumns(selection) {
+  columns.value = currentAvailableColumns.value.filter((col) =>
+    selection.includes(col.key)
+  )
+  showColumnsForm.value = false
+}
+
 function getMenuItems(item) {
   const result = []
-  if (item.type === 'account') {
+  if (identityType.value === 'account') {
     item.possible_actions.forEach((element) => {
       result.push({
         label: element.label,
@@ -184,7 +381,7 @@ function getMenuItems(item) {
       onClick: deleteAccount,
       color: 'red',
     })
-  } else if (item.type === 'alias') {
+  } else if (identityType.value === 'alias') {
     result.push({
       label: $gettext('Edit'),
       icon: 'mdi-circle-edit-outline',
@@ -268,6 +465,13 @@ async function deleteAlias(alias) {
   }
 }
 
+function displayRecipients(alias) {
+  if (!alias.recipients) {
+    return ''
+  }
+  return alias.recipients.join(', ')
+}
+
 onMounted(() => {
   fetchIdentities()
 })
@@ -275,4 +479,17 @@ onMounted(() => {
 defineExpose({
   fetchIdentities,
 })
+
+fetchIdentities = debounce(fetchIdentities, 500)
 </script>
+
+<style scoped lang="scss">
+a {
+  text-decoration: none;
+  color: rgb(var(--v-theme-primary));
+
+  &:visited {
+    color: rgb(var(--v-theme-primary));
+  }
+}
+</style>
