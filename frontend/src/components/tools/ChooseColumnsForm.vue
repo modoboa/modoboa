@@ -9,6 +9,7 @@
           color="primary"
           hide-details
           density="compact"
+          :disabled="props.mandatoryColumns.includes(column.key)"
         />
       </div>
     </v-card-text>
@@ -24,6 +25,10 @@
 <script setup>
 const props = defineProps({
   availableColumns: {
+    type: Array,
+    default: null,
+  },
+  mandatoryColumns: {
     type: Array,
     default: null,
   },
