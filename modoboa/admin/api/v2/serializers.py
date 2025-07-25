@@ -402,15 +402,32 @@ class AccountSerializer(v1_serializers.AccountSerializer):
     aliases = serializers.ListField(
         child=lib_fields.DRFEmailFieldUTF8(), source="mailbox.alias_addresses"
     )
+    possible_actions = serializers.SerializerMethodField()
 
     class Meta(v1_serializers.AccountSerializer.Meta):
-        fields = v1_serializers.AccountSerializer.Meta.fields + ("aliases",)
+        fields = v1_serializers.AccountSerializer.Meta.fields + (
+            "aliases",
+            "possible_actions",
+        )
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         if not param_tools.get_global_parameter("enable_admin_limits", app="limits"):
             return
         self.fields["resources"] = serializers.SerializerMethodField()
+
+    def get_possible_actions(self, identity) -> list[IdPossibleActionsSerializer]:
+        actions = admin_signals.extra_account_identities_actions.send(
+            self.__class__, account=identity
+        )
+        cleaned_actions = []
+        for action in actions:
+            try:
+                serialized_data = IdPossibleActionsSerializer(action[1]).data
+                cleaned_actions.append(serialized_data)
+            except (ValidationError, AttributeError):
+                continue
+        return cleaned_actions
 
     def get_resources(self, account) -> list[AccountResourceSerializer]:
         if account.role == "SimpleUsers":
