@@ -9,7 +9,7 @@
       :items-length="totalIdentities"
       :page="currentPage"
       :items-per-page="itemsPerPageR"
-      item-value="key"
+      item-value="pk"
       elevation="0"
       show-select
       :sort-by="sortByR"
@@ -35,7 +35,7 @@
             :title="$gettext('Customize displayed columns')"
             @click="showColumnsForm = true"
           ></v-btn>
-          <v-menu location="bottom">
+          <v-menu v-if="selected.length > 1" location="bottom">
             <template #activator="{ props }">
               <v-btn
                 append-icon="mdi-chevron-down"
@@ -157,6 +157,7 @@
       <ChooseColumnsForm
         :columns="columns"
         :available-columns="currentAvailableColumns"
+        :mandatory-columns="mandatoryColumns"
         @apply="updateDisplayedColumns"
       />
     </v-dialog>
@@ -294,8 +295,16 @@ const currentAvailableColumns = computed(() => {
   }
 })
 
+const mandatoryColumns = computed(() => {
+  if (identityType.value === 'account') {
+    return ['username']
+  }
+  return ['address']
+})
+
 async function updateType(value) {
   loading.value = true
+  identities.value = []
   sortByR.value = []
   if (value === 'account') {
     columns.value = defaultAccountsColumns
