@@ -51,7 +51,7 @@ file and update the `type` in `[auth]` to::
 
 Then, add the following line in `[auth]`::
 
-  oauth2_introspection_endpoint = https://radical:<client_secret>@<hostname of your server>/api/o/introspect/
+  oauth2_introspection_endpoint = https://radicale:<client_secret>@<hostname of your server>/api/o/introspect/
 
 
 Replace ``<client_secret>`` with the value you obtained earlier.
