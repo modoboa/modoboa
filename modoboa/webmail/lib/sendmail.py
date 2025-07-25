@@ -128,7 +128,8 @@ def send_mail(request, attributes: dict, attachments: list) -> tuple[bool, str |
     elif conf["smtp_secured_mode"] == "starttls":
         options.update({"use_tls": True})
     if conf["smtp_authentication"]:
-        if not settings.WEBMAIL_DEV_MODE:
+        dev_mode = getattr(settings, "WEBMAIL_DEV_MODE", False)
+        if not dev_mode:
             options.update(
                 {
                     "backend": "modoboa.lib.smtp_backend.OAuthBearerEmailBackend",
