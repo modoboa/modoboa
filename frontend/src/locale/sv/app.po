@@ -75,7 +75,7 @@ msgstr "Åtkomstregler"
 msgid "Account"
 msgstr "Konto"
 
-#: src/components/admin/identities/IdentityList.vue:239
+#: src/components/admin/identities/IdentityList.vue:436
 #, fuzzy
 msgid "Account deleted"
 msgstr "Konto skapat"
@@ -84,14 +84,19 @@ msgstr "Konto skapat"
 msgid "Account settings"
 msgstr "Kontoinställningar"
 
+#: src/components/admin/identities/IdentityList.vue:69
+#, fuzzy
+msgid "Accounts"
+msgstr "Konto"
+
 #: src/components/account/FidoAuthForm.vue:137
 #: src/components/account/FilterForm.vue:76
 #: src/components/admin/alarms/AlarmList.vue:31
 #: src/components/admin/alarms/AlarmList.vue:98
 #: src/components/admin/domains/DomainList.vue:221
 #: src/components/admin/domains/DomainList.vue:35
-#: src/components/admin/identities/IdentityList.vue:136
-#: src/components/admin/identities/IdentityList.vue:35
+#: src/components/admin/identities/IdentityList.vue:283
+#: src/components/admin/identities/IdentityList.vue:46
 #: src/components/admin/imap_migration/MigrationsList.vue:23
 #: src/components/admin/imap_migration/MigrationsList.vue:83
 #: src/components/admin/imap_migration/ProvidersList.vue:102
@@ -181,6 +186,7 @@ msgstr "Tillagd på"
 #: src/components/admin/identities/AccountSenderAddresses.vue:73
 #: src/components/admin/identities/AliasCreationForm.vue:60
 #: src/components/admin/identities/AliasEditForm.vue:16
+#: src/components/admin/identities/IdentityList.vue:185
 #: src/components/admin/imap_migration/ProviderCreationForm.vue:54
 #: src/components/admin/imap_migration/ProvidersList.vue:97
 #: src/components/contacts/ContactForm.vue:85
@@ -200,7 +206,7 @@ msgstr "Adressboksinformation"
 msgid "Administered domains"
 msgstr "Administrerade domäner"
 
-#: src/components/admin/domains/DomainAdminList.vue:153
+#: src/components/admin/domains/DomainAdminList.vue:156
 msgid "Administrator added"
 msgstr "Administratör tillagd"
 
@@ -208,7 +214,7 @@ msgstr "Administratör tillagd"
 msgid "Administrator name"
 msgstr "Administratörs namn"
 
-#: src/components/admin/domains/DomainAdminList.vue:162
+#: src/components/admin/domains/DomainAdminList.vue:165
 msgid "Administrator removed"
 msgstr "Administratör raderad"
 
@@ -243,6 +249,7 @@ msgid "Alarms deleted"
 msgstr "Larm raderade"
 
 #: src/components/admin/identities/AccountEditForm.vue:116
+#: src/components/admin/identities/IdentityList.vue:74
 #: src/views/admin/domains/DomainsView.vue:26
 #: src/views/admin/identities/AliasView.vue:5
 #: src/views/admin/identities/IdentitiesView.vue:26
@@ -257,7 +264,7 @@ msgstr "Alias ​​har redan lagts till"
 msgid "Alias already exists, redirecting to edit page"
 msgstr "Aliaset finns redan, omdirigerar till redigeringssidan"
 
-#: src/components/admin/identities/IdentityList.vue:266
+#: src/components/admin/identities/IdentityList.vue:463
 #, fuzzy
 msgid "Alias deleted"
 msgstr "Larm raderade"
@@ -319,15 +326,16 @@ msgstr "API token skapat"
 msgid "API token deleted"
 msgstr "API token raderat"
 
+#: src/components/tools/ChooseColumnsForm.vue:19
 #: src/components/tools/TimeSerieChart.vue:22
 msgid "Apply"
 msgstr "Tillämpa"
 
-#: src/components/admin/identities/IdentityList.vue:252
+#: src/components/admin/identities/IdentityList.vue:449
 msgid "Are you sure you want to delete this alias?"
 msgstr "Är du säker på att du vill ta bort detta alias?"
 
-#: src/components/admin/identities/IdentityList.vue:224
+#: src/components/admin/identities/IdentityList.vue:421
 msgid "Are you sure you want to delete this identity ?"
 msgstr "Är du säker på att du vill ta bort den här identiteten?"
 
@@ -507,6 +515,10 @@ msgstr "Välj en åtgärd"
 msgid "Choose an operator"
 msgstr "Välj en operatör"
 
+#: src/components/tools/ChooseColumnsForm.vue:2
+msgid "Choose columns to display"
+msgstr ""
+
 #: src/components/contacts/ContactForm.vue:104
 msgid "City"
 msgstr "Stad"
@@ -663,6 +675,8 @@ msgstr "Skapa standardalias för domänen."
 #: src/components/admin/domains/DomainSummary.vue:8
 #: src/components/admin/identities/AccountSummary.vue:8
 #: src/components/admin/identities/AliasSummary.vue:8
+#: src/components/admin/identities/IdentityList.vue:200
+#: src/components/admin/identities/IdentityList.vue:249
 msgid "Creation date"
 msgstr "Datum skapad"
 
@@ -682,6 +696,10 @@ msgstr "CSV verkar vara dåligt formaterad"
 #: src/components/admin/identities/form_steps/AccountPasswordSubForm.vue:4
 msgid "Current password"
 msgstr "Nuvarande lösenord"
+
+#: src/components/admin/identities/IdentityList.vue:35
+msgid "Customize displayed columns"
+msgstr ""
 
 #: src/components/admin/identities/form_steps/AccountMailboxForm.vue:23
 msgid "Daily message sending limit"
@@ -723,9 +741,9 @@ msgstr ""
 #: src/components/admin/alarms/AlarmList.vue:126
 #: src/components/admin/domains/DomainAliasForm.vue:39
 #: src/components/admin/domains/DomainList.vue:325
-#: src/components/admin/identities/IdentityList.vue:183
-#: src/components/admin/identities/IdentityList.vue:195
-#: src/components/admin/identities/IdentityList.vue:208
+#: src/components/admin/identities/IdentityList.vue:380
+#: src/components/admin/identities/IdentityList.vue:392
+#: src/components/admin/identities/IdentityList.vue:405
 #: src/components/admin/imap_migration/MigrationsList.vue:123
 #: src/components/admin/imap_migration/ProvidersList.vue:124
 #: src/components/calendars/EventForm.vue:90
@@ -755,6 +773,7 @@ msgstr "Radera token"
 #: src/components/admin/identities/AliasCreationForm.vue:72
 #: src/components/admin/identities/AliasSummary.vue:30
 #: src/components/admin/identities/form_steps/AliasGeneralForm.vue:58
+#: src/components/admin/identities/IdentityList.vue:196
 #: src/components/calendars/EventForm.vue:74
 #: src/views/admin/InformationView.vue:148
 msgid "Description"
@@ -878,7 +897,7 @@ msgstr "DNS konfigurering hjälp"
 msgid "DNS status"
 msgstr "DNS status"
 
-#: src/components/admin/identities/IdentityList.vue:107
+#: src/components/admin/identities/IdentityList.vue:152
 msgid "Do not delete account folder"
 msgstr "Ta inte bort kontomappen"
 
@@ -960,8 +979,8 @@ msgid "E-mail"
 msgstr "E-post"
 
 #: src/components/admin/domains/DomainList.vue:320
-#: src/components/admin/identities/IdentityList.vue:178
-#: src/components/admin/identities/IdentityList.vue:190
+#: src/components/admin/identities/IdentityList.vue:375
+#: src/components/admin/identities/IdentityList.vue:387
 #: src/components/admin/imap_migration/ProvidersList.vue:130
 #: src/components/contacts/ContactList.vue:138
 #: src/views/account/FiltersView.vue:329
@@ -1079,6 +1098,8 @@ msgstr "Aktivera länkar"
 #: src/components/admin/identities/AliasSummary.vue:16
 #: src/components/admin/identities/form_steps/AccountGeneralForm.vue:46
 #: src/components/admin/identities/form_steps/AliasGeneralForm.vue:53
+#: src/components/admin/identities/IdentityList.vue:186
+#: src/components/admin/identities/IdentityList.vue:225
 msgid "Enabled"
 msgstr "Aktiverad"
 
@@ -1115,6 +1136,7 @@ msgstr "Ex: 10MB. Lämna tomt för ingen gräns"
 #: src/components/admin/identities/AliasCreationForm.vue:66
 #: src/components/admin/identities/AliasSummary.vue:26
 #: src/components/admin/identities/form_steps/AliasGeneralForm.vue:56
+#: src/components/admin/identities/IdentityList.vue:192
 msgid "Expire at"
 msgstr "Utgår kl"
 
@@ -1186,6 +1208,7 @@ msgstr "Filter"
 #: src/components/account/ProfileForm.vue:9
 #: src/components/admin/identities/AccountCreationForm.vue:99
 #: src/components/admin/identities/form_steps/AccountGeneralForm.vue:18
+#: src/components/admin/identities/IdentityList.vue:218
 #: src/components/contacts/ContactForm.vue:12
 msgid "First name"
 msgstr "Förnamn"
@@ -1226,10 +1249,6 @@ msgstr "Fullständig adress"
 #: src/components/admin/identities/AccountSummary.vue:19
 msgid "Full name"
 msgstr "Komplett namn"
-
-#: src/components/admin/identities/IdentityList.vue:133
-msgid "Fullname/recipient"
-msgstr "Komplett namn/mottagare"
 
 #: src/components/admin/dmarc/DmarcAligmentChart.vue:127
 #: src/components/admin/dmarc/DmarcAligmentChart.vue:143
@@ -1404,6 +1423,7 @@ msgid "Keep local copies"
 msgstr "Behåll lokala kopior"
 
 #: src/components/account/ProfileForm.vue:22
+#: src/components/admin/identities/IdentityList.vue:227
 msgid "Language"
 msgstr "Språk"
 
@@ -1411,9 +1431,19 @@ msgstr "Språk"
 msgid "Language does no exist"
 msgstr "Språket existerar inte"
 
+#: src/components/admin/identities/IdentityList.vue:253
+#, fuzzy
+msgid "Last login"
+msgstr "Senaste inloggning"
+
 #: src/components/admin/identities/AccountSummary.vue:12
 msgid "Last login date"
 msgstr "Senaste inloggning"
+
+#: src/components/admin/identities/IdentityList.vue:204
+#, fuzzy
+msgid "Last modification"
+msgstr "Senaste ändrad datum"
 
 #: src/components/admin/domains/DomainSummary.vue:12
 msgid "Last modification date"
@@ -1424,6 +1454,11 @@ msgstr "Senaste ändrad datum"
 #: src/components/admin/identities/form_steps/AccountGeneralForm.vue:25
 #: src/components/contacts/ContactForm.vue:22
 msgid "Last name"
+msgstr "Efternamn"
+
+#: src/components/admin/identities/IdentityList.vue:222
+#, fuzzy
+msgid "Last Name"
 msgstr "Efternamn"
 
 #: src/components/account/FidoAuthForm.vue:135
@@ -1651,7 +1686,7 @@ msgstr "namn"
 #: src/components/admin/domains/DomainCreationForm.vue:164
 #: src/components/admin/domains/DomainList.vue:207
 #: src/components/admin/domains/form_steps/DomainOptionsForm.vue:11
-#: src/components/admin/identities/IdentityList.vue:131
+#: src/components/admin/identities/IdentityList.vue:216
 #: src/components/admin/imap_migration/ProviderCreationForm.vue:53
 #: src/components/admin/imap_migration/ProvidersList.vue:96
 #: src/components/calendars/CalendarForm.vue:15
@@ -1745,8 +1780,8 @@ msgstr "nej"
 #: src/components/admin/domains/DNSDetail.vue:223
 #: src/components/admin/domains/DNSDetail.vue:243
 #: src/components/admin/domains/DomainList.vue:266
-#: src/components/admin/identities/IdentityList.vue:228
-#: src/components/admin/identities/IdentityList.vue:256
+#: src/components/admin/identities/IdentityList.vue:425
+#: src/components/admin/identities/IdentityList.vue:453
 #: src/components/tools/CreationForm.vue:136
 #: src/layouts/webmail/WebmailLayout.vue:197
 msgid "No"
@@ -1923,6 +1958,7 @@ msgstr "Telefon"
 #: src/components/account/ProfileForm.vue:47
 #: src/components/account/ProfileForm.vue:50
 #: src/components/admin/identities/AccountSummary.vue:31
+#: src/components/admin/identities/IdentityList.vue:229
 #: src/components/contacts/PhoneNumberField.vue:5
 msgid "Phone number"
 msgstr "Telefonnummer"
@@ -2073,6 +2109,7 @@ msgstr "Mottagare"
 #: src/components/admin/identities/AliasCreationForm.vue:97
 #: src/components/admin/identities/AliasEditForm.vue:41
 #: src/components/admin/identities/AliasRecipientsSummary.vue:4
+#: src/components/admin/identities/IdentityList.vue:188
 msgid "Recipients"
 msgstr "Mottagare"
 
@@ -2155,6 +2192,7 @@ msgstr "Resursanvändning"
 #: src/components/admin/identities/AccountCreationForm.vue:92
 #: src/components/admin/identities/AccountEditForm.vue:9
 #: src/components/admin/identities/AccountSummary.vue:23
+#: src/components/admin/identities/IdentityList.vue:226
 msgid "Role"
 msgstr "Roll"
 
@@ -2172,8 +2210,9 @@ msgstr "Spara"
 msgid "Save your changes"
 msgstr "Spara dina ändringar"
 
+#: src/components/admin/alarms/AlarmList.vue:20
 #: src/components/admin/domains/DomainList.vue:19
-#: src/components/admin/identities/IdentityList.vue:18
+#: src/components/admin/identities/IdentityList.vue:23
 #: src/components/admin/imap_migration/ProvidersList.vue:39
 #: src/components/admin/logs/AuditTrailList.vue:16
 #: src/components/admin/logs/MessageList.vue:16
@@ -2187,6 +2226,7 @@ msgstr "Sök i meddelanden"
 
 #: src/components/account/ProfileForm.vue:54
 #: src/components/admin/identities/AccountSummary.vue:27
+#: src/components/admin/identities/IdentityList.vue:233
 msgid "Secondary email"
 msgstr "Sekundär e-post"
 
@@ -2334,9 +2374,10 @@ msgstr "Synkronisering startade"
 msgid "Synchronize contacts with address book"
 msgstr "Synkronisera kontakter med adressboken"
 
-#: src/components/admin/identities/IdentityList.vue:134
-msgid "Tags"
-msgstr "Taggar"
+#: src/components/admin/identities/IdentityList.vue:237
+#, fuzzy
+msgid "TFA enabled"
+msgstr "Filter aktiverat"
 
 #: src/components/account/AutoReplyForm.vue:24
 msgid ""
@@ -2421,6 +2462,11 @@ msgstr ""
 #: src/components/admin/dmarc/DmarcSourceTable.vue:12
 msgid "Total"
 msgstr "Totalt"
+
+#: src/components/admin/identities/IdentityList.vue:241
+#, fuzzy
+msgid "TOTP enabled"
+msgstr "Aktiverad"
 
 #: src/components/admin/domains/DomainCreationForm.vue:152
 #: src/components/admin/domains/DomainCreationForm.vue:215
@@ -2556,8 +2602,8 @@ msgstr "varning"
 #: src/components/account/FidoAuthForm.vue:178
 #: src/components/admin/domains/DNSDetail.vue:237
 #: src/components/admin/domains/DomainList.vue:260
-#: src/components/admin/identities/IdentityList.vue:223
-#: src/components/admin/identities/IdentityList.vue:251
+#: src/components/admin/identities/IdentityList.vue:420
+#: src/components/admin/identities/IdentityList.vue:448
 #: src/components/tools/CreationForm.vue:129
 #: src/layouts/webmail/WebmailLayout.vue:192
 #: src/views/calendars/CalendarView.vue:247
@@ -2567,6 +2613,11 @@ msgstr "Varning"
 #: src/components/account/FidoAuthForm.vue:6
 msgid "WebAuthn"
 msgstr "WebAuthn"
+
+#: src/components/admin/identities/IdentityList.vue:245
+#, fuzzy
+msgid "WebAutn enabled"
+msgstr "Filter aktiverat"
 
 #: src/views/webmail/MailboxView.vue:4
 msgid "Webmail"
@@ -2605,8 +2656,8 @@ msgstr "ja"
 #: src/components/admin/domains/DNSDetail.vue:224
 #: src/components/admin/domains/DNSDetail.vue:244
 #: src/components/admin/domains/DomainList.vue:267
-#: src/components/admin/identities/IdentityList.vue:227
-#: src/components/admin/identities/IdentityList.vue:255
+#: src/components/admin/identities/IdentityList.vue:424
+#: src/components/admin/identities/IdentityList.vue:452
 #: src/components/tools/CreationForm.vue:135
 #: src/layouts/webmail/WebmailLayout.vue:196
 msgid "Yes"
@@ -2677,17 +2728,22 @@ msgstr "Din webbläsare verkar inte vara kompatibel med WebAuthN"
 msgid "Zip code"
 msgstr "Postnummer"
 
-#: src/components/admin/identities/IdentityList.vue:132
-#, fuzzy
-msgctxt "female"
-msgid "Enabled"
-msgstr "Aktiverad"
-
 #: src/views/admin/identities/IdentitiesView.vue:18
 #, fuzzy
 msgctxt "male"
 msgid "New"
 msgstr "Ny"
+
+#~ msgid "Fullname/recipient"
+#~ msgstr "Komplett namn/mottagare"
+
+#~ msgid "Tags"
+#~ msgstr "Taggar"
+
+#, fuzzy
+#~ msgctxt "female"
+#~ msgid "Enabled"
+#~ msgstr "Aktiverad"
 
 #~ msgid "help"
 #~ msgstr "hjälp"
