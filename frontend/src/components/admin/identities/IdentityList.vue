@@ -29,6 +29,12 @@
             class="flex-grow-0 w-33 mr-4"
           ></v-text-field>
           <slot name="extraActions" />
+          <v-btn
+            variant="text"
+            icon="mdi-format-columns"
+            :title="$gettext('Customize displayed columns')"
+            @click="showColumnsForm = true"
+          ></v-btn>
           <v-menu location="bottom">
             <template #activator="{ props }">
               <v-btn
@@ -49,44 +55,45 @@
             icon="mdi-reload"
             @click="fetchIdentities"
           ></v-btn>
-          <v-radio-group
-            v-model="identityType"
-            inline
-            @update:model-value="updateType"
-            :readonly="loading"
-          >
-            <v-radio
-              color="primary"
-              :label="$gettext('Accounts')"
-              value="account"
-            ></v-radio>
-            <v-radio
-              color="primary"
-              :label="$gettext('Alias')"
-              value="alias"
-            ></v-radio>
-          </v-radio-group>
-          <v-combobox
-            v-model="columns"
-            :items="currentAvailableColumns"
-            multiple
-            return-object
-          >
-          </v-combobox>
-          <v-spacer></v-spacer>
+
+          <template #extension>
+            <v-radio-group
+              v-model="identityType"
+              inline
+              :readonly="loading"
+              hide-details
+              @update:model-value="updateType"
+            >
+              <v-radio
+                color="primary"
+                :label="$gettext('Accounts')"
+                value="account"
+              ></v-radio>
+              <v-radio
+                color="primary"
+                :label="$gettext('Alias')"
+                value="alias"
+              ></v-radio>
+            </v-radio-group>
+          </template>
         </v-toolbar>
       </template>
-      <template #[`item.identity`]="{ item }">
-        <template v-if="identityType === 'account'">
-          <router-link :to="{ name: 'AccountDetail', params: { id: item.pk } }">
-            {{ item.identity }}
-          </router-link>
-        </template>
-        <template v-else>
-          <router-link :to="{ name: 'AliasDetail', params: { id: item.pk } }">
-            {{ item.identity }}
-          </router-link>
-        </template>
+      <template #[`item.username`]="{ item }">
+        <router-link :to="{ name: 'AccountDetail', params: { id: item.pk } }">
+          {{ item.username }}
+        </router-link>
+      </template>
+      <template #[`item.address`]="{ item }">
+        <router-link :to="{ name: 'AliasDetail', params: { id: item.pk } }">
+          {{ item.address }}
+        </router-link>
+      </template>
+      <template #[`item.is_active`]="{ item }">
+        <v-icon
+          :color="item.is_active ? 'success' : 'error'"
+          :icon="item.is_active ? 'mdi-check-circle' : 'mdi-close-circle'"
+          variant="flat"
+        />
       </template>
       <template #[`item.enabled`]="{ item }">
         <v-icon
@@ -95,15 +102,24 @@
           variant="flat"
         />
       </template>
-      <template #[`item.tags`]="{ item }">
-        <v-chip
-          v-for="(tag, index) in item.tags"
-          :key="tag.name"
-          :color="tag.type !== 'idt' ? 'primary' : 'default'"
-          :class="index > 0 ? 'ml-2' : ''"
-          size="small"
-        >
-          {{ tag.label }}
+      <template #[`item.recipients`]="{ item }">
+        {{ displayRecipients(item) }}
+      </template>
+      <template #[`item.date_joined`]="{ item }">
+        {{ $date(item.date_joined) }}
+      </template>
+      <template #[`item.creation`]="{ item }">
+        {{ $date(item.creation) }}
+      </template>
+      <template #[`item.last_modification`]="{ item }">
+        {{ $date(item.last_modification) }}
+      </template>
+      <template #[`item.last_login`]="{ item }">
+        {{ $date(item.last_login) }}
+      </template>
+      <template #[`item.role`]="{ item }">
+        <v-chip color="default" size="small">
+          {{ item.role }}
         </v-chip>
       </template>
       <template #[`item.actions`]="{ item }">
@@ -137,6 +153,13 @@
         hide-details
       />
     </ConfirmDialog>
+    <v-dialog v-model="showColumnsForm" max-width="500">
+      <ChooseColumnsForm
+        :columns="columns"
+        :available-columns="currentAvailableColumns"
+        @apply="updateDisplayedColumns"
+      />
+    </v-dialog>
   </v-card>
 </template>
 
@@ -145,44 +168,39 @@ import { ref, onMounted, computed } from 'vue'
 import { useGettext } from 'vue3-gettext'
 import MenuItems from '@/components/tools/MenuItems.vue'
 import ConfirmDialog from '@/components/tools/ConfirmDialog.vue'
+import ChooseColumnsForm from '@/components/tools/ChooseColumnsForm.vue'
 import { useRouter } from 'vue-router'
 import { useBusStore } from '@/stores'
 import accountsApi from '@/api/accounts'
 import aliasesApi from '@/api/aliases'
 import debounce from 'debounce'
-// import identitiesApi from '@/api/identities'
 
-const { $gettext, $pgettext } = useGettext()
+const { $gettext } = useGettext()
 const router = useRouter()
 const { displayNotification } = useBusStore()
 
 const availableAliasesColumns = {
-  address: { title: $gettext('Address'), key: 'address', value: 'address' },
-  enabled: { title: $gettext('Enabled'), key: 'enabled', value: 'enabled' },
+  address: { title: $gettext('Address'), key: 'address' },
+  enabled: { title: $gettext('Enabled'), key: 'enabled' },
   recipients: {
     title: $gettext('Recipients'),
     key: 'recipients',
-    value: 'recipients',
   },
   expire_at: {
     title: $gettext('Expire at'),
     key: 'expire_at',
-    value: 'expire_at',
   },
   description: {
     title: $gettext('Description'),
     key: 'description',
-    value: 'description',
   },
   creation: {
     title: $gettext('Creation date'),
     key: 'creation',
-    value: 'creation',
   },
   last_modification: {
     title: $gettext('Last modification'),
     key: 'last_modification',
-    value: 'last_modification',
   },
 }
 
@@ -193,54 +211,45 @@ const defaultAliasColumns = [
 ]
 
 const availableAccountsColumns = {
-  username: { title: $gettext('Name'), key: 'username', value: 'username' },
+  username: { title: $gettext('Name'), key: 'username' },
   first_name: {
     title: $gettext('First name'),
     key: 'first_name',
-    value: 'first_name',
   },
   last_name: {
     title: $gettext('Last Name'),
     key: 'last_name',
-    value: 'last_name',
   },
-  is_active: { title: $gettext('Enabled'), key: 'enabled', value: 'is_active' },
-  role: { title: $gettext('Role'), key: 'role', value: 'role' },
-  language: { title: $gettext('Language'), key: 'language', value: 'language' },
+  is_active: { title: $gettext('Enabled'), key: 'is_active' },
+  role: { title: $gettext('Role'), key: 'role' },
+  language: { title: $gettext('Language'), key: 'language' },
   phone_number: {
     title: $gettext('Phone number'),
     key: 'phone_number',
-    value: 'phone_number',
   },
   secondary_email: {
     title: $gettext('Secondary email'),
     key: 'secondary_email',
-    value: 'secondary_email',
   },
   tfa_enabled: {
     title: $gettext('TFA enabled'),
     key: 'tfa_enabled',
-    value: 'tfa_enabled',
   },
   totp_enabled: {
     title: $gettext('TOTP enabled'),
     key: 'totp_enabled',
-    value: 'totp_enabled',
   },
   webauth_enabled: {
     title: $gettext('WebAutn enabled'),
     key: 'webauth_enabled',
-    value: 'webauth_enabled',
   },
   date_joined: {
-    title: $gettext('Created date'),
+    title: $gettext('Creation date'),
     key: 'date_joined',
-    value: 'date_joined',
   },
   last_login: {
     title: $gettext('Last login'),
     key: 'last_login',
-    value: 'last_login',
   },
 }
 
@@ -263,6 +272,7 @@ const currentPage = ref(1)
 const itemsPerPageR = ref(10)
 const sortByR = ref([])
 const columns = ref(defaultAccountsColumns)
+const showColumnsForm = ref(false)
 
 const headers = computed(() => {
   const result = columns.value
@@ -292,7 +302,7 @@ async function updateType(value) {
   } else {
     columns.value = defaultAliasColumns
   }
-  fetchIdentities()
+  await fetchIdentities()
 }
 
 async function updatedOptions({ page, itemsPerPage, sortBy }) {
@@ -329,9 +339,16 @@ async function fetchIdentities() {
   }
 }
 
+function updateDisplayedColumns(selection) {
+  columns.value = currentAvailableColumns.value.filter((col) =>
+    selection.includes(col.key)
+  )
+  showColumnsForm.value = false
+}
+
 function getMenuItems(item) {
   const result = []
-  if (identityType === 'account') {
+  if (identityType.value === 'account') {
     item.possible_actions.forEach((element) => {
       result.push({
         label: element.label,
@@ -355,7 +372,7 @@ function getMenuItems(item) {
       onClick: deleteAccount,
       color: 'red',
     })
-  } else if (identityType === 'alias') {
+  } else if (identityType.value === 'alias') {
     result.push({
       label: $gettext('Edit'),
       icon: 'mdi-circle-edit-outline',
@@ -439,6 +456,13 @@ async function deleteAlias(alias) {
   }
 }
 
+function displayRecipients(alias) {
+  if (!alias.recipients) {
+    return ''
+  }
+  return alias.recipients.join(', ')
+}
+
 onMounted(() => {
   fetchIdentities()
 })
@@ -449,3 +473,14 @@ defineExpose({
 
 fetchIdentities = debounce(fetchIdentities, 500)
 </script>
+
+<style scoped lang="scss">
+a {
+  text-decoration: none;
+  color: rgb(var(--v-theme-primary));
+
+  &:visited {
+    color: rgb(var(--v-theme-primary));
+  }
+}
+</style>

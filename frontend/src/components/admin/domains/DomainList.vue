@@ -348,11 +348,20 @@ defineExpose({
 })
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .v-text-field--outlined :deep(fieldset) {
   border-color: #bfc5d2;
 }
 .v-input--checkbox :deep(.v-label) {
   font-size: 0.875rem !important;
+}
+
+a {
+  text-decoration: none;
+  color: rgb(var(--v-theme-primary));
+
+  &:visited {
+    color: rgb(var(--v-theme-primary));
+  }
 }
 </style>
