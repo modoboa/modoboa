@@ -1,6 +1,6 @@
 """Custom SMTP email backend."""
 
-from django.core.mail.backends import EmailBackend
+from django.core.mail.backends.smtp import EmailBackend
 from django.core.mail.utils import DNS_NAME
 
 from modoboa.lib import oauth2
