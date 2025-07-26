@@ -141,7 +141,7 @@ class CoreGlobalParametersSerializer(serializers.Serializer):
     )
 
     # Dashboard settings
-    custom_welcome_message = serializers.CharField(required=False)
+    custom_welcome_message = serializers.CharField(required=False, allow_blank=True)
     rss_feed_url = serializers.URLField(
         allow_blank=True, required=False, allow_null=True
     )

@@ -21,10 +21,10 @@ export const useAuthStore = defineStore('auth', () => {
   let postLogoutRedirectUri = config.OAUTH_POST_REDIRECT_URI
 
   if (!redirectUri.startsWith('http')) {
-    redirectUri = `${location.protocol}//${location.host}${redirectUri}`
+    redirectUri = `${location.protocol}//${location.host}${config.OAUTH_REDIRECT_URI}`
   }
   if (!postLogoutRedirectUri.startsWith('http')) {
-    postLogoutRedirectUri = `${location.protocol}//${location.host}${postLogouRedirectUri}`
+    postLogoutRedirectUri = `${location.protocol}//${location.host}${config.OAUTH_POST_REDIRECT_URI}`
   }
   const manager = new UserManager({
     authority: config.OAUTH_AUTHORITY_URL,
