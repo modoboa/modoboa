@@ -545,6 +545,22 @@ class CapabilitiesAPITestCase(ModoAPITestCase):
         self.assertIn("rspamd", response.json()["capabilities"])
 
 
+class ThemeAPITestCase(ModoAPITestCase):
+
+    def test_get(self):
+        url = reverse("v2:theme")
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        theme = response.json()
+        self.assertEqual(theme["theme_primary_color"], "#046BF8")
+
+        self.set_global_parameter("theme_primary_color", "#FF0000")
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        theme = response.json()
+        self.assertEqual(theme["theme_primary_color"], "#FF00000")
+
+
 class NewsFeedAPIViewTestCase(ModoAPITestCase):
 
     @classmethod
