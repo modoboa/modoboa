@@ -4,5 +4,5 @@
   "OAUTH_AUTHORITY_URL": "https://localhost:8000/api/o",
   "OAUTH_CLIENT_ID": "LVQbfIIX3khWR3nDvix1u9yEGHZUxcx53bhJ7FlD",
   "OAUTH_REDIRECT_URI": "/login/logged",
-  "OAUTH_POST_REDIRECT_URI": "https://localhost:3000/"
+  "OAUTH_POST_REDIRECT_URI": "/"
 }
