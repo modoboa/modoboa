@@ -134,7 +134,7 @@ def send_mail(request, attributes: dict, attachments: list) -> tuple[bool, str |
                 {
                     "backend": "modoboa.lib.smtp_backend.OAuthBearerEmailBackend",
                     "username": request.user.email,
-                    "password": request.auth,
+                    "password": str(request.auth),
                 }
             )
         else:

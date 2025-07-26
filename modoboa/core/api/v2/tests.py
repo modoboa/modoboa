@@ -558,7 +558,7 @@ class ThemeAPITestCase(ModoAPITestCase):
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
         theme = response.json()
-        self.assertEqual(theme["theme_primary_color"], "#FF00000")
+        self.assertEqual(theme["theme_primary_color"], "#FF0000")
 
 
 class NewsFeedAPIViewTestCase(ModoAPITestCase):
