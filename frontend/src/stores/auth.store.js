@@ -18,15 +18,19 @@ export const useAuthStore = defineStore('auth', () => {
   const authUser = ref(null)
   const isAuthenticated = ref(false)
   let redirectUri = config.OAUTH_REDIRECT_URI
+  let postLogoutRedirectUri = config.OAUTH_POST_REDIRECT_URI
 
   if (!redirectUri.startsWith('http')) {
     redirectUri = `${location.protocol}//${location.host}${redirectUri}`
+  }
+  if (!postLogoutRedirectUri.startsWith('http')) {
+    postLogoutRedirectUri = `${location.protocol}//${location.host}${postLogouRedirectUri}`
   }
   const manager = new UserManager({
     authority: config.OAUTH_AUTHORITY_URL,
     client_id: config.OAUTH_CLIENT_ID,
     redirect_uri: redirectUri,
-    post_logout_redirect_uri: config.OAUTH_POST_REDIRECT_URI,
+    post_logout_redirect_uri: postLogoutRedirectUri,
     response_type: 'code',
     scope: 'openid read write',
     automaticSilentRenew: true,
