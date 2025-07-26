@@ -179,6 +179,27 @@ class CapabilitiesAPIView(APIView):
         return response.Response({"capabilities": get_capabilities()})
 
 
+class ThemeAPIView(APIView):
+    """Return the theme values of this Modoboa instance."""
+
+    permission_classes = [permissions.IsAuthenticated]
+    throttle_classes = [UserLesserDdosUser]
+
+    @extend_schema(responses=serializers.ThemeSerializer)
+    def get(self, request, *args, **kwargs):
+        values = {}
+        params = [
+            "theme_primary_color",
+            "theme_primary_color_dark",
+            "theme_primary_color_light",
+            "theme_secondary_color",
+            "theme_label_color",
+        ]
+        for param in params:
+            values[param] = request.localconfig.parameters.get_value(param)
+        return response.Response(values)
+
+
 class NewsFeedAPIView(APIView):
     """Return list of latest news from configured RSS feed."""
 

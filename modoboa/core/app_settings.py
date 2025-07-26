@@ -99,12 +99,14 @@ GLOBAL_PARAMETERS_STRUCT = collections.OrderedDict(
                         (
                             "allow_special_characters",
                             {
-                                "label": gettext_lazy("Allow special characters for random password"),
+                                "label": gettext_lazy(
+                                    "Allow special characters for random password"
+                                ),
                                 "help_text": gettext_lazy(
                                     "Enable special characters in randomly generated "
                                     "passwords."
                                 ),
-                            }
+                            },
                         ),
                         (
                             "update_password_url",
@@ -479,6 +481,15 @@ GLOBAL_PARAMETERS_STRUCT = collections.OrderedDict(
                 "params": collections.OrderedDict(
                     [
                         (
+                            "custom_welcome_message",
+                            {
+                                "label": gettext_lazy("Custom welcome message"),
+                                "help_text": gettext_lazy(
+                                    "A welcome message that will be displayed instead the default one"
+                                ),
+                            },
+                        ),
+                        (
                             "rss_feed_url",
                             {
                                 "label": gettext_lazy("Custom RSS feed"),
@@ -496,6 +507,70 @@ GLOBAL_PARAMETERS_STRUCT = collections.OrderedDict(
                                     "Hide features widget for resellers and domain "
                                     "administrators"
                                 ),
+                            },
+                        ),
+                    ]
+                ),
+            },
+        ),
+        (
+            "theme",
+            {
+                "label": gettext_lazy("Theme"),
+                "params": collections.OrderedDict(
+                    [
+                        (
+                            "theme_primary_color",
+                            {
+                                "label": gettext_lazy("Primary theme color"),
+                                "help": gettext_lazy(
+                                    "Primary color of the theme (hexadecimal code), used as the background color of the left menu for example"
+                                ),
+                                "widget": "ColorPicker",
+                            },
+                        ),
+                        (
+                            "theme_primary_color_light",
+                            {
+                                "label": gettext_lazy(
+                                    "Primary theme color (lighter version)"
+                                ),
+                                "help": gettext_lazy(
+                                    "Primary color of the theme (hexadecimal code)"
+                                ),
+                                "widget": "ColorPicker",
+                            },
+                        ),
+                        (
+                            "theme_primary_color_dark",
+                            {
+                                "label": gettext_lazy(
+                                    "Primary theme color (darker version)"
+                                ),
+                                "help": gettext_lazy(
+                                    "Primary color of the theme (hexadecimal code)"
+                                ),
+                                "widget": "ColorPicker",
+                            },
+                        ),
+                        (
+                            "theme_secondary_color",
+                            {
+                                "label": gettext_lazy("Secondary theme color"),
+                                "help": gettext_lazy(
+                                    "Secondary color of the theme (hexadecimal code), used as the background color of some buttons for example"
+                                ),
+                                "widget": "ColorPicker",
+                            },
+                        ),
+                        (
+                            "theme_label_color",
+                            {
+                                "label": gettext_lazy("Labels theme color"),
+                                "help": gettext_lazy(
+                                    "Theme color for labels (hexadecimal code)"
+                                ),
+                                "widget": "ColorPicker",
                             },
                         ),
                     ]

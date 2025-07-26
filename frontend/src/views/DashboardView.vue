@@ -1,6 +1,6 @@
 <template>
   <v-toolbar flat>
-    <v-toolbar-title>{{ $gettext('Welcome to Modoboa') }}</v-toolbar-title>
+    <v-toolbar-title>{{ welcomeMsg }}</v-toolbar-title>
   </v-toolbar>
 
   <v-row>
@@ -11,7 +11,21 @@
 </template>
 
 <script setup>
+import { ref } from 'vue'
+import { useGettext } from 'vue3-gettext'
 import NewsFeedWidget from '@/components/admin/dashboard/NewsFeedWidget'
+import parametersApi from '@/api/parameters'
+
+const { $gettext } = useGettext()
+
+const welcomeMsg = ref('')
+
+const response = await parametersApi.getGlobalApplication('core')
+if (response.data.params.custom_welcome_message) {
+  welcomeMsg.value = response.data.params.custom_welcome_message
+} else {
+  welcomeMsg.value = $gettext('Welcome to Modoboa')
+}
 </script>
 
 <style scoped>

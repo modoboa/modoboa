@@ -141,10 +141,18 @@ class CoreGlobalParametersSerializer(serializers.Serializer):
     )
 
     # Dashboard settings
+    custom_welcome_message = serializers.CharField(required=False)
     rss_feed_url = serializers.URLField(
         allow_blank=True, required=False, allow_null=True
     )
     hide_features_widget = serializers.BooleanField(default=False)
+
+    # Theme settings
+    theme_primary_color = serializers.CharField(default="#046BF8")
+    theme_primary_color_dark = serializers.CharField(default="#0350BA")
+    theme_primary_color_light = serializers.CharField(default="#3688F9")
+    theme_secondary_color = serializers.CharField(default="#F18429")
+    theme_label_color = serializers.CharField(default="#616161")
 
     # Notification settings
     sender_address = lib_fields.DRFEmailFieldUTF8(default="noreply@yourdomain.test")
@@ -654,3 +662,12 @@ class NewsFeedEntrySerializer(serializers.Serializer):
     title = serializers.CharField()
     link = serializers.CharField()
     published = serializers.DateTimeField()
+
+
+class ThemeSerializer(serializers.Serializer):
+
+    theme_primary_color = serializers.CharField(default="#046BF8")
+    theme_primary_color_dark = serializers.CharField(default="#0350BA")
+    theme_primary_color_light = serializers.CharField(default="#3688F9")
+    theme_secondary_color = serializers.CharField(default="#F18429")
+    theme_label_color = serializers.CharField(default="#616161")

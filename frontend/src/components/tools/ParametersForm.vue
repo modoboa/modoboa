@@ -68,6 +68,16 @@
                     v-model="parameters[param.name]"
                   >
                   </HtmlEditor>
+                  <v-color-picker
+                    v-else-if="param.widget === 'ColorPicker'"
+                    v-model="parameters[param.name]"
+                    :hint="param.help_text"
+                    persistent-hint
+                    :error="formErrors[param.name] !== undefined"
+                    :error-messages="formErrors[param.name]"
+                    density="compact"
+                    variant="outlined"
+                  />
                   <v-text-field
                     v-else
                     v-model="parameters[param.name]"

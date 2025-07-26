@@ -43,4 +43,5 @@ urlpatterns += [
         name="news-feed",
     ),
     path("capabilities/", views.CapabilitiesAPIView.as_view(), name="capabilities"),
+    path("theme/", views.ThemeAPIView.as_view(), name="theme"),
 ]
