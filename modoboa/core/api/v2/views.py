@@ -210,7 +210,10 @@ class NewsFeedAPIView(APIView):
     def get(self, request, *args, **kwargs):
         lang = "fr" if request.user.language == "fr" else "en"
         feed_url = f"{MODOBOA_WEBSITE_URL}{lang}/weblog/feeds/"
-        if request.user.role != "SuperAdmins":
+        show_rss_feed_to_superadmins = request.localconfig.parameters.get_value(
+            "show_rss_feed_to_superadmins"
+        )
+        if request.user.role != "SuperAdmins" or show_rss_feed_to_superadmins:
             custom_feed_url = request.localconfig.parameters.get_value("rss_feed_url")
             if custom_feed_url:
                 feed_url = custom_feed_url
