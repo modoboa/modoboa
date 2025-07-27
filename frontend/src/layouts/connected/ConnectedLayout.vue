@@ -100,6 +100,6 @@ themeApi.getTheme().then((response) => {
 
 <style>
 .v-application {
-  background-color: #f7f8fa;
+  background-color: #f7f8fa !important;
 }
 </style>
