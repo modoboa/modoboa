@@ -10,22 +10,16 @@ import repository from '@/api/repository'
 import accountApi from '@/api/account'
 import accountsApi from '@/api/accounts'
 import authApi from '@/api/auth.js'
-
+import { getAbsoluteUrl } from '@/utils'
 import { useGlobalConfig } from '@/main'
 
 export const useAuthStore = defineStore('auth', () => {
   const config = useGlobalConfig()
   const authUser = ref(null)
   const isAuthenticated = ref(false)
-  let redirectUri = config.OAUTH_REDIRECT_URI
-  let postLogoutRedirectUri = config.OAUTH_POST_REDIRECT_URI
+  let redirectUri = getAbsoluteUrl(config.OAUTH_REDIRECT_URI)
+  let postLogoutRedirectUri = getAbsoluteUrl(config.OAUTH_POST_REDIRECT_URI)
 
-  if (!redirectUri.startsWith('http')) {
-    redirectUri = `${location.protocol}//${location.host}${config.OAUTH_REDIRECT_URI}`
-  }
-  if (!postLogoutRedirectUri.startsWith('http')) {
-    postLogoutRedirectUri = `${location.protocol}//${location.host}${config.OAUTH_POST_REDIRECT_URI}`
-  }
   const manager = new UserManager({
     authority: config.OAUTH_AUTHORITY_URL,
     client_id: config.OAUTH_CLIENT_ID,
