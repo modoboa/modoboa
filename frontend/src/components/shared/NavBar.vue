@@ -149,23 +149,6 @@ onMounted(() => {
 </script>
 
 <style lang="scss" scoped>
-.v-list-item {
-  &--active {
-    &::before {
-      opacity: 0;
-    }
-    background-color: #034bad !important;
-    color: white;
-    opacity: 1;
-  }
-}
-
-.v-list-subheader {
-  &__text {
-    color: white !important;
-  }
-}
-
 .logo {
   cursor: pointer;
 }
