@@ -1,7 +1,6 @@
 from django.conf import settings
 from django.contrib.auth import views as auth_views
 from django.urls import include, path
-from django.views.i18n import JavaScriptCatalog
 
 from drf_spectacular.views import (
     SpectacularJSONAPIView,
@@ -13,7 +12,6 @@ from modoboa.core import views as core_views
 from modoboa.core.extensions import exts_pool
 
 urlpatterns = [
-    path("jsi18n/", JavaScriptCatalog.as_view(), name="javascript-catalog"),
     path("", include("modoboa.core.urls")),
     path(
         "accounts/password_reset/",
