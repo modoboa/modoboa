@@ -36,6 +36,7 @@ class OAuthBearerEmailBackend(EmailBackend):
                 self.connection.starttls(context=self.ssl_context)
             if self.username and self.password:
                 token = oauth2.build_oauthbearer_string(self.username, self.password)
+                self.connection.ehlo(DNS_NAME.get_fqdn())
                 self.connection.docmd("AUTH", f"OAUTHBEARER {token.decode('utf-8')}")
             return True
         except OSError:
