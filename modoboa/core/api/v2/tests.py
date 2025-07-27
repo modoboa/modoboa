@@ -592,6 +592,12 @@ class NewsFeedAPIViewTestCase(ModoAPITestCase):
         self.assertEqual(response.status_code, 200)
         self.assertIn("modoboa", response.json()[0]["link"])
 
+        # Try as superadmin and show_rss_feed_to_superadmins enabled
+        self.set_global_parameter("show_rss_feed_to_superadmins", True)
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertIn("django", response.json()[0]["link"])
+
         # Try as domainadmin
         dadmin = models.User.objects.get(username="admin@test.com")
         self.authenticate_user(dadmin)

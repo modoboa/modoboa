@@ -145,6 +145,7 @@ class CoreGlobalParametersSerializer(serializers.Serializer):
     rss_feed_url = serializers.URLField(
         allow_blank=True, required=False, allow_null=True
     )
+    show_rss_feed_to_superadmins = serializers.BooleanField(default=False)
     hide_features_widget = serializers.BooleanField(default=False)
 
     # Theme settings
