@@ -604,7 +604,7 @@ msgstr ""
 msgid "Copy token to clipboard"
 msgstr ""
 
-#: src/components/tools/ParametersForm.vue:183
+#: src/components/tools/ParametersForm.vue:194
 msgid "Could not save parameters"
 msgstr ""
 
@@ -1847,7 +1847,7 @@ msgstr ""
 msgid "or suggest a new language"
 msgstr ""
 
-#: src/components/tools/ParametersForm.vue:178
+#: src/components/tools/ParametersForm.vue:189
 msgid "Parameters updated"
 msgstr ""
 
@@ -2544,7 +2544,7 @@ msgstr ""
 msgid "Week"
 msgstr ""
 
-#: src/views/DashboardView.vue:3
+#: src/views/DashboardView.vue:27
 msgid "Welcome to Modoboa"
 msgstr ""
 

@@ -635,7 +635,7 @@ msgstr "Copiar para área de transferência"
 msgid "Copy token to clipboard"
 msgstr "Copiar token para a área de transferência"
 
-#: src/components/tools/ParametersForm.vue:183
+#: src/components/tools/ParametersForm.vue:194
 msgid "Could not save parameters"
 msgstr "Não é possível salvar os parâmetros"
 
@@ -1927,7 +1927,7 @@ msgstr "Opções"
 msgid "or suggest a new language"
 msgstr "ou sugira um novo idioma"
 
-#: src/components/tools/ParametersForm.vue:178
+#: src/components/tools/ParametersForm.vue:189
 msgid "Parameters updated"
 msgstr "Parâmetros atualizados"
 
@@ -2662,7 +2662,7 @@ msgstr "E-mail"
 msgid "Week"
 msgstr "Semana"
 
-#: src/views/DashboardView.vue:3
+#: src/views/DashboardView.vue:27
 msgid "Welcome to Modoboa"
 msgstr "Bem-vindo ao Modoboa"
 

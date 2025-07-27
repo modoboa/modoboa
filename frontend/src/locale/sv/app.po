@@ -627,7 +627,7 @@ msgstr "Kopiera till urklipp"
 msgid "Copy token to clipboard"
 msgstr "Kopiera token till urklipp"
 
-#: src/components/tools/ParametersForm.vue:183
+#: src/components/tools/ParametersForm.vue:194
 msgid "Could not save parameters"
 msgstr "Kunde inte spara parametrar"
 
@@ -1899,7 +1899,7 @@ msgstr "Alternativ"
 msgid "or suggest a new language"
 msgstr "eller föreslå ett nytt språk"
 
-#: src/components/tools/ParametersForm.vue:178
+#: src/components/tools/ParametersForm.vue:189
 msgid "Parameters updated"
 msgstr "Parametrar uppdaterade"
 
@@ -2627,7 +2627,7 @@ msgstr "Webmail"
 msgid "Week"
 msgstr "Vecka"
 
-#: src/views/DashboardView.vue:3
+#: src/views/DashboardView.vue:27
 msgid "Welcome to Modoboa"
 msgstr "Välkommen till Modoboa"
 
