@@ -71,6 +71,7 @@
                   <v-color-picker
                     v-else-if="param.widget === 'ColorPicker'"
                     v-model="parameters[param.name]"
+                    mode="hexa"
                     :hint="param.help_text"
                     persistent-hint
                     :error="formErrors[param.name] !== undefined"
