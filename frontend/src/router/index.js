@@ -426,6 +426,23 @@ const routes = [
           },
         ],
       },
+      {
+        path: 'quarantine',
+        component: () => import('@/layouts/user/UserLayout.vue'),
+        meta: {
+          requiresAuth: true,
+        },
+        children: [
+          {
+            path: '',
+            name: 'QuarantineView',
+            component: () => import('@/views/quarantine/QuarantineView.vue'),
+            meta: {
+              requiresAuth: true,
+            },
+          },
+        ],
+      },
     ],
   },
   {

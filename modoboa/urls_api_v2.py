@@ -1,5 +1,6 @@
 """External API urls."""
 
+from django.conf import settings
 from django.urls import include, path
 
 from modoboa.core.extensions import exts_pool
@@ -24,5 +25,10 @@ urlpatterns = [
     path("", include("modoboa.calendars.urls")),
     path("webmail/", include("modoboa.webmail.urls")),
 ]
+
+if "modoboa.amavis" in settings.MODOBOA_APPS:
+    urlpatterns += [
+        path("amavis/", include("modoboa.amavis.urls")),
+    ]
 
 urlpatterns += exts_pool.get_urls(category="api")
