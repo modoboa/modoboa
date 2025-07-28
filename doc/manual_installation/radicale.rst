@@ -85,7 +85,7 @@ Then, add the following line in `[auth]`::
 
 Replace ``<client_secret>`` with the value you obtained earlier.
 
-Your:file:`/etc/radicale/config` should look like this (listening address and port may vary):
+Your :file:`/etc/radicale/config` should look like this (listening address and port may vary)::
 
   [server]
   hosts = 0.0.0.0:5232,[::]:5232
@@ -106,11 +106,11 @@ With that set-up, radicale should be working when managing calendars through mod
 Modifications for using external clients (optional)
 ---------------------------------------------------
 
-To ensure other clients can identify, you need to modify radicale by adding in the config file under the [auth] section:
+To ensure other clients can identify, you need to modify radicale by adding in the config file under the [auth] section::
 
   dovecot_socket = /run/dovecot/auth-radicale
 
-and in 10-master.conf for dovecot:
+and in 10-master.conf for dovecot::
 
   unix_listener auth-radicale {
    mode = 0660
