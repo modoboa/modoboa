@@ -16,6 +16,17 @@ services:
       LDAP_ADMIN_PASSWORD: test
     profiles: [ldap]
 
+  mariadb:
+    image: mariadb:10
+    restart: unless-stopped
+    environment:
+      MARIADB_ROOT_PASSWORD: Password1000
+      MARIADB_DATABASE: amavis
+
+    volumes:
+      - ./docker/mariadb:/var/lib/mysql
+    profiles: [mariadb]
+
   rq:
     build:
       context: .
