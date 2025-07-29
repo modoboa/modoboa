@@ -8,7 +8,7 @@
   >
     <div class="d-flex align-center">
       <v-img
-        src="@/assets/Modoboa_RVB-BLANC-SANS.png"
+        :src="globalConfig.MENU_LOGO_PATH"
         max-width="190"
         class="logo"
         @click="router.push(props.logoRoute)"
@@ -93,6 +93,7 @@
 <script setup>
 import { useRouter } from 'vue-router'
 import { ref, computed, onMounted } from 'vue'
+import { useGlobalConfig } from '@/main'
 import { useGlobalStore, useAuthStore, useLayoutStore } from '@/stores'
 import constants from '@/constants.json'
 
@@ -116,6 +117,7 @@ const globalStore = useGlobalStore()
 const authStore = useAuthStore()
 const layoutStore = useLayoutStore()
 const router = useRouter()
+const globalConfig = useGlobalConfig()
 
 const rail = ref(false)
 const drawer = ref(true)
