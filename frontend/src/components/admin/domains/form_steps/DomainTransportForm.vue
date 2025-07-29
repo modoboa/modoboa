@@ -65,6 +65,9 @@ function update() {
 
 onMounted(() => {
   form.value = { ...props.modelValue }
+  if (!form.value.settings) {
+    form.value.settings = {}
+  }
   transports.getAll().then((resp) => {
     backends.value = resp.data
     if (form.value.service) {
