@@ -150,6 +150,10 @@ class Command(BaseCommand):
             os.path.dirname(__file__), "../../../frontend_dist/"
         )
         frontend_target_dir = f"{settings.BASE_DIR}/frontend"
+        if settings.MODOBOA_CUSTOM_LOGO:
+            logo_path = settings.MODOBOA_CUSTOM_LOGO
+        else:
+            logo_path = f"{frontend_target_dir}/assets/Modoboa_RVB-BLANC-SANS.png"
         if os.path.isdir(base_frontend_dir):
             shutil.rmtree(frontend_target_dir, ignore_errors=True)
             os.makedirs(frontend_target_dir, exist_ok=True)
@@ -164,10 +168,12 @@ class Command(BaseCommand):
                 fp.write(
                     f"""{{
   "API_BASE_URL": "{base_uri}/api/v2",
+  "API_DOC_URL": "{base_uri}/api/schema-v2/swagger/",
   "OAUTH_AUTHORITY_URL": "{base_uri}/api/o",
   "OAUTH_CLIENT_ID": "{client_id}",
   "OAUTH_REDIRECT_URI": "{redirect_uri}",
-  "OAUTH_POST_REDIRECT_URI": "{base_uri}"
+  "OAUTH_POST_REDIRECT_URI": "{base_uri}",
+  "MENU_LOGO_PATH": {logo_path}
 }}
 """
                 )
