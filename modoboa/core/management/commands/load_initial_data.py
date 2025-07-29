@@ -150,7 +150,7 @@ class Command(BaseCommand):
             os.path.dirname(__file__), "../../../frontend_dist/"
         )
         frontend_target_dir = f"{settings.BASE_DIR}/frontend"
-        if settings.MODOBOA_CUSTOM_LOGO:
+        if hasattr(settings, "MODOBOA_CUSTOM_LOGO"):
             logo_path = settings.MODOBOA_CUSTOM_LOGO
         else:
             logo_path = f"{frontend_target_dir}/assets/Modoboa_RVB-BLANC-SANS.png"
@@ -173,7 +173,7 @@ class Command(BaseCommand):
   "OAUTH_CLIENT_ID": "{client_id}",
   "OAUTH_REDIRECT_URI": "{redirect_uri}",
   "OAUTH_POST_REDIRECT_URI": "{base_uri}",
-  "MENU_LOGO_PATH": {logo_path}
+  "MENU_LOGO_PATH": "{logo_path}"
 }}
 """
                 )
