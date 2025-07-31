@@ -164,15 +164,3 @@ onMounted(() => {
   cursor: pointer;
 }
 </style>
-
-<style lang="scss" scoped>
-.logo {
-  cursor: pointer;
-}
-</style>
-
-<style lang="scss" scoped>
-.logo {
-  cursor: pointer;
-}
-</style>
