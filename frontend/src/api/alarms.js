@@ -13,8 +13,6 @@ export default {
     return repository.delete(`${resource}/${alarmId}/`)
   },
   bulkDelete(alarmsIds) {
-    return repository.delete(`${resource}/bulk_delete/`, {
-      params: { ids: alarmsIds },
-    })
+    return repository.post(`${resource}/bulk_delete/`, { ids: alarmsIds })
   },
 }
