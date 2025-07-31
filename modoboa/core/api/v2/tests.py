@@ -19,7 +19,6 @@ from modoboa.admin import (
 from modoboa.core import models, constants
 from modoboa.core.tests import utils
 from modoboa.lib.tests import ModoAPITestCase
-from rest_framework.authtoken.models import Token
 
 DOVEADM_TEST_PATH = utils.get_doveadm_test_path()
 DOVECOT_USER = getpass.getuser()
@@ -325,15 +324,6 @@ class PasswordResetTestCase(AccountViewSetTestCase):
         super().__init__(*args, **kwargs)
         self.id = 0
         self.sms_token = 0
-
-    @classmethod
-    def setUpTestData(cls):  # NOQA:N802
-        """Create test data."""
-        super().setUpTestData()
-        factories.populate_database()
-        cls.da_token = Token.objects.create(
-            user=models.User.objects.get(username="admin@test.com")
-        )
 
     @mock.patch("ovh.Client.get")
     @mock.patch("ovh.Client.post")
