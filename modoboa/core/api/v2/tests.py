@@ -183,6 +183,13 @@ class ParametersAPITestCase(ModoAPITestCase):
 
 
 class AccountViewSetTestCase(ModoAPITestCase):
+
+    @classmethod
+    def setUpTestData(cls):  # NOQA:N802
+        """Create test data."""
+        super().setUpTestData()
+        factories.populate_database()
+
     def test_me(self):
         url = reverse("v2:account-me")
         resp = self.client.get(url)
@@ -260,6 +267,57 @@ class AccountViewSetTestCase(ModoAPITestCase):
 
         user.refresh_from_db()
         self.assertEqual(user.totp_enabled, False)
+
+    def test_available_applications(self):
+        url = reverse("v2:account-available-applications")
+        resp = self.client.get(url)
+        self.assertEqual(resp.status_code, 200)
+        # admin -> only 1 app.
+        self.assertEqual(len(resp.json()), 1)
+
+        # Domain admin with mailbox
+        dadmin = models.User.objects.get(username="admin@test.com")
+        self.authenticate_user(dadmin)
+        resp = self.client.get(url)
+        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(len(resp.json()), 4)
+
+        # Simple user
+        user = models.User.objects.get(username="user@test.com")
+        self.authenticate_user(user)
+        resp = self.client.get(url)
+        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(len(resp.json()), 3)
+
+    @override_settings(
+        MODOBOA_APPS=[
+            "modoboa",
+            "modoboa.core",
+            "modoboa.lib",
+            "modoboa.admin",
+            "modoboa.transport",
+            "modoboa.relaydomains",
+            "modoboa.limits",
+            "modoboa.parameters",
+            "modoboa.dnstools",
+            "modoboa.policyd",
+            "modoboa.maillog",
+            "modoboa.pdfcredentials",
+            "modoboa.dmarc",
+            "modoboa.imap_migration",
+            "modoboa.autoreply",
+            "modoboa.sievefilters",
+            "modoboa.rspamd",
+        ]
+    )
+    def test_available_applications_with_disabled(self):
+        url = reverse("v2:account-available-applications")
+        # Domain admin with mailbox
+        dadmin = models.User.objects.get(username="admin@test.com")
+        self.authenticate_user(dadmin)
+        resp = self.client.get(url)
+        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(len(resp.json()), 1)
 
 
 class PasswordResetTestCase(AccountViewSetTestCase):
