@@ -68,14 +68,14 @@
         ref="importForm"
         :title="$gettext('Import identities')"
         @submit="importIdentities"
-        @close="showImportForm = false"
+        @close="closeImportForm"
       >
         <template #help>
           <ul>
             <li>
               <em
                 >account; loginname; password; first name; last name; enabled;
-                group; address; quota; [, domain, ...]</em
+                group; address; quota[; domain; ...]</em
               >
             </li>
             <li>
@@ -132,6 +132,11 @@ function exportIdentities() {
 function importIdentities(data, form) {
   data.append('crypt_passwords', form.crypt_passwords)
   importContent(identitiesApi, data, importForm, $gettext)
+}
+
+function closeImportForm() {
+  showImportForm.value = false
+  idList.value.fetchIdentities()
 }
 </script>
 

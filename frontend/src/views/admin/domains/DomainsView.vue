@@ -56,7 +56,7 @@
         ref="importForm"
         :title="$gettext('Import domains')"
         @submit="importDomains"
-        @close="showImportForm = false"
+        @close="closeImportForm"
       >
         <template #help>
           <ul>
@@ -114,6 +114,11 @@ function importDomains(data) {
 
 const closeAliasForm = () => {
   showAliasForm.value = false
+  domainList.value.reloadDomains()
+}
+
+const closeImportForm = () => {
+  showImportForm.value = false
   domainList.value.reloadDomains()
 }
 </script>
