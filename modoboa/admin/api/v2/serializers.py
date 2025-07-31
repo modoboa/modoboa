@@ -741,6 +741,11 @@ class AlarmSerializer(serializers.ModelSerializer):
         model = models.Alarm
 
 
+class AlarmBulkDeleteSerializer(serializers.Serializer):
+
+    ids = serializers.ListField(child=serializers.IntegerField())
+
+
 class AlarmSwitchStatusSerializer(serializers.Serializer):
     """Serializer to switch the status of an Alarm."""
 
