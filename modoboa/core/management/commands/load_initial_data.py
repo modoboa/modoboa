@@ -57,6 +57,12 @@ class Command(BaseCommand):
             default=False,
             help="Omit everything related to frontend initialisation",
         )
+        parser.add_argument(
+            "--relative-urls-in-config",
+            action="store_true",
+            default=False,
+            help="Use relative urls in generated config.json file",
+        )
 
     def handle(self, *args, **options):
         """Command entry point."""
@@ -117,7 +123,10 @@ class Command(BaseCommand):
         base_uris = " ".join(base_uris_list)
         base_uri = base_uris_list[0]
         redirect_uris = " ".join([f"{uri}/login/logged" for uri in base_uris_list])
-        redirect_uri = redirect_uris.split(" ")[0]
+        if not options["relative_urls_in_config"]:
+            redirect_uri = redirect_uris.split(" ")[0]
+        else:
+            redirect_uri = "/login/logged"
         client_id = ""
         if options["dev"]:
             base_uri = "https://localhost:3000/"
@@ -151,9 +160,11 @@ class Command(BaseCommand):
         )
         frontend_target_dir = f"{settings.BASE_DIR}/frontend"
         if hasattr(settings, "MODOBOA_CUSTOM_LOGO"):
-            logo_path = settings.MODOBOA_CUSTOM_LOGO
+            menu_logo_path = settings.MODOBOA_CUSTOM_LOGO
+            form_logo_path = settings.MODOBOA_CUSTOM_LOGO
         else:
-            logo_path = f"{frontend_target_dir}/assets/Modoboa_RVB-BLANC-SANS.png"
+            menu_logo_path = f"{frontend_target_dir}/assets/Modoboa_RVB-BLANC-SANS.png"
+            form_logo_path = f"{frontend_target_dir}/assets/Modoboa_RVB-BLEU-SANS.png"
         if os.path.isdir(base_frontend_dir):
             shutil.rmtree(frontend_target_dir, ignore_errors=True)
             os.makedirs(frontend_target_dir, exist_ok=True)
@@ -164,16 +175,28 @@ class Command(BaseCommand):
                         f"{frontend_target_dir}/{entry.name}",
                         target_is_directory=entry.is_dir(),
                     )
+            api_base_url = "/api/v2"
+            api_doc_url = "/api/schema-v2/swagger/"
+            oauth_authority_url = "/api/o"
+            if options["relative_urls_in_config"]:
+                api_base_url += base_uri
+                api_doc_url += base_uri
+                oauth_authority_url += base_uri
+                oauth_post_logout_redirect_uri = ""
+            else:
+                oauth_post_logout_redirect_uri = base_uri
+
             with open(f"{frontend_target_dir}/config.json", "w") as fp:
                 fp.write(
                     f"""{{
-  "API_BASE_URL": "{base_uri}/api/v2",
-  "API_DOC_URL": "{base_uri}/api/schema-v2/swagger/",
-  "OAUTH_AUTHORITY_URL": "{base_uri}/api/o",
+  "API_BASE_URL": "{api_base_url}",
+  "API_DOC_URL": "{api_doc_url}",
+  "OAUTH_AUTHORITY_URL": "{oauth_authority_url}",
   "OAUTH_CLIENT_ID": "{client_id}",
   "OAUTH_REDIRECT_URI": "{redirect_uri}",
-  "OAUTH_POST_REDIRECT_URI": "{base_uri}",
-  "MENU_LOGO_PATH": "{logo_path}"
+  "OAUTH_POST_REDIRECT_URI": "{oauth_post_logout_redirect_uri}",
+  "MENU_LOGO_PATH": "{menu_logo_path}",
+  "CREATION_FORM_LOGO_PATH": "{form_logo_path}"
 }}
 """
                 )
