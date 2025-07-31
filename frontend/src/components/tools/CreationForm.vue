@@ -7,11 +7,7 @@
     >
       <ConfirmDialog ref="confirm" />
       <v-stepper-header class="align-center px-10">
-        <v-img
-          :src="globalConfig.CREATION_FORM_LOGO_PATH"
-          max-width="190"
-          class="hidden-sm-and-down"
-        />
+        <v-img :src="logoPath" max-width="190" class="hidden-sm-and-down" />
         <v-stepper-item
           v-for="(step, index) in steps"
           :key="step.name"
@@ -105,7 +101,7 @@
 <script setup lang="js">
 import ConfirmDialog from './ConfirmDialog'
 import CreationSummary from './CreationSummary.vue'
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import { useGettext } from 'vue3-gettext'
 import { useDisplay } from 'vuetify'
 import { useGlobalConfig } from '@/main'
@@ -125,6 +121,15 @@ const props = defineProps({
 const currentStep = ref(1)
 const working = ref(false)
 const confirm = ref()
+
+const logoPath = computed(() => {
+  if (globalConfig.CREATION_FORM_LOGO_PATH) {
+    return globalConfig.CREATION_FORM_LOGO_PATH
+  }
+  const imgUrl = new URL('@/assets/Modoboa_RVB-BLEU-SANS.png', import.meta.url)
+    .href
+  return imgUrl
+})
 
 const emit = defineEmits(['close', 'create', 'validationError'])
 
