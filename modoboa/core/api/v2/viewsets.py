@@ -1,5 +1,6 @@
 """Core API v2 viewsets."""
 
+from django.conf import settings
 from django.utils.translation import gettext as _
 
 from django_otp.plugins.otp_static.models import StaticDevice, StaticToken
@@ -166,29 +167,37 @@ class AccountViewSet(core_v1_viewsets.AccountViewSet):
                 }
             )
         if hasattr(request.user, "mailbox"):
-            apps += [
-                {
-                    "name": "calendar",
-                    "label": _("Calendars"),
-                    "icon": "mdi-calendar",
-                    "description": _("Calendar"),
-                    "url": "/user/calendars",
-                },
-                {
-                    "name": "contacts",
-                    "label": _("Contacts"),
-                    "icon": "mdi-contacts-outline",
-                    "description": _("Address book"),
-                    "url": "/user/contacts",
-                },
-                {
-                    "name": "webmail",
-                    "label": _("Webmail"),
-                    "icon": "mdi-at",
-                    "description": _("Webmail"),
-                    "url": "/user/webmail",
-                },
-            ]
+            if "modoboa.contacts" in settings.MODOBOA_APPS:
+                apps += [
+                    {
+                        "name": "contacts",
+                        "label": _("Contacts"),
+                        "icon": "mdi-contacts-outline",
+                        "description": _("Address book"),
+                        "url": "/user/contacts",
+                    }
+                ]
+            if "modoboa.calendars" in settings.MODOBOA_APPS:
+                apps += [
+                    {
+                        "name": "calendar",
+                        "label": _("Calendars"),
+                        "icon": "mdi-calendar",
+                        "description": _("Calendar"),
+                        "url": "/user/calendars",
+                    }
+                ]
+            if "modoboa.webmail" in settings.MODOBOA_APPS:
+                apps += [
+                    {
+                        "name": "webmail",
+                        "label": _("Webmail"),
+                        "icon": "mdi-at",
+                        "description": _("Webmail"),
+                        "url": "/user/webmail",
+                    }
+                ]
+
         apps += exts_pool.get_available_apps()
         serializer = serializers.ModoboaApplicationSerializer(apps, many=True)
         return response.Response(serializer.data)
