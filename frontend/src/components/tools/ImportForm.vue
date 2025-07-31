@@ -86,7 +86,7 @@ async function submit() {
     return
   }
   const data = new FormData()
-  data.append('sourcefile', form.value.sourcefile[0])
+  data.append('sourcefile', form.value.sourcefile)
   if (form.value.sepchar) {
     data.append('sepchar', form.value.sepchar)
   }
