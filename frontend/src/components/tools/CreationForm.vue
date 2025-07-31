@@ -1,6 +1,10 @@
 <template>
   <div class="d-flex justify-center inner fill-height">
-    <v-stepper v-model="currentStep" :mobile="!smAndDown">
+    <v-stepper
+      v-model="currentStep"
+      :mobile="!smAndDown"
+      class="vertical-overflow"
+    >
       <ConfirmDialog ref="confirm" />
       <v-stepper-header class="align-center px-10">
         <v-img
@@ -179,6 +183,9 @@ defineExpose({
 .v-stepper {
   width: 100%;
   overflow: auto;
+}
+.vertical-overflow {
+  overflow-y: auto !important;
 }
 
 .v-window {
