@@ -6,5 +6,6 @@
     "OAUTH_REDIRECT_URI": "/login/logged",
     "OAUTH_POST_REDIRECT_URI": "/",
     "HTML_PAGE_TITLE": "Test title",
-    "MENU_LOGO_PATH": "src/assets/Modoboa_RVB-BLANC-SANS.png"
+    "MENU_LOGO_PATH": "/src/assets/Modoboa_RVB-BLANC-SANS.png",
+    "CREATION_FORM_LOGO_PATH": "/src/assets/Modoboa_RVB-BLEU-SANS.png"
 }
