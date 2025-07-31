@@ -8,7 +8,7 @@
   >
     <div class="d-flex align-center">
       <v-img
-        :src="globalConfig.MENU_LOGO_PATH"
+        :src="menuLogoPath"
         max-width="190"
         class="logo"
         @click="router.push(props.logoRoute)"
@@ -131,6 +131,15 @@ const displayInformationBell = computed(
     globalStore.notifications.length !== 0
 )
 
+const menuLogoPath = computed(() => {
+  if (globalConfig.MENU_LOGO_PATH) {
+    return globalConfig.MENU_LOGO_PATH
+  }
+  const imgUrl = new URL('@/assets/Modoboa_RVB-BLANC-SANS.png', import.meta.url)
+    .href
+  return imgUrl
+})
+
 function displayMenuItem(item) {
   if (isAuthenticated.value) {
     const condition =
@@ -149,6 +158,18 @@ onMounted(() => {
   }
 })
 </script>
+
+<style lang="scss" scoped>
+.logo {
+  cursor: pointer;
+}
+</style>
+
+<style lang="scss" scoped>
+.logo {
+  cursor: pointer;
+}
+</style>
 
 <style lang="scss" scoped>
 .logo {
