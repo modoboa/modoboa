@@ -4,7 +4,7 @@
       <ConfirmDialog ref="confirm" />
       <v-stepper-header class="align-center px-10">
         <v-img
-          src="@/assets/Modoboa_RVB-BLEU-SANS.png"
+          :src="globalConfig.CREATION_FORM_LOGO_PATH"
           max-width="190"
           class="hidden-sm-and-down"
         />
@@ -104,8 +104,10 @@ import CreationSummary from './CreationSummary.vue'
 import { ref } from 'vue'
 import { useGettext } from 'vue3-gettext'
 import { useDisplay } from 'vuetify'
+import { useGlobalConfig } from '@/main'
 
 const { smAndDown } = useDisplay()
+const globalConfig = useGlobalConfig()
 
 const props = defineProps({
   title: { type: String, default: '' },
