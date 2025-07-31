@@ -178,13 +178,13 @@ class Command(BaseCommand):
             api_base_url = "/api/v2"
             api_doc_url = "/api/schema-v2/swagger/"
             oauth_authority_url = "/api/o"
-            if options["relative_urls_in_config"]:
-                api_base_url += base_uri
-                api_doc_url += base_uri
-                oauth_authority_url += base_uri
-                oauth_post_logout_redirect_uri = ""
-            else:
+            if not options["relative_urls_in_config"]:
+                api_base_url = f"{base_uri}{api_base_url}"
+                api_doc_url = f"{base_uri}{base_uri}"
+                oauth_authority_url = f"{base_uri}{oauth_authority_url}"
                 oauth_post_logout_redirect_uri = base_uri
+            else:
+                oauth_post_logout_redirect_uri = ""
 
             with open(f"{frontend_target_dir}/config.json", "w") as fp:
                 fp.write(
