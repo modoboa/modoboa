@@ -818,7 +818,7 @@ class AlarmViewSetTestCase(ModoAPITestCase):
             domain__name="test.com", mailbox=None, title="Test alarm"
         )
         data = {"ids": [alarm1.pk, alarm2.pk]}
-        resp = self.client.delete(url, data, format="json")
+        resp = self.client.post(url, data, format="json")
         self.assertEqual(resp.status_code, 204)
         with self.assertRaises(models.Alarm.DoesNotExist):
             alarm1.refresh_from_db()
