@@ -78,6 +78,7 @@ class LogParser:
         # set up regular expression
         self._date_expressions = [
             r"(?P<month>\w+)\s+(?P<day>\d+)\s+(?P<hour>\d+):(?P<min>\d+):(?P<sec>\d+)(?P<eol>.*)",  # noqa
+            r"(?P<year>\d+)-(?P<month>\d+)-(?P<day>\d+)T(?P<hour>\d+):(?P<min>\d+):(?P<sec>\d+)[\+\-]\d+:\d+(?P<eol>.*)",  # noqa
             r"(?P<year>\d+)-(?P<month>\d+)-(?P<day>\d+)T(?P<hour>\d+):(?P<min>\d+):(?P<sec>\d+)\.\d+[\+\-]\d+:\d+(?P<eol>.*)",  # noqa
         ]
         self._date_expressions = [re.compile(v) for v in self._date_expressions]
