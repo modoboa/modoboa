@@ -86,20 +86,61 @@ class ManagementCommandsTestCase(SimpleModoTestCase):
             self.addCleanup(shutil.rmtree, frontend_src)
 
         frontend_dir = pathlib.Path(settings.BASE_DIR) / "frontend"
-        self.assertFalse(frontend_dir.exists(), f"frontend directory {frontend_dir} doesn’t exist before load_initial_data")
+        self.assertFalse(
+            frontend_dir.exists(),
+            f"frontend directory {frontend_dir} doesn’t exist before load_initial_data",
+        )
         management.call_command("load_initial_data")
-        self.assertTrue(frontend_dir.is_dir(), f"frontend directory {frontend_dir} is directory after load_initial_data")
+        self.assertTrue(
+            frontend_dir.is_dir(),
+            f"frontend directory {frontend_dir} is directory after load_initial_data",
+        )
         for entry in frontend_dir.iterdir():
             if entry.name == "config.json":
-                self.assertTrue(entry.is_file() and not entry.is_symlink(), f"frontend directory entry {entry} is regular file")
+                self.assertTrue(
+                    entry.is_file() and not entry.is_symlink(),
+                    f"frontend directory entry {entry} is regular file",
+                )
                 try:
                     content = json.loads(entry.read_text("utf-8"))
                 except (ValueError, UnicodeDecodeError):
-                    self.fail(f"frontend directory entry {entry} is not UTF-8 encoded JSON")
-                for key_name in ("API_BASE_URL", "OAUTH_AUTHORITY_URL", "OAUTH_CLIENT_ID", "OAUTH_REDIRECT_URI", "OAUTH_POST_REDIRECT_URI"):
+                    self.fail(
+                        f"frontend directory entry {entry} is not UTF-8 encoded JSON"
+                    )
+                for key_name in (
+                    "API_BASE_URL",
+                    "OAUTH_AUTHORITY_URL",
+                    "OAUTH_CLIENT_ID",
+                    "OAUTH_REDIRECT_URI",
+                    "OAUTH_POST_REDIRECT_URI",
+                ):
                     self.assertIn(key_name, content)
             else:
-                self.assertTrue(entry.is_symlink(), f"frontend directory entry {entry} is symlink")
+                self.assertTrue(
+                    entry.is_symlink(), f"frontend directory entry {entry} is symlink"
+                )
+
+    def test_init_data_relative_urls(self):
+        """Test behavior of --relative-urls-in-config option."""
+        # Create our own dummy frontend directory if `vite` hasn’t been invoked yet
+        frontend_src = pathlib.Path(__file__).parent.parent.parent / "frontend_dist"
+        if not frontend_src.is_dir():
+            (frontend_src / "dummy").mkdir(parents=True)
+            self.addCleanup(shutil.rmtree, frontend_src)
+
+        management.call_command("load_initial_data", "--relative-urls-in-config")
+        frontend_dir = pathlib.Path(settings.BASE_DIR) / "frontend"
+        filepath = f"{frontend_dir}/config.json"
+        self.assertTrue(frontend_dir.exists())
+        with open(filepath) as fp:
+            config = json.loads(fp.read())
+        for param in [
+            "API_BASE_URL",
+            "API_DOC_URL",
+            "OAUTH_REDIRECT_URI",
+            "OAUTH_POST_REDIRECT_URI",
+        ]:
+            self.assertFalse(config[param].startswith("http"))
 
     def test_clean_inactive_accounts(self):
         """Run clean_inactive_accounts command."""
