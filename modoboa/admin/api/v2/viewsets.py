@@ -387,11 +387,18 @@ class AlarmViewSet(
             .order_by("-created")
         )
 
+    def get_serializer_class(self, *args, **kwargs):
+        if self.action == "bulk_delete":
+            return serializers.AlarmBulkDeleteSerializer
+        elif self.action == "switch":
+            return serializers.AlarmSwitchStatusSerializer
+        return serializers.AlarmSerializer
+
     @action(methods=["patch"], detail=True)
     def switch(self, request, **kwargs):
         """Custom update method that switch status of an alarm."""
         alarm = self.get_object()
-        serializer = serializers.AlarmSwitchStatusSerializer(data=request.data)
+        serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         if serializer.data["status"] == constants.ALARM_CLOSED:
             alarm.close()
@@ -399,15 +406,10 @@ class AlarmViewSet(
             alarm.reopen()
         return response.Response(status=status.HTTP_204_NO_CONTENT)
 
-    @action(methods=["delete"], detail=False)
+    @action(methods=["post"], detail=False)
     def bulk_delete(self, request, **kwargs):
         """Delete multiple alarms at the same time."""
-        ids = request.query_params.getlist("ids[]")
-        if not ids:
-            return response.Response(_("No alarm ID provided"), status=400)
-        try:
-            ids = [int(alarm_id) for alarm_id in ids]
-        except ValueError:
-            return response.Response(_("Received invalid alarm id(s)"), status=400)
-        models.Alarm.objects.filter(pk__in=ids).delete()
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        models.Alarm.objects.filter(pk__in=serializer.validated_data["ids"]).delete()
         return response.Response(status=204)
