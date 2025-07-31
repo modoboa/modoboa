@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { useAuthStore } from '@/stores'
+import { useGlobalConfig } from '@/main'
 import constants from '@/constants.json'
 
 const routes = [
@@ -440,6 +441,11 @@ const router = createRouter({
 })
 
 router.beforeEach(async (to, from, next) => {
+  const config = useGlobalConfig()
+
+  document.title = config.HTML_PAGE_TITLE
+    ? config.HTML_PAGE_TITLE
+    : 'Welcome to Modoboa'
   if (to.meta.requiresAuth !== undefined) {
     const previousPage = window.location.href
     sessionStorage.setItem('previousPage', previousPage)
