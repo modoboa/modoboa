@@ -193,7 +193,7 @@ Custom logo
 ===========
 
 You have the possibility to use a custom logo instead of the default
-one on the login page.
+one on the login page and inside generated PDF documents.
 
 To do so, open the :file:`settings.py` file and add a
 ``MODOBOA_CUSTOM_LOGO`` variable. This variable must contain the
@@ -203,6 +203,18 @@ relative URL of your logo under ``MEDIA_URL``. For example::
 
 Then copy your logo file into the directory indicated by
 ``MEDIA_ROOT``.
+
+You can also customize the logo(s) used in the frontend application
+(left menu and creation forms).
+
+To do so, copy the corresponding files inside the frontend directory
+directly (defaults to ``/srv/modoboa/instance/frontend``).
+
+Then, edit the :file:`config.json` file located in this very same
+directory and add the following variables::
+
+  "MENU_LOGO_PATH": "/cusrtom_logo.png",
+  "CREATION_FORM_LOGO_PATH": "/custom_logo2.png"
 
 ******************
 Host configuration
