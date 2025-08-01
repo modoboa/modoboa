@@ -159,12 +159,6 @@ class Command(BaseCommand):
             os.path.dirname(__file__), "../../../frontend_dist/"
         )
         frontend_target_dir = f"{settings.BASE_DIR}/frontend"
-        if hasattr(settings, "MODOBOA_CUSTOM_LOGO"):
-            menu_logo_path = settings.MODOBOA_CUSTOM_LOGO
-            form_logo_path = settings.MODOBOA_CUSTOM_LOGO
-        else:
-            menu_logo_path = f"{frontend_target_dir}/assets/Modoboa_RVB-BLANC-SANS.png"
-            form_logo_path = f"{frontend_target_dir}/assets/Modoboa_RVB-BLEU-SANS.png"
         if os.path.isdir(base_frontend_dir):
             shutil.rmtree(frontend_target_dir, ignore_errors=True)
             os.makedirs(frontend_target_dir, exist_ok=True)
@@ -194,9 +188,7 @@ class Command(BaseCommand):
   "OAUTH_AUTHORITY_URL": "{oauth_authority_url}",
   "OAUTH_CLIENT_ID": "{client_id}",
   "OAUTH_REDIRECT_URI": "{redirect_uri}",
-  "OAUTH_POST_REDIRECT_URI": "{oauth_post_logout_redirect_uri}",
-  "MENU_LOGO_PATH": "{menu_logo_path}",
-  "CREATION_FORM_LOGO_PATH": "{form_logo_path}"
+  "OAUTH_POST_REDIRECT_URI": "{oauth_post_logout_redirect_uri}"
 }}
 """
                 )
