@@ -35,6 +35,10 @@
           <v-col cols="12" md="6">
             <DomainSummary :domain="domain" />
             <div class="mt-4" />
+            <template v-if="domain.type === 'relaydomain'">
+              <RelayDomainSummary :domain="domain" />
+              <div class="mt-4" />
+            </template>
             <DomainAdminList :domain="domain" />
           </v-col>
           <v-col cols="12" md="6">
@@ -84,6 +88,7 @@ import DomainAdminList from '@/components/admin/domains/DomainAdminList.vue'
 import DmarcAligmentChart from '@/components/admin/dmarc/DmarcAligmentChart.vue'
 import DNSDetail from '@/components/admin/domains/DNSDetail.vue'
 import DomainSummary from '@/components/admin/domains/DomainSummary.vue'
+import RelayDomainSummary from '@/components/admin/domains/RelayDomainSummary.vue'
 import LoadingData from '@/components/tools/LoadingData.vue'
 import ResourcesForm from '@/components/tools/ResourcesForm.vue'
 import TimeSerieChart from '@/components/tools/TimeSerieChart.vue'
