@@ -17,6 +17,9 @@ export default {
   getRandomPassword() {
     return repository.get(`${resource}/random_password/`)
   },
+  getCredentials(accountId) {
+    return repository.get(`credentials/${accountId}/`, { responseType: 'blob' })
+  },
   validate(data) {
     return repository.post(`${resource}/validate/`, data)
   },

@@ -38,12 +38,16 @@ class PDFCredentialsSettingsSerializer(serializers.Serializer):
         required=False, allow_blank=True, allow_null=True
     )
     include_connection_settings = serializers.BooleanField(default=False)
-    smtp_server_address = serializers.CharField()
+    smtp_server_address = serializers.CharField(
+        required=False, allow_blank=True, allow_null=True
+    )
     smtp_server_port = serializers.IntegerField(default=587)
     smtp_connection_security = serializers.ChoiceField(
         choices=CONNECTION_SECURITY_MODES, default="starttls"
     )
-    imap_server_address = serializers.CharField()
+    imap_server_address = serializers.CharField(
+        required=False, allow_blank=True, allow_null=True
+    )
     imap_server_port = serializers.IntegerField(default=143)
     imap_connection_security = serializers.ChoiceField(
         choices=CONNECTION_SECURITY_MODES, default="starttls"
@@ -72,13 +76,21 @@ class PDFCredentialsSettingsSerializer(serializers.Serializer):
             enabled_pdfcredentials is None
             and param_tools.get_global_parameter("enabled_pdfcredentials")
         )
+        errors = {}
         if condition:
             storage_dir = data.get("storage_dir", None)
             if storage_dir is not None:
                 if not os.path.isdir(storage_dir):
-                    raise serializers.ValidationError(_("Directory not found."))
-                if not os.access(storage_dir, os.W_OK):
-                    raise serializers.ValidationError(_("Directory is not writable"))
+                    errors["storage_dir"] = _("Directory not found.")
+                elif not os.access(storage_dir, os.W_OK):
+                    errors["storage_dir"] = _("Directory is not writable")
+            include_connection_settings = data.get("include_connection_settings")
+            if include_connection_settings:
+                for field in ["smtp_server_address", "imap_server_address"]:
+                    if not data.get(field):
+                        errors[field] = _("This field is required.")
+        if errors:
+            raise serializers.ValidationError(errors)
         return data
 
 
