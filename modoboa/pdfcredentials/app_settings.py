@@ -121,7 +121,7 @@ PDF_CREDENTIALS_PARAMETERS_STRUCT = collections.OrderedDict(
                             "smtp_server_address",
                             {
                                 "label": _("SMTP server address"),
-                                "display": "include_connection_settings=True",
+                                "display": "include_connection_settings=true",
                                 "help_text": _(
                                     "Address of the SMTP server (hostname or IP)"
                                 ),
