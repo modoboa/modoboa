@@ -43,11 +43,7 @@
       <v-row>
         <v-col cols="6">{{ $gettext('Enabled') }}</v-col>
         <v-col cols="6">
-          <v-icon
-            :color="domain.enabled ? 'success' : 'error'"
-            :icon="domain.enabled ? 'mdi-check-circle' : 'mdi-close-circle'"
-            variant="flat"
-          />
+          <BooleanIcon :value="domain.enabled" variant="flat" />
         </v-col>
       </v-row>
     </v-card-text>
@@ -56,6 +52,7 @@
 
 <script setup lang="js">
 import { useGettext } from 'vue3-gettext'
+import BooleanIcon from '@/components/tools/BooleanIcon'
 
 const { $gettext } = useGettext()
 defineProps({ domain: { type: Object, default: null } })
