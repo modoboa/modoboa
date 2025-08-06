@@ -221,9 +221,9 @@ class AdminGlobalParametersSerializer(serializers.Serializer):
     enable_dkim_checks = serializers.BooleanField(default=True)
     enable_dmarc_checks = serializers.BooleanField(default=True)
     enable_autoconfig_checks = serializers.BooleanField(default=True)
-    custom_dns_server = serializers.IPAddressField(allow_blank=True)
+    custom_dns_server = serializers.IPAddressField(allow_blank=True, allow_null=True)
     enable_dnsbl_checks = serializers.BooleanField(default=True)
-    dkim_keys_storage_dir = serializers.CharField(allow_blank=True)
+    dkim_keys_storage_dir = serializers.CharField(allow_blank=True, allow_null=True)
     dkim_default_key_length = serializers.ChoiceField(
         default=2048, choices=constants.DKIM_KEY_LENGTHS
     )
