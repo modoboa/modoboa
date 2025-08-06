@@ -649,7 +649,7 @@ GLOBAL_PARAMETERS_STRUCT = collections.OrderedDict(
                             "new_versions_email_rcpt",
                             {
                                 "label": gettext_lazy("Recipient"),
-                                "display": "check_new_versions=true",
+                                "display": "send_new_versions_email=true",
                                 "help_text": gettext_lazy(
                                     "Recipient of new versions notification emails."
                                 ),
