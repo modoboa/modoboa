@@ -362,9 +362,9 @@ function getMenuItems(item) {
       result.push({
         label: element.label,
         icon: element.icon,
-        onClick: () => {
-          if (element.type === 'download') {
-            //TODO : downloadFile(element)
+        onClick: (account) => {
+          if (element.name === 'get_credentials') {
+            downloadCredentials(account)
           }
           fetchIdentities()
         },
@@ -436,6 +436,16 @@ async function deleteAccount(account) {
   } finally {
     loading.value = false
   }
+}
+
+async function downloadCredentials(account) {
+  const resp = await accountsApi.getCredentials(account.pk)
+  const blob = new Blob([resp.data], { type: resp.headers['Content-Type'] })
+  const link = document.createElement('a')
+  link.href = URL.createObjectURL(blob)
+  link.download = `credentials_${account.pk}.pdf`
+  link.click()
+  URL.revokeObjectURL(link.href)
 }
 
 function editAlias() {}

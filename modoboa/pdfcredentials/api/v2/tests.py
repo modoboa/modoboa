@@ -190,3 +190,31 @@ class PDFCredentialViewTestCase(ModoAPITestCase):
         data["enabled_pdfcredentials"] = False
         resp = self.client.put(url, data, format="json")
         self.assertEqual(resp.status_code, 200)
+
+    def test_optional_settings(self):
+        url = reverse("v2:parameter-global-detail", args=["pdfcredentials"])
+        path = f"{self.workdir}/credentials"
+        os.makedirs(path)
+        data = {
+            "enabled_pdfcredentials": True,
+            "storage_dir": path,
+            "webpanel_url": "http://localhost",
+        }
+        resp = self.client.put(url, data, format="json")
+        self.assertEqual(resp.status_code, 200)
+
+        data["include_connection_settings"] = True
+        resp = self.client.put(url, data, format="json")
+        self.assertEqual(resp.status_code, 400)
+        errors = resp.json()
+        self.assertEqual(errors["smtp_server_address"][0], "This field is required.")
+        self.assertEqual(errors["imap_server_address"][0], "This field is required.")
+
+        data.update(
+            {
+                "smtp_server_address": "mail.localhost",
+                "imap_server_address": "mail.localhost",
+            }
+        )
+        resp = self.client.put(url, data, format="json")
+        self.assertEqual(resp.status_code, 200)
