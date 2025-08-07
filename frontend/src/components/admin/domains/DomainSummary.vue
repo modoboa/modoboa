@@ -26,11 +26,18 @@
         }}</v-col>
         <v-col v-else cols="6">{{ domain.default_mailbox_quota }} MB</v-col>
       </v-row>
-      <v-row v-if="domain.message_limit !== undefined">
+      <v-row>
         <v-col cols="6">{{ $gettext('Daily sending limit') }}</v-col>
-        <v-col cols="6"
+        <v-col
+          v-if="
+            domain.message_limit !== undefined && domain.message_limit !== null
+          "
+          cols="6"
           >{{ domain.message_limit }} {{ $gettext('messages') }}</v-col
         >
+        <v-col v-else cols="6">
+          {{ $gettext('Unlimited') }}
+        </v-col>
       </v-row>
       <v-row>
         <v-col cols="6">{{ $gettext('Mailboxes') }}</v-col>
@@ -43,11 +50,7 @@
       <v-row>
         <v-col cols="6">{{ $gettext('Enabled') }}</v-col>
         <v-col cols="6">
-          <v-icon
-            :color="domain.enabled ? 'success' : 'error'"
-            :icon="domain.enabled ? 'mdi-check-circle' : 'mdi-close-circle'"
-            variant="flat"
-          />
+          <BooleanIcon :value="domain.enabled" variant="flat" />
         </v-col>
       </v-row>
     </v-card-text>
@@ -56,6 +59,7 @@
 
 <script setup lang="js">
 import { useGettext } from 'vue3-gettext'
+import BooleanIcon from '@/components/tools/BooleanIcon'
 
 const { $gettext } = useGettext()
 defineProps({ domain: { type: Object, default: null } })

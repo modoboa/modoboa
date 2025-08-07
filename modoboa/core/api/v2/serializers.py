@@ -76,8 +76,12 @@ class CoreGlobalParametersSerializer(serializers.Serializer):
     default_password = serializers.CharField(default="ChangeMe1!")
     random_password_length = serializers.IntegerField(min_value=8, default=8)
     allow_special_characters = serializers.BooleanField(default=False)
-    update_password_url = serializers.URLField(required=False, allow_blank=True)
-    password_recovery_msg = serializers.CharField(required=False, allow_blank=True)
+    update_password_url = serializers.URLField(
+        required=False, allow_blank=True, allow_null=True
+    )
+    password_recovery_msg = serializers.CharField(
+        required=False, allow_blank=True, allow_null=True
+    )
     sms_password_recovery = serializers.BooleanField(default=False)
     sms_provider = serializers.ChoiceField(
         choices=constants.SMS_BACKENDS, required=False, allow_null=True
@@ -87,7 +91,9 @@ class CoreGlobalParametersSerializer(serializers.Serializer):
     ldap_server_address = serializers.CharField(default="localhost")
     ldap_server_port = serializers.IntegerField(default=389)
     ldap_enable_secondary_server = serializers.BooleanField(default=False)
-    ldap_secondary_server_address = serializers.CharField(required=False)
+    ldap_secondary_server_address = serializers.CharField(
+        required=False, allow_blank=True, allow_null=True
+    )
     ldap_secondary_server_port = serializers.IntegerField(default=389, required=False)
     ldap_secured = serializers.ChoiceField(
         choices=constants.LDAP_SECURE_MODES, default="none"
@@ -109,9 +115,11 @@ class CoreGlobalParametersSerializer(serializers.Serializer):
         choices=constants.LDAP_AUTH_METHODS,
         default="searchbind",
     )
-    ldap_bind_dn = serializers.CharField(default="", required=False, allow_blank=True)
+    ldap_bind_dn = serializers.CharField(
+        default="", required=False, allow_blank=True, allow_null=True
+    )
     ldap_bind_password = serializers.CharField(
-        default="", required=False, allow_blank=True
+        default="", required=False, allow_blank=True, allow_null=True
     )
     ldap_search_base = serializers.CharField(
         default="", required=False, allow_blank=True
@@ -124,15 +132,21 @@ class CoreGlobalParametersSerializer(serializers.Serializer):
     )
 
     # LDAP sync settings
-    ldap_sync_bind_dn = serializers.CharField(required=False, allow_blank=True)
-    ldap_sync_bind_password = serializers.CharField(required=False, allow_blank=True)
+    ldap_sync_bind_dn = serializers.CharField(
+        required=False, allow_blank=True, allow_null=True
+    )
+    ldap_sync_bind_password = serializers.CharField(
+        required=False, allow_blank=True, allow_null=True
+    )
     ldap_enable_sync = serializers.BooleanField(default=False)
     ldap_sync_delete_remote_account = serializers.BooleanField(default=False)
     ldap_sync_account_dn_template = serializers.CharField(
-        required=False, allow_blank=True
+        required=False, allow_blank=True, allow_null=True
     )
     ldap_enable_import = serializers.BooleanField(default=False)
-    ldap_import_search_base = serializers.CharField(required=False, allow_blank=True)
+    ldap_import_search_base = serializers.CharField(
+        required=False, allow_blank=True, allow_null=True
+    )
     ldap_import_search_filter = serializers.CharField(default="(cn=*)", required=False)
     ldap_import_username_attr = serializers.CharField(default="cn")
     ldap_dovecot_sync = serializers.BooleanField(default=False)
@@ -141,7 +155,9 @@ class CoreGlobalParametersSerializer(serializers.Serializer):
     )
 
     # Dashboard settings
-    custom_welcome_message = serializers.CharField(required=False, allow_blank=True)
+    custom_welcome_message = serializers.CharField(
+        required=False, allow_blank=True, allow_null=True
+    )
     rss_feed_url = serializers.URLField(
         allow_blank=True, required=False, allow_null=True
     )
@@ -162,7 +178,9 @@ class CoreGlobalParametersSerializer(serializers.Serializer):
     enable_api_communication = serializers.BooleanField(default=True)
     check_new_versions = serializers.BooleanField(default=True)
     send_new_versions_email = serializers.BooleanField(default=False)
-    new_versions_email_rcpt = lib_fields.DRFEmailFieldUTF8(required=False)
+    new_versions_email_rcpt = lib_fields.DRFEmailFieldUTF8(
+        required=False, allow_null=True
+    )
     send_statistics = serializers.BooleanField(default=True)
 
     # Misc settings
@@ -195,10 +213,11 @@ class CoreGlobalParametersSerializer(serializers.Serializer):
         return value
 
     def validate_ldap_sync_account_dn_template(self, value):
-        try:
-            value % {"user": "toto"}
-        except (KeyError, ValueError):
-            raise serializers.ValidationError(_("Invalid syntax")) from None
+        if value:
+            try:
+                value % {"user": "toto"}
+            except (KeyError, ValueError):
+                raise serializers.ValidationError(_("Invalid syntax")) from None
         return value
 
     def validate_ldap_search_filter(self, value):
