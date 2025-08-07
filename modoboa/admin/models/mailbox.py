@@ -295,19 +295,21 @@ class Mailbox(mixins.MessageLimitMixin, AdminObject):
     def update_from_dict(self, user, values):
         """Update mailbox from a dictionary."""
         newaddress = None
-        if values["email"] != self.full_address:
-            newaddress = values["email"]
-        elif (
-            self.user.role == "SimpleUsers" and self.user.username != self.full_address
-        ):
-            newaddress = self.user.username
-        if newaddress is not None:
-            local_part, domname = split_mailbox(newaddress)
-            domain = Domain.objects.filter(name=domname).first()
-            if domain is None:
-                raise lib_exceptions.NotFound(_("Domain does not exist"))
-            if not user.can_access(domain):
-                raise lib_exceptions.PermDeniedException
+        if "email" in values:
+            if values["email"] != self.full_address:
+                newaddress = values["email"]
+            elif (
+                self.user.role == "SimpleUsers"
+                and self.user.username != self.full_address
+            ):
+                newaddress = self.user.username
+            if newaddress is not None:
+                local_part, domname = split_mailbox(newaddress)
+                domain = Domain.objects.filter(name=domname).first()
+                if domain is None:
+                    raise lib_exceptions.NotFound(_("Domain does not exist"))
+                if not user.can_access(domain):
+                    raise lib_exceptions.PermDeniedException
         if "use_domain_quota" in values:
             self.use_domain_quota = values["use_domain_quota"]
         if "use_domain_quota" in values or "quota" in values:
