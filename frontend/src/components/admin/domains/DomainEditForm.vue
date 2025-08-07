@@ -254,6 +254,8 @@ async function save() {
     }
     if (data.type === 'relaydomain') {
       transportForm.value.checkSettingTypes(data)
+    } else if (data.transport) {
+      delete data.transport
     }
     if (data.message_limit === '') {
       data.message_limit = null
