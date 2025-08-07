@@ -26,11 +26,18 @@
         }}</v-col>
         <v-col v-else cols="6">{{ domain.default_mailbox_quota }} MB</v-col>
       </v-row>
-      <v-row v-if="domain.message_limit !== undefined">
+      <v-row>
         <v-col cols="6">{{ $gettext('Daily sending limit') }}</v-col>
-        <v-col cols="6"
+        <v-col
+          v-if="
+            domain.message_limit !== undefined && domain.message_limit !== null
+          "
+          cols="6"
           >{{ domain.message_limit }} {{ $gettext('messages') }}</v-col
         >
+        <v-col v-else cols="6">
+          {{ $gettext('Unlimited') }}
+        </v-col>
       </v-row>
       <v-row>
         <v-col cols="6">{{ $gettext('Mailboxes') }}</v-col>
