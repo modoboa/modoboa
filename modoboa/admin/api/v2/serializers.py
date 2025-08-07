@@ -61,6 +61,8 @@ class DomainSerializer(v1_serializers.DomainSerializer):
             "domain_admin",
             "transport",
             "opened_alarms_count",
+            "sent_messages",
+            "sent_messages_in_percent",
         )
 
     def __init__(self, *args, **kwargs):

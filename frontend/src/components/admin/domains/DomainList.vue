@@ -104,10 +104,28 @@
             <DNSStatusChip :status="item.dns_global_status" />
           </td>
           <td>
-            <v-progress-linear v-model="item.allocated_quota_in_percent" />
+            <v-progress-linear
+              v-if="item.message_limit"
+              :color="
+                item.sent_messages_in_percent < 80 ? 'primary' : 'warning'
+              "
+              :model-value="item.sent_messages_in_percent"
+            />
+            <span v-else>
+              {{ $gettext('Unlimited') }}
+            </span>
           </td>
           <td>
-            <v-progress-linear v-model="item.allocated_quota_in_percent" />
+            <v-progress-linear
+              v-if="item.quota !== '0'"
+              :color="
+                item.allocated_quota_in_percent < 80 ? 'primary' : 'warning'
+              "
+              :model-value="item.allocated_quota_in_percent"
+            />
+            <span v-else>
+              {{ $gettext('Unlimited') }}
+            </span>
           </td>
           <td v-if="canSetRole">
             <div class="text-right">
