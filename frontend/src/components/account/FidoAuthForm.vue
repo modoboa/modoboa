@@ -107,15 +107,12 @@ import { ref, onMounted, computed } from 'vue'
 import authApi from '@/api/auth.js'
 import { useGettext } from 'vue3-gettext'
 import rules from '@/plugins/rules.js'
-import { useAuthStore } from '@/stores'
+import { useBusStore, useAuthStore } from '@/stores'
 import ConfirmDialog from '@/components/tools/ConfirmDialog.vue'
 import RecoveryCodesResetDialog from './RecoveryCodesResetDialog.vue'
-import {
-  create,
-  parseCreationOptionsFromJSON,
-} from '@github/webauthn-json/browser-ponyfill'
 
 const authStore = useAuthStore()
+const busStore = useBusStore()
 
 const { $gettext } = useGettext()
 
@@ -125,7 +122,7 @@ const browserCapable = !!(
   navigator.credentials &&
   navigator.credentials.create &&
   navigator.credentials.get &&
-  window.PublicKeyCredential
+  PublicKeyCredential.parseCreationOptionsFromJSON
 )
 const fidoForm = ref()
 const fidoCreds = computed(() => authStore.fidoCreds)
@@ -151,19 +148,28 @@ async function startFidoRegistration() {
   registrationLoading.value = true
   const creationOption = await authApi.beginFidoRegistration()
   if (creationOption) {
-    const options = parseCreationOptionsFromJSON(creationOption.data)
-    const device = await create(options)
-    const result = device.toJSON()
-    result.name = name.value
-    authStore.addFidoCred(result).then((res) => {
-      if (res.status === 200) {
-        tokens.value = res.data.tokens
-        showBackupTokenDialog.value = true
-      }
-    })
-    fidoForm.value.reset()
-    registrationLoading.value = false
-    return
+    const options = PublicKeyCredential.parseCreationOptionsFromJSON(creationOption.data.publicKey)
+    navigator.credentials
+      .create({publicKey: options})
+      .then((device) => {
+        const result = device.toJSON()
+        result.name = name.value
+        authStore.addFidoCred(result).then((res) => {
+          if (res.status === 200) {
+            tokens.value = res.data.tokens
+            showBackupTokenDialog.value = true
+          }
+        })
+        fidoForm.value.reset()
+        registrationLoading.value = false
+        return
+      })
+      .catch((err) => {
+        console.log(err)
+        fidoForm.value.reset()
+        registrationLoading.value = false
+        busStore.displayNotification({msg: $gettext('Failed to register the webAuthN device'), type: 'error'})
+      })
   }
   registrationLoading.value = false
 }

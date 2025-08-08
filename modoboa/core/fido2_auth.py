@@ -37,7 +37,7 @@ def begin_registration(request):
         extensions={"credentialProtectionPolicy": "userVerificationOptional"},
     )
     request.session["fido2_state"] = state
-    return options
+    return dict(options)
 
 
 def end_registration(request):
