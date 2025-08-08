@@ -188,6 +188,7 @@ class CoreGlobalParametersSerializer(serializers.Serializer):
     inactive_account_threshold = serializers.IntegerField(default=30)
     top_notifications_check_interval = serializers.IntegerField(default=30)
     log_maximum_age = serializers.IntegerField(default=365)
+    message_history_maximum_age = serializers.IntegerField(default=180)
     items_per_page = serializers.IntegerField(default=30)
     default_top_redirection = serializers.ChoiceField(
         default="user", choices=[("user", _("User profile"))], required=False

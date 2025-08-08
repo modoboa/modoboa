@@ -721,6 +721,17 @@ GLOBAL_PARAMETERS_STRUCT = collections.OrderedDict(
                             },
                         ),
                         (
+                            "message_history_maximum_age",
+                            {
+                                "label": gettext_lazy(
+                                    "Retention time in message history"
+                                ),
+                                "help_text": gettext_lazy(
+                                    "Retention time (in days) of a message in the message history section"
+                                ),
+                            },
+                        ),
+                        (
                             "items_per_page",
                             {
                                 "label": gettext_lazy("Items per page"),
