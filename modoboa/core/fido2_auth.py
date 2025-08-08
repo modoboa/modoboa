@@ -34,7 +34,6 @@ def begin_registration(request):
         ),
         list(get_creds_from_user(request.user.pk).values()),
         user_verification=UserVerificationRequirement.DISCOURAGED,
-        extensions={"credentialProtectionPolicy": "userVerificationOptional"},
     )
     request.session["fido2_state"] = state
     return dict(options)
