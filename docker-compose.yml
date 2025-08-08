@@ -52,6 +52,7 @@ services:
       sh -c "cd test_project
              python3 manage.py migrate
              python3 manage.py load_initial_data --dev
+             python3 manage.py set_default_site --name localhost --domain localhost
              django-admin compilemessages
              python3 manage.py runserver_plus 0.0.0.0:8000 --cert-file cert.crt"
     depends_on:
