@@ -61,9 +61,34 @@
             </v-progress-linear>
           </v-col>
         </v-row>
-        <v-row v-if="account.mailbox.message_limit">
+        <v-row
+          v-if="
+            account.mailbox.message_limit !== null &&
+            account.mailbox.message_limit !== undefined
+          "
+        >
           <v-col cols="6">{{ $gettext('Daily sending limit') }}</v-col>
-          <v-col cols="6">{{ account.mailbox.message_limit }}</v-col>
+          <v-col cols="6">
+            <template v-if="account.mailbox.message_limit === 0">
+              {{ $gettext('Sending forbidden') }}
+            </template>
+            <v-progress-linear
+              v-else
+              :color="
+                account.mailbox.sent_messages_in_percent < 80
+                  ? 'primary'
+                  : 'warning'
+              "
+              :model-value="account.mailbox.sent_messages_in_percent"
+              height="25"
+              class="white--text"
+            >
+              <template #default="{ value }">
+                {{ Math.ceil(value) }}% ({{ account.mailbox.message_limit }}
+                {{ $gettext('messages') }})
+              </template>
+            </v-progress-linear>
+          </v-col>
         </v-row>
       </template>
     </v-card-text>
