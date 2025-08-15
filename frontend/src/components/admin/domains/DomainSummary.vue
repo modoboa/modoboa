@@ -33,8 +33,25 @@
             domain.message_limit !== undefined && domain.message_limit !== null
           "
           cols="6"
-          >{{ domain.message_limit }} {{ $gettext('messages') }}</v-col
         >
+          <template v-if="domain.message_limit === 0">
+            {{ $gettext('Sending forbidden') }}
+          </template>
+          <v-progress-linear
+            v-else
+            :color="
+              domain.sent_messages_in_percent < 80 ? 'primary' : 'warning'
+            "
+            :model-value="domain.sent_messages_in_percent"
+            height="25"
+            class="white--text"
+          >
+            <template #default="{ value }">
+              {{ Math.ceil(value) }}% ({{ domain.message_limit }}
+              {{ $gettext('messages') }})
+            </template>
+          </v-progress-linear>
+        </v-col>
         <v-col v-else cols="6">
           {{ $gettext('Unlimited') }}
         </v-col>
