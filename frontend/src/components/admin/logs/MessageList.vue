@@ -25,7 +25,9 @@
         {{ $date(item.date) }}
       </template>
       <template #[`item.sender`]="{ item }">
-        {{ $truncate(item.sender, 50) }}
+        <span :title="item.sender">
+          {{ $truncate(item.sender, 50) }}
+        </span>
       </template>
     </v-data-table-server>
   </v-card>
