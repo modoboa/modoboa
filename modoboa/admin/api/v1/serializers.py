@@ -208,6 +208,7 @@ class MailboxSerializer(serializers.ModelSerializer):
             "message_limit",
             "quota_usage",
             "is_send_only",
+            "sent_messages_in_percent",
         )
 
     def get_quota_usage(self, mb) -> int:

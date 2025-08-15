@@ -122,6 +122,50 @@
           {{ item.role }}
         </v-chip>
       </template>
+      <template #[`item.quota_usage`]="{ item }">
+        <template v-if="item.mailbox">
+          <v-progress-linear
+            v-if="item.mailbox.quota !== '0'"
+            :color="item.mailbox.quota_usage < 80 ? 'primary' : 'warning'"
+            :model-value="item.mailbox.quota_usage"
+          />
+          <span v-else>
+            {{ $gettext('Unlimited') }}
+          </span>
+        </template>
+        <template v-else>
+          {{ $gettext('No mailbox') }}
+        </template>
+      </template>
+      <template #[`item.sent_messages_in_percent`]="{ item }">
+        <template v-if="item.mailbox">
+          <template
+            v-if="
+              item.mailbox.message_limit !== null &&
+              item.mailbox.message_limit !== undefined
+            "
+          >
+            <v-progress-linear
+              v-if="item.mailbox.message_limit !== 0"
+              :color="
+                item.mailbox.sent_messages_in_percent < 80
+                  ? 'primary'
+                  : 'warning'
+              "
+              :model-value="item.mailbox.sent_messages_in_percent"
+            />
+            <span v-else>
+              {{ $gettext('Sending forbidden') }}
+            </span>
+          </template>
+          <template v-else>
+            {{ $gettext('Unlimited') }}
+          </template>
+        </template>
+        <template v-else>
+          {{ $gettext('No mailbox') }}
+        </template>
+      </template>
       <template #[`item.actions`]="{ item }">
         <template
           v-if="
@@ -223,6 +267,11 @@ const availableAccountsColumns = {
   },
   is_active: { title: $gettext('Enabled'), key: 'is_active' },
   role: { title: $gettext('Role'), key: 'role' },
+  quota: { title: $gettext('Quota'), key: 'quota_usage' },
+  message_limit: {
+    title: $gettext('Message limit'),
+    key: 'sent_messages_in_percent',
+  },
   language: { title: $gettext('Language'), key: 'language' },
   phone_number: {
     title: $gettext('Phone number'),
@@ -258,6 +307,7 @@ const defaultAccountsColumns = [
   availableAccountsColumns.username,
   availableAccountsColumns.is_active,
   availableAccountsColumns.role,
+  availableAccountsColumns.quota,
 ]
 
 const identityType = ref('account')
