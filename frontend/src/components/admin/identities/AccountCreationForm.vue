@@ -245,8 +245,9 @@ function preparePayload(payload) {
       cleaned_payload.mailbox.message_limit = null
     }
     if (
-      cleaned_payload.mailbox.quota === undefined ||
-      cleaned_payload.mailbox.quota === null
+      !cleaned_payload.mailbox.use_domain_quota &&
+      (cleaned_payload.mailbox.quota === undefined ||
+        cleaned_payload.mailbox.quota === null)
     ) {
       cleaned_payload.mailbox.quota = 0
     }
