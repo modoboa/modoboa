@@ -145,15 +145,19 @@ if (authUser.value.role === constants.SUPER_ADMIN) {
   let response = await parametersApi.getGlobalApplications()
   registeredApplications.value = response.data
 
-  if (parametersStore.imapMigrationEnabled === null) {
-    response = await parametersApi.getGlobalApplication('imap_migration')
-    parametersStore.imapMigrationEnabled =
-      response.data.params.enabled_imapmigration
-  }
   response = await capabilitiesApi.getCapabilities()
-  isRspamdVisible.value = 'rspamd' in response.data.capabilities
+  const capabilities = response.data?.capabilities
+
+  if (capabilities.imap_migration) {
+    if (parametersStore.imapMigrationEnabled === null) {
+      response = await parametersApi.getGlobalApplication('imap_migration')
+      parametersStore.imapMigrationEnabled =
+        response.data.params.enabled_imapmigration
+    }
+  }
+  isRspamdVisible.value = 'rspamd' in capabilities
   if (isRspamdVisible.value) {
-    rspamdUrl.value = response.data.capabilities.rspamd.location || '/rspamd'
+    rspamdUrl.value = capabilities.rspamd.location || '/rspamd'
   }
 }
 </script>
