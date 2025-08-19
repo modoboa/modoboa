@@ -30,9 +30,20 @@
           <template #[`item.updated`]="{ item }">
             {{ $date(item.updated) }}
           </template>
+          <template #[`item.issues`]="{ item }">
+            <template v-if="item.dnsbl_results.length">
+              <v-btn
+                icon="mdi-bell"
+                color="error"
+                variant="flat"
+                size="x-small"
+                @click="openDNSBLSummary(item)"
+              />
+            </template>
+          </template>
         </v-data-table-virtual>
       </template>
-      <div class="overline">{{ $gettext('Auto configuration') }}</div>
+      <div class="mt-4 overline">{{ $gettext('Auto configuration') }}</div>
       <template v-if="domain.dns_global_status == 'pending'">
         <v-row>
           <v-col>
@@ -69,7 +80,7 @@
             </v-chip>
           </v-col>
         </v-row>
-        <div class="overline">{{ $gettext('Authentication') }}</div>
+        <div class="mt-4 overline">{{ $gettext('Authentication') }}</div>
         <v-row>
           <v-col>
             <v-chip v-if="detail.spf_record" color="success">
@@ -142,16 +153,23 @@
     <v-dialog v-model="showDKIMKey" max-width="800px" persistent>
       <DomainDKIMKey :domain="domain" @close="showDKIMKey = false" />
     </v-dialog>
+    <v-dialog v-model="showDNSBLSummary" max-width="800px" persistent>
+      <DNSBLSummary
+        :mxrecord="selectedMXRecord"
+        @close="showDNSBLSummary = false"
+      />
+    </v-dialog>
     <ConfirmDialog ref="dialog" />
   </v-card>
 </template>
 
-<script setup lang="js">
+<script setup>
 import { useGettext } from 'vue3-gettext'
 import { useBusStore } from '@/stores'
 import domainsApi from '@/api/domains'
 import DomainDKIMKey from './DomainDKIMKey.vue'
 import DomainDNSConfig from './DomainDNSConfig.vue'
+import DNSBLSummary from './DNSBLSummary.vue'
 import ConfirmDialog from '@/components/tools/ConfirmDialog.vue'
 import { ref, computed, watch } from 'vue'
 
@@ -170,11 +188,14 @@ const mxRecordHeaders = ref([
   { title: $gettext('Name'), value: 'name' },
   { title: $gettext('Address'), value: 'address' },
   { title: $gettext('Updated'), value: 'updated' },
+  { title: '', value: 'issues' },
 ])
 const keyLoading = ref(false)
+const selectedMXRecord = ref(null)
 
 const showConfigHelp = ref(false)
 const showDKIMKey = ref(false)
+const showDNSBLSummary = ref(false)
 
 function copyPubKey() {
   navigator.clipboard.writeText(domain.value.dkim_public_key)
@@ -244,6 +265,11 @@ function generateNewKey() {
       agreeLabel: $gettext('Yes'),
     }
   )
+}
+
+function openDNSBLSummary(mxrecord) {
+  selectedMXRecord.value = mxrecord
+  showDNSBLSummary.value = true
 }
 
 watch(
