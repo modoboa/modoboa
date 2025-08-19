@@ -17,12 +17,14 @@
           <v-autocomplete
             v-else
             v-model="selectedAccount"
+            v-model:search="search"
             :label="$gettext('Select an account')"
             :items="accounts"
             variant="outlined"
             item-title="username"
             class="mt-5"
             return-object
+            @update:search="fetchAccounts"
           >
             <template #append>
               <v-btn
@@ -103,6 +105,7 @@ const emit = defineEmits(['close'])
 
 const accounts = ref([])
 const administrators = ref([])
+const search = ref('')
 
 const adminHeaders = ref([
   { title: $gettext('Username'), value: 'username' },
@@ -129,18 +132,20 @@ function fetchAdministrators(domain) {
 }
 
 function fetchAccounts() {
-  accountApi
-    .getAll({
-      role: [constants.RESELLER, constants.DOMAIN_ADMIN],
-      page_size: 50,
-    })
-    .then((resp) => {
-      accounts.value = resp.data.results.filter(
-        (account) =>
-          administrators.value.find((admin) => admin.id === account.pk) ===
-          undefined
-      )
-    })
+  const params = {
+    role: [constants.RESELLER, constants.DOMAIN_ADMIN],
+    page_size: 50,
+  }
+  if (search.value) {
+    params.search = search.value
+  }
+  accountApi.getAll(params).then((resp) => {
+    accounts.value = resp.data.results.filter(
+      (account) =>
+        administrators.value.find((admin) => admin.id === account.pk) ===
+        undefined
+    )
+  })
 }
 function addAdministrator() {
   domainApi
