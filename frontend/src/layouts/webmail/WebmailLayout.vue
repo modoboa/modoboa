@@ -10,11 +10,7 @@
       >
         <template #prepend>
           <div class="d-flex align-center">
-            <v-img
-              src="@/assets/Modoboa_RVB-BLANC-SANS.png"
-              max-width="190"
-              class="logo"
-            />
+            <v-img :src="menuLogoPath" max-width="190" class="logo" />
             <v-btn
               :icon="rail ? 'mdi-chevron-right' : 'mdi-chevron-left'"
               variant="text"
@@ -99,6 +95,7 @@ import { computed, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useGettext } from 'vue3-gettext'
 import { useBusStore } from '@/stores'
+import { useLogos } from '@/composables/logos'
 import ConfirmDialog from '@/components/tools/ConfirmDialog.vue'
 import ConnectedLayout from '@/layouts/connected/ConnectedLayout.vue'
 import MailboxForm from '@/components/webmail/MailboxForm.vue'
@@ -109,6 +106,7 @@ const { $gettext } = useGettext()
 const route = useRoute()
 const router = useRouter()
 const busStore = useBusStore()
+const { menuLogoPath } = useLogos()
 
 const confirm = ref()
 const drawer = ref(true)
