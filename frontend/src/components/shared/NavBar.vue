@@ -93,7 +93,7 @@
 <script setup>
 import { useRouter } from 'vue-router'
 import { ref, computed, onMounted } from 'vue'
-import { useGlobalConfig } from '@/main'
+import { useLogos } from '@/composables/logos'
 import { useGlobalStore, useAuthStore, useLayoutStore } from '@/stores'
 import constants from '@/constants.json'
 
@@ -117,7 +117,7 @@ const globalStore = useGlobalStore()
 const authStore = useAuthStore()
 const layoutStore = useLayoutStore()
 const router = useRouter()
-const globalConfig = useGlobalConfig()
+const { menuLogoPath } = useLogos()
 
 const rail = ref(false)
 const drawer = ref(true)
@@ -130,15 +130,6 @@ const displayInformationBell = computed(
     globalStore.notifications.length !== undefined &&
     globalStore.notifications.length !== 0
 )
-
-const menuLogoPath = computed(() => {
-  if (globalConfig.MENU_LOGO_PATH) {
-    return globalConfig.MENU_LOGO_PATH
-  }
-  const imgUrl = new URL('@/assets/Modoboa_RVB-BLANC-SANS.png', import.meta.url)
-    .href
-  return imgUrl
-})
 
 function displayMenuItem(item) {
   if (isAuthenticated.value) {
