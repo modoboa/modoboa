@@ -71,6 +71,10 @@ class MXRecord(models.Model):
     def __str__(self):
         return f"{self.name} ({self.address}) for {self.domain} "
 
+    @property
+    def active_dnsbl_results(self):
+        return self.dnsblresult_set.exclude(status="")
+
 
 class DNSBLQuerySet(models.QuerySet):
     """Custom manager for DNSBLResultManager."""
