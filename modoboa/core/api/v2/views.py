@@ -14,7 +14,8 @@ from drf_spectacular.utils import extend_schema
 from rest_framework import permissions, response
 from rest_framework.views import APIView
 
-from modoboa.core import signals
+from modoboa.admin import models as admin_models
+from modoboa.core import models, signals
 from modoboa.core.utils import check_for_updates, get_capabilities
 from modoboa.lib.permissions import IsSuperUser, IsPrivilegedUser
 from modoboa.lib.throttle import (
@@ -225,4 +226,22 @@ class NewsFeedAPIView(APIView):
                 entries.append(entry)
 
         serializer = serializers.NewsFeedEntrySerializer(entries, many=True)
+        return response.Response(serializer.data)
+
+
+class StatisticsAPIView(APIView):
+    """Return some statistics about this modoboa instance."""
+
+    permission_classes = [permissions.IsAuthenticated, IsSuperUser]
+    throttle_classes = [UserLesserDdosUser]
+
+    @extend_schema(responses=serializers.StatisticsSerializer())
+    def get(self, request, *args, **kwargs):
+        data = {
+            "domain_count": admin_models.Domain.objects.count(),
+            "domain_alias_count": admin_models.DomainAlias.objects.count(),
+            "account_count": models.User.objects.count(),
+            "alias_count": admin_models.Alias.objects.filter(internal=False).count(),
+        }
+        serializer = serializers.StatisticsSerializer(data)
         return response.Response(serializer.data)
