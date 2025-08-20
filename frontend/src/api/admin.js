@@ -10,4 +10,7 @@ export default {
   getNewsFeed() {
     return repository.get('/admin/news_feed/')
   },
+  getStatistics() {
+    return repository.get('/admin/statistics/')
+  },
 }

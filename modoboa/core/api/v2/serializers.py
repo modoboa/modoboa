@@ -692,3 +692,11 @@ class ThemeSerializer(serializers.Serializer):
     theme_primary_color_light = serializers.CharField(default="#3688F9")
     theme_secondary_color = serializers.CharField(default="#F18429")
     theme_label_color = serializers.CharField(default="#616161")
+
+
+class StatisticsSerializer(serializers.Serializer):
+
+    domain_count = serializers.IntegerField()
+    domain_alias_count = serializers.IntegerField()
+    account_count = serializers.IntegerField()
+    alias_count = serializers.IntegerField()

@@ -658,3 +658,21 @@ class NewsFeedAPIViewTestCase(ModoAPITestCase):
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
         self.assertIn("modoboa", response.json()[0]["link"])
+
+
+class StatisticsAPIViewTestCase(ModoAPITestCase):
+
+    @classmethod
+    def setUpTestData(cls):
+        """Create test data."""
+        super().setUpTestData()
+        factories.populate_database()
+
+    def test_get_statistics(self):
+        url = reverse("v2:statistics")
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        stats = response.json()
+        self.assertEqual(stats["domain_count"], 2)
+        self.assertEqual(stats["account_count"], 5)
+        self.assertEqual(stats["alias_count"], 3)
