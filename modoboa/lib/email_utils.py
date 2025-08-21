@@ -96,7 +96,7 @@ class Email:
         if self._headers is None:
             self._headers = []
 
-            # don't break modoboa_webmail.lib.imapemail.ImapEmail, it
+            # don't break modoboa.webmail.lib.imapemail.ImapEmail, it
             # doesn't have self._msg it loads e-mails (and their headers)
             # from the IMAP server.
             if self._msg is not None:

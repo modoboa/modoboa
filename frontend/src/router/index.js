@@ -441,6 +441,14 @@ const routes = [
               requiresAuth: true,
             },
           },
+          {
+            path: ':mailid/:rcpt',
+            name: 'QuarantineMessageView',
+            component: () => import('@/views/quarantine/MessageView.vue'),
+            meta: {
+              requiresAuth: true,
+            },
+          },
         ],
       },
     ],

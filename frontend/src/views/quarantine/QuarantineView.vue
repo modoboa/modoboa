@@ -1,9 +1,11 @@
 <template>
-  <div class="text-h5 ml-4">
-    {{ $gettext('Quarantine') }}
-  </div>
+  <div>
+    <div class="text-h5 ml-4">
+      {{ $gettext('Quarantine') }}
+    </div>
 
-  <QuarantineList />
+    <QuarantineList />
+  </div>
 </template>
 
 <script setup>
