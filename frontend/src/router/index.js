@@ -428,7 +428,7 @@ const routes = [
       },
       {
         path: 'quarantine',
-        component: () => import('@/layouts/user/UserLayout.vue'),
+        component: () => import('@/layouts/quarantine/QuarantineLayout.vue'),
         meta: {
           requiresAuth: true,
         },
