@@ -593,7 +593,7 @@ dlist; dlist@test.com; True; user1@test.com; user@extdomain.com
         )  # NOQA:E501
         self.client.post(
             reverse("v2:identities-import-from-csv"),
-            {"sourcefile": f, "crypt_password": True},
+            {"sourcefile": f, "crypt_passwords": True},
         )
         admin = core_models.User.objects.get(username="admin")
         u1 = core_models.User.objects.get(username="user1@test.com")
