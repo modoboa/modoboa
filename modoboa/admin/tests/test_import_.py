@@ -88,7 +88,7 @@ account; user1@nonlocal.com; toto; User; One; True; SimpleUsers; user1@nonlocal.
             name="identities.csv",
         )  # NOQA:E501
         url = reverse("v2:identities-import-from-csv")
-        self.client.post(url, {"sourcefile": f, "crypt_password": True})
+        self.client.post(url, {"sourcefile": f, "crypt_passwords": True})
         self.assertFalse(User.objects.filter(username="user1@nonlocal.com").exists())
 
     def test_import_invalid_quota(self):
@@ -99,7 +99,7 @@ account; user1@test.com; toto; User; One; True; SimpleUsers; user1@test.com; ; t
             name="identities.csv",
         )  # NOQA:E501
         url = reverse("v2:identities-import-from-csv")
-        resp = self.client.post(url, {"sourcefile": f, "crypt_password": True})
+        resp = self.client.post(url, {"sourcefile": f, "crypt_passwords": True})
         self.assertIn("wrong quota value", resp.content.decode())
 
     def test_import_domain_by_domainadmin(self):
@@ -114,7 +114,7 @@ domain; domain2.com; 1000; 200; False
             name="identities.csv",
         )
         url = reverse("v2:identities-import-from-csv")
-        resp = self.client.post(url, {"sourcefile": f, "crypt_password": True})
+        resp = self.client.post(url, {"sourcefile": f, "crypt_passwords": True})
         self.assertIn("You are not allowed to import domains", resp.content.decode())
         f = ContentFile(
             b"""
@@ -122,7 +122,7 @@ domainalias; domalias1.com; test.com; True
 """,
             name="identities.csv",
         )
-        resp = self.client.post(url, {"sourcefile": f, "crypt_password": True})
+        resp = self.client.post(url, {"sourcefile": f, "crypt_passwords": True})
         self.assertIn(
             "You are not allowed to import domain aliases", resp.content.decode()
         )
@@ -138,7 +138,7 @@ account; user1@test.com; toto; User; One; True; SimpleUsers; user1@test.com; 40
         )
         resp = self.client.post(
             reverse("v2:identities-import-from-csv"),
-            {"sourcefile": f, "crypt_password": True},
+            {"sourcefile": f, "crypt_passwords": True},
         )
         self.assertIn("test.com: domain quota exceeded", resp.content.decode())
 
@@ -151,7 +151,7 @@ account; user1@test.com; toto; User; One; True; SimpleUsers; user1@test.com
         )
         self.client.post(
             reverse("v2:identities-import-from-csv"),
-            {"sourcefile": f, "crypt_password": True},
+            {"sourcefile": f, "crypt_passwords": True},
         )
         account = User.objects.get(username="user1@test.com")
         self.assertEqual(
@@ -168,7 +168,7 @@ account; truc@test.com; toto; René; Truc; True; DomainAdmins; truc@test.com; 0;
         )  # NOQA:E501
         self.client.post(
             reverse("v2:identities-import-from-csv"),
-            {"sourcefile": f, "crypt_password": True, "continue_if_exists": True},
+            {"sourcefile": f, "crypt_passwords": True, "continue_if_exists": True},
         )
         admin = User.objects.get(username="admin")
         u1 = User.objects.get(username="truc@test.com")
@@ -189,7 +189,7 @@ account; sa@test.com; toto; Super; Admin; True; SuperAdmins; superadmin@test.com
         )  # NOQA:E501
         self.client.post(
             reverse("v2:identities-import-from-csv"),
-            {"sourcefile": f, "crypt_password": True, "continue_if_exists": True},
+            {"sourcefile": f, "crypt_passwords": True, "continue_if_exists": True},
         )
         with self.assertRaises(User.DoesNotExist):
             User.objects.get(username="sa@test.com")
@@ -203,7 +203,7 @@ alias;user.alias@test.com;True;user@test.com;;;;;;;;;;;;;;;;
         )
         self.client.post(
             reverse("v2:identities-import-from-csv"),
-            {"sourcefile": f, "crypt_password": True, "continue_if_exists": True},
+            {"sourcefile": f, "crypt_passwords": True, "continue_if_exists": True},
         )
         alias = Alias.objects.get(address="user.alias@test.com")
         self.assertEqual(alias.type, "alias")
@@ -218,7 +218,7 @@ alias;user@test.com;True;admin@test.com
         )
         self.client.post(
             reverse("v2:identities-import-from-csv"),
-            {"sourcefile": f, "crypt_password": True},
+            {"sourcefile": f, "crypt_passwords": True},
         )
         self.assertTrue(
             Alias.objects.filter(address="user@test.com", internal=False).exists()
@@ -315,7 +315,7 @@ alias; alias1@test.com; True; user1@test.com
         )  # NOQA:E501
         resp = self.client.post(
             reverse("v2:identities-import-from-csv"),
-            {"sourcefile": f, "crypt_password": True},
+            {"sourcefile": f, "crypt_passwords": True},
         )
         self.assertEqual(resp.status_code, 200)
 

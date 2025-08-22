@@ -138,7 +138,7 @@ def import_domainalias(user, row, formopts):
 def import_account(user, row, formopts):
     """Specific code for accounts import"""
     account = User()
-    account.from_csv(user, row, formopts["crypt_password"])
+    account.from_csv(user, row, formopts["crypt_passwords"])
 
 
 def _import_alias(user, row, **kwargs):
