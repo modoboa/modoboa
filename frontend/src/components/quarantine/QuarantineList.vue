@@ -27,17 +27,37 @@
             :placeholder="$gettext('Search in messages')"
             variant="outlined"
             single-line
-            flat
             hide-details
-            density="compact"
             class="flex-grow-0 w-33 mr-4"
             clearable
+            density="compact"
             @click:clear="fetchContent"
             @keyup.enter="fetchContent"
           >
             <template #prepend-inner>
               <v-btn icon variant="flat" size="small">
                 <v-icon icon="mdi-magnify"></v-icon>
+                <v-menu activator="parent">
+                  <v-card>
+                    <v-card-text>
+                      <v-radio-group v-model="searchCriteria">
+                        <v-radio
+                          :label="$gettext('From address')"
+                          value="from_addr"
+                        ></v-radio>
+                        <v-radio
+                          :label="$gettext('Subject')"
+                          value="subject"
+                        ></v-radio>
+                        <v-radio :label="$gettext('To')" value="to"></v-radio>
+                        <v-radio
+                          :label="$gettext('both')"
+                          value="both"
+                        ></v-radio>
+                      </v-radio-group>
+                    </v-card-text>
+                  </v-card>
+                </v-menu>
               </v-btn>
             </template>
           </v-text-field>
@@ -87,6 +107,36 @@
               </v-list>
             </v-menu>
           </v-btn>
+
+          <v-select
+            v-model="typeFilter"
+            variant="outlined"
+            :items="messageTypes"
+            class="ml-2 flex-grow-0"
+            density="compact"
+            item-title="label"
+            item-value="key"
+            chips
+            hide-details
+            @update:model-value="fetchContent"
+          >
+            <template #chip="{ props, item }">
+              <span class="mr-2">{{ $gettext('Display') }}</span>
+              <v-chip
+                v-bind="props"
+                :color="item.raw.color"
+                :text="item.raw.label"
+                label
+              ></v-chip>
+            </template>
+            <template #item="{ props, item }">
+              <v-list-item v-bind="props" title="">
+                <v-chip :color="item.raw.color" label>
+                  {{ item.raw.label }}
+                </v-chip>
+              </v-list-item>
+            </template>
+          </v-select>
         </div>
       </template>
       <template #[`item.type`]="{ item }">
@@ -128,9 +178,25 @@ const itemsPerPageR = ref(10)
 const loading = ref(false)
 const messages = ref([])
 const search = ref('')
+const searchCriteria = ref('both')
 const selected = ref([])
 const sortByR = ref([])
 const totalMessages = ref(0)
+const typeFilter = ref('all')
+
+const messageTypes = [
+  { color: '', key: 'all', label: 'All' },
+  { color: 'success', key: 'C', label: 'Clean' },
+  { color: 'error', key: 'S', label: 'Spam' },
+  { color: 'warning', key: 'Y', label: 'Spammy' },
+  { color: 'error', key: 'V', label: 'Virus' },
+  { color: 'warning', key: 'H', label: 'Bad Header' },
+  { color: 'warning', key: 'M', label: 'Bad MIME' },
+  { color: 'warning', key: 'B', label: 'Banned' },
+  { color: 'warning', key: 'O', label: 'Over sized' },
+  { color: 'warning', key: 'T', label: 'MTA error' },
+  { color: '', key: 'U', label: 'Unchecked' },
+]
 
 const headers = [
   { title: '', key: 'type' },
@@ -184,6 +250,10 @@ const _fetchContent = async () => {
   }
   if (search.value !== '') {
     params.search = search.value
+    params.criteria = searchCriteria.value
+  }
+  if (typeFilter.value !== 'all') {
+    params.msgtype = typeFilter.value
   }
   try {
     const resp = await api.getQuarantineContent(params)
@@ -262,8 +332,6 @@ const markSelectionAsSpam = async () => {
 const markSelectionAsHam = async () => {
   await markSelection('ham')
 }
-
-const submitSearch = () => {}
 </script>
 
 <style lang="scss">
