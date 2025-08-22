@@ -24,7 +24,6 @@
         <div class="d-flex my-4">
           <v-text-field
             v-model="search"
-            prepend-inner-icon="mdi-magnify"
             :placeholder="$gettext('Search in messages')"
             variant="outlined"
             single-line
@@ -34,8 +33,14 @@
             class="flex-grow-0 w-33 mr-4"
             clearable
             @click:clear="fetchContent"
-            @keyup.enter="submitSearch"
-          ></v-text-field>
+            @keyup.enter="fetchContent"
+          >
+            <template #prepend-inner>
+              <v-btn icon variant="flat" size="small">
+                <v-icon icon="mdi-magnify"></v-icon>
+              </v-btn>
+            </template>
+          </v-text-field>
 
           <v-btn
             class="ml-2"
@@ -110,6 +115,7 @@
 import { ref } from 'vue'
 import { useGettext } from 'vue3-gettext'
 import { useRouter } from 'vue-router'
+import debounce from 'debounce'
 import { useBusStore } from '@/stores'
 import api from '@/api/amavis'
 
@@ -165,7 +171,7 @@ const updatedOptions = async ({ page, itemsPerPage, sortBy }) => {
   fetchContent()
 }
 
-const fetchContent = async () => {
+const _fetchContent = async () => {
   loading.value = true
   const params = {
     page: currentPage.value || 1,
@@ -188,6 +194,8 @@ const fetchContent = async () => {
     loading.value = false
   }
 }
+
+const fetchContent = debounce(_fetchContent, 500)
 
 const openMessage = (event, { item }) => {
   router.push({
