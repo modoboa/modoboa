@@ -3,6 +3,7 @@ import Cookies from 'js-cookie'
 import { defineStore } from 'pinia'
 import { computed, inject, ref } from 'vue'
 import gettext from '@/plugins/gettext'
+import { useLocale } from 'vuetify'
 import router from '@/router/index.js'
 import { UserManager } from 'oidc-client-ts'
 
@@ -19,6 +20,7 @@ export const useAuthStore = defineStore('auth', () => {
   const isAuthenticated = ref(false)
   let redirectUri = getAbsoluteUrl(config.OAUTH_REDIRECT_URI)
   let postLogoutRedirectUri = getAbsoluteUrl(config.OAUTH_POST_REDIRECT_URI)
+  const { current } = useLocale()
 
   const manager = new UserManager({
     authority: config.OAUTH_AUTHORITY_URL,
@@ -48,11 +50,11 @@ export const useAuthStore = defineStore('auth', () => {
   })
 
   async function fetchUser() {
-    return accountApi.getMe().then((resp) => {
-      authUser.value = resp.data
-      gettext.current = accountLanguage.value
-      isAuthenticated.value = true
-    })
+    const resp = await accountApi.getMe()
+    authUser.value = resp.data
+    gettext.current = accountLanguage.value
+    current.value = accountLanguage.value
+    isAuthenticated.value = true
   }
 
   async function getFidoCreds() {
@@ -169,6 +171,7 @@ export const useAuthStore = defineStore('auth', () => {
       authUser.value = { ...newAuthUser }
       if (accountLanguage.value in gettext.available) {
         gettext.current = accountLanguage.value
+        current.value = accountLanguage.value
       }
     })
   }
