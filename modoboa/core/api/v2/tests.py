@@ -196,6 +196,18 @@ class AccountViewSetTestCase(ModoAPITestCase):
         me = resp.json()
         self.assertEqual(me["username"], "admin")
 
+    def test_update_me(self):
+        url = reverse("v2:account-me")
+        data = {
+            "first_name": "First name",
+            "secondary_email": "toto@iti.com",
+            "language": "fr",
+        }
+        resp = self.client.put(url, data, format="json")
+        self.assertEqual(resp.status_code, 200)
+        me = resp.json()
+        self.assertEqual(me["secondary_email"], data["secondary_email"])
+
     def test_me_password(self, password_ko="Toto1234", password_ok="password"):
         url = reverse("v2:account-check-me-password")
         resp = self.client.post(url, {"password": password_ko}, format="json")
