@@ -7,6 +7,7 @@
       :search="search"
       item-value="id"
       :items-length="totalAlarms"
+      :items-per-page-options="itemsPerPageOptions"
       :loading="loading"
       elevation="0"
       show-select
@@ -101,6 +102,12 @@ const headers = [
     align: 'right',
   },
 ]
+const itemsPerPageOptions = [
+  { value: 10, title: '10' },
+  { value: 25, title: '25' },
+  { value: 50, title: '50' },
+  { value: 100, title: '100' },
+]
 
 function getActionMenuItems() {
   const result = []
@@ -176,7 +183,7 @@ async function deleteAlarm(alarm, single = true) {
   })
 }
 async function deleteAlarms() {
-  await alarmsApi.bulkDelete(selected.value.map((alarm) => alarm.id))
+  await alarmsApi.bulkDelete(selected.value)
   busStore.displayNotification({ msg: $gettext('Alarms deleted') })
   selected.value = []
   fetchAlarms({})

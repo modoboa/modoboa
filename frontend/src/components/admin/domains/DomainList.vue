@@ -5,7 +5,7 @@
       :expanded="expanded"
       :headers="domainHeaders"
       :items="domains"
-      item-value="name"
+      item-value="pk"
       :search="search"
       show-select
       expand-on-click
@@ -44,121 +44,103 @@
           ></v-btn>
         </v-toolbar>
       </template>
+      <template #[`item.name`]="{ item }">
+        <router-link
+          :to="{
+            name: 'DomainDetail',
+            params: { id: item.pk },
+          }"
+        >
+          {{ item.name }}
+        </router-link>
+        <v-chip
+          v-if="item.type === 'relaydomain'"
+          size="small"
+          color="primary"
+          class="ml-2"
+        >
+          {{ $gettext('Relay') }}
+        </v-chip>
+      </template>
+
+      <template #[`item.enabled`]="{ item }">
+        <BooleanIcon :value="item.enabled" />
+      </template>
+
       <template
-        #item="{
+        #[`item.data-table-expand`]="{
           item,
           internalItem,
           isExpanded,
           toggleExpand,
-          isSelected,
-          toggleSelect,
         }"
       >
-        <tr>
-          <td
-            class="v-data-table__td v-data-table-column--no-padding v-data-table-column--align-start"
-          >
-            <v-checkbox-btn
-              :value="!isSelected(internalItem)"
-              @click="toggleSelect(internalItem)"
-            />
-          </td>
-          <td>
-            <router-link
-              :to="{
-                name: 'DomainDetail',
-                params: { id: item.pk },
-              }"
-            >
-              {{ item.name }}
-            </router-link>
-            <v-chip
-              v-if="item.type === 'relaydomain'"
-              size="small"
-              color="primary"
-              class="ml-2"
-            >
-              {{ $gettext('Relay') }}
-            </v-chip>
-          </td>
-          <td>
-            <v-icon
-              :color="item.enabled ? 'success' : 'error'"
-              :icon="item.enabled ? 'mdi-check-circle' : 'mdi-close-circle'"
-              variant="flat"
-            />
-          </td>
-          <td>
-            {{ item.domainalias_count }} aliases
-            <v-btn
-              v-if="item.domainalias_count"
-              variant="text"
-              :icon="
-                isExpanded(internalItem) ? 'mdi-chevron-up' : 'mdi-chevron-down'
-              "
-              @click="loadAliases(item, internalItem, isExpanded, toggleExpand)"
-            >
-            </v-btn>
-          </td>
-          <td>
-            <DNSStatusChip :status="item.dns_global_status" />
-          </td>
-          <td>
-            <v-progress-linear
-              v-if="item.message_limit"
-              :color="
-                item.sent_messages_in_percent < 80 ? 'primary' : 'warning'
-              "
-              :model-value="item.sent_messages_in_percent"
-            />
-            <span v-else>
-              {{ $gettext('Unlimited') }}
-            </span>
-          </td>
-          <td>
-            <v-progress-linear
-              v-if="item.quota !== '0'"
-              :color="
-                item.allocated_quota_in_percent < 80 ? 'primary' : 'warning'
-              "
-              :model-value="item.allocated_quota_in_percent"
-            />
-            <span v-else>
-              {{ $gettext('Unlimited') }}
-            </span>
-          </td>
-          <td v-if="canSetRole">
-            <div class="text-right">
-              <v-menu offset-y>
-                <template #activator="{ props }">
-                  <v-badge
-                    v-if="item.opened_alarms_count"
-                    bordered
-                    color="error"
-                    icon="mdi-bell"
-                    overlap
-                  >
-                    <v-btn
-                      icon="mdi-dots-horizontal"
-                      variant="text"
-                      v-bind="props"
-                    >
-                    </v-btn>
-                  </v-badge>
-                  <v-btn
-                    v-else
-                    icon="mdi-dots-horizontal"
-                    variant="text"
-                    v-bind="props"
-                  >
-                  </v-btn>
-                </template>
-                <MenuItems :items="getDomainMenuItems(item)" :obj="item" />
-              </v-menu>
-            </div>
-          </td>
-        </tr>
+        {{ item.domainalias_count }} aliases
+        <v-btn
+          v-if="item.domainalias_count"
+          variant="text"
+          size="small"
+          :icon="
+            isExpanded(internalItem) ? 'mdi-chevron-up' : 'mdi-chevron-down'
+          "
+          @click="loadAliases(item, internalItem, isExpanded, toggleExpand)"
+        >
+        </v-btn>
       </template>
+
+      <template #[`item.dns_global_status`]="{ item }">
+        <DNSStatusChip :status="item.dns_global_status" />
+      </template>
+
+      <template #[`item.message_limit`]="{ item }">
+        <v-progress-linear
+          v-if="item.message_limit"
+          :color="item.sent_messages_in_percent < 80 ? 'primary' : 'warning'"
+          :model-value="item.sent_messages_in_percent"
+        />
+        <span v-else>
+          {{ $gettext('Unlimited') }}
+        </span>
+      </template>
+
+      <template #[`item.allocated_quota_in_percent`]="{ item }">
+        <v-progress-linear
+          v-if="item.quota !== '0'"
+          :color="item.allocated_quota_in_percent < 80 ? 'primary' : 'warning'"
+          :model-value="item.allocated_quota_in_percent"
+        />
+        <span v-else>
+          {{ $gettext('Unlimited') }}
+        </span>
+      </template>
+
+      <template #[`item.actions`]="{ item }">
+        <div class="text-right">
+          <v-menu offset-y>
+            <template #activator="{ props }">
+              <v-badge
+                v-if="item.opened_alarms_count"
+                bordered
+                color="error"
+                icon="mdi-bell"
+                overlap
+              >
+                <v-btn icon="mdi-dots-horizontal" variant="text" v-bind="props">
+                </v-btn>
+              </v-badge>
+              <v-btn
+                v-else
+                icon="mdi-dots-horizontal"
+                variant="text"
+                v-bind="props"
+              >
+              </v-btn>
+            </template>
+            <MenuItems :items="getDomainMenuItems(item)" :obj="item" />
+          </v-menu>
+        </div>
+      </template>
+
       <template #expanded-row="{ item, columns }">
         <tr class="grey lighten-4">
           <td :colspan="columns.length">
@@ -167,12 +149,9 @@
               :key="alias.name"
               class="mr-4"
             >
-              <a href="#" class="mr-2" @click="editDomainAlias(item, alias)">{{
-                alias.name
-              }}</a>
-              <v-chip variant="flat" size="x-small" color="success"
-                >DNS OK</v-chip
-              >
+              <v-chip class="mr-2" @click="editDomainAlias(item, alias)">
+                {{ alias.name }}
+              </v-chip>
             </span>
           </td>
         </tr>
@@ -206,6 +185,7 @@ import { useBusStore } from '@/stores'
 import { useGettext } from 'vue3-gettext'
 import { useRouter } from 'vue-router'
 import { usePermissions } from '@/composables/permissions'
+import BooleanIcon from '@/components/tools/BooleanIcon.vue'
 import DomainAdminList from './DomainAdminList.vue'
 import ConfirmDialog from '@/components/tools/ConfirmDialog.vue'
 import DNSStatusChip from './DNSStatusChip.vue'
@@ -224,7 +204,7 @@ const busStore = useBusStore()
 const domainHeaders = [
   { title: $gettext('Name'), key: 'name' },
   { title: $gettext('Enabled'), key: 'enabled', width: '5%' },
-  { title: $gettext('Aliases'), key: 'domainalias_count' },
+  { title: $gettext('Aliases'), key: 'data-table-expand', width: '10%' },
   {
     title: $gettext('DNS status'),
     key: 'dns_global_status',
@@ -310,16 +290,12 @@ function editDomainAlias(domain, alias) {
   showAliasForm.value = true
 }
 
-function loadAliases(item, internalItem, isItemExpanded, toggleExpand) {
-  const isExpand = isItemExpanded(internalItem)
-  if (isExpand) {
-    toggleExpand(internalItem)
-    return
-  }
-  domainsApi.getDomainAliases(item.name).then((resp) => {
+async function loadAliases(item, internalItem, isItemExpanded, toggleExpand) {
+  const isExpanded = isItemExpanded(internalItem)
+  if (!isExpanded) {
+    const resp = await domainsApi.getDomainAliases(item.name)
     aliases.value[item.name] = resp.data
-    toggleExpand(internalItem)
-  })
+  }
 }
 
 function openAdminList(domain) {
