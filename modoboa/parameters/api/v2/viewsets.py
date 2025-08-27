@@ -93,6 +93,8 @@ class GlobalParametersViewSet(BaseParametersViewSet):
 
     def get_permissions(self):
         if self.action == "retrieve":
+            if self.kwargs.get("pk") == "amavis":
+                return [permissions.IsAuthenticated()]
             return [permissions.IsAuthenticated(), IsPrivilegedUser()]
         return [permissions.IsAuthenticated(), IsSuperUser()]
 
