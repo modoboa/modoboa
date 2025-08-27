@@ -48,11 +48,22 @@ def create_static_tokens(request):
 class AccountViewSet(core_v1_viewsets.AccountViewSet):
     """Account viewset."""
 
-    @extend_schema(responses=admin_v2_serializers.AccountMeSerializer)
-    @action(methods=["get"], detail=False)
+    @extend_schema(
+        responses=admin_v2_serializers.AccountMeSerializer,
+        request=admin_v2_serializers.AccountMeUpdateSerializer,
+    )
+    @action(methods=["get", "put"], detail=False)
     def me(self, request):
         """Return information about connected user."""
-        serializer = admin_v1_serializers.AccountSerializer(request.user)
+        if request.method == "PUT":
+            serializer = admin_v2_serializers.AccountMeUpdateSerializer(
+                data=request.data, instance=request.user
+            )
+            serializer.is_valid(raise_exception=True)
+            instance = serializer.save()
+            serializer = admin_v1_serializers.AccountSerializer(instance)
+        else:
+            serializer = admin_v1_serializers.AccountSerializer(request.user)
         return response.Response(serializer.data)
 
     @action(

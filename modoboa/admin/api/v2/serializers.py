@@ -398,6 +398,20 @@ class AccountMeSerializer(v1_serializers.AccountSerializer):
         return [f"{p.content_type.app_label}.{p.codename}" for p in permissions]
 
 
+class AccountMeUpdateSerializer(serializers.ModelSerializer):
+    """Update serializer for connected user."""
+
+    class Meta:
+        model = core_models.User
+        fields = (
+            "first_name",
+            "last_name",
+            "language",
+            "phone_number",
+            "secondary_email",
+        )
+
+
 class AccountSerializer(v1_serializers.AccountSerializer):
     """Add support for user resources."""
 
