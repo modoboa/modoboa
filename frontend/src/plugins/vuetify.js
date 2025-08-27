@@ -7,6 +7,24 @@
 // Styles
 import '@mdi/font/css/materialdesignicons.css'
 import 'vuetify/styles'
+import {
+  cs,
+  de,
+  el,
+  en,
+  es,
+  fi,
+  fr,
+  it,
+  ja,
+  nl,
+  pl,
+  pt,
+  ru,
+  sv,
+  tr,
+  zhHans,
+} from 'vuetify/locale'
 
 // Composables
 import { createVuetify } from 'vuetify'
@@ -24,6 +42,28 @@ export default createVuetify({
           label: '#616161',
         },
       },
+    },
+  },
+  locale: {
+    locale: 'en',
+    fallback: 'en',
+    messages: {
+      cs,
+      de,
+      el,
+      en,
+      es,
+      fi,
+      fr,
+      it,
+      ja,
+      nl,
+      pl,
+      pt,
+      ru,
+      sv,
+      tr,
+      zhHans,
     },
   },
   styles: { configFile: 'src/styles/settings.scss' },
