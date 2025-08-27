@@ -6,6 +6,9 @@ export default {
   getMe() {
     return repository.get(`/${resource}/me/`)
   },
+  updateMe(data) {
+    return repository.put(`/${resource}/me/`, data)
+  },
   checkPassword(value) {
     return repository.post(`/${resource}/me/password/`, { password: value })
   },

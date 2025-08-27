@@ -163,7 +163,7 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   async function updateAccount(data) {
-    return accountsApi.patch(authUser.value.pk, data).then((response) => {
+    return accountApi.updateMe(data).then((response) => {
       const newAuthUser = { ...authUser.value, ...response.data }
       delete newAuthUser.password
       authUser.value = { ...newAuthUser }
