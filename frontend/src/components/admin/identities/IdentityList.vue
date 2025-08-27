@@ -9,6 +9,7 @@
       :items-length="totalIdentities"
       :page="currentPage"
       :items-per-page="itemsPerPageR"
+      :items-per-page-options="itemsPerPageOptions"
       item-value="pk"
       elevation="0"
       show-select
@@ -308,6 +309,13 @@ const defaultAccountsColumns = [
   availableAccountsColumns.is_active,
   availableAccountsColumns.role,
   availableAccountsColumns.quota,
+]
+
+const itemsPerPageOptions = [
+  { value: 10, title: '10' },
+  { value: 25, title: '25' },
+  { value: 50, title: '50' },
+  { value: 100, title: '100' },
 ]
 
 const identityType = ref('account')

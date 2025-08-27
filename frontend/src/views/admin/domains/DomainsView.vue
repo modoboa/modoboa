@@ -15,7 +15,7 @@
               prepend-icon="mdi-plus"
               class="mr-4"
             >
-              {{ $gettext('New') }}
+              {{ $pgettext('male', 'New') }}
             </v-btn>
           </template>
           <v-list density="compact">

@@ -6,6 +6,7 @@
       :search="search"
       class="elevation-0"
       :items-length="total"
+      :items-per-page-options="itemsPerPageOptions"
       @update:options="fetchMessages"
     >
       <template #top>
@@ -47,6 +48,12 @@ const headers = [
   { title: $gettext('Status'), key: 'status' },
   { title: $gettext('To'), key: 'rcpt' },
   { title: $gettext('From'), key: 'sender' },
+]
+const itemsPerPageOptions = [
+  { value: 10, title: '10' },
+  { value: 25, title: '25' },
+  { value: 50, title: '50' },
+  { value: 100, title: '100' },
 ]
 
 const loading = ref(true)
