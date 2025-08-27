@@ -6,6 +6,7 @@
       :search="search"
       class="elevation-0"
       :items-length="total"
+      :items-per-page-options="itemsPerPageOptions"
       @update:options="fetchLogs"
     >
       <template #top>
@@ -51,6 +52,12 @@ const headers = [
   { title: $gettext('Level'), key: 'level' },
   { title: $gettext('Logger'), key: 'logger' },
   { title: $gettext('Message'), key: 'message' },
+]
+const itemsPerPageOptions = [
+  { value: 10, title: '10' },
+  { value: 25, title: '25' },
+  { value: 50, title: '50' },
+  { value: 100, title: '100' },
 ]
 
 function getLevelColor(level) {
