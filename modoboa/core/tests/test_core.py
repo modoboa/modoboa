@@ -186,6 +186,30 @@ class ManagementCommandsTestCase(SimpleModoTestCase):
         with self.assertRaises(models.User.DoesNotExist):
             account.refresh_from_db()
 
+    def test_add_allowed_hosts(self):
+        with self.assertRaises(management.CommandError):
+            management.call_command(
+                "add_allowed_hosts", "app1.domain.tld", "app2.domain.tld"
+            )
+        management.call_command("load_initial_data")
+        management.call_command(
+            "add_allowed_hosts", "app1.domain.tld", "app2.domain.tld"
+        )
+        app_model = get_application_model()
+        app = app_model.objects.filter(name="modoboa_frontend").first()
+        self.assertIn("app1.domain.tld", app.redirect_uris)
+        self.assertIn("app2.domain.tld", app.redirect_uris)
+        self.assertIn("app1.domain.tld", app.post_logout_redirect_uris)
+        self.assertIn("app2.domain.tld", app.post_logout_redirect_uris)
+
+        # Check if same hostname is not added more than once
+        uri_count = len(app.redirect_uris.split(" "))
+        management.call_command(
+            "add_allowed_hosts", "app1.domain.tld", "app2.domain.tld"
+        )
+        app.refresh_from_db()
+        self.assertEqual(len(app.redirect_uris.split(" ")), uri_count)
+
 
 class APICommunicationTestCase(ModoTestCase):
     """Check communication with the API."""
