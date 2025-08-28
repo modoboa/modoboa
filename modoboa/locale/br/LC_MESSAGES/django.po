@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-07-27 10:50+0200\n"
+"POT-Creation-Date: 2025-08-28 09:41+0200\n"
 "PO-Revision-Date: 2020-05-06 11:16+0000\n"
 "Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
 "Language-Team: Breton (http://www.transifex.com/tonio/modoboa/language/br/)\n"
@@ -37,68 +37,69 @@ msgstr ""
 "Kota dre-ziouer e Mo arloet d'ar boestoù-postel. Un dalvoudegezh \"0\" a "
 "dalvez kota ebet."
 
-#: admin/api/v1/serializers.py:88
+#: admin/api/v1/serializers.py:94
 #, fuzzy
 msgid "domain alias with this name already exists"
 msgstr "Un alias gant an anv-mañ zo anezhañ dija"
 
-#: admin/api/v1/serializers.py:98
+#: admin/api/v1/serializers.py:104
 msgid "No authorized MX record found for this domain"
 msgstr "Enrolladenn MX aotreet ebet kavet evit an domani-mañ"
 
-#: admin/api/v1/serializers.py:116
+#: admin/api/v1/serializers.py:122
 msgid "Cannot be greater than domain quota"
 msgstr "N'hall ket bezañ brasoc'h evit kota an domani"
 
-#: admin/api/v1/serializers.py:162 admin/api/v1/serializers.py:357
-#: admin/api/v2/serializers.py:548 admin/models/alias.py:44
+#: admin/api/v1/serializers.py:168 admin/api/v1/serializers.py:364
+#: admin/api/v2/serializers.py:564 admin/models/alias.py:44
 msgid "Permission denied."
 msgstr "Aotreadur nac'het"
 
-#: admin/api/v1/serializers.py:224 admin/api/v2/serializers.py:88
-#: admin/api/v2/serializers.py:470 core/api/v2/serializers.py:235
-#: core/api/v2/serializers.py:237 core/api/v2/serializers.py:246
+#: admin/api/v1/serializers.py:231 admin/api/v2/serializers.py:90
+#: admin/api/v2/serializers.py:486 core/api/v2/serializers.py:255
+#: core/api/v2/serializers.py:257 core/api/v2/serializers.py:266
 #: transport/backends.py:40
 msgid "This field is required"
 msgstr "Rekis eo leuniañ ar vaezienn"
 
-#: admin/api/v1/serializers.py:236
+#: admin/api/v1/serializers.py:243
 msgid ""
 "List of administered domains (resellers and domain administrators only)."
 msgstr "Listenn domanioù meret (eilgwerzherien ha merourien zomani hepken)."
 
-#: admin/api/v1/serializers.py:330 admin/api/v2/serializers.py:530
+#: admin/api/v1/serializers.py:337 admin/api/v2/serializers.py:546
 msgid "Not allowed for this role."
 msgstr "Neket aotreet evit ar rol-mañ."
 
-#: admin/api/v1/serializers.py:348
+#: admin/api/v1/serializers.py:355
 msgid "Must be equal to mailbox full_address"
 msgstr "Rankout a ra bezañ par ouzh boest-postell chomlec'h_klok"
 
-#: admin/api/v1/serializers.py:390 admin/api/v2/serializers.py:582
+#: admin/api/v1/serializers.py:397 admin/api/v2/serializers.py:598
 #: calendars/serializers.py:175 calendars/serializers.py:177
+#: pdfcredentials/api/v2/serializers.py:91
 msgid "This field is required."
 msgstr "Ar vaezienn-mañ a zo rekiset."
 
-#: admin/api/v1/serializers.py:402 admin/api/v2/serializers.py:599
+#: admin/api/v1/serializers.py:409 admin/api/v2/serializers.py:615
 msgid "Local domain {} does not exist"
 msgstr "N'eus ket eus an domani lec'hel {}"
 
-#: admin/api/v1/serializers.py:492
+#: admin/api/v1/serializers.py:499
 msgid "A list of recipient"
 msgstr "Ul listenn resevourien"
 
-#: admin/api/v1/serializers.py:508 admin/api/v2/viewsets.py:286
+#: admin/api/v1/serializers.py:515 admin/api/v2/viewsets.py:286
 #, fuzzy
 #| msgid "User '%s' already exists"
 msgid "This alias already exists"
 msgstr "An implijer \"%s\" a zo anezhañ endeo"
 
-#: admin/api/v1/serializers.py:544
+#: admin/api/v1/serializers.py:551
 msgid "You don't have access to this domain."
 msgstr "N'ho peus moned ebet d'an domani-mañ."
 
-#: admin/api/v1/serializers.py:553
+#: admin/api/v1/serializers.py:560
 msgid "You don't have access to this mailbox."
 msgstr "N'ho peus moned ebet d'ar voest-posteloù-mañ."
 
@@ -106,58 +107,58 @@ msgstr "N'ho peus moned ebet d'ar voest-posteloù-mañ."
 msgid "Here is your new Modoboa password: {}"
 msgstr ""
 
-#: admin/api/v2/serializers.py:80
+#: admin/api/v2/serializers.py:82
 msgid "DKIM keys storage directory not configured"
 msgstr "Kavlec'h stokiñ an alc'hwezioù DKIM chomet digefluniet"
 
-#: admin/api/v2/serializers.py:92
+#: admin/api/v2/serializers.py:94
 msgid "This field is valid when type is relaydomain"
 msgstr ""
 
-#: admin/api/v2/serializers.py:99
+#: admin/api/v2/serializers.py:101
 msgid "You can't define an unlimited quota."
 msgstr "N'hallit ket termeniñ ur c'hota divevenn"
 
-#: admin/api/v2/serializers.py:133
+#: admin/api/v2/serializers.py:135
 #, python-format
 msgid "User '%s' already exists"
 msgstr "An implijer \"%s\" a zo anezhañ endeo"
 
-#: admin/api/v2/serializers.py:248 admin/api/v2/serializers.py:254
+#: admin/api/v2/serializers.py:250 admin/api/v2/serializers.py:256
 msgid "Must be a positive integer"
 msgstr "Rankout a ra bezañ un anterin pozitivel"
 
-#: admin/api/v2/serializers.py:263
+#: admin/api/v2/serializers.py:265
 msgid "openssl not found, please make sure it is installed."
 msgstr "n'heller ket kavout openssl, bezit asur emañ staliet."
 
-#: admin/api/v2/serializers.py:266 pdfcredentials/api/v2/serializers.py:79
+#: admin/api/v2/serializers.py:268 pdfcredentials/api/v2/serializers.py:84
 msgid "Directory not found."
 msgstr "Neket bet kavet an domani."
 
-#: admin/api/v2/serializers.py:277
+#: admin/api/v2/serializers.py:279
 msgid "This field only allows valid IP addresses (or networks)"
 msgstr ""
 
-#: admin/api/v2/serializers.py:290
+#: admin/api/v2/serializers.py:292
 msgid "Please disable imap migration before disabling this option."
 msgstr ""
 
-#: admin/api/v2/serializers.py:303
+#: admin/api/v2/serializers.py:305
 msgid "Define at least one authorized network / address"
 msgstr "Termeniñ da vihanañ ur rouedad / chomlec'h aotreet"
 
-#: admin/api/v2/serializers.py:565
+#: admin/api/v2/serializers.py:581
 msgid "The left part of an email address can't be more than 64 characters."
 msgstr ""
 
-#: admin/api/v2/serializers.py:587
+#: admin/api/v2/serializers.py:603
 #, fuzzy
 #| msgid "A mailbox is required"
 msgid "A mailbox is required to create aliases."
 msgstr "Ur voest-posteloù a zo rekiset"
 
-#: admin/api/v2/serializers.py:751
+#: admin/api/v2/serializers.py:772
 #, fuzzy
 #| msgid "Unknown"
 msgid "Unknown status"
@@ -170,14 +171,6 @@ msgstr "N'ho peus moned ebet d'an domani-mañ"
 #: admin/api/v2/viewsets.py:87
 msgid "You can't delete your own domain"
 msgstr "N'hallit ket dilemel ho tomani deoc'h-c'hwi hoc'h-unan"
-
-#: admin/api/v2/viewsets.py:407
-msgid "No alarm ID provided"
-msgstr ""
-
-#: admin/api/v2/viewsets.py:411
-msgid "Received invalid alarm id(s)"
-msgstr ""
 
 #: admin/app_settings.py:19 limits/app_settings.py:38 limits/constants.py:13
 msgid "Domains"
@@ -407,7 +400,7 @@ msgstr ""
 "Krouiñ un alias en ur implijout ar chomlec'h pa vez adanvet ar voest-"
 "posteloù."
 
-#: admin/app_settings.py:287 core/api/v2/viewsets.py:162
+#: admin/app_settings.py:287 core/api/v2/viewsets.py:174
 msgid "Administration"
 msgstr "Melestradurezh"
 
@@ -438,7 +431,7 @@ msgstr "alias an domani"
 msgid "Account import failed (%s): domain does not exist"
 msgstr "Enporzhiadur kont c'hwitet (%s): n'eus ket eus an domani"
 
-#: admin/handlers.py:242 admin/models/mailbox.py:340
+#: admin/handlers.py:242 admin/models/mailbox.py:342
 msgid "Mailbox {} already exists"
 msgstr "Boest-postel {} a zo anezhi endeo"
 
@@ -723,7 +716,7 @@ msgstr "Ur c'hota a zo rekiset"
 msgid "{}: domain quota exceeded"
 msgstr "Kota an domani dibaseet"
 
-#: admin/models/mailbox.py:308
+#: admin/models/mailbox.py:310
 msgid "Domain does not exist"
 msgstr "N'eus ket eus an Domani"
 
@@ -900,7 +893,7 @@ msgid ""
 "Maximum size in bytes of imported ICS files (or KB, MB, GB if specified)"
 msgstr ""
 
-#: calendars/app_settings.py:89 core/api/v2/viewsets.py:172
+#: calendars/app_settings.py:89 core/api/v2/viewsets.py:195
 msgid "Calendars"
 msgstr ""
 
@@ -936,7 +929,7 @@ msgstr "Frekañs sinkroneladur"
 msgid "Interval in seconds between 2 synchronization requests"
 msgstr "Padelezh en eilennoù etre 2 reked sinkroneladur"
 
-#: contacts/app_settings.py:51 core/api/v2/viewsets.py:179
+#: contacts/app_settings.py:51 core/api/v2/viewsets.py:185
 #, fuzzy
 #| msgid "Domains"
 msgid "Contacts"
@@ -990,12 +983,12 @@ msgstr "Enrolladennoù MX eus {}"
 msgid "2FA is already enabled"
 msgstr ""
 
-#: core/api/v1/serializers.py:87
+#: core/api/v1/serializers.py:86
 #, python-format
-msgid "Failed TFA settings editing attempt from '%s' as user '%s'"
+msgid "Failed TFA settings editing attempt from '%(addr)s' as user '%(user)s'"
 msgstr ""
 
-#: core/api/v1/serializers.py:91 core/api/v2/serializers.py:425
+#: core/api/v1/serializers.py:91 core/api/v2/serializers.py:445
 #, fuzzy
 #| msgid "Old password"
 msgid "Invalid password"
@@ -1009,44 +1002,44 @@ msgstr ""
 msgid "Local"
 msgstr "Lec'hel"
 
-#: core/api/v2/serializers.py:175 core/app_settings.py:17
+#: core/api/v2/serializers.py:194 core/app_settings.py:17
 msgid "User profile"
 msgstr "Profil implijer"
 
-#: core/api/v2/serializers.py:194 core/api/v2/serializers.py:201
-#: core/api/v2/serializers.py:208
+#: core/api/v2/serializers.py:213 core/api/v2/serializers.py:221
+#: core/api/v2/serializers.py:228
 msgid "Invalid syntax"
 msgstr "Sintaks direizh"
 
-#: core/api/v2/serializers.py:213
+#: core/api/v2/serializers.py:233
 msgid "Invalid rounds number"
 msgstr "Niveroù ront direizh"
 
-#: core/api/v2/serializers.py:413 core/forms.py:81
+#: core/api/v2/serializers.py:433 core/forms.py:81
 msgid "This code is invalid"
 msgstr ""
 
-#: core/api/v2/serializers.py:483 core/views/auth.py:194 core/views/auth.py:247
+#: core/api/v2/serializers.py:503 core/views/auth.py:194 core/views/auth.py:247
 msgid "Please use the following code to recover your Modoboa password: {}"
 msgstr ""
 
-#: core/api/v2/viewsets.py:164
+#: core/api/v2/viewsets.py:176
 #, fuzzy
 #| msgid "Administration"
 msgid "Administration console"
 msgstr "Melestradurezh"
 
-#: core/api/v2/viewsets.py:174
-msgid "Calendar"
-msgstr ""
-
-#: core/api/v2/viewsets.py:181
+#: core/api/v2/viewsets.py:187
 #, fuzzy
 #| msgid "Address"
 msgid "Address book"
 msgstr "Levr chomlec'hioù"
 
-#: core/api/v2/viewsets.py:186 core/api/v2/viewsets.py:188
+#: core/api/v2/viewsets.py:197
+msgid "Calendar"
+msgstr ""
+
+#: core/api/v2/viewsets.py:205 core/api/v2/viewsets.py:207
 #: webmail/app_settings.py:258 webmail/app_settings.py:265
 #, fuzzy
 #| msgid "E-mail"
@@ -1579,19 +1572,27 @@ msgstr "Oad enrollañ maksimom ar marilhoù"
 msgid "The maximum age in days of a log record"
 msgstr "Oad brasañ e devezhioù un enrollodenn renabl"
 
-#: core/app_settings.py:726
+#: core/app_settings.py:727
+msgid "Retention time in message history"
+msgstr ""
+
+#: core/app_settings.py:730
+msgid "Retention time (in days) of a message in the message history section"
+msgstr ""
+
+#: core/app_settings.py:737
 msgid "Items per page"
 msgstr "Elfennoù dre bajenn"
 
-#: core/app_settings.py:728
+#: core/app_settings.py:739
 msgid "Number of displayed items per page"
 msgstr "Niver a elfennoù diskouezet dre bajenn"
 
-#: core/app_settings.py:735
+#: core/app_settings.py:746
 msgid "Default top redirection"
 msgstr "Adhenchañ pennañ dre-ziouer"
 
-#: core/app_settings.py:737
+#: core/app_settings.py:748
 msgid "The default redirection used when no application is specified"
 msgstr "An adheñchañ dre-ziouer implijet pa n'eus arload ebet spisaet"
 
@@ -1625,8 +1626,8 @@ msgstr ""
 
 #: core/checks.py:34
 msgid ""
-"Visit : https://modoboa.readthedocs.io/en/latest/manual_installation/dovecot."
-"html#dovecot-oauth2"
+"Visit : https://modoboa.readthedocs.io/en/latest/manual_installation/"
+"dovecot.html#dovecot-oauth2"
 msgstr ""
 
 #: core/checks.py:41
@@ -2141,17 +2142,12 @@ msgstr ""
 #: imap_migration/app_settings.py:76
 msgid ""
 "A comma seperated list of folders to explicitly include in sync even if "
-"filtered by the Folder Filter Exclusions. Example: debian.user, debian."
-"personal "
+"filtered by the Folder Filter Exclusions. Example: debian.user, "
+"debian.personal "
 msgstr ""
 
 #: imap_migration/apps.py:20
 msgid "IMAP Migration"
-msgstr ""
-
-#: imap_migration/auth_backends.py:49 webmail/lib/imaputils.py:240
-#, python-brace-format
-msgid "Connection to IMAP server failed: {error}"
 msgstr ""
 
 #: imap_migration/checks.py:12
@@ -2515,13 +2511,13 @@ msgstr "Kont"
 msgid "Personal account information"
 msgstr "Hizivaat ho titouroù personel"
 
-#: pdfcredentials/api/v2/serializers.py:81
+#: pdfcredentials/api/v2/serializers.py:86
 #, fuzzy
 #| msgid "Directory not found."
 msgid "Directory is not writable"
 msgstr "Neket bet kavet an domani."
 
-#: pdfcredentials/api/v2/serializers.py:102
+#: pdfcredentials/api/v2/serializers.py:114
 #, fuzzy
 #| msgid "No information available for this domain."
 msgid "No document available for this user"
@@ -3336,14 +3332,30 @@ msgstr ""
 msgid "User defined email signature"
 msgstr ""
 
+#: webmail/exceptions.py:18
+#, fuzzy
+#| msgid "Server address"
+msgid "Server response"
+msgstr "Chomlec'h ar servijer"
+
 #: webmail/lib/attachments.py:112
 #, fuzzy
 msgid "Failed to remove attachment: "
 msgstr "N'heller ket adsevel lec'hiadur ar voest-posteloù (%s)"
 
+#: webmail/lib/imapemail.py:272
+msgid "wrote:"
+msgstr ""
+
 #: webmail/lib/imapemail.py:306
 msgid "Date"
 msgstr "Deiziad"
+
+#: webmail/lib/imapemail.py:322 webmail/lib/imapemail.py:325
+#, fuzzy
+#| msgid "Message"
+msgid "Original message"
+msgstr "Kemennadenn"
 
 #: webmail/lib/imaputils.py:221
 msgid "Failed to retrieve hierarchy delimiter"

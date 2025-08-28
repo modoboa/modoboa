@@ -26,7 +26,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-07-27 10:50+0200\n"
+"POT-Creation-Date: 2025-08-28 09:41+0200\n"
 "PO-Revision-Date: 2011-07-01 08:15+0000\n"
 "Last-Translator: Rafael Barretto Alves <ch3yd@hotmail.com>, "
 "2013,2015-2017,2025\n"
@@ -53,69 +53,70 @@ msgstr ""
 "Cota padrão em MB aplicada para caixas de correio. Um valor 0 significa que "
 "não há cota."
 
-#: admin/api/v1/serializers.py:88
+#: admin/api/v1/serializers.py:94
 #, fuzzy
 #| msgid "Alias with this name already exists"
 msgid "domain alias with this name already exists"
 msgstr "Já existe um apelido com este nome"
 
-#: admin/api/v1/serializers.py:98
+#: admin/api/v1/serializers.py:104
 msgid "No authorized MX record found for this domain"
 msgstr "Nenhum registro MX autorizado encontrado para este domínio"
 
-#: admin/api/v1/serializers.py:116
+#: admin/api/v1/serializers.py:122
 msgid "Cannot be greater than domain quota"
 msgstr "Não pode ser maior que a cota de domínio"
 
-#: admin/api/v1/serializers.py:162 admin/api/v1/serializers.py:357
-#: admin/api/v2/serializers.py:548 admin/models/alias.py:44
+#: admin/api/v1/serializers.py:168 admin/api/v1/serializers.py:364
+#: admin/api/v2/serializers.py:564 admin/models/alias.py:44
 msgid "Permission denied."
 msgstr "Permissão negada."
 
-#: admin/api/v1/serializers.py:224 admin/api/v2/serializers.py:88
-#: admin/api/v2/serializers.py:470 core/api/v2/serializers.py:235
-#: core/api/v2/serializers.py:237 core/api/v2/serializers.py:246
+#: admin/api/v1/serializers.py:231 admin/api/v2/serializers.py:90
+#: admin/api/v2/serializers.py:486 core/api/v2/serializers.py:255
+#: core/api/v2/serializers.py:257 core/api/v2/serializers.py:266
 #: transport/backends.py:40
 msgid "This field is required"
 msgstr "Este campo é obrigatório"
 
-#: admin/api/v1/serializers.py:236
+#: admin/api/v1/serializers.py:243
 msgid ""
 "List of administered domains (resellers and domain administrators only)."
 msgstr ""
 "Lista de domínios administrados (somente revendedores e administradores de "
 "domínio)."
 
-#: admin/api/v1/serializers.py:330 admin/api/v2/serializers.py:530
+#: admin/api/v1/serializers.py:337 admin/api/v2/serializers.py:546
 msgid "Not allowed for this role."
 msgstr "Não é permitido para esta função."
 
-#: admin/api/v1/serializers.py:348
+#: admin/api/v1/serializers.py:355
 msgid "Must be equal to mailbox full_address"
 msgstr "Deve ser igual a full_address de caixa de correio"
 
-#: admin/api/v1/serializers.py:390 admin/api/v2/serializers.py:582
+#: admin/api/v1/serializers.py:397 admin/api/v2/serializers.py:598
 #: calendars/serializers.py:175 calendars/serializers.py:177
+#: pdfcredentials/api/v2/serializers.py:91
 msgid "This field is required."
 msgstr "Este campo é obrigatório."
 
-#: admin/api/v1/serializers.py:402 admin/api/v2/serializers.py:599
+#: admin/api/v1/serializers.py:409 admin/api/v2/serializers.py:615
 msgid "Local domain {} does not exist"
 msgstr "Domínio local {} não existe"
 
-#: admin/api/v1/serializers.py:492
+#: admin/api/v1/serializers.py:499
 msgid "A list of recipient"
 msgstr "Uma lista de destinatários"
 
-#: admin/api/v1/serializers.py:508 admin/api/v2/viewsets.py:286
+#: admin/api/v1/serializers.py:515 admin/api/v2/viewsets.py:286
 msgid "This alias already exists"
 msgstr "Este apelido já existe"
 
-#: admin/api/v1/serializers.py:544
+#: admin/api/v1/serializers.py:551
 msgid "You don't have access to this domain."
 msgstr "Você não tem acesso a este domínio."
 
-#: admin/api/v1/serializers.py:553
+#: admin/api/v1/serializers.py:560
 msgid "You don't have access to this mailbox."
 msgstr "Você não tem acesso a esta caixa de correio."
 
@@ -123,58 +124,58 @@ msgstr "Você não tem acesso a esta caixa de correio."
 msgid "Here is your new Modoboa password: {}"
 msgstr "Aqui está sua nova senha do Modoboa: {}"
 
-#: admin/api/v2/serializers.py:80
+#: admin/api/v2/serializers.py:82
 msgid "DKIM keys storage directory not configured"
 msgstr "Diretório de armazenamento de chaves DKIM não configurado"
 
-#: admin/api/v2/serializers.py:92
+#: admin/api/v2/serializers.py:94
 msgid "This field is valid when type is relaydomain"
 msgstr ""
 
-#: admin/api/v2/serializers.py:99
+#: admin/api/v2/serializers.py:101
 msgid "You can't define an unlimited quota."
 msgstr "Você não pode definir uma cota ilimitada."
 
-#: admin/api/v2/serializers.py:133
+#: admin/api/v2/serializers.py:135
 #, python-format
 msgid "User '%s' already exists"
 msgstr "O usuário '%s' já existe"
 
-#: admin/api/v2/serializers.py:248 admin/api/v2/serializers.py:254
+#: admin/api/v2/serializers.py:250 admin/api/v2/serializers.py:256
 msgid "Must be a positive integer"
 msgstr "Deve ser um inteiro positivo"
 
-#: admin/api/v2/serializers.py:263
+#: admin/api/v2/serializers.py:265
 msgid "openssl not found, please make sure it is installed."
 msgstr "openssl não encontrado, certifique-se que está instalado."
 
-#: admin/api/v2/serializers.py:266 pdfcredentials/api/v2/serializers.py:79
+#: admin/api/v2/serializers.py:268 pdfcredentials/api/v2/serializers.py:84
 msgid "Directory not found."
 msgstr "Diretório não encontrado."
 
-#: admin/api/v2/serializers.py:277
+#: admin/api/v2/serializers.py:279
 msgid "This field only allows valid IP addresses (or networks)"
 msgstr "Este campo permite apenas endereços IP válidos (ou redes)"
 
-#: admin/api/v2/serializers.py:290
+#: admin/api/v2/serializers.py:292
 msgid "Please disable imap migration before disabling this option."
 msgstr "Desative a migração imap antes de desativar esta opção."
 
-#: admin/api/v2/serializers.py:303
+#: admin/api/v2/serializers.py:305
 msgid "Define at least one authorized network / address"
 msgstr "Defina pelo menos uma rede/endereço autorizado"
 
-#: admin/api/v2/serializers.py:565
+#: admin/api/v2/serializers.py:581
 msgid "The left part of an email address can't be more than 64 characters."
 msgstr ""
 "A parte à esquerda de um endereço de e-mail não pode ter mais de 64 "
 "caracteres."
 
-#: admin/api/v2/serializers.py:587
+#: admin/api/v2/serializers.py:603
 msgid "A mailbox is required to create aliases."
 msgstr "Uma caixa de correio é necessária para criar apelidos."
 
-#: admin/api/v2/serializers.py:751
+#: admin/api/v2/serializers.py:772
 msgid "Unknown status"
 msgstr "Status desconhecido"
 
@@ -185,14 +186,6 @@ msgstr "Você não tem acesso a este domínio"
 #: admin/api/v2/viewsets.py:87
 msgid "You can't delete your own domain"
 msgstr "Você não pode excluir seu próprio domínio"
-
-#: admin/api/v2/viewsets.py:407
-msgid "No alarm ID provided"
-msgstr "Nenhum ID de alarme fornecido"
-
-#: admin/api/v2/viewsets.py:411
-msgid "Received invalid alarm id(s)"
-msgstr "IDs de alarme inválidos recebidos"
 
 #: admin/app_settings.py:19 limits/app_settings.py:38 limits/constants.py:13
 msgid "Domains"
@@ -407,7 +400,7 @@ msgstr ""
 "Crie um apelido usando o endereço antigo quando uma caixa de correio for "
 "renomeada."
 
-#: admin/app_settings.py:287 core/api/v2/viewsets.py:162
+#: admin/app_settings.py:287 core/api/v2/viewsets.py:174
 msgid "Administration"
 msgstr "Administração"
 
@@ -436,7 +429,7 @@ msgstr "apelido de domínio"
 msgid "Account import failed (%s): domain does not exist"
 msgstr "Falha na importação da conta (%s): o domínio não existe"
 
-#: admin/handlers.py:242 admin/models/mailbox.py:340
+#: admin/handlers.py:242 admin/models/mailbox.py:342
 msgid "Mailbox {} already exists"
 msgstr "A caixa de correio {} já existe"
 
@@ -702,7 +695,7 @@ msgstr "É necessária uma cota"
 msgid "{}: domain quota exceeded"
 msgstr "{}: cota de domínio excedida"
 
-#: admin/models/mailbox.py:308
+#: admin/models/mailbox.py:310
 msgid "Domain does not exist"
 msgstr "O domínio não existe"
 
@@ -879,7 +872,7 @@ msgstr ""
 "Tamanho máximo em bytes dos arquivos ICS importados (ou KB, MB, GB se "
 "especificado)"
 
-#: calendars/app_settings.py:89 core/api/v2/viewsets.py:172
+#: calendars/app_settings.py:89 core/api/v2/viewsets.py:195
 msgid "Calendars"
 msgstr "Calendários"
 
@@ -915,7 +908,7 @@ msgstr "Frequência de sincronização"
 msgid "Interval in seconds between 2 synchronization requests"
 msgstr "Intervalo, em segundos, entre 2 pedidos de sincronização"
 
-#: contacts/app_settings.py:51 core/api/v2/viewsets.py:179
+#: contacts/app_settings.py:51 core/api/v2/viewsets.py:185
 msgid "Contacts"
 msgstr "Contatos"
 
@@ -963,14 +956,15 @@ msgstr "Código PIN inválido"
 msgid "2FA is already enabled"
 msgstr "2FA já está habilitado"
 
-#: core/api/v1/serializers.py:87
-#, python-format
-msgid "Failed TFA settings editing attempt from '%s' as user '%s'"
+#: core/api/v1/serializers.py:86
+#, fuzzy, python-format
+#| msgid "Failed TFA settings editing attempt from '%s' as user '%s'"
+msgid "Failed TFA settings editing attempt from '%(addr)s' as user '%(user)s'"
 msgstr ""
 "Falha na tentativa de edição de configurações do TFA de '%s' como usuário "
 "'%s'"
 
-#: core/api/v1/serializers.py:91 core/api/v2/serializers.py:425
+#: core/api/v1/serializers.py:91 core/api/v2/serializers.py:445
 msgid "Invalid password"
 msgstr "Senha inválida"
 
@@ -982,41 +976,41 @@ msgstr "2FA não está habilitado"
 msgid "Local"
 msgstr "Local"
 
-#: core/api/v2/serializers.py:175 core/app_settings.py:17
+#: core/api/v2/serializers.py:194 core/app_settings.py:17
 msgid "User profile"
 msgstr "Perfil do usuário"
 
-#: core/api/v2/serializers.py:194 core/api/v2/serializers.py:201
-#: core/api/v2/serializers.py:208
+#: core/api/v2/serializers.py:213 core/api/v2/serializers.py:221
+#: core/api/v2/serializers.py:228
 msgid "Invalid syntax"
 msgstr "Sintaxe inválida"
 
-#: core/api/v2/serializers.py:213
+#: core/api/v2/serializers.py:233
 msgid "Invalid rounds number"
 msgstr "Número de ciclos inválido"
 
-#: core/api/v2/serializers.py:413 core/forms.py:81
+#: core/api/v2/serializers.py:433 core/forms.py:81
 msgid "This code is invalid"
 msgstr "Este código é inválido"
 
-#: core/api/v2/serializers.py:483 core/views/auth.py:194 core/views/auth.py:247
+#: core/api/v2/serializers.py:503 core/views/auth.py:194 core/views/auth.py:247
 msgid "Please use the following code to recover your Modoboa password: {}"
 msgstr ""
 "Por favor, use o seguinte código para recuperar sua senha do Modoboa: {}"
 
-#: core/api/v2/viewsets.py:164
+#: core/api/v2/viewsets.py:176
 msgid "Administration console"
 msgstr "Console de administração"
 
-#: core/api/v2/viewsets.py:174
-msgid "Calendar"
-msgstr "Calendário"
-
-#: core/api/v2/viewsets.py:181
+#: core/api/v2/viewsets.py:187
 msgid "Address book"
 msgstr "Catálogo de endereço"
 
-#: core/api/v2/viewsets.py:186 core/api/v2/viewsets.py:188
+#: core/api/v2/viewsets.py:197
+msgid "Calendar"
+msgstr "Calendário"
+
+#: core/api/v2/viewsets.py:205 core/api/v2/viewsets.py:207
 #: webmail/app_settings.py:258 webmail/app_settings.py:265
 #, fuzzy
 #| msgid "E-mail"
@@ -1571,19 +1565,27 @@ msgstr "Idade máxima do registro de log"
 msgid "The maximum age in days of a log record"
 msgstr "A idade máxima em dias de um registro de log"
 
-#: core/app_settings.py:726
+#: core/app_settings.py:727
+msgid "Retention time in message history"
+msgstr ""
+
+#: core/app_settings.py:730
+msgid "Retention time (in days) of a message in the message history section"
+msgstr ""
+
+#: core/app_settings.py:737
 msgid "Items per page"
 msgstr "Itens por página"
 
-#: core/app_settings.py:728
+#: core/app_settings.py:739
 msgid "Number of displayed items per page"
 msgstr "Número de itens exibidos por página"
 
-#: core/app_settings.py:735
+#: core/app_settings.py:746
 msgid "Default top redirection"
 msgstr "Redirecionamento de topo padrão"
 
-#: core/app_settings.py:737
+#: core/app_settings.py:748
 msgid "The default redirection used when no application is specified"
 msgstr ""
 "O redirecionamento padrão usado quando nenhuma aplicação é especificada"
@@ -1618,8 +1620,8 @@ msgstr ""
 
 #: core/checks.py:34
 msgid ""
-"Visit : https://modoboa.readthedocs.io/en/latest/manual_installation/dovecot."
-"html#dovecot-oauth2"
+"Visit : https://modoboa.readthedocs.io/en/latest/manual_installation/"
+"dovecot.html#dovecot-oauth2"
 msgstr ""
 
 #: core/checks.py:41
@@ -2119,8 +2121,8 @@ msgstr "Inclusões de Filtro de Pasta"
 #: imap_migration/app_settings.py:76
 msgid ""
 "A comma seperated list of folders to explicitly include in sync even if "
-"filtered by the Folder Filter Exclusions. Example: debian.user, debian."
-"personal "
+"filtered by the Folder Filter Exclusions. Example: debian.user, "
+"debian.personal "
 msgstr ""
 "Uma lista separada por vírgulas de pastas a serem incluídas explicitamente "
 "na sincronização, mesmo se filtradas pelas Exclusões de Filtro de Pasta. "
@@ -2129,12 +2131,6 @@ msgstr ""
 #: imap_migration/apps.py:20
 msgid "IMAP Migration"
 msgstr "Migração IMAP"
-
-#: imap_migration/auth_backends.py:49 webmail/lib/imaputils.py:240
-#, fuzzy, python-brace-format
-#| msgid "Connection to IMAP server failed: %s"
-msgid "Connection to IMAP server failed: {error}"
-msgstr "Falha na conexão com o servidor IMAP: %s"
 
 #: imap_migration/checks.py:12
 msgid ""
@@ -2489,11 +2485,11 @@ msgstr "Contas"
 msgid "Personal account information"
 msgstr "Informações pessoais da conta"
 
-#: pdfcredentials/api/v2/serializers.py:81
+#: pdfcredentials/api/v2/serializers.py:86
 msgid "Directory is not writable"
 msgstr "O diretório não é gravável"
 
-#: pdfcredentials/api/v2/serializers.py:102
+#: pdfcredentials/api/v2/serializers.py:114
 msgid "No document available for this user"
 msgstr "Nenhum documento disponível para este usuário"
 
@@ -3275,15 +3271,31 @@ msgstr "Texto da assinatura"
 msgid "User defined email signature"
 msgstr "Assinatura de e-mail definida pelo usuário"
 
+#: webmail/exceptions.py:18
+#, fuzzy
+#| msgid "Server address"
+msgid "Server response"
+msgstr "Endereço do servidor"
+
 #: webmail/lib/attachments.py:112
 #, fuzzy
 #| msgid "Failed to create LDAP account: {}"
 msgid "Failed to remove attachment: "
 msgstr "Falha ao remover anexo:"
 
+#: webmail/lib/imapemail.py:272
+msgid "wrote:"
+msgstr ""
+
 #: webmail/lib/imapemail.py:306
 msgid "Date"
 msgstr "Data"
+
+#: webmail/lib/imapemail.py:322 webmail/lib/imapemail.py:325
+#, fuzzy
+#| msgid "All messages"
+msgid "Original message"
+msgstr "Todas as mensagens"
 
 #: webmail/lib/imaputils.py:221
 msgid "Failed to retrieve hierarchy delimiter"
@@ -3315,3 +3327,14 @@ msgstr ""
 #, python-format
 msgid "Attachment is too big (limit: %s)"
 msgstr "Anexo muito grande (limite: %s)"
+
+#~ msgid "No alarm ID provided"
+#~ msgstr "Nenhum ID de alarme fornecido"
+
+#~ msgid "Received invalid alarm id(s)"
+#~ msgstr "IDs de alarme inválidos recebidos"
+
+#, fuzzy, python-brace-format
+#~| msgid "Connection to IMAP server failed: %s"
+#~ msgid "Connection to IMAP server failed: {error}"
+#~ msgstr "Falha na conexão com o servidor IMAP: %s"
