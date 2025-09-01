@@ -48,7 +48,7 @@ dependencies = [
 	"dnspython==2.7.0",
 	"feedparser==6.0.11",
 	"fido2==2.0.0",
-	"gevent==25.8.1",
+	"gevent==25.8.2",
 	"progressbar33==2.4",
 	"python-dateutil",
 	"cryptography",
