@@ -43,12 +43,6 @@ elif DB == "sqlite":
             "PORT": "",
             "ATOMIC_REQUESTS": True,
         },
-        "amavis": {
-            "ENGINE": "django.db.backends.sqlite3",
-            "NAME": "amavis.db",
-            "PORT": "",
-            "ATOMIC_REQUESTS": True,
-        },
     }
 else:
     DATABASES = {
