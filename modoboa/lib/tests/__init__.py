@@ -195,6 +195,8 @@ class SimpleModoTestCase(ParametersMixin, TestCase):
 class ModoTestCase(ParametersMixin, TestCase):
     """All test cases must inherit from this one."""
 
+    databases = "__all__"
+
     @classmethod
     def setUpTestData(cls):  # noqa
         """Create a default user."""
