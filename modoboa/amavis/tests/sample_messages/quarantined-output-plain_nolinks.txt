@@ -7,7 +7,7 @@ incorrect We need to verify your account information in order to continue
 using your Apple ID, Please Verify your account information by clicking on the
 link below  
 
- **Click here to Verify your ID**  
+**Click here to Verify your ID**  
 
 Thanks for choosing Apple,  
 Apple Team  

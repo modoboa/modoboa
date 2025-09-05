@@ -35,7 +35,7 @@ class EmailTests(TestCase):
     """
 
     def _get_expected_output(self, message_id, **kwargs):
-        ext = kwargs["dformat"] if "dformat" in kwargs else "plain"
+        ext = kwargs.get("dformat", "plain")
         ext += "_links" if "links" in kwargs and kwargs["links"] else "_nolinks"
         message_path = os.path.join(SAMPLES_DIR, f"{message_id}-output-{ext}.txt")
         assert os.path.isfile(message_path), f"{message_path} does not exist."
