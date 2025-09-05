@@ -17,6 +17,21 @@ from modoboa.core import models as core_models
 from modoboa.lib.tests import ModoAPITestCase
 
 
+AMAVIS_SETTINGS = {
+    "localpart_is_case_sensitive": False,
+    "recipient_delimiter": "",
+    "max_attachment_size": 14,
+    "released_msgs_cleanup": False,
+    "am_pdp_mode": "unix",
+    "am_pdp_host": "localhost",
+    "am_pdp_port": 9998,
+    "user_can_release": False,
+    "self_service": False,
+    "manual_learning": True,
+    "sa_is_local": True,
+}
+
+
 class TestDataMixin:
     """A mixin to provide test data."""
 
@@ -70,6 +85,13 @@ class QuarantineViewSetTestCase(TestDataMixin, ModoAPITestCase):
         url = reverse("v2:amavis-quarantine-detail", args=[mail_id])
         resp = self.client.get(f"{url}?rcpt={rcpt}")
         self.assertEqual(resp.status_code, 200)
+
+        user = core_models.User.objects.get(username="user@test.com")
+        self.client.force_authenticate(user)
+        resp = self.client.get(f"{url}?rcpt={rcpt}")
+        self.assertEqual(resp.status_code, 200)
+        self.msgrcpt.refresh_from_db()
+        self.assertEqual(self.msgrcpt.rs, "V")
 
     def test_headers(self):
         mail_id = smart_str(self.msgrcpt.mail.mail_id)
@@ -286,3 +308,12 @@ class PolicyViewSetTestCase(ModoAPITestCase):
         p = models.Policy.objects.get(users__email="@test.com")
         self.assertEqual(p.bypass_virus_checks, data["bypass_virus_checks"])
         self.assertEqual(p.spam_tag2_level, data["spam_tag2_level"])
+
+
+class ParametersAPITestCase(ModoAPITestCase):
+
+    def test_update(self):
+        settings = AMAVIS_SETTINGS.copy()
+        url = reverse("v2:parameter-global-detail", args=["core"])
+        resp = self.client.put(url, settings, format="json")
+        self.assertEqual(resp.status_code, 200)
