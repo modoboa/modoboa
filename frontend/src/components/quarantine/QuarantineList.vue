@@ -87,6 +87,7 @@
           >
           </v-btn>
           <v-btn
+            v-if="manualLearningEnabled"
             class="ml-2"
             size="small"
             variant="tonal"
@@ -144,6 +145,14 @@
           {{ item.type }}
         </v-chip>
       </template>
+      <template #[`item.status`]="{ item }">
+        <v-icon
+          v-if="item.status"
+          :icon="getStatusIcon(item)"
+          :title="getStatusTitle(item)"
+          size="small"
+        />
+      </template>
       <template #[`item.from_address`]="{ item }">
         <span :title="item.from_address">
           {{ $truncate(item.from_address, 30) }}
@@ -158,23 +167,42 @@
         {{ $date(item.datetime) }}
       </template>
     </v-data-table-server>
+    <ConfirmDialog ref="learningRecipientRef">
+      <v-radio-group v-model="learningDatabase" class="mt-4" hide-details>
+        <v-radio
+          v-for="lrcpt in learningRecipients"
+          :key="lrcpt.value"
+          :value="lrcpt.value"
+          :label="lrcpt.title"
+        >
+        </v-radio>
+      </v-radio-group>
+    </ConfirmDialog>
   </v-card>
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import { useGettext } from 'vue3-gettext'
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import debounce from 'debounce'
-import { useBusStore } from '@/stores'
+import { useAuthStore, useBusStore } from '@/stores'
+import { useAmavis } from '@/composables/amavis'
+import ConfirmDialog from '@/components/tools/ConfirmDialog'
 import api from '@/api/amavis'
+import constants from '@/constants'
 
 const { $gettext } = useGettext()
 const router = useRouter()
+const route = useRoute()
+const authStore = useAuthStore()
 const { displayNotification } = useBusStore()
+const { manualLearningEnabled, learningRecipients } = await useAmavis()
 
 const currentPage = ref(1)
 const itemsPerPageR = ref(10)
+const learningDatabase = ref(null)
+const learningRecipientRef = ref(null)
 const loading = ref(false)
 const messages = ref([])
 const search = ref('')
@@ -199,13 +227,21 @@ const messageTypes = [
 ]
 
 const headers = [
-  { title: '', key: 'type' },
+  { title: '', key: 'type', width: '5%' },
+  { title: '', key: 'status', width: '5%' },
   { title: $gettext('Score'), key: 'score' },
   { title: $gettext('To'), key: 'to_address' },
   { title: $gettext('From'), key: 'from_address' },
   { title: $gettext('Subject'), key: 'subject' },
   { title: $gettext('Date'), key: 'datetime' },
 ]
+
+watch(
+  () => route.query.requests,
+  () => {
+    fetchContent()
+  }
+)
 
 const getRowProps = ({ item }) => {
   return {
@@ -226,6 +262,32 @@ const getTypeColor = (value) => {
   }
   if (value === 'C') {
     return 'success'
+  }
+  return ''
+}
+
+const getStatusIcon = (item) => {
+  if (item.status === 'R') {
+    return 'mdi-reply'
+  }
+  if (item.status === 'S') {
+    return 'mdi-thumb-down-outline'
+  }
+  if (item.status === 'H') {
+    return 'mdi-thumb-up-outline'
+  }
+  return ''
+}
+
+const getStatusTitle = (item) => {
+  if (item.status === 'R') {
+    return $gettext('Message released')
+  }
+  if (item.status === 'S') {
+    return $gettext('Message marked as spam')
+  }
+  if (item.status === 'H') {
+    return $gettext('Message marked as non-spam')
   }
   return ''
 }
@@ -254,6 +316,9 @@ const _fetchContent = async () => {
   }
   if (typeFilter.value !== 'all') {
     params.msgtype = typeFilter.value
+  }
+  if (route.query?.requests === '1') {
+    params.viewrequests = 1
   }
   try {
     const resp = await api.getQuarantineContent(params)
@@ -313,9 +378,24 @@ const releaseSelection = async () => {
 }
 
 const markSelection = async (mtype) => {
+  if (
+    manualLearningEnabled.value &&
+    authStore.authUser.role !== constants.USER
+  ) {
+    learningDatabase.value =
+      authStore.authUser.role === constants.SUPER_ADMIN ? 'global' : 'domain'
+    await learningRecipientRef.value.open(
+      $gettext('Learning database'),
+      $gettext('Which database should be used for this learning:'),
+      { width: 600, noconfirm: true }
+    )
+  }
   loading.value = true
   const data = prepareSelectionPayload()
   data.type = mtype
+  if (learningDatabase.value) {
+    data.database = learningDatabase.value
+  }
   try {
     await api.markMessageSelection(data)
     displayNotification({ msg: $gettext('Selection is being processed...') })

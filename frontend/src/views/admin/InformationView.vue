@@ -3,16 +3,16 @@
     <v-toolbar flat>
       <v-toolbar-title>{{ $gettext('Information') }}</v-toolbar-title>
     </v-toolbar>
-    <v-card v-if="globalStore.notifications.length" class="my-6">
+    <v-card v-if="globalStore.adminNotifications.length" class="my-6">
       <v-card-title>
         {{ $gettext('Important messages') }}
       </v-card-title>
 
       <v-card-text>
         <v-alert
-          v-for="notification in globalStore.notifications"
+          v-for="notification in globalStore.adminNotifications"
           :key="notification.id"
-          :type="notification.level"
+          :type="notification.color"
           :title="notification.text"
           border="start"
           variant="tonal"

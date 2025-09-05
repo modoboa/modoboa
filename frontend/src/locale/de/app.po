@@ -79,7 +79,7 @@ msgid "Access rules"
 msgstr "Zugriffsregeln"
 
 #: src/components/calendars/CalendarAccessRulesForm.vue:42
-#: src/components/shared/TopMenu.vue:93
+#: src/components/shared/TopMenu.vue:131
 #: src/views/admin/identities/AccountView.vue:4
 #: src/views/admin/identities/IdentitiesView.vue:23
 msgid "Account"
@@ -344,6 +344,7 @@ msgstr "API-Token erstellt"
 msgid "API token deleted"
 msgstr "API-Token gelöscht"
 
+#: src/components/admin/domains/DomainPolicyForm.vue:96
 #: src/components/tools/ChooseColumnsForm.vue:19
 #: src/components/tools/TimeSerieChart.vue:22
 msgid "Apply"
@@ -431,6 +432,11 @@ msgstr "Zurück"
 msgid "Backup codes"
 msgstr "Backupcodes"
 
+#: src/components/admin/domains/DomainPolicy.vue:39
+#, fuzzy
+msgid "Banned filters"
+msgstr "Verwendung"
+
 #: src/components/webmail/ComposeEmailForm.vue:110
 #: src/components/webmail/ComposeEmailForm.vue:73
 msgid "Bcc"
@@ -443,6 +449,14 @@ msgstr "Gebundenes Format"
 #: src/components/contacts/ContactForm.vue:75
 msgid "Birth date"
 msgstr "Geburtsdatum"
+
+#: src/components/quarantine/QuarantineList.vue:54
+msgid "both"
+msgstr ""
+
+#: src/components/admin/domains/form_steps/DomainPolicyForm.vue:5
+msgid "Bypass virus checks"
+msgstr ""
 
 #: src/components/calendars/EventForm.vue:49
 #: src/views/calendars/CalendarView.vue:3
@@ -474,6 +488,7 @@ msgstr "Kalender aktualisiert"
 #: src/components/account/FilterForm.vue:147
 #: src/components/account/FilterSetForm.vue:24
 #: src/components/admin/domains/DomainEditForm.vue:161
+#: src/components/admin/domains/DomainPolicyForm.vue:93
 #: src/components/admin/identities/AccountEditForm.vue:183
 #: src/components/admin/identities/AliasEditForm.vue:69
 #: src/components/admin/imap_migration/ProviderForm.vue:58
@@ -562,7 +577,7 @@ msgstr "Hier klicken, zum Schlüssel kopieren"
 #: src/components/tools/ImportForm.vue:51
 #: src/components/webmail/AttachmentsDialog.vue:41
 #: src/components/webmail/MailboxForm.vue:29
-#: src/layouts/connected/ConnectedLayout.vue:17
+#: src/layouts/connected/ConnectedLayout.vue:19
 msgid "Close"
 msgstr "Schließen"
 
@@ -621,6 +636,16 @@ msgstr "Kontakte"
 #: src/components/account/AutoReplyForm.vue:20
 msgid "Content"
 msgstr "Inhalt"
+
+#: src/components/admin/domains/DomainPolicy.vue:5
+#, fuzzy
+msgid "Content filter"
+msgstr "Neue Wiederherstellungscodes"
+
+#: src/components/admin/domains/DomainPolicyForm.vue:4
+#, fuzzy
+msgid "Content filter settings"
+msgstr "Allgemein"
 
 #: src/components/tools/ImportForm.vue:40
 msgid "Continue on error"
@@ -732,12 +757,18 @@ msgstr "Dashboard"
 
 #: src/components/admin/logs/AuditTrailList.vue:51
 #: src/components/admin/logs/MessageList.vue:47
+#: src/components/quarantine/QuarantineList.vue:240
 msgid "Date"
 msgstr "Datum"
 
 #: src/components/tools/TimeSerieChart.vue:110
 msgid "Day"
 msgstr "Tag"
+
+#: src/components/admin/domains/DomainPolicyForm.vue:47
+#: src/components/tools/YesNoDefaultField.vue:15
+msgid "default"
+msgstr ""
 
 #: src/components/admin/domains/DomainCreationForm.vue:193
 #: src/components/admin/domains/DomainSummary.vue:23
@@ -752,6 +783,16 @@ msgid ""
 msgstr ""
 "Auf Postfächer angewendete Quota. Kann in KB, MB (Voreinstellung) oder GB "
 "angegeben werden. 0 eingeben, um keine Quota zu verwenden."
+
+#: src/components/admin/domains/DomainPolicy.vue:24
+#: src/components/admin/domains/DomainPolicy.vue:35
+#: src/components/admin/domains/DomainPolicy.vue:46
+#: src/components/admin/domains/DomainPolicy.vue:57
+#: src/components/admin/domains/DomainPolicy.vue:68
+#: src/components/admin/domains/DomainPolicy.vue:79
+#, fuzzy
+msgid "Default value"
+msgstr "Standardwert der Domain verwenden"
 
 #: src/components/admin/alarms/AlarmList.vue:116
 #: src/components/admin/alarms/AlarmList.vue:133
@@ -773,6 +814,15 @@ msgstr "Löschen"
 #: src/views/account/FiltersView.vue:382
 msgid "Delete filter set"
 msgstr "Filterset löschen"
+
+#: src/views/quarantine/MessageView.vue:32
+#, fuzzy
+msgid "Delete message"
+msgstr "Verwendung"
+
+#: src/components/quarantine/QuarantineList.vue:84
+msgid "Delete selection"
+msgstr ""
 
 #: src/layouts/webmail/WebmailLayout.vue:56
 msgid "Delete this mailbox"
@@ -807,13 +857,33 @@ msgstr "Deaktivieren"
 msgid "Disable 2FA"
 msgstr "Deaktiviere 2-Faktor-Authentifizierung"
 
+#: src/components/admin/domains/DomainPolicyForm.vue:26
+#, fuzzy
+msgid "Disable banned checks"
+msgstr "Deaktiviert"
+
 #: src/views/webmail/EmailView.vue:74
 msgid "Disable links"
 msgstr "Links deaktivieren"
 
+#: src/components/admin/domains/DomainPolicyForm.vue:18
+#, fuzzy
+msgid "Disable spam checks"
+msgstr "Aktiviere DNS Prüfungen"
+
+#: src/components/admin/domains/DomainPolicyForm.vue:11
+#, fuzzy
+msgid "Disable virus checks"
+msgstr "Deaktiviert"
+
 #: src/components/admin/domains/DNSStatusChip.vue:18
 msgid "Disabled"
 msgstr "Deaktiviert"
+
+#: src/components/quarantine/QuarantineList.vue:125
+#, fuzzy
+msgid "Display"
+msgstr "Vollständiger Name"
 
 #: src/components/contacts/ContactList.vue:23
 msgid "Display address book information"
@@ -988,6 +1058,11 @@ msgstr "Domain gelöscht"
 msgid "Domain name (ex: domain.tld)"
 msgstr "Domainname (z.B. domain.tld)"
 
+#: src/composables/amavis.js:33
+#, fuzzy
+msgid "Domain's database"
+msgstr "Standardwert der Domain verwenden"
+
 #: src/components/admin/identities/AccountEditForm.vue:82
 msgid "domain's default value"
 msgstr "Domains Standardwert"
@@ -1038,6 +1113,10 @@ msgstr "Kategorie bearbeiten"
 #: src/components/contacts/ContactForm.vue:182
 msgid "Edit contact"
 msgstr "Kontakt bearbeiten"
+
+#: src/components/admin/domains/DomainPolicy.vue:9
+msgid "Edit content filter settings"
+msgstr ""
 
 #: src/views/admin/domains/DomainEditView.vue:3
 msgid "Edit domain"
@@ -1271,10 +1350,16 @@ msgstr "Mit ARC weitergeleitet"
 #: src/components/account/AutoReplyForm.vue:36
 #: src/components/admin/logs/MessageList.vue:50
 #: src/components/calendars/EventForm.vue:24
+#: src/components/quarantine/QuarantineList.vue:238
 #: src/components/tools/TimeSerieChart.vue:19
 #: src/components/webmail/ComposeEmailForm.vue:29
 msgid "From"
 msgstr "Von"
+
+#: src/components/quarantine/QuarantineList.vue:45
+#, fuzzy
+msgid "From address"
+msgstr "Zufällige Adresse"
 
 #: src/components/calendars/CalendarAccessRulesForm.vue:11
 msgid "Full address"
@@ -1325,6 +1410,10 @@ msgstr "Neuen DKIM Schlüssel generieren"
 msgid "Generated address"
 msgstr "Generierte Adresse"
 
+#: src/composables/amavis.js:30
+msgid "Global database"
+msgstr ""
+
 #: src/views/admin/InformationView.vue:29
 msgid "Go to <strong>Settings > General</strong> section"
 msgstr "Gehen Sie zum Abschnitt <strong>Einstellungen > Allgemein</strong>"
@@ -1341,6 +1430,10 @@ msgid ""
 msgstr ""
 "Hier ist ein Beispiel für eine DNS Konfiguration (Bind Format). Ersetzen Sie"
 " die Werte zwischen [ ] durch die entsprechenden."
+
+#: src/views/quarantine/MessageView.vue:65
+msgid "Hide full headers"
+msgstr ""
 
 #: src/components/admin/identities/AccountCreationForm.vue:168
 #: src/components/admin/identities/AccountCreationForm.vue:95
@@ -1511,6 +1604,12 @@ msgstr "Neueste Nachrichten"
 msgid "Latest version"
 msgstr "Lezte Version"
 
+#: src/components/quarantine/QuarantineList.vue:385
+#: src/views/quarantine/MessageView.vue:209
+#, fuzzy
+msgid "Learning database"
+msgstr "Erstellungsdatum"
+
 #: src/components/admin/identities/form_steps/AccountMailboxForm.vue:26
 msgid "Leave empty for no limit"
 msgstr "Für kein Limit, leer lassen"
@@ -1538,7 +1637,7 @@ msgstr "Lokale Domain (optional)"
 msgid "Logger"
 msgstr "Logger"
 
-#: src/components/shared/TopMenu.vue:100
+#: src/components/shared/TopMenu.vue:138
 msgid "Logout"
 msgstr "Logout"
 
@@ -1586,9 +1685,22 @@ msgstr ""
 msgid "Mark as followed"
 msgstr "Als gefolgt markieren"
 
+#: src/views/quarantine/MessageView.vue:47
+msgid "Mark as non-spam"
+msgstr ""
+
+#: src/components/quarantine/QuarantineList.vue:105
+msgid "Mark as not spam"
+msgstr ""
+
 #: src/components/webmail/EmailList.vue:62
 msgid "Mark as read"
 msgstr "Als gelesen markieren"
+
+#: src/components/quarantine/QuarantineList.vue:101
+#: src/views/quarantine/MessageView.vue:43
+msgid "Mark as spam"
+msgstr ""
 
 #: src/components/webmail/EmailList.vue:77
 msgid "Mark as unfollowed"
@@ -1608,7 +1720,7 @@ msgstr "MB"
 msgid "Message"
 msgstr "Verwendung"
 
-#: src/views/webmail/EmailView.vue:254
+#: src/views/quarantine/MessageView.vue:196 src/views/webmail/EmailView.vue:254
 msgid "Message deleted"
 msgstr "Nachricht gelöscht"
 
@@ -1628,9 +1740,25 @@ msgstr "Nachrichtenlimit"
 msgid "Message marked as junk"
 msgstr "Als Junk markierte Nachricht"
 
+#: src/components/quarantine/QuarantineList.vue:291
+#: src/views/quarantine/MessageView.vue:236
+msgid "Message marked as non-spam"
+msgstr ""
+
 #: src/views/webmail/EmailView.vue:282
 msgid "Message marked as not junk"
 msgstr "Nachricht als, kein Junk markiert"
+
+#: src/components/quarantine/QuarantineList.vue:288
+#: src/views/quarantine/MessageView.vue:232
+msgid "Message marked as spam"
+msgstr ""
+
+#: src/components/quarantine/QuarantineList.vue:285
+#: src/views/quarantine/MessageView.vue:178
+#, fuzzy
+msgid "Message released"
+msgstr "Verwendung"
 
 #: src/components/admin/domains/DomainCreationForm.vue:197
 #: src/components/admin/domains/form_steps/DomainLimitationsForm.vue:32
@@ -1814,7 +1942,7 @@ msgstr "Neue Wiederherstellungscodes"
 msgid "Next"
 msgstr "Weiter"
 
-#: src/plugins/filters.js:10
+#: src/components/tools/YesNoDefaultField.vue:11 src/plugins/filters.js:10
 msgid "no"
 msgstr "nein"
 
@@ -1878,6 +2006,11 @@ msgstr "Nicht generiert"
 msgid "Note"
 msgstr "Notiz"
 
+#: src/components/shared/TopMenu.vue:18
+#, fuzzy
+msgid "Notifications"
+msgstr "Datum der letzten Änderung"
+
 #: src/components/admin/identities/AccountEditForm.vue:163
 msgid "Number of allowed mailbox aliases:"
 msgstr "Anzahl der zulässigen Postfachaliase:"
@@ -1940,6 +2073,14 @@ msgstr "Geöffnete Alarme"
 #: src/components/admin/domains/DomainCreationForm.vue:239
 msgid "Options"
 msgstr "Optionen"
+
+#: src/components/admin/domains/DomainPolicyForm.vue:69
+msgid "or more is spam"
+msgstr ""
+
+#: src/components/admin/domains/DomainPolicyForm.vue:84
+msgid "or more throw spam message away"
+msgstr ""
 
 #: src/components/account/ProfileForm.vue:30
 msgid "or suggest a new language"
@@ -2086,6 +2227,15 @@ msgstr "Provider aktualisiert"
 msgid "Providers"
 msgstr "Provider"
 
+#: src/views/quarantine/QuarantineView.vue:4
+msgid "Quarantine"
+msgstr ""
+
+#: src/views/quarantine/MessageView.vue:4
+#, fuzzy
+msgid "Quarantined message"
+msgstr "Domains importieren"
+
 #: src/components/admin/logs/MessageList.vue:46
 msgid "Queue ID"
 msgstr "Warteschlangen ID"
@@ -2176,6 +2326,10 @@ msgstr "Authentifikator registrieren"
 msgid "Registered Webauthn devices"
 msgstr "Registrierte Webauthn Geräte"
 
+#: src/components/admin/domains/DomainPolicy.vue:61
+msgid "Rejection threshold"
+msgstr ""
+
 #: src/components/tools/TimeSerieChart.vue:27
 msgid "Relative time ranges"
 msgstr "Relative Zeiträume"
@@ -2187,6 +2341,24 @@ msgstr "Relais"
 #: src/components/admin/domains/form_steps/DomainGeneralForm.vue:66
 msgid "Relay domain"
 msgstr "Relais Domain"
+
+#: src/views/quarantine/MessageView.vue:21
+#, fuzzy
+msgid "Release message"
+msgstr "Verwendung"
+
+#: src/components/quarantine/QuarantineList.vue:372
+#: src/views/quarantine/MessageView.vue:176
+msgid "Release request sent"
+msgstr ""
+
+#: src/views/quarantine/QuarantineView.vue:12
+msgid "release requests"
+msgstr ""
+
+#: src/components/quarantine/QuarantineList.vue:72
+msgid "Release selection"
+msgstr ""
 
 #: src/components/admin/alarms/AlarmList.vue:123
 msgid "Reload"
@@ -2260,6 +2432,10 @@ msgstr "Speichern"
 msgid "Save your changes"
 msgstr "Änderungen speichern"
 
+#: src/components/quarantine/QuarantineList.vue:236
+msgid "Score"
+msgstr ""
+
 #: src/components/admin/alarms/AlarmList.vue:21
 #: src/components/admin/domains/DomainList.vue:19
 #: src/components/admin/identities/IdentityList.vue:24
@@ -2270,6 +2446,7 @@ msgstr "Änderungen speichern"
 msgid "Search"
 msgstr "Suchen"
 
+#: src/components/quarantine/QuarantineList.vue:27
 #: src/components/webmail/EmailList.vue:14
 msgid "Search in messages"
 msgstr "In Nachrichten suchen"
@@ -2307,6 +2484,19 @@ msgstr ""
 #: src/components/tools/ImportForm.vue:22
 msgid "Select file"
 msgstr "Wählen Sie eine Datei aus"
+
+#: src/components/quarantine/QuarantineList.vue:359
+#, fuzzy
+msgid "Selection deleted"
+msgstr "Erstellungsdatum"
+
+#: src/components/quarantine/QuarantineList.vue:398
+msgid "Selection is being processed..."
+msgstr ""
+
+#: src/components/quarantine/QuarantineList.vue:374
+msgid "Selection released"
+msgstr ""
 
 #: src/components/calendars/ImportEventsForm.vue:30
 #: src/components/webmail/ComposeEmailForm.vue:13
@@ -2379,6 +2569,20 @@ msgstr "Zeige Schlüssel"
 msgid "Simple user"
 msgstr "Normaler Benutzer"
 
+#: src/components/admin/domains/DomainPolicy.vue:50
+msgid "Spam classification threshold"
+msgstr ""
+
+#: src/components/admin/domains/DomainPolicy.vue:17
+#, fuzzy
+msgid "Spam filters"
+msgstr "Verwendung"
+
+#: src/components/admin/domains/DomainPolicy.vue:72
+#: src/components/admin/domains/DomainPolicyForm.vue:34
+msgid "Spam marker"
+msgstr ""
+
 #: src/components/admin/identities/AccountSenderAddresses.vue:17
 msgid "Specify an email address"
 msgstr "E-Mailadresse eingeben"
@@ -2413,6 +2617,8 @@ msgid "Status"
 msgstr "Status"
 
 #: src/components/account/AutoReplyForm.vue:12
+#: src/components/quarantine/QuarantineList.vue:239
+#: src/components/quarantine/QuarantineList.vue:49
 #: src/components/webmail/ComposeEmailForm.vue:137
 msgid "Subject"
 msgstr "Betreff"
@@ -2488,12 +2694,18 @@ msgstr ""
 msgid "there"
 msgstr "dort"
 
+#: src/components/admin/domains/DomainPolicyForm.vue:56
+msgid "Thresholds"
+msgstr ""
+
 #: src/components/calendars/EventForm.vue:12
 msgid "Title"
 msgstr "Titel"
 
 #: src/components/admin/logs/MessageList.vue:49
 #: src/components/calendars/EventForm.vue:34
+#: src/components/quarantine/QuarantineList.vue:237
+#: src/components/quarantine/QuarantineList.vue:52
 #: src/components/tools/TimeSerieChart.vue:20
 #: src/components/webmail/ComposeEmailForm.vue:46
 #: src/views/webmail/EmailView.vue:109
@@ -2636,6 +2848,10 @@ msgstr "Anzahl benutzt"
 msgid "Use domain default value"
 msgstr "Standardwert der Domain verwenden"
 
+#: src/composables/amavis.js:36
+msgid "User's database"
+msgstr ""
+
 #: src/components/admin/domains/DomainAdminList.vue:111
 #: src/components/admin/identities/AccountCreationForm.vue:97
 #: src/components/admin/identities/form_steps/AccountGeneralForm.vue:3
@@ -2653,6 +2869,15 @@ msgstr "Gültig"
 #: src/components/account/FilterForm.vue:49
 msgid "Value"
 msgstr "Wert"
+
+#: src/views/quarantine/MessageView.vue:62
+msgid "View full headers"
+msgstr ""
+
+#: src/components/admin/domains/DomainPolicy.vue:28
+#, fuzzy
+msgid "Virus filters"
+msgstr "E-Mail Adresse"
 
 #: src/components/admin/dashboard/NewsFeedWidget.vue:21
 msgid "Visit the official weblog for more information"
@@ -2694,6 +2919,11 @@ msgstr "Woche"
 msgid "Welcome to Modoboa"
 msgstr "Willkommen zu Modoboa"
 
+#: src/components/quarantine/QuarantineList.vue:386
+#: src/views/quarantine/MessageView.vue:210
+msgid "Which database should be used for this learning:"
+msgstr ""
+
 #: src/components/admin/domains/form_steps/DomainOptionsForm.vue:25
 msgid "With a mailbox"
 msgstr "Mit einem Postfach"
@@ -2711,7 +2941,7 @@ msgstr "Schreiben"
 msgid "Year"
 msgstr "Jahr"
 
-#: src/plugins/filters.js:10
+#: src/components/tools/YesNoDefaultField.vue:7 src/plugins/filters.js:10
 msgid "yes"
 msgstr "ja"
 

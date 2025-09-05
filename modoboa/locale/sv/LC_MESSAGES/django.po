@@ -12,10 +12,8 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-08-28 09:41+0200\n"
 "PO-Revision-Date: 2011-07-01 08:15+0000\n"
-"Last-Translator: Olle Gustafsson <olle@dalnix.se>, "
-"2013,2015-2018,2020,2022-2023,2025\n"
-"Language-Team: Swedish (http://app.transifex.com/tonio/modoboa/language/"
-"sv/)\n"
+"Last-Translator: Olle Gustafsson <olle@dalnix.se>, 2013,2015-2018,2020,2022-2023,2025\n"
+"Language-Team: Swedish (http://app.transifex.com/tonio/modoboa/language/sv/)\n"
 "Language: sv\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -27,8 +25,8 @@ msgid ""
 "Quota shared between mailboxes. Can be expressed in KB, MB (default) or GB. "
 "A value of 0 means no quota."
 msgstr ""
-"Kvot som delas mellan brevlådor. Kan uttryckas i KB, MB (standard) eller GB. "
-"Ett värde på 0 betyder ingen kvot."
+"Kvot som delas mellan brevlådor. Kan uttryckas i KB, MB (standard) eller GB."
+" Ett värde på 0 betyder ingen kvot."
 
 #: admin/api/v1/serializers.py:46
 msgid "Default quota in MB applied to mailboxes. A value of 0 means no quota."
@@ -184,8 +182,8 @@ msgstr "Giltiga MX"
 
 #: admin/app_settings.py:37
 msgid ""
-"A list of IP or network address every MX record should match. A warning will "
-"be sent if a record does not respect it."
+"A list of IP or network address every MX record should match. A warning will"
+" be sent if a record does not respect it."
 msgstr ""
 "En lista med IP- eller nätverksadresser som varje MX-post ska matcha. En "
 "varning kommer att skickas om en post inte respekterar den."
@@ -199,8 +197,8 @@ msgid ""
 "Prevent the creation of a new domain if its MX record does not use one of "
 "the defined addresses."
 msgstr ""
-"Förhindra skapandet av en ny domän om dess MX-post inte använder någon av de "
-"definierade adresserna."
+"Förhindra skapandet av en ny domän om dess MX-post inte använder någon av de"
+" definierade adresserna."
 
 #: admin/app_settings.py:59
 msgid "Enable IPV6 checks"
@@ -344,8 +342,8 @@ msgid ""
 "Number of messages freshly created mailboxes will be allowed to send per "
 "day. Leave empty for no limit."
 msgstr ""
-"Antal meddelanden som nyskapade brevlådor tillåts skicka per dag. Lämna tomt "
-"utan gräns."
+"Antal meddelanden som nyskapade brevlådor tillåts skicka per dag. Lämna tomt"
+" utan gräns."
 
 #: admin/app_settings.py:207
 msgid "Automatic account removal"
@@ -360,7 +358,8 @@ msgid "Automatic domain/mailbox creation"
 msgstr "Automatisk domän-/brevlådeskapande"
 
 #: admin/app_settings.py:221
-msgid "Create a domain and a mailbox when an account is automatically created."
+msgid ""
+"Create a domain and a mailbox when an account is automatically created."
 msgstr "Skapa en domän och en postlåda när ett konto skapas automatiskt."
 
 #: admin/app_settings.py:230
@@ -681,8 +680,8 @@ msgid ""
 "coming from it are considered as spam. You should contact those providers "
 "and ask them to unlist detected IP address(es)."
 msgstr ""
-"Domänens rykte kommer att påverkas och det finns en chans att e-"
-"postmeddelanden som kommer från den betraktas som spam. Du bör kontakta "
+"Domänens rykte kommer att påverkas och det finns en chans att "
+"e-postmeddelanden som kommer från den betraktas som spam. Du bör kontakta "
 "dessa leverantörer och be dem att ta bort upptäckta IP-adresser."
 
 #: admin/templates/admin/notifications/domain_invalid_mx.html:3
@@ -915,7 +914,8 @@ msgstr "2FA redan aktiverat"
 #| msgid "Failed TFA settings editing attempt from '%s' as user '%s'"
 msgid "Failed TFA settings editing attempt from '%(addr)s' as user '%(user)s'"
 msgstr ""
-"Misslyckades TFA-inställningar redigeringsförsök från '%s' som användare '%s'"
+"Misslyckades TFA-inställningar redigeringsförsök från '%s' som användare "
+"'%s'"
 
 #: core/api/v1/serializers.py:91 core/api/v2/serializers.py:445
 msgid "Invalid password"
@@ -946,7 +946,8 @@ msgstr "Ogiltigt antal omgångar"
 msgid "This code is invalid"
 msgstr "Denna kod är ogiltig"
 
-#: core/api/v2/serializers.py:503 core/views/auth.py:194 core/views/auth.py:247
+#: core/api/v2/serializers.py:503 core/views/auth.py:194
+#: core/views/auth.py:247
 msgid "Please use the following code to recover your Modoboa password: {}"
 msgstr "Använd följande kod för att återställa ditt Modoboa lösenord: {}"
 
@@ -1150,8 +1151,8 @@ msgstr "Administratörsgrupper"
 
 #: core/app_settings.py:239
 msgid ""
-"Members of those LDAP Posix groups will be created as domain administrators. "
-"Use ';' characters to separate groups."
+"Members of those LDAP Posix groups will be created as domain administrators."
+" Use ';' characters to separate groups."
 msgstr ""
 "Användare av dessa LDAP Posix grupper kommer skapas som "
 "domänadministratörer. Använd ';' för att separera grupper."
@@ -1243,8 +1244,8 @@ msgid ""
 "The template used to construct a user's DN. It should contain one "
 "placeholder (ie. %(user)s)"
 msgstr ""
-"Mallen som används för att konstruera en användares DN. Den bör innehålla en "
-"platshållare (dvs. %(user)s)"
+"Mallen som används för att konstruera en användares DN. Den bör innehålla en"
+" platshållare (dvs. %(user)s)"
 
 #: core/app_settings.py:350
 msgid "LDAP synchronization settings"
@@ -1269,7 +1270,8 @@ msgid ""
 "Delete remote LDAP account when local account is deleted, otherwise it will "
 "be disabled."
 msgstr ""
-"Radera LDAP-fjärrkonto när det lokala kontot raderas, annars inaktiveras det."
+"Radera LDAP-fjärrkonto när det lokala kontot raderas, annars inaktiveras "
+"det."
 
 #: core/app_settings.py:401
 msgid "Account DN template"
@@ -1306,7 +1308,8 @@ msgstr "Aktivera Dovecot LDAP-synkronisering"
 
 #: core/app_settings.py:457
 msgid "LDAP authentication settings will be applied to Dovecot configuration."
-msgstr "LDAP-autentiseringsinställningar tillämpas på Dovecot-konfigurationen."
+msgstr ""
+"LDAP-autentiseringsinställningar tillämpas på Dovecot-konfigurationen."
 
 #: core/app_settings.py:465
 msgid "Dovecot LDAP config file"
@@ -1344,21 +1347,26 @@ msgstr "Användardefinierat RSS-flöde"
 #: core/app_settings.py:497
 msgid "Display custom RSS feed to resellers and domain administrators"
 msgstr ""
-"Visa användardefinierat RSS-flöde för återförsäljare och domänadministratörer"
+"Visa användardefinierat RSS-flöde för återförsäljare och "
+"domänadministratörer"
 
 #: core/app_settings.py:506
 #, fuzzy
-#| msgid "Display custom RSS feed to resellers and domain administrators"
+#| msgid ""
+#| "Display custom RSS feed to resellers and domain administrators"
 msgid "Display custom RSS feed to super admins"
 msgstr ""
-"Visa användardefinierat RSS-flöde för återförsäljare och domänadministratörer"
+"Visa användardefinierat RSS-flöde för återförsäljare och "
+"domänadministratörer"
 
 #: core/app_settings.py:509
 #, fuzzy
-#| msgid "Display custom RSS feed to resellers and domain administrators"
+#| msgid ""
+#| "Display custom RSS feed to resellers and domain administrators"
 msgid "Display custom RSS feed also to super administrators"
 msgstr ""
-"Visa användardefinierat RSS-flöde för återförsäljare och domänadministratörer"
+"Visa användardefinierat RSS-flöde för återförsäljare och "
+"domänadministratörer"
 
 #: core/app_settings.py:517
 msgid "Hide features widget"
@@ -1474,8 +1482,8 @@ msgstr "Aktivera spårning av inaktiva konton"
 
 #: core/app_settings.py:686
 msgid ""
-"Allow the administrator to set a threshold (in days) beyond which an account "
-"is considered inactive if the user hasn't logged in"
+"Allow the administrator to set a threshold (in days) beyond which an account"
+" is considered inactive if the user hasn't logged in"
 msgstr ""
 "Tillåt administratören att ställa in en tröskel (i dagar) över vilken ett "
 "konto anses inaktivt om användaren inte har loggat in"
@@ -1486,8 +1494,8 @@ msgstr "Gräns för inaktiva konton"
 
 #: core/app_settings.py:698
 msgid ""
-"An account with a last login date greater than this threshold (in days) will "
-"be considered as inactive"
+"An account with a last login date greater than this threshold (in days) will"
+" be considered as inactive"
 msgstr ""
 "Ett konto som inte har loggat in innan denna gräns (antal dagar) kommer "
 "anses som inaktivt"
@@ -1562,8 +1570,9 @@ msgstr ""
 
 #: core/checks.py:34
 msgid ""
-"Visit : https://modoboa.readthedocs.io/en/latest/manual_installation/"
-"dovecot.html#dovecot-oauth2"
+"Visit : "
+"https://modoboa.readthedocs.io/en/latest/manual_installation/dovecot.html#dovecot-"
+"oauth2"
 msgstr ""
 
 #: core/checks.py:41
@@ -1574,8 +1583,9 @@ msgstr ""
 
 #: core/checks.py:45
 msgid ""
-"Visit :  https://modoboa.readthedocs.io/en/latest/manual_installation/"
-"radicale.html#radicale-oauth2"
+"Visit :  "
+"https://modoboa.readthedocs.io/en/latest/manual_installation/radicale.html#radicale-"
+"oauth2"
 msgstr ""
 
 #: core/constants.py:6
@@ -1751,7 +1761,8 @@ msgstr[1] "Lösenord måste innehålla minst {} specialtecken."
 
 #: core/password_validation.py:70
 msgid "Your password must contain a combination of different character types."
-msgstr "Ditt lösenord måste innehålla en kombination av olika typer av tecken."
+msgstr ""
+"Ditt lösenord måste innehålla en kombination av olika typer av tecken."
 
 #: core/sms_backends/ovh.py:21 core/sms_backends/ovh.py:102
 msgid "API endpoint"
@@ -2141,8 +2152,8 @@ msgid ""
 "Maximum number of allowed domain administrators for a new administrator. (0 "
 "to deny any creation, -1 to allow unlimited creations)"
 msgstr ""
-"Maximalt antal tillåtna domänadministratörer för en ny administratör. (0 för "
-"att neka någon skapelse, -1 för att tillåta obegränsade skapelser)"
+"Maximalt antal tillåtna domänadministratörer för en ny administratör. (0 för"
+" att neka någon skapelse, -1 för att tillåta obegränsade skapelser)"
 
 #: limits/app_settings.py:41
 msgid ""
@@ -2159,8 +2170,8 @@ msgstr "Domän alias"
 
 #: limits/app_settings.py:52
 msgid ""
-"Maximum number of allowed domain aliases for a new administrator. (0 to deny "
-"any creation, -1 to allow unlimited creations)"
+"Maximum number of allowed domain aliases for a new administrator. (0 to deny"
+" any creation, -1 to allow unlimited creations)"
 msgstr ""
 "Maximalt antal tillåtna domänalias för en ny administratör. (0 för att neka "
 "någon skapelse, -1 för att tillåta obegränsade skapelser)"
@@ -2183,8 +2194,8 @@ msgid ""
 "Maximum number of allowed aliases for a new administrator. (0 to deny any "
 "creation, -1 to allow unlimited creations)"
 msgstr ""
-"Maximalt antal tillåtna alias för en ny administratör. (0 för att neka någon "
-"skapelse, -1 för att tillåta obegränsade skapelser)"
+"Maximalt antal tillåtna alias för en ny administratör. (0 för att neka någon"
+" skapelse, -1 för att tillåta obegränsade skapelser)"
 
 #: limits/app_settings.py:84 limits/constants.py:59
 msgid "Quota"
@@ -2212,8 +2223,8 @@ msgstr "Aktivera eller inaktivera gränser per domän"
 
 #: limits/app_settings.py:114
 msgid ""
-"Maximum number of allowed domain administrators for a new domain. (0 to deny "
-"any creation, -1 to allow unlimited creations)"
+"Maximum number of allowed domain administrators for a new domain. (0 to deny"
+" any creation, -1 to allow unlimited creations)"
 msgstr ""
 "Maximalt antal tillåtna domänadministratörer för en ny domän. (0 för att "
 "neka någon skapelse, -1 för att tillåta obegränsade skapelser)"
@@ -2236,8 +2247,8 @@ msgstr ""
 
 #: limits/app_settings.py:149
 msgid ""
-"Maximum number of allowed aliases for a new domain. (0 to deny any creation, "
-"-1 to allow unlimited creations)"
+"Maximum number of allowed aliases for a new domain. (0 to deny any creation,"
+" -1 to allow unlimited creations)"
 msgstr ""
 "Maximalt antal tillåtna alias för en ny domän. (0 för att neka någon "
 "skapelse, -1 för att tillåta obegränsade skapelser)"
@@ -2456,8 +2467,8 @@ msgid ""
 "Generate a new document only when a new account is created. If set to no, a "
 "new document will be created each time a password is updated."
 msgstr ""
-"Skapa ett nytt dokument först när ett nytt konto har skapats. Om inställt på "
-"nej kommer ett nytt dokument att skapas varje gång ett lösenord uppdateras."
+"Skapa ett nytt dokument först när ett nytt konto har skapats. Om inställt på"
+" nej kommer ett nytt dokument att skapas varje gång ett lösenord uppdateras."
 
 #: pdfcredentials/app_settings.py:84
 msgid "Customization options"
@@ -2583,8 +2594,7 @@ msgid ""
 "your contacts.\n"
 msgstr ""
 "\n"
-"Här kan du se dina e-postmeddelanden när som helst online, skapa filter "
-"eller hantera\n"
+"Här kan du se dina e-postmeddelanden när som helst online, skapa filter eller hantera\n"
 "dina kontakter.\n"
 
 #: pdfcredentials/documents.py:126
@@ -2685,11 +2695,11 @@ msgstr "Sökväg till nyckelkarta"
 
 #: rspamd/app_settings.py:21
 msgid ""
-"Absolute path of the file which contains paths to DKIM private keys. Must be "
-"readable by _rspamd group or user."
+"Absolute path of the file which contains paths to DKIM private keys. Must be"
+" readable by _rspamd group or user."
 msgstr ""
-"Absolut sökväg till filen som innehåller sökvägar till DKIM privata nycklar. "
-"Måste vara läsbar av _rspamd-gruppen eller användaren."
+"Absolut sökväg till filen som innehåller sökvägar till DKIM privata nycklar."
+" Måste vara läsbar av _rspamd-gruppen eller användaren."
 
 #: rspamd/app_settings.py:30
 msgid "Selector map path"
@@ -2709,8 +2719,8 @@ msgstr "Plats för Rspamd-dashboard"
 
 #: rspamd/app_settings.py:53
 msgid ""
-"Location of the rspamd dashboard. Can either be a relative URL (eg. '/"
-"rspamd') or a full URL (eg. 'https://rspamd.domain.tld/').Only use for "
+"Location of the rspamd dashboard. Can either be a relative URL (eg. "
+"'/rspamd') or a full URL (eg. 'https://rspamd.domain.tld/').Only use for "
 "guidance on the Super-Admin dashboard."
 msgstr ""
 "Plats för Rspamd-dashboarden. Kan vara en relativ URL (t.ex. '/rspamd') "
@@ -2939,9 +2949,9 @@ msgid ""
 "primary address, and check your spam folder.</p>"
 msgstr ""
 "<p>Vi har e-postat dig instruktioner för att ändra ditt lösenord, om ett "
-"konto finns med den e-post adress du angav. Du borde få detta brev inom kort."
-"</p> <p>Om du inte fått något brev, var vänlig kontrollera att du angav rätt "
-"e-post adress, och kolla din skräpkatalog.</p>"
+"konto finns med den e-post adress du angav. Du borde få detta brev inom "
+"kort.</p> <p>Om du inte fått något brev, var vänlig kontrollera att du angav"
+" rätt e-post adress, och kolla din skräpkatalog.</p>"
 
 #: templates/registration/password_reset_email.html:4
 #: templates/registration/password_reset_email_v2.html:4
@@ -2950,8 +2960,8 @@ msgid ""
 "To initiate the password reset process for your %(username)s Modoboa "
 "account, click the link below:"
 msgstr ""
-"För att starta processen för återställning av lösenord för ditt %(username)s "
-"Modoboa konto, klicka på länken nedanför:"
+"För att starta processen för återställning av lösenord för ditt %(username)s"
+" Modoboa konto, klicka på länken nedanför:"
 
 #: templates/registration/password_reset_email.html:10
 #: templates/registration/password_reset_email_v2.html:10
@@ -2989,8 +2999,8 @@ msgstr "Engångslösenord"
 
 #: templates/registration/twofactor_code_verify.html:35
 msgid ""
-"Enter the code from the two-factor app on your mobile device. If you've lost "
-"your device, you may enter one of your recovery codes."
+"Enter the code from the two-factor app on your mobile device. If you've lost"
+" your device, you may enter one of your recovery codes."
 msgstr ""
 "Ange koden från tvåfaktorsappen på din mobila enhet. Om du har tappat bort "
 "din enhet kan du ange en av dina återställningskoder."
@@ -3062,7 +3072,7 @@ msgstr "Servern behöver autentisering"
 
 #: webmail/app_settings.py:118
 msgid "Display"
-msgstr "Visa"
+msgstr "Visning"
 
 #: webmail/app_settings.py:124
 msgid "Default message display mode"
@@ -3082,7 +3092,7 @@ msgstr "Aktivera/inaktivera HTML-länkvisning"
 
 #: webmail/app_settings.py:144
 msgid "Number of displayed emails per page"
-msgstr "Antal visade e-postmeddelanden per sida"
+msgstr "Antalet visade e-postmeddelanden per sida"
 
 #: webmail/app_settings.py:147
 msgid "Sets the maximum number of messages displayed in a page"

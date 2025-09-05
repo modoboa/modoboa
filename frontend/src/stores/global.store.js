@@ -1,12 +1,18 @@
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import { defineStore } from 'pinia'
-import adminApi from '@/api/admin'
+import capabilitiesApi from '@/api/capabilities'
+import notificationsApi from '@/api/notifications'
 
 export const useGlobalStore = defineStore('global', () => {
+  const capabilities = ref([])
   const notifications = ref([])
 
+  async function fetchCapabilities() {
+    const response = await capabilitiesApi.getCapabilities()
+    capabilities.value = response.data.capabilities
+  }
   async function fetchNotifications() {
-    const response = await adminApi.getNotifications()
+    const response = await notificationsApi.getNotifications()
     notifications.value = response.data
   }
 
@@ -15,8 +21,26 @@ export const useGlobalStore = defineStore('global', () => {
   }
 
   async function $reset() {
+    capabilities.value = []
     notifications.value = []
   }
 
-  return { notifications, fetchNotifications, getNotificationById, $reset }
+  const activeNotifications = computed(() => {
+    return notifications.value.length !== 0
+  })
+
+  const adminNotifications = computed(() => {
+    return notifications.value.filter((notif) => notif.target === 'admin')
+  })
+
+  return {
+    capabilities,
+    notifications,
+    fetchCapabilities,
+    fetchNotifications,
+    getNotificationById,
+    activeNotifications,
+    adminNotifications,
+    $reset,
+  }
 })

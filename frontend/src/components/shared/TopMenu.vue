@@ -1,28 +1,65 @@
 <template>
   <div v-if="user" class="top-menu">
-    <v-menu activator="parent" location="bottom">
-      <template #activator="{ props }">
-        <v-btn icon="mdi-apps" flat class="mr-4" v-bind="props"></v-btn>
-      </template>
-      <v-card min-width="350" max-width="400" class="pa-4">
-        <v-row class="justify-center">
-          <v-col
-            v-for="application in applications"
-            :key="application.name"
-            cols="6"
+    <v-btn
+      v-if="globalStore.activeNotifications"
+      icon
+      color="error"
+      class="mr-4"
+      variant="tonal"
+      size="small"
+    >
+      <v-icon icon="mdi-bell" />
+      <v-menu activator="parent" location="bottom">
+        <v-list>
+          <div class="text-center">
+            <v-list-item :title="$gettext('Notifications')" />
+          </div>
+          <v-divider></v-divider>
+          <v-list-item
+            v-for="notif in globalStore.notifications"
+            :key="notif.id"
+            :to="notif.url"
           >
-            <v-sheet
-              rounded
-              class="application text-center pa-4 text-body-2"
-              @click="$router.push(application.url)"
+            <template #prepend>
+              <v-badge
+                :color="notif.color"
+                :content="notif.counter"
+                inline
+              ></v-badge>
+            </template>
+            <v-list-item-title>{{ notif.text }}</v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
+    </v-btn>
+
+    <v-btn icon class="mr-4" variant="flat">
+      <v-icon icon="mdi-apps" />
+      <v-menu activator="parent" location="bottom">
+        <v-card min-width="350" max-width="400" class="pa-4">
+          <v-row class="justify-center">
+            <v-col
+              v-for="application in applications"
+              :key="application.name"
+              cols="6"
             >
-              <v-icon color="primary" :icon="application.icon" size="x-large" />
-              <div class="mt-2">{{ application.label }}</div>
-            </v-sheet>
-          </v-col>
-        </v-row>
-      </v-card>
-    </v-menu>
+              <v-sheet
+                rounded
+                class="application text-center pa-4 text-body-2"
+                @click="$router.push(application.url)"
+              >
+                <v-icon
+                  color="primary"
+                  :icon="application.icon"
+                  size="x-large"
+                />
+                <div class="mt-2">{{ application.label }}</div>
+              </v-sheet>
+            </v-col>
+          </v-row>
+        </v-card>
+      </v-menu>
+    </v-btn>
 
     <v-btn icon flat color="primary">
       {{ userInitials }}
@@ -60,6 +97,7 @@
 import { computed, onMounted, ref } from 'vue'
 import { getActivePinia } from 'pinia'
 import { useGettext } from 'vue3-gettext'
+import { useGlobalStore } from '@/stores'
 import accountApi from '@/api/account'
 
 const props = defineProps({
@@ -74,6 +112,7 @@ const props = defineProps({
 })
 
 const { $gettext } = useGettext()
+const globalStore = useGlobalStore()
 
 const applications = ref([])
 
@@ -112,6 +151,7 @@ onMounted(() => {
   accountApi.getAvailableApplications().then((resp) => {
     applications.value = resp.data
   })
+  globalStore.fetchNotifications()
 })
 </script>
 

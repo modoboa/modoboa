@@ -125,7 +125,9 @@ def check_for_new_versions(sender, include_all: bool, **kwargs) -> list:
             {
                 "id": "newversionavailable",
                 "text": _("One or more updates are available"),
-                "level": "info",
+                "color": "info",
+                "url": "/admin/information",
+                "target": "admin",
             }
         ]
     elif include_all:
@@ -137,7 +139,9 @@ def check_for_new_versions(sender, include_all: bool, **kwargs) -> list:
                 "id": "deprecatedpasswordscheme",
                 "text": _("You are still using a deprecated password scheme (%s)")
                 % hasher.name,
-                "level": "warning",
+                "color": "warning",
+                "url": "/admin/information",
+                "target": "admin",
             }
         ]
     return result

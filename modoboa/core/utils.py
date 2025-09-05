@@ -111,6 +111,9 @@ def get_capabilities():
     if is_rspamd_installed:
         rspamd_options = get_rspamd_options()
         capabilities.update({"rspamd": rspamd_options})
+    # Amavis
+    if "modoboa.amavis" in settings.MODOBOA_APPS:
+        capabilities.update({"amavis": {}})
     # IMAP migration
     if "modoboa.imap_migration" in settings.MODOBOA_APPS:
         capabilities.update({"imap_migration": {}})
