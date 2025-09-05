@@ -17,8 +17,17 @@ export function usePermissions() {
     )
   })
 
+  const canViewDomain = computed(() => {
+    return [
+      constants.DOMAIN_ADMIN,
+      constants.RESELLER,
+      constants.SUPER_ADMIN,
+    ].includes(authStore.authUser.role)
+  })
+
   return {
     canSetRole,
     canAddDomain,
+    canViewDomain,
   }
 }

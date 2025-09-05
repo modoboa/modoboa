@@ -49,9 +49,6 @@
             :title="item.text"
             :prepend-icon="item.icon"
           >
-            <template v-if="item.withBell && displayInformationBell" #append>
-              <v-icon color="red" icon="mdi-bell-alert-outline" />
-            </template>
           </v-list-item>
           <v-list-group v-else :value="item.text">
             <template #activator="{ props }">
@@ -92,10 +89,9 @@
 
 <script setup>
 import { useRouter } from 'vue-router'
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed } from 'vue'
 import { useLogos } from '@/composables/logos'
-import { useGlobalStore, useAuthStore, useLayoutStore } from '@/stores'
-import constants from '@/constants.json'
+import { useAuthStore, useLayoutStore } from '@/stores'
 
 const props = defineProps({
   color: {
@@ -113,7 +109,6 @@ const props = defineProps({
   },
 })
 
-const globalStore = useGlobalStore()
 const authStore = useAuthStore()
 const layoutStore = useLayoutStore()
 const router = useRouter()
@@ -124,12 +119,6 @@ const drawer = ref(true)
 
 const authUser = computed(() => authStore.authUser)
 const isAuthenticated = computed(() => authStore.isAuthenticated)
-
-const displayInformationBell = computed(
-  () =>
-    globalStore.notifications.length !== undefined &&
-    globalStore.notifications.length !== 0
-)
 
 function displayMenuItem(item) {
   if (isAuthenticated.value) {
@@ -142,12 +131,6 @@ function displayMenuItem(item) {
   }
   return false
 }
-
-onMounted(() => {
-  if (authUser.value.role === constants.SUPER_ADMIN) {
-    globalStore.fetchNotifications()
-  }
-})
 </script>
 
 <style lang="scss" scoped>

@@ -14,14 +14,12 @@ msgstr ""
 "POT-Creation-Date: 2025-08-28 09:41+0200\n"
 "PO-Revision-Date: 2020-05-06 11:16+0000\n"
 "Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
-"Language-Team: Czech (Czech Republic) (http://www.transifex.com/tonio/"
-"modoboa/language/cs_CZ/)\n"
+"Language-Team: Czech (Czech Republic) (http://www.transifex.com/tonio/modoboa/language/cs_CZ/)\n"
 "Language: cs_CZ\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=(n == 1 && n % 1 == 0) ? 0 : (n >= 2 && n "
-"<= 4 && n % 1 == 0) ? 1: (n % 1 != 0 ) ? 2 : 3;\n"
+"Plural-Forms: nplurals=4; plural=(n == 1 && n % 1 == 0) ? 0 : (n >= 2 && n <= 4 && n % 1 == 0) ? 1: (n % 1 != 0 ) ? 2 : 3;\n"
 
 #: admin/api/v1/serializers.py:39
 msgid ""
@@ -188,11 +186,11 @@ msgstr "Platné MX záznamy"
 
 #: admin/app_settings.py:37
 msgid ""
-"A list of IP or network address every MX record should match. A warning will "
-"be sent if a record does not respect it."
+"A list of IP or network address every MX record should match. A warning will"
+" be sent if a record does not respect it."
 msgstr ""
-"Seznam IP nebo síťových adres, které by každý MX záznam měl obsahovat. Pokud "
-"toto záznam nerespektuje, bude odesláno varování."
+"Seznam IP nebo síťových adres, které by každý MX záznam měl obsahovat. Pokud"
+" toto záznam nerespektuje, bude odesláno varování."
 
 #: admin/app_settings.py:47
 msgid "New domains must use authorized MX(s)"
@@ -385,7 +383,8 @@ msgid "Automatic domain/mailbox creation"
 msgstr "Automatické vytvoření domény/schránky"
 
 #: admin/app_settings.py:221
-msgid "Create a domain and a mailbox when an account is automatically created."
+msgid ""
+"Create a domain and a mailbox when an account is automatically created."
 msgstr "Při založení účtu automaticky vytvořit doménu a schránku."
 
 #: admin/app_settings.py:230
@@ -728,8 +727,8 @@ msgid ""
 "and ask them to unlist detected IP address(es)."
 msgstr ""
 "Reputace domény bude ovlivněna, a je možné, že e-maily přicházející z ní "
-"jsou považovány za spam. Měli byste kontaktovat tyto poskytovatele a požádat "
-"je o odstranění IP adresy (adres) ze seznamu."
+"jsou považovány za spam. Měli byste kontaktovat tyto poskytovatele a požádat"
+" je o odstranění IP adresy (adres) ze seznamu."
 
 #: admin/templates/admin/notifications/domain_invalid_mx.html:3
 #, python-format
@@ -776,14 +775,16 @@ msgstr "Obecné"
 
 #: autoreply/app_settings.py:18
 #, fuzzy
-#| msgid "Timeout in seconds between two auto-replies to the same recipient"
+#| msgid ""
+#| "Timeout in seconds between two auto-replies to the same recipient"
 msgid "Period between two auto-replies"
 msgstr ""
 "Interval v sekundách mezi dvěmi automatickými odpověďmi stejnému příjemci"
 
 #: autoreply/app_settings.py:20
 #, fuzzy
-#| msgid "Timeout in seconds between two auto-replies to the same recipient"
+#| msgid ""
+#| "Timeout in seconds between two auto-replies to the same recipient"
 msgid ""
 "Number of days to wait before sending a new auto-reply to the same recipient"
 msgstr ""
@@ -1015,7 +1016,8 @@ msgstr "Neplatný počet cyklů"
 msgid "This code is invalid"
 msgstr ""
 
-#: core/api/v2/serializers.py:503 core/views/auth.py:194 core/views/auth.py:247
+#: core/api/v2/serializers.py:503 core/views/auth.py:194
+#: core/views/auth.py:247
 msgid "Please use the following code to recover your Modoboa password: {}"
 msgstr ""
 
@@ -1071,8 +1073,8 @@ msgid ""
 "Number of rounds to use (only used by sha256crypt and sha512crypt). Must be "
 "between 1000 and 999999999, inclusive."
 msgstr ""
-"Počet cyklů (použije se pouze u sha256crypt a sha512crypt). Hodnota musí být "
-"mezi 1000 a 999999999 včetně."
+"Počet cyklů (použije se pouze u sha256crypt a sha512crypt). Hodnota musí být"
+" mezi 1000 a 999999999 včetně."
 
 #: core/app_settings.py:73
 msgid "Update password scheme at login"
@@ -1216,8 +1218,8 @@ msgstr "Správcovské skupiny"
 
 #: core/app_settings.py:239
 msgid ""
-"Members of those LDAP Posix groups will be created as domain administrators. "
-"Use ';' characters to separate groups."
+"Members of those LDAP Posix groups will be created as domain administrators."
+" Use ';' characters to separate groups."
 msgstr ""
 "Členové těchto LDAP Posix skupin budou automaticky vytvořeni jako správci "
 "domény. Pro oddělení skupin použijte ';'."
@@ -1406,13 +1408,15 @@ msgstr "Zobrazit vlastní RSS zdroj distributorům a správcům domény"
 
 #: core/app_settings.py:506
 #, fuzzy
-#| msgid "Display custom RSS feed to resellers and domain administrators"
+#| msgid ""
+#| "Display custom RSS feed to resellers and domain administrators"
 msgid "Display custom RSS feed to super admins"
 msgstr "Zobrazit vlastní RSS zdroj distributorům a správcům domény"
 
 #: core/app_settings.py:509
 #, fuzzy
-#| msgid "Display custom RSS feed to resellers and domain administrators"
+#| msgid ""
+#| "Display custom RSS feed to resellers and domain administrators"
 msgid "Display custom RSS feed also to super administrators"
 msgstr "Zobrazit vlastní RSS zdroj distributorům a správcům domény"
 
@@ -1532,8 +1536,8 @@ msgstr "Počet dnů pro neaktivní účet"
 
 #: core/app_settings.py:686
 msgid ""
-"Allow the administrator to set a threshold (in days) beyond which an account "
-"is considered inactive if the user hasn't logged in"
+"Allow the administrator to set a threshold (in days) beyond which an account"
+" is considered inactive if the user hasn't logged in"
 msgstr ""
 
 #: core/app_settings.py:695
@@ -1542,8 +1546,8 @@ msgstr "Počet dnů pro neaktivní účet"
 
 #: core/app_settings.py:698
 msgid ""
-"An account with a last login date greater than this threshold (in days) will "
-"be considered as inactive"
+"An account with a last login date greater than this threshold (in days) will"
+" be considered as inactive"
 msgstr ""
 "Účet s datem posledního přihlášení starším než práh (ve dnech) bude "
 "považován za neaktivní"
@@ -1619,8 +1623,9 @@ msgstr ""
 
 #: core/checks.py:34
 msgid ""
-"Visit : https://modoboa.readthedocs.io/en/latest/manual_installation/"
-"dovecot.html#dovecot-oauth2"
+"Visit : "
+"https://modoboa.readthedocs.io/en/latest/manual_installation/dovecot.html#dovecot-"
+"oauth2"
 msgstr ""
 
 #: core/checks.py:41
@@ -1631,8 +1636,9 @@ msgstr ""
 
 #: core/checks.py:45
 msgid ""
-"Visit :  https://modoboa.readthedocs.io/en/latest/manual_installation/"
-"radicale.html#radicale-oauth2"
+"Visit :  "
+"https://modoboa.readthedocs.io/en/latest/manual_installation/radicale.html#radicale-"
+"oauth2"
 msgstr ""
 
 #: core/constants.py:6
@@ -2240,10 +2246,11 @@ msgstr "Doménové aliasy"
 
 #: limits/app_settings.py:52
 #, fuzzy
-#| msgid "Maximum number of allowed domain aliases for a new administrator"
+#| msgid ""
+#| "Maximum number of allowed domain aliases for a new administrator"
 msgid ""
-"Maximum number of allowed domain aliases for a new administrator. (0 to deny "
-"any creation, -1 to allow unlimited creations)"
+"Maximum number of allowed domain aliases for a new administrator. (0 to deny"
+" any creation, -1 to allow unlimited creations)"
 msgstr "Maximální povolený počet doménových aliasů (nastavení nového správce)"
 
 #: limits/app_settings.py:64
@@ -2296,13 +2303,14 @@ msgstr ""
 #| msgid ""
 #| "Maximum number of allowed domain administrators for a new administrator"
 msgid ""
-"Maximum number of allowed domain administrators for a new domain. (0 to deny "
-"any creation, -1 to allow unlimited creations)"
+"Maximum number of allowed domain administrators for a new domain. (0 to deny"
+" any creation, -1 to allow unlimited creations)"
 msgstr "Maximální povolený počet správců domény (nastavení nového správce)"
 
 #: limits/app_settings.py:126
 #, fuzzy
-#| msgid "Maximum number of allowed domain aliases for a new administrator"
+#| msgid ""
+#| "Maximum number of allowed domain aliases for a new administrator"
 msgid ""
 "Maximum number of allowed domain aliases for a new domain. (0 to deny any "
 "creation, -1 to allow unlimited creations)"
@@ -2320,8 +2328,8 @@ msgstr "Maximální povolený počet schránek (nastavení nového správce)"
 #, fuzzy
 #| msgid "Maximum number of allowed aliases for a new administrator"
 msgid ""
-"Maximum number of allowed aliases for a new domain. (0 to deny any creation, "
-"-1 to allow unlimited creations)"
+"Maximum number of allowed aliases for a new domain. (0 to deny any creation,"
+" -1 to allow unlimited creations)"
 msgstr "Maximální povolený počet aliasů (nastavení nového správce)"
 
 #: limits/apps.py:16
@@ -2567,8 +2575,8 @@ msgid ""
 "Generate a new document only when a new account is created. If set to no, a "
 "new document will be created each time a password is updated."
 msgstr ""
-"Vytvářet nové dokumenty pouze při vytvoření účtu. Je-li nastaveno na hodnotu "
-"ne, bude nový dokument vytvořen pokaždé, když dojde ke změne hesla."
+"Vytvářet nové dokumenty pouze při vytvoření účtu. Je-li nastaveno na hodnotu"
+" ne, bude nový dokument vytvořen pokaždé, když dojde ke změne hesla."
 
 #: pdfcredentials/app_settings.py:84
 msgid "Customization options"
@@ -2696,8 +2704,7 @@ msgid ""
 "your contacts.\n"
 msgstr ""
 "\n"
-"Zde si kdykoliv můžete prohlédnout své emaily, vytvořit filtry nebo "
-"spravovat Vaše kontakty.\n"
+"Zde si kdykoliv můžete prohlédnout své emaily, vytvořit filtry nebo spravovat Vaše kontakty.\n"
 
 #: pdfcredentials/documents.py:126
 msgid "Please change your password!"
@@ -2725,7 +2732,8 @@ msgstr "PDF přístupové údaje"
 
 #: pdfcredentials/lib.py:29
 #, fuzzy
-#| msgid "Failed to create the directory that will contain PDF documents (%s)"
+#| msgid ""
+#| "Failed to create the directory that will contain PDF documents (%s)"
 msgid "Can't write to selected directory to store PDF documents"
 msgstr "Vytváření adresáře pro uložení PDF dokumentů (%s) selhalo "
 
@@ -2807,8 +2815,8 @@ msgstr ""
 
 #: rspamd/app_settings.py:21
 msgid ""
-"Absolute path of the file which contains paths to DKIM private keys. Must be "
-"readable by _rspamd group or user."
+"Absolute path of the file which contains paths to DKIM private keys. Must be"
+" readable by _rspamd group or user."
 msgstr ""
 
 #: rspamd/app_settings.py:30
@@ -2827,8 +2835,8 @@ msgstr ""
 
 #: rspamd/app_settings.py:53
 msgid ""
-"Location of the rspamd dashboard. Can either be a relative URL (eg. '/"
-"rspamd') or a full URL (eg. 'https://rspamd.domain.tld/').Only use for "
+"Location of the rspamd dashboard. Can either be a relative URL (eg. "
+"'/rspamd') or a full URL (eg. 'https://rspamd.domain.tld/').Only use for "
 "guidance on the Super-Admin dashboard."
 msgstr ""
 
@@ -3095,7 +3103,8 @@ msgid ""
 "To initiate the password reset process for your %(username)s Modoboa "
 "account, click the link below:"
 msgstr ""
-"Klikněte na odkaz níže pro resetování hesla vašeho Modoboa účtu %(username)s:"
+"Klikněte na odkaz níže pro resetování hesla vašeho Modoboa účtu "
+"%(username)s:"
 
 #: templates/registration/password_reset_email.html:10
 #: templates/registration/password_reset_email_v2.html:10
@@ -3137,8 +3146,8 @@ msgstr "Původní heslo"
 
 #: templates/registration/twofactor_code_verify.html:35
 msgid ""
-"Enter the code from the two-factor app on your mobile device. If you've lost "
-"your device, you may enter one of your recovery codes."
+"Enter the code from the two-factor app on your mobile device. If you've lost"
+" your device, you may enter one of your recovery codes."
 msgstr ""
 
 #: templates/registration/twofactor_code_verify.html:42
@@ -3396,6 +3405,5 @@ msgid "Attachment is too big (limit: %s)"
 msgstr "Příloha je příliš velká (omezení: %s)"
 
 #, fuzzy, python-brace-format
-#~| msgid "Connection to IMAP server failed: %s"
 #~ msgid "Connection to IMAP server failed: {error}"
 #~ msgstr "Spojení se serverem IMAP selhalo: %s"

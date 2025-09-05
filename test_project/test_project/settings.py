@@ -392,13 +392,19 @@ WEBMAIL_DEV_PASSWORD = os.environ.get("WEBMAIL_DEV_PASSWORD", "")
 
 # Amavis
 
-DATABASES["amavis"] = {  # NOQA
-    "ENGINE": "django.db.backends.mysql",
-    "HOST": "mariadb",
-    "NAME": "amavis",
-    "USER": "root",
-    "PASSWORD": "Password1000",
-}
+MIGRATION_MODULES = {"amavis": None}
+TEST_RUNNER = "modoboa.lib.test_runners.UnManagedModelTestRunner"
+
+# Uncomment this in dev mode
+# DATABASES["amavis"] = {  # NOQA
+#     "ENGINE": "django.db.backends.mysql",
+#     "HOST": "mariadb",
+#     "NAME": "amavis",
+#     "USER": "root",
+#     "PASSWORD": "Password1000",
+# }
 
 DATABASE_ROUTERS = ["modoboa.amavis.dbrouter.AmavisRouter"]
-AMAVIS_DEFAULT_DATABASE_ENCODING = "LATIN1"
+
+AMAVIS_DEFAULT_DATABASE_ENCODING = "UTF-8"
+# AMAVIS_DEFAULT_DATABASE_ENCODING = "LATIN1"

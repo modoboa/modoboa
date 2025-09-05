@@ -664,9 +664,11 @@ class NotificationSerializer(serializers.Serializer):
     """Serializer used to render a notification."""
 
     id = serializers.CharField()
-    url = serializers.CharField(required=False)
     text = serializers.CharField()
-    level = serializers.CharField()
+    color = serializers.CharField()
+    target = serializers.CharField()
+    url = serializers.CharField(required=False)
+    counter = serializers.IntegerField(required=False)
 
 
 class ModoboaApplicationSerializer(serializers.Serializer):

@@ -174,7 +174,8 @@ msgstr "Dieses Feld erlaubt nur gültige IP-Adressen (oder Netzwerke)"
 
 #: admin/api/v2/serializers.py:292
 msgid "Please disable imap migration before disabling this option."
-msgstr "Bitte IMAP Migration deaktivieren bevor Sie diese Option deaktivieren."
+msgstr ""
+"Bitte IMAP Migration deaktivieren bevor Sie diese Option deaktivieren."
 
 #: admin/api/v2/serializers.py:305
 msgid "Define at least one authorized network / address"
@@ -427,7 +428,8 @@ msgstr "Konto Import fehlgeschlagen (%s): ungültiger Quota-Wert"
 
 #: admin/lib.py:121
 msgid "You are not allowed to import domains"
-msgstr "Sie verfügen nicht über ausreichend Rechte, um Domains zu importieren."
+msgstr ""
+"Sie verfügen nicht über ausreichend Rechte, um Domains zu importieren."
 
 #: admin/lib.py:130
 msgid "You are not allowed to import domain aliases."

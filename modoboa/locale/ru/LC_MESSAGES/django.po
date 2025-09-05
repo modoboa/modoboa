@@ -17,15 +17,12 @@ msgstr ""
 "POT-Creation-Date: 2025-08-28 09:41+0200\n"
 "PO-Revision-Date: 2020-05-06 11:16+0000\n"
 "Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
-"Language-Team: Russian (http://www.transifex.com/tonio/modoboa/language/"
-"ru/)\n"
+"Language-Team: Russian (http://www.transifex.com/tonio/modoboa/language/ru/)\n"
 "Language: ru\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
-"n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || "
-"(n%100>=11 && n%100<=14)? 2 : 3);\n"
+"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n%100>=11 && n%100<=14)? 2 : 3);\n"
 
 #: admin/api/v1/serializers.py:39
 msgid ""
@@ -200,8 +197,8 @@ msgstr ""
 
 #: admin/app_settings.py:37
 msgid ""
-"A list of IP or network address every MX record should match. A warning will "
-"be sent if a record does not respect it."
+"A list of IP or network address every MX record should match. A warning will"
+" be sent if a record does not respect it."
 msgstr ""
 
 #: admin/app_settings.py:47
@@ -361,7 +358,8 @@ msgid "Automatic domain/mailbox creation"
 msgstr "Домен создан"
 
 #: admin/app_settings.py:221
-msgid "Create a domain and a mailbox when an account is automatically created."
+msgid ""
+"Create a domain and a mailbox when an account is automatically created."
 msgstr ""
 
 #: admin/app_settings.py:230
@@ -744,13 +742,15 @@ msgstr "Основные"
 
 #: autoreply/app_settings.py:18
 #, fuzzy
-#| msgid "Timeout in seconds between two auto-replies to the same recipient"
+#| msgid ""
+#| "Timeout in seconds between two auto-replies to the same recipient"
 msgid "Period between two auto-replies"
 msgstr "Промежуток между автоматическими ответами"
 
 #: autoreply/app_settings.py:20
 #, fuzzy
-#| msgid "Timeout in seconds between two auto-replies to the same recipient"
+#| msgid ""
+#| "Timeout in seconds between two auto-replies to the same recipient"
 msgid ""
 "Number of days to wait before sending a new auto-reply to the same recipient"
 msgstr "Промежуток между автоматическими ответами"
@@ -978,7 +978,8 @@ msgstr "Неправильное количество циклов"
 msgid "This code is invalid"
 msgstr ""
 
-#: core/api/v2/serializers.py:503 core/views/auth.py:194 core/views/auth.py:247
+#: core/api/v2/serializers.py:503 core/views/auth.py:194
+#: core/views/auth.py:247
 msgid "Please use the following code to recover your Modoboa password: {}"
 msgstr ""
 
@@ -1034,8 +1035,8 @@ msgid ""
 "Number of rounds to use (only used by sha256crypt and sha512crypt). Must be "
 "between 1000 and 999999999, inclusive."
 msgstr ""
-"Количество циклов (используется только для sha256crypt и sha512crypt), Может "
-"быть от 1000 до 999999999, включительно."
+"Количество циклов (используется только для sha256crypt и sha512crypt), Может"
+" быть от 1000 до 999999999, включительно."
 
 #: core/app_settings.py:73
 msgid "Update password scheme at login"
@@ -1180,8 +1181,8 @@ msgstr "Администратор груп"
 
 #: core/app_settings.py:239
 msgid ""
-"Members of those LDAP Posix groups will be created as domain administrators. "
-"Use ';' characters to separate groups."
+"Members of those LDAP Posix groups will be created as domain administrators."
+" Use ';' characters to separate groups."
 msgstr ""
 "Члены этих LDAP Posix групп должны быть созданы администратором домена. "
 "Используйте ';' для как разделитель груп"
@@ -1259,8 +1260,8 @@ msgid ""
 "An optional filter string (e.g. '(objectClass=person)'). In order to be "
 "valid, it must be enclosed in parentheses."
 msgstr ""
-"Необязательная срока поиска (например '(objectClass=person)') Значение нужно "
-"заключить в скобки"
+"Необязательная срока поиска (например '(objectClass=person)') Значение нужно"
+" заключить в скобки"
 
 #: core/app_settings.py:339
 msgid "User DN template"
@@ -1272,8 +1273,8 @@ msgid ""
 "The template used to construct a user's DN. It should contain one "
 "placeholder (ie. %(user)s)"
 msgstr ""
-"Шаблон используется для построения запросов к DN Он должен содержать атрибут "
-"например (%(user)s)"
+"Шаблон используется для построения запросов к DN Он должен содержать атрибут"
+" например (%(user)s)"
 
 #: core/app_settings.py:350
 msgid "LDAP synchronization settings"
@@ -1368,7 +1369,8 @@ msgstr ""
 
 #: core/app_settings.py:506
 #, fuzzy
-#| msgid "Display custom RSS feed to resellers and domain administrators"
+#| msgid ""
+#| "Display custom RSS feed to resellers and domain administrators"
 msgid "Display custom RSS feed to super admins"
 msgstr ""
 "Отображать пользовательскую ленту RSS для реселлеров и администраторов "
@@ -1376,7 +1378,8 @@ msgstr ""
 
 #: core/app_settings.py:509
 #, fuzzy
-#| msgid "Display custom RSS feed to resellers and domain administrators"
+#| msgid ""
+#| "Display custom RSS feed to resellers and domain administrators"
 msgid "Display custom RSS feed also to super administrators"
 msgstr ""
 "Отображать пользовательскую ленту RSS для реселлеров и администраторов "
@@ -1388,7 +1391,8 @@ msgstr "Спрятать виджет новых функций"
 
 #: core/app_settings.py:519
 msgid "Hide features widget for resellers and domain administrators"
-msgstr "Спрятать виджет новых функций для реселлеров и администраторов доменов"
+msgstr ""
+"Спрятать виджет новых функций для реселлеров и администраторов доменов"
 
 #: core/app_settings.py:531
 msgid "Theme"
@@ -1498,8 +1502,8 @@ msgstr "Порог неактивного аккаунта"
 
 #: core/app_settings.py:686
 msgid ""
-"Allow the administrator to set a threshold (in days) beyond which an account "
-"is considered inactive if the user hasn't logged in"
+"Allow the administrator to set a threshold (in days) beyond which an account"
+" is considered inactive if the user hasn't logged in"
 msgstr ""
 
 #: core/app_settings.py:695
@@ -1508,8 +1512,8 @@ msgstr "Порог неактивного аккаунта"
 
 #: core/app_settings.py:698
 msgid ""
-"An account with a last login date greater than this threshold (in days) will "
-"be considered as inactive"
+"An account with a last login date greater than this threshold (in days) will"
+" be considered as inactive"
 msgstr ""
 "Аккаунт с датой последнего входа, превышающей этот порог (в днях), будет "
 "считаться неактивным"
@@ -1552,7 +1556,8 @@ msgstr "Порог перенаправления по умолчанию"
 
 #: core/app_settings.py:748
 msgid "The default redirection used when no application is specified"
-msgstr "Если приложение не указано. Используется перенаправление по умолчанию."
+msgstr ""
+"Если приложение не указано. Используется перенаправление по умолчанию."
 
 #: core/checks.py:15
 msgid ""
@@ -1581,8 +1586,9 @@ msgstr ""
 
 #: core/checks.py:34
 msgid ""
-"Visit : https://modoboa.readthedocs.io/en/latest/manual_installation/"
-"dovecot.html#dovecot-oauth2"
+"Visit : "
+"https://modoboa.readthedocs.io/en/latest/manual_installation/dovecot.html#dovecot-"
+"oauth2"
 msgstr ""
 
 #: core/checks.py:41
@@ -1593,8 +1599,9 @@ msgstr ""
 
 #: core/checks.py:45
 msgid ""
-"Visit :  https://modoboa.readthedocs.io/en/latest/manual_installation/"
-"radicale.html#radicale-oauth2"
+"Visit :  "
+"https://modoboa.readthedocs.io/en/latest/manual_installation/radicale.html#radicale-"
+"oauth2"
 msgstr ""
 
 #: core/constants.py:6
@@ -2202,10 +2209,11 @@ msgstr "Синонимы доменов"
 
 #: limits/app_settings.py:52
 #, fuzzy
-#| msgid "Maximum number of allowed domain aliases for a new administrator"
+#| msgid ""
+#| "Maximum number of allowed domain aliases for a new administrator"
 msgid ""
-"Maximum number of allowed domain aliases for a new administrator. (0 to deny "
-"any creation, -1 to allow unlimited creations)"
+"Maximum number of allowed domain aliases for a new administrator. (0 to deny"
+" any creation, -1 to allow unlimited creations)"
 msgstr "Максимальное количество синонимов доменов для нового администратора"
 
 #: limits/app_settings.py:64
@@ -2258,14 +2266,15 @@ msgstr ""
 #| msgid ""
 #| "Maximum number of allowed domain administrators for a new administrator"
 msgid ""
-"Maximum number of allowed domain administrators for a new domain. (0 to deny "
-"any creation, -1 to allow unlimited creations)"
+"Maximum number of allowed domain administrators for a new domain. (0 to deny"
+" any creation, -1 to allow unlimited creations)"
 msgstr ""
 "Максимальное количество администраторов домена для нового администратора"
 
 #: limits/app_settings.py:126
 #, fuzzy
-#| msgid "Maximum number of allowed domain aliases for a new administrator"
+#| msgid ""
+#| "Maximum number of allowed domain aliases for a new administrator"
 msgid ""
 "Maximum number of allowed domain aliases for a new domain. (0 to deny any "
 "creation, -1 to allow unlimited creations)"
@@ -2283,8 +2292,8 @@ msgstr "Максимальное количество почтовых ящик�
 #, fuzzy
 #| msgid "Maximum number of allowed aliases for a new administrator"
 msgid ""
-"Maximum number of allowed aliases for a new domain. (0 to deny any creation, "
-"-1 to allow unlimited creations)"
+"Maximum number of allowed aliases for a new domain. (0 to deny any creation,"
+" -1 to allow unlimited creations)"
 msgstr "Максимальное количество синонимов для нового администратора"
 
 #: limits/apps.py:16
@@ -2772,8 +2781,8 @@ msgstr ""
 
 #: rspamd/app_settings.py:21
 msgid ""
-"Absolute path of the file which contains paths to DKIM private keys. Must be "
-"readable by _rspamd group or user."
+"Absolute path of the file which contains paths to DKIM private keys. Must be"
+" readable by _rspamd group or user."
 msgstr ""
 
 #: rspamd/app_settings.py:30
@@ -2792,8 +2801,8 @@ msgstr ""
 
 #: rspamd/app_settings.py:53
 msgid ""
-"Location of the rspamd dashboard. Can either be a relative URL (eg. '/"
-"rspamd') or a full URL (eg. 'https://rspamd.domain.tld/').Only use for "
+"Location of the rspamd dashboard. Can either be a relative URL (eg. "
+"'/rspamd') or a full URL (eg. 'https://rspamd.domain.tld/').Only use for "
 "guidance on the Super-Admin dashboard."
 msgstr ""
 
@@ -3080,8 +3089,8 @@ msgstr "Старый пароль"
 
 #: templates/registration/twofactor_code_verify.html:35
 msgid ""
-"Enter the code from the two-factor app on your mobile device. If you've lost "
-"your device, you may enter one of your recovery codes."
+"Enter the code from the two-factor app on your mobile device. If you've lost"
+" your device, you may enter one of your recovery codes."
 msgstr ""
 
 #: templates/registration/twofactor_code_verify.html:42
@@ -3342,7 +3351,5 @@ msgid "Attachment is too big (limit: %s)"
 msgstr "Вложения слишком велики (лимит: %s)"
 
 #, fuzzy, python-brace-format
-#~| msgid "Connection to MANAGESIEVE server failed, check your configuration"
 #~ msgid "Connection to IMAP server failed: {error}"
-#~ msgstr ""
-#~ "Соединение с сервером MANAGESIEVE не удалось, проверьте конфигурацию"
+#~ msgstr "Соединение с сервером MANAGESIEVE не удалось, проверьте конфигурацию"

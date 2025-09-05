@@ -12,8 +12,7 @@ msgstr ""
 "POT-Creation-Date: 2025-08-28 09:41+0200\n"
 "PO-Revision-Date: 2017-10-12 19:37+0000\n"
 "Last-Translator: Kostas Moumouris <moumouriskostas@gmail.com>\n"
-"Language-Team: Greek (Greece) (http://www.transifex.com/tonio/modoboa/"
-"language/el_GR/)\n"
+"Language-Team: Greek (Greece) (http://www.transifex.com/tonio/modoboa/language/el_GR/)\n"
 "Language: el_GR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -198,8 +197,8 @@ msgstr "Έγκυρα MXς"
 
 #: admin/app_settings.py:37
 msgid ""
-"A list of IP or network address every MX record should match. A warning will "
-"be sent if a record does not respect it."
+"A list of IP or network address every MX record should match. A warning will"
+" be sent if a record does not respect it."
 msgstr ""
 "Μια λίστα από IP ή δικτυακές διευθύνσεις που κάθε εγράφη MX πρέπει να "
 "ταιριάζει. "
@@ -213,8 +212,8 @@ msgid ""
 "Prevent the creation of a new domain if its MX record does not use one of "
 "the defined addresses."
 msgstr ""
-"Αποτροπή δημιουργίας νέου domain, εάν η εγράφη MX  χρησιμοποιεί μια από τις  "
-"είδη ορισμένες διευθύνσεις."
+"Αποτροπή δημιουργίας νέου domain, εάν η εγράφη MX  χρησιμοποιεί μια από τις"
+"  είδη ορισμένες διευθύνσεις."
 
 #: admin/app_settings.py:59
 #, fuzzy
@@ -364,7 +363,8 @@ msgid ""
 "value specified. A value of 0 means no quota."
 msgstr ""
 "Προκαθορισμένο quota γραμματοκιβωτίου (σε MB) που εφαρμόζεται στα νέα "
-"domains χωρίς προκαθορισμένες τιμές. Μια τιμή 0 σημαίνει ότι δεν έχει quota. "
+"domains χωρίς προκαθορισμένες τιμές. Μια τιμή 0 σημαίνει ότι δεν έχει quota."
+" "
 
 #: admin/app_settings.py:197
 #, fuzzy
@@ -385,14 +385,16 @@ msgstr "Αυτόματη αφαίρεση λογαριασμών"
 #: admin/app_settings.py:209
 msgid "When a mailbox is removed, also remove the associated account"
 msgstr ""
-"Όταν αφαιρείται ένα γραμματοκιβώτιο, να αφαιρείται και ο σχετικός λογαριασμός"
+"Όταν αφαιρείται ένα γραμματοκιβώτιο, να αφαιρείται και ο σχετικός "
+"λογαριασμός"
 
 #: admin/app_settings.py:218
 msgid "Automatic domain/mailbox creation"
 msgstr "Αυτόματη δημιουργία domain/γραμματοκιβωτίων"
 
 #: admin/app_settings.py:221
-msgid "Create a domain and a mailbox when an account is automatically created."
+msgid ""
+"Create a domain and a mailbox when an account is automatically created."
 msgstr ""
 "Δημιουργία domain και γραμματοκιβωτίου κατά την αυτόματη δημιουργία "
 "λογαριασμού"
@@ -675,8 +677,8 @@ msgstr ""
 #| msgid "Default mailbox quota cannot be greater than domain quota"
 msgid "{}: default mailbox quota cannot be greater than domain quota"
 msgstr ""
-"Το προεπιλεγμένο quota για το γραμματοκιβώτιο δεν πρέπει να είναι μεγαλύτερο "
-"από το domain quota. "
+"Το προεπιλεγμένο quota για το γραμματοκιβώτιο δεν πρέπει να είναι μεγαλύτερο"
+" από το domain quota. "
 
 #: admin/models/domain_alias.py:36
 msgid "The alias name"
@@ -739,8 +741,8 @@ msgid ""
 msgstr ""
 "Η φήμη (reputation) του domain θα επηρεαστεί και υπάρχει πιθανότητα τα "
 "μηνύματα ηλεκτρονικού ταχυδρομείου που προέρχονται από αυτό να θεωρούνται "
-"ανεπιθύμητα. Θα πρέπει να επικοινωνήσετε με αυτούς τους παροχους και να τους "
-"ζητήσετε να σας βγάλουν από τη  λίστα ανεπιθύμητων διευθύνσεων IP."
+"ανεπιθύμητα. Θα πρέπει να επικοινωνήσετε με αυτούς τους παροχους και να τους"
+" ζητήσετε να σας βγάλουν από τη  λίστα ανεπιθύμητων διευθύνσεων IP."
 
 #: admin/templates/admin/notifications/domain_invalid_mx.html:3
 #, python-format
@@ -789,7 +791,8 @@ msgstr "Γενικά"
 
 #: autoreply/app_settings.py:18
 #, fuzzy
-#| msgid "Timeout in seconds between two auto-replies to the same recipient"
+#| msgid ""
+#| "Timeout in seconds between two auto-replies to the same recipient"
 msgid "Period between two auto-replies"
 msgstr ""
 "Χρονικό όριο λήξης σε δευτερόλεπτα μεταξύ δύο αυτόματων απαντήσεων προς τον "
@@ -797,7 +800,8 @@ msgstr ""
 
 #: autoreply/app_settings.py:20
 #, fuzzy
-#| msgid "Timeout in seconds between two auto-replies to the same recipient"
+#| msgid ""
+#| "Timeout in seconds between two auto-replies to the same recipient"
 msgid ""
 "Number of days to wait before sending a new auto-reply to the same recipient"
 msgstr ""
@@ -1037,7 +1041,8 @@ msgstr "Λάθος αριθμός επαναλήψεων "
 msgid "This code is invalid"
 msgstr ""
 
-#: core/api/v2/serializers.py:503 core/views/auth.py:194 core/views/auth.py:247
+#: core/api/v2/serializers.py:503 core/views/auth.py:194
+#: core/views/auth.py:247
 msgid "Please use the following code to recover your Modoboa password: {}"
 msgstr ""
 
@@ -1236,8 +1241,8 @@ msgstr "Χρήση ασφαλής σύνδεσης"
 #: core/app_settings.py:221
 msgid "Use an SSL/STARTTLS connection to access the LDAP server"
 msgstr ""
-"Χρησιμοποιήστε μια σύνδεση SSL / STARTTLS για να συνδεθήκατε στον διακομιστή "
-"LDAP"
+"Χρησιμοποιήστε μια σύνδεση SSL / STARTTLS για να συνδεθήκατε στον διακομιστή"
+" LDAP"
 
 #: core/app_settings.py:228
 msgid "Active Directory"
@@ -1253,11 +1258,11 @@ msgstr "Groups Διαχειριστών"
 
 #: core/app_settings.py:239
 msgid ""
-"Members of those LDAP Posix groups will be created as domain administrators. "
-"Use ';' characters to separate groups."
+"Members of those LDAP Posix groups will be created as domain administrators."
+" Use ';' characters to separate groups."
 msgstr ""
-"Τα μέλη αυτών των LDAP Posix ομάδων χρηστών θα δημιουργηθούν ως διαχειριστές "
-"domain. Χρησιμοποιείστε τον χαραχτήρα ';' για να ξεχωρίσετε τις ομάδες."
+"Τα μέλη αυτών των LDAP Posix ομάδων χρηστών θα δημιουργηθούν ως διαχειριστές"
+" domain. Χρησιμοποιείστε τον χαραχτήρα ';' για να ξεχωρίσετε τις ομάδες."
 
 #: core/app_settings.py:248
 msgid "Group type"
@@ -1335,8 +1340,8 @@ msgid ""
 "An optional filter string (e.g. '(objectClass=person)'). In order to be "
 "valid, it must be enclosed in parentheses."
 msgstr ""
-"Προαιρετικό φίλτρο (π.χ. '(objectClass=person)'). Για να είναι έγκυρο πρέπει "
-"να περικλείεται σε παρενθέσεις."
+"Προαιρετικό φίλτρο (π.χ. '(objectClass=person)'). Για να είναι έγκυρο πρέπει"
+" να περικλείεται σε παρενθέσεις."
 
 #: core/app_settings.py:339
 msgid "User DN template"
@@ -1458,14 +1463,16 @@ msgstr ""
 
 #: core/app_settings.py:506
 #, fuzzy
-#| msgid "Display custom RSS feed to resellers and domain administrators"
+#| msgid ""
+#| "Display custom RSS feed to resellers and domain administrators"
 msgid "Display custom RSS feed to super admins"
 msgstr ""
 "Προβολή κατά παραγγελία RSS feed για μεταπωλητές και διαχειριστές τομέα"
 
 #: core/app_settings.py:509
 #, fuzzy
-#| msgid "Display custom RSS feed to resellers and domain administrators"
+#| msgid ""
+#| "Display custom RSS feed to resellers and domain administrators"
 msgid "Display custom RSS feed also to super administrators"
 msgstr ""
 "Προβολή κατά παραγγελία RSS feed για μεταπωλητές και διαχειριστές τομέα"
@@ -1588,8 +1595,8 @@ msgstr "Όριο απενεργοποιημένων λογαριασμών  "
 
 #: core/app_settings.py:686
 msgid ""
-"Allow the administrator to set a threshold (in days) beyond which an account "
-"is considered inactive if the user hasn't logged in"
+"Allow the administrator to set a threshold (in days) beyond which an account"
+" is considered inactive if the user hasn't logged in"
 msgstr ""
 
 #: core/app_settings.py:695
@@ -1598,8 +1605,8 @@ msgstr "Όριο απενεργοποιημένων λογαριασμών  "
 
 #: core/app_settings.py:698
 msgid ""
-"An account with a last login date greater than this threshold (in days) will "
-"be considered as inactive"
+"An account with a last login date greater than this threshold (in days) will"
+" be considered as inactive"
 msgstr "Όριο (σε ημέρες) για να απενεργοποιηθεί ένας Λογαριασμός."
 
 #: core/app_settings.py:707
@@ -1673,8 +1680,9 @@ msgstr ""
 
 #: core/checks.py:34
 msgid ""
-"Visit : https://modoboa.readthedocs.io/en/latest/manual_installation/"
-"dovecot.html#dovecot-oauth2"
+"Visit : "
+"https://modoboa.readthedocs.io/en/latest/manual_installation/dovecot.html#dovecot-"
+"oauth2"
 msgstr ""
 
 #: core/checks.py:41
@@ -1685,8 +1693,9 @@ msgstr ""
 
 #: core/checks.py:45
 msgid ""
-"Visit :  https://modoboa.readthedocs.io/en/latest/manual_installation/"
-"radicale.html#radicale-oauth2"
+"Visit :  "
+"https://modoboa.readthedocs.io/en/latest/manual_installation/radicale.html#radicale-"
+"oauth2"
 msgstr ""
 
 #: core/constants.py:6
@@ -1825,7 +1834,8 @@ msgstr ""
 #: core/models.py:150
 msgid "Failed to update password: LDAP module not installed"
 msgstr ""
-"Σφάλμα κατά την ενημέρωση του κωδικού: το LDAP module δεν είναι εγκατεστημένο"
+"Σφάλμα κατά την ενημέρωση του κωδικού: το LDAP module δεν είναι "
+"εγκατεστημένο"
 
 #: core/models.py:185 policyd/core.py:117
 msgid "account"
@@ -2300,8 +2310,8 @@ msgstr "Ψευδώνυμα domain"
 
 #: limits/app_settings.py:52
 msgid ""
-"Maximum number of allowed domain aliases for a new administrator. (0 to deny "
-"any creation, -1 to allow unlimited creations)"
+"Maximum number of allowed domain aliases for a new administrator. (0 to deny"
+" any creation, -1 to allow unlimited creations)"
 msgstr ""
 "Μέγιστος αριθμός από επιτρεπόμενα ψευδώνυμα για domain, για νέους "
 "διαχειριστές. (Το 0 δεν επιτρέπει κανένα, το -1 επιτρέπει απεριόριστα) "
@@ -2336,8 +2346,8 @@ msgid ""
 "The quota a reseller will be allowed to share between the domains he "
 "creates. (0 means no quota)"
 msgstr ""
-"To quota που ένας μεταπωλητής επιτρέπεται να μοιράζει μεταξύ των domains που "
-"δημιουργεί. (0 σημαίνει χωρίς quota)"
+"To quota που ένας μεταπωλητής επιτρέπεται να μοιράζει μεταξύ των domains που"
+" δημιουργεί. (0 σημαίνει χωρίς quota)"
 
 #: limits/app_settings.py:98
 msgid "Default per-domain limits"
@@ -2353,8 +2363,8 @@ msgstr "Ενεργοποίηση ή απενεργοποίηση ορίων αν
 
 #: limits/app_settings.py:114
 msgid ""
-"Maximum number of allowed domain administrators for a new domain. (0 to deny "
-"any creation, -1 to allow unlimited creations)"
+"Maximum number of allowed domain administrators for a new domain. (0 to deny"
+" any creation, -1 to allow unlimited creations)"
 msgstr ""
 "Μέγιστος αριθμός από επιτρεπόμενους διαχειριστές domain για ένα νέο domain. "
 "(0 απαγορεύει την δημιουργία, -1 επιτρέπει άπειρες δημιουργίες)"
@@ -2377,8 +2387,8 @@ msgstr ""
 
 #: limits/app_settings.py:149
 msgid ""
-"Maximum number of allowed aliases for a new domain. (0 to deny any creation, "
-"-1 to allow unlimited creations)"
+"Maximum number of allowed aliases for a new domain. (0 to deny any creation,"
+" -1 to allow unlimited creations)"
 msgstr ""
 "Μέγιστος αριθμός από επιτρεπόμενα ψευδώνυμα  για ένα νέο domain. (0 "
 "απαγορεύει την δημιουργία, -1 επιτρέπει άπειρες δημιουργίες)"
@@ -2433,8 +2443,8 @@ msgstr ""
 #: limits/constants.py:93
 msgid "Maximum number of mailbox aliases allowed for this domain."
 msgstr ""
-"Μέγιστος αριθμός από ψευδώνυμα γραμματοκιβωτίων που επιτρέπονται για αυτό το "
-"domain. "
+"Μέγιστος αριθμός από ψευδώνυμα γραμματοκιβωτίων που επιτρέπονται για αυτό το"
+" domain. "
 
 #: limits/constants.py:102
 msgid "Maximum number of domain admins allowed for this domain."
@@ -2751,8 +2761,7 @@ msgid ""
 "your contacts.\n"
 msgstr ""
 "\n"
-"Εδώ μπορείτε να προβάλετε τα ηλεκτρονικά σας μηνύματα σε πραγματικό χρόνο, "
-"να δημιουργήσετε φίλτρα ή να διαχειριστείτε\n"
+"Εδώ μπορείτε να προβάλετε τα ηλεκτρονικά σας μηνύματα σε πραγματικό χρόνο, να δημιουργήσετε φίλτρα ή να διαχειριστείτε\n"
 " τις επαφές σας.\n"
 
 #: pdfcredentials/documents.py:126
@@ -2783,18 +2792,19 @@ msgstr "Διαπιστευτήρια PDF"
 
 #: pdfcredentials/lib.py:29
 #, fuzzy
-#| msgid "Failed to create the directory that will contain PDF documents (%s)"
+#| msgid ""
+#| "Failed to create the directory that will contain PDF documents (%s)"
 msgid "Can't write to selected directory to store PDF documents"
 msgstr ""
-"Σφάλμα στην δημιουργία του καταλόγου αρχείων για την αποθήκευση PDF εγγράφων "
-"(%s)"
+"Σφάλμα στην δημιουργία του καταλόγου αρχείων για την αποθήκευση PDF εγγράφων"
+" (%s)"
 
 #: pdfcredentials/lib.py:35
 #, python-format
 msgid "Failed to create the directory that will contain PDF documents (%s)"
 msgstr ""
-"Σφάλμα στην δημιουργία του καταλόγου αρχείων για την αποθήκευση PDF εγγράφων "
-"(%s)"
+"Σφάλμα στην δημιουργία του καταλόγου αρχείων για την αποθήκευση PDF εγγράφων"
+" (%s)"
 
 #: pdfcredentials/lib.py:82
 msgid ""
@@ -2865,8 +2875,8 @@ msgstr ""
 
 #: rspamd/app_settings.py:21
 msgid ""
-"Absolute path of the file which contains paths to DKIM private keys. Must be "
-"readable by _rspamd group or user."
+"Absolute path of the file which contains paths to DKIM private keys. Must be"
+" readable by _rspamd group or user."
 msgstr ""
 
 #: rspamd/app_settings.py:30
@@ -2885,8 +2895,8 @@ msgstr ""
 
 #: rspamd/app_settings.py:53
 msgid ""
-"Location of the rspamd dashboard. Can either be a relative URL (eg. '/"
-"rspamd') or a full URL (eg. 'https://rspamd.domain.tld/').Only use for "
+"Location of the rspamd dashboard. Can either be a relative URL (eg. "
+"'/rspamd') or a full URL (eg. 'https://rspamd.domain.tld/').Only use for "
 "guidance on the Super-Admin dashboard."
 msgstr ""
 
@@ -3119,8 +3129,8 @@ msgid ""
 "The password reset link was invalid, possibly because it has already been "
 "used. Please request a new password reset."
 msgstr ""
-"Ο σύνδεσμος για την επαναφορά του κωδικού ήταν άκυρος, πιθανότατα γιατί είχε "
-"είδη χρησιμοποιηθεί. Παρακαλώ ζητήστε μια νέα επαναφορά κωδικού."
+"Ο σύνδεσμος για την επαναφορά του κωδικού ήταν άκυρος, πιθανότατα γιατί είχε"
+" είδη χρησιμοποιηθεί. Παρακαλώ ζητήστε μια νέα επαναφορά κωδικού."
 
 #: templates/registration/password_reset_confirm_code.html:22
 msgid "Enter the code you've just received by SMS"
@@ -3144,8 +3154,8 @@ msgstr ""
 "Σας έχουμε αποστείλει με ηλεκτρονικό ταχυδρομείο οδηγίες για να ορίσετε των "
 "κωδικό σας, εφόσον υπάρχει ένας λογαριασμός με το διεύθυνση ηλεκτρονικής "
 "αλληλογραφίας που καταχωρήσατε.  Θα πρέπει να το λάβετε σύντομα. <p><p>Εάν "
-"δεν λάβατε το email, παρακαλώ συγουρευτείτε ότι εισάγατε σωστά την διεύθυνση "
-"σας και ελέγξτε τον φάκελο τον Spam σας. </p> "
+"δεν λάβατε το email, παρακαλώ συγουρευτείτε ότι εισάγατε σωστά την διεύθυνση"
+" σας και ελέγξτε τον φάκελο τον Spam σας. </p> "
 
 #: templates/registration/password_reset_email.html:4
 #: templates/registration/password_reset_email_v2.html:4
@@ -3197,8 +3207,8 @@ msgstr "Παλιός κωδικός"
 
 #: templates/registration/twofactor_code_verify.html:35
 msgid ""
-"Enter the code from the two-factor app on your mobile device. If you've lost "
-"your device, you may enter one of your recovery codes."
+"Enter the code from the two-factor app on your mobile device. If you've lost"
+" your device, you may enter one of your recovery codes."
 msgstr ""
 
 #: templates/registration/twofactor_code_verify.html:42
@@ -3459,6 +3469,5 @@ msgid "Attachment is too big (limit: %s)"
 msgstr "Το συνημμένο είναι πολύ μεγάλο (όριο: %s)"
 
 #, fuzzy, python-brace-format
-#~| msgid "Connection to IMAP server failed: %s"
 #~ msgid "Connection to IMAP server failed: {error}"
 #~ msgstr "Η σύνδεση στο διακομιστή IMAP απέτυχε:%s"

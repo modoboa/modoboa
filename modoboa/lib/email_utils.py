@@ -334,7 +334,7 @@ def split_mailbox(mailbox, return_extension=False):
     return (local_part, domain, extension)
 
 
-def decode(value_bytes, encoding, append_to_error=""):
+def decode(value_bytes: bytes, encoding: str, append_to_error: str = "") -> str:
     """Try to decode the given string."""
     assert isinstance(value_bytes, bytes), "value_bytes should be of type bytes"
     if len(value_bytes) == 0:

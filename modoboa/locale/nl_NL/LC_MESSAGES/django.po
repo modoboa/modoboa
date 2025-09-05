@@ -22,8 +22,7 @@ msgstr ""
 "POT-Creation-Date: 2025-08-28 09:41+0200\n"
 "PO-Revision-Date: 2024-07-17 11:46+0200\n"
 "Last-Translator: J Rosier <vertalen@tagora.nl>\n"
-"Language-Team: Dutch (Netherlands) (http://www.transifex.com/tonio/modoboa/"
-"language/nl_NL/)\n"
+"Language-Team: Dutch (Netherlands) (http://www.transifex.com/tonio/modoboa/language/nl_NL/)\n"
 "Language: nl_NL\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -194,11 +193,11 @@ msgstr "Geldige MX'en"
 
 #: admin/app_settings.py:37
 msgid ""
-"A list of IP or network address every MX record should match. A warning will "
-"be sent if a record does not respect it."
+"A list of IP or network address every MX record should match. A warning will"
+" be sent if a record does not respect it."
 msgstr ""
-"Een lijst van IP-adressen waaraan alle MX-records moeten voldoen. Er zal een "
-"waarschuwing getoond worden voor records die niet overeenkomen."
+"Een lijst van IP-adressen waaraan alle MX-records moeten voldoen. Er zal een"
+" waarschuwing getoond worden voor records die niet overeenkomen."
 
 #: admin/app_settings.py:47
 msgid "New domains must use authorized MX(s)"
@@ -372,9 +371,11 @@ msgid "Automatic domain/mailbox creation"
 msgstr "Domein en mailbox automatisch aanmaken"
 
 #: admin/app_settings.py:221
-msgid "Create a domain and a mailbox when an account is automatically created."
+msgid ""
+"Create a domain and a mailbox when an account is automatically created."
 msgstr ""
-"Maak een domein en mailbox aan wanneer een account automatisch is aangemaakt."
+"Maak een domein en mailbox aan wanneer een account automatisch is "
+"aangemaakt."
 
 #: admin/app_settings.py:230
 msgid "Create an alias when a mailbox is renamed"
@@ -382,7 +383,8 @@ msgstr "Maak een alias aan als een mailbox hernoemd wordt."
 
 #: admin/app_settings.py:233
 msgid "Create an alias using the old address when a mailbox is renamed."
-msgstr "Maak een alias aan voor het oude adres als een mailbox hernoemd wordt."
+msgstr ""
+"Maak een alias aan voor het oude adres als een mailbox hernoemd wordt."
 
 #: admin/app_settings.py:287 core/api/v2/viewsets.py:174
 msgid "Administration"
@@ -698,8 +700,8 @@ msgid ""
 "coming from it are considered as spam. You should contact those providers "
 "and ask them to unlist detected IP address(es)."
 msgstr ""
-"De reputatie van dit domein wordt hierdoor aangetast er bestaat een kans dat "
-"e-mail van dit domein als spam wordt gezien. Je zou contact moeten opnemen "
+"De reputatie van dit domein wordt hierdoor aangetast er bestaat een kans dat"
+" e-mail van dit domein als spam wordt gezien. Je zou contact moeten opnemen "
 "met deze providers en hun vragen om deze IP adressen van de lijst te halen."
 
 #: admin/templates/admin/notifications/domain_invalid_mx.html:3
@@ -749,14 +751,16 @@ msgstr "Algemeen"
 
 #: autoreply/app_settings.py:18
 #, fuzzy
-#| msgid "Timeout in seconds between two auto-replies to the same recipient"
+#| msgid ""
+#| "Timeout in seconds between two auto-replies to the same recipient"
 msgid "Period between two auto-replies"
 msgstr ""
 "Minimale tijd in seconden tussen twee auto-antwoorden naar dezelfde afzender"
 
 #: autoreply/app_settings.py:20
 #, fuzzy
-#| msgid "Timeout in seconds between two auto-replies to the same recipient"
+#| msgid ""
+#| "Timeout in seconds between two auto-replies to the same recipient"
 msgid ""
 "Number of days to wait before sending a new auto-reply to the same recipient"
 msgstr ""
@@ -770,8 +774,8 @@ msgstr "Standaard onderwerp"
 msgid ""
 "Default subject used when an auto-reply message is created automatically"
 msgstr ""
-"Standaard onderwerp gebruikt wanneer een automatisch antwoord automatisch is "
-"aangemaakt"
+"Standaard onderwerp gebruikt wanneer een automatisch antwoord automatisch is"
+" aangemaakt"
 
 #: autoreply/app_settings.py:38
 #, python-format
@@ -994,7 +998,8 @@ msgstr "Ongeldig nummer van rondes"
 msgid "This code is invalid"
 msgstr ""
 
-#: core/api/v2/serializers.py:503 core/views/auth.py:194 core/views/auth.py:247
+#: core/api/v2/serializers.py:503 core/views/auth.py:194
+#: core/views/auth.py:247
 msgid "Please use the following code to recover your Modoboa password: {}"
 msgstr "Gebruik de volgende code om het Modoboa wachtwoord te herstellen: {}"
 
@@ -1202,8 +1207,8 @@ msgstr "Beheerdergroepen"
 
 #: core/app_settings.py:239
 msgid ""
-"Members of those LDAP Posix groups will be created as domain administrators. "
-"Use ';' characters to separate groups."
+"Members of those LDAP Posix groups will be created as domain administrators."
+" Use ';' characters to separate groups."
 msgstr ""
 "Leden van deze LDAP POSIX-groepen zullen aangemaakt worden als "
 "domeinbeheerders. Gebruik ';' karakters om groepen te scheiden."
@@ -1311,7 +1316,8 @@ msgstr "Activeer export naar LDAP"
 msgid ""
 "Enable automatic synchronization between local database and LDAP directory"
 msgstr ""
-"Activeer automatische synchronisatie tussen lokale database en LDAP directory"
+"Activeer automatische synchronisatie tussen lokale database en LDAP "
+"directory"
 
 #: core/app_settings.py:389
 msgid "Delete remote LDAP account when local account is deleted"
@@ -1344,7 +1350,8 @@ msgstr "Activeer import van LDAP"
 
 #: core/app_settings.py:414
 msgid "Enable account synchronization from LDAP directory to local database"
-msgstr "Activeer accountsynchronisatie van LDAP directory naar lokale database"
+msgstr ""
+"Activeer accountsynchronisatie van LDAP directory naar lokale database"
 
 #: core/app_settings.py:444
 msgid "Username attribute"
@@ -1399,13 +1406,15 @@ msgstr "Toon aangepaste RSS feed aan resellers en domein beheerders. "
 
 #: core/app_settings.py:506
 #, fuzzy
-#| msgid "Display custom RSS feed to resellers and domain administrators"
+#| msgid ""
+#| "Display custom RSS feed to resellers and domain administrators"
 msgid "Display custom RSS feed to super admins"
 msgstr "Toon aangepaste RSS feed aan resellers en domein beheerders. "
 
 #: core/app_settings.py:509
 #, fuzzy
-#| msgid "Display custom RSS feed to resellers and domain administrators"
+#| msgid ""
+#| "Display custom RSS feed to resellers and domain administrators"
 msgid "Display custom RSS feed also to super administrators"
 msgstr "Toon aangepaste RSS feed aan resellers en domein beheerders. "
 
@@ -1525,8 +1534,8 @@ msgstr "Drempelwaarde inactieve gebruikers"
 
 #: core/app_settings.py:686
 msgid ""
-"Allow the administrator to set a threshold (in days) beyond which an account "
-"is considered inactive if the user hasn't logged in"
+"Allow the administrator to set a threshold (in days) beyond which an account"
+" is considered inactive if the user hasn't logged in"
 msgstr ""
 
 #: core/app_settings.py:695
@@ -1535,8 +1544,8 @@ msgstr "Drempelwaarde inactieve gebruikers"
 
 #: core/app_settings.py:698
 msgid ""
-"An account with a last login date greater than this threshold (in days) will "
-"be considered as inactive"
+"An account with a last login date greater than this threshold (in days) will"
+" be considered as inactive"
 msgstr ""
 "Een gebruiker die langer dan dit aantal dagen niet ingelogd is, wordt op "
 "inactief gezet."
@@ -1615,8 +1624,9 @@ msgstr ""
 
 #: core/checks.py:34
 msgid ""
-"Visit : https://modoboa.readthedocs.io/en/latest/manual_installation/"
-"dovecot.html#dovecot-oauth2"
+"Visit : "
+"https://modoboa.readthedocs.io/en/latest/manual_installation/dovecot.html#dovecot-"
+"oauth2"
 msgstr ""
 
 #: core/checks.py:41
@@ -1627,8 +1637,9 @@ msgstr ""
 
 #: core/checks.py:45
 msgid ""
-"Visit :  https://modoboa.readthedocs.io/en/latest/manual_installation/"
-"radicale.html#radicale-oauth2"
+"Visit :  "
+"https://modoboa.readthedocs.io/en/latest/manual_installation/radicale.html#radicale-"
+"oauth2"
 msgstr ""
 
 #: core/constants.py:6
@@ -2214,7 +2225,8 @@ msgid ""
 "Maximum number of allowed domain administrators for a new administrator. (0 "
 "to deny any creation, -1 to allow unlimited creations)"
 msgstr ""
-"Maximum aantal toegestane domein administrators voor een nieuwe administrator"
+"Maximum aantal toegestane domein administrators voor een nieuwe "
+"administrator"
 
 #: limits/app_settings.py:41
 #, fuzzy
@@ -2231,10 +2243,11 @@ msgstr "Domeinaliassen"
 
 #: limits/app_settings.py:52
 #, fuzzy
-#| msgid "Maximum number of allowed domain aliases for a new administrator"
+#| msgid ""
+#| "Maximum number of allowed domain aliases for a new administrator"
 msgid ""
-"Maximum number of allowed domain aliases for a new administrator. (0 to deny "
-"any creation, -1 to allow unlimited creations)"
+"Maximum number of allowed domain aliases for a new administrator. (0 to deny"
+" any creation, -1 to allow unlimited creations)"
 msgstr "Maximum aantal domein aliassen voor een nieuwe administrator"
 
 #: limits/app_settings.py:64
@@ -2287,14 +2300,16 @@ msgstr ""
 #| msgid ""
 #| "Maximum number of allowed domain administrators for a new administrator"
 msgid ""
-"Maximum number of allowed domain administrators for a new domain. (0 to deny "
-"any creation, -1 to allow unlimited creations)"
+"Maximum number of allowed domain administrators for a new domain. (0 to deny"
+" any creation, -1 to allow unlimited creations)"
 msgstr ""
-"Maximum aantal toegestane domein administrators voor een nieuwe administrator"
+"Maximum aantal toegestane domein administrators voor een nieuwe "
+"administrator"
 
 #: limits/app_settings.py:126
 #, fuzzy
-#| msgid "Maximum number of allowed domain aliases for a new administrator"
+#| msgid ""
+#| "Maximum number of allowed domain aliases for a new administrator"
 msgid ""
 "Maximum number of allowed domain aliases for a new domain. (0 to deny any "
 "creation, -1 to allow unlimited creations)"
@@ -2312,8 +2327,8 @@ msgstr "Maximum aantal toegestane mailboxen voor een nieuwe administrator"
 #, fuzzy
 #| msgid "Maximum number of allowed aliases for a new administrator"
 msgid ""
-"Maximum number of allowed aliases for a new domain. (0 to deny any creation, "
-"-1 to allow unlimited creations)"
+"Maximum number of allowed aliases for a new domain. (0 to deny any creation,"
+" -1 to allow unlimited creations)"
 msgstr "Maximum aantal aliassen voor een nieuwe administrator"
 
 #: limits/apps.py:16
@@ -2553,8 +2568,8 @@ msgid ""
 "new document will be created each time a password is updated."
 msgstr ""
 "Genereer een document enkel wanneer een account is nieuw aangemaakt. Indien "
-"'nee' is geselecteerd zal bij iedere wachtwoord wijziging een nieuw document "
-"worden gemaakt. "
+"'nee' is geselecteerd zal bij iedere wachtwoord wijziging een nieuw document"
+" worden gemaakt. "
 
 #: pdfcredentials/app_settings.py:84
 msgid "Customization options"
@@ -2681,8 +2696,7 @@ msgid ""
 "your contacts.\n"
 msgstr ""
 "\n"
-"Hier kunt u uw e-mails online bekijken, filters aanmaken, of contactpersonen "
-"beheren.\n"
+"Hier kunt u uw e-mails online bekijken, filters aanmaken, of contactpersonen beheren.\n"
 
 #: pdfcredentials/documents.py:126
 msgid "Please change your password!"
@@ -2710,7 +2724,8 @@ msgstr "PDF gegevens"
 
 #: pdfcredentials/lib.py:29
 #, fuzzy
-#| msgid "Failed to create the directory that will contain PDF documents (%s)"
+#| msgid ""
+#| "Failed to create the directory that will contain PDF documents (%s)"
 msgid "Can't write to selected directory to store PDF documents"
 msgstr "Het aanmaken van de map voor de PDF documenten is mislukt (%s)"
 
@@ -2792,8 +2807,8 @@ msgstr ""
 
 #: rspamd/app_settings.py:21
 msgid ""
-"Absolute path of the file which contains paths to DKIM private keys. Must be "
-"readable by _rspamd group or user."
+"Absolute path of the file which contains paths to DKIM private keys. Must be"
+" readable by _rspamd group or user."
 msgstr ""
 
 #: rspamd/app_settings.py:30
@@ -2812,8 +2827,8 @@ msgstr ""
 
 #: rspamd/app_settings.py:53
 msgid ""
-"Location of the rspamd dashboard. Can either be a relative URL (eg. '/"
-"rspamd') or a full URL (eg. 'https://rspamd.domain.tld/').Only use for "
+"Location of the rspamd dashboard. Can either be a relative URL (eg. "
+"'/rspamd') or a full URL (eg. 'https://rspamd.domain.tld/').Only use for "
 "guidance on the Super-Admin dashboard."
 msgstr ""
 
@@ -2969,7 +2984,8 @@ msgstr ""
 #, fuzzy
 #| msgid "Connection to IMAP server failed: %s"
 msgid "Connection to MANAGESIEVE server failed, check your configuration"
-msgstr "Verbinding naar MANAGESIEVE server mislukt, controleer uw configuratie"
+msgstr ""
+"Verbinding naar MANAGESIEVE server mislukt, controleer uw configuratie"
 
 #: sievefilters/lib.py:76
 #, fuzzy
@@ -3028,8 +3044,7 @@ msgstr "Wachtwoord vergeten?"
 msgid ""
 "Your password has been set. You may go ahead and <a href=\"%(url)s\">sign "
 "in</a> now."
-msgstr ""
-"Je wachtwoord is ingesteld. Je kunt nu <a href=\"%(url)s\">inloggen</a>"
+msgstr "Je wachtwoord is ingesteld. Je kunt nu <a href=\"%(url)s\">inloggen</a>"
 
 #: templates/registration/password_reset_confirm.html:8
 msgid "Change password"
@@ -3068,10 +3083,8 @@ msgid ""
 "<p>If you don't receive an email, please make sure you've entered your "
 "primary address, and check your spam folder.</p>"
 msgstr ""
-"<p>We hebben je instructies gemailt om je wachtwoord in te stellen. Als het "
-"door jou ingevulde email adres bestaat, zal je hem binnenkort ontvangen</p>\n"
-"<p>Als je geen email ontvangt, controleer dan of je het juiste email adres "
-"hebt ingevuld, en controleer je spam folder. </p>"
+"<p>We hebben je instructies gemailt om je wachtwoord in te stellen. Als het door jou ingevulde email adres bestaat, zal je hem binnenkort ontvangen</p>\n"
+"<p>Als je geen email ontvangt, controleer dan of je het juiste email adres hebt ingevuld, en controleer je spam folder. </p>"
 
 #: templates/registration/password_reset_email.html:4
 #: templates/registration/password_reset_email_v2.html:4
@@ -3123,8 +3136,8 @@ msgstr "Oud wachtwoord"
 
 #: templates/registration/twofactor_code_verify.html:35
 msgid ""
-"Enter the code from the two-factor app on your mobile device. If you've lost "
-"your device, you may enter one of your recovery codes."
+"Enter the code from the two-factor app on your mobile device. If you've lost"
+" your device, you may enter one of your recovery codes."
 msgstr ""
 
 #: templates/registration/twofactor_code_verify.html:42
@@ -3236,7 +3249,7 @@ msgstr "(De)activeer weergave van HTML-koppelingen"
 #, fuzzy
 #| msgid "Number of displayed items per page"
 msgid "Number of displayed emails per page"
-msgstr "Aantal weergegeven e-mails per pagina"
+msgstr "Aantal weergegeven emails per pagina"
 
 #: webmail/app_settings.py:147
 msgid "Sets the maximum number of messages displayed in a page"
@@ -3376,6 +3389,5 @@ msgid "Attachment is too big (limit: %s)"
 msgstr "Bijlage is te groot (maximaal toegestane grootte: %s)"
 
 #, fuzzy, python-brace-format
-#~| msgid "Connection to IMAP server failed: %s"
 #~ msgid "Connection to IMAP server failed: {error}"
 #~ msgstr "Verbinding naar IMAP server mislukt: %s"
