@@ -3,13 +3,10 @@ import re
 import socket
 import struct
 from email.utils import parseaddr
-from functools import wraps
 
 import idna
 
 from django.conf import settings
-from django.contrib.auth.views import redirect_to_login
-from django.urls import reverse
 from django.utils.translation import gettext as _
 
 from rest_framework import authentication, exceptions
@@ -21,33 +18,6 @@ from modoboa.lib.sysutils import exec_cmd
 from modoboa.parameters import tools as param_tools
 from .models import Msgrcpt, Policy, Users
 from .utils import smart_bytes, smart_str
-
-
-def selfservice(ssfunc=None):
-    """Decorator used to expose views to the 'self-service' feature
-
-    The 'self-service' feature allows users to act on quarantined
-    messages without beeing authenticated.
-
-    This decorator only acts as a 'router'.
-
-    :param ssfunc: the function to call if the 'self-service'
-                   pre-requisites are satisfied
-    """
-
-    def decorator(f):
-        @wraps(f)
-        def wrapped_f(request, *args, **kwargs):
-            secret_id = request.GET.get("secret_id")
-            if not secret_id and request.user.is_authenticated:
-                return f(request, *args, **kwargs)
-            if not param_tools.get_global_parameter("self_service"):
-                return redirect_to_login(reverse("modoboa_amavis:index"))
-            return ssfunc(request, *args, **kwargs)
-
-        return wrapped_f
-
-    return decorator
 
 
 class SelfServiceAuthentication(authentication.BaseAuthentication):
