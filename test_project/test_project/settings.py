@@ -395,7 +395,16 @@ WEBMAIL_DEV_PASSWORD = os.environ.get("WEBMAIL_DEV_PASSWORD", "")
 MIGRATION_MODULES = {"amavis": None}
 TEST_RUNNER = "modoboa.lib.test_runners.UnManagedModelTestRunner"
 
-# Uncomment this in dev mode
+# We force sqlite backend for tests because the generated database is
+# not the same as the one provided by amavis...
+DATABASES["amavis"] = {  # noqa
+    "ENGINE": "django.db.backends.sqlite3",
+    "NAME": "amavis.db",
+    "PORT": "",
+    "ATOMIC_REQUESTS": True,
+}
+
+# Uncomment this in dev mode (docker)
 # DATABASES["amavis"] = {  # NOQA
 #     "ENGINE": "django.db.backends.mysql",
 #     "HOST": "mariadb",
