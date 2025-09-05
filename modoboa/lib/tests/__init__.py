@@ -189,7 +189,7 @@ class ParametersMixin:
 class SimpleModoTestCase(ParametersMixin, TestCase):
     """Simple class to add parameters editing."""
 
-    pass
+    databases = "__all__"
 
 
 class ModoTestCase(ParametersMixin, TestCase):
