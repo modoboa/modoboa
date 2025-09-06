@@ -166,3 +166,10 @@ class CanCreateDomain(permissions.BasePermission):
 
     def has_permission(self, request, view):
         return request.user.has_perm("admin.add_domain")
+
+
+class CanViewDomain(permissions.BasePermission):
+    """Permissions class to allow users with view_domain right."""
+
+    def has_permission(self, request, view):
+        return request.user.has_perm("admin.view_domain")

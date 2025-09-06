@@ -104,6 +104,7 @@ MODOBOA_APPS = (
     "modoboa.contacts",
     "modoboa.calendars",
     "modoboa.webmail",
+    "modoboa.amavis",
 )
 
 try:
@@ -376,6 +377,7 @@ LOGGING = {
 
 SILENCED_SYSTEM_CHECKS = [
     "security.W019",  # modoboa uses iframes to display e-mails
+    "fields.W342",
 ]
 
 DISABLE_DASHBOARD_EXTERNAL_QUERIES = False
@@ -387,3 +389,31 @@ LDAP_SERVER_PORT = os.environ.get("LDAP_SERVER_PORT", 3389)
 WEBMAIL_DEV_MODE = os.environ.get("WEBMAIL_DEV_MODE", "off") == "on"
 WEBMAIL_DEV_USERNAME = os.environ.get("WEBMAIL_DEV_USERNAME", "")
 WEBMAIL_DEV_PASSWORD = os.environ.get("WEBMAIL_DEV_PASSWORD", "")
+
+# Amavis
+
+MIGRATION_MODULES = {"amavis": None}
+TEST_RUNNER = "modoboa.lib.test_runners.UnManagedModelTestRunner"
+
+# We force sqlite backend for tests because the generated database is
+# not the same as the one provided by amavis...
+DATABASES["amavis"] = {  # noqa
+    "ENGINE": "django.db.backends.sqlite3",
+    "NAME": "amavis.db",
+    "PORT": "",
+    "ATOMIC_REQUESTS": True,
+}
+
+# Uncomment this in dev mode (docker)
+# DATABASES["amavis"] = {  # NOQA
+#     "ENGINE": "django.db.backends.mysql",
+#     "HOST": "mariadb",
+#     "NAME": "amavis",
+#     "USER": "root",
+#     "PASSWORD": "Password1000",
+# }
+
+DATABASE_ROUTERS = ["modoboa.amavis.dbrouter.AmavisRouter"]
+
+AMAVIS_DEFAULT_DATABASE_ENCODING = "UTF-8"
+# AMAVIS_DEFAULT_DATABASE_ENCODING = "LATIN1"

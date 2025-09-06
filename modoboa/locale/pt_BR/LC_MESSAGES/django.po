@@ -28,16 +28,13 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-08-28 09:41+0200\n"
 "PO-Revision-Date: 2011-07-01 08:15+0000\n"
-"Last-Translator: Rafael Barretto Alves <ch3yd@hotmail.com>, "
-"2013,2015-2017,2025\n"
-"Language-Team: Portuguese (Brazil) (http://app.transifex.com/tonio/modoboa/"
-"language/pt_BR/)\n"
+"Last-Translator: Rafael Barretto Alves <ch3yd@hotmail.com>, 2013,2015-2017,2025\n"
+"Language-Team: Portuguese (Brazil) (http://app.transifex.com/tonio/modoboa/language/pt_BR/)\n"
 "Language: pt_BR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n == 0 || n == 1) ? 0 : n != 0 && n % "
-"1000000 == 0 ? 1 : 2;\n"
+"Plural-Forms: nplurals=3; plural=(n == 0 || n == 1) ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;\n"
 
 #: admin/api/v1/serializers.py:39
 msgid ""
@@ -205,11 +202,11 @@ msgstr "MXs válidos"
 
 #: admin/app_settings.py:37
 msgid ""
-"A list of IP or network address every MX record should match. A warning will "
-"be sent if a record does not respect it."
+"A list of IP or network address every MX record should match. A warning will"
+" be sent if a record does not respect it."
 msgstr ""
-"Uma lista de endereços IP ou de rede que cada registro MX deve corresponder. "
-"Um aviso será enviado se um registro não for respeitado."
+"Uma lista de endereços IP ou de rede que cada registro MX deve corresponder."
+" Um aviso será enviado se um registro não for respeitado."
 
 #: admin/app_settings.py:47
 msgid "New domains must use authorized MX(s)"
@@ -246,8 +243,8 @@ msgstr "Ativar verificações DKIM"
 #: admin/app_settings.py:80
 msgid "Check if every domain with DKIM signin enabled has a valid DNS record"
 msgstr ""
-"Verifique se todos os domínios com login DKIM habilitado têm um registro DNS "
-"válido"
+"Verifique se todos os domínios com login DKIM habilitado têm um registro DNS"
+" válido"
 
 #: admin/app_settings.py:88
 msgid "Enable DMARC checks"
@@ -295,8 +292,8 @@ msgid ""
 "world."
 msgstr ""
 "Caminho absoluto do diretório onde as chaves privadas DKIM serão "
-"armazenadas. Certifique-se que este diretório pertença ao usuário root e não "
-"seja legível pelo mundo exterior."
+"armazenadas. Certifique-se que este diretório pertença ao usuário root e não"
+" seja legível pelo mundo exterior."
 
 #: admin/app_settings.py:137
 msgid "Default DKIM key length"
@@ -356,8 +353,8 @@ msgid ""
 "Default mailbox quota (in MB) applied to freshly created domains with no "
 "value specified. A value of 0 means no quota."
 msgstr ""
-"Cota de caixa de correio padrão (em MB) aplicada para domínios recém-criados "
-"sem nenhum valor especificado. Um valor 0 significa que não há cota."
+"Cota de caixa de correio padrão (em MB) aplicada para domínios recém-criados"
+" sem nenhum valor especificado. Um valor 0 significa que não há cota."
 
 #: admin/app_settings.py:197
 msgid "Default mailbox sending limit"
@@ -385,7 +382,8 @@ msgid "Automatic domain/mailbox creation"
 msgstr "Criação automática de domínio/caixa de correio"
 
 #: admin/app_settings.py:221
-msgid "Create a domain and a mailbox when an account is automatically created."
+msgid ""
+"Create a domain and a mailbox when an account is automatically created."
 msgstr ""
 "Crie um domínio e uma caixa de correio quando uma conta for criada "
 "automaticamente."
@@ -716,7 +714,8 @@ msgid ""
 msgstr ""
 "A reputação do domínio será afetada e há uma chance de que os e-mails "
 "provenientes dele sejam considerados spam. Você deve entrar em contato com "
-"esses provedores e pedir que eles retirem a lista de endereços IP detectados."
+"esses provedores e pedir que eles retirem a lista de endereços IP "
+"detectados."
 
 #: admin/templates/admin/notifications/domain_invalid_mx.html:3
 #, python-format
@@ -759,7 +758,8 @@ msgstr "Geral"
 
 #: autoreply/app_settings.py:18
 #, fuzzy
-#| msgid "Timeout in seconds between two auto-replies to the same recipient"
+#| msgid ""
+#| "Timeout in seconds between two auto-replies to the same recipient"
 msgid "Period between two auto-replies"
 msgstr ""
 "Tempo limite, em segundos, entre duas respostas automáticas para o mesmo "
@@ -767,7 +767,8 @@ msgstr ""
 
 #: autoreply/app_settings.py:20
 #, fuzzy
-#| msgid "Timeout in seconds between two auto-replies to the same recipient"
+#| msgid ""
+#| "Timeout in seconds between two auto-replies to the same recipient"
 msgid ""
 "Number of days to wait before sending a new auto-reply to the same recipient"
 msgstr ""
@@ -993,7 +994,8 @@ msgstr "Número de ciclos inválido"
 msgid "This code is invalid"
 msgstr "Este código é inválido"
 
-#: core/api/v2/serializers.py:503 core/views/auth.py:194 core/views/auth.py:247
+#: core/api/v2/serializers.py:503 core/views/auth.py:194
+#: core/views/auth.py:247
 msgid "Please use the following code to recover your Modoboa password: {}"
 msgstr ""
 "Por favor, use o seguinte código para recuperar sua senha do Modoboa: {}"
@@ -1198,8 +1200,8 @@ msgstr "Grupos de administradores"
 
 #: core/app_settings.py:239
 msgid ""
-"Members of those LDAP Posix groups will be created as domain administrators. "
-"Use ';' characters to separate groups."
+"Members of those LDAP Posix groups will be created as domain administrators."
+" Use ';' characters to separate groups."
 msgstr ""
 "Membros dos grupos do LDAP Posix serão criados como administradores de "
 "domínio. Use o caractere ';' para separar grupos."
@@ -1249,8 +1251,8 @@ msgid ""
 "The distinguished name to use when binding to the LDAP server. Leave empty "
 "for an anonymous bind"
 msgstr ""
-"O nome distinto para usar quando vincular ao servidor LDAP. Deixe vazio para "
-"vincular anonimamente"
+"O nome distinto para usar quando vincular ao servidor LDAP. Deixe vazio para"
+" vincular anonimamente"
 
 #: core/app_settings.py:305 core/app_settings.py:367
 msgid "Bind password"
@@ -1290,8 +1292,8 @@ msgid ""
 "The template used to construct a user's DN. It should contain one "
 "placeholder (ie. %(user)s)"
 msgstr ""
-"A template usada para construir um DN de usuário. Deve conter um placeholder "
-"(por ex: %(user)s)"
+"A template usada para construir um DN de usuário. Deve conter um placeholder"
+" (por ex: %(user)s)"
 
 #: core/app_settings.py:350
 msgid "LDAP synchronization settings"
@@ -1305,8 +1307,8 @@ msgstr "Habilitar exportação para LDAP"
 msgid ""
 "Enable automatic synchronization between local database and LDAP directory"
 msgstr ""
-"Ativar a sincronização automática entre o banco de dados local e o diretório "
-"LDAP"
+"Ativar a sincronização automática entre o banco de dados local e o diretório"
+" LDAP"
 
 #: core/app_settings.py:389
 msgid "Delete remote LDAP account when local account is deleted"
@@ -1402,7 +1404,8 @@ msgstr ""
 
 #: core/app_settings.py:506
 #, fuzzy
-#| msgid "Display custom RSS feed to resellers and domain administrators"
+#| msgid ""
+#| "Display custom RSS feed to resellers and domain administrators"
 msgid "Display custom RSS feed to super admins"
 msgstr ""
 "Mostrar um feed RSS personalizado para revendedores e administradores de "
@@ -1410,7 +1413,8 @@ msgstr ""
 
 #: core/app_settings.py:509
 #, fuzzy
-#| msgid "Display custom RSS feed to resellers and domain administrators"
+#| msgid ""
+#| "Display custom RSS feed to resellers and domain administrators"
 msgid "Display custom RSS feed also to super administrators"
 msgstr ""
 "Mostrar um feed RSS personalizado para revendedores e administradores de "
@@ -1531,8 +1535,8 @@ msgstr "Ativar rastreamento de conta inativa"
 
 #: core/app_settings.py:686
 msgid ""
-"Allow the administrator to set a threshold (in days) beyond which an account "
-"is considered inactive if the user hasn't logged in"
+"Allow the administrator to set a threshold (in days) beyond which an account"
+" is considered inactive if the user hasn't logged in"
 msgstr ""
 "Permitir que o administrador defina um limite (em dias) além do qual uma "
 "conta é considerada inativa se o usuário não tiver feito login"
@@ -1543,8 +1547,8 @@ msgstr "Limite de conta inativa"
 
 #: core/app_settings.py:698
 msgid ""
-"An account with a last login date greater than this threshold (in days) will "
-"be considered as inactive"
+"An account with a last login date greater than this threshold (in days) will"
+" be considered as inactive"
 msgstr ""
 "Uma conta com uma data de login maior que este limite (em dias) será "
 "considerada como inativa"
@@ -1620,8 +1624,9 @@ msgstr ""
 
 #: core/checks.py:34
 msgid ""
-"Visit : https://modoboa.readthedocs.io/en/latest/manual_installation/"
-"dovecot.html#dovecot-oauth2"
+"Visit : "
+"https://modoboa.readthedocs.io/en/latest/manual_installation/dovecot.html#dovecot-"
+"oauth2"
 msgstr ""
 
 #: core/checks.py:41
@@ -1632,8 +1637,9 @@ msgstr ""
 
 #: core/checks.py:45
 msgid ""
-"Visit :  https://modoboa.readthedocs.io/en/latest/manual_installation/"
-"radicale.html#radicale-oauth2"
+"Visit :  "
+"https://modoboa.readthedocs.io/en/latest/manual_installation/radicale.html#radicale-"
+"oauth2"
 msgstr ""
 
 #: core/constants.py:6
@@ -2235,8 +2241,8 @@ msgstr "Apelidos de domínios"
 
 #: limits/app_settings.py:52
 msgid ""
-"Maximum number of allowed domain aliases for a new administrator. (0 to deny "
-"any creation, -1 to allow unlimited creations)"
+"Maximum number of allowed domain aliases for a new administrator. (0 to deny"
+" any creation, -1 to allow unlimited creations)"
 msgstr ""
 "Número máximo de apelidos de domínio permitidos para um novo administrador. "
 "(0 para negar qualquer criação, -1 para permitir criações ilimitadas)"
@@ -2246,8 +2252,8 @@ msgid ""
 "Maximum number of allowed mailboxes for a new administrator. (0 to deny any "
 "creation, -1 to allow unlimited creations)"
 msgstr ""
-"Número máximo de caixas de correio permitidas para um novo administrador. (0 "
-"para negar qualquer criação, -1 para permitir criações ilimitadas)"
+"Número máximo de caixas de correio permitidas para um novo administrador. (0"
+" para negar qualquer criação, -1 para permitir criações ilimitadas)"
 
 #: limits/app_settings.py:73 limits/app_settings.py:146 limits/constants.py:39
 #: limits/constants.py:92
@@ -2288,11 +2294,11 @@ msgstr "Habilitar ou desabilitar limites por domínio"
 
 #: limits/app_settings.py:114
 msgid ""
-"Maximum number of allowed domain administrators for a new domain. (0 to deny "
-"any creation, -1 to allow unlimited creations)"
+"Maximum number of allowed domain administrators for a new domain. (0 to deny"
+" any creation, -1 to allow unlimited creations)"
 msgstr ""
-"Número máximo de administradores de domínio permitidos para um novo domínio. "
-"(0 para negar qualquer criação, -1 para permitir criações ilimitadas)"
+"Número máximo de administradores de domínio permitidos para um novo domínio."
+" (0 para negar qualquer criação, -1 para permitir criações ilimitadas)"
 
 #: limits/app_settings.py:126
 msgid ""
@@ -2312,8 +2318,8 @@ msgstr ""
 
 #: limits/app_settings.py:149
 msgid ""
-"Maximum number of allowed aliases for a new domain. (0 to deny any creation, "
-"-1 to allow unlimited creations)"
+"Maximum number of allowed aliases for a new domain. (0 to deny any creation,"
+" -1 to allow unlimited creations)"
 msgstr ""
 "Número máximo de apelidos permitidos para um novo domínio. (0 para negar "
 "qualquer criação, -1 para permitir criações ilimitadas)"
@@ -2539,8 +2545,9 @@ msgid ""
 "Generate a new document only when a new account is created. If set to no, a "
 "new document will be created each time a password is updated."
 msgstr ""
-"Gere um novo documento somente quando uma nova conta for criada. Se definido "
-"como não, um novo documento será criado sempre que uma senha for atualizada."
+"Gere um novo documento somente quando uma nova conta for criada. Se definido"
+" como não, um novo documento será criado sempre que uma senha for "
+"atualizada."
 
 #: pdfcredentials/app_settings.py:84
 msgid "Customization options"
@@ -2579,8 +2586,8 @@ msgid ""
 "Include required SMTP and IMAP connection information to configure a mail "
 "client, a tablet or a phone"
 msgstr ""
-"Incluir as informações de conexão SMTP e IMAP necessárias para configurar um "
-"cliente de e-mail, um tablet ou um telefone"
+"Incluir as informações de conexão SMTP e IMAP necessárias para configurar um"
+" cliente de e-mail, um tablet ou um telefone"
 
 #: pdfcredentials/app_settings.py:123 pdfcredentials/documents.py:133
 msgid "SMTP server address"
@@ -2666,8 +2673,7 @@ msgid ""
 "your contacts.\n"
 msgstr ""
 "\n"
-"Aqui você pode visualizar online seus e-mails a qualquer momento, criar "
-"filtros ou gerenciar\n"
+"Aqui você pode visualizar online seus e-mails a qualquer momento, criar filtros ou gerenciar\n"
 "seus contatos.\n"
 
 #: pdfcredentials/documents.py:126
@@ -2687,8 +2693,8 @@ msgid ""
 "Failed to create PDF_credentials directory. Please check the permissions or "
 "the path."
 msgstr ""
-"Falha ao criar diretório PDF_credentials. Por favor, verifique as permissões "
-"ou o caminho."
+"Falha ao criar diretório PDF_credentials. Por favor, verifique as permissões"
+" ou o caminho."
 
 #: pdfcredentials/handlers.py:64
 msgid "Download PDF credentials"
@@ -2771,8 +2777,8 @@ msgstr ""
 
 #: rspamd/app_settings.py:21
 msgid ""
-"Absolute path of the file which contains paths to DKIM private keys. Must be "
-"readable by _rspamd group or user."
+"Absolute path of the file which contains paths to DKIM private keys. Must be"
+" readable by _rspamd group or user."
 msgstr ""
 
 #: rspamd/app_settings.py:30
@@ -2791,8 +2797,8 @@ msgstr ""
 
 #: rspamd/app_settings.py:53
 msgid ""
-"Location of the rspamd dashboard. Can either be a relative URL (eg. '/"
-"rspamd') or a full URL (eg. 'https://rspamd.domain.tld/').Only use for "
+"Location of the rspamd dashboard. Can either be a relative URL (eg. "
+"'/rspamd') or a full URL (eg. 'https://rspamd.domain.tld/').Only use for "
 "guidance on the Super-Admin dashboard."
 msgstr ""
 
@@ -2855,7 +2861,7 @@ msgstr "Qualquer um dos seguintes"
 
 #: sievefilters/constants.py:12
 msgid "All messages"
-msgstr "Todas as mensagens"
+msgstr "Todas mensagens"
 
 #: sievefilters/constants.py:16
 msgid "contains"
@@ -3017,8 +3023,8 @@ msgid ""
 "primary address, and check your spam folder.</p>"
 msgstr ""
 "<p>Enviamos instruções por e-mail para definir sua senha, se houver uma "
-"conta com o e-mail que você digitou. Você deve recebê-lo em breve.</p> <p>Se "
-"você não receber um e-mail, certifique-se de ter digitado seu endereço "
+"conta com o e-mail que você digitou. Você deve recebê-lo em breve.</p> <p>Se"
+" você não receber um e-mail, certifique-se de ter digitado seu endereço "
 "principal e verifique sua pasta de spam.</p>"
 
 #: templates/registration/password_reset_email.html:4
@@ -3037,8 +3043,8 @@ msgid ""
 "If clicking the link above doesn't work, please copy and paste the URL in a "
 "new browser window instead."
 msgstr ""
-"Se clicar no link acima não funcionar, copie e cole a URL em uma nova janela "
-"do navegador."
+"Se clicar no link acima não funcionar, copie e cole a URL em uma nova janela"
+" do navegador."
 
 #: templates/registration/password_reset_email.html:14
 #: templates/registration/password_reset_email_v2.html:14
@@ -3067,11 +3073,11 @@ msgstr "Senha de uso único"
 
 #: templates/registration/twofactor_code_verify.html:35
 msgid ""
-"Enter the code from the two-factor app on your mobile device. If you've lost "
-"your device, you may enter one of your recovery codes."
+"Enter the code from the two-factor app on your mobile device. If you've lost"
+" your device, you may enter one of your recovery codes."
 msgstr ""
-"Digite o código do aplicativo de dois fatores em seu celular. Se você perdeu "
-"seu dispositivo, pode digitar um de seus códigos de recuperação."
+"Digite o código do aplicativo de dois fatores em seu celular. Se você perdeu"
+" seu dispositivo, pode digitar um de seus códigos de recuperação."
 
 #: templates/registration/twofactor_code_verify.html:42
 msgid "Verify code"
@@ -3335,6 +3341,5 @@ msgstr "Anexo muito grande (limite: %s)"
 #~ msgstr "IDs de alarme inválidos recebidos"
 
 #, fuzzy, python-brace-format
-#~| msgid "Connection to IMAP server failed: %s"
 #~ msgid "Connection to IMAP server failed: {error}"
 #~ msgstr "Falha na conexão com o servidor IMAP: %s"

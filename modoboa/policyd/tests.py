@@ -41,6 +41,8 @@ class PolicyDaemonTestCase(RedisTestCaseMixin, ParametersMixin, TransactionTestC
     A redis instance is required to run those tests.
     """
 
+    databases = "__all__"
+
     def setUp(self):
         super().setUp()
         call_command("load_initial_data")

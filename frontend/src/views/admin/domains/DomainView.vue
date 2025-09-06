@@ -40,6 +40,8 @@
               <div class="mt-4" />
             </template>
             <DomainAdminList :domain="domain" />
+            <div class="mt-4" />
+            <DomainPolicy v-if="isAmavisEnabled" :domain="domain" />
           </v-col>
           <v-col cols="12" md="6">
             <DNSDetail v-model="domain" />
@@ -83,26 +85,33 @@
   </div>
 </template>
 
-<script setup lang="js">
+<script setup>
 import DomainAdminList from '@/components/admin/domains/DomainAdminList.vue'
 import DmarcAligmentChart from '@/components/admin/dmarc/DmarcAligmentChart.vue'
 import DNSDetail from '@/components/admin/domains/DNSDetail.vue'
 import DomainSummary from '@/components/admin/domains/DomainSummary.vue'
 import RelayDomainSummary from '@/components/admin/domains/RelayDomainSummary.vue'
+import DomainPolicy from '@/components/admin/domains/DomainPolicy.vue'
 import LoadingData from '@/components/tools/LoadingData.vue'
 import ResourcesForm from '@/components/tools/ResourcesForm.vue'
 import TimeSerieChart from '@/components/tools/TimeSerieChart.vue'
 import { useGettext } from 'vue3-gettext'
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import { useRoute } from 'vue-router'
+import { useGlobalStore } from '@/stores'
 import domainsApi from '@/api/domains'
 
 const { $gettext } = useGettext()
 const route = useRoute()
+const globalStore = useGlobalStore()
 
 const domain = ref(null)
 const limitsConfig = ref({})
 const tab = ref(null)
+
+const isAmavisEnabled = computed(() => {
+  return 'amavis' in globalStore.capabilities
+})
 
 function refreshDomain() {
   domainsApi.getDomain(route.params.id).then((resp) => {

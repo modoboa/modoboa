@@ -177,6 +177,16 @@ class AccountViewSet(core_v1_viewsets.AccountViewSet):
                     "url": "/admin",
                 }
             )
+        if "modoboa.amavis" in settings.MODOBOA_APPS:
+            apps.append(
+                {
+                    "name": "amavis",
+                    "label": _("Quarantine"),
+                    "icon": "mdi-server-security",
+                    "description": _("Amavis quarantine"),
+                    "url": "/user/quarantine",
+                }
+            )
         if hasattr(request.user, "mailbox"):
             if "modoboa.contacts" in settings.MODOBOA_APPS:
                 apps += [

@@ -16,8 +16,7 @@ msgstr ""
 "POT-Creation-Date: 2025-08-28 09:41+0200\n"
 "PO-Revision-Date: 2024-07-17 11:45+0200\n"
 "Last-Translator: Mike C. <miguelmclara@gmail.com>\n"
-"Language-Team: Portuguese (Portugal) (http://www.transifex.com/projects/p/"
-"modoboa/language/pt_PT/)\n"
+"Language-Team: Portuguese (Portugal) (http://www.transifex.com/projects/p/modoboa/language/pt_PT/)\n"
 "Language: pt_PT\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -211,8 +210,8 @@ msgstr ""
 
 #: admin/app_settings.py:37
 msgid ""
-"A list of IP or network address every MX record should match. A warning will "
-"be sent if a record does not respect it."
+"A list of IP or network address every MX record should match. A warning will"
+" be sent if a record does not respect it."
 msgstr ""
 
 #: admin/app_settings.py:47
@@ -385,7 +384,8 @@ msgid "Automatic domain/mailbox creation"
 msgstr "Criação automatica de domino/caixa de correio"
 
 #: admin/app_settings.py:221
-msgid "Create a domain and a mailbox when an account is automatically created."
+msgid ""
+"Create a domain and a mailbox when an account is automatically created."
 msgstr ""
 "Criar um dominio e uma caixa de correio quando uma conta é criada "
 "automátiamente."
@@ -775,7 +775,8 @@ msgstr "Geral"
 
 #: autoreply/app_settings.py:18
 #, fuzzy
-#| msgid "Timeout in seconds between two auto-replies to the same recipient"
+#| msgid ""
+#| "Timeout in seconds between two auto-replies to the same recipient"
 msgid "Period between two auto-replies"
 msgstr ""
 "Tempo limite em segundos entre duas respostas automáticas para o mesmo "
@@ -783,7 +784,8 @@ msgstr ""
 
 #: autoreply/app_settings.py:20
 #, fuzzy
-#| msgid "Timeout in seconds between two auto-replies to the same recipient"
+#| msgid ""
+#| "Timeout in seconds between two auto-replies to the same recipient"
 msgid ""
 "Number of days to wait before sending a new auto-reply to the same recipient"
 msgstr ""
@@ -1020,7 +1022,8 @@ msgstr "Número de linhas inválido"
 msgid "This code is invalid"
 msgstr ""
 
-#: core/api/v2/serializers.py:503 core/views/auth.py:194 core/views/auth.py:247
+#: core/api/v2/serializers.py:503 core/views/auth.py:194
+#: core/views/auth.py:247
 msgid "Please use the following code to recover your Modoboa password: {}"
 msgstr ""
 
@@ -1234,8 +1237,8 @@ msgstr "Grupos de Administrador"
 
 #: core/app_settings.py:239
 msgid ""
-"Members of those LDAP Posix groups will be created as domain administrators. "
-"Use ';' characters to separate groups."
+"Members of those LDAP Posix groups will be created as domain administrators."
+" Use ';' characters to separate groups."
 msgstr ""
 "Os membros destes grupos \"LDAP Posix\" serão criados como administradores "
 "de domínio. Use ';' para separar os grupos."
@@ -1298,8 +1301,7 @@ msgstr "Password para bind"
 
 #: core/app_settings.py:307 core/app_settings.py:369
 msgid "The password to use when binding to the LDAP server (with 'Bind DN')"
-msgstr ""
-"A password usada para fazer o \"bind\" ao servidor LDAP (com 'Bind DN')"
+msgstr "A password usada para fazer o \"bind\" ao servidor LDAP (com 'Bind DN')"
 
 #: core/app_settings.py:317 core/app_settings.py:422
 msgid "Users search base"
@@ -1558,8 +1560,8 @@ msgstr ""
 
 #: core/app_settings.py:686
 msgid ""
-"Allow the administrator to set a threshold (in days) beyond which an account "
-"is considered inactive if the user hasn't logged in"
+"Allow the administrator to set a threshold (in days) beyond which an account"
+" is considered inactive if the user hasn't logged in"
 msgstr ""
 
 #: core/app_settings.py:695
@@ -1568,8 +1570,8 @@ msgstr ""
 
 #: core/app_settings.py:698
 msgid ""
-"An account with a last login date greater than this threshold (in days) will "
-"be considered as inactive"
+"An account with a last login date greater than this threshold (in days) will"
+" be considered as inactive"
 msgstr ""
 
 #: core/app_settings.py:707
@@ -1645,8 +1647,9 @@ msgstr ""
 
 #: core/checks.py:34
 msgid ""
-"Visit : https://modoboa.readthedocs.io/en/latest/manual_installation/"
-"dovecot.html#dovecot-oauth2"
+"Visit : "
+"https://modoboa.readthedocs.io/en/latest/manual_installation/dovecot.html#dovecot-"
+"oauth2"
 msgstr ""
 
 #: core/checks.py:41
@@ -1657,8 +1660,9 @@ msgstr ""
 
 #: core/checks.py:45
 msgid ""
-"Visit :  https://modoboa.readthedocs.io/en/latest/manual_installation/"
-"radicale.html#radicale-oauth2"
+"Visit :  "
+"https://modoboa.readthedocs.io/en/latest/manual_installation/radicale.html#radicale-"
+"oauth2"
 msgstr ""
 
 #: core/constants.py:6
@@ -1826,8 +1830,8 @@ msgstr "O simple utilizador '%s' deve ter endereço de e-mail válido"
 #| msgid "username and email fields must not differ for '%s'"
 msgid "username and email fields must not differ for '{}'"
 msgstr ""
-"Os campos nome de utilizador e endereço de email não deve ser diferente para "
-"'%s'"
+"Os campos nome de utilizador e endereço de email não deve ser diferente para"
+" '%s'"
 
 #: core/password_validation.py:25
 msgid "Password must contain at least {} digit."
@@ -1983,7 +1987,7 @@ msgstr "Nenhum"
 #, fuzzy
 #| msgid "Quantity"
 msgid "Quarantine"
-msgstr "Quantidade"
+msgstr "Quarentena"
 
 #: dmarc/models.py:12
 #, fuzzy
@@ -2288,10 +2292,11 @@ msgstr "Aliases de domínio"
 
 #: limits/app_settings.py:52
 #, fuzzy
-#| msgid "Maximum number of allowed domain aliases for a new administrator"
+#| msgid ""
+#| "Maximum number of allowed domain aliases for a new administrator"
 msgid ""
-"Maximum number of allowed domain aliases for a new administrator. (0 to deny "
-"any creation, -1 to allow unlimited creations)"
+"Maximum number of allowed domain aliases for a new administrator. (0 to deny"
+" any creation, -1 to allow unlimited creations)"
 msgstr ""
 "Número máximo permitido de aliases de domínio para um novo administrador"
 
@@ -2345,15 +2350,16 @@ msgstr ""
 #| msgid ""
 #| "Maximum number of allowed domain administrators for a new administrator"
 msgid ""
-"Maximum number of allowed domain administrators for a new domain. (0 to deny "
-"any creation, -1 to allow unlimited creations)"
+"Maximum number of allowed domain administrators for a new domain. (0 to deny"
+" any creation, -1 to allow unlimited creations)"
 msgstr ""
 "Número máximo permitido de administradores de domínio para um novo "
 "administrador"
 
 #: limits/app_settings.py:126
 #, fuzzy
-#| msgid "Maximum number of allowed domain aliases for a new administrator"
+#| msgid ""
+#| "Maximum number of allowed domain aliases for a new administrator"
 msgid ""
 "Maximum number of allowed domain aliases for a new domain. (0 to deny any "
 "creation, -1 to allow unlimited creations)"
@@ -2372,8 +2378,8 @@ msgstr "Número máximo permitido de caixas de correio para novo administrador"
 #, fuzzy
 #| msgid "Maximum number of allowed aliases for a new administrator"
 msgid ""
-"Maximum number of allowed aliases for a new domain. (0 to deny any creation, "
-"-1 to allow unlimited creations)"
+"Maximum number of allowed aliases for a new domain. (0 to deny any creation,"
+" -1 to allow unlimited creations)"
 msgstr "Número máximo de aliases permitidas para um novo administrador"
 
 #: limits/apps.py:16
@@ -2395,7 +2401,8 @@ msgstr "Número máximo de caixas de correio que este utilizador por criar"
 #: limits/constants.py:40
 msgid "Maximum number of mailbox aliases this user can create"
 msgstr ""
-"Número máximo de aliases para caixas de correio que este utilizador por criar"
+"Número máximo de aliases para caixas de correio que este utilizador por "
+"criar"
 
 #: limits/constants.py:49
 msgid "Maximum number of domain administrators this user can create"
@@ -2423,7 +2430,8 @@ msgstr "Número máximo de caixas de correio que este utilizador por criar"
 #| msgid "Maximum number of mailbox aliases this user can create"
 msgid "Maximum number of mailbox aliases allowed for this domain."
 msgstr ""
-"Número máximo de aliases para caixas de correio que este utilizador por criar"
+"Número máximo de aliases para caixas de correio que este utilizador por "
+"criar"
 
 #: limits/constants.py:102
 #, fuzzy
@@ -2833,8 +2841,8 @@ msgstr ""
 
 #: rspamd/app_settings.py:21
 msgid ""
-"Absolute path of the file which contains paths to DKIM private keys. Must be "
-"readable by _rspamd group or user."
+"Absolute path of the file which contains paths to DKIM private keys. Must be"
+" readable by _rspamd group or user."
 msgstr ""
 
 #: rspamd/app_settings.py:30
@@ -2853,8 +2861,8 @@ msgstr ""
 
 #: rspamd/app_settings.py:53
 msgid ""
-"Location of the rspamd dashboard. Can either be a relative URL (eg. '/"
-"rspamd') or a full URL (eg. 'https://rspamd.domain.tld/').Only use for "
+"Location of the rspamd dashboard. Can either be a relative URL (eg. "
+"'/rspamd') or a full URL (eg. 'https://rspamd.domain.tld/').Only use for "
 "guidance on the Super-Admin dashboard."
 msgstr ""
 
@@ -3149,8 +3157,8 @@ msgstr "Password antiga"
 
 #: templates/registration/twofactor_code_verify.html:35
 msgid ""
-"Enter the code from the two-factor app on your mobile device. If you've lost "
-"your device, you may enter one of your recovery codes."
+"Enter the code from the two-factor app on your mobile device. If you've lost"
+" your device, you may enter one of your recovery codes."
 msgstr ""
 
 #: templates/registration/twofactor_code_verify.html:42
@@ -3401,6 +3409,5 @@ msgid "Attachment is too big (limit: %s)"
 msgstr "Anexo demasiado grande (limite %s)"
 
 #, fuzzy, python-brace-format
-#~| msgid "Connection to IMAP server failed: %s"
 #~ msgid "Connection to IMAP server failed: {error}"
 #~ msgstr "Ligação ao servidor IMAP falhou : %s"

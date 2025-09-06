@@ -77,7 +77,10 @@ dependencies = [
         # User
         "drf-nested-routers",
         "vobject",
-        "caldav==2.0.1"
+        "caldav==2.0.1",
+        # Amavis
+        "html2text",
+        "idna",
 ]
 [project.optional-dependencies]
 dev = [

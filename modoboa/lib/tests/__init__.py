@@ -189,11 +189,13 @@ class ParametersMixin:
 class SimpleModoTestCase(ParametersMixin, TestCase):
     """Simple class to add parameters editing."""
 
-    pass
+    databases = "__all__"
 
 
 class ModoTestCase(ParametersMixin, TestCase):
     """All test cases must inherit from this one."""
+
+    databases = "__all__"
 
     @classmethod
     def setUpTestData(cls):  # noqa
@@ -231,6 +233,8 @@ class ModoTestCase(ParametersMixin, TestCase):
 
 class ModoAPITestCase(ParametersMixin, APITestCase):
     """All test cases must inherit from this one."""
+
+    databases = "__all__"
 
     @classmethod
     def setUpTestData(cls):  # noqa

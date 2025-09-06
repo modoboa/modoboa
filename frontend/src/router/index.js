@@ -426,6 +426,46 @@ const routes = [
           },
         ],
       },
+      {
+        path: 'quarantine',
+        component: () => import('@/layouts/quarantine/QuarantineLayout.vue'),
+        meta: {
+          requiresAuth: true,
+        },
+        children: [
+          {
+            path: '',
+            name: 'QuarantineView',
+            component: () => import('@/views/quarantine/QuarantineView.vue'),
+            meta: {
+              requiresAuth: true,
+            },
+          },
+          {
+            path: ':mailid/:rcpt',
+            name: 'QuarantineMessageView',
+            component: () => import('@/views/quarantine/MessageView.vue'),
+            meta: {
+              requiresAuth: true,
+            },
+          },
+        ],
+      },
+      {
+        path: 'selfquarantine',
+        component: () => import('@/layouts/quarantine/SelfServiceLayout.vue'),
+        props: { loadTheme: false },
+        meta: {
+          requiresAuth: false,
+        },
+        children: [
+          {
+            path: ':mailid/:rcpt',
+            name: 'SelfQuarantineMessageView',
+            component: () => import('@/views/quarantine/MessageView.vue'),
+          },
+        ],
+      },
     ],
   },
   {
@@ -446,7 +486,7 @@ router.beforeEach(async (to, from, next) => {
   document.title = config.HTML_PAGE_TITLE
     ? config.HTML_PAGE_TITLE
     : 'Welcome to Modoboa'
-  if (to.meta.requiresAuth !== undefined) {
+  if (to.meta?.requiresAuth === true) {
     const previousPage = window.location.href
     sessionStorage.setItem('previousPage', previousPage)
     const authStore = useAuthStore()

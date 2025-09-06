@@ -16,6 +16,17 @@ services:
       LDAP_ADMIN_PASSWORD: test
     profiles: [ldap]
 
+  mariadb:
+    image: mariadb:10
+    restart: unless-stopped
+    environment:
+      MARIADB_ROOT_PASSWORD: Password1000
+      MARIADB_DATABASE: amavis
+
+    volumes:
+      - ./docker/mariadb:/var/lib/mysql
+    profiles: [amavis]
+
   rq:
     build:
       context: .
@@ -103,6 +114,19 @@ services:
       DOCKER: "yes"
     depends_on:
       - api
+
+  amavis:
+    container_name: modoboa_amavis
+    restart: unless-stopped
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.amavis.dev
+    profiles: [amavis]
+    ports:
+      - 9998:9998
+    volumes:
+      - ./docker/amavis_config/amavisd.conf:/etc/amavisd.conf
+    command: amavisd debug
 
   dovecot:
     container_name: modoboa_dovecot
