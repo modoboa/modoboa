@@ -19,7 +19,7 @@ from modoboa.lib.tests import ModoAPITestCase
 
 AMAVIS_SETTINGS = {
     "localpart_is_case_sensitive": False,
-    "recipient_delimiter": "",
+    "recipient_delimiter": "+",
     "max_attachment_size": 14,
     "released_msgs_cleanup": False,
     "am_pdp_mode": "unix",
