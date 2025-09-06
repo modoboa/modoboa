@@ -1,20 +1,19 @@
-#
+# 
 # Translators:
 # Adrien spitfireap, 2024
 # Antoine Nguyen <tonio@ngyn.org>, 2025
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "PO-Revision-Date: 2024-08-01 12:26+0000\n"
 "Last-Translator: Antoine Nguyen <tonio@ngyn.org>, 2025\n"
 "Language-Team: French (https://app.transifex.com/tonio/teams/13749/fr/)\n"
-"Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n == 0 || n == 1) ? 0 : n != 0 && n % "
-"1000000 == 0 ? 1 : 2;\n"
+"Language: fr\n"
+"Plural-Forms: nplurals=3; plural=(n == 0 || n == 1) ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;\n"
 
 #: src/components/admin/imap_migration/ProviderCreationForm.vue:41
 msgid "(the domain will be created locally)"
@@ -43,8 +42,8 @@ msgid ""
 "A user with all privileges, can do anything. By default, such a user does "
 "not have a mailbox so he can't access end-user features."
 msgstr ""
-"Un utilisateur ayant tous les privilège, peut tout faire. Par défaut, il n'a "
-"pas de boîte mail et ne peut donc pas accéder aux fonctionnalités d'un "
+"Un utilisateur ayant tous les privilège, peut tout faire. Par défaut, il n'a"
+" pas de boîte mail et ne peut donc pas accéder aux fonctionnalités d'un "
 "utilisateur final."
 
 #: src/components/admin/identities/form_steps/AccountRoleForm.vue:83
@@ -52,8 +51,8 @@ msgid ""
 "A user with no privileges but with a mailbox. He will be allowed to use all "
 "end-user features: webmail, calendar, contacts, filters."
 msgstr ""
-"Un utilisateur sans privilèges mais ayant une boîte mail. Il sera autorisé à "
-"utiliser toutes les fonctionnalités de l'utilisateur final : webmail, "
+"Un utilisateur sans privilèges mais ayant une boîte mail. Il sera autorisé à"
+" utiliser toutes les fonctionnalités de l'utilisateur final : webmail, "
 "calendrier, contacts, filtres."
 
 #: src/components/admin/identities/form_steps/AccountRoleForm.vue:93
@@ -282,11 +281,11 @@ msgstr "Alias supprimé"
 #: src/components/admin/identities/form_steps/AccountAliasForm.vue:8
 #: src/components/admin/identities/form_steps/AliasRecipientForm.vue:8
 msgid ""
-"Alias(es) of this mailbox. To create a catchall alias, just enter the domain "
-"name (@domain.tld)."
+"Alias(es) of this mailbox. To create a catchall alias, just enter the domain"
+" name (@domain.tld)."
 msgstr ""
-"Alias(s) de cette boîte aux lettres. Pour créer un alias fourre-tout, entrer "
-"uniquement le nom du domaine (@domain.tld)."
+"Alias(s) de cette boîte aux lettres. Pour créer un alias fourre-tout, entrer"
+" uniquement le nom du domaine (@domain.tld)."
 
 #: src/components/admin/domains/DomainList.vue:207
 #: src/components/admin/domains/DomainSummary.vue:64
@@ -315,8 +314,8 @@ msgid ""
 "administrator, plus the possibility to create domains and to assign "
 "resources."
 msgstr ""
-"Un utilisateur intermédiaire qui a les mêmes privilèges qu'un administrateur "
-"de domaine, et la possibilité de créer des domaines et d'affecter des "
+"Un utilisateur intermédiaire qui a les mêmes privilèges qu'un administrateur"
+" de domaine, et la possibilité de créer des domaines et d'affecter des "
 "ressources."
 
 #: src/components/account/FilterForm.vue:17
@@ -428,9 +427,8 @@ msgid "Backup codes"
 msgstr "Codes de récupération"
 
 #: src/components/admin/domains/DomainPolicy.vue:39
-#, fuzzy
 msgid "Banned filters"
-msgstr "Filtres de messages"
+msgstr "Filtres banned"
 
 #: src/components/webmail/ComposeEmailForm.vue:110
 #: src/components/webmail/ComposeEmailForm.vue:73
@@ -447,11 +445,11 @@ msgstr "Date de naissance"
 
 #: src/components/quarantine/QuarantineList.vue:54
 msgid "both"
-msgstr ""
+msgstr "tout"
 
 #: src/components/admin/domains/form_steps/DomainPolicyForm.vue:5
 msgid "Bypass virus checks"
-msgstr ""
+msgstr "Désactiver les filtres virus"
 
 #: src/components/calendars/EventForm.vue:49
 #: src/views/calendars/CalendarView.vue:3
@@ -522,8 +520,8 @@ msgstr "Consulter la liste suivante pour trouver des composants associés"
 #: src/views/admin/identities/IdentitiesView.vue:95
 msgid "Check this option if passwords contained in your file are not crypted"
 msgstr ""
-"Cochez cette option si les mots de passe contenus dans votre fichier ne sont "
-"pas chiffrés"
+"Cochez cette option si les mots de passe contenus dans votre fichier ne sont"
+" pas chiffrés"
 
 #: src/components/admin/domains/DomainAliasForm.vue:15
 msgid "Choose a domain"
@@ -636,14 +634,12 @@ msgid "Content"
 msgstr "Contenu"
 
 #: src/components/admin/domains/DomainPolicy.vue:5
-#, fuzzy
 msgid "Content filter"
-msgstr "Contenu"
+msgstr "Filtre de contenu"
 
 #: src/components/admin/domains/DomainPolicyForm.vue:4
-#, fuzzy
 msgid "Content filter settings"
-msgstr "Paramètres généraux "
+msgstr "Paramètres du filtre de contenu"
 
 #: src/components/tools/ImportForm.vue:40
 msgid "Continue on error"
@@ -767,7 +763,7 @@ msgstr "Jour"
 #: src/components/admin/domains/DomainPolicyForm.vue:47
 #: src/components/tools/YesNoDefaultField.vue:15
 msgid "default"
-msgstr ""
+msgstr "défaut"
 
 #: src/components/admin/domains/DomainCreationForm.vue:193
 #: src/components/admin/domains/DomainSummary.vue:23
@@ -789,9 +785,8 @@ msgstr ""
 #: src/components/admin/domains/DomainPolicy.vue:57
 #: src/components/admin/domains/DomainPolicy.vue:68
 #: src/components/admin/domains/DomainPolicy.vue:79
-#, fuzzy
 msgid "Default value"
-msgstr "Valeur du domaine par défaut"
+msgstr "Valeur par défaut"
 
 #: src/components/admin/alarms/AlarmList.vue:116
 #: src/components/admin/alarms/AlarmList.vue:133
@@ -815,14 +810,12 @@ msgid "Delete filter set"
 msgstr "Supprimer le jeu de filtre"
 
 #: src/views/quarantine/MessageView.vue:32
-#, fuzzy
 msgid "Delete message"
-msgstr "Tous les messages"
+msgstr "Supprimer le message"
 
 #: src/components/quarantine/QuarantineList.vue:84
-#, fuzzy
 msgid "Delete selection"
-msgstr "Supprimer le jeton"
+msgstr "Supprimer la sélection"
 
 #: src/layouts/webmail/WebmailLayout.vue:56
 msgid "Delete this mailbox"
@@ -858,32 +851,28 @@ msgid "Disable 2FA"
 msgstr "Désactiver l'authentification à double facteur"
 
 #: src/components/admin/domains/DomainPolicyForm.vue:26
-#, fuzzy
 msgid "Disable banned checks"
-msgstr "Desactiver les liens"
+msgstr "Désactiver les filtres banned"
 
 #: src/views/webmail/EmailView.vue:74
 msgid "Disable links"
 msgstr "Desactiver les liens"
 
 #: src/components/admin/domains/DomainPolicyForm.vue:18
-#, fuzzy
 msgid "Disable spam checks"
-msgstr "Activer les tests DNS"
+msgstr "Désactiver les filtres spam"
 
 #: src/components/admin/domains/DomainPolicyForm.vue:11
-#, fuzzy
 msgid "Disable virus checks"
-msgstr "Desactiver les liens"
+msgstr "Désactiver les filtres virus"
 
 #: src/components/admin/domains/DNSStatusChip.vue:18
 msgid "Disabled"
 msgstr "Désactivés"
 
 #: src/components/quarantine/QuarantineList.vue:125
-#, fuzzy
 msgid "Display"
-msgstr "Nom affiché"
+msgstr "Afficher"
 
 #: src/components/contacts/ContactList.vue:23
 msgid "Display address book information"
@@ -911,8 +900,8 @@ msgid ""
 "DKIM key does not seem to be generated yet or has failed. Do you want to "
 "requeue the job?"
 msgstr ""
-"La génération de la clé DKIM ne semble pas avoir eu lieu ou a échoué. Voulez "
-"vous replanifier cette action ?"
+"La génération de la clé DKIM ne semble pas avoir eu lieu ou a échoué. Voulez"
+" vous replanifier cette action ?"
 
 #: src/components/admin/domains/DomainCreationForm.vue:209
 #: src/components/admin/domains/form_steps/DomainDNSForm.vue:22
@@ -925,7 +914,8 @@ msgid "DKIM key selector"
 msgstr "Sélecteur de clé DKIM"
 
 #: src/components/admin/domains/DNSDetail.vue:259
-msgid "DKIM keys already exist for this domain. Do you want to overwrite them?"
+msgid ""
+"DKIM keys already exist for this domain. Do you want to overwrite them?"
 msgstr "Des clés DKIM existent déjà pour ce domaine. Voulez-vous les écraser?"
 
 #: src/components/admin/domains/DomainDKIMKey.vue:5
@@ -1056,9 +1046,8 @@ msgid "Domain name (ex: domain.tld)"
 msgstr "Nom de domaine (ex: domaine.tld)"
 
 #: src/composables/amavis.js:33
-#, fuzzy
 msgid "Domain's database"
-msgstr "La valeur par défaut du domaine"
+msgstr "Base du domaine"
 
 #: src/components/admin/identities/AccountEditForm.vue:82
 msgid "domain's default value"
@@ -1113,7 +1102,7 @@ msgstr "Modifier le contact"
 
 #: src/components/admin/domains/DomainPolicy.vue:9
 msgid "Edit content filter settings"
-msgstr ""
+msgstr "Modifier les paramètres du filtre de contenu"
 
 #: src/views/admin/domains/DomainEditView.vue:3
 msgid "Edit domain"
@@ -1356,9 +1345,8 @@ msgid "From"
 msgstr "De"
 
 #: src/components/quarantine/QuarantineList.vue:45
-#, fuzzy
 msgid "From address"
-msgstr "Adresse aléatoire"
+msgstr "Emetteur"
 
 #: src/components/calendars/CalendarAccessRulesForm.vue:11
 msgid "Full address"
@@ -1411,7 +1399,7 @@ msgstr "Adresse générée"
 
 #: src/composables/amavis.js:30
 msgid "Global database"
-msgstr ""
+msgstr "Base globale"
 
 #: src/views/admin/InformationView.vue:29
 msgid "Go to <strong>Settings > General</strong> section"
@@ -1432,7 +1420,7 @@ msgstr ""
 
 #: src/views/quarantine/MessageView.vue:65
 msgid "Hide full headers"
-msgstr ""
+msgstr "Cacher l'intégralité des entêtes"
 
 #: src/components/admin/identities/AccountCreationForm.vue:168
 #: src/components/admin/identities/AccountCreationForm.vue:95
@@ -1458,8 +1446,8 @@ msgid ""
 "If you configured it recently, please wait for the first report to be "
 "received and processed."
 msgstr ""
-"Si vous l'avez récemment configuré, veuillez attendre que le premier rapport "
-"soit reçu et traité. "
+"Si vous l'avez récemment configuré, veuillez attendre que le premier rapport"
+" soit reçu et traité. "
 
 #: src/layouts/admin/AdminLayout.vue:96
 msgid "IMAP Migration"
@@ -1521,12 +1509,11 @@ msgstr "Information"
 
 #: src/components/account/TotpAuthForm.vue:34
 msgid ""
-"Install a soft token authenticator like FreeOTP or Google Authenticator from "
-"your application repository and use that app to scan this QR code."
+"Install a soft token authenticator like FreeOTP or Google Authenticator from"
+" your application repository and use that app to scan this QR code."
 msgstr ""
 "Installez un logiciel d'authentification de jeton comme FreeOTP ou google\n"
-"                 Authentification depuis votre magasin d'applications et "
-"utilisez\n"
+"                 Authentification depuis votre magasin d'applications et utilisez\n"
 "                 cette application pour scanner ce QR code."
 
 #: src/views/admin/InformationView.vue:92
@@ -1543,7 +1530,8 @@ msgstr "Numéro de port incorrect"
 
 #: src/components/admin/domains/DNSBLSummary.vue:10
 msgid ""
-"IP address %{ address } is currently listed by the following DNSBL providers:"
+"IP address %{ address } is currently listed by the following DNSBL "
+"providers:"
 msgstr ""
 "L'adresse IP %{ address } est actuellement listée par les fournisseurs de "
 "DNSBL suivants :"
@@ -1551,7 +1539,8 @@ msgstr ""
 #: src/components/admin/imap_migration/form_steps/ProviderGeneralForm.vue:27
 msgid "Is the IMAP connection secured using SSL/TLS or StartTLS"
 msgstr ""
-"La connexion IMAP est-elle sécurisée via l'utilisation de SSL/TLS ou StartTLS"
+"La connexion IMAP est-elle sécurisée via l'utilisation de SSL/TLS ou "
+"StartTLS"
 
 #: src/components/account/ForwardForm.vue:16
 msgid "Keep local copies"
@@ -1607,9 +1596,8 @@ msgstr "Dernière version"
 
 #: src/components/quarantine/QuarantineList.vue:385
 #: src/views/quarantine/MessageView.vue:209
-#, fuzzy
 msgid "Learning database"
-msgstr "Date de création"
+msgstr "Base d'apprentissage"
 
 #: src/components/admin/identities/form_steps/AccountMailboxForm.vue:26
 msgid "Leave empty for no limit"
@@ -1679,22 +1667,20 @@ msgstr "Boîtes aux lettres"
 msgid ""
 "Make sure <strong>Update password scheme at login</strong> option is enabled"
 msgstr ""
-"Assurez vous que l'option <strong>Mettre à jour la méthode de chiffrement du "
-"mot de passe à la connexion</strong> est activée"
+"Assurez vous que l'option <strong>Mettre à jour la méthode de chiffrement du"
+" mot de passe à la connexion</strong> est activée"
 
 #: src/components/webmail/EmailList.vue:72
 msgid "Mark as followed"
 msgstr "Marquer comme suivi"
 
 #: src/views/quarantine/MessageView.vue:47
-#, fuzzy
 msgid "Mark as non-spam"
-msgstr "Marquer comme non lu"
+msgstr "Marquer comme non-spam"
 
 #: src/components/quarantine/QuarantineList.vue:105
-#, fuzzy
 msgid "Mark as not spam"
-msgstr "Marquer comme non lu"
+msgstr "Marquer comme non spam"
 
 #: src/components/webmail/EmailList.vue:62
 msgid "Mark as read"
@@ -1702,9 +1688,8 @@ msgstr "Marqué comme lu"
 
 #: src/components/quarantine/QuarantineList.vue:101
 #: src/views/quarantine/MessageView.vue:43
-#, fuzzy
 msgid "Mark as spam"
-msgstr "Marqué comme lu"
+msgstr "Marquer comme spam"
 
 #: src/components/webmail/EmailList.vue:77
 msgid "Mark as unfollowed"
@@ -1724,7 +1709,8 @@ msgstr "Mo"
 msgid "Message"
 msgstr "Message"
 
-#: src/views/quarantine/MessageView.vue:196 src/views/webmail/EmailView.vue:254
+#: src/views/quarantine/MessageView.vue:196
+#: src/views/webmail/EmailView.vue:254
 msgid "Message deleted"
 msgstr "Marquer comme supprimé"
 
@@ -1746,9 +1732,8 @@ msgstr "Message marqué comme pourriel"
 
 #: src/components/quarantine/QuarantineList.vue:291
 #: src/views/quarantine/MessageView.vue:236
-#, fuzzy
 msgid "Message marked as non-spam"
-msgstr "Message marqué comme légitime"
+msgstr "Message marqué comme non-spam"
 
 #: src/views/webmail/EmailView.vue:282
 msgid "Message marked as not junk"
@@ -1756,15 +1741,13 @@ msgstr "Message marqué comme légitime"
 
 #: src/components/quarantine/QuarantineList.vue:288
 #: src/views/quarantine/MessageView.vue:232
-#, fuzzy
 msgid "Message marked as spam"
-msgstr "Message marqué comme pourriel"
+msgstr "Message marqué comme spam"
 
 #: src/components/quarantine/QuarantineList.vue:285
 #: src/views/quarantine/MessageView.vue:178
-#, fuzzy
 msgid "Message released"
-msgstr "Marquer comme supprimé"
+msgstr "Message libéré"
 
 #: src/components/admin/domains/DomainCreationForm.vue:197
 #: src/components/admin/domains/form_steps/DomainLimitationsForm.vue:32
@@ -2015,9 +1998,8 @@ msgid "Note"
 msgstr "Note"
 
 #: src/components/shared/TopMenu.vue:18
-#, fuzzy
 msgid "Notifications"
-msgstr "Identification"
+msgstr "Notifications"
 
 #: src/components/admin/identities/AccountEditForm.vue:163
 msgid "Number of allowed mailbox aliases:"
@@ -2084,11 +2066,11 @@ msgstr "Options"
 
 #: src/components/admin/domains/DomainPolicyForm.vue:69
 msgid "or more is spam"
-msgstr ""
+msgstr "ou plus est du spam"
 
 #: src/components/admin/domains/DomainPolicyForm.vue:84
 msgid "or more throw spam message away"
-msgstr ""
+msgstr "ou plus rejette le spam"
 
 #: src/components/account/ProfileForm.vue:30
 msgid "or suggest a new language"
@@ -2171,9 +2153,9 @@ msgid ""
 "Please note that you will see this message until <strong>ALL</strong> user "
 "passwords have been converted using the new scheme."
 msgstr ""
-"Veuillez noter que vous verrez ce message jusqu'à ce que <strong>TOUS</"
-"strong> les mots de passe de vos utilisateurs aient été convertis en "
-"utilisant la nouvelle méthode."
+"Veuillez noter que vous verrez ce message jusqu'à ce que "
+"<strong>TOUS</strong> les mots de passe de vos utilisateurs aient été "
+"convertis en utilisant la nouvelle méthode."
 
 #: src/components/admin/imap_migration/ProviderCreationForm.vue:55
 #: src/components/admin/imap_migration/ProvidersList.vue:98
@@ -2237,12 +2219,11 @@ msgstr "Fournisseurs"
 
 #: src/views/quarantine/QuarantineView.vue:4
 msgid "Quarantine"
-msgstr ""
+msgstr "Quarantaine"
 
 #: src/views/quarantine/MessageView.vue:4
-#, fuzzy
 msgid "Quarantined message"
-msgstr "Messages importants"
+msgstr "Message en quarantaine"
 
 #: src/components/admin/logs/MessageList.vue:46
 msgid "Queue ID"
@@ -2261,9 +2242,9 @@ msgstr "Quota"
 
 #: src/components/admin/identities/form_steps/AccountMailboxForm.vue:15
 msgid ""
-"Quota for this mailbox, can be expressed in KB, MB (default) or GB. Define a "
-"custom value or use domain's default one. Leave empty to define an unlimited "
-"value (not allowed for domain administrators)."
+"Quota for this mailbox, can be expressed in KB, MB (default) or GB. Define a"
+" custom value or use domain's default one. Leave empty to define an "
+"unlimited value (not allowed for domain administrators)."
 msgstr ""
 "Quota pour cette boite. Peut être exprimé en Ko, Mo (défaut) ou Go. Définir "
 "une valeur spécifique ou utiliser la valeur par défaut du domaine. Laisser "
@@ -2335,7 +2316,7 @@ msgstr "Péréphériques Webauthn enregistrés"
 
 #: src/components/admin/domains/DomainPolicy.vue:61
 msgid "Rejection threshold"
-msgstr ""
+msgstr "Seuil de rejet"
 
 #: src/components/tools/TimeSerieChart.vue:27
 msgid "Relative time ranges"
@@ -2350,23 +2331,21 @@ msgid "Relay domain"
 msgstr "Domaine relais"
 
 #: src/views/quarantine/MessageView.vue:21
-#, fuzzy
 msgid "Release message"
-msgstr "Tous les messages"
+msgstr "Libérer le message"
 
 #: src/components/quarantine/QuarantineList.vue:372
 #: src/views/quarantine/MessageView.vue:176
 msgid "Release request sent"
-msgstr ""
+msgstr "Requête de libération envoyée"
 
 #: src/views/quarantine/QuarantineView.vue:12
 msgid "release requests"
-msgstr ""
+msgstr "requêtes de libération"
 
 #: src/components/quarantine/QuarantineList.vue:72
-#, fuzzy
 msgid "Release selection"
-msgstr "Supprimer l'action"
+msgstr "Libérer la sélection"
 
 #: src/components/admin/alarms/AlarmList.vue:123
 msgid "Reload"
@@ -2442,7 +2421,7 @@ msgstr "Sauvegardez vos changements"
 
 #: src/components/quarantine/QuarantineList.vue:236
 msgid "Score"
-msgstr ""
+msgstr "Score"
 
 #: src/components/admin/alarms/AlarmList.vue:21
 #: src/components/admin/domains/DomainList.vue:19
@@ -2493,18 +2472,16 @@ msgid "Select file"
 msgstr "Sélectionner un fichier"
 
 #: src/components/quarantine/QuarantineList.vue:359
-#, fuzzy
 msgid "Selection deleted"
-msgstr "Migration supprimée"
+msgstr "Sélection supprimée"
 
 #: src/components/quarantine/QuarantineList.vue:398
 msgid "Selection is being processed..."
-msgstr ""
+msgstr "La sélection est en cours de traitement..."
 
 #: src/components/quarantine/QuarantineList.vue:374
-#, fuzzy
 msgid "Selection released"
-msgstr "Sélectionner un fichier"
+msgstr "Sélection libérée"
 
 #: src/components/calendars/ImportEventsForm.vue:30
 #: src/components/webmail/ComposeEmailForm.vue:13
@@ -2579,17 +2556,16 @@ msgstr "Utilisateur simple"
 
 #: src/components/admin/domains/DomainPolicy.vue:50
 msgid "Spam classification threshold"
-msgstr ""
+msgstr "Seuil de classification en spam"
 
 #: src/components/admin/domains/DomainPolicy.vue:17
-#, fuzzy
 msgid "Spam filters"
-msgstr "Filtres de messages"
+msgstr "Filtres spam"
 
 #: src/components/admin/domains/DomainPolicy.vue:72
 #: src/components/admin/domains/DomainPolicyForm.vue:34
 msgid "Spam marker"
-msgstr ""
+msgstr "Marqueur de spam"
 
 #: src/components/admin/identities/AccountSenderAddresses.vue:17
 msgid "Specify an email address"
@@ -2655,12 +2631,12 @@ msgstr "TFA activée"
 #: src/components/account/AutoReplyForm.vue:24
 msgid ""
 "The content of your answer. You can use the following variables, which will "
-"be automatically replaced by the appropriate value: %(name)s, %(fromdate)s, %"
-"(untildate)s"
+"be automatically replaced by the appropriate value: %(name)s, %(fromdate)s, "
+"%(untildate)s"
 msgstr ""
 "Le contenu de votre réponse. Vous pouvez utiliser les variables suivantes, "
-"qui seront automatiquement remplacées par les valeurs appropriées : %"
-"(name)s, %(fromdate)s, %(untildate)s"
+"qui seront automatiquement remplacées par les valeurs appropriées : "
+"%(name)s, %(fromdate)s, %(untildate)s"
 
 #: src/components/calendars/CalendarDetail.vue:19
 #: src/components/contacts/AddressBookInfo.vue:19
@@ -2673,8 +2649,8 @@ msgid ""
 "The first element of each line is mandatory and must be equal to one of the "
 "previous values."
 msgstr ""
-"Le premier élément de chaque ligne est obligatoire et doit être égal à l'une "
-"des valeurs précédentes."
+"Le premier élément de chaque ligne est obligatoire et doit être égal à l'une"
+" des valeurs précédentes."
 
 #: src/components/account/RecoveryCodesResetDialog.vue:9
 #: src/components/account/TotpAuthForm.vue:61
@@ -2692,9 +2668,9 @@ msgstr ""
 
 #: src/views/admin/InformationView.vue:22
 msgid ""
-"The password scheme you are using has been deprecated and will be removed in "
-"the next minor version. The procedure to upgrade to a stronger scheme is as "
-"follows:"
+"The password scheme you are using has been deprecated and will be removed in"
+" the next minor version. The procedure to upgrade to a stronger scheme is as"
+" follows:"
 msgstr ""
 "La méthode de chiffrement de mot de passe que vous utilisez a été rendue "
 "obsolète et sera retirée dans la prochaine version mineure. La procédure de "
@@ -2706,7 +2682,7 @@ msgstr "ici"
 
 #: src/components/admin/domains/DomainPolicyForm.vue:56
 msgid "Thresholds"
-msgstr ""
+msgstr "Seuils"
 
 #: src/components/calendars/EventForm.vue:12
 msgid "Title"
@@ -2724,8 +2700,8 @@ msgstr "A"
 
 #: src/components/contacts/AddressBookInfo.vue:9
 msgid ""
-"To access this address book from the outside (such as Mozilla Thunderbird or "
-"your smartphone), use the following URL:"
+"To access this address book from the outside (such as Mozilla Thunderbird or"
+" your smartphone), use the following URL:"
 msgstr ""
 "Pour accéder à ce carnet d'adresse depuis l'extérieur (comme Mozilla "
 "Thunderbird ou votre smartphone), utilisez l'URL suivante :"
@@ -2860,7 +2836,7 @@ msgstr "Utiliser la valeur par défaut du domaine"
 
 #: src/composables/amavis.js:36
 msgid "User's database"
-msgstr ""
+msgstr "Base de l'utilisateur"
 
 #: src/components/admin/domains/DomainAdminList.vue:111
 #: src/components/admin/identities/AccountCreationForm.vue:97
@@ -2882,12 +2858,11 @@ msgstr "Valeur"
 
 #: src/views/quarantine/MessageView.vue:62
 msgid "View full headers"
-msgstr ""
+msgstr "Voir l'intégralité des entêtes"
 
 #: src/components/admin/domains/DomainPolicy.vue:28
-#, fuzzy
 msgid "Virus filters"
-msgstr "Modifier le filtre"
+msgstr "Filtres virus"
 
 #: src/components/admin/dashboard/NewsFeedWidget.vue:21
 msgid "Visit the official weblog for more information"
@@ -2932,7 +2907,7 @@ msgstr "Bienvenue dans Modoboa"
 #: src/components/quarantine/QuarantineList.vue:386
 #: src/views/quarantine/MessageView.vue:210
 msgid "Which database should be used for this learning:"
-msgstr ""
+msgstr "Quelle base doit être utilisée pour cet apprentissage :"
 
 #: src/components/admin/domains/form_steps/DomainOptionsForm.vue:25
 msgid "With a mailbox"
