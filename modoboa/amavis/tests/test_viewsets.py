@@ -314,6 +314,6 @@ class ParametersAPITestCase(ModoAPITestCase):
 
     def test_update(self):
         settings = AMAVIS_SETTINGS.copy()
-        url = reverse("v2:parameter-global-detail", args=["core"])
+        url = reverse("v2:parameter-global-detail", args=["amavis"])
         resp = self.client.put(url, settings, format="json")
         self.assertEqual(resp.status_code, 200)
