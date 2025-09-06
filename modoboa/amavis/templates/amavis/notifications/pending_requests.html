@@ -1,0 +1,16 @@
+{% load i18n %}
+
+{% blocktranslate trimmed count counter=total %}
+  {{ counter }} release request is pending for action.
+{% plural %}
+  {{ counter }} release requests are pending for action.
+{% endblocktranslate %}
+{% translate "Sketch:" %}
+{% for msg in requests %}
+  {% translate "From:" %} {{ msg.mail.sid.email }}
+  {% translate "To:" %} {{ msg.rid.email }}
+  {% translate "Date:" %} {{ msg.mail.time_datetime|date:"DATETIME_FORMAT" }}
+  {% translate "Subject:" %} {{ msg.mail.subject }}
+  {% translate "Act on this message:" %} {{ baseurl }}/user/quarantine/{{ msg.mail.mail_id }}/{{ msg.rid.email }}
+{% endfor %}
+{% blocktranslate %}Please visit {{ listingurl }} for a full listing.{% endblocktranslate %}

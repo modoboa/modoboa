@@ -192,3 +192,13 @@ class Command(BaseCommand):
 }}
 """
                 )
+
+
+# ADD SIGNAL FOR THAT
+# def load_initial_data(self):
+#     """Create records for existing domains and co."""
+#     for dom in Domain.objects.all():
+#         policy = create_user_and_policy("@{0}".format(dom.name))
+#         for domalias in dom.domainalias_set.all():
+#             domalias_pattern = "@{0}".format(domalias.name)
+#             create_user_and_use_policy(domalias_pattern, policy)

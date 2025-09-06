@@ -6,7 +6,7 @@
     @keydown.esc="cancel"
   >
     <v-card>
-      <v-toolbar :color="options.color" density="compact" flat>
+      <v-toolbar :color="options.color" density="compact" variant="flat">
         <v-toolbar-title class="text-body-2 font-weight-bold">
           {{ title }}
         </v-toolbar-title>
@@ -28,7 +28,7 @@
   </v-dialog>
 </template>
 
-<script setup lang="js">
+<script setup>
 import { ref } from 'vue'
 import { useGettext } from 'vue3-gettext'
 

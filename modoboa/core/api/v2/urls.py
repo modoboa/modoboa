@@ -33,11 +33,6 @@ urlpatterns += [
         name="components_information",
     ),
     path(
-        "admin/notifications/",
-        views.NotificationsAPIView.as_view(),
-        name="notifications",
-    ),
-    path(
         "admin/news_feed/",
         views.NewsFeedAPIView.as_view(),
         name="news-feed",
@@ -48,5 +43,10 @@ urlpatterns += [
         name="statistics",
     ),
     path("capabilities/", views.CapabilitiesAPIView.as_view(), name="capabilities"),
+    path(
+        "notifications/",
+        views.NotificationsAPIView.as_view(),
+        name="notifications",
+    ),
     path("theme/", views.ThemeAPIView.as_view(), name="theme"),
 ]

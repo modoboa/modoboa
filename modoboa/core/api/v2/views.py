@@ -142,7 +142,9 @@ class PasswordResetConfirmView(APIView):
 class ComponentsInformationAPIView(APIView):
     """Retrieve information about installed components."""
 
-    permission_classes = [permissions.IsAuthenticated, IsSuperUser]
+    permission_classes = [
+        permissions.IsAuthenticated,
+    ]
     throttle_classes = [UserLesserDdosUser]
 
     @extend_schema(responses=serializers.ModoboaComponentSerializer(many=True))

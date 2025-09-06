@@ -19,8 +19,7 @@ msgstr ""
 "POT-Creation-Date: 2025-08-28 09:41+0200\n"
 "PO-Revision-Date: 2020-05-06 11:16+0000\n"
 "Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
-"Language-Team: Spanish (http://www.transifex.com/tonio/modoboa/language/"
-"es/)\n"
+"Language-Team: Spanish (http://www.transifex.com/tonio/modoboa/language/es/)\n"
 "Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -205,8 +204,8 @@ msgstr "MX Validos"
 
 #: admin/app_settings.py:37
 msgid ""
-"A list of IP or network address every MX record should match. A warning will "
-"be sent if a record does not respect it."
+"A list of IP or network address every MX record should match. A warning will"
+" be sent if a record does not respect it."
 msgstr ""
 "Una lista de IP o dirección de red, cada registro MX debe coincidir. Se "
 "enviará una advertencia si un registro no la respeta."
@@ -323,8 +322,9 @@ msgid ""
 "Default quota (in MB) applied to freshly created domains with no value "
 "specified. A value of 0 means no quota."
 msgstr ""
-"Cuota por defecto (en MB) que se aplica a la creación de nuevos dominios que "
-"no tuvieran un valor especificado. Un valor de 0 significa que no hay cuota."
+"Cuota por defecto (en MB) que se aplica a la creación de nuevos dominios que"
+" no tuvieran un valor especificado. Un valor de 0 significa que no hay "
+"cuota."
 
 #: admin/app_settings.py:156
 #, fuzzy
@@ -396,8 +396,10 @@ msgid "Automatic domain/mailbox creation"
 msgstr "Creación automática de dominio/buzón"
 
 #: admin/app_settings.py:221
-msgid "Create a domain and a mailbox when an account is automatically created."
-msgstr "Crear un dominio y un buzón cuando se cree automáticamente una cuenta."
+msgid ""
+"Create a domain and a mailbox when an account is automatically created."
+msgstr ""
+"Crear un dominio y un buzón cuando se cree automáticamente una cuenta."
 
 #: admin/app_settings.py:230
 msgid "Create an alias when a mailbox is renamed"
@@ -726,8 +728,8 @@ msgid ""
 "Modoboa detected that domain %(domain)s is listed by the following DNSBL "
 "providers:"
 msgstr ""
-"Modoboa detectó que el(los) dominio(s) %(domain)s está(n) listado(s) por los "
-"siguientes proveedores DNSBL:"
+"Modoboa detectó que el(los) dominio(s) %(domain)s está(n) listado(s) por los"
+" siguientes proveedores DNSBL:"
 
 #: admin/templates/admin/notifications/domain_in_dnsbl.html:11
 msgid ""
@@ -736,16 +738,16 @@ msgid ""
 "and ask them to unlist detected IP address(es)."
 msgstr ""
 "La reputación de los dominios se verán afectados y existe la posibilidad de "
-"que los mensajes de correo electrónico procedentes de él se consideren spam. "
-"Debe comunicarse con estos proveedores y pedirles que elimine la(s) "
+"que los mensajes de correo electrónico procedentes de él se consideren spam."
+" Debe comunicarse con estos proveedores y pedirles que elimine la(s) "
 "dirección(es) IP detectada(s)."
 
 #: admin/templates/admin/notifications/domain_invalid_mx.html:3
 #, python-format
 msgid "Modoboa detected that domain %(domain)s has no valid MX record:"
 msgstr ""
-"Modoboa detectó que el(los) dominio(s) %(domain)s está(n) listado(s) por los "
-"siguientes proveedores DNSBL:"
+"Modoboa detectó que el(los) dominio(s) %(domain)s está(n) listado(s) por los"
+" siguientes proveedores DNSBL:"
 
 #: admin/tests/test_mx.py:155
 #, fuzzy, python-format
@@ -788,13 +790,15 @@ msgstr "General"
 
 #: autoreply/app_settings.py:18
 #, fuzzy
-#| msgid "Timeout in seconds between two auto-replies to the same recipient"
+#| msgid ""
+#| "Timeout in seconds between two auto-replies to the same recipient"
 msgid "Period between two auto-replies"
 msgstr "Tiempo en segundos entre dos autorespuestas para el mismo emisor"
 
 #: autoreply/app_settings.py:20
 #, fuzzy
-#| msgid "Timeout in seconds between two auto-replies to the same recipient"
+#| msgid ""
+#| "Timeout in seconds between two auto-replies to the same recipient"
 msgid ""
 "Number of days to wait before sending a new auto-reply to the same recipient"
 msgstr "Tiempo en segundos entre dos autorespuestas para el mismo emisor"
@@ -1029,7 +1033,8 @@ msgstr "Número de rondas inváldo"
 msgid "This code is invalid"
 msgstr ""
 
-#: core/api/v2/serializers.py:503 core/views/auth.py:194 core/views/auth.py:247
+#: core/api/v2/serializers.py:503 core/views/auth.py:194
+#: core/views/auth.py:247
 msgid "Please use the following code to recover your Modoboa password: {}"
 msgstr ""
 
@@ -1085,8 +1090,8 @@ msgid ""
 "Number of rounds to use (only used by sha256crypt and sha512crypt). Must be "
 "between 1000 and 999999999, inclusive."
 msgstr ""
-"Número de rondas a usar (sólo utilizado por sha256crypr y sha512crypt). Debe "
-"estar entre 1000 y 999999999, incluído."
+"Número de rondas a usar (sólo utilizado por sha256crypr y sha512crypt). Debe"
+" estar entre 1000 y 999999999, incluído."
 
 #: core/app_settings.py:73
 msgid "Update password scheme at login"
@@ -1231,11 +1236,11 @@ msgstr "Administrador de grupos"
 
 #: core/app_settings.py:239
 msgid ""
-"Members of those LDAP Posix groups will be created as domain administrators. "
-"Use ';' characters to separate groups."
+"Members of those LDAP Posix groups will be created as domain administrators."
+" Use ';' characters to separate groups."
 msgstr ""
-"Los miembros de esos grupos Posix LDAP serán creados como administradores de "
-"dominio. Use caracteres \";\" para separar los grupos."
+"Los miembros de esos grupos Posix LDAP serán creados como administradores de"
+" dominio. Use caracteres \";\" para separar los grupos."
 
 #: core/app_settings.py:248
 msgid "Group type"
@@ -1282,8 +1287,8 @@ msgid ""
 "The distinguished name to use when binding to the LDAP server. Leave empty "
 "for an anonymous bind"
 msgstr ""
-"El nombre distinguido a usar cuando nos unimos al servidor LDAP. Dejar vació "
-"para una unión anónima"
+"El nombre distinguido a usar cuando nos unimos al servidor LDAP. Dejar vació"
+" para una unión anónima"
 
 #: core/app_settings.py:305 core/app_settings.py:367
 msgid "Bind password"
@@ -1421,7 +1426,8 @@ msgstr ""
 
 #: core/app_settings.py:506
 #, fuzzy
-#| msgid "Display custom RSS feed to resellers and domain administrators"
+#| msgid ""
+#| "Display custom RSS feed to resellers and domain administrators"
 msgid "Display custom RSS feed to super admins"
 msgstr ""
 "Mostrar una fuente de agregación RSS personalizada a revendedores y "
@@ -1429,7 +1435,8 @@ msgstr ""
 
 #: core/app_settings.py:509
 #, fuzzy
-#| msgid "Display custom RSS feed to resellers and domain administrators"
+#| msgid ""
+#| "Display custom RSS feed to resellers and domain administrators"
 msgid "Display custom RSS feed also to super administrators"
 msgstr ""
 "Mostrar una fuente de agregación RSS personalizada a revendedores y "
@@ -1553,8 +1560,8 @@ msgstr "Límite para cuentas inactivas"
 
 #: core/app_settings.py:686
 msgid ""
-"Allow the administrator to set a threshold (in days) beyond which an account "
-"is considered inactive if the user hasn't logged in"
+"Allow the administrator to set a threshold (in days) beyond which an account"
+" is considered inactive if the user hasn't logged in"
 msgstr ""
 
 #: core/app_settings.py:695
@@ -1563,8 +1570,8 @@ msgstr "Límite para cuentas inactivas"
 
 #: core/app_settings.py:698
 msgid ""
-"An account with a last login date greater than this threshold (in days) will "
-"be considered as inactive"
+"An account with a last login date greater than this threshold (in days) will"
+" be considered as inactive"
 msgstr ""
 "Una cuenta inactiva con una fecha de inicio de sesión previa a este límite "
 "(en días) se considerará como cuenta inactiva"
@@ -1616,9 +1623,9 @@ msgid ""
 "between summer/winter time (ie the same local time occuring twice due to "
 "clock change)."
 msgstr ""
-"A fijado USE_TZ como falso, lo que puede llevar a problemas en la transición "
-"entre los horarios de verano e invierno (p.ej., que la misma hora exista dos "
-"veces debido a cambios del reloj)."
+"A fijado USE_TZ como falso, lo que puede llevar a problemas en la transición"
+" entre los horarios de verano e invierno (p.ej., que la misma hora exista "
+"dos veces debido a cambios del reloj)."
 
 #: core/checks.py:19
 msgid "Set `USE_TZ = True` in settings.py"
@@ -1640,8 +1647,9 @@ msgstr ""
 
 #: core/checks.py:34
 msgid ""
-"Visit : https://modoboa.readthedocs.io/en/latest/manual_installation/"
-"dovecot.html#dovecot-oauth2"
+"Visit : "
+"https://modoboa.readthedocs.io/en/latest/manual_installation/dovecot.html#dovecot-"
+"oauth2"
 msgstr ""
 
 #: core/checks.py:41
@@ -1652,8 +1660,9 @@ msgstr ""
 
 #: core/checks.py:45
 msgid ""
-"Visit :  https://modoboa.readthedocs.io/en/latest/manual_installation/"
-"radicale.html#radicale-oauth2"
+"Visit :  "
+"https://modoboa.readthedocs.io/en/latest/manual_installation/radicale.html#radicale-"
+"oauth2"
 msgstr ""
 
 #: core/constants.py:6
@@ -1954,7 +1963,7 @@ msgstr "Nada"
 #, fuzzy
 #| msgid "Quantity"
 msgid "Quarantine"
-msgstr "Cantidad"
+msgstr "Cuarentena"
 
 #: dmarc/models.py:12
 #, fuzzy
@@ -2258,10 +2267,11 @@ msgstr "Alias del dominio"
 
 #: limits/app_settings.py:52
 #, fuzzy
-#| msgid "Maximum number of allowed domain aliases for a new administrator"
+#| msgid ""
+#| "Maximum number of allowed domain aliases for a new administrator"
 msgid ""
-"Maximum number of allowed domain aliases for a new administrator. (0 to deny "
-"any creation, -1 to allow unlimited creations)"
+"Maximum number of allowed domain aliases for a new administrator. (0 to deny"
+" any creation, -1 to allow unlimited creations)"
 msgstr ""
 "Número máximo permitido de alias de dominio para un nuevo administrador"
 
@@ -2315,15 +2325,16 @@ msgstr ""
 #| msgid ""
 #| "Maximum number of allowed domain administrators for a new administrator"
 msgid ""
-"Maximum number of allowed domain administrators for a new domain. (0 to deny "
-"any creation, -1 to allow unlimited creations)"
+"Maximum number of allowed domain administrators for a new domain. (0 to deny"
+" any creation, -1 to allow unlimited creations)"
 msgstr ""
 "Número máximo de dominios permitido de administradores para un nuevo "
 "administrador"
 
 #: limits/app_settings.py:126
 #, fuzzy
-#| msgid "Maximum number of allowed domain aliases for a new administrator"
+#| msgid ""
+#| "Maximum number of allowed domain aliases for a new administrator"
 msgid ""
 "Maximum number of allowed domain aliases for a new domain. (0 to deny any "
 "creation, -1 to allow unlimited creations)"
@@ -2342,8 +2353,8 @@ msgstr "Número máximo de mailboxes permitidas para un nuevo administrador"
 #, fuzzy
 #| msgid "Maximum number of allowed aliases for a new administrator"
 msgid ""
-"Maximum number of allowed aliases for a new domain. (0 to deny any creation, "
-"-1 to allow unlimited creations)"
+"Maximum number of allowed aliases for a new domain. (0 to deny any creation,"
+" -1 to allow unlimited creations)"
 msgstr "Número máxido de alias permitidos para un nuevo administrador"
 
 #: limits/apps.py:16
@@ -2816,8 +2827,8 @@ msgstr ""
 
 #: rspamd/app_settings.py:21
 msgid ""
-"Absolute path of the file which contains paths to DKIM private keys. Must be "
-"readable by _rspamd group or user."
+"Absolute path of the file which contains paths to DKIM private keys. Must be"
+" readable by _rspamd group or user."
 msgstr ""
 
 #: rspamd/app_settings.py:30
@@ -2836,8 +2847,8 @@ msgstr ""
 
 #: rspamd/app_settings.py:53
 msgid ""
-"Location of the rspamd dashboard. Can either be a relative URL (eg. '/"
-"rspamd') or a full URL (eg. 'https://rspamd.domain.tld/').Only use for "
+"Location of the rspamd dashboard. Can either be a relative URL (eg. "
+"'/rspamd') or a full URL (eg. 'https://rspamd.domain.tld/').Only use for "
 "guidance on the Super-Admin dashboard."
 msgstr ""
 
@@ -2987,7 +2998,8 @@ msgstr "Detener procesamiento"
 
 #: sievefilters/lib.py:49
 msgid "Connection to MANAGESIEVE server failed, check your configuration"
-msgstr "La conexión al servidor MANAGESIEVE falló, verifique su configuración."
+msgstr ""
+"La conexión al servidor MANAGESIEVE falló, verifique su configuración."
 
 #: sievefilters/lib.py:76
 #, fuzzy
@@ -3088,10 +3100,10 @@ msgid ""
 "primary address, and check your spam folder.</p>"
 msgstr ""
 "<p>Si existe una cuenta con el correo electrónico introducido, recibirá en "
-"breves instantes instrucciones via email para cambiar su contraseña.</"
-"p><p>Si no recibe el correo, por favor compruebe que la dirección de correo "
-"electrónico introducida es su dirección principal y revise su directorio de "
-"correo basura.</p>"
+"breves instantes instrucciones via email para cambiar su "
+"contraseña.</p><p>Si no recibe el correo, por favor compruebe que la "
+"dirección de correo electrónico introducida es su dirección principal y "
+"revise su directorio de correo basura.</p>"
 
 #: templates/registration/password_reset_email.html:4
 #: templates/registration/password_reset_email_v2.html:4
@@ -3143,8 +3155,8 @@ msgstr "Contraseña anterior"
 
 #: templates/registration/twofactor_code_verify.html:35
 msgid ""
-"Enter the code from the two-factor app on your mobile device. If you've lost "
-"your device, you may enter one of your recovery codes."
+"Enter the code from the two-factor app on your mobile device. If you've lost"
+" your device, you may enter one of your recovery codes."
 msgstr ""
 
 #: templates/registration/twofactor_code_verify.html:42
@@ -3407,6 +3419,5 @@ msgid "Attachment is too big (limit: %s)"
 msgstr "EL adjunto es demasiado grande (límite: %s)"
 
 #, fuzzy, python-brace-format
-#~| msgid "Connection to IMAP server failed: %s"
 #~ msgid "Connection to IMAP server failed: {error}"
 #~ msgstr "Falló la conexión con el servidor IMAP: %s"

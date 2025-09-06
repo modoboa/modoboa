@@ -1,0 +1,80 @@
+X-Envelope-From: <it-edu@evil.example.net>
+X-Envelope-To: <me@example.net>
+X-Envelope-To-Blocked: <me@example.net>
+X-Quarantine-ID: <nZkKQ_MUuyil>
+X-Amavis-Alert: BAD HEADER SECTION, Non-encoded non-ASCII data (and not UTF-8)
+	(char 85 hex): Subject: I think I saw you in my dreams\x{85}
+X-Spam-Flag: YES
+X-Spam-Score: 8.178
+X-Spam-Level: ********
+X-Spam-Status: Yes, score=8.178 tag=-999 tag2=3.9 kill=5
+	tests=[HEADER_FROM_DIFFERENT_DOMAINS=0.25, HTML_IMAGE_ONLY_28=0.726,
+	HTML_MESSAGE=0.001, MIME_HTML_ONLY=1.105, RCVD_IN_MSPIKE_H2=-0.001,
+	TVD_PH_BODY_ACCOUNTS_PRE=0.001, T_REMOTE_IMAGE=0.01,
+	T_RP_MATCHES_RCVD=-0.01, URIBL_BLACK=1.7, URIBL_DBL_ABUSE_SPAM=2,
+	URI_WPADMIN=2.396] autolearn=no autolearn_force=no
+Received: from mail.example.net ([127.0.0.1])
+	by mail.example.net (mail.example.net [127.0.0.1]) (amavisd-new, port 10024)
+	with LMTP id nZkKQ_MUuyil for <me@example.net>;
+	Sat, 16 Dec 2017 13:09:49 +0000 (GMT)
+Received: from evil.example.net (mail.evil.example.net [10.0.0.1])
+	by mail.example.net (Postfix) with ESMTPS id 62B2E1AF12D
+	for <me@example.net>; Sat, 16 Dec 2017 13:09:49 +0000 (GMT)
+Received: from it-edu by evil.example.net with local (Exim 4.82)
+	(envelope-from <it-edu@evil.example.net>)
+	id 1eQCDr-0005NE-IT
+	for me@example.net; Sat, 16 Dec 2017 16:09:47 +0300
+To: me@example.net
+Subject: =?UTF-8?Q?Account_Suspension_Notification_=21?=
+X-PHP-Originating-Script: 520:maill.php
+Date: Sat, 16 Dec 2017 16:09:47 +0300
+From: Notice <Notice@fake.example.net>
+Reply-To: Notice@fake.example.net
+Message-ID: <6619a5295cefcf484a58944fc280eb90@evil.example.net>
+X-Priority: 1
+X-Mailer: PHPMailer 5.2.10 (https://github.com/PHPMailer/PHPMailer/)
+MIME-Version: 1.0
+Content-Type: text/html; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+
+<!DOCTYPE html>
+<html>
+<HEAD><STYLE>
+.cssage P
+{
+margin:0px;
+padding:0px
+}
+body.cssage
+{
+font-size: 12pt;
+font-family:Calibri
+}
+</STYLE>
+
+</HEAD>
+<BODY class="cssage">
+<DIV dir="ltr"><FONT size=2 face="Arial, Helvetica, sans-serif"></FONT><BR>
+<DIV>
+<DIV>
+<TABLE style="FONT-FAMILY: 'Times New Roman'" border=0 cellSpacing=0 cellPadding=0 width=600 align="center">
+<TR class=header>
+<TD vAlign=bottom><SPAN style="FONT-FAMILY: 'Trebuchet MS', Arial, Helvetica, sans-serif; COLOR: rgb(159,159,159); FONT-SIZE: 12px" >This is an automated email, please do not reply</SPAN></TD>
+<TD align=right><IMG style="WIDTH: 215px; HEIGHT: 66px" alt="" src="http://im55.gulfup.com/oLrUdE.jpg"></TD></TR>
+<TR >
+<TD height=14 vAlign=bottom colSpan=2><IMG src="https://www.payza.com/emails/images/bar.png" width="100%" height=3></TD></TR>
+<TR>
+<TD colSpan=2>
+<H1 style="PADDING-BOTTOM: 0px; PADDING-LEFT: 0px; PADDING-RIGHT: 0px; FONT-FAMILY: 'Trebuchet MS', Arial, Helvetica, sans-serif; COLOR: rgb(189,151,0); FONT-SIZE: 24px; FONT-WEIGHT: normal; PADDING-TOP: 10px">Dear Client</H1>
+<P style="LINE-HEIGHT: 21px; FONT-FAMILY: 'Trebuchet MS', Arial, Helvetica, sans-serif; COLOR: rgb(84,84,84); FONT-SIZE: 14px">We've noticed that some of your account information appears to be missing or incorrect
+We need to verify your account information in order to continue using your Apple ID, Please Verify your account information by clicking on the link below<BR><BR><B><A style="COLOR: rgb(27,144,234)" href="http://chiikulab.com/wp-admin/images/Update/Apple2018%20V2.1/
+" target=_blank>Click here to Verify your ID</A></B></P></TD></TR>
+<TR>
+<TD colSpan=2>
+<DIV><SPAN style="FONT-FAMILY: 'Trebuchet MS', Arial, Helvetica, sans-serif; COLOR: rgb(51,102,204); FONT-SIZE: 15px" ></SPAN><BR></DIV><br><SPAN style="FONT-FAMILY: 'Trebuchet MS', Arial, Helvetica, sans-serif; COLOR: rgb(202,162,0); FONT-SIZE: 17px" class=ecxthanks>Thanks for choosing Apple,</SPAN><BR style="COLOR: rgb(202,162,0)"><SPAN style="FONT-FAMILY: 'Trebuchet MS', Arial, Helvetica, sans-serif; COLOR: rgb(202,162,0); FONT-SIZE: 15px" >Apple Team</SPAN></TD></TR>
+<TR >
+<TD height=14 vAlign=bottom colSpan=2><IMG src="https://www.payza.com/emails/images/bar.png" width="100%" height=3></TD></TR>
+<TR>
+<TD colSpan=2>
+<P style="PADDING-BOTTOM: 0px; PADDING-LEFT: 0px; PADDING-RIGHT: 0px; FONT-FAMILY: 'Trebuchet MS', Arial, Helvetica, sans-serif; COLOR: rgb(84,84,84); FONT-SIZE: 12px; PADDING-TOP: 10px" >&copy; 2017 Apple. All rights reserved.</P>
+<P style="FONT-FAMILY: 'Trebuchet MS', Arial, Helvetica, sans-serif; COLOR: rgb(186,148,0); FONT-SIZE: 11px">Email ID: 163327</P></TD></TR></TABLE></DIV></DIV></DIV></BODY></html>

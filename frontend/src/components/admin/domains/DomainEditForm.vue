@@ -172,7 +172,7 @@
   </div>
 </template>
 
-<script setup lang="js">
+<script setup>
 import DomainDNSForm from './form_steps/DomainDNSForm.vue'
 import DomainGeneralForm from './form_steps/DomainGeneralForm.vue'
 import DomainLimitationsForm from './form_steps/DomainLimitationsForm.vue'

@@ -5,14 +5,14 @@
 <script setup>
 import { ref, computed } from 'vue'
 import { useGettext } from 'vue3-gettext'
-import { useAuthStore, useParametersStore } from '@/stores'
+import { useAuthStore, useGlobalStore, useParametersStore } from '@/stores'
 import parametersApi from '@/api/parameters'
-import capabilitiesApi from '@/api/capabilities'
 import ConnectedLayout from '@/layouts/connected/ConnectedLayout.vue'
 import constants from '@/constants.json'
 
 const { $gettext } = useGettext()
 const authStore = useAuthStore()
+const globalStore = useGlobalStore()
 const parametersStore = useParametersStore()
 
 const isRspamdVisible = ref(false)
@@ -145,19 +145,18 @@ if (authUser.value.role === constants.SUPER_ADMIN) {
   let response = await parametersApi.getGlobalApplications()
   registeredApplications.value = response.data
 
-  response = await capabilitiesApi.getCapabilities()
-  const capabilities = response.data?.capabilities
+  await globalStore.fetchCapabilities()
 
-  if (capabilities.imap_migration) {
+  if (globalStore.capabilities.imap_migration) {
     if (parametersStore.imapMigrationEnabled === null) {
       response = await parametersApi.getGlobalApplication('imap_migration')
       parametersStore.imapMigrationEnabled =
         response.data.params.enabled_imapmigration
     }
   }
-  isRspamdVisible.value = 'rspamd' in capabilities
+  isRspamdVisible.value = 'rspamd' in globalStore.capabilities
   if (isRspamdVisible.value) {
-    rspamdUrl.value = capabilities.rspamd.location || '/rspamd'
+    rspamdUrl.value = globalStore.capabilities.rspamd.location || '/rspamd'
   }
 }
 </script>
