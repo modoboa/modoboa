@@ -18,7 +18,7 @@ class RenameIndexIfExists(migrations.RenameIndex):
         )
         if len(matching_index_name) != 1:
             return
-        super.database_forwards(app_label, schema_editor, from_state, to_state)
+        super().database_forwards(app_label, schema_editor, from_state, to_state)
 
 
 class Migration(migrations.Migration):
