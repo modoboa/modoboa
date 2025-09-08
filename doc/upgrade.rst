@@ -130,11 +130,61 @@ Rebuild Virtual Environment
 Specific instructions
 *********************
 
+Version 2.5.0
+=============
+
+Amavis plugin integrated into Modoboa core repository. If you are
+using Amavis content filter and the quarantine plugin, the following
+upgrade instructions, otherwise proceed with regular upgrade
+instructions.
+
+Pre update
+----------
+
+-  If you are using Postegresql (default option with the installer),
+   run as a root user:
+
+   .. sourcecode:: bash
+
+       > sudo -u postgres -i psql -d "modoboa" -c "UPDATE django_content_type SET app_label='amavis' WHERE app_label='modoboa_amavis'"
+       > sudo -u postgres -i psql -d "modoboa" -c "UPDATE django_migrations SET app='amavis' WHERE app='modoboa_amavis'"
+
+-   If you are using Mysql, run as a root user:
+
+    .. sourcecode:: bash
+
+       > echo "UPDATE django_content_type SET app_label='amavis' WHERE app_label='modoboa_amavis'" |  mysql -u root -p modoboa
+       > echo "UPDATE django_migrations SET app='amavis' WHERE app='modoboa_amavis'" | mysql -u root -p modoboa
+
+Required changes to :file:`settings.py`
+---------------------------------------
+
+- Rename the following extensions in the ``MODOBOA_APPS`` variable:
+
+  - ``modoboa_amavis`` -> ``modoboa.amavis``
+
+- Add the following variables:
+
+  .. sourcecode:: python
+
+     DATABASE_ROUTERS = ["modoboa.amavis.dbrouter.AmavisRouter"]
+
+     AMAVIS_DEFAULT_DATABASE_ENCODING = "LATIN1"  # or any value matching your database config
+
+- Remove configuration block related to ``modoboa_amavis`` plugin (these should be at the end of the file)
+
+Post update
+-----------
+
+- Run the following command::
+
+  $ pip uninstall modoboa_amavis
+
 Version 2.4.2
 =============
 
 Changes to :file:`settings.py`
----------------------------------------
+------------------------------
 
 - Make sure ``MODOBOA_APPS`` variable contains the following line:
 
