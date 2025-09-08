@@ -23,11 +23,6 @@ And it is extensible by nature and comes with a lot of additional extensions:
 |                                                         |                         |                                                      |
 |                                                         |                         |                                                      |
 |                                                         |                         |                                                      |
-+=========================================================+=========================+======================================================+
-|`modoboa-amavis                                          |A frontend for `Amavis   |https://modoboa-amavis.readthedocs.io                 |
-|<https://github.com/modoboa/modoboa-amavis>`_            |<http://www.amavis.org>`_|                                                      |
-|                                                         |                         |                                                      |
-|                                                         |                         |                                                      |
 +---------------------------------------------------------+-------------------------+------------------------------------------------------+
 |`modoboa-pfxadmin-migrate                                |A tool to migrate from   |https://github.com/modoboa/modoboa-pfxadmin-migrate   |
 |<https://github.com/modoboa/modoboa-pfxadmin-migrate>`_  |Postfixadmin             |                                                      |

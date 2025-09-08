@@ -1,0 +1,11 @@
+FROM alpine:latest
+
+LABEL org.opencontainers.image.authors="Antoine Nguyen <tonio@ngyn.org>"
+
+WORKDIR /app
+RUN apk add amavis perl-dbi perl-dbd-mysql spamassassin
+RUN sa-update
+
+EXPOSE 9998
+
+CMD amavisd
