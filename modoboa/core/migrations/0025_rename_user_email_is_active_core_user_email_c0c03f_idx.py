@@ -3,15 +3,33 @@
 from django.db import migrations
 
 
+class RenameIndexIfExists(migrations.RenameIndex):
+
+    def database_forwards(self, app_label, schema_editor, from_state, to_state):
+        from_model = from_state.apps.get_model(app_label, self.model_name)
+        columns = [
+            from_model._meta.get_field(field).column for field in ["email", "is_active"]
+        ]
+        matching_index_name = schema_editor._constraint_names(
+            from_model,
+            column_names=columns,
+            index=True,
+            unique=False,
+        )
+        if len(matching_index_name) != 1:
+            return
+        super().database_forwards(app_label, schema_editor, from_state, to_state)
+
+
 class Migration(migrations.Migration):
     dependencies = [
         ("core", "0024_alter_user_language"),
     ]
 
     operations = [
-        # migrations.RenameIndex(
-        #     model_name="user",
-        #     new_name="core_user_email_c0c03f_idx",
-        #     old_fields=("email", "is_active"),
-        # ),
+        RenameIndexIfExists(
+            model_name="user",
+            new_name="core_user_email_c0c03f_idx",
+            old_fields=("email", "is_active"),
+        ),
     ]
