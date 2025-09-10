@@ -10,7 +10,7 @@ from modoboa.amavis import models
 class GlobalParametersSerializer(serializers.Serializer):
 
     localpart_is_case_sensitive = serializers.BooleanField(default=False)
-    recipient_delimiter = serializers.CharField(default="")
+    recipient_delimiter = serializers.CharField(default="", allow_blank=True)
     max_messages_age = serializers.IntegerField(default=14)
     released_msgs_cleanup = serializers.BooleanField(default=False)
     am_pdp_mode = serializers.ChoiceField(
