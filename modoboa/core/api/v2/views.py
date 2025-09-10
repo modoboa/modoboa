@@ -157,7 +157,9 @@ class ComponentsInformationAPIView(APIView):
 class NotificationsAPIView(APIView):
     """Return list of active notifications."""
 
-    permission_classes = [permissions.IsAuthenticated, IsSuperUser]
+    permission_classes = [
+        permissions.IsAuthenticated,
+    ]
     throttle_classes = [UserLesserDdosUser]
 
     @extend_schema(responses=serializers.NotificationSerializer(many=True))
