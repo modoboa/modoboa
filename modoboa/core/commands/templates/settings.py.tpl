@@ -2,10 +2,10 @@
 Django settings for {{ name }} project.
 
 For more information on this file, see
-https://docs.djangoproject.com/en/4.2/topics/settings/
+https://docs.djangoproject.com/en/dev/topics/settings/
 
 For the full list of settings and their values, see
-https://docs.djangoproject.com/en/2.2/ref/settings/
+https://docs.djangoproject.com/en/dev/ref/settings/
 """
 
 from logging.handlers import SysLogHandler
@@ -16,9 +16,6 @@ env = environ.Env()
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.realpath(os.path.dirname(os.path.dirname(__file__)))
 environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = '{{ secret_key }}'
@@ -157,14 +154,14 @@ WSGI_APPLICATION = '{{ name }}.wsgi.application'
 
 
 # Database
-# https://docs.djangoproject.com/en/4.2/ref/settings/#databases
+# https://docs.djangoproject.com/en/dev/ref/settings/#databases
 
 DATABASES = {
     {% for conn in db_connections.values %}{{ conn|safe }}{% endfor %}
 }
 
 # Internationalization
-# https://docs.djangoproject.com/en/4.2/topics/i18n/
+# https://docs.djangoproject.com/en/dev/topics/i18n/
 
 LANGUAGE_CODE = '{{ lang }}'
 
@@ -177,12 +174,12 @@ USE_L10N = True
 USE_TZ = True
 
 # Default primary key field type
-# https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
+# https://docs.djangoproject.com/en/dev/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 
 # Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/2.2/howto/static-files/
+# https://docs.djangoproject.com/en/dev/howto/static-files/
 
 STATIC_URL = '/sitestatic/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'sitestatic')
@@ -295,7 +292,7 @@ CACHES = {
 
 
 # Password validation
-# https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
+# https://docs.djangoproject.com/en/dev/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -384,7 +381,11 @@ SILENCED_SYSTEM_CHECKS = [
 ]
 
 PHONENUMBER_DB_FORMAT = 'INTERNATIONAL'
-
+{% if amavis_enabled %}
+# Amavis settings
+DATABASE_ROUTERS = ["modoboa.amavis.dbrouter.AmavisRouter"]
+AMAVIS_DEFAULT_DATABASE_ENCODING = "LATIN1"  # or any value matching your database config
+{% endif %}
 # Load settings from extensions
 {% for extension in extra_settings %}
 try:
