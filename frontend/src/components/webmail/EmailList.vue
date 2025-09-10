@@ -228,9 +228,7 @@ const autoRefreshContent = () => {
 }
 
 const submitSearch = () => {
-  if (search.value) {
-    fetchEmails()
-  }
+  fetchEmails()
 }
 
 const toggleAllSelection = (value) => {
