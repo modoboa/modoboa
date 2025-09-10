@@ -218,6 +218,7 @@ class DeployCommand(Command):
                 allowed_host = "localhost"
         extra_settings = []
         extensions = parsed_args.extensions
+        amavis_enabled = False
         if extensions:
             if "all" in extensions:
                 extensions = self._get_extension_list()
@@ -233,6 +234,7 @@ class DeployCommand(Command):
                 exec_cmd(cmd, capture_output=False)
             extra_settings = self.find_extra_settings(extensions)
             extensions = [extension[1] for extension in extensions]
+            amavis_enabled = "modoboa.amavis" in extensions
 
         mod = __import__(parsed_args.name, globals(), locals(), [smart_str("settings")])
         tpl = self._render_template(
@@ -247,6 +249,7 @@ class DeployCommand(Command):
                 "devmode": parsed_args.devel,
                 "extensions": extensions,
                 "extra_settings": extra_settings,
+                "amavis_enabled": amavis_enabled,
             },
         )
         with open(f"{path}/settings.py", "w") as fp:
