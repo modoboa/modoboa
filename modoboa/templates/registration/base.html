@@ -8,6 +8,24 @@
     <title>{% trans "Welcome to Modoboa" %}</title>
     <link rel="icon" type="image/x-icon" href="{% static 'css/favicon.ico' %}" />
     <link rel="stylesheet" type="text/css" href="{% static 'css/offline.css' %}" />
+    <style>
+     .left-column {
+       background-color: {{ theme_primary_color }};
+       text-align: center;
+     }
+     .btn-primary {
+       background-color: {{ theme_primary_color }};
+       color: white;
+     }
+     .btn-primary:hover {
+       background-color: {{ theme_primary_color_dark }};
+     }
+     .footer a {
+       color: #{{ theme_primary_color }};
+       text-decoration: none;
+       font-size: 14px;
+     }
+    </style>
     {% block extra_css %}{% endblock %}
   </head>
   <body>

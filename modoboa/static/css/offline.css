@@ -23,11 +23,6 @@ body {
     padding: 20px;
 }
 
-.left-column {
-    background-color: #046bf8;
-    text-align: center;
-}
-
 .right-column {
     background-color: #ffffff;
     display: flex;
@@ -115,27 +110,12 @@ h2 {
     transition: background-color 0.3s;
 }
 
-.btn-primary {
-  background-color: #007bff;
-  color: white;
-}
-
 .btn:hover {
   background-color: #c9c9c9;
 }
 
-.btn-primary:hover {
-    background-color: #0056b3;
-}
-
 .footer {
     margin-top: 20px;
-}
-
-.footer a {
-    color: #007bff;
-    text-decoration: none;
-    font-size: 14px;
 }
 
 .footer a:hover {
@@ -153,6 +133,13 @@ h2 {
 
 .mt {
   margin-top: 5px;
+}
+
+.annoucement {
+  background-color: #e6e6e6;
+  padding: 20px;
+  border-radius: 5px;
+  text-align: left;
 }
 
 @media (max-width: 768px) {
