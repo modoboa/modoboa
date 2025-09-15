@@ -155,7 +155,8 @@ watch(
   () => _props.graphicName,
   () => {
     options.value.colors = getColors()
-  }
+  },
+  { immediate: true }
 )
 </script>
 
