@@ -58,7 +58,6 @@ class AutoDiscoverView(ConfigBaseMixin, generic.TemplateView):
 
 class MobileConfigView(generic.View):
 
-    databases = "__all__"
     http_method_names = ["get"]
 
     def get(self, request, *args, **kwargs):

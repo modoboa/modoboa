@@ -130,6 +130,27 @@ Rebuild Virtual Environment
 Specific instructions
 *********************
 
+Version 2.6.0
+=============
+
+New built-in auto-configuration service.
+
+Required changes to :file:`settings.py`
+---------------------------------------
+
+- Add the following line to ``MODOBOA_APPS`` variable:
+
+  .. sourcecode:: python
+
+     'modoboa.autoconfig'
+
+- Add the following hostnames to ``ALLOWED_HOSTS`` variable:
+
+  .. sourcecode:: python
+
+     'autoconfig.<MY DOMAIN>',
+     'autodiscover.<MY DOMAIN>',
+
 Version 2.5.0
 =============
 
