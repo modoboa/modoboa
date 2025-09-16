@@ -13,6 +13,7 @@ from modoboa.core.extensions import exts_pool
 
 urlpatterns = [
     path("", include("modoboa.core.urls")),
+    path("", include("modoboa.autoconfig.urls")),
     path(
         "accounts/password_reset/",
         core_views.PasswordResetView.as_view(),
