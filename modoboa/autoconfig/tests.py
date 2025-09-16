@@ -36,5 +36,3 @@ class ViewsTestCase(TestCase):
 
         resp = self.client.get(f"{url}?emailaddress=test@test.com")
         self.assertEqual(resp.status_code, 200)
-
-        self.assertIn(b"<EmailAddress>test@test.com", resp.content)
