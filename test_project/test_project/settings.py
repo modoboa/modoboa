@@ -50,6 +50,15 @@ DEFAULT_AUTO_FIELD = "django.db.models.AutoField"
 # SERVER_EMAIL = 'webmaster@example.net'
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
+EMAIL_CLIENT_CONNECTION_SETTINGS = {
+    "imap": {
+        "HOSTNAME": "localhost",
+        "SOCKET_TYPE": "SSL",
+        "PORT": 993,
+    },
+    "smtp": {"HOSTNAME": "localhost", "SOCKET_TYPE": "STARTTLS", "PORT": 587},
+}
+
 # Security settings
 
 X_FRAME_OPTIONS = "SAMEORIGIN"
@@ -87,6 +96,7 @@ MODOBOA_APPS = (
     "modoboa.core",
     "modoboa.lib",
     "modoboa.admin",
+    "modoboa.autoconfig",
     "modoboa.transport",
     "modoboa.relaydomains",
     "modoboa.limits",
@@ -397,6 +407,7 @@ TEST_RUNNER = "modoboa.lib.test_runners.UnManagedModelTestRunner"
 
 # We force sqlite backend for tests because the generated database is
 # not the same as the one provided by amavis...
+
 DATABASES["amavis"] = {  # noqa
     "ENGINE": "django.db.backends.sqlite3",
     "NAME": "amavis.db",
