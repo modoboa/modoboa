@@ -4,6 +4,8 @@ from django.urls import reverse
 
 class ViewsTestCase(TestCase):
 
+    databases = "__all__"
+
     def test_autoconfig(self):
         url = reverse("autoconfig:autoconfig")
 

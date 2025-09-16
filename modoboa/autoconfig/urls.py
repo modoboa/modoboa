@@ -8,7 +8,7 @@ app_name = "autoconfig"
 
 urlpatterns = [
     path(
-        ".well-known/autoconfig/mail/config-v1.1.xml",
+        "mail/config-v1.1.xml",
         views.AutoConfigView.as_view(),
         name="autoconfig",
     ),
