@@ -74,7 +74,7 @@ class MobileConfigView(generic.View):
             "PayloadType": "Configuration",
             "PayloadVersion": 1,
             "PayloadIdentifier": f"{reverse_domain}.mailprofile",
-            "PayloadUUID": uuid.uuid4(),
+            "PayloadUUID": str(uuid.uuid4()),
             "PayloadDisplayName": f"{domain} Mail Configuration",
             "PayloadOrganization": domain,
             "PayloadContent": [
@@ -82,7 +82,7 @@ class MobileConfigView(generic.View):
                     "PayloadType": "com.apple.mail.managed",
                     "PayloadVersion": 1,
                     "PayloadIdentifier": f"{reverse_domain}.mailprofile.mail",
-                    "PayloadUUID": uuid.uuid4(),
+                    "PayloadUUID": str(uuid.uuid4()),
                     "PayloadDisplayName": "Mail",
                     "EmailAccountDescription": f"{domain} Mail",
                     "EmailAccountType": "EmailTypeIMAP",
