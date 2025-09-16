@@ -9,7 +9,7 @@
       <hostname>{{ connection_settings.imap.HOSTNAME }}</hostname>
       <port>{{ connection_settings.imap.PORT }}</port>
       <socketType>{{ connection_settings.imap.SOCKET_TYPE }}</socketType>
-      <authentication>password-cleartext</authentication>
+      <authentication>plain</authentication>
       <username>{{ emailaddress }}</username>
     </incomingServer>
 
@@ -17,7 +17,7 @@
       <hostname>{{ connection_settings.smtp.HOSTNAME }}</hostname>
       <port>{{ connection_settings.smtp.PORT }}</port>
       <socketType>{{ connection_settings.smtp.SOCKET_TYPE }}</socketType>
-      <authentication>password-cleartext</authentication>
+      <authentication>plain</authentication>
       <username>{{ emailaddress }}</username>
     </outgoingServer>
   </emailProvider>
