@@ -65,8 +65,7 @@ class MobileConfigView(generic.View):
         if not emailaddress:
             raise Http404
         local_part, domain = split_address(emailaddress)
-        context = self.get_common_context(emailaddress)
-        parts = context["domain"].split(".")
+        parts = domain.split(".")
         parts.reverse()
         reverse_domain = ".".join(parts)
         imap_settings = settings.EMAIL_CLIENT_CONNECTION_SETTINGS["imap"]
