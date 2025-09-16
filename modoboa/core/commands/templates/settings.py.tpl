@@ -38,6 +38,19 @@ SITE_ID = 1
 # The email address that error messages come from, such as those sent to ADMINS
 #SERVER_EMAIL = 'webmaster@example.net'
 
+EMAIL_CLIENT_CONNECTION_SETTINGS = {
+    'imap': {
+        'HOSTNAME': '{{ allowed_host }}',
+        'SOCKET_TYPE': 'SSL',
+        'PORT': 993,
+    },
+    'smtp': {
+        'HOSTNAME': '{{ allowed_host }}',
+        'SOCKET_TYPE': 'STARTTLS',
+        'PORT': 587
+    }
+}
+
 # Security settings
 
 X_FRAME_OPTIONS = "SAMEORIGIN"
@@ -75,6 +88,7 @@ MODOBOA_APPS = (
     'modoboa.core',
     'modoboa.lib',
     'modoboa.admin',
+    'modoboa.autoconfig',
     'modoboa.transport',
     'modoboa.relaydomains',
     'modoboa.limits',

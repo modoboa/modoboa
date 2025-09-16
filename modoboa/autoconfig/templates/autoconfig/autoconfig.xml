@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<clientConfig version="1.1">
+  <emailProvider id="{{ domain }}">
+    <domain>{{ domain }}</domain>
+    <displayName>Modoboa</displayName>
+    <displayShortName>Mail</displayShortName>
+
+    <incomingServer type="imap">
+      <hostname>{{ connection_settings.imap.HOSTNAME }}</hostname>
+      <port>{{ connection_settings.imap.PORT }}</port>
+      <socketType>{{ connection_settings.imap.SOCKET_TYPE }}</socketType>
+      <authentication>plain</authentication>
+      <username>{{ emailaddress }}</username>
+    </incomingServer>
+
+    <outgoingServer type="smtp">
+      <hostname>{{ connection_settings.smtp.HOSTNAME }}</hostname>
+      <port>{{ connection_settings.smtp.PORT }}</port>
+      <socketType>{{ connection_settings.smtp.SOCKET_TYPE }}</socketType>
+      <authentication>plain</authentication>
+      <username>{{ emailaddress }}</username>
+    </outgoingServer>
+  </emailProvider>
+</clientConfig>
