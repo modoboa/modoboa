@@ -1,8 +1,8 @@
+import plistlib
 import uuid
 
 from django.conf import settings
 from django.http import Http404, HttpResponse
-from django.template.loader import render_to_string
 from django.utils.decorators import method_decorator
 from django.views import generic
 from django.views.decorators.csrf import csrf_exempt
@@ -56,31 +56,56 @@ class AutoDiscoverView(ConfigBaseMixin, generic.TemplateView):
         return self.render_to_response(context)
 
 
-class MobileConfigView(ConfigBaseMixin, generic.TemplateView):
+class MobileConfigView(generic.View):
 
-    content_type = "application/x-apple-aspen-config"
+    databases = "__all__"
     http_method_names = ["get"]
-    template_name = "autoconfig/mobileconfig.xml"
 
-    def get_context_data(self, **kwargs):
-        emailaddress = self.request.GET.get("email")
+    def get(self, request, *args, **kwargs):
+        emailaddress = self.request.GET.get("emailaddress")
         if not emailaddress:
             raise Http404
-        context = super().get_context_data(**kwargs)
-        context.update(self.get_common_context(emailaddress))
+        local_part, domain = split_address(emailaddress)
+        context = self.get_common_context(emailaddress)
         parts = context["domain"].split(".")
         parts.reverse()
-        context.update(
-            {
-                "reverse_domain": ".".join(parts),
-                "content_uuid": uuid.uuid4(),
-                "global_uuid": uuid.uuid4(),
-            }
+        reverse_domain = ".".join(parts)
+        imap_settings = settings.EMAIL_CLIENT_CONNECTION_SETTINGS["imap"]
+        smtp_settings = settings.EMAIL_CLIENT_CONNECTION_SETTINGS["smtp"]
+        profile = {
+            "PayloadType": "Configuration",
+            "PayloadVersion": 1,
+            "PayloadIdentifier": f"{reverse_domain}.mailprofile",
+            "PayloadUUID": uuid.uuid4(),
+            "PayloadDisplayName": f"{domain} Mail Configuration",
+            "PayloadOrganization": domain,
+            "PayloadContent": [
+                {
+                    "PayloadType": "com.apple.mail.managed",
+                    "PayloadVersion": 1,
+                    "PayloadIdentifier": f"{reverse_domain}.mailprofile.mail",
+                    "PayloadUUID": uuid.uuid4(),
+                    "PayloadDisplayName": "Mail",
+                    "EmailAccountDescription": f"{domain} Mail",
+                    "EmailAccountType": "EmailTypeIMAP",
+                    "EmailAddress": emailaddress,
+                    # incoming
+                    "IncomingMailServerHostName": imap_settings["HOSTNAME"],
+                    "IncomingMailServerPortNumber": imap_settings["PORT"],
+                    "IncomingMailServerUseSSL": True,
+                    "IncomingMailServerUsername": emailaddress,
+                    # outgoing
+                    "OutgoingMailServerHostName": smtp_settings["HOSTNAME"],
+                    "OutgoingMailServerPortNumber": smtp_settings["PORT"],
+                    "OutgoingMailServerUseSSL": True,
+                    "OutgoingMailServerUsername": emailaddress,
+                    "OutgoingPasswordSameAsIncomingPassword": True,
+                }
+            ],
+        }
+        plist_bytes = plistlib.dumps(profile, fmt=plistlib.FMT_XML)
+        resp = HttpResponse(
+            plist_bytes, content_type="application/x-apple-aspen-config"
         )
-        return context
-
-    def render_to_response(self, context, **responsse_kwargs):
-        content = render_to_string(self.template_name, context)
-        response = HttpResponse(content, content_type=self.content_type)
-        response["Content-Disposition"] = 'attachment; filename="mail.mobileconfig"'
-        return response
+        resp["Content-Disposition"] = 'attachment; filename="mail.mobileconfig"'
+        return resp
