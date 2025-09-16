@@ -62,7 +62,7 @@ Getting help
 
 Modoboa is a free software and is totally open source BUT you can hire the team if you need professional services. More information here: https://modoboa.org/en/professional-services/.
 
-Contracting a support plan if a good way to ensure your installation stays available and up-to-date and it will help the project to be sustainable :)
+Contracting a support plan is a good way to ensure your installation stays available and up-to-date and it will help the project to be sustainable :)
 
 *********
 Community
