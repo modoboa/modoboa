@@ -16,7 +16,7 @@
     />
     <v-chip
       v-for="(_recipient, index) in recipients"
-      :key="index"
+      :key="_recipient"
       class="mr-2 mt-2"
       closable
       @click:close="removeRecipient(index)"
@@ -29,17 +29,13 @@
 <script setup lang="js">
 import EmailField from '@/components/tools/EmailField'
 import { useGettext } from 'vue3-gettext'
-import { ref, computed } from 'vue'
+import { ref } from 'vue'
 
 const { $gettext } = useGettext()
-const emit = defineEmits(['update:model-value'])
-const props = defineProps({
-  modelValue: { type: Array, default: () => [] },
-})
 
-const recipients = computed({
-  get: () => props.modelValue,
-  set: (value) => emit('update:model-value', value),
+const recipients = defineModel({
+  type: Array,
+  default: () => [],
 })
 
 const recipient = ref('')
