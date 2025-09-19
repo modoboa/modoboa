@@ -130,7 +130,9 @@ function exportIdentities() {
 }
 
 function importIdentities(data, form) {
-  data.append('crypt_passwords', form.crypt_passwords)
+  if (form.crypt_passwords !== undefined && form.crypt_passwords !== null) {
+    data.append('crypt_passwords', form.crypt_passwords)
+  }
   importContent(identitiesApi, data, importForm, $gettext)
 }
 
