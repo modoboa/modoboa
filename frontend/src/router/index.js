@@ -490,9 +490,6 @@ router.beforeEach(async (to, from, next) => {
     const previousPage = window.location.href
     sessionStorage.setItem('previousPage', previousPage)
     const authStore = useAuthStore()
-    if (!authStore.authUser) {
-      await authStore.initialize()
-    }
     const isAuth = await authStore.validateAccess()
     if (isAuth) {
       if (to.meta.allowedRoles !== undefined) {

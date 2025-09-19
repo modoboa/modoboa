@@ -1,5 +1,4 @@
 <script setup>
-import { onMounted } from 'vue'
 import { useAuthStore } from '@/stores'
 import { useModoboaTheme } from '@/composables/theme'
 
@@ -10,10 +9,7 @@ const props = defineProps({
 const authStore = useAuthStore()
 const { enableTheme } = useModoboaTheme()
 
-onMounted(() => {
-  authStore.completeLogin(props.redirectUrl)
-})
-
+await authStore.completeLogin(props.redirectUrl)
 await enableTheme()
 </script>
 
