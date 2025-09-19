@@ -745,7 +745,7 @@ class CSVImportSerializer(serializers.Serializer):
 class CSVIdentityImportSerializer(CSVImportSerializer):
     """Custom serializer for identity import."""
 
-    crypt_passwords = serializers.BooleanField()
+    crypt_passwords = serializers.BooleanField(default=False)
 
 
 class AlarmSerializer(serializers.ModelSerializer):

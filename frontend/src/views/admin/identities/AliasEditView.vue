@@ -2,7 +2,7 @@
   <v-toolbar flat>
     <v-toolbar-title>{{ $gettext('Edit alias') }}</v-toolbar-title>
   </v-toolbar>
-  <AliasEditForm :alias="alias" />
+  <AliasEditForm />
 </template>
 
 <script setup lang="js">
