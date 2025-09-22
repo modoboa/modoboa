@@ -11,7 +11,7 @@ from django.utils import timezone
 
 from modoboa.admin import factories as admin_factories
 from modoboa.core import models as core_models
-from modoboa.lib.tests import ModoAPITestCase, ModoTestCase
+from modoboa.lib.tests import ModoAPITestCase
 
 from . import factories
 from . import mocks
@@ -46,7 +46,7 @@ class TestDataMixin:
 
     def setUp(self, *args, **kwargs):
         """Initiate test context."""
-        self.client.force_login(self.user)
+        self.client.force_authenticate(self.user)
         self.set_global_parameter(
             "server_location", "http://example.test/radicale/", app="calendars"
         )
@@ -312,7 +312,7 @@ class EmailAddressViewSetTestCase(TestDataMixin, ModoAPITestCase):
         self.assertEqual(len(response.data), 3)
 
 
-class ImportTestCase(TestDataMixin, ModoTestCase):
+class ImportTestCase(TestDataMixin, ModoAPITestCase):
 
     def setUp(self):
         super().setUp()

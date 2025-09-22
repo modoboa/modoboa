@@ -62,7 +62,7 @@ class ARMessageViewSetTestCase(PatcherMixin, ModoAPITestCase):
     def test_retrieve_armessage_domadmin(self):
         admin = User.objects.get(username="admin@test.com")
         self.client.logout()
-        self.client.force_login(admin)
+        self.client.force_authenticate(admin)
         url = reverse("api:armessage-list")
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
@@ -74,7 +74,7 @@ class ARMessageViewSetTestCase(PatcherMixin, ModoAPITestCase):
 
     def test_retrieve_armessage_simpleuser(self):
         self.client.logout()
-        self.client.force_login(self.account)
+        self.client.force_authenticate(self.account)
         url = reverse("api:armessage-list")
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
@@ -156,7 +156,7 @@ class AccountARMessageViewSetTestCase(PatcherMixin, ModoAPITestCase):
         response = self.client.get(url)
         self.assertEqual(response.status_code, 403)
         self.client.logout()
-        self.client.force_login(self.account)
+        self.client.force_authenticate(self.account)
         self.assertFalse(
             models.ARmessage.objects.filter(mbox=self.account.mailbox).exists()
         )
@@ -168,7 +168,7 @@ class AccountARMessageViewSetTestCase(PatcherMixin, ModoAPITestCase):
 
     def test_set_armessage(self):
         self.client.logout()
-        self.client.force_login(self.account)
+        self.client.force_authenticate(self.account)
         url = reverse("api:account_armessage-armessage")
         fromdate = timezone.now()
         todate = fromdate + relativedelta(days=4)
