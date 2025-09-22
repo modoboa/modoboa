@@ -1,5 +1,7 @@
 """Admin model mixins."""
 
+from typing import Optional
+
 from modoboa.policyd.utils import get_message_counter
 
 
@@ -18,7 +20,7 @@ class MessageLimitMixin:
         return self.message_limit - get_message_counter(self.message_counter_key)
 
     @property
-    def sent_messages_in_percent(self):
+    def sent_messages_in_percent(self) -> Optional[int]:  # noqa
         """Return number of sent messages as a percentage."""
         if not self.message_limit:
             return None

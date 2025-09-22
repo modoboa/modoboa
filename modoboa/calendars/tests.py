@@ -13,7 +13,7 @@ from modoboa.admin import factories as admin_factories
 from modoboa.admin import models as admin_models
 from modoboa.core import factories as core_factories
 from modoboa.core import models as core_models
-from modoboa.lib.tests import ModoTestCase, ModoAPITestCase
+from modoboa.lib.tests import ModoAPITestCase
 
 from modoboa.admin.factories import populate_database
 
@@ -53,7 +53,7 @@ class TestDataMixin:
         cls.scalendar2 = factories.SharedCalendarFactory(domain=cls.domain2)
 
 
-class AccessRuleTestCase(ModoTestCase):
+class AccessRuleTestCase(ModoAPITestCase):
 
     @classmethod
     def setUpTestData(cls):
@@ -139,7 +139,7 @@ class UserCalendarViewSetTestCase(TestDataMixin, ModoAPITestCase):
 
     def setUp(self):
         """Initiate test context."""
-        self.client.force_login(self.account)
+        self.client.force_authenticate(self.account)
         self.set_global_parameter("server_location", "http://localhost:5232")
 
     def test_get_calendars(self):
@@ -214,7 +214,7 @@ class SharedCalendarViewSetTestCase(TestDataMixin, ModoAPITestCase):
 
     def setUp(self):
         """Initiate test context."""
-        self.client.force_login(self.admin_account)
+        self.client.force_authenticate(self.admin_account)
         self.set_global_parameter("server_location", "http://localhost:5232")
 
     def test_get_calendars(self):
@@ -304,7 +304,7 @@ class AccessRuleViewSetTestCase(TestDataMixin, ModoAPITestCase):
 
     def setUp(self):
         """Initiate test context."""
-        self.client.force_login(self.account)
+        self.client.force_authenticate(self.account)
 
     def test_get_accessrules(self):
         """Test access rule retrieval."""
@@ -383,7 +383,7 @@ class EventViewSetTestCase(TestDataMixin, ModoAPITestCase):
         self.cal_mock.return_value = mocks.Calendar(client=self.client_mock)
         self.addCleanup(patcher2.stop)
 
-        self.client.force_login(self.account)
+        self.client.force_authenticate(self.account)
         self.set_global_parameter("server_location", "http://localhost")
 
     def test_get_user_events(self):
@@ -550,7 +550,7 @@ class AttendeeViewSetTestCase(ModoAPITestCase):
 
     def setUp(self):
         """Initiate test context."""
-        self.client.force_login(self.account)
+        self.client.force_authenticate(self.account)
 
     def test_get_attendees(self):
         """Test attendees retrieval."""
@@ -571,7 +571,7 @@ class MailboxViewSetTestCase(ModoAPITestCase):
 
     def setUp(self):
         """Initiate test context."""
-        self.client.force_login(self.account)
+        self.client.force_authenticate(self.account)
 
     def test_get_mailboxes(self):
         """Test mailbox retrieval."""

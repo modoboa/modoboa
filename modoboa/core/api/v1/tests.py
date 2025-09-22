@@ -1,9 +1,9 @@
 from django.urls import reverse_lazy
 
-from modoboa.lib.tests import ModoTestCase
+from modoboa.lib.tests import ModoAPITestCase
 
 
-class OpenAPITestCase(ModoTestCase):
+class OpenAPITestCase(ModoAPITestCase):
     openapi_schema_url = reverse_lazy("schema-v1-legacy")
 
     def test_unauthorized(self):

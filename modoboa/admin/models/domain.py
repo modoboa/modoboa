@@ -202,7 +202,7 @@ class Domain(mixins.MessageLimitMixin, AdminObject):
         return self.dnsrecord_set.filter(type="autodiscover").first()
 
     @cached_property
-    def allocated_quota(self):
+    def allocated_quota(self) -> int:
         """Return current quota allocation."""
         if not self.quota:
             return 0
