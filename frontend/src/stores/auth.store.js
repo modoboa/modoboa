@@ -106,17 +106,6 @@ export const useAuthStore = defineStore('auth', () => {
     })
   }
 
-  async function initialize() {
-    if (isAuthenticated.value) {
-      return null
-    }
-    const user = await manager.getUser()
-    if (!user) {
-      return null
-    }
-    return fetchUser()
-  }
-
   async function validateAccess() {
     const user = await manager.getUser()
     if (!user || user.expired) {
@@ -124,6 +113,9 @@ export const useAuthStore = defineStore('auth', () => {
     }
     repository.defaults.headers.common.Authorization = `Bearer ${user.access_token}`
     repository.defaults.headers.post['Content-Type'] = 'application/json'
+    if (!isAuthenticated.value) {
+      await fetchUser()
+    }
     return true
   }
 
@@ -137,7 +129,7 @@ export const useAuthStore = defineStore('auth', () => {
 
   async function completeLogin(redirectUrl) {
     try {
-      const user = await manager.signinRedirectCallback()
+      const user = await manager.signinCallback()
       isAuthenticated.value = true
       const previousPage = sessionStorage.getItem('previousPage')
       // Redirect the user to the previous page if available
@@ -204,7 +196,6 @@ export const useAuthStore = defineStore('auth', () => {
     addFidoCred,
     deleteFidoCreds,
     editFidoCred,
-    initialize,
     login,
     $reset,
     updateAccount,
