@@ -220,7 +220,7 @@ class User(AbstractUser):
         return self.email
 
     @property
-    def tfa_enabled(self):
+    def tfa_enabled(self) -> bool:
         return self.totp_enabled or self.webauthn_enabled
 
     def is_owner(self, obj):

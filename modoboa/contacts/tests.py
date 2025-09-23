@@ -11,7 +11,7 @@ from django.utils import timezone
 
 from modoboa.admin import factories as admin_factories
 from modoboa.core import models as core_models
-from modoboa.lib.tests import ModoAPITestCase, ModoTestCase
+from modoboa.lib.tests import ModoAPITestCase
 
 from . import factories
 from . import mocks
@@ -46,7 +46,7 @@ class TestDataMixin:
 
     def setUp(self, *args, **kwargs):
         """Initiate test context."""
-        self.client.force_login(self.user)
+        self.client.force_authenticate(self.user)
         self.set_global_parameter(
             "server_location", "http://example.test/radicale/", app="calendars"
         )
@@ -72,8 +72,7 @@ class ViewsTestCase(TestDataMixin, ModoAPITestCase):
     def test_user_settings(self):
         """Check that remote collection creation request is sent."""
         # 1. Addressbook with contacts must be synced manually
-        data = {"username": self.user.username, "password": "toto"}
-        self.client.post(reverse("core:login"), data)
+        self.client.force_authenticate(self.user)
         self.enable_cdav_sync()
         self.addressbook.refresh_from_db()
         self.assertIs(self.addressbook.last_sync, None)
@@ -81,8 +80,7 @@ class ViewsTestCase(TestDataMixin, ModoAPITestCase):
         # 2. Addressbook with no contacts can be considered synced
         user = core_models.User.objects.get(username="user@test2.com")
         abook = user.addressbook_set.first()
-        data = {"username": user.username, "password": "toto"}
-        self.client.post(reverse("core:login"), data)
+        self.client.force_authenticate(user)
         abook.refresh_from_db()
         self.assertIs(abook.last_sync, None)
         # Now enable sync.
@@ -312,7 +310,7 @@ class EmailAddressViewSetTestCase(TestDataMixin, ModoAPITestCase):
         self.assertEqual(len(response.data), 3)
 
 
-class ImportTestCase(TestDataMixin, ModoTestCase):
+class ImportTestCase(TestDataMixin, ModoAPITestCase):
 
     def setUp(self):
         super().setUp()
