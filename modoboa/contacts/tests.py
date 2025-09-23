@@ -72,8 +72,7 @@ class ViewsTestCase(TestDataMixin, ModoAPITestCase):
     def test_user_settings(self):
         """Check that remote collection creation request is sent."""
         # 1. Addressbook with contacts must be synced manually
-        data = {"username": self.user.username, "password": "toto"}
-        self.client.post(reverse("core:login"), data)
+        self.client.force_authenticate(self.user)
         self.enable_cdav_sync()
         self.addressbook.refresh_from_db()
         self.assertIs(self.addressbook.last_sync, None)
@@ -81,8 +80,7 @@ class ViewsTestCase(TestDataMixin, ModoAPITestCase):
         # 2. Addressbook with no contacts can be considered synced
         user = core_models.User.objects.get(username="user@test2.com")
         abook = user.addressbook_set.first()
-        data = {"username": user.username, "password": "toto"}
-        self.client.post(reverse("core:login"), data)
+        self.client.force_authenticate(user)
         abook.refresh_from_db()
         self.assertIs(abook.last_sync, None)
         # Now enable sync.
