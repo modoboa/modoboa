@@ -151,6 +151,19 @@ Required changes to :file:`settings.py`
      'autoconfig.<MY DOMAIN>',
      'autodiscover.<MY DOMAIN>',
 
+- Remove ``rest_framework.authentication.SessionAuthentication`` from ``REST_FRAMEWORK`` variable:
+
+  .. sourcecode:: python
+
+     REST_FRAMEWORK = {
+         # Stuff before...
+         "DEFAULT_AUTHENTICATION_CLASSES": (
+             "oauth2_provider.contrib.rest_framework.OAuth2Authentication",
+             "rest_framework.authentication.TokenAuthentication",
+         ),
+         # Stuff after...
+      }
+
 Version 2.5.0
 =============
 
