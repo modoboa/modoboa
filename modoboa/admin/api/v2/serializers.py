@@ -246,12 +246,8 @@ class AdminGlobalParametersSerializer(serializers.Serializer):
 
     # Aliases settings
     alias_can_target_any_domain = serializers.BooleanField(default=True)
-    alias_target_block_list = serializers.ListField(
-        child=serializers.CharField(), required=False
-    )
-    alias_target_allow_list = serializers.ListField(
-        child=serializers.CharField(), required=False
-    )
+    alias_target_block_list = serializers.CharField(required=False, allow_null=True)
+    alias_target_allow_list = serializers.CharField(required=False, allow_null=True)
 
     def validate_default_domain_quota(self, value):
         """Ensure quota is a positive integer."""

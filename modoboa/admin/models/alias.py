@@ -91,16 +91,21 @@ class AliasManager(models.Manager):
         )
 
 
+def convert_to_list(raw_value: str) -> list[str]:
+    """Convert input string to list of string."""
+    return [item.strip() for item in raw_value.split(",")]
+
+
 def is_alias_target_allowed(domain: str) -> bool:
     """Check if alias target is allowed or not."""
     params = dict(param_tools.get_global_parameters(app="admin"))
     if params.get("alias_can_target_any_domain"):
-        blocked_domains = params.get("alias_target_block_list", "").split(",")
-        if domain in blocked_domains:
+        blocked_domains = params.get("alias_target_block_list")
+        if blocked_domains and domain in convert_to_list(blocked_domains):
             return False
     else:
-        allowed_domains = params.get("alias_target_allow_list", "").split(",")
-        if domain not in allowed_domains:
+        allowed_domains = params.get("alias_target_allow_list")
+        if allowed_domains and domain not in convert_to_list(allowed_domains):
             return False
     return True
 
