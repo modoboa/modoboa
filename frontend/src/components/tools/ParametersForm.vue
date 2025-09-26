@@ -169,7 +169,7 @@ function display(element) {
   element.display.split('&').forEach((rule) => {
     let [field, value] = rule.split('=')
     if (value === 'true' || value === 'false') {
-      value = Boolean(value)
+      value = value === 'true'
     }
     result &= parameters.value[field] === value
   })

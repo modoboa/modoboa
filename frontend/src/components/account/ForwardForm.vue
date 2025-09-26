@@ -28,7 +28,7 @@
   </v-card>
 </template>
 
-<script setup lang="js">
+<script setup>
 import { ref } from 'vue'
 import { useGettext } from 'vue3-gettext'
 import accountApi from '@/api/account'
@@ -40,15 +40,17 @@ const busStore = useBusStore()
 const form = ref({})
 const loading = ref(false)
 
-function submit() {
+async function submit() {
   loading.value = true
-  accountApi.setForward(form.value).then(() => {
-    loading.value = false
+  try {
+    await accountApi.setForward(form.value)
     busStore.displayNotification({
       type: 'success',
       msg: $gettext('Forward updated'),
     })
-  })
+  } finally {
+    loading.value = false
+  }
 }
 
 accountApi.getForward().then((resp) => {

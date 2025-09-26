@@ -239,6 +239,45 @@ GLOBAL_PARAMETERS_STRUCT = collections.OrderedDict(
                 ),
             },
         ),
+        (
+            "aliases",
+            {
+                "label": gettext_lazy("Aliases"),
+                "params": collections.OrderedDict(
+                    [
+                        (
+                            "alias_can_target_any_domain",
+                            {
+                                "label": gettext_lazy("Alias can target any domain"),
+                                "help_text": gettext_lazy(
+                                    "Allow aliases to target any domain, not just the local domains."
+                                ),
+                            },
+                        ),
+                        (
+                            "alias_target_block_list",
+                            {
+                                "label": gettext_lazy("Alias target block list"),
+                                "help_text": gettext_lazy(
+                                    "A list of domains that aliases cannot target (comma separated)."
+                                ),
+                                "display": "alias_can_target_any_domain=true",
+                            },
+                        ),
+                        (
+                            "alias_target_allow_list",
+                            {
+                                "label": gettext_lazy("Alias target allow list"),
+                                "help_text": gettext_lazy(
+                                    "A list of domains that aliases can target (comma separated)."
+                                ),
+                                "display": "alias_can_target_any_domain=false",
+                            },
+                        ),
+                    ]
+                ),
+            },
+        ),
     ]
 )
 
