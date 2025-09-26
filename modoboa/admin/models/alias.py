@@ -21,6 +21,7 @@ from modoboa.lib.exceptions import (
     ModoboaException,
     AliasExists,
 )
+from modoboa.parameters import tools as param_tools
 from .. import signals
 from .base import AdminObject
 from .domain import Domain
@@ -88,6 +89,20 @@ class AliasManager(models.Manager):
         self.create(
             creator=creator, domain=domain, address=address, recipients=recipients
         )
+
+
+def is_alias_target_allowed(domain: str) -> bool:
+    """Check if alias target is allowed or not."""
+    params = dict(param_tools.get_global_parameters(app="admin"))
+    if params.get("alias_can_target_any_domain"):
+        blocked_domains = params.get("alias_target_block_list", "").split(",")
+        if domain in blocked_domains:
+            return False
+    else:
+        allowed_domains = params.get("alias_target_allow_list", "").split(",")
+        if domain not in allowed_domains:
+            return False
+    return True
 
 
 class Alias(AdminObject):
@@ -182,6 +197,8 @@ class Alias(AdminObject):
             if domname is None:
                 raise BadRequest("{} {}".format(_("Invalid address"), address))
             domain = Domain.objects.filter(name=domname).first()
+            if not domain and not is_alias_target_allowed(domname):
+                raise BadRequest(f"{_('Target domain not allowed')}: {domname}")
             kwargs = {"address": address, "alias": self}
             if (domain is not None) and (
                 any(
