@@ -42,8 +42,9 @@ _axios.interceptors.response.use(
         !error.config.ignoreErrors
       ) {
         const busStore = useBusStore()
+        const msg = error.response.data?.error || error.response.data
         busStore.displayNotification({
-          msg: error.response.data,
+          msg,
           type: 'error',
         })
       }

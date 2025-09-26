@@ -244,6 +244,11 @@ class AdminGlobalParametersSerializer(serializers.Serializer):
     auto_create_domain_and_mailbox = serializers.BooleanField(default=True)
     create_alias_on_mbox_rename = serializers.BooleanField(default=False)
 
+    # Aliases settings
+    alias_can_target_any_domain = serializers.BooleanField(default=True)
+    alias_target_block_list = serializers.CharField(required=False, allow_null=True)
+    alias_target_allow_list = serializers.CharField(required=False, allow_null=True)
+
     def validate_default_domain_quota(self, value):
         """Ensure quota is a positive integer."""
         if value < 0:
