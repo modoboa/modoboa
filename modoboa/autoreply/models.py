@@ -58,9 +58,9 @@ class ARmessage(models.Model):
         name = "autoreply"
         action = [("vacation", ":subject", self.subject, ":days", days, content)]
         if not fset.getfilter(name):
-            fset.addfilter(name, condition, action)
+            fset.addfilter(name, condition, action, matchtype="allof")
         else:
-            fset.updatefilter(name, name, condition, action)
+            fset.updatefilter(name, name, condition, action, matchtype="allof")
         for filter in fset.filters:
             if filter["name"] == name:
                 filter["description"] = (
