@@ -116,7 +116,12 @@
         {{ $date(item.last_modification) }}
       </template>
       <template #[`item.last_login`]="{ item }">
-        {{ $date(item.last_login) }}
+        <template v-if="item.last_login">
+          {{ $date(item.last_login) }}
+        </template>
+        <template v-else>
+          {{ $gettext('Never logged-in') }}
+        </template>
       </template>
       <template #[`item.role`]="{ item }">
         <v-chip color="default" size="small">

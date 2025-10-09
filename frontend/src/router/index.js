@@ -272,7 +272,11 @@ const routes = [
         component: () => import('@/views/admin/monitoring/MessagesView.vue'),
         meta: {
           requiresAuth: true,
-          allowedRoles: [constants.DOMAIN_ADMIN, constants.SUPER_ADMIN],
+          allowedRoles: [
+            constants.DOMAIN_ADMIN,
+            constants.RESELLER,
+            constants.SUPER_ADMIN,
+          ],
         },
       },
       {
