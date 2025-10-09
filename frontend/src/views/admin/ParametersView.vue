@@ -5,6 +5,7 @@
     </v-toolbar>
 
     <ParametersForm
+      :key="$route.params.app"
       :app="$route.params.app"
       :structure="structure"
       :values="parameters"
