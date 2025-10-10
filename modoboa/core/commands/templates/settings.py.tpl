@@ -245,7 +245,7 @@ SPECTACULAR_SETTINGS = {
     'SCHEMA_PATH_PREFIX': r'/api/v[0-9]',
     'TITLE': 'Modoboa API',
     'VERSION': None,
-    'SERVE_PERMISSIONS': ['rest_framework.permissions.IsAuthenticated'],
+    'SERVE_AUTHENTICATION': [],
 }
 
 # Modoboa settings
