@@ -1762,7 +1762,7 @@ msgstr "なし"
 
 #: dmarc/models.py:11
 msgid "Quarantine"
-msgstr "検疫"
+msgstr "隔離"
 
 #: dmarc/models.py:12
 msgid "Reject"
