@@ -130,6 +130,36 @@ Rebuild Virtual Environment
 Specific instructions
 *********************
 
+Version 2.6.1
+=============
+
+Required changes to :file:`settings.py`
+---------------------------------------
+
+- Add the following lines to ``LOGGING`` variable:
+
+  .. sourcecode:: python
+
+     'handlers': {
+         ...
+         'syslog': {
+             'class': 'logging.handlers.SysLogHandler',
+             'facility': SysLogHandler.LOG_SYSLOG,
+             'formatter': 'syslog'
+         },
+         ...
+     },
+     'loggers': {
+         ...
+         'modoboa.dns': {
+             'handlers': ['syslog'],
+             'level': 'INFO',
+             'propagate': False
+         },
+         ...
+     }
+
+
 Version 2.6.0
 =============
 
