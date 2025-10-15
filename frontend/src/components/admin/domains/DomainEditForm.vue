@@ -157,12 +157,13 @@
       </v-expansion-panel>
     </v-expansion-panels>
     <div class="mt-4 d-flex justify-end">
-      <v-btn :loading="working" @click="router.go(-1)">
+      <v-btn :loading="working" variant="outlined" @click="router.go(-1)">
         {{ $gettext('Cancel') }}
       </v-btn>
       <v-btn
         class="ml-4"
         color="primary darken-1"
+        variant="outlined"
         :loading="working"
         @click="save"
       >

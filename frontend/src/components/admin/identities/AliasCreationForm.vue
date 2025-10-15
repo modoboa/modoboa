@@ -35,7 +35,7 @@ const { $gettext } = useGettext()
 const busStore = useBusStore()
 const router = useRouter()
 
-const emit = defineEmits(['close', 'created'])
+const emit = defineEmits(['close'])
 
 //Forms refs
 const form = ref()
@@ -145,8 +145,14 @@ async function submit() {
   }
 
   try {
-    await aliasesApi.create(alias.value)
-    emit('created')
+    const resp = await aliasesApi.create(alias.value)
+    router.push({
+      name: 'AliasDetail',
+      params: {
+        id: resp.data.pk,
+      },
+    })
+    busStore.displayNotification({ msg: $gettext('Alias created') })
     close()
   } finally {
     form.value.working = false
