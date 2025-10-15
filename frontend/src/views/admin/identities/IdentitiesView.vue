@@ -104,7 +104,7 @@
   </div>
 </template>
 
-<script setup lang="js">
+<script setup>
 import { ref } from 'vue'
 import { useGettext } from 'vue3-gettext'
 import identitiesApi from '@/api/identities'
@@ -124,8 +124,8 @@ const importForm = ref()
 const idList = ref()
 
 function exportIdentities() {
-  identitiesApi.exportAll().then((resp) => {
-    exportContent(resp.data, 'identities', $gettext)
+  identitiesApi.exportAll(idList.value.identityType).then((resp) => {
+    exportContent(resp.data, `${idList.value.identityType}-list`, $gettext)
   })
 }
 
