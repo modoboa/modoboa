@@ -2,6 +2,7 @@
   <v-card class="mt-6">
     <v-data-table-server
       v-model="selected"
+      v-model:sort-by="currentSort"
       :headers="headers"
       :items="alarms"
       :search="search"
@@ -71,19 +72,27 @@
   </v-card>
 </template>
 
-<script setup lang="js">
+<script setup>
 import { ref } from 'vue'
 import debounce from 'debounce'
 import { useGettext } from 'vue3-gettext'
+import { useRoute } from 'vue-router'
 import { useBusStore } from '@/stores'
 import alarmsApi from '@/api/alarms'
 import constants from '@/constants.json'
 import MenuItems from '@/components/tools/MenuItems'
 
 const { $gettext } = useGettext()
+const route = useRoute()
 
 const busStore = useBusStore()
 const alarms = ref([])
+const currentSort = ref([
+  {
+    key: 'status',
+    order: 'desc',
+  },
+])
 const loading = ref(false)
 const search = ref('')
 const selected = ref([])
@@ -203,6 +212,10 @@ async function openAlarm(alarm) {
       busStore.displayNotification({ msg: $gettext('Alarm re-opened') })
       fetchAlarms({})
     })
+}
+
+if (route.query.search) {
+  search.value = route.query.search
 }
 
 fetchAlarms = debounce(fetchAlarms, 500)
