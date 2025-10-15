@@ -2,13 +2,13 @@
   <v-card class="mt-6">
     <v-data-table
       v-model="selected"
-      :expanded="expanded"
+      v-model:expanded="expanded"
       :headers="domainHeaders"
       :items="domains"
       item-value="pk"
       :search="search"
       show-select
-      expand-on-click
+      show-expand
       :loading="loading"
     >
       <template #top>
@@ -168,6 +168,7 @@
       <DomainAliasForm
         :domain-alias="selectedDomainAlias"
         @close="closeDomainAliasForm"
+        @alias-deleted="reloadDomains"
       />
     </v-dialog>
     <v-dialog v-model="showAdminList" persistent max-width="800px">
@@ -239,6 +240,7 @@ const expanded = ref([])
 async function reloadDomains() {
   aliases.value = {}
   loading.value = true
+  expanded.value = []
   try {
     const resp = await domainsApi.getDomains()
     domains.value = resp.data
@@ -296,6 +298,7 @@ async function loadAliases(item, internalItem, isItemExpanded, toggleExpand) {
     const resp = await domainsApi.getDomainAliases(item.name)
     aliases.value[item.name] = resp.data
   }
+  toggleExpand(internalItem)
 }
 
 function openAdminList(domain) {
