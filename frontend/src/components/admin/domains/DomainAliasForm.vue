@@ -55,7 +55,7 @@ import domainsApi from '@/api/domains'
 
 const { $gettext } = useGettext()
 
-const emit = defineEmits(['close'])
+const emit = defineEmits(['close', 'aliasDeleted'])
 const { displayNotification } = useBusStore()
 
 const props = defineProps({
@@ -82,6 +82,7 @@ async function deleteAlias() {
   try {
     await domainsApi.deleteDomainAlias(props.domainAlias.pk)
     displayNotification({ msg: $gettext('Domain alias deleted') })
+    emit('aliasDeleted')
     emit('close')
   } finally {
     working.value = false

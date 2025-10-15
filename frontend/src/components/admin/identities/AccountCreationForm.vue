@@ -61,7 +61,7 @@
   </CreationForm>
 </template>
 
-<script setup lang="js">
+<script setup>
 import accountsApi from '@/api/accounts'
 import CreationForm from '@/components/tools/CreationForm.vue'
 import AccountRoleForm from './form_steps/AccountRoleForm.vue'
@@ -70,16 +70,18 @@ import AccountMailboxForm from './form_steps/AccountMailboxForm.vue'
 import AccountAliasForm from './form_steps/AccountAliasForm.vue'
 import constants from '@/constants.json'
 
+import { useRouter } from 'vue-router'
 import { useGettext } from 'vue3-gettext'
 import { ref, computed } from 'vue'
 import { useBusStore, useDomainsStore } from '@/stores'
 import { usePermissions } from '@/composables/permissions'
 
+const router = useRouter()
 const { $gettext } = useGettext()
 const { canSetRole } = usePermissions()
 const busStore = useBusStore()
 const domainsStore = useDomainsStore()
-const emit = defineEmits(['close', 'created'])
+const emit = defineEmits(['close'])
 
 const needsMailbox = computed(
   () => account.value.username && account.value.username.indexOf('@') !== -1
@@ -274,8 +276,9 @@ async function submit() {
   delete data.new_password
   delete data.password_confirmation
   try {
-    await accountsApi.create(data)
-    emit('created')
+    const resp = await accountsApi.create(data)
+    router.push({ name: 'AccountDetail', params: { id: resp.data.pk } })
+    busStore.displayNotification({ msg: $gettext('Account created') })
     close()
   } finally {
     form.value.working = false
