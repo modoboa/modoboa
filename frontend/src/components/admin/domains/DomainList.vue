@@ -330,7 +330,8 @@ function getDomainMenuItems(domain) {
       label: $gettext('Alarms'),
       icon: 'mdi-bell',
       color: 'red',
-      onClick: () => router.push({ name: 'Alarms' }),
+      onClick: () =>
+        router.push({ name: 'Alarms', query: { search: domain.name } }),
     })
   }
   return result
