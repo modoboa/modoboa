@@ -1,8 +1,10 @@
 <template>
-  <v-toolbar flat>
-    <v-toolbar-title>{{ $gettext('Opened alarms') }}</v-toolbar-title>
-  </v-toolbar>
-  <AlarmList />
+  <div>
+    <v-toolbar flat>
+      <v-toolbar-title>{{ $gettext('Opened alarms') }}</v-toolbar-title>
+    </v-toolbar>
+    <AlarmList />
+  </div>
 </template>
 
 <script setup lang="js">
