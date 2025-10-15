@@ -138,7 +138,7 @@ class MXTestCase(ModoTestCase):
         """Test to get error loggins from specific DNS server."""
         mock_query.side_effect = utils.mock_dns_query_result
         mock_ip_address.side_effect = utils.mock_ip_address_result
-        with LogCapture("modoboa.admin") as log:
+        with LogCapture("modoboa.dns") as log:
             get_domain_mx_list("does-not-exist.example.com")
             get_domain_mx_list("no-mx.example.com")
             get_domain_mx_list("no-ns-servers.example.com")
@@ -148,36 +148,36 @@ class MXTestCase(ModoTestCase):
             get_domain_mx_list("bad-response.example.com")
         log.check(
             (
-                "modoboa.admin",
+                "modoboa.dns",
                 "ERROR",
                 _("No DNS record found for %s") % "does-not-exist.example.com",
             ),
-            ("modoboa.admin", "ERROR", _("No MX record for %s") % "no-mx.example.com"),
-            ("modoboa.admin", "ERROR", _("No working name servers found")),
+            ("modoboa.dns", "ERROR", _("No MX record for %s") % "no-mx.example.com"),
+            ("modoboa.dns", "ERROR", _("No working name servers found")),
             (
-                "modoboa.admin",
+                "modoboa.dns",
                 "WARNING",
                 _("DNS resolution timeout, unable to query %s at the moment")
                 % "timeout.example.com",
             ),
             (
-                "modoboa.admin",
+                "modoboa.dns",
                 "ERROR",
                 _("No DNS record found for %s") % "does-not-exist.example.com",
             ),
             (
-                "modoboa.admin",
+                "modoboa.dns",
                 "ERROR",
                 _("No DNS record found for %s") % "does-not-exist.example.com",
             ),
             (
-                "modoboa.admin",
+                "modoboa.dns",
                 "WARNING",
                 _("Invalid IP address format for %(domain)s; %(addr)s")
                 % {"domain": "bad-response.example.com", "addr": "000.0.0.0"},
             ),
             (
-                "modoboa.admin",
+                "modoboa.dns",
                 "WARNING",
                 _("Invalid IP address format for %(domain)s; %(addr)s")
                 % {"domain": "bad-response.example.com", "addr": "000.0.0.0"},
@@ -193,15 +193,15 @@ class MXTestCase(ModoTestCase):
         localconfig = core_models.LocalConfig.objects.first()
         localconfig.parameters.set_value("enable_ipv6_mx_checks", True, "admin")
         localconfig.save()
-        with LogCapture("modoboa.admin") as log:
+        with LogCapture("modoboa.dns") as log:
             get_domain_mx_list("test3.com")
         log.check(
-            ("modoboa.admin", "ERROR", _("No AAAA record for %s") % "mx3.example.com")
+            ("modoboa.dns", "ERROR", _("No AAAA record for %s") % "mx3.example.com")
         )
         localconfig = core_models.LocalConfig.objects.first()
         localconfig.parameters.set_value("enable_ipv6_mx_checks", False, "admin")
         localconfig.save()
-        with LogCapture("modoboa.admin") as log2:
+        with LogCapture("modoboa.dns") as log2:
             get_domain_mx_list("test3.com")
         log2.check()
 
