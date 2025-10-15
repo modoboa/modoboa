@@ -361,6 +361,11 @@ LOGGING = {
             'facility': SysLogHandler.LOG_MAIL,
             'formatter': 'syslog'
         },
+        'syslog': {
+            'class': 'logging.handlers.SysLogHandler',
+            'facility': SysLogHandler.LOG_SYSLOG,
+            'formatter': 'syslog'
+        },
         'modoboa': {
             'class': 'modoboa.core.loggers.SQLHandler',
         }
@@ -378,6 +383,11 @@ LOGGING = {
         },
         'modoboa.admin': {
             'handlers': ['modoboa'],
+            'level': 'INFO',
+            'propagate': False
+        },
+        'modoboa.dns': {
+            'handlers': ['syslog'],
             'level': 'INFO',
             'propagate': False
         },

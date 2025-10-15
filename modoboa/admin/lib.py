@@ -213,7 +213,7 @@ def get_authoritative_resolver(domain, resolver=None):
 
 def get_dns_records(name, typ, resolver=None):
     """Retrieve DNS records for given name and type."""
-    logger = logging.getLogger("modoboa.admin")
+    logger = logging.getLogger("modoboa.dns")
 
     try:
         resolver = get_authoritative_resolver(name, resolver=resolver)
@@ -242,7 +242,7 @@ def get_dns_records(name, typ, resolver=None):
 def get_domain_mx_list(domain):
     """Return a list of MX IP address for domain."""
     result = []
-    logger = logging.getLogger("modoboa.admin")
+    logger = logging.getLogger("modoboa.dns")
     resolver = get_dns_resolver()
     dns_answers = get_dns_records(domain, "MX", resolver)
     if dns_answers is None:
