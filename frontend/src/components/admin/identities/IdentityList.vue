@@ -551,6 +551,7 @@ onMounted(() => {
 
 defineExpose({
   fetchIdentities,
+  identityType,
 })
 
 fetchIdentities = debounce(fetchIdentities, 500)

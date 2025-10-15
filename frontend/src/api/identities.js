@@ -6,8 +6,8 @@ export default {
   getAll() {
     return repository.get(`${resource}/`)
   },
-  exportAll() {
-    return repository.get(`/${resource}/export/`)
+  exportAll(type) {
+    return repository.get(`/${resource}/export/`, { params: { type } })
   },
   importFromCSV(data) {
     return repository.post(`/${resource}/import/`, data, {

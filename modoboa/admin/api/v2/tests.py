@@ -653,6 +653,22 @@ dlist; dlist@test.com; True; user1@test.com; user@extdomain.com
         received_content[0] = ",".join(admin_row)
         self.assertCountEqual(expected_response.strip().split("\r\n"), received_content)
 
+    def test_export_accounts(self):
+        response = self.client.get(f"{reverse('v2:identities-export')}?type=account")
+        expected_response = "account,admin,,,,True,SuperAdmins,,\r\naccount,admin@test.com,{PLAIN}toto,,,True,DomainAdmins,admin@test.com,10,test.com\r\naccount,admin@test2.com,{PLAIN}toto,,,True,DomainAdmins,admin@test2.com,10,test2.com\r\naccount,user@test.com,{PLAIN}toto,,,True,SimpleUsers,user@test.com,10\r\naccount,user@test2.com,{PLAIN}toto,,,True,SimpleUsers,user@test2.com,10\r\n"  # NOQA:E501
+        received_content = force_str(response.content.strip()).split("\r\n")
+        # Empty admin password because it is hashed using SHA512-CRYPT
+        admin_row = received_content[0].split(",")
+        admin_row[2] = ""
+        received_content[0] = ",".join(admin_row)
+        self.assertCountEqual(expected_response.strip().split("\r\n"), received_content)
+
+    def test_export_aliases(self):
+        response = self.client.get(f"{reverse('v2:identities-export')}?type=alias")
+        expected_response = "alias,alias@test.com,True,user@test.com\r\nalias,forward@test.com,True,user@external.com\r\nalias,postmaster@test.com,True,test@truc.fr,toto@titi.com\r\n"  # NOQA:E501
+        received_content = force_str(response.content.strip()).split("\r\n")
+        self.assertCountEqual(expected_response.strip().split("\r\n"), received_content)
+
 
 class AliasViewSetTestCase(ModoAPITestCase):
     @classmethod

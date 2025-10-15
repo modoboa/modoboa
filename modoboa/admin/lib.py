@@ -31,7 +31,12 @@ from . import signals
 from .models import Alias, Domain, DomainAlias
 
 
-def get_identities(user, searchquery=None, idtfilter=None, grpfilter=None):
+def get_identities(
+    user: User,
+    searchquery: str | None = None,
+    idtfilter: str | None = None,
+    grpfilter: str | None = None,
+) -> chain:
     """Return all the identities owned by a user.
 
     :param user: the desired user
