@@ -240,7 +240,8 @@ class IdentityViewSet(GetThrottleViewsetMixin, viewsets.ViewSet):
     def export(self, request, **kwargs):
         """Export accounts and aliases to CSV."""
         result = []
-        for idt in lib.get_identities(request.user):
+        idtfilter = request.GET.get("type")
+        for idt in lib.get_identities(request.user, idtfilter=idtfilter):
             result.append(idt.to_csv_row())
         return response.Response(result)
 
