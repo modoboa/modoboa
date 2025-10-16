@@ -58,10 +58,19 @@ class DomainViewSet(
 ):
     """V2 viewset."""
 
+    filter_backends = (
+        filters.OrderingFilter,
+        filters.SearchFilter,
+        dj_filters.DjangoFilterBackend,
+    )
+    pagination_class = pagination.CustomPageNumberPagination
     permission_classes = (
         permissions.IsAuthenticated,
         permissions.DjangoModelPermissions,
     )
+    search_fields = [
+        "^name",
+    ]
 
     def get_queryset(self):
         """Filter queryset based on current user."""

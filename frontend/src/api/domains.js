@@ -4,8 +4,8 @@ const domainResource = 'domains'
 const domainAliasResource = 'domainaliases'
 
 export default {
-  getDomains() {
-    return repository.get(`/${domainResource}/`)
+  getDomains(params) {
+    return repository.get(`/${domainResource}/`, { params })
   },
   getDomain(domainId) {
     return repository.get(`/${domainResource}/${domainId}/`)

@@ -1,15 +1,20 @@
 <template>
   <v-card class="mt-6">
-    <v-data-table
+    <v-data-table-server
       v-model="selected"
       v-model:expanded="expanded"
       :headers="domainHeaders"
       :items="domains"
+      :items-length="totalDomains"
+      :page="currentPage"
+      :items-per-page="itemsPerPageR"
+      :items-per-page-options="itemsPerPageOptions"
       item-value="pk"
       :search="search"
       show-select
       show-expand
       :loading="loading"
+      @update:options="optionsUpdated"
     >
       <template #top>
         <v-toolbar color="white" flat>
@@ -156,7 +161,7 @@
           </td>
         </tr>
       </template>
-    </v-data-table>
+    </v-data-table-server>
     <ConfirmDialog ref="confirm">
       <v-checkbox
         v-model="keepDomainFolder"
@@ -212,7 +217,17 @@ const domainHeaders = [
     sortable: false,
   },
   { title: $gettext('Sending limit'), key: 'message_limit' },
-  { title: $gettext('Quota'), key: 'allocated_quota_in_percent' },
+  {
+    title: $gettext('Quota'),
+    key: 'allocated_quota_in_percent',
+    sortable: false,
+  },
+]
+const itemsPerPageOptions = [
+  { value: 10, title: '10' },
+  { value: 25, title: '25' },
+  { value: 50, title: '50' },
+  { value: 100, title: '100' },
 ]
 
 if (canSetRole.value) {
@@ -236,17 +251,42 @@ const showAliasForm = ref(false)
 const search = ref('')
 const selected = ref([])
 const expanded = ref([])
+const totalDomains = ref(0)
+const currentPage = ref(1)
+const itemsPerPageR = ref(10)
+const sortByR = ref([])
 
 async function reloadDomains() {
+  const params = {
+    page: currentPage.value || 1,
+    page_size: itemsPerPageR.value || 10,
+  }
+  if (sortByR.value && sortByR.value.length) {
+    params.ordering = sortByR.value
+      .map((item) => (item.order !== 'asc' ? `-${item.key}` : item.key))
+      .join(',')
+  }
+  if (search.value !== '') {
+    params.search = search.value
+  }
+
   aliases.value = {}
   loading.value = true
   expanded.value = []
   try {
-    const resp = await domainsApi.getDomains()
-    domains.value = resp.data
+    const resp = await domainsApi.getDomains(params)
+    domains.value = resp.data.results
+    totalDomains.value = resp.data.count
   } finally {
     loading.value = false
   }
+}
+
+async function optionsUpdated({ page, itemsPerPage, sortBy }) {
+  currentPage.value = page
+  itemsPerPageR.value = itemsPerPage
+  sortByR.value = sortBy
+  await reloadDomains()
 }
 
 function closeDomainAliasForm() {
