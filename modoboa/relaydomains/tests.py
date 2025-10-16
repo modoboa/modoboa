@@ -76,7 +76,7 @@ class RelayDomainsTestCase(ModoAPITestCase, Operations):
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
         content = response.json()
-        self.assertEqual(len(content), 3)
+        self.assertEqual(content["count"], 3)
 
     def test_create_relaydomain(self):
         """Test the creation of a relay domain.
