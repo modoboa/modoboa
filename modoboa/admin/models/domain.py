@@ -257,7 +257,7 @@ class Domain(mixins.MessageLimitMixin, AdminObject):
                 continue
             grant_access_to_object(account, mb)
             grant_access_to_object(account, mb.user)
-        for al in self.alias_set.all():
+        for al in self.alias_set.filter(internal=False):
             grant_access_to_object(account, al)
 
     def remove_admin(self, account):

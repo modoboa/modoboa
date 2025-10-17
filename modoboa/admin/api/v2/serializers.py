@@ -521,7 +521,8 @@ class WritableAccountSerializer(v1_serializers.WritableAccountSerializer):
         if not param_tools.get_global_parameter("enable_admin_limits", app="limits"):
             return
         del self.fields["domains"]
-        if self.context["request"].user.role in ["Resellers", "SuperAdmins"]:
+        user = self.context["request"].user
+        if not user.is_anonymous and user.role in ["Resellers", "SuperAdmins"]:
             self.fields["resources"] = WritableResourceSerializer(
                 many=True, required=False
             )
