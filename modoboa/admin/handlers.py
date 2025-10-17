@@ -236,11 +236,6 @@ def import_account_mailbox(sender, user, account, row, **kwargs):
             sender="import", context=domain, object_type="mailboxes"
         )
         account.save()
-        qset = models.Mailbox.objects.filter(address=mailbox, domain=domain)
-        if qset.exists():
-            raise exceptions.Conflict(
-                _("Mailbox {} already exists").format(account.email)
-            )
         if len(row) == 1:
             quota = None
         else:
@@ -274,16 +269,16 @@ def grant_access_to_all_objects(sender, account, role, **kwargs):
     """Grant all permissions if new role is SuperAdmin."""
     if role != "SuperAdmins":
         return
-    perm_models = [
-        core_models.User,
-        models.Domain,
-        models.DomainAlias,
-        models.Mailbox,
-        models.Alias,
+    querysets = [
+        core_models.User.objects.all(),
+        models.Domain.objects.all(),
+        models.DomainAlias.objects.all(),
+        models.Mailbox.objects.all(),
+        models.Alias.objects.filter(internal=False),
     ]
-    for model in perm_models:
+    for queryset in querysets:
         permissions.grant_access_to_objects(
-            account, model.objects.all(), ContentType.objects.get_for_model(model)
+            account, queryset, ContentType.objects.get_for_model(queryset.model)
         )
 
 
