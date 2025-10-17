@@ -74,7 +74,9 @@ class DomainViewSet(
 
     def get_queryset(self):
         """Filter queryset based on current user."""
-        return models.Domain.objects.get_for_admin(self.request.user)
+        if self.request.user and not self.request.user.is_anonymous:
+            return models.Domain.objects.get_for_admin(self.request.user)
+        return models.Domain.objects.none()
 
     def get_serializer_class(self, *args, **kwargs):
         if self.action == "delete":
@@ -198,6 +200,8 @@ class AccountViewSet(v1_viewsets.AccountViewSet):
     def get_queryset(self):
         """Filter queryset based on current user."""
         user = self.request.user
+        if not user or user.is_anonymous:
+            return core_models.User.objects.none()
         ids = user.objectaccess_set.filter(
             content_type=ContentType.objects.get_for_model(user)
         ).values_list("object_id", flat=True)
@@ -271,14 +275,27 @@ class IdentityViewSet(GetThrottleViewsetMixin, viewsets.ViewSet):
         return response.Response({"status": status, "message": msg})
 
 
+class AliasFilter(dj_filters.FilterSet):
+
+    domain = dj_filters.ModelChoiceFilter(
+        queryset=lambda request: models.Domain.objects.get_for_admin(request.user),
+        field_name="domain__name",
+    )
+
+    class Meta:
+        model = models.Alias
+        fields = ["domain"]
+
+
 class AliasViewSet(v1_viewsets.AliasViewSet):
     """Viewset for Alias."""
 
-    filter_backends = (
+    filter_backends = [
+        dj_filters.DjangoFilterBackend,
         filters.OrderingFilter,
         filters.SearchFilter,
-        dj_filters.DjangoFilterBackend,
-    )
+    ]
+    filterset_class = AliasFilter
     pagination_class = pagination.CustomPageNumberPagination
     search_fields = ["address"]
     serializer_class = serializers.AliasSerializer
@@ -391,6 +408,8 @@ class AlarmViewSet(
     serializer_class = serializers.AlarmSerializer
 
     def get_queryset(self):
+        if self.request.user.is_anonymous:
+            return models.Alarm.objects.none()
         return (
             models.Alarm.objects.select_related("domain")
             .filter(domain__in=models.Domain.objects.get_for_admin(self.request.user))
