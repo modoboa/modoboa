@@ -192,6 +192,18 @@ class AccountViewSet(
         return Response(body)
 
 
+class AliasFilter(dj_filters.FilterSet):
+
+    domain = dj_filters.ModelChoiceFilter(
+        queryset=lambda request: models.Domain.objects.get_for_admin(request.user),
+        field_name="mailbox__domain",
+    )
+
+    class Meta:
+        model = models.Alias
+        fields = ["domain"]
+
+
 class AliasViewSet(
     GetThrottleViewsetMixin, lib_viewsets.RevisionModelMixin, viewsets.ModelViewSet
 ):
@@ -200,6 +212,10 @@ class AliasViewSet(
     Create a new alias instance.
     """
 
+    filter_backends = [
+        dj_filters.DjangoFilterBackend,
+    ]
+    filterset_class = AliasFilter
     permission_classes = [
         IsAuthenticated,
         DjangoModelPermissions,
@@ -209,14 +225,12 @@ class AliasViewSet(
     def get_queryset(self):
         """Filter queryset based on current user."""
         user = self.request.user
+        if user is None or user.is_anonymous:
+            return models.Alias.objects.none()
         ids = user.objectaccess_set.filter(
             content_type=ContentType.objects.get_for_model(models.Alias)
         ).values_list("object_id", flat=True)
-        queryset = models.Alias.objects.filter(pk__in=ids)
-        domain = self.request.query_params.get("domain")
-        if domain:
-            queryset = queryset.filter(domain__name=domain)
-        return queryset
+        return models.Alias.objects.filter(pk__in=ids, internal=False)
 
 
 class SenderAddressFilterSet(dj_filters.FilterSet):
