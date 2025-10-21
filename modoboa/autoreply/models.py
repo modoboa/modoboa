@@ -37,9 +37,10 @@ class ARmessage(models.Model):
         context = {"name": self.mbox.user.fullname}
         days = request.localconfig.parameters.get_value("tracking_period")
         context["fromdate"] = localize(self.fromdate)
-        fromdate = self.fromdate.isoformat()
-        fromdate, tz = fromdate.split("+")
-        tz = f"+{tz.replace(':', '')}"
+        fromdate_iso = self.fromdate.isoformat()
+        fromdate = fromdate_iso[:-6]
+        tz_offset = fromdate_iso[-6:]
+        tz = f"+{tz_offset.replace(':', '')}"
         condition = [("currentdate", ":zone", tz, ":value", "ge", "iso8601", fromdate)]
         if self.untildate:
             context["untildate"] = localize(self.untildate)
@@ -51,7 +52,7 @@ class ARmessage(models.Model):
                     ":value",
                     "lt",
                     "iso8601",
-                    self.untildate.isoformat().split("+")[0],
+                    self.untildate.isoformat()[:-6],
                 )
             )
         content = self.content % context
