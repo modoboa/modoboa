@@ -52,7 +52,7 @@
     "prettier": "^3.3.2",
     "sass": "1.77.1",
     "unplugin-fonts": "^1.0.3",
-    "vite": "^6.3.6",
+    "vite": "^6.4.1",
     "vite-plugin-vuetify": "^2.0.3"
   }
 }
