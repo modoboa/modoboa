@@ -15,8 +15,8 @@ export const useDomainsStore = defineStore('domains', () => {
   async function getDomains() {
     domainsLoaded.value = false
     try {
-      const resp = await domainApi.getDomains()
-      domains.value = resp.data
+      const resp = await domainApi.getDomains({ page_size: 0 })
+      domains.value = resp.data.results
     } finally {
       domainsLoaded.value = false
     }

@@ -111,8 +111,8 @@ async function submit() {
 }
 
 onMounted(() => {
-  domainsApi.getDomains().then((resp) => {
-    domains.value = resp.data
+  domainsApi.getDomains({ page_size: 0 }).then((resp) => {
+    domains.value = resp.data.results
   })
   if (props.domainAlias) {
     form.value = JSON.parse(JSON.stringify(props.domainAlias))

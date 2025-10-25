@@ -106,8 +106,8 @@ function onKeyDown(e) {
   }
 }
 
-domainsApi.getDomains().then((resp) => {
-  localDomains.value = resp.data
+domainsApi.getDomains({ page_size: 0 }).then((resp) => {
+  localDomains.value = resp.data.results
 })
 
 function atLeastOneAssDomain() {
