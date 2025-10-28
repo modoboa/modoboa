@@ -1,5 +1,7 @@
 """Postfix autoreply models."""
 
+import re
+
 from django.db import models
 from django.utils import timezone
 from django.utils.formats import localize
@@ -37,12 +39,16 @@ class ARmessage(models.Model):
         context = {"name": self.mbox.user.fullname}
         days = request.localconfig.parameters.get_value("tracking_period")
         context["fromdate"] = localize(self.fromdate)
-        fromdate = self.fromdate.isoformat()
-        fromdate, tz = fromdate.split("+")
-        tz = f"+{tz.replace(':', '')}"
+        fromdate_iso = self.fromdate.isoformat()
+        fromdate_split = re.split('[-+]', fromdate_iso)
+        fromdate = '-'.join(fromdate_split[:-1])
+        tz_offset = fromdate_split[-1]
+        tz = f"+{tz_offset.replace(':', '')}"
         condition = [("currentdate", ":zone", tz, ":value", "ge", "iso8601", fromdate)]
         if self.untildate:
             context["untildate"] = localize(self.untildate)
+            untildate_iso = self.untildate.isoformat()
+            untildate_split = re.split('[-+]', untildate_iso)
             condition.append(
                 (
                     "currentdate",
@@ -51,7 +57,7 @@ class ARmessage(models.Model):
                     ":value",
                     "lt",
                     "iso8601",
-                    self.untildate.isoformat().split("+")[0],
+                    '-'.join(untildate_split[:-1]),
                 )
             )
         content = self.content % context
