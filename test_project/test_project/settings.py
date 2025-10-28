@@ -114,7 +114,7 @@ MODOBOA_APPS = (
     "modoboa.contacts",
     "modoboa.calendars",
     "modoboa.webmail",
-    "modoboa.amavis",
+    # "modoboa.amavis",
 )
 
 try:
