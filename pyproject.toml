@@ -32,7 +32,7 @@ dependencies = [
 	"django-phonenumber-field[phonenumbers]==8.3.0",
 	"django-reversion==6.0.0",
 	"django-xforwardedfor-middleware==2.0",
-	"django-otp==1.6.2",
+	"django-otp==1.6.3",
 	"django-filter",
 	"django-rename-app==0.1.7",
 	"django-environ",
