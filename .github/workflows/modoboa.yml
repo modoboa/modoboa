@@ -212,7 +212,7 @@ jobs:
       - name: Build packages
         run: |
           sudo apt-get install librrd-dev rrdtool libssl-dev
-          python -m pip install --upgrade pip build pip-tools
+          python -m pip install --upgrade "pip!=25.3" build pip-tools
           pip-compile -o requirements.txt pyproject.toml
           pip install -r requirements.txt
           cd modoboa
