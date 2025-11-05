@@ -28,7 +28,7 @@
         <v-expansion-panel-title v-slot="{ expanded }">
           <v-row no-gutters>
             <v-col cols="4">
-              {{ $gettext('Identification') }}
+              {{ $gettext('Account') }}
             </v-col>
             <v-col cols="8" class="">
               <v-fade-transition leave-absolute>
@@ -62,6 +62,35 @@
           />
         </v-expansion-panel-text>
       </v-expansion-panel>
+
+      <v-expansion-panel eager value="profileForm">
+        <v-expansion-panel-title v-slot="{ expanded }">
+          <v-row no-gutters>
+            <v-col cols="4">
+              {{ $gettext('Profile') }}
+            </v-col>
+            <v-col cols="8" class="">
+              <v-fade-transition leave-absolute>
+                <span v-if="expanded"></span>
+                <v-row v-else no-gutters style="width: 100%">
+                  <v-col cols="6">
+                    <div class="mr-2">
+                      {{ $gettext('Language:') }}
+                      {{
+                        languageStore.getLanguageLabel(editedAccount.language)
+                      }}
+                    </div>
+                  </v-col>
+                </v-row>
+              </v-fade-transition>
+            </v-col>
+          </v-row>
+        </v-expansion-panel-title>
+        <v-expansion-panel-text>
+          <AccountProfileForm ref="profileForm" v-model="editedAccount" />
+        </v-expansion-panel-text>
+      </v-expansion-panel>
+
       <v-expansion-panel v-if="usernameIsEmail" eager value="mailboxForm">
         <v-expansion-panel-title v-slot="{ expanded }">
           <v-row no-gutters>
@@ -195,11 +224,12 @@
   </div>
 </template>
 
-<script setup lang="js">
-import { useAuthStore } from '@/stores'
+<script setup>
+import { useAuthStore, useBusStore, useLanguageStore } from '@/stores'
 import AccountGeneralForm from './form_steps/AccountGeneralForm.vue'
 import AccountMailboxForm from './form_steps/AccountMailboxForm.vue'
 import AccountAliasForm from './form_steps/AccountAliasForm.vue'
+import AccountProfileForm from './form_steps/AccountProfileForm.vue'
 import AccountRoleForm from './form_steps/AccountRoleForm.vue'
 import ResourcesForm from '@/components/tools/ResourcesForm.vue'
 import LoadingData from '@/components/tools/LoadingData.vue'
@@ -213,6 +243,8 @@ import constants from '@/constants.json'
 
 const { $gettext } = useGettext()
 const authStore = useAuthStore()
+const { displayNotification } = useBusStore()
+const languageStore = useLanguageStore()
 const route = useRoute()
 const router = useRouter()
 const { canSetRole } = usePermissions()
@@ -249,12 +281,14 @@ const generalForm = ref()
 const mailboxForm = ref()
 const aliasForm = ref()
 const resourcesForm = ref()
+const profileForm = ref()
 
 //formMap
 const formMap = computed(() => {
   const map = {
     roleForm: roleForm,
     generalForm: generalForm,
+    profileForm: profileForm,
   }
   if (usernameIsEmail.value) {
     map.aliasForm = aliasForm
@@ -308,6 +342,7 @@ async function save() {
       }
     }
     await accountsApi.patch(editedAccount.value.pk, data)
+    displayNotification({ msg: $gettext('Account updated') })
     router.push({
       name: 'AccountDetail',
       params: { id: route.params.id },
@@ -340,4 +375,8 @@ watch(
   },
   { deep: true }
 )
+
+if (!languageStore.loaded) {
+  await languageStore.getLanguages()
+}
 </script>

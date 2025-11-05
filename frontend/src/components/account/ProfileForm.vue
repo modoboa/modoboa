@@ -84,7 +84,7 @@
   </v-expansion-panels>
 </template>
 
-<script setup lang="js">
+<script setup>
 import { useBusStore, useAuthStore } from '@/stores'
 import languagesApi from '@/api/languages'
 import AccountPasswordForm from '@/components/admin/identities/form_steps/AccountPasswordSubForm.vue'

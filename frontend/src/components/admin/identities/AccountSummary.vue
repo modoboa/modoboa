@@ -24,6 +24,12 @@
         <v-col cols="6">{{ account.role }}</v-col>
       </v-row>
       <v-row>
+        <v-col cols="6">{{ $gettext('Language') }} </v-col>
+        <v-col cols="6">{{
+          languageStore.getLanguageLabel(account.language)
+        }}</v-col>
+      </v-row>
+      <v-row>
         <v-col cols="6">{{ $gettext('Secondary email') }}</v-col>
         <v-col cols="6">{{ account.secondary_email }}</v-col>
       </v-row>
@@ -95,6 +101,12 @@
   </v-card>
 </template>
 
-<script setup lang="js">
+<script setup>
+import { useLanguageStore } from '@/stores'
+
 defineProps({ account: { type: Object, default: null } })
+
+const languageStore = useLanguageStore()
+
+await languageStore.getLanguages()
 </script>
