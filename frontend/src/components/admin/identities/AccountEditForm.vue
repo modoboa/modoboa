@@ -281,12 +281,14 @@ const generalForm = ref()
 const mailboxForm = ref()
 const aliasForm = ref()
 const resourcesForm = ref()
+const profileForm = ref()
 
 //formMap
 const formMap = computed(() => {
   const map = {
     roleForm: roleForm,
     generalForm: generalForm,
+    profileForm: profileForm,
   }
   if (usernameIsEmail.value) {
     map.aliasForm = aliasForm
