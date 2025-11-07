@@ -328,3 +328,11 @@ alias; alias1@test.com; True; user1@test.com
             self.assertTrue(ex_message.startswith("Object already exists"))
 
         call_command("modo", "import", "--continue-if-exists", test_file)
+
+    def test_import_accounts(self):
+        test_file = os.path.join(
+            os.path.dirname(__file__), "test_data/import_accounts.csv"
+        )
+        call_command("modo", "import", "--crypt-passwords", test_file)
+        user = User.objects.get(username="user1@test.com")
+        self.assertTrue(user.check_password("toto"))
