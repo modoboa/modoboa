@@ -35,7 +35,7 @@ class ImportCommand(BaseCommand):
             help="Continue even if an entry already exists.",
         )
         parser.add_argument(
-            "--crypt-password",
+            "--crypt-passwords",
             action="store_true",
             default=False,
             help="Encrypt provided passwords.",
