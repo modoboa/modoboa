@@ -105,7 +105,7 @@ def is_alias_target_allowed(domain: str) -> bool:
             return False
     else:
         allowed_domains = params.get("alias_target_allow_list")
-        if allowed_domains and domain not in convert_to_list(allowed_domains):
+        if not allowed_domains or domain not in convert_to_list(allowed_domains):
             return False
     return True
 
