@@ -725,10 +725,14 @@ class AliasSerializer(v1_serializers.AliasSerializer):
 class UserForwardSerializer(serializers.Serializer):
     """Serializer to define user forward."""
 
-    recipients = serializers.CharField(required=False)
+    recipients = serializers.CharField(
+        required=False, allow_blank=True, allow_null=True
+    )
     keepcopies = serializers.BooleanField(default=False)
 
     def validate_recipients(self, value):
+        if not value:
+            return value
         value = value.strip()
         recipients = []
         if not value:

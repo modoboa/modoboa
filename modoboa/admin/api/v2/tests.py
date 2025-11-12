@@ -727,12 +727,24 @@ class UserAccountViewSetTestCase(ModoAPITestCase):
         url = reverse("v2:user_account-forward")
         resp = self.client.get(url)
         self.assertEqual(resp.status_code, 200)
-        self.assertNotIn("recipients", resp.json())
+        self.assertIs(resp.json()["recipients"], None)
+        self.assertEqual(
+            models.Alias.objects.filter(
+                internal=False, address=self.da.username
+            ).count(),
+            0,
+        )
 
         data = {"recipients": "user@domain.ext"}
         resp = self.client.post(url, data, format="json")
         self.assertEqual(resp.status_code, 200)
         self.assertEqual(self.da.mailbox.aliasrecipient_set.count(), 1)
+        self.assertEqual(
+            models.Alias.objects.filter(
+                internal=False, address=self.da.username
+            ).count(),
+            1,
+        )
 
         data = {"recipients": "user@domain.ext", "keepcopies": True}
         resp = self.client.post(url, data, format="json")
@@ -751,6 +763,16 @@ class UserAccountViewSetTestCase(ModoAPITestCase):
         self.assertEqual(resp.status_code, 200)
         self.assertEqual(
             models.Alias.objects.filter(address=self.da.username).count(), 1
+        )
+
+        data = {"recipients": "", "keepcopies": False}
+        resp = self.client.post(url, data, format="json")
+        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(
+            models.Alias.objects.filter(
+                internal=False, address=self.da.username
+            ).count(),
+            0,
         )
 
 
