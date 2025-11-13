@@ -14,6 +14,17 @@
     >
       <template #top>
         <v-toolbar color="white" flat>
+          <v-text-field
+            v-model="search"
+            prepend-inner-icon="mdi-magnify"
+            :placeholder="$gettext('Search')"
+            single-line
+            variant="outlined"
+            hide-details
+            density="compact"
+            class="flex-grow-0 w-33 mr-4"
+          />
+          <slot name="extraActions" />
           <v-menu location="bottom">
             <template #activator="{ props }">
               <v-btn
@@ -33,14 +44,6 @@
             @click="reloadProviders"
           ></v-btn>
           <v-spacer></v-spacer>
-          <v-text-field
-            v-model="search"
-            prepend-inner-icon="mdi-magnify"
-            :placeholder="$gettext('Search')"
-            single-line
-            variant="outlined"
-            hide-details
-          />
         </v-toolbar>
       </template>
 
@@ -78,7 +81,7 @@
   </v-card>
 </template>
 
-<script setup lang="js">
+<script setup>
 import { useProvidersStore } from '@/stores'
 import MenuItems from '@/components/tools/MenuItems'
 import { useGettext } from 'vue3-gettext'

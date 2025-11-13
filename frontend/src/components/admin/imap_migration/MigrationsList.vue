@@ -12,6 +12,17 @@
     >
       <template #top>
         <v-toolbar color="white" flat>
+          <v-text-field
+            v-model="search"
+            prepend-inner-icon="mdi-magnify"
+            placeholder="Search"
+            filled
+            variant="outlined"
+            density="compact"
+            hide-details
+            class="flex-grow-0 w-33 mr-4"
+          ></v-text-field>
+
           <v-menu location="bottom">
             <template #activator="{ props }">
               <v-btn
@@ -31,15 +42,6 @@
             @click="getMigrations()"
           ></v-btn>
           <v-spacer></v-spacer>
-          <v-text-field
-            v-model="search"
-            prepend-inner-icon="mdi-magnify"
-            placeholder="Search"
-            filled
-            variant="outlined"
-            density="compact"
-            hide-details
-          ></v-text-field>
         </v-toolbar>
       </template>
       <template #[`item.mailbox`]="{ item }">
