@@ -279,7 +279,7 @@ class AliasFilter(dj_filters.FilterSet):
 
     domain = dj_filters.ModelChoiceFilter(
         queryset=lambda request: models.Domain.objects.get_for_admin(request.user),
-        field_name="domain__name",
+        to_field_name="name",
     )
 
     class Meta:

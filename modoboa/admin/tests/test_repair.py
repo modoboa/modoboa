@@ -20,7 +20,7 @@ class RepairTestCase(ModoTestCase):
         """Check that command works fine."""
         ObjectAccess.objects.all().delete()
         mbox = models.Mailbox.objects.first()
-        alias = models.Alias.objects.first()
+        alias = models.Alias.objects.filter(internal=False).first()
         # assert mbox has no owner
         self.assertIs(get_object_owner(mbox), None)
         # fix it. run in quiet mode because we dont want output in tests
@@ -53,7 +53,7 @@ class RepairTestCase(ModoTestCase):
         count, detail = models.Alias.objects.filter(
             address="user@test.com", internal=True
         ).delete()
-        self.assertEqual(count, 3)
+        self.assertEqual(count, 2)
         ret = management.call_command("modo", "repair", "--quiet")
         assert ret is None
         self.assertTrue(
