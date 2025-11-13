@@ -54,16 +54,21 @@
     </v-expansion-panel>
   </v-expansion-panels>
   <div class="mt-4 d-flex justify-end">
-    <v-btn @click="$router.go(-1)">
+    <v-btn variant="outlined" @click="$router.go(-1)">
       {{ $gettext('Cancel') }}
     </v-btn>
-    <v-btn class="ml-4" color="primary darken-1" @click="save">
+    <v-btn
+      class="ml-4"
+      color="primary darken-1"
+      variant="outlined"
+      @click="save"
+    >
       {{ $gettext('Save') }}
     </v-btn>
   </div>
 </template>
 
-<script setup lang="js">
+<script setup>
 import { ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { useBusStore, useProvidersStore } from '@/stores'
@@ -105,13 +110,13 @@ watch(
 )
 
 async function save() {
-  if (generalForm.value !== undefined) {
+  if (generalForm.value) {
     const { valid } = await generalForm.value.vFormRef.validate()
     if (!valid) {
       return
     }
   }
-  if (associatedForm.value !== undefined) {
+  if (associatedForm.value) {
     const { valid } = await associatedForm.value.vFormRef.validate()
     if (!valid) {
       return

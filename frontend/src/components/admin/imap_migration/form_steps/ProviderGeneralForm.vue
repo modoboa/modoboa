@@ -4,6 +4,7 @@
       v-model="provider.name"
       :label="$gettext('Provider name')"
       variant="outlined"
+      density="compact"
       :rules="[rules.required]"
     />
     <v-text-field
@@ -11,12 +12,14 @@
       :label="$gettext('Address (hostname or IP)')"
       :rules="[rules.required]"
       variant="outlined"
+      density="compact"
     />
     <v-text-field
       v-model="provider.port"
       :label="$gettext('IMAP Port')"
       type="number"
       variant="outlined"
+      density="compact"
       :rules="[rules.required, rules.portNumber]"
     />
     <v-switch
