@@ -2,18 +2,20 @@
   <div>
     <v-toolbar flat>
       <v-toolbar-title> {{ $gettext('Providers') }} </v-toolbar-title>
-      <v-spacer />
-      <v-btn
-        color="primary"
-        variant="flat"
-        prepend-icon="mdi-plus"
-        @click="showProviderWizard = true"
-      >
-        {{ $gettext('New') }}
-      </v-btn>
     </v-toolbar>
 
-    <ProvidersList />
+    <ProvidersList>
+      <template #extraActions>
+        <v-btn
+          color="primary"
+          variant="outlined"
+          prepend-icon="mdi-plus"
+          @click="showProviderWizard = true"
+        >
+          {{ $pgettext('male', 'New') }}
+        </v-btn>
+      </template>
+    </ProvidersList>
 
     <v-dialog
       v-model="showProviderWizard"

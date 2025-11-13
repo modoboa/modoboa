@@ -44,7 +44,7 @@ export const useProvidersStore = defineStore('providers', () => {
   async function deleteProvider(id) {
     providersLoaded.value = false
     return providersApi
-      .deleteProvider({ id: id })
+      .deleteProvider(id)
       .then((response) => {
         delete providers.value[id]
         busStore.displayNotification({
