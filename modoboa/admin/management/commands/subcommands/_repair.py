@@ -56,7 +56,7 @@ def sometimes_objects_have_no_owner(**options):
         User.objects.all(),
         models.Domain.objects.all(),
         models.DomainAlias.objects.all(),
-        models.Alias.objects.filter(domain__isnull=False),
+        models.Alias.objects.filter(internal=False, domain__isnull=False),
         models.Mailbox.objects.filter(domain__isnull=False),
     )
     for qs in owned_models:
