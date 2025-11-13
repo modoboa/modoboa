@@ -79,6 +79,7 @@ INSTALLED_APPS = (
     "corsheaders",
     "rest_framework",
     "rest_framework.authtoken",
+    "django_filters",
     "drf_spectacular",
     "django_otp",
     "django_otp.plugins.otp_totp",
@@ -262,6 +263,9 @@ SPECTACULAR_SETTINGS = {
     "TITLE": "Modoboa API",
     "VERSION": None,
     "SERVE_AUTHENTICATION": [],
+    "DEFAULT_FILTER_INSPECTORS": [
+        "drf_spectacular.contrib.django_filters.DjangoFilterBackendInspector",
+    ],
 }
 
 # Modoboa settings
