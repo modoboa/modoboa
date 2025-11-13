@@ -647,6 +647,11 @@ class AliasAPITestCase(ModoAPITestCase):
         response = response.json()
         self.assertEqual(len(response), 3)
 
+        response = self.client.get(f"{url}?domain=test2.com")
+        self.assertEqual(response.status_code, 200)
+        response = response.json()
+        self.assertEqual(len(response), 0)
+
     def test_get_alias(self):
         """Retrieve an alias."""
         al = models.Alias.objects.get(address="alias@test.com")
