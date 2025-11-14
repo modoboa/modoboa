@@ -157,7 +157,7 @@ Here is a sample nginx configuration::
           try_files $uri $uri/ =404;
       }
 
-      location ~ ^/(api|accounts) {
+      location ~ ^/(api|accounts|autodiscover) {
           include uwsgi_params;
           uwsgi_param UWSGI_SCRIPT instance.wsgi:application;
           uwsgi_pass modoboa;
@@ -175,11 +175,33 @@ Here is a sample nginx configuration::
       }
   }
 
-``<modoboa instance name>``, ``<hostname>``, ``<modoboa_instance_path>`` and ``<ssl...>`` must be replaced by the value you used.
-``<uwsgi_socket_path>``
+``<uwsgi_socket_path>``, ``<modoboa instance name>``, ``<hostname>``,
+``<modoboa_instance_path>`` and ``<ssl...>`` must be replaced by the
+value you used when :ref:`you deployed your instance <deployment>`.
 
+In case you want to use enable auto-configuration functionality,
+create a second virtualhost configuration (the hostname should look
+like ``autoconfig.<your domain here>``)::
 
-when :ref:`you deployed your instance <deployment>`.
+  server {
+    listen 80;
+    listen [::]:80;
+    server_name autoconfig.<your_domain>;
+    root <modoboa_instance_path>;
+
+    access_log /var/log/nginx/autoconfig-access.log;
+    error_log /var/log/nginx/autoconfig-error.log;
+
+    location ~ ^/(mail/config-v1.1.xml|mobileconfig) {
+        include uwsgi_params;
+	uwsgi_param UWSGI_SCRIPT instance.wsgi:application;
+        uwsgi_pass modoboa;
+    }
+}
+
+``<modoboa_instance_path>`` and ``<your_domain>`` must be replaced by
+the value you used when :ref:`you deployed your instance
+<deployment>`.
 
 If you do not plan to use SSL then change the listen directive to
 ``listen 80;`` and delete each of the following directives::
