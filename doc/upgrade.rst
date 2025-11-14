@@ -181,6 +181,19 @@ Required changes to :file:`settings.py`
      'autoconfig.<MY DOMAIN>',
      'autodiscover.<MY DOMAIN>',
 
+- Add the following variable:
+
+  .. sourcecode:: python
+
+     EMAIL_CLIENT_CONNECTION_SETTINGS = {
+         "imap": {
+             "HOSTNAME": "<YOUR HOSTNAME HERE>",
+             "SOCKET_TYPE": "SSL",
+             "PORT": 993,
+         },
+         "smtp": {"HOSTNAME": "<YOUR HOSTNAME HERE>", "SOCKET_TYPE": "STARTTLS", "PORT": 587},
+     }
+
 - Remove ``rest_framework.authentication.SessionAuthentication`` from ``REST_FRAMEWORK`` variable:
 
   .. sourcecode:: python
