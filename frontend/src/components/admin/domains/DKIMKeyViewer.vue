@@ -3,7 +3,6 @@
     <pre id="dkimdns" class="dkim"
       >{{ domain.dkim_key_selector }}._domainkey.{{ domain.name }}. IN TXT ({{
         splitKey
-      }})
       }})</pre
     >
   </button>
