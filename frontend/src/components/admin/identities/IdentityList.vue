@@ -511,7 +511,9 @@ async function downloadCredentials(account) {
   URL.revokeObjectURL(link.href)
 }
 
-function editAlias() {}
+function editAlias(alias) {
+  router.push({ name: 'AliasEdit', params: { id: alias.pk } })
+}
 
 function deleteIdentities() {}
 
