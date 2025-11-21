@@ -14,13 +14,22 @@ class ConfigBaseMixin:
 
     content_type = "application/xml"
 
-    def get_common_context(self, emailaddress: str) -> dict:
-        local_part, domain = split_address(emailaddress)
-        return {
-            "emailaddress": emailaddress,
-            "domain": domain,
-            "connection_settings": settings.EMAIL_CLIENT_CONNECTION_SETTINGS,
-        }
+    def get_common_context(self: str) -> dict:
+        ret = {"connection_settings": settings.EMAIL_CLIENT_CONNECTION_SETTINGS}
+
+        emailaddress = self.request.GET.get("emailaddress")
+        if emailaddress:
+            user, domain = split_address(emailaddress)
+        else:
+            domain = self.request.get_host().split(".", 1)[1]
+
+        if domain:
+                ret["domain"] =  domain
+        if emailaddress:
+                ret["emailaddress"] = emailaddress
+        else:
+                ret["emailaddress"] = "%EMAILLOCALPART%@%EMAILDOMAIN%"
+        return ret
 
 
 class AutoConfigView(ConfigBaseMixin, generic.TemplateView):
@@ -29,11 +38,8 @@ class AutoConfigView(ConfigBaseMixin, generic.TemplateView):
     template_name = "autoconfig/autoconfig.xml"
 
     def get_context_data(self, **kwargs):
-        emailaddress = self.request.GET.get("emailaddress")
-        if not emailaddress:
-            raise Http404
         context = super().get_context_data(**kwargs)
-        context.update(self.get_common_context(emailaddress))
+        context.update(self.get_common_context())
         return context
 
 
@@ -44,11 +50,8 @@ class AutoDiscoverView(ConfigBaseMixin, generic.TemplateView):
     template_name = "autoconfig/autodiscover.xml"
 
     def get_context_data(self, **kwargs):
-        emailaddress = self.request.POST.get("EmailAddress")
-        if not emailaddress:
-            raise Http404
         context = super().get_context_data(**kwargs)
-        context.update(self.get_common_context(emailaddress))
+        context.update(self.get_common_context())
         return context
 
     def post(self, request, *args, **kwargs):
