@@ -14,7 +14,7 @@ class ConfigBaseMixin:
 
     content_type = "application/xml"
 
-    def get_common_context(self: str) -> dict:
+    def get_common_context(self) -> dict:
         ret = {"connection_settings": settings.EMAIL_CLIENT_CONNECTION_SETTINGS}
 
         emailaddress = self.request.GET.get("emailaddress")
