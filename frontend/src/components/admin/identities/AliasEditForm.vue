@@ -88,9 +88,11 @@ import LoadingData from '@/components/tools/LoadingData.vue'
 import { useGettext } from 'vue3-gettext'
 import { ref, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { useBusStore } from '@/stores'
 import aliasesApi from '@/api/aliases'
 
 const { $gettext } = useGettext()
+const { displayNotification } = useBusStore()
 const route = useRoute()
 const router = useRouter()
 
@@ -127,6 +129,7 @@ async function save() {
 
   try {
     await aliasesApi.patch(route.params.id, editedAlias.value)
+    displayNotification({ msg: $gettext('Alias updated') })
     router.push({
       name: 'AliasDetail',
       params: { id: route.params.id },
