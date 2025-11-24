@@ -72,3 +72,30 @@ class CheckSessionCookieSecureTest(SimpleModoTestCase):
         )
         msgs = checks.check_radicale_oauth_app()
         self.assertEqual(len(msgs), 0)
+
+    @override_settings(
+        MODOBOA_APPS=[
+            "modoboa",
+            "modoboa.core",
+            "modoboa.lib",
+            "modoboa.admin",
+            "modoboa.autoconfig",
+            "modoboa.transport",
+            "modoboa.relaydomains",
+            "modoboa.limits",
+            "modoboa.parameters",
+            "modoboa.dnstools",
+            "modoboa.policyd",
+            "modoboa.maillog",
+            "modoboa.pdfcredentials",
+            "modoboa.dmarc",
+            "modoboa.imap_migration",
+            "modoboa.autoreply",
+            "modoboa.sievefilters",
+            "modoboa.webmail",
+        ]
+    )
+    def test_radicale_oauth_app_skipped(self):
+        get_application_model().objects.filter(name="Radicale").delete()
+        msgs = checks.check_radicale_oauth_app()
+        self.assertEqual(len(msgs), 0)
