@@ -1,164 +1,173 @@
 <template>
-  <div
-    class="bg-white rounded-lg pa-4 position-relative h-100 d-flex flex-column"
-  >
-    <v-toolbar color="white">
-      <v-btn icon="mdi-arrow-left" size="small" variant="flat" @click="close" />
-      <v-btn
-        class="ml-2"
-        color="primary"
-        variant="tonal"
-        prepend-icon="mdi-send"
-        :loading="working"
-        :text="$gettext('Send')"
-        @click="submit"
-      >
-      </v-btn>
-      <v-btn
-        class="ml-2"
-        variant="tonal"
-        prepend-icon="mdi-paperclip"
-        :text="$gettext('Attachments') + ` (${attachmentCount})`"
-        @click="openAttachmentsDialog"
+  <div class="position-relative h-100">
+    <div
+      class="bg-white rounded-lg pa-4 position-relative h-100 d-flex flex-column"
+    >
+      <v-toolbar color="white">
+        <v-btn
+          icon="mdi-arrow-left"
+          size="small"
+          variant="flat"
+          @click="close"
+        />
+        <v-btn
+          class="ml-2"
+          color="primary"
+          variant="tonal"
+          prepend-icon="mdi-send"
+          :loading="working"
+          :text="$gettext('Send')"
+          @click="submit"
+        >
+        </v-btn>
+        <v-btn
+          class="ml-2"
+          variant="tonal"
+          prepend-icon="mdi-paperclip"
+          :text="$gettext('Attachments') + ` (${attachmentCount})`"
+          @click="openAttachmentsDialog"
+        />
+      </v-toolbar>
+      <v-form ref="formRef" class="flex-grow-1 d-flex flex-column">
+        <div>
+          <v-row class="align-center">
+            <v-col cols="2">
+              <span>{{ $gettext('From') }}</span>
+            </v-col>
+            <v-col cols="8">
+              <v-select
+                v-model="form.sender"
+                :items="allowedSenders"
+                item-title="address"
+                item-value="address"
+                variant="outlined"
+                density="compact"
+                hide-details="auto"
+                :rules="[rules.required]"
+              />
+            </v-col>
+          </v-row>
+          <v-row class="align-center">
+            <v-col cols="2">
+              <span>{{ $gettext('To') }}</span>
+            </v-col>
+            <v-col cols="8">
+              <v-combobox
+                v-model="form.to"
+                :items="contacts"
+                item-title="display_name"
+                return-object
+                :placeholder="$gettext('Provide one or more addresses')"
+                variant="outlined"
+                density="compact"
+                hide-details="auto"
+                chips
+                multiple
+                :rules="[rules.required]"
+                @update:search="lookForContacts"
+              />
+            </v-col>
+            <v-col cols="2">
+              <v-btn
+                v-if="!showCcField"
+                :text="$gettext('Cc')"
+                prepend-icon="mdi-plus"
+                size="x-small"
+                variant="flat"
+                @click="showCcField = true"
+              />
+              <v-btn
+                v-if="!showBccField"
+                :text="$gettext('Bcc')"
+                prepend-icon="mdi-plus"
+                size="x-small"
+                variant="flat"
+                @click="showBccField = true"
+              />
+            </v-col>
+          </v-row>
+          <v-row v-if="showCcField" class="align-center">
+            <v-col cols="2">
+              <span>{{ $gettext('Cc') }}</span>
+              <v-btn
+                icon="mdi-close"
+                variant="flat"
+                size="x-small"
+                @click="showCcField = false"
+              />
+            </v-col>
+            <v-col cols="8">
+              <v-combobox
+                v-model="form.cc"
+                :items="contacts"
+                item-title="display_name"
+                return-object
+                :placeholder="$gettext('Provide one or more addresses')"
+                variant="outlined"
+                density="compact"
+                hide-details="auto"
+                chips
+                multiple
+                :hide-no-data="false"
+                @update:search="lookForContacts"
+              />
+            </v-col>
+          </v-row>
+          <v-row v-if="showBccField" class="align-center">
+            <v-col cols="2">
+              <span>{{ $gettext('Bcc') }}</span>
+              <v-btn
+                icon="mdi-close"
+                variant="flat"
+                size="x-small"
+                @click="showBccField = false"
+              />
+            </v-col>
+            <v-col cols="8">
+              <v-combobox
+                v-model="form.bcc"
+                :items="contacts"
+                item-title="display_name"
+                return-object
+                :placeholder="$gettext('Provide one or more addresses')"
+                variant="outlined"
+                density="compact"
+                hide-details="auto"
+                chips
+                multiple
+                :hide-no-data="false"
+                @update:search="lookForContacts"
+              />
+            </v-col>
+          </v-row>
+          <v-row class="align-center">
+            <v-col cols="2">
+              <span>{{ $gettext('Subject') }}</span>
+            </v-col>
+            <v-col cols="8">
+              <v-text-field
+                v-model="form.subject"
+                variant="outlined"
+                density="compact"
+                hide-details="auto"
+              />
+            </v-col>
+          </v-row>
+        </div>
+        <BodyEditor
+          v-model="form.body"
+          :editor-mode="editorMode"
+          @on-toggle-html-mode="(value) => emit('onToggleHtmlMode', value)"
+        />
+      </v-form>
+    </div>
+    <v-dialog v-model="showAttachmentsDialog" max-width="800">
+      <AttachmentsDialog
+        :session-uid="route.query.uid"
+        @close="closeAttachmentDialog"
       />
-    </v-toolbar>
-    <v-form ref="formRef" class="flex-grow-1 d-flex flex-column">
-      <div>
-        <v-row class="align-center">
-          <v-col cols="2">
-            <span>{{ $gettext('From') }}</span>
-          </v-col>
-          <v-col cols="8">
-            <v-select
-              v-model="form.sender"
-              :items="allowedSenders"
-              item-title="address"
-              item-value="address"
-              variant="outlined"
-              density="compact"
-              hide-details="auto"
-              :rules="[rules.required]"
-            />
-          </v-col>
-        </v-row>
-        <v-row class="align-center">
-          <v-col cols="2">
-            <span>{{ $gettext('To') }}</span>
-          </v-col>
-          <v-col cols="8">
-            <v-combobox
-              v-model="form.to"
-              :items="contacts"
-              item-title="display_name"
-              return-object
-              :placeholder="$gettext('Provide one or more addresses')"
-              variant="outlined"
-              density="compact"
-              hide-details="auto"
-              :rules="[rules.required]"
-              @update:search="lookForContacts"
-            />
-          </v-col>
-          <v-col cols="2">
-            <v-btn
-              v-if="!showCcField"
-              :text="$gettext('Cc')"
-              prepend-icon="mdi-plus"
-              size="x-small"
-              variant="flat"
-              @click="showCcField = true"
-            />
-            <v-btn
-              v-if="!showBccField"
-              :text="$gettext('Bcc')"
-              prepend-icon="mdi-plus"
-              size="x-small"
-              variant="flat"
-              @click="showBccField = true"
-            />
-          </v-col>
-        </v-row>
-        <v-row v-if="showCcField" class="align-center">
-          <v-col cols="2">
-            <span>{{ $gettext('Cc') }}</span>
-            <v-btn
-              icon="mdi-close"
-              variant="flat"
-              size="x-small"
-              @click="showCcField = false"
-            />
-          </v-col>
-          <v-col cols="8">
-            <v-combobox
-              v-model="form.cc"
-              :items="contacts"
-              item-title="display_name"
-              return-object
-              :placeholder="$gettext('Provide one or more addresses')"
-              variant="outlined"
-              density="compact"
-              hide-details="auto"
-              chips
-              multiple
-              :hide-no-data="false"
-              @update:search="lookForContacts"
-            />
-          </v-col>
-        </v-row>
-        <v-row v-if="showBccField" class="align-center">
-          <v-col cols="2">
-            <span>{{ $gettext('Bcc') }}</span>
-            <v-btn
-              icon="mdi-close"
-              variant="flat"
-              size="x-small"
-              @click="showBccField = false"
-            />
-          </v-col>
-          <v-col cols="8">
-            <v-combobox
-              v-model="form.bcc"
-              :items="contacts"
-              item-title="display_name"
-              return-object
-              :placeholder="$gettext('Provide one or more addresses')"
-              variant="outlined"
-              density="compact"
-              hide-details="auto"
-              chips
-              multiple
-              :hide-no-data="false"
-              @update:search="lookForContacts"
-            />
-          </v-col>
-        </v-row>
-        <v-row class="align-center">
-          <v-col cols="2">
-            <span>{{ $gettext('Subject') }}</span>
-          </v-col>
-          <v-col cols="8">
-            <v-text-field
-              v-model="form.subject"
-              variant="outlined"
-              density="compact"
-              hide-details="auto"
-            />
-          </v-col>
-        </v-row>
-      </div>
-      <BodyEditor
-        v-model="form.body"
-        :editor-mode="editorMode"
-        @on-toggle-html-mode="(value) => emit('onToggleHtmlMode', value)"
-      />
-    </v-form>
+    </v-dialog>
   </div>
-  <v-dialog v-model="showAttachmentsDialog" max-width="800">
-    <AttachmentsDialog
-      :session-uid="route.query.uid"
-      @close="closeAttachmentDialog"
-    />
-  </v-dialog>
 </template>
 
 <script setup>
@@ -214,8 +223,8 @@ const initForm = () => {
   }
   if (props.originalEmail) {
     form.value.to = props.originalEmail.reply_to
-      ? props.originalEmail.reply_to
-      : props.originalEmail.from_address.address
+      ? [props.originalEmail.reply_to]
+      : [props.originalEmail.from_address.address]
     if (props.replyAll) {
       let addresses = props.originalEmail.to
         .filter((rcpt) => rcpt.address !== authStore.authUser.username)
@@ -243,11 +252,12 @@ const submit = async () => {
   }
   working.value = true
   const body = { ...form.value }
-  if (typeof form.value.to !== 'string') {
-    body.to = [form.value.to.emails[0].address]
-  } else {
-    body.to = [form.value.to]
+
+  const to = []
+  for (const rcpt of body.to) {
+    to.push(typeof rcpt === 'string' ? rcpt : rcpt.emails[0].address)
   }
+  body.to = to
   if (body.cc?.length) {
     const cc = []
     for (const rcpt of body.cc) {
