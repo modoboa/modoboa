@@ -30,7 +30,7 @@
     @click:close="removeDomain(index)"
   >
     <template v-if="domain.new_domain">
-      {{ domain.name }} --> {{ domain.new_domain.name }}
+      {{ domain.name }} --> {{ getDomainName(domain.new_domain) }}
     </template>
     <template v-else>
       {{ domain.name }}
@@ -106,9 +106,10 @@ function onKeyDown(e) {
   }
 }
 
-domainsApi.getDomains({ page_size: 0 }).then((resp) => {
-  localDomains.value = resp.data.results
-})
+function getDomainName(domainId) {
+  console.log(localDomains.value)
+  return localDomains.value.find((domain) => domain.pk === domainId).name
+}
 
 function atLeastOneAssDomain() {
   if (domains.value.length === 0) {
@@ -118,4 +119,7 @@ function atLeastOneAssDomain() {
 }
 
 defineExpose({ vFormRef })
+
+const resp = await domainsApi.getDomains({ page_size: 0 })
+localDomains.value = resp.data.results
 </script>
