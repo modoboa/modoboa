@@ -23,7 +23,7 @@
         color="primary"
         class="mr-2"
       >
-        <v-btn v-btn text="HTML" size="small" @click="toggleHtmlMode"> </v-btn>
+        <v-btn text="HTML" size="small" @click="toggleHtmlMode"> </v-btn>
       </v-btn-toggle>
     </div>
     <v-textarea v-model="model" class="border-sm" />
