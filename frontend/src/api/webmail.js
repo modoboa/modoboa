@@ -65,23 +65,31 @@ export default {
       responseType: 'blob',
     })
   },
-  deleteSelection(mailbox, selection) {
+  moveSelection(source, destination, selection) {
     const body = {
-      mailbox,
+      source,
+      destination,
+      selection,
+    }
+    return repository.post('/webmail/emails/move/', body)
+  },
+  deleteSelection(source, selection) {
+    const body = {
+      source,
       selection,
     }
     return repository.post('/webmail/emails/delete/', body)
   },
-  markSelectionAsJunk(mailbox, selection) {
+  markSelectionAsJunk(source, selection) {
     const body = {
-      mailbox,
+      source,
       selection,
     }
     return repository.post('/webmail/emails/mark_as_junk/', body)
   },
-  markSelectionAsNotJunk(mailbox, selection) {
+  markSelectionAsNotJunk(source, selection) {
     const body = {
-      mailbox,
+      source,
       selection,
     }
     return repository.post('/webmail/emails/mark_as_not_junk/', body)
