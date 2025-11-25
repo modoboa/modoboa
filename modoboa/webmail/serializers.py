@@ -173,7 +173,8 @@ class EmailSerializer(serializers.Serializer):
 
 class MoveSelectionSerializer(serializers.Serializer):
 
-    mailbox = serializers.CharField()
+    source = serializers.CharField()
+    destination = serializers.CharField(required=False)
     selection = serializers.ListField(child=serializers.CharField())
 
     def validate_selection(self, value):
