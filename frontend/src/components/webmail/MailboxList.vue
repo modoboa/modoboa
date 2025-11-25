@@ -167,7 +167,7 @@ async function onDrop(mailbox) {
       timeout: 0,
     })
     const resp = await api.moveSelection(
-      route.query.mailbox,
+      route.query.mailbox || 'INBOX',
       mailbox.name,
       webmailStore.selection
     )
