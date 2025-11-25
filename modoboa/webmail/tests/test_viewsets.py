@@ -173,15 +173,27 @@ class UserEmailViewSetTestCase(WebmailTestCase):
         self.assertEqual(response.status_code, 200)
         self.assertIn("Message-ID", response.json()["source"])
 
-    def test_delete(self):
+    def test_move(self):
         self.authenticate()
-        url = reverse("v2:webmail-email-delete")
-        body = {"mailbox": "INBOX", "selection": [1]}
+        url = reverse("v2:webmail-email-move")
+        body = {"source": "INBOX", "destination": "Junk", "selection": [1]}
         response = self.client.post(url, body, format="json")
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json()["count"], 1)
 
-        body = {"mailbox": "INBOX", "selection": ["truc"]}
+        body = {"source": "INBOX", "selection": [1]}
+        response = self.client.post(url, body, format="json")
+        self.assertEqual(response.status_code, 400)
+
+    def test_delete(self):
+        self.authenticate()
+        url = reverse("v2:webmail-email-delete")
+        body = {"source": "INBOX", "selection": [1]}
+        response = self.client.post(url, body, format="json")
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json()["count"], 1)
+
+        body = {"source": "INBOX", "selection": ["truc"]}
         response = self.client.post(url, body, format="json")
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json()["count"], 0)
@@ -189,7 +201,7 @@ class UserEmailViewSetTestCase(WebmailTestCase):
     def test_mark_as_junk(self):
         self.authenticate()
         url = reverse("v2:webmail-email-mark-as-junk")
-        body = {"mailbox": "INBOX", "selection": [1]}
+        body = {"source": "INBOX", "selection": [1]}
         response = self.client.post(url, body, format="json")
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json()["count"], 1)
@@ -197,7 +209,7 @@ class UserEmailViewSetTestCase(WebmailTestCase):
     def test_mark_as_not_junk(self):
         self.authenticate()
         url = reverse("v2:webmail-email-mark-as-not-junk")
-        body = {"mailbox": "INBOX", "selection": [1]}
+        body = {"source": "INBOX", "selection": [1]}
         response = self.client.post(url, body, format="json")
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json()["count"], 1)

@@ -3,14 +3,16 @@ import { defineStore } from 'pinia'
 import { ref } from 'vue'
 
 export const useBusStore = defineStore('bus', () => {
-  const notification = ref({})
+  const notification = ref('')
   const notificationColor = ref('')
+  const notificationTimeout = ref(2000)
   const dataKey = ref(1)
   const mbCounterKey = ref(1)
 
   async function $reset() {
-    notification.value = {}
+    notification.value = ''
     notificationColor.value = ''
+    notificationTimeout.value = 2000
     dataKey.value = 1
     mbCounterKey.value = 1
   }
@@ -18,6 +20,13 @@ export const useBusStore = defineStore('bus', () => {
   function displayNotification(options) {
     notification.value = options.msg
     notificationColor.value = options.type ? options.type : 'success'
+    if (options.timeout !== undefined) {
+      notificationTimeout.value = options.timeout
+    }
+  }
+
+  function hideNotification() {
+    notification.value = ''
   }
 
   function reloadData() {
@@ -32,6 +41,7 @@ export const useBusStore = defineStore('bus', () => {
     notification,
     notificationColor,
     displayNotification,
+    hideNotification,
     reloadMailboxCounters,
     dataKey,
     mbCounterKey,
