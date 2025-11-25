@@ -89,7 +89,7 @@
         </v-menu>
       </v-btn>
       <v-spacer />
-      <div v-if="emails" class="d-flex align-center">
+      <div v-if="emails.results" class="d-flex align-center">
         <div class="text-caption mr-2">
           {{ emails.first_index }}-{{ emails.last_index }} {{ $gettext('on') }}
           {{ emails.count }}
@@ -174,7 +174,7 @@
 </template>
 
 <script setup>
-import { computed, nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
+import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useGettext } from 'vue3-gettext'
 import { useBusStore, useWebmailStore } from '@/stores'
@@ -194,13 +194,11 @@ const router = useRouter()
 const route = useRoute()
 
 const loading = ref(false)
-const emails = ref([])
-const emailsPage = ref({})
+const emails = ref({})
 const page = ref(1)
 const search = ref('')
 const selectAll = ref(false)
 const working = ref(false)
-const emailList = ref(null)
 
 let intervalId = null
 
