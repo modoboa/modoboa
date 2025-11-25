@@ -9,5 +9,6 @@ export * from './domains.store'
 export * from './parameters.store'
 export * from './providers.store'
 export * from './contacts.store'
+export * from './webmail.store'
 
 export default createPinia()

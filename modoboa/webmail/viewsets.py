@@ -9,6 +9,7 @@ from rest_framework import parsers, response, viewsets
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
 
+from modoboa.lib import exceptions
 from modoboa.lib.paginator import Paginator
 from modoboa.lib.viewsets import HasMailbox
 from modoboa.webmail import lib, serializers
@@ -123,7 +124,7 @@ class UserEmailViewSet(viewsets.GenericViewSet):
     def get_serializer_class(self):
         if self.action == "list":
             return serializers.PaginatedEmailListSerializer
-        if self.action in ["delete", "mark_as_junk", "mark_as_not_junk"]:
+        if self.action in ["move", "delete", "mark_as_junk", "mark_as_not_junk"]:
             return serializers.MoveSelectionSerializer
         if self.action == "flag":
             return serializers.FlagSelectionSerializer
@@ -167,17 +168,30 @@ class UserEmailViewSet(viewsets.GenericViewSet):
         )
         return response.Response(serializer.data)
 
-    def move_selection(self, request, destination: str) -> int:
+    def move_selection(self, request, destination: str | None = None) -> int:
         """Move selected messages to the given mailbox."""
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
+        if destination is None:
+            if "destination" not in serializer.validated_data:
+                raise exceptions.BadRequest("No destination provided")
+            destination = serializer.validated_data["destination"]
         with lib.get_imapconnector(request) as mbc:
             mbc.move(
                 ",".join(serializer.validated_data["selection"]),
-                serializer.validated_data["mailbox"],
+                serializer.validated_data["source"],
                 destination,
             )
         return len(serializer.validated_data["selection"])
+
+    @action(
+        methods=["post"],
+        detail=False,
+        serializer_class=serializers.MoveSelectionSerializer,
+    )
+    def move(self, request):
+        count = self.move_selection(request)
+        return response.Response({"count": count})
 
     @action(
         methods=["post"],

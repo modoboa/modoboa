@@ -12,6 +12,10 @@
         @click="updateSelection(mailbox.name)"
         @mouseover="setHover(mailbox, true)"
         @mouseleave="setHover(mailbox, false)"
+        @dragover.prevent
+        @dragenter="setHover(mailbox, true)"
+        @dragleave="setHover(mailbox, false)"
+        @drop="onDrop(mailbox)"
       >
         <v-icon :icon="iconByMailboxType[mailbox.type]" class="mr-4" />
         <template v-if="mailbox.name === route.query.mailbox">
@@ -57,7 +61,8 @@
 <script setup>
 import { ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
-import { useBusStore } from '@/stores'
+import { useGettext } from 'vue3-gettext'
+import { useBusStore, useWebmailStore } from '@/stores'
 import api from '@/api/webmail'
 
 const props = defineProps({
@@ -86,7 +91,9 @@ const model = defineModel()
 const emit = defineEmits(['update:modelValue'])
 
 const route = useRoute()
+const { $gettext } = useGettext()
 const busStore = useBusStore()
+const webmailStore = useWebmailStore()
 
 const iconByMailboxType = {
   inbox: 'mdi-inbox',
@@ -152,6 +159,25 @@ function updateSelection(value) {
   }
 }
 
+async function onDrop(mailbox) {
+  try {
+    busStore.displayNotification({
+      msg: $gettext('Moving selection...'),
+      type: 'info',
+      timeout: 0,
+    })
+    const resp = await api.moveSelection(
+      route.query.mailbox || 'INBOX',
+      mailbox.name,
+      webmailStore.selection
+    )
+    webmailStore.listingKey++
+    webmailStore.selection = []
+  } finally {
+    busStore.hideNotification()
+  }
+}
+
 watch(
   () => busStore.mbCounterKey,
   () => {
@@ -168,5 +194,9 @@ watch(
   &:hover {
     border-radius: 5px;
   }
+}
+
+.mailbox * {
+  pointer-events: none;
 }
 </style>

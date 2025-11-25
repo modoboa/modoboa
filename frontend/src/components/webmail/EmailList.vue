@@ -5,6 +5,7 @@
         v-model="selectAll"
         class="mr-4"
         hide-details
+        color="primary"
         @update:model-value="toggleAllSelection"
       />
 
@@ -119,14 +120,17 @@
           :key="email.imapid"
           density="compact"
           class="mb-2 mx-1"
+          draggable="true"
+          @dragstart="onDragStart(email)"
         >
           <v-card-text
             class="d-flex align-center"
             :class="{ 'font-weight-bold': email.style === 'unseen' }"
           >
             <v-checkbox
-              v-model="selection"
+              v-model="webmailStore.selection"
               :value="email.imapid"
+              color="primary"
               hide-details
             />
             <v-btn
@@ -173,7 +177,7 @@
 import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useGettext } from 'vue3-gettext'
-import { useBusStore } from '@/stores'
+import { useBusStore, useWebmailStore } from '@/stores'
 import api from '@/api/webmail'
 
 const props = defineProps({
@@ -183,8 +187,9 @@ const props = defineProps({
   },
 })
 
-const { $gettext } = useGettext()
+const { $gettext, $ngettext } = useGettext()
 const { displayNotification, reloadMailboxCounters } = useBusStore()
+const webmailStore = useWebmailStore()
 const router = useRouter()
 const route = useRoute()
 
@@ -193,7 +198,6 @@ const emails = ref({})
 const page = ref(1)
 const search = ref('')
 const selectAll = ref(false)
-const selection = ref([])
 const working = ref(false)
 
 let intervalId = null
@@ -233,18 +237,18 @@ const submitSearch = () => {
 
 const toggleAllSelection = (value) => {
   if (!value) {
-    selection.value = []
+    webmailStore.selection = []
   } else {
-    selection.value = emails.value.results.map((email) => email.imapid)
+    webmailStore.selection = emails.value.results.map((email) => email.imapid)
   }
 }
 
 const deleteSelection = () => {
-  if (!selection.value.length) {
+  if (!webmailStore.selection.length) {
     return
   }
   working.value = true
-  api.deleteSelection(currentMailbox.value, selection.value).then(() => {
+  api.deleteSelection(currentMailbox.value, webmailStore.selection).then(() => {
     working.value = false
     displayNotification({ msg: $gettext('Message(s) deleted') })
     fetchEmails()
@@ -253,41 +257,47 @@ const deleteSelection = () => {
 }
 
 const markSelectionAsJunk = () => {
-  if (!selection.value.length) {
+  if (!webmailStore.selection.length) {
     return
   }
   working.value = true
-  api.markSelectionAsJunk(currentMailbox.value, selection.value).then(() => {
-    working.value = false
-    displayNotification({ msg: $gettext('Message(s) marked as junk') })
-    autoRefreshContent()
-  })
+  api
+    .markSelectionAsJunk(currentMailbox.value, webmailStore.selection)
+    .then(() => {
+      working.value = false
+      displayNotification({ msg: $gettext('Message(s) marked as junk') })
+      autoRefreshContent()
+    })
 }
 
 const markSelectionAsNotJunk = () => {
-  if (!selection.value.length) {
+  if (!webmailStore.selection.length) {
     return
   }
   working.value = true
-  api.markSelectionAsNotJunk(currentMailbox.value, selection.value).then(() => {
-    working.value = false
-    displayNotification({ msg: $gettext('Message(s) marked as not junk') })
-    autoRefreshContent()
-  })
+  api
+    .markSelectionAsNotJunk(currentMailbox.value, webmailStore.selection)
+    .then(() => {
+      working.value = false
+      displayNotification({ msg: $gettext('Message(s) marked as not junk') })
+      autoRefreshContent()
+    })
 }
 
 const flagSelection = (status) => {
-  if (!selection.value.length) {
+  if (!webmailStore.selection.length) {
     return
   }
   working.value = true
-  api.flagSelection(currentMailbox.value, selection.value, status).then(() => {
-    working.value = false
-    selection.value = []
-    displayNotification({ msg: $gettext('Message(s) flagged') })
-    fetchEmails()
-    reloadMailboxCounters()
-  })
+  api
+    .flagSelection(currentMailbox.value, webmailStore.selection, status)
+    .then(() => {
+      working.value = false
+      webmailStore.selection = []
+      displayNotification({ msg: $gettext('Message(s) flagged') })
+      fetchEmails()
+      reloadMailboxCounters()
+    })
 }
 
 const emptyMailbox = () => {
@@ -305,6 +315,25 @@ const toggleFollowState = async (email) => {
   email.flagged = flag === 'flagged'
 }
 
+const onDragStart = (email) => {
+  if (!webmailStore.selection.includes(email.imapid)) {
+    webmailStore.selection = [email.imapid]
+  }
+  const ghost = document.createElement('div')
+  const count = webmailStore.selection.length || 0
+  const msg = $ngettext('%{count} message', '%{count} messages', count, {
+    count,
+  })
+  ghost.innerHTML = `
+    <div class="pa-4 rounded-lg" style="background: #a9a9a9; opacity: 0.8; width: 300px">
+      <div style="font-weight: 600">${msg}</div>
+    </div>
+  `
+  document.body.appendChild(ghost)
+  event.dataTransfer.setDragImage(ghost, -10, -10)
+  setTimeout(() => ghost.remove(), 0)
+}
+
 onMounted(() => {
   intervalId = setInterval(autoRefreshContent, 300 * 1000)
 })
@@ -320,13 +349,22 @@ watch(
   },
   { immediate: true }
 )
-watch(selection, () => {
-  if (!selection.value.length) {
-    selectAll.value = false
-  } else {
-    selectAll.value = true
+watch(
+  () => webmailStore.selection,
+  () => {
+    if (!webmailStore.selection.length) {
+      selectAll.value = false
+    } else {
+      selectAll.value = true
+    }
   }
-})
+)
+watch(
+  () => webmailStore.listingKey,
+  () => {
+    fetchEmails()
+  }
+)
 watch(page, () => {
   fetchEmails()
 })
