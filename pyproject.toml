@@ -72,6 +72,7 @@ dependencies = [
 	# RQ
 	"rq>=1.13.0",
 	"django-rq",
+	"rq-scheduler",
 	# Sieve
 	"sievelib>=1.4.1",
         # User

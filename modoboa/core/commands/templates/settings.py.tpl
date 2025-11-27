@@ -296,6 +296,12 @@ RQ_QUEUES = {
         'DB': REDIS_QUOTA_DB,
         'URL': REDIS_URL,
     },
+    'dovecot': {
+        'HOST': REDIS_HOST,
+        'PORT': REDIS_PORT,
+        'DB': REDIS_QUOTA_DB,
+        'URL': REDIS_URL,
+    },
 }
 
 # CACHE
