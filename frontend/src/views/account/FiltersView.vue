@@ -4,7 +4,7 @@
       {{ $gettext('Message filters') }}
     </div>
 
-    <v-toolbar color="white" flat>
+    <v-toolbar color="white" flat class="px-4">
       <v-autocomplete
         v-model="currentFilterSet"
         :label="$gettext('Select a filter set')"
@@ -55,10 +55,11 @@
             color="primary"
             :title="$gettext('Add new filter')"
             class="mx-auto"
+            variant="outlined"
             @click="showFilterForm = true"
           >
             <v-icon icon="mdi-plus" />
-            {{ $gettext('Add') }}
+            {{ $gettext('New') }}
           </v-btn>
         </div>
         <v-data-table
@@ -100,19 +101,19 @@
         </v-btn>
       </template>
     </div>
-  </div>
-  <v-dialog v-model="showFilterSetForm" max-width="600">
-    <FilterSetForm @close="closeFilterSetForm" />
-  </v-dialog>
+    <v-dialog v-model="showFilterSetForm" max-width="600">
+      <FilterSetForm @close="closeFilterSetForm" />
+    </v-dialog>
 
-  <v-dialog v-model="showFilterForm" max-width="800">
-    <FilterForm
-      v-if="currentFilterSet"
-      :filter-set="currentFilterSet.name"
-      :filter="selectedFilter"
-      @close="closeFilterForm"
-    />
-  </v-dialog>
+    <v-dialog v-model="showFilterForm" max-width="800">
+      <FilterForm
+        v-if="currentFilterSet"
+        :filter-set="currentFilterSet.name"
+        :filter="selectedFilter"
+        @close="closeFilterForm"
+      />
+    </v-dialog>
+  </div>
 </template>
 
 <script setup>
@@ -190,9 +191,9 @@ function getFilterSetName(filterSet) {
   return result
 }
 
-function closeFilterSetForm() {
+async function closeFilterSetForm() {
   showFilterSetForm.value = false
-  fetchFilterSets()
+  await fetchFilterSets()
 }
 
 function closeFilterForm() {
@@ -201,27 +202,34 @@ function closeFilterForm() {
   fetchFilters(currentFilterSet.value.name)
 }
 
-function fetchFilterSets() {
-  accountApi.getFilterSets().then((resp) => {
-    if (
-      resp.data.length > 0 &&
-      resp.data[0].active &&
-      resp.data[0].name === null
-    ) {
-      // No filter is active
-      filterSets.value = resp.data.slice(1)
-    } else {
-      filterSets.value = resp.data
-    }
-    if (!currentFilterSet.value && route.params.filterset) {
-      for (const filterSet of filterSets.value) {
-        if (filterSet.name === route.params.filterset) {
-          currentFilterSet.value = filterSet
-          break
-        }
+async function fetchFilterSets() {
+  const resp = await accountApi.getFilterSets()
+  if (
+    resp.data.length > 0 &&
+    resp.data[0].active &&
+    resp.data[0].name === null
+  ) {
+    // No filter is active
+    filterSets.value = resp.data.slice(1)
+  } else {
+    filterSets.value = resp.data
+  }
+  if (route.params.filterset) {
+    for (const filterSet of filterSets.value) {
+      if (filterSet.name === route.params.filterset) {
+        currentFilterSet.value = filterSet
+        break
       }
     }
-  })
+  } else {
+    // Select first filter set
+    for (const filterSet of filterSets.value) {
+      if (filterSet.name) {
+        currentFilterSet.value = filterSet
+        break
+      }
+    }
+  }
 }
 
 function fetchFilters(filterSetName) {
@@ -285,14 +293,23 @@ async function moveFilterUp(filter) {
 
 async function activateFilterSet(filterSet) {
   await accountApi.activateFilterSet(filterSet.name)
+  await fetchFilterSets()
   busStore.displayNotification({ msg: $gettext('Filter set activated') })
+}
+
+async function deactivateFilterSet() {
+  await accountApi.deactivateActiveFilterSet()
+  await fetchFilterSets()
+  busStore.displayNotification({
+    msg: $gettext('Active filter set deactivated'),
+  })
 }
 
 async function deleteFilterSet(filterSet) {
   await accountApi.deleteFilterSet(filterSet.name)
   busStore.displayNotification({ msg: $gettext('Filter set removed') })
   currentFilterSet.value = null
-  fetchFilterSets()
+  await fetchFilterSets()
 }
 
 async function saveFilterSet() {
@@ -395,9 +412,16 @@ function getFilterSetActions() {
       icon: 'mdi-check',
       onClick: activateFilterSet,
     })
+  } else {
+    result.push({
+      label: $gettext('Deactivate filter set'),
+      color: 'error',
+      icon: 'mdi-close',
+      onClick: deactivateFilterSet,
+    })
   }
   return result.concat(filterSetActions)
 }
 
-fetchFilterSets()
+await fetchFilterSets()
 </script>

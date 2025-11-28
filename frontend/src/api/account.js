@@ -70,6 +70,9 @@ export default {
   activateFilterSet(filterSetName) {
     return repository.post(`${resource}/filtersets/${filterSetName}/activate/`)
   },
+  deactivateActiveFilterSet() {
+    return repository.post(`${resource}/filtersets/deactivate_active/`)
+  },
   deleteFilterSet(filterSetName) {
     return repository.delete(`${resource}/filtersets/${filterSetName}/`)
   },
