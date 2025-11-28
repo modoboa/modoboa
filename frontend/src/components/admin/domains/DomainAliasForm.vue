@@ -13,15 +13,17 @@
           :rules="[rules.required]"
         />
         <label class="m-label">{{ $gettext('Choose a domain') }}</label>
-        <v-select
+        <v-autocomplete
           v-model="form.target"
+          v-model:search="search"
           :items="domains"
           item-title="name"
           item-value="pk"
           :rules="[rules.required]"
-          single-line
           variant="outlined"
           density="compact"
+          clearable
+          @update:search="fetchDomainsDelayed"
         />
         <v-switch v-model="form.enabled" label="Enabled" color="primary" />
       </v-card-text>
@@ -46,9 +48,10 @@
   </v-card>
 </template>
 
-<script setup lang="js">
+<script setup>
 import { useGettext } from 'vue3-gettext'
 import { computed, ref, onMounted } from 'vue'
+import debounce from 'debounce'
 import { useBusStore } from '@/stores'
 import rules from '@/plugins/rules.js'
 import domainsApi from '@/api/domains'
@@ -66,6 +69,7 @@ const domains = ref([])
 const form = ref({ enabled: true })
 const working = ref(false)
 const vFormRef = ref()
+const search = ref('')
 
 const submitLabel = computed(() => {
   return props.domainAlias ? $gettext('Update') : $gettext('Add')
@@ -89,6 +93,19 @@ async function deleteAlias() {
   }
 }
 
+function fetchDomains() {
+  const params = {
+    page_size: 0,
+  }
+  if (search.value) {
+    params.search = search.value
+  }
+  domainsApi.getDomains(params).then((resp) => {
+    domains.value = resp.data.results
+  })
+}
+const fetchDomainsDelayed = debounce(fetchDomains, 500)
+
 async function submit() {
   const { valid } = await vFormRef.value.validate()
   if (!valid) {
@@ -111,9 +128,7 @@ async function submit() {
 }
 
 onMounted(() => {
-  domainsApi.getDomains({ page_size: 0 }).then((resp) => {
-    domains.value = resp.data.results
-  })
+  fetchDomains()
   if (props.domainAlias) {
     form.value = JSON.parse(JSON.stringify(props.domainAlias))
   }
