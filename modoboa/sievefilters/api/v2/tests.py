@@ -96,6 +96,12 @@ class FilterSetViewSetTestCase(PatcherMixin, ModoAPITestCase):
         resp = self.client.post(url)
         self.assertEqual(resp.status_code, 200)
 
+    def test_deactivate_active(self):
+        self.authenticate()
+        url = reverse("v2:filterset-deactivate-active")
+        resp = self.client.post(url)
+        self.assertEqual(resp.status_code, 200)
+
     def test_download(self):
         self.authenticate()
         url = reverse("v2:filterset-download", args=["unknown"])
