@@ -1,68 +1,81 @@
-# Russian translations for Modoboa package.
-# Copyright (C) 2023 THE Modoboa'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the Modoboa package.
-# Automatically generated, 2023.
-#
+# 
+# Translators:
+# Antoine Nguyen <tonio@ngyn.org>, 2024
+# Ilya Chaycowskiy, 2025
+# Nikolay Khudenko, 2025
+# Кирилл Казючиц, 2025
+# Aleksandr Mokrushin, 2025
+# Николай Грищенков, 2025
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Modoboa 0.1.0\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-12-01 14:58+0100\n"
-"PO-Revision-Date: 2023-02-23 11:26+0100\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
-"Language: ru\n"
+"Project-Id-Version: PACKAGE VERSION\n"
+"PO-Revision-Date: 2024-08-01 12:26+0000\n"
+"Last-Translator: Николай Грищенков, 2025\n"
+"Language-Team: Russian (https://app.transifex.com/tonio/teams/13749/ru/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
-"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Language: ru\n"
+"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n%100>=11 && n%100<=14)? 2 : 3);\n"
 
 #: src/components/admin/imap_migration/ProviderCreationForm.vue:41
 msgid "(the domain will be created locally)"
-msgstr ""
+msgstr "(домен будет создан локально)"
 
 #: src/components/calendars/ImportEventsForm.vue:81
 msgid "%{ n } event imported"
 msgid_plural "%{ n } events imported"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "%{ n } событие импортировано"
+msgstr[1] "%{ n } событий импортировано"
+msgstr[2] "%{ n } событий импортировано"
+msgstr[3] "Импортировано событий: %{ n }"
 
 #: src/components/account/APISetupForm.vue:45
 msgid "A documentation of the API is available"
-msgstr ""
+msgstr "Документация API доступна."
 
 #: src/components/admin/domains/DNSDetail.vue:216
 msgid ""
 "A new key will be generated soon. Refresh the page in a moment to see it."
 msgstr ""
+"Новый ключ будет сгенерирован в ближайшее время. Обновите страницу через "
+"минуту, чтобы увидеть это."
 
 #: src/components/admin/identities/form_steps/AccountRoleForm.vue:111
 msgid ""
 "A user with all privileges, can do anything. By default, such a user does "
 "not have a mailbox so he can't access end-user features."
 msgstr ""
+"Пользователь со всеми привилегиями может делать что угодно. По умолчанию у "
+"такого пользователя нет почтового ящика, поэтому он не может получить доступ"
+" к функциям конечного пользователя."
 
 #: src/components/admin/identities/form_steps/AccountRoleForm.vue:83
 msgid ""
 "A user with no privileges but with a mailbox. He will be allowed to use all "
 "end-user features: webmail, calendar, contacts, filters."
 msgstr ""
+"Пользователь без привилегий, но с почтовым ящиком. Ему будет разрешено "
+"использовать все функции конечного пользователя: веб-почту, календарь, "
+"контакты, фильтры."
 
 #: src/components/admin/identities/form_steps/AccountRoleForm.vue:93
 msgid ""
 "A user with privileges on one or more domain. He will be allowed to "
 "administer mailboxes and he can also have a mailbox."
 msgstr ""
+"Пользователь с привилегиями в одном или нескольких доменах. Ему будет "
+"разрешено администрировать почтовые ящики, а также он может иметь почтовый "
+"ящик."
 
 #: src/components/tools/TimeSerieChart.vue:17
 msgid "Absolute time range"
-msgstr ""
+msgstr "Абсолютный временной диапазон"
 
 #: src/views/calendars/CalendarView.vue:104
 msgid "Access rules"
-msgstr ""
+msgstr "Правила доступа"
 
 #: src/components/admin/identities/AccountEditForm.vue:31
 #: src/components/calendars/CalendarAccessRulesForm.vue:42
@@ -70,37 +83,31 @@ msgstr ""
 #: src/views/admin/identities/AccountView.vue:4
 #: src/views/admin/identities/IdentitiesView.vue:23
 msgid "Account"
-msgstr "Добавить аккаунт"
+msgstr "Учётная запись"
 
 #: src/components/admin/dashboard/GlobalStatisticsWidget.vue:15
-#, fuzzy
 msgid "Account count"
-msgstr "аккаунт изменен"
+msgstr "Количество учётных записей"
 
 #: src/components/admin/identities/AccountCreationForm.vue:281
-#, fuzzy
 msgid "Account created"
-msgstr "Аккаунт создан"
+msgstr "Учётная запись создана"
 
 #: src/components/admin/identities/IdentityList.vue:500
-#, fuzzy
 msgid "Account deleted"
-msgstr "Аккаунт создан"
+msgstr "Учётная запись удалена"
 
 #: src/views/account/SettingsView.vue:3
-#, fuzzy
 msgid "Account settings"
-msgstr "Настройки"
+msgstr "Настройки учётной записи"
 
 #: src/components/admin/identities/AccountEditForm.vue:346
-#, fuzzy
 msgid "Account updated"
-msgstr "Аккаунт создан"
+msgstr "Учётная запись обновлена"
 
 #: src/components/admin/identities/IdentityList.vue:70
-#, fuzzy
 msgid "Accounts"
-msgstr "Добавить аккаунт"
+msgstr "Учётные записи"
 
 #: src/components/account/FidoAuthForm.vue:134
 #: src/components/account/FilterForm.vue:76
@@ -116,29 +123,28 @@ msgstr "Добавить аккаунт"
 #: src/components/admin/imap_migration/ProvidersList.vue:36
 #: src/components/contacts/ContactList.vue:128
 msgid "Actions"
-msgstr "Действие"
+msgstr "Действия"
 
 #: src/views/account/FiltersView.vue:393
 msgid "Activate filter set"
-msgstr ""
+msgstr "Включить набор фильтров"
 
 #: src/components/account/AutoReplyForm.vue:39
 msgid "Activate your auto reply from this date"
-msgstr ""
+msgstr "Включить автоответ с этой даты"
 
 #: src/components/account/AutoReplyForm.vue:50
 msgid "Activate your auto reply until this date"
-msgstr ""
+msgstr "Включить автоответ по эту дату"
 
 #: src/views/account/FiltersView.vue:186
 msgid "active"
-msgstr ""
+msgstr "активно"
 
 #: src/components/account/FilterSetForm.vue:14
 #: src/views/account/FiltersView.vue:149
-#, fuzzy
 msgid "Active"
-msgstr "Действие"
+msgstr "Активно"
 
 #: src/components/admin/domains/DomainAliasForm.vue:71
 #: src/components/contacts/CategoryForm.vue:60
@@ -146,60 +152,55 @@ msgstr "Действие"
 #: src/components/contacts/ContactList.vue:18
 #: src/views/account/FiltersView.vue:61
 msgid "Add"
-msgstr "Адрес"
+msgstr "Добавить"
 
 #: src/views/contacts/AddressBook.vue:54
-#, fuzzy
 msgid "Add a category"
-msgstr "Действие"
+msgstr "Добавить категорию"
 
 #: src/components/admin/domains/DomainAliasForm.vue:77
 msgid "Add a new domain alias"
-msgstr ""
+msgstr "Добавить новый псевдоним домена"
 
 #: src/components/account/FilterForm.vue:127
-#, fuzzy
 msgid "Add action"
-msgstr "Действие"
+msgstr "Добавить действие"
 
 #: src/components/admin/domains/DomainAdminList.vue:69
 msgid "Add administrator"
-msgstr ""
+msgstr "Добавить администратора"
 
 #: src/components/contacts/CategoryForm.vue:57
-#, fuzzy
 msgid "Add category"
-msgstr "Действие"
+msgstr "Добавить категорию"
 
 #: src/components/account/FilterForm.vue:60
-#, fuzzy
 msgid "Add condition"
-msgstr "Действие"
+msgstr "Добавить условие"
 
 #: src/views/account/FiltersView.vue:25
 msgid "Add filter set"
-msgstr ""
+msgstr "Добавить набор фильтров"
 
 #: src/views/account/FiltersView.vue:56
 msgid "Add new filter"
-msgstr ""
+msgstr "Добавить фильтр"
 
 #: src/components/admin/identities/AccountSenderAddresses.vue:52
 msgid "Add sender address"
-msgstr ""
+msgstr "Добавить адрес отправителя"
 
 #: src/components/webmail/ContactCard.vue:15
-#, fuzzy
 msgid "Add to contacts"
-msgstr "Новый аккаунт"
+msgstr "Добавить в контакты"
 
 #: src/components/admin/identities/DomainAdminDomains.vue:16
 msgid "Add/Remove from the domain page"
-msgstr ""
+msgstr "Добавить/удалить на странице домена"
 
 #: src/components/account/FidoAuthForm.vue:131
 msgid "Added On"
-msgstr ""
+msgstr "Дата создания"
 
 #: src/components/admin/domains/DNSDetail.vue:189
 #: src/components/admin/identities/AccountSenderAddresses.vue:73
@@ -215,27 +216,27 @@ msgstr "Адрес"
 
 #: src/components/admin/imap_migration/form_steps/ProviderGeneralForm.vue:12
 msgid "Address (hostname or IP)"
-msgstr ""
+msgstr "Адрес (имя хоста или IP)"
 
 #: src/components/contacts/AddressBookInfo.vue:4
 msgid "Address book information"
-msgstr ""
+msgstr "О адресной книге"
 
 #: src/components/admin/identities/DomainAdminDomains.vue:4
 msgid "Administered domains"
-msgstr "Список квот"
+msgstr "Управляемые домены"
 
 #: src/components/admin/domains/DomainAdminList.vue:161
 msgid "Administrator added"
-msgstr ""
+msgstr "Администратор добавлен"
 
 #: src/components/admin/domains/DomainCreationForm.vue:251
 msgid "Administrator name"
-msgstr ""
+msgstr "Имя администратора"
 
 #: src/components/admin/domains/DomainAdminList.vue:170
 msgid "Administrator removed"
-msgstr ""
+msgstr "Администратор удален"
 
 #: src/components/admin/domains/DomainAdminList.vue:9
 #: src/components/admin/domains/DomainList.vue:352
@@ -243,31 +244,29 @@ msgid "Administrators"
 msgstr "Администраторы"
 
 #: src/components/admin/domains/DomainAdminList.vue:6
-#, fuzzy
 msgid "Administrators of"
 msgstr "Администраторы"
 
 #: src/components/admin/alarms/AlarmList.vue:204
 msgid "Alarm closed"
-msgstr ""
+msgstr "Напоминание закрыто"
 
 #: src/components/admin/alarms/AlarmList.vue:189
-#, fuzzy
 msgid "Alarm deleted"
-msgstr "Дата создания"
+msgstr "Напоминание удалено"
 
 #: src/components/admin/alarms/AlarmList.vue:212
 msgid "Alarm re-opened"
-msgstr ""
+msgstr "Напоминание снова открыто"
 
 #: src/components/admin/domains/DomainList.vue:370
 #: src/layouts/admin/AdminLayout.vue:60
 msgid "Alarms"
-msgstr ""
+msgstr "Напоминания"
 
 #: src/components/admin/alarms/AlarmList.vue:196
 msgid "Alarms deleted"
-msgstr ""
+msgstr "Напоминания удалены"
 
 #: src/components/admin/identities/AccountEditForm.vue:145
 #: src/components/admin/identities/IdentityList.vue:75
@@ -275,38 +274,36 @@ msgstr ""
 #: src/views/admin/identities/AliasView.vue:5
 #: src/views/admin/identities/IdentitiesView.vue:26
 msgid "Alias"
-msgstr "Синоним"
+msgstr "Псевдоним"
 
 #: src/components/admin/identities/form_steps/AccountAliasForm.vue:50
-#, fuzzy
 msgid "Alias already added"
-msgstr "Синоним создан"
+msgstr "Псевдоним уже добавлен"
 
 #: src/components/admin/identities/AliasCreationForm.vue:130
 msgid "Alias already exists, redirecting to edit page"
-msgstr ""
+msgstr "Псевдоним уже существует — переходим к редактированию"
 
 #: src/components/admin/dashboard/GlobalStatisticsWidget.vue:19
-#, fuzzy
 msgid "Alias count"
-msgstr "Новый аккаунт"
+msgstr "Количество псевдонимов"
 
 #: src/components/admin/identities/AliasCreationForm.vue:155
-#, fuzzy
 msgid "Alias created"
-msgstr "Синоним создан"
+msgstr "Псевдоним создан"
 
 #: src/components/admin/identities/IdentityList.vue:537
-#, fuzzy
 msgid "Alias deleted"
-msgstr "Дата создания"
+msgstr "Псевдоним удалён"
 
 #: src/components/admin/identities/form_steps/AccountAliasForm.vue:8
 #: src/components/admin/identities/form_steps/AliasRecipientForm.vue:8
 msgid ""
-"Alias(es) of this mailbox. To create a catchall alias, just enter the domain "
-"name (@domain.tld)."
+"Alias(es) of this mailbox. To create a catchall alias, just enter the domain"
+" name (@domain.tld)."
 msgstr ""
+"Псевдоним(ы) этого почтового ящика. Чтобы создать универсальный псевдоним, "
+"просто введите имя домена (пример @domain.tld)."
 
 #: src/components/admin/domains/DomainList.vue:213
 #: src/components/admin/domains/DomainSummary.vue:64
@@ -315,20 +312,19 @@ msgstr ""
 #: src/components/admin/identities/AccountCreationForm.vue:149
 #: src/components/admin/identities/AccountCreationForm.vue:180
 msgid "Aliases"
-msgstr "Синоним(ы)"
+msgstr "Псевдонимы"
 
 #: src/components/admin/dmarc/DmarcAligmentChart.vue:5
 msgid "Alignment"
-msgstr ""
+msgstr "Выравнивание"
 
 #: src/components/account/FilterForm.vue:18
-#, fuzzy
 msgid "All messages"
-msgstr "использование (%%)"
+msgstr "Все письма"
 
 #: src/components/account/FilterForm.vue:16
 msgid "All of the following"
-msgstr ""
+msgstr "Все условия ниже"
 
 #: src/components/admin/identities/form_steps/AccountRoleForm.vue:102
 msgid ""
@@ -336,28 +332,28 @@ msgid ""
 "administrator, plus the possibility to create domains and to assign "
 "resources."
 msgstr ""
+"Промежуточный пользователь, имеющий те же привилегии, что и администратор "
+"домена, а также возможность создавать домены и назначать ресурсы."
 
 #: src/components/account/FilterForm.vue:17
 msgid "Any of the following"
-msgstr ""
+msgstr "Любое из условий ниже"
 
 #: src/views/account/SettingsView.vue:23
 msgid "API access"
-msgstr ""
+msgstr "Доступ к API"
 
 #: src/components/account/APISetupForm.vue:73
 msgid "API token copied to your clipboard"
-msgstr ""
+msgstr "Токен API скопирован в буфер обмена"
 
 #: src/components/account/APISetupForm.vue:85
-#, fuzzy
 msgid "API token created"
-msgstr "Аккаунт создан"
+msgstr "Токен API создан"
 
 #: src/components/account/APISetupForm.vue:107
-#, fuzzy
 msgid "API token deleted"
-msgstr "Дата создания"
+msgstr "Токен API удалён"
 
 #: src/components/admin/domains/DomainPolicyForm.vue:96
 #: src/components/tools/ChooseColumnsForm.vue:19
@@ -367,46 +363,44 @@ msgstr "Применить"
 
 #: src/components/admin/identities/IdentityList.vue:523
 msgid "Are you sure you want to delete this alias?"
-msgstr ""
+msgstr "Удалить этот псевдоним?"
 
 #: src/components/admin/identities/IdentityList.vue:485
 msgid "Are you sure you want to delete this identity ?"
-msgstr ""
+msgstr "Вы уверены, что хотите удалить эту личность?"
 
 #: src/components/admin/imap_migration/ProviderCreationForm.vue:42
-#, fuzzy
 msgid "Associated domain"
-msgstr "Список квот"
+msgstr "Связанный домен"
 
 #: src/components/admin/imap_migration/ProviderCreationForm.vue:64
 #: src/components/admin/imap_migration/ProviderCreationForm.vue:72
 #: src/components/admin/imap_migration/ProviderForm.vue:30
 #: src/components/admin/imap_migration/ProvidersList.vue:103
-#, fuzzy
 msgid "Associated domains"
-msgstr "Список квот"
+msgstr "Связанные домены"
 
 #: src/components/webmail/AttachmentsDialog.vue:16
 msgid "Attach"
-msgstr ""
+msgstr "Прикрепить"
 
 #: src/components/webmail/AttachmentsDialog.vue:3
 #: src/components/webmail/ComposeEmailForm.vue:21
 msgid "Attachments"
-msgstr ""
+msgstr "Вложения"
 
 #: src/views/login/LoginCallbackView.vue:20 src/views/login/LoginView.vue:17
 msgid "Attempting to log you in."
-msgstr ""
+msgstr "Выполняется вход"
 
 #: src/components/calendars/EventForm.vue:61
 msgid "Attendees"
-msgstr ""
+msgstr "Участники"
 
 #: src/layouts/admin/AdminLayout.vue:79
 #: src/views/admin/monitoring/AuditTrailView.vue:3
 msgid "Audit trail"
-msgstr ""
+msgstr "Журнал действий"
 
 #: src/components/admin/domains/DNSDetail.vue:83
 msgid "Authentication"
@@ -415,91 +409,85 @@ msgstr "Аутентификация"
 #: src/components/admin/domains/DNSDetail.vue:46
 #: src/components/admin/domains/DomainDNSConfig.vue:71
 msgid "Auto configuration"
-msgstr ""
+msgstr "Автоматическая настройка"
 
 #: src/views/account/SettingsView.vue:17
 msgid "Auto-reply message"
-msgstr ""
+msgstr "Текст автоответа"
 
 #: src/components/account/AutoReplyForm.vue:95
 msgid "Auto-reply message updated"
-msgstr ""
+msgstr "Автоответ обновлён"
 
 #: src/components/admin/domains/DNSDetail.vue:67
 msgid "autoconfig record (Mozilla) not found"
-msgstr ""
+msgstr "Запись автонастройки (Mozilla) не найдена"
 
 #: src/components/admin/domains/DNSDetail.vue:61
 msgid "autoconfig record (Mozilla): %{ value }"
-msgstr ""
+msgstr "Запись автонастройки (Mozilla): %{ value }"
 
 #: src/components/admin/domains/DNSDetail.vue:79
 msgid "autodiscover record (Microsoft) not found"
-msgstr ""
+msgstr "запись автообнаружения (Microsoft) не найдена"
 
 #: src/components/admin/domains/DNSDetail.vue:73
 msgid "autodiscover record (Microsoft): %{ value }"
-msgstr ""
+msgstr "запись автообнаружения (Microsoft): %{ value }"
 
 #: src/components/tools/CreationForm.vue:66
 msgid "Back"
-msgstr ""
+msgstr "Назад"
 
 #: src/components/account/BackupCodeAuthForm.vue:6
 msgid "Backup codes"
-msgstr ""
+msgstr "Резервные коды"
 
 #: src/components/admin/domains/DomainPolicy.vue:45
-#, fuzzy
 msgid "Banned filters"
-msgstr "использование (%%)"
+msgstr "Фильтры запрещённых вложений"
 
 #: src/components/webmail/ComposeEmailForm.vue:110
 #: src/components/webmail/ComposeEmailForm.vue:73
 msgid "Bcc"
-msgstr ""
+msgstr "Скрытая копия"
 
 #: src/components/admin/domains/DomainDKIMKey.vue:23
 msgid "Bind/named format. Click to copy"
-msgstr "Неверный формат"
+msgstr "Формат BIND/named. Кликните для копирования"
 
 #: src/components/contacts/ContactForm.vue:75
-#, fuzzy
 msgid "Birth date"
-msgstr "Дата создания"
+msgstr "Дата рождения"
 
 #: src/components/quarantine/QuarantineList.vue:54
 msgid "both"
-msgstr ""
+msgstr "оба"
 
 #: src/components/calendars/EventForm.vue:49
 #: src/views/calendars/CalendarView.vue:3
 msgid "Calendar"
-msgstr ""
+msgstr "Календарь"
 
 #: src/components/calendars/CalendarForm.vue:106
-#, fuzzy
 msgid "Calendar created"
-msgstr "Домен создан"
+msgstr "Календарь создан"
 
 #: src/views/calendars/CalendarView.vue:259
-#, fuzzy
 msgid "Calendar deleted"
-msgstr "Дата создания"
+msgstr "Календарь удален"
 
 #: src/components/calendars/CalendarDetail.vue:4
-#, fuzzy
 msgid "Calendar information"
-msgstr "Информация"
+msgstr "Информация о календаре"
 
 #: src/components/calendars/CalendarAccessRulesForm.vue:4
 msgid "Calendar sharing"
-msgstr ""
+msgstr "Общий доступ к календарю"
 
 #: src/components/calendars/CalendarForm.vue:103
-#, fuzzy
 msgid "Calendar updated"
-msgstr "Профиль обновлен"
+msgstr "Календарь обновлен"
 
 #: src/components/account/APISetupForm.vue:98
 #: src/components/account/FidoAuthForm.vue:210
@@ -512,35 +500,34 @@ msgstr "Профиль обновлен"
 #: src/components/admin/imap_migration/ProviderForm.vue:58
 #: src/components/tools/ConfirmDialog.vue:55
 msgid "Cancel"
-msgstr ""
+msgstr "Отмена"
 
 #: src/components/contacts/ContactCategoriesForm.vue:5
 #: src/components/contacts/ContactList.vue:133
 #: src/views/contacts/AddressBook.vue:41
 msgid "Categories"
-msgstr ""
+msgstr "Категории"
 
 #: src/components/contacts/CategoryForm.vue:92
-#, fuzzy
 msgid "Category deleted"
-msgstr "Дата создания"
+msgstr "Категория удалена"
 
 #: src/components/webmail/ComposeEmailForm.vue:65
 #: src/components/webmail/ComposeEmailForm.vue:83
 msgid "Cc"
-msgstr ""
+msgstr "Копия"
 
 #: src/views/admin/InformationView.vue:37
 msgid "Change the value of <strong>Default password scheme</strong>"
-msgstr ""
+msgstr "Изменить схему <strong>шифрования паролей по умолчанию</strong>"
 
 #: src/components/admin/imap_migration/form_steps/ProviderGeneralForm.vue:36
 msgid "Check connection:"
-msgstr ""
+msgstr "Проверка соединения:"
 
 #: src/views/admin/InformationView.vue:107
 msgid "Check out the following list to find related components"
-msgstr ""
+msgstr "Посмотрите список связанных компонентов ниже"
 
 #: src/views/admin/identities/IdentitiesView.vue:95
 msgid "Check this option if passwords contained in your file are not crypted"
@@ -548,35 +535,35 @@ msgstr "Выберите эту опцию если пароль в вашем �
 
 #: src/components/admin/domains/DomainAliasForm.vue:15
 msgid "Choose a domain"
-msgstr ""
+msgstr "Выберите домен"
 
 #: src/components/account/FilterForm.vue:28
 msgid "Choose a header"
-msgstr ""
+msgstr "Выберите заголовок"
 
 #: src/components/admin/identities/form_steps/AccountRoleForm.vue:7
 msgid "Choose a role"
-msgstr ""
+msgstr "Выберите роль"
 
 #: src/components/account/FilterForm.vue:84
 msgid "Choose an action"
-msgstr ""
+msgstr "Выберите действие"
 
 #: src/components/account/FilterForm.vue:38
 msgid "Choose an operator"
-msgstr ""
+msgstr "Выберите оператор"
 
 #: src/components/tools/ChooseColumnsForm.vue:2
 msgid "Choose columns to display"
-msgstr ""
+msgstr "Выберите отображаемые столбцы"
 
 #: src/components/contacts/ContactForm.vue:104
 msgid "City"
-msgstr ""
+msgstr "Город"
 
 #: src/components/account/TotpAuthForm.vue:24
 msgid "Click here to copy the key"
-msgstr ""
+msgstr "Кликните, чтобы скопировать ключ"
 
 #: src/components/account/RecoveryCodesResetDialog.vue:25
 #: src/components/admin/domains/DNSBLSummary.vue:27
@@ -598,40 +585,39 @@ msgstr ""
 #: src/components/webmail/MailboxForm.vue:29
 #: src/layouts/connected/ConnectedLayout.vue:19
 msgid "Close"
-msgstr ""
+msgstr "Закрыть"
 
 #: src/components/admin/alarms/AlarmList.vue:149
 msgid "Close alarm"
-msgstr ""
+msgstr "Закрыть напоминание"
 
 #: src/components/admin/alarms/AlarmList.vue:48
 msgid "Closed"
-msgstr ""
+msgstr "Закрыто"
 
 #: src/components/calendars/CalendarForm.vue:25
 msgid "Color"
-msgstr ""
+msgstr "Цвет"
 
 #: src/components/contacts/ContactForm.vue:41
 msgid "Company"
-msgstr ""
+msgstr "Организация"
 
 #: src/layouts/webmail/WebmailLayout.vue:24
 msgid "Compose"
-msgstr ""
+msgstr "Написать"
 
 #: src/layouts/webmail/WebmailLayout.vue:62
 msgid "Compress this mailbox"
-msgstr ""
+msgstr "Сжать этот ящик"
 
 #: src/components/account/FilterForm.vue:14
-#, fuzzy
 msgid "Conditions"
-msgstr "Подтверждение"
+msgstr "Условия"
 
 #: src/components/tools/CreationForm.vue:96
 msgid "Confirm and create"
-msgstr ""
+msgstr "Подтвердить и создать"
 
 #: src/components/admin/identities/form_steps/AccountPasswordSubForm.vue:65
 msgid "Confirmation"
@@ -642,28 +628,27 @@ msgid ""
 "Congratulations! Two-factor authentication using one-time passwords is now "
 "enabled for your account."
 msgstr ""
+"Поздравляем! Двухфакторная аутентификация с одноразовыми паролями включена"
 
 #: src/components/webmail/ContactCard.vue:64
 msgid "Contact added to address book"
-msgstr ""
+msgstr "Контакт добавлен в адресную книгу"
 
 #: src/views/contacts/AddressBook.vue:3 src/views/contacts/AddressBook.vue:37
 msgid "Contacts"
-msgstr ""
+msgstr "Контакты"
 
 #: src/components/account/AutoReplyForm.vue:20
 msgid "Content"
-msgstr ""
+msgstr "Содержимое"
 
 #: src/components/admin/domains/DomainPolicy.vue:5
-#, fuzzy
 msgid "Content filter"
-msgstr "Е-майл адрес"
+msgstr "Фильтр содержимого"
 
 #: src/components/admin/domains/DomainPolicyForm.vue:4
-#, fuzzy
 msgid "Content filter settings"
-msgstr "Основные"
+msgstr "Настройки фильтра содержимого"
 
 #: src/components/tools/ImportForm.vue:40
 msgid "Continue on error"
@@ -671,67 +656,66 @@ msgstr "Продолжать при ошибке"
 
 #: src/components/admin/domains/form_steps/DomainGeneralForm.vue:22
 msgid "Control if this domain will be allowed to send and receive messages"
-msgstr ""
+msgstr "Разрешить домену отправлять и принимать письма"
 
 #: src/components/admin/domains/DNSDetail.vue:125
 msgid "Copy key to clipboard"
-msgstr ""
+msgstr "Скопировать ключ в буфер обмена"
 
 #: src/components/admin/domains/DomainCreationForm.vue:54
 #: src/components/admin/identities/AccountCreationForm.vue:43
 #: src/components/admin/identities/form_steps/AccountPasswordSubForm.vue:44
 msgid "Copy to clipboard"
-msgstr ""
+msgstr "Скопировать в буфер обмена"
 
 #: src/components/account/APISetupForm.vue:28
 msgid "Copy token to clipboard"
-msgstr ""
+msgstr "Скопировать токен в буфер обмена"
 
 #: src/components/tools/ParametersForm.vue:194
 msgid "Could not save parameters"
-msgstr ""
+msgstr "Не удалось сохранить настройки"
 
 #: src/components/contacts/ContactForm.vue:112
 msgid "Country"
-msgstr ""
+msgstr "Страна"
 
 #: src/components/account/FilterForm.vue:195
 #: src/components/account/FilterSetForm.vue:30
 #: src/components/calendars/CalendarForm.vue:83
 #: src/components/webmail/MailboxForm.vue:79
-#, fuzzy
 msgid "Create"
-msgstr "Дата создания"
+msgstr "Создать"
 
 #: src/components/admin/domains/DomainCreationForm.vue:242
 #: src/components/admin/domains/form_steps/DomainOptionsForm.vue:5
 msgid "Create a domain administrator"
-msgstr "Создание администратора домена"
+msgstr "Создать администратора домена"
 
 #: src/components/admin/domains/form_steps/DomainOptionsForm.vue:27
 msgid "Create a mailbox for the administrator."
-msgstr "Создание администратора домена"
+msgstr "Создать почтовый ящик для администратора"
 
 #: src/components/account/FilterSetForm.vue:3
 msgid "Create a new filter set"
-msgstr ""
+msgstr "Создать новый набор фильтров"
 
 #: src/layouts/webmail/WebmailLayout.vue:45
 msgid "Create a new mailbox"
-msgstr ""
+msgstr "Создать новый почтовый ящик"
 
 #: src/components/admin/domains/DomainCreationForm.vue:266
 #: src/components/admin/domains/form_steps/DomainOptionsForm.vue:33
 msgid "Create aliases"
-msgstr "Создание синонимов"
+msgstr "Создать псевдонимы"
 
 #: src/components/webmail/MailboxForm.vue:75
 msgid "Create new mailbox"
-msgstr ""
+msgstr "Создать новый почтовый ящик"
 
 #: src/components/admin/domains/form_steps/DomainOptionsForm.vue:35
 msgid "Create standard aliases for the domain."
-msgstr ""
+msgstr "Создать стандартные псевдонимы для домена"
 
 #: src/components/admin/domains/DomainSummary.vue:8
 #: src/components/admin/identities/AccountSummary.vue:8
@@ -742,9 +726,8 @@ msgid "Creation date"
 msgstr "Дата создания"
 
 #: src/components/tools/ResourcesView.vue:39
-#, fuzzy
 msgid "Creation denied"
-msgstr "Дата создания"
+msgstr "Создание запрещено"
 
 #: src/views/admin/identities/IdentitiesView.vue:91
 msgid "Crypt passwords"
@@ -752,25 +735,24 @@ msgstr "Шифровать пароль"
 
 #: src/mixins/importExport.js:39
 msgid "CSV seems to be badly formatted"
-msgstr ""
+msgstr "CSV-файл имеет неверный формат"
 
 #: src/components/admin/identities/form_steps/AccountPasswordSubForm.vue:4
-#, fuzzy
 msgid "Current password"
-msgstr "Шифровать пароль"
+msgstr "Текущий пароль"
 
 #: src/components/admin/identities/IdentityList.vue:36
 msgid "Customize displayed columns"
-msgstr ""
+msgstr "Настроить отображаемые столбцы"
 
 #: src/components/admin/identities/form_steps/AccountMailboxForm.vue:23
 msgid "Daily message sending limit"
-msgstr ""
+msgstr "Лимит отправки писем в сутки"
 
 #: src/components/admin/domains/DomainSummary.vue:30
 #: src/components/admin/identities/AccountSummary.vue:76
 msgid "Daily sending limit"
-msgstr ""
+msgstr "Лимит отправки в сутки"
 
 #: src/layouts/admin/AdminLayout.vue:34
 msgid "Dashboard"
@@ -780,7 +762,7 @@ msgstr "Приборная панель"
 #: src/components/admin/logs/MessageList.vue:47
 #: src/components/quarantine/QuarantineList.vue:236
 msgid "Date"
-msgstr ""
+msgstr "Дата"
 
 #: src/components/tools/TimeSerieChart.vue:110
 msgid "Day"
@@ -789,19 +771,21 @@ msgstr "День"
 #: src/components/admin/domains/DomainPolicyForm.vue:47
 #: src/components/tools/YesNoDefaultField.vue:5
 msgid "default"
-msgstr ""
+msgstr "по умолчанию"
 
 #: src/components/admin/domains/DomainCreationForm.vue:193
 #: src/components/admin/domains/DomainSummary.vue:23
 #: src/components/admin/domains/form_steps/DomainLimitationsForm.vue:19
 msgid "Default mailbox quota"
-msgstr ""
+msgstr "Квота почтового ящика по умолчанию"
 
 #: src/components/admin/domains/form_steps/DomainLimitationsForm.vue:21
 msgid ""
 "Default quota applied to mailboxes. Can be expressed in KB, MB (default) or "
 "GB. A value of 0 means no quota."
 msgstr ""
+"Квота по умолчанию, применяемая к почтовым ящикам. Может быть выражена в КБ,"
+" МБ (по умолчанию) или ГБ. Значение 0 означает отсутствие квоты."
 
 #: src/components/admin/domains/DomainPolicy.vue:27
 #: src/components/admin/domains/DomainPolicy.vue:41
@@ -809,9 +793,8 @@ msgstr ""
 #: src/components/admin/domains/DomainPolicy.vue:66
 #: src/components/admin/domains/DomainPolicy.vue:75
 #: src/components/admin/domains/DomainPolicy.vue:84
-#, fuzzy
 msgid "Default value"
-msgstr "Используются значения домена по умолчанию "
+msgstr "Значение по умолчанию"
 
 #: src/components/admin/alarms/AlarmList.vue:125
 #: src/components/admin/alarms/AlarmList.vue:142
@@ -828,32 +811,31 @@ msgstr "Используются значения домена по умолча
 #: src/views/account/FiltersView.vue:334
 #: src/views/calendars/CalendarView.vue:109
 msgid "Delete"
-msgstr ""
+msgstr "Удалить"
 
 #: src/views/account/FiltersView.vue:382
 msgid "Delete filter set"
-msgstr ""
+msgstr "Удалить набор фильтров"
 
 #: src/views/quarantine/MessageView.vue:32
-#, fuzzy
 msgid "Delete message"
-msgstr "использование (%%)"
+msgstr "Удалить письмо"
 
 #: src/components/quarantine/QuarantineList.vue:84
 msgid "Delete selection"
-msgstr ""
+msgstr "Удалить выбранное"
 
 #: src/layouts/webmail/WebmailLayout.vue:56
 msgid "Delete this mailbox"
-msgstr ""
+msgstr "Удалить этот ящик"
 
 #: src/layouts/webmail/WebmailLayout.vue:191
 msgid "Delete this mailbox?"
-msgstr ""
+msgstr "Удалить этот почтовый ящик?"
 
 #: src/components/account/APISetupForm.vue:38
 msgid "Delete token"
-msgstr ""
+msgstr "Удалить токен"
 
 #: src/components/admin/identities/AliasCreationForm.vue:72
 #: src/components/admin/identities/AliasSummary.vue:30
@@ -862,172 +844,166 @@ msgstr ""
 #: src/components/calendars/EventForm.vue:74
 #: src/views/admin/InformationView.vue:148
 msgid "Description"
-msgstr ""
+msgstr "Описание"
 
 #: src/components/admin/dmarc/DmarcAligmentChart.vue:45
 msgid "Detail"
-msgstr ""
+msgstr "Подробности"
 
 #: src/views/account/FiltersView.vue:345
-#, fuzzy
 msgid "Disable"
-msgstr "Разрешен"
+msgstr "Отключить"
 
 #: src/components/account/TotpAuthForm.vue:101
-#, fuzzy
 msgid "Disable 2FA"
-msgstr "Разрешен"
+msgstr "Отключить двухфакторную аутентификацию 2FA"
 
 #: src/components/admin/domains/DomainPolicyForm.vue:26
-#, fuzzy
 msgid "Disable banned checks"
-msgstr "Разрешен"
+msgstr "Отключить проверку запрещённых вложений"
 
 #: src/views/webmail/EmailView.vue:74
-#, fuzzy
 msgid "Disable links"
-msgstr "Разрешен"
+msgstr "Отключить ссылки"
 
 #: src/components/admin/domains/DomainPolicyForm.vue:18
-#, fuzzy
 msgid "Disable spam checks"
-msgstr "Разрешен"
+msgstr "Отключить проверку на спам"
 
 #: src/components/admin/domains/DomainPolicyForm.vue:11
-#, fuzzy
 msgid "Disable virus checks"
-msgstr "Разрешен"
+msgstr "Отключить антивирусную проверку"
 
 #: src/components/admin/domains/DNSStatusChip.vue:18
 msgid "Disabled"
-msgstr "Разрешен"
+msgstr "Отключено"
 
 #: src/components/quarantine/QuarantineList.vue:125
-#, fuzzy
 msgid "Display"
-msgstr "Имя файла"
+msgstr "Отображение"
 
 #: src/components/contacts/ContactList.vue:23
 msgid "Display address book information"
-msgstr ""
+msgstr "Показать информацию об адресной книге"
 
 #: src/components/contacts/ContactForm.vue:31
 #: src/components/contacts/ContactList.vue:125
-#, fuzzy
 msgid "Display name"
-msgstr "Имя файла"
+msgstr "Отображаемое имя"
 
 #: src/views/webmail/EmailView.vue:78
-#, fuzzy
 msgid "Display source"
-msgstr "Имя файла"
+msgstr "Показать источник"
 
 #: src/components/admin/domains/DNSDetail.vue:114
 msgid "DKIM key"
-msgstr ""
+msgstr "Ключ DKIM"
 
 #: src/components/admin/domains/DNSDetail.vue:203
 msgid "DKIM key copied to clipboard"
-msgstr ""
+msgstr "Ключ DKIM скопирован в буфер обмена"
 
 #: src/components/admin/domains/DNSDetail.vue:239
 msgid ""
 "DKIM key does not seem to be generated yet or has failed. Do you want to "
 "requeue the job?"
 msgstr ""
+"Ключ DKIM ещё не создан или создание завершилось ошибкой. Поставить задачу "
+"на повторное создание?"
 
 #: src/components/admin/domains/DomainCreationForm.vue:209
 #: src/components/admin/domains/form_steps/DomainDNSForm.vue:22
 msgid "DKIM key length"
-msgstr ""
+msgstr "Длина ключа DKIM"
 
 #: src/components/admin/domains/DomainCreationForm.vue:205
 #: src/components/admin/domains/form_steps/DomainDNSForm.vue:16
 msgid "DKIM key selector"
-msgstr ""
+msgstr "Селектор ключа DKIM"
 
 #: src/components/admin/domains/DNSDetail.vue:259
-msgid "DKIM keys already exist for this domain. Do you want to overwrite them?"
-msgstr ""
+msgid ""
+"DKIM keys already exist for this domain. Do you want to overwrite them?"
+msgstr "Для этого домена уже существуют ключи DKIM. Перезаписать их?"
 
 #: src/components/admin/domains/DomainDKIMKey.vue:5
 msgid "DKIM public key for"
-msgstr ""
+msgstr "Публичный ключ DKIM для"
 
 #: src/components/admin/domains/DNSDetail.vue:95
 msgid "DKIM record found"
-msgstr ""
+msgstr "DKIM-запись найдена"
 
 #: src/components/admin/domains/DNSDetail.vue:98
 msgid "DKIM record not found"
-msgstr ""
+msgstr "DKIM-запись не найдена"
 
 #: src/components/admin/domains/DomainEditForm.vue:52
 msgid "DKIM signing"
-msgstr ""
+msgstr "Подпись DKIM"
 
 #: src/views/admin/domains/DomainView.vue:28
 msgid "DMARC"
-msgstr ""
+msgstr "DMARC"
 
 #: src/components/admin/domains/DNSDetail.vue:103
 msgid "DMARC record found"
-msgstr ""
+msgstr "DMARC-запись найдена"
 
 #: src/components/admin/domains/DNSDetail.vue:106
 msgid "DMARC record not found"
-msgstr ""
+msgstr "DMARC-запись не найдена"
 
 #: src/components/admin/dmarc/DmarcAligmentChart.vue:89
 msgid "DMARC support does not seem to be enabled for this domain."
-msgstr ""
+msgstr "Похоже, для этого домена поддержка DMARC не включена"
 
 #: src/components/admin/domains/DomainCreationForm.vue:144
 #: src/components/admin/domains/DomainCreationForm.vue:150
 #: src/components/admin/domains/DomainCreationForm.vue:174
 #: src/components/admin/domains/DomainEditForm.vue:36
 msgid "DNS"
-msgstr ""
+msgstr "DNS"
 
 #: src/components/admin/domains/DomainEditForm.vue:43
 msgid "DNS checks"
-msgstr ""
+msgstr "Проверка DNS"
 
 #: src/components/admin/domains/DomainDNSConfig.vue:4
 msgid "DNS configuration for "
-msgstr ""
+msgstr "DNS-конфигурация для"
 
 #: src/components/admin/domains/DNSDetail.vue:8
 msgid "DNS configuration help"
-msgstr ""
+msgstr "Помощь по настройке DNS"
 
 #: src/components/admin/domains/DomainList.vue:215
 msgid "DNS status"
-msgstr "Статистика"
+msgstr "Состояние DNS"
 
 #: src/components/admin/domains/DNSBLSummary.vue:5
 msgid "DNSBL summary for "
-msgstr ""
+msgstr "Результаты проверки по DNSBL для"
 
 #: src/components/admin/identities/IdentityList.vue:202
 msgid "Do not delete account folder"
-msgstr ""
+msgstr "Не удалять папку учётной записи"
 
 #: src/components/admin/domains/DomainList.vue:168
 msgid "Do not delete domain folder"
-msgstr ""
+msgstr "Не удалять папку домена"
 
 #: src/components/admin/domains/DomainList.vue:301
 msgid "Do you really want to delete the domain %{ domain }?"
-msgstr ""
+msgstr "Вы действительно хотите удалить домен %{ domain }?"
 
 #: src/views/calendars/CalendarView.vue:248
 msgid "Do you really want to delete this calendar?"
-msgstr ""
+msgstr "Вы действительно хотите удалить этот календарь?"
 
 #: src/components/account/FidoAuthForm.vue:185
 msgid "Do you really want to delete this WebAuthn device?"
-msgstr ""
+msgstr "Вы действительно хотите удалить это устройство WebAuthn?"
 
 #: src/components/admin/alarms/AlarmList.vue:104
 #: src/components/admin/domains/form_steps/DomainGeneralForm.vue:61
@@ -1035,7 +1011,7 @@ msgstr ""
 #: src/views/admin/domains/DomainsView.vue:23
 #: src/views/admin/domains/DomainView.vue:6
 msgid "Domain"
-msgstr ""
+msgstr "Домен"
 
 #: src/components/admin/identities/form_steps/AccountRoleForm.vue:91
 msgid "Domain administrator"
@@ -1043,51 +1019,47 @@ msgstr "Администратор домена"
 
 #: src/components/admin/dashboard/GlobalStatisticsWidget.vue:11
 msgid "Domain alias count"
-msgstr ""
+msgstr "Количество псевдонимов домена"
 
 #: src/components/admin/domains/DomainAliasForm.vue:101
 msgid "Domain alias created"
-msgstr ""
+msgstr "Псевдоним домена создан"
 
 #: src/components/admin/domains/DomainAliasForm.vue:84
 msgid "Domain alias deleted"
-msgstr ""
+msgstr "Псевдоним домена удалён"
 
 #: src/components/admin/domains/DomainAliasForm.vue:105
 msgid "Domain alias updated"
-msgstr ""
+msgstr "Псевдоним домена обновлён"
 
 #: src/components/admin/dashboard/GlobalStatisticsWidget.vue:7
-#, fuzzy
 msgid "Domain count"
-msgstr "Домен создан"
+msgstr "Количество доменов"
 
 #: src/components/admin/domains/DomainCreationForm.vue:318
 msgid "Domain created"
 msgstr "Домен создан"
 
 #: src/components/admin/identities/AccountCreationForm.vue:131
-#, fuzzy
 msgid "Domain default value"
-msgstr "Используются значения домена по умолчанию "
+msgstr "Значение по умолчанию для домена"
 
 #: src/components/admin/domains/DomainList.vue:318
 msgid "Domain deleted"
-msgstr ""
+msgstr "Домен удалён"
 
 #: src/components/admin/domains/form_steps/DomainGeneralForm.vue:5
 msgid "Domain name (ex: domain.tld)"
-msgstr ""
+msgstr "Имя домена (например, domain.tld)"
 
 #: src/composables/amavis.js:36
-#, fuzzy
 msgid "Domain's database"
-msgstr "Используются значения домена по умолчанию "
+msgstr "База данных домена"
 
 #: src/components/admin/identities/AccountEditForm.vue:111
-#, fuzzy
 msgid "domain's default value"
-msgstr "Используются значения домена по умолчанию "
+msgstr "значение по умолчанию домена"
 
 #: src/layouts/admin/AdminLayout.vue:40
 #: src/views/admin/domains/DomainsView.vue:4
@@ -1096,15 +1068,15 @@ msgstr "Домены"
 
 #: src/components/tools/ImportForm.vue:43
 msgid "Don't treat duplicated objects as errors"
-msgstr ""
+msgstr "Не считать дубликаты ошибками"
 
 #: src/views/account/FiltersView.vue:377
 msgid "Download filter set"
-msgstr ""
+msgstr "Скачать набор фильтров"
 
 #: src/components/contacts/ContactList.vue:126
 msgid "E-mail"
-msgstr ""
+msgstr "Электронная почта"
 
 #: src/components/admin/domains/DomainList.vue:357
 #: src/components/admin/identities/IdentityList.vue:439
@@ -1114,125 +1086,109 @@ msgstr ""
 #: src/views/account/FiltersView.vue:329
 #: src/views/calendars/CalendarView.vue:99
 msgid "Edit"
-msgstr ""
+msgstr "Редактировать"
 
 #: src/views/admin/identities/AccountEditView.vue:3
-#, fuzzy
 msgid "Edit account"
-msgstr "Новый аккаунт"
+msgstr "Изменить учётную запись"
 
 #: src/views/admin/identities/AliasEditView.vue:3
-#, fuzzy
 msgid "Edit alias"
-msgstr "Новый синоним"
+msgstr "Изменить псевдоним"
 
 #: src/components/calendars/CalendarForm.vue:6
-#, fuzzy
 msgid "Edit calendar"
-msgstr "Новый синоним"
+msgstr "Изменить календарь"
 
 #: src/components/contacts/CategoryForm.vue:57
-#, fuzzy
 msgid "Edit category"
-msgstr "Е-майл адрес"
+msgstr "Изменить категорию"
 
 #: src/components/contacts/ContactForm.vue:182
-#, fuzzy
 msgid "Edit contact"
-msgstr "Новый аккаунт"
+msgstr "Изменить контакт"
 
 #: src/components/admin/domains/DomainPolicy.vue:9
 msgid "Edit content filter settings"
-msgstr ""
+msgstr "Изменить настройки фильтра содержимого"
 
 #: src/views/admin/domains/DomainEditView.vue:3
 msgid "Edit domain"
-msgstr ""
+msgstr "Изменить домен"
 
 #: src/components/admin/domains/DomainAliasForm.vue:76
 msgid "Edit domain alias"
-msgstr ""
+msgstr "Изменить псевдоним домена"
 
 #: src/components/calendars/EventForm.vue:133
-#, fuzzy
 msgid "Edit event"
-msgstr "Новый аккаунт"
+msgstr "Изменить событие"
 
 #: src/components/account/FilterForm.vue:192
-#, fuzzy
 msgid "Edit filter"
-msgstr "Е-майл адрес"
+msgstr "Изменить фильтр"
 
 #: src/components/webmail/MailboxForm.vue:76
-#, fuzzy
 msgid "Edit mailbox"
-msgstr "Новый синоним"
+msgstr "Изменить почтовый ящик"
 
 #: src/views/admin/imap_migration/ProviderEditView.vue:3
-#, fuzzy
 msgid "Edit provider"
-msgstr "Е-майл адрес"
+msgstr "Изменить провайдера"
 
 #: src/layouts/webmail/WebmailLayout.vue:50
 msgid "Edit this mailbox"
-msgstr ""
+msgstr "Изменить этот ящик"
 
 #: src/components/account/FidoAuthForm.vue:207
-#, fuzzy
 msgid "Edit your device"
-msgstr "Е-майл адрес"
+msgstr "Изменить устройство"
 
 #: src/components/account/FidoAuthForm.vue:206
-#, fuzzy
 msgid "Edition"
-msgstr "Новый аккаунт"
+msgstr "Редактирование"
 
 #: src/components/admin/identities/AccountCreationForm.vue:125
 msgid "Email"
-msgstr ""
+msgstr "Email"
 
 #: src/components/admin/identities/form_steps/AliasGeneralForm.vue:10
 msgid "Email address"
-msgstr "Е-майл адрес"
+msgstr "Адрес электронной почты"
 
 #: src/layouts/admin/AdminLayout.vue:101
-#, fuzzy
 msgid "Email providers"
-msgstr "Е-майл адрес"
+msgstr "Почтовые провайдеры"
 
 #: src/components/webmail/ComposeEmailForm.vue:268
-#, fuzzy
 msgid "Email sent"
-msgstr "Е-майл адрес"
+msgstr "Письмо отправлено"
 
 #: src/components/tools/CreationSummary.vue:45
 msgid "Empty"
-msgstr ""
+msgstr "Пусто"
 
 #: src/components/webmail/EmailList.vue:83
-#, fuzzy
 msgid "Empty mailbox"
-msgstr "Почтовые ящики"
+msgstr "Очистить ящик"
 
 #: src/views/account/FiltersView.vue:352
-#, fuzzy
 msgid "Enable"
-msgstr "Разрешено"
+msgstr "Включить"
 
 #: src/components/admin/domains/DomainCreationForm.vue:182
 #: src/components/admin/domains/form_steps/DomainDNSForm.vue:11
 msgid "Enable DKIM signing"
-msgstr ""
+msgstr "Включить подпись DKIM"
 
 #: src/components/admin/domains/DomainCreationForm.vue:177
 #: src/components/admin/domains/form_steps/DomainDNSForm.vue:6
 msgid "Enable DNS checks"
-msgstr ""
+msgstr "Включить проверку DNS"
 
 #: src/views/webmail/EmailView.vue:69
-#, fuzzy
 msgid "Enable links"
-msgstr "Разрешено"
+msgstr "Включить ссылки"
 
 #: src/components/account/AutoReplyForm.vue:7
 #: src/components/admin/domains/DomainCreationForm.vue:167
@@ -1249,152 +1205,141 @@ msgstr "Разрешено"
 #: src/components/admin/identities/IdentityList.vue:237
 #: src/components/admin/identities/IdentityList.vue:276
 msgid "Enabled"
-msgstr "Разрешено"
+msgstr "Включено"
 
 #: src/components/account/FidoAuthForm.vue:55
 msgid "Enter a name to register a new webauthn device."
-msgstr ""
+msgstr "Введите имя для регистрации нового устройства webauthn."
 
 #: src/components/admin/identities/form_steps/AccountGeneralForm.vue:79
 msgid "Enter a simple username or an email address"
-msgstr ""
+msgstr "Введите логин или полный адрес электронной почты"
 
 #: src/components/admin/identities/form_steps/AccountGeneralForm.vue:77
-#, fuzzy
 msgid "Enter an email address"
-msgstr "Е-майл адрес"
+msgstr "Введите адрес электронной почты"
 
 #: src/components/calendars/EventForm.vue:182
 msgid "Event added"
-msgstr ""
+msgstr "Событие добавлено"
 
 #: src/components/calendars/EventForm.vue:198
-#, fuzzy
 msgid "Event deleted"
-msgstr "аккаунт изменен"
+msgstr "Событие удалено"
 
 #: src/components/calendars/EventForm.vue:185
 #: src/views/calendars/CalendarView.vue:225
-#, fuzzy
 msgid "Event updated"
-msgstr "аккаунт изменен"
+msgstr "Событие обновлено"
 
 #: src/components/admin/identities/form_steps/AccountMailboxForm.vue:13
 msgid "Ex: 10MB. Leave empty for no limit"
-msgstr ""
+msgstr "Пример: 10MB. Оставьте пустым — без ограничений"
 
 #: src/components/admin/identities/AliasCreationForm.vue:66
 #: src/components/admin/identities/AliasSummary.vue:26
 #: src/components/admin/identities/form_steps/AliasGeneralForm.vue:56
 #: src/components/admin/identities/IdentityList.vue:243
 msgid "Expire at"
-msgstr ""
+msgstr "Истекает"
 
 #: src/views/admin/identities/IdentitiesView.vue:40
 msgid "Export accounts and aliases to CSV"
-msgstr ""
+msgstr "Экспорт учётных записей и псевдонимов в CSV"
 
 #: src/views/admin/domains/DomainsView.vue:40
 msgid "Export domains and aliases to CSV"
-msgstr ""
+msgstr "Экспорт доменов и псевдонимов в CSV"
 
 #: src/components/admin/dmarc/DmarcAligmentChart.vue:130
 #: src/components/admin/dmarc/DmarcAligmentChart.vue:152
 msgid "Failed"
-msgstr ""
+msgstr "Ошибка"
 
 #: src/views/account/FiltersView.vue:241
 msgid "Failed to display template. Using raw mode"
-msgstr ""
+msgstr "Не удалось отобразить шаблон. Используется исходный режим"
 
 #: src/components/account/FidoAuthForm.vue:171
 msgid "Failed to register the webAuthN device"
-msgstr ""
+msgstr "Не удалось зарегистрировать устройство WebAuthn"
 
 #: src/components/account/ProfileForm.vue:24
 msgid "Feel free to improve the translations"
-msgstr ""
+msgstr "Помогите улучшить переводы"
 
 #: src/plugins/rules.js:31
 msgid "Field is required"
-msgstr ""
+msgstr "Поле обязательно для заполнения"
 
 #: src/components/account/FilterForm.vue:300
 msgid "Filter added"
-msgstr ""
+msgstr "Фильтр добавлен"
 
 #: src/views/account/FiltersView.vue:265
-#, fuzzy
 msgid "Filter disabled"
-msgstr "Разрешен"
+msgstr "Фильтр отключён"
 
 #: src/views/account/FiltersView.vue:256
 msgid "Filter enabled"
-msgstr ""
+msgstr "Фильтр включён"
 
 #: src/views/account/FiltersView.vue:271
 msgid "Filter removed"
-msgstr ""
+msgstr "Фильтр удалён"
 
 #: src/views/account/FiltersView.vue:288
 msgid "Filter set activated"
-msgstr ""
+msgstr "Набор фильтров включён"
 
 #: src/components/account/FilterSetForm.vue:66
-#, fuzzy
 msgid "Filter set created"
-msgstr "Домен создан"
+msgstr "Набор фильтров создан"
 
 #: src/views/account/FiltersView.vue:293
 msgid "Filter set removed"
-msgstr ""
+msgstr "Набор фильтров удалён"
 
 #: src/views/account/FiltersView.vue:307
-#, fuzzy
 msgid "Filter set updated"
-msgstr "Профиль обновлен"
+msgstr "Набор фильтров обновлён"
 
 #: src/components/account/FilterForm.vue:303
-#, fuzzy
 msgid "Filter updated"
-msgstr "Профиль обновлен"
+msgstr "Фильтр обновлён"
 
 #: src/layouts/account/AccountLayout.vue:33
 msgid "Filters"
-msgstr ""
+msgstr "Фильтры"
 
 #: src/components/account/ProfileForm.vue:9
 #: src/components/admin/identities/AccountCreationForm.vue:101
 #: src/components/admin/identities/form_steps/AccountGeneralForm.vue:18
 #: src/components/admin/identities/IdentityList.vue:269
 #: src/components/contacts/ContactForm.vue:12
-#, fuzzy
 msgid "First name"
-msgstr "Имя файла"
+msgstr "Имя"
 
 #: src/views/account/SettingsView.vue:14 src/views/webmail/EmailView.vue:23
 msgid "Forward"
-msgstr "Перенаправленые"
+msgstr "Переслать"
 
 #: src/components/account/ForwardForm.vue:18
 msgid "Forward messages and store copies into your local mailbox"
-msgstr ""
-"Перенаправление сообщения, и сохранение копии в вашем локальном почтовом "
-"ящике"
+msgstr "Пересылать письма и сохранять копии в своём ящике"
 
 #: src/components/account/ForwardForm.vue:49
 msgid "Forward updated"
-msgstr "Перенаправление обновлено"
+msgstr "Пересылка обновлена"
 
 #: src/components/admin/dmarc/DmarcAligmentChart.vue:129
 #: src/components/admin/dmarc/DmarcAligmentChart.vue:151
-#, fuzzy
 msgid "Forwarded"
-msgstr "Перенаправленые"
+msgstr "Пересылается"
 
 #: src/components/admin/dmarc/DmarcAligmentChart.vue:61
 msgid "Forwarders with ARC"
-msgstr ""
+msgstr "Пересылки с поддержкой ARC"
 
 #: src/components/account/AutoReplyForm.vue:36
 #: src/components/admin/logs/MessageList.vue:50
@@ -1403,17 +1348,15 @@ msgstr ""
 #: src/components/tools/TimeSerieChart.vue:19
 #: src/components/webmail/ComposeEmailForm.vue:29
 msgid "From"
-msgstr ""
+msgstr "От"
 
 #: src/components/quarantine/QuarantineList.vue:45
-#, fuzzy
 msgid "From address"
-msgstr "Ошибочный запрос"
+msgstr "Адрес отправителя"
 
 #: src/components/calendars/CalendarAccessRulesForm.vue:11
-#, fuzzy
 msgid "Full address"
-msgstr "Е-майл адрес"
+msgstr "Полный адрес"
 
 #: src/components/admin/identities/AccountSummary.vue:19
 msgid "Full name"
@@ -1421,9 +1364,8 @@ msgstr "Имя файла"
 
 #: src/components/admin/dmarc/DmarcAligmentChart.vue:127
 #: src/components/admin/dmarc/DmarcAligmentChart.vue:143
-#, fuzzy
 msgid "Fully aligned"
-msgstr "Имя файла"
+msgstr "Полное выравнивание"
 
 #: src/components/admin/domains/DomainCreationForm.vue:143
 #: src/components/admin/domains/DomainCreationForm.vue:149
@@ -1437,85 +1379,85 @@ msgstr "Имя файла"
 #: src/components/admin/imap_migration/ProviderForm.vue:7
 #: src/views/admin/domains/DomainView.vue:22
 msgid "General"
-msgstr "Основные"
+msgstr "Общие"
 
 #: src/components/admin/domains/DomainSummary.vue:4
 #: src/components/admin/identities/AccountSummary.vue:4
 #: src/components/admin/identities/AliasSummary.vue:4
 msgid "General information"
-msgstr ""
+msgstr "Общая информация"
 
 #: src/components/account/ProfileForm.vue:5
-#, fuzzy
 msgid "General settings"
-msgstr "Основные"
+msgstr "Основные настройки"
 
 #: src/components/account/APISetupForm.vue:13
-#, fuzzy
 msgid "Generate"
-msgstr "Основные"
+msgstr "Сгенерировать"
 
 #: src/components/admin/domains/DNSDetail.vue:130
 msgid "Generate a new DKIM key"
-msgstr ""
+msgstr "Создать новый ключ DKIM"
 
 #: src/components/admin/identities/form_steps/AliasGeneralForm.vue:38
-#, fuzzy
 msgid "Generated address"
-msgstr "Ошибочный запрос"
+msgstr "Сгенерированный адрес"
 
 #: src/composables/amavis.js:33
 msgid "Global database"
-msgstr ""
+msgstr "Общая база данных"
 
 #: src/views/admin/InformationView.vue:29
 msgid "Go to <strong>Settings > General</strong> section"
-msgstr ""
+msgstr "Перейдите в  <strong>Настройки  > Общие</strong>"
 
 #: src/components/account/APISetupForm.vue:46
 #: src/components/account/ProfileForm.vue:28
 msgid "here"
-msgstr ""
+msgstr "здесь"
 
 #: src/components/admin/domains/DomainDNSConfig.vue:9
 msgid ""
 "Here is an example of DNS configuration (bind format). Replace values "
 "between [ ] by the appropriate ones."
 msgstr ""
+"Пример DNS-конфигурации (формат BIND). Замените значения в [ ] на свои"
 
 #: src/views/quarantine/MessageView.vue:71
 msgid "Hide full headers"
-msgstr ""
+msgstr "Скрыть все заголовки"
 
 #: src/components/admin/identities/AccountCreationForm.vue:170
 #: src/components/admin/identities/AccountCreationForm.vue:97
 msgid "Identification"
-msgstr ""
+msgstr "Идентификация"
 
 #: src/layouts/admin/AdminLayout.vue:50
 #: src/views/admin/identities/IdentitiesView.vue:4
 msgid "Identities"
-msgstr "Пользователи"
+msgstr "Личности"
 
 #: src/components/tools/CreationForm.vue:136
 msgid ""
 "If you close this form now, your modifications won't be saved. Do you "
 "confirm?"
-msgstr ""
+msgstr "Если закрыть форму сейчас — все изменения будут потеряны. Продолжить?"
 
 #: src/components/admin/dmarc/DmarcAligmentChart.vue:94
 msgid ""
 "If you configured it recently, please wait for the first report to be "
 "received and processed."
 msgstr ""
+"Если вы недавно включили отчёты — дождитесь получения и обработки первого "
+"отчёта."
 
 #: src/layouts/admin/AdminLayout.vue:96
 msgid "IMAP Migration"
-msgstr ""
+msgstr "IMAP Миграция"
 
 #: src/components/admin/imap_migration/form_steps/ProviderGeneralForm.vue:19
 msgid "IMAP Port"
-msgstr ""
+msgstr "IMAP Порт"
 
 #: src/components/tools/ImportForm.vue:54
 #: src/views/calendars/CalendarView.vue:114
@@ -1524,7 +1466,7 @@ msgstr "Импорт"
 
 #: src/views/admin/identities/IdentitiesView.vue:33
 msgid "Import accounts and aliases from CSV file"
-msgstr ""
+msgstr "Импорт учётных записей и псевдонимов из CSV-файла"
 
 #: src/views/admin/domains/DomainsView.vue:57
 msgid "Import domains"
@@ -1532,36 +1474,35 @@ msgstr "Импорт доменов"
 
 #: src/views/admin/domains/DomainsView.vue:33
 msgid "Import domains and aliases from CSV file"
-msgstr ""
+msgstr "Импорт доменов и псевдонимов из CSV-файла"
 
 #: src/components/calendars/ImportEventsForm.vue:5
-#, fuzzy
 msgid "Import events"
-msgstr "Импорт информации о пользователях"
+msgstr "Импортировать события"
 
 #: src/views/admin/identities/IdentitiesView.vue:69
 msgid "Import identities"
 msgstr "Импорт информации о пользователях"
 
 #: src/views/admin/InformationView.vue:8
-#, fuzzy
 msgid "Important messages"
-msgstr "Импорт доменов"
+msgstr "Важные письма"
 
 #: src/views/account/FiltersView.vue:188
-#, fuzzy
 msgid "inactive"
-msgstr "Действие"
+msgstr "неактивно"
 
 #: src/components/account/ForwardForm.vue:8
 msgid "Indicate one or more recipients separated by a comma (,)"
-msgstr ""
+msgstr "Укажите одного или нескольких получателей через запятую (,)"
 
 #: src/views/admin/InformationView.vue:61
 msgid ""
 "Inform <strong>ALL</strong> your users that they must login to Modoboa to "
 "complete the operation"
 msgstr ""
+"Сообщите <strong>ВСЕМ</strong> пользователям, что они должны зайти в Modoboa"
+" для завершения операции"
 
 #: src/layouts/admin/AdminLayout.vue:136 src/views/admin/InformationView.vue:4
 #: src/views/calendars/CalendarView.vue:94
@@ -1570,14 +1511,16 @@ msgstr "Информация"
 
 #: src/components/account/TotpAuthForm.vue:34
 msgid ""
-"Install a soft token authenticator like FreeOTP or Google Authenticator from "
-"your application repository and use that app to scan this QR code."
+"Install a soft token authenticator like FreeOTP or Google Authenticator from"
+" your application repository and use that app to scan this QR code."
 msgstr ""
+"Установите приложение-аутентификатор, такой как FreeOTP или Google "
+"Authenticator, из вашего репозитория приложений и используйте это приложение"
+" для сканирования этого QR-кода."
 
 #: src/views/admin/InformationView.vue:92
-#, fuzzy
 msgid "Installed components"
-msgstr "Установленная версия"
+msgstr "Установленные компоненты"
 
 #: src/views/admin/InformationView.vue:146
 msgid "Installed version"
@@ -1585,16 +1528,17 @@ msgstr "Установленная версия"
 
 #: src/plugins/rules.js:45
 msgid "Invalid port number"
-msgstr ""
+msgstr "Неверный номер порта"
 
 #: src/components/admin/domains/DNSBLSummary.vue:10
 msgid ""
-"IP address %{ address } is currently listed by the following DNSBL providers:"
-msgstr ""
+"IP address %{ address } is currently listed by the following DNSBL "
+"providers:"
+msgstr "IP-адрес %{ address } сейчас находится в следующих DNSBL:"
 
 #: src/components/admin/imap_migration/form_steps/ProviderGeneralForm.vue:30
 msgid "Is the IMAP connection secured using SSL/TLS or StartTLS"
-msgstr ""
+msgstr "IMAP-соединение защищено через SSL/TLS или STARTTLS"
 
 #: src/components/account/ForwardForm.vue:16
 msgid "Keep local copies"
@@ -1605,72 +1549,67 @@ msgstr "Сохранить локальную копию"
 #: src/components/admin/identities/form_steps/AccountProfileForm.vue:3
 #: src/components/admin/identities/IdentityList.vue:283
 msgid "Language"
-msgstr ""
+msgstr "Язык"
 
 #: src/components/account/ProfileForm.vue:132
 msgid "Language does no exist"
-msgstr ""
+msgstr "Такого языка нет"
 
 #: src/components/admin/identities/AccountEditForm.vue:78
 msgid "Language:"
-msgstr ""
+msgstr "Язык:"
 
 #: src/components/admin/identities/IdentityList.vue:309
 msgid "Last login"
-msgstr ""
+msgstr "Последний вход"
 
 #: src/components/admin/identities/AccountSummary.vue:12
 msgid "Last login date"
-msgstr ""
+msgstr "Дата последнего входа"
 
 #: src/components/admin/identities/IdentityList.vue:255
-#, fuzzy
 msgid "Last modification"
-msgstr "Дата последней модификации"
+msgstr "Последнее изменение"
 
 #: src/components/admin/domains/DomainSummary.vue:12
 msgid "Last modification date"
-msgstr "Дата последней модификации"
+msgstr "Дата последнего изменения"
 
 #: src/components/account/ProfileForm.vue:15
 #: src/components/admin/identities/AccountCreationForm.vue:104
 #: src/components/admin/identities/form_steps/AccountGeneralForm.vue:25
 #: src/components/contacts/ContactForm.vue:22
 msgid "Last name"
-msgstr ""
+msgstr "Фамилия"
 
 #: src/components/admin/identities/IdentityList.vue:273
-#, fuzzy
 msgid "Last Name"
-msgstr "Логин"
+msgstr "Фамилия"
 
 #: src/components/account/FidoAuthForm.vue:132
 msgid "Last Used"
-msgstr ""
+msgstr "Последнее использование"
 
 #: src/components/admin/dashboard/NewsFeedWidget.vue:2
-#, fuzzy
 msgid "Latest news"
-msgstr "Установленная версия"
+msgstr "Последние новости"
 
 #: src/views/admin/InformationView.vue:147
-#, fuzzy
 msgid "Latest version"
-msgstr "Установленная версия"
+msgstr "Последняя версия"
 
 #: src/components/quarantine/QuarantineList.vue:388
 #: src/views/quarantine/MessageView.vue:218
-#, fuzzy
 msgid "Learning database"
-msgstr "Дата создания"
+msgstr "База обучения SpamAssassin"
 
 #: src/components/admin/identities/form_steps/AccountMailboxForm.vue:26
 msgid "Leave empty for no limit"
-msgstr ""
+msgstr "Оставьте пустым — без ограничений"
 
 #: src/components/contacts/ContactForm.vue:144
 msgid "Less"
-msgstr ""
+msgstr "Меньше"
 
 #: src/components/admin/logs/AuditTrailList.vue:52
 msgid "Level"
@@ -1681,23 +1620,23 @@ msgstr "Уровень"
 #: src/components/admin/domains/DomainCreationForm.vue:189
 #: src/components/admin/domains/DomainEditForm.vue:73
 msgid "Limitations"
-msgstr ""
+msgstr "Ограничения"
 
 #: src/components/admin/imap_migration/form_steps/ProviderAssociatedForm.vue:13
 msgid "Local domain (optional)"
-msgstr ""
+msgstr "Локальный домен (необязательно)"
 
 #: src/components/admin/logs/AuditTrailList.vue:53
 msgid "Logger"
-msgstr "Логгер"
+msgstr "Журнал событий"
 
 #: src/components/shared/TopMenu.vue:139
 msgid "Logout"
-msgstr "Завершить сеанс"
+msgstr "Выйти"
 
 #: src/views/admin/InformationView.vue:54
 msgid "Logout / Login with your current account so its password gets updated"
-msgstr ""
+msgstr "Выйдите и зайдите снова, чтобы обновился пароль"
 
 #: src/components/admin/alarms/AlarmList.vue:105
 #: src/components/admin/identities/AccountCreationForm.vue:122
@@ -1707,24 +1646,20 @@ msgid "Mailbox"
 msgstr "Почтовые ящики"
 
 #: src/layouts/webmail/WebmailLayout.vue:185
-#, fuzzy
 msgid "Mailbox compressed"
-msgstr "Почтовые ящики"
+msgstr "Почтовый ящик сжат"
 
 #: src/components/webmail/MailboxForm.vue:105
-#, fuzzy
 msgid "Mailbox created"
-msgstr "Домен создан"
+msgstr "Почтовый ящик создан"
 
 #: src/layouts/webmail/WebmailLayout.vue:202
-#, fuzzy
 msgid "Mailbox deleted"
-msgstr "Дата создания"
+msgstr "Почтовый ящик удалён"
 
 #: src/components/webmail/MailboxForm.vue:98
-#, fuzzy
 msgid "Mailbox renamed"
-msgstr "Почтовые ящики"
+msgstr "Почтовый ящик переименован"
 
 #: src/components/admin/domains/DomainSummary.vue:60
 msgid "Mailboxes"
@@ -1734,149 +1669,143 @@ msgstr "Почтовые ящики"
 msgid ""
 "Make sure <strong>Update password scheme at login</strong> option is enabled"
 msgstr ""
+"Убедитесь, что включена опция <strong>Обновлять схему пароля при "
+"входе</strong>"
 
 #: src/components/webmail/EmailList.vue:72
 msgid "Mark as followed"
-msgstr ""
+msgstr "Пометить как важное"
 
 #: src/views/quarantine/MessageView.vue:53
 msgid "Mark as non-spam"
-msgstr ""
+msgstr "Пометить как НЕ спам"
 
 #: src/components/quarantine/QuarantineList.vue:105
 msgid "Mark as not spam"
-msgstr ""
+msgstr "Пометить как НЕ спам"
 
 #: src/components/webmail/EmailList.vue:62
 msgid "Mark as read"
-msgstr ""
+msgstr "Пометить как прочитанное"
 
 #: src/components/quarantine/QuarantineList.vue:101
 #: src/views/quarantine/MessageView.vue:49
 msgid "Mark as spam"
-msgstr ""
+msgstr "Пометить как спам"
 
 #: src/components/webmail/EmailList.vue:77
 msgid "Mark as unfollowed"
-msgstr ""
+msgstr "Снять пометку «Важное»"
 
 #: src/components/webmail/EmailList.vue:67
 msgid "Mark as unread"
-msgstr ""
+msgstr "Пометить как непрочитанное"
 
 #: src/components/admin/domains/DomainSummary.vue:20
 #: src/components/admin/identities/AccountSummary.vue:65
 msgid "MB"
-msgstr ""
+msgstr "МБ"
 
 #: src/components/admin/alarms/AlarmList.vue:106
 #: src/components/admin/logs/AuditTrailList.vue:54
 msgid "Message"
-msgstr "использование (%%)"
+msgstr "Письмо"
 
-#: src/views/quarantine/MessageView.vue:201 src/views/webmail/EmailView.vue:254
-#, fuzzy
+#: src/views/quarantine/MessageView.vue:201
+#: src/views/webmail/EmailView.vue:254
 msgid "Message deleted"
-msgstr "использование (%%)"
+msgstr "Письмо удалено"
 
 #: src/views/account/FiltersView.vue:4
-#, fuzzy
 msgid "Message filters"
-msgstr "использование (%%)"
+msgstr "Фильтры писем"
 
 #: src/views/admin/monitoring/MessagesView.vue:3
-#, fuzzy
 msgid "Message history"
-msgstr "использование (%%)"
+msgstr "История письма"
 
 #: src/components/admin/identities/IdentityList.vue:280
-#, fuzzy
 msgid "Message limit"
-msgstr "использование (%%)"
+msgstr "Лимит писем"
 
 #: src/views/webmail/EmailView.vue:268
 msgid "Message marked as junk"
-msgstr ""
+msgstr "Письмо помечено как спам"
 
 #: src/components/quarantine/QuarantineList.vue:290
 #: src/views/quarantine/MessageView.vue:245
 msgid "Message marked as non-spam"
-msgstr ""
+msgstr "Письмо помечено как НЕ спам"
 
 #: src/views/webmail/EmailView.vue:282
 msgid "Message marked as not junk"
-msgstr ""
+msgstr "Письмо помечено как НЕ спам"
 
 #: src/components/quarantine/QuarantineList.vue:287
 #: src/views/quarantine/MessageView.vue:241
 msgid "Message marked as spam"
-msgstr ""
+msgstr "Письмо помечено как спам"
 
 #: src/components/quarantine/QuarantineList.vue:284
 #: src/views/quarantine/MessageView.vue:183
-#, fuzzy
 msgid "Message released"
-msgstr "использование (%%)"
+msgstr "Письмо выпущено"
 
 #: src/components/admin/domains/DomainCreationForm.vue:197
 #: src/components/admin/domains/form_steps/DomainLimitationsForm.vue:32
 #: src/components/admin/identities/AccountCreationForm.vue:135
 msgid "Message sending limit"
-msgstr ""
+msgstr "Лимит отправляемых писем"
 
 #: src/components/webmail/EmailList.vue:249
-#, fuzzy
 msgid "Message(s) deleted"
-msgstr "использование (%%)"
+msgstr "Письмо(а) удалены"
 
 #: src/components/webmail/EmailList.vue:287
-#, fuzzy
 msgid "Message(s) flagged"
-msgstr "использование (%%)"
+msgstr "Письмо(а) помечено как важные"
 
 #: src/components/webmail/EmailList.vue:262
 msgid "Message(s) marked as junk"
-msgstr ""
+msgstr "Письмо(а) помечено как спам"
 
 #: src/components/webmail/EmailList.vue:274
 msgid "Message(s) marked as not junk"
-msgstr ""
+msgstr "Письмо(а) помечено как НЕ спам"
 
 #: src/components/admin/domains/DomainSummary.vue:51
 #: src/components/admin/identities/AccountSummary.vue:94
 msgid "messages"
-msgstr ""
+msgstr "письма"
 
 #: src/layouts/admin/AdminLayout.vue:84
 msgid "Messages"
-msgstr ""
+msgstr "Письма"
 
 #: src/components/admin/imap_migration/MigrationsList.vue:100
-#, fuzzy
 msgid "Migration deleted"
-msgstr "Дата создания"
+msgstr "Миграция удалена"
 
 #: src/layouts/admin/AdminLayout.vue:106
 #: src/views/admin/imap_migration/MigrationsView.vue:4
-#, fuzzy
 msgid "Migrations"
-msgstr "Подтверждение"
+msgstr "Миграции"
 
 #: src/plugins/rules.js:36
 msgid "Minimum length is %{ length }"
-msgstr ""
+msgstr "Минимальная длина %{ length }"
 
 #: src/components/admin/identities/AliasSummary.vue:12
 msgid "Modified"
-msgstr "Синоним изменен"
+msgstr "Изменено"
 
 #: src/components/tools/CreationSummary.vue:10
 msgid "Modify"
-msgstr ""
+msgstr "Изменить"
 
 #: src/layouts/admin/AdminLayout.vue:66
 msgid "Monitoring"
-msgstr ""
+msgstr "Мониторинг"
 
 #: src/components/tools/TimeSerieChart.vue:112
 msgid "Month"
@@ -1884,32 +1813,31 @@ msgstr "Месяц"
 
 #: src/components/contacts/ContactForm.vue:141
 msgid "More"
-msgstr ""
+msgstr "Еще"
 
 #: src/views/account/FiltersView.vue:360
 msgid "Move down"
-msgstr ""
+msgstr "Переместить вниз"
 
 #: src/views/account/FiltersView.vue:367
 msgid "Move up"
-msgstr ""
+msgstr "Переместить вверх"
 
 #: src/plugins/rules.js:41
 msgid "Must be a numeric value or empty"
-msgstr ""
+msgstr "Должно быть числом или пустым"
 
 #: src/components/admin/domains/DNSDetail.vue:15
 msgid "MX records"
-msgstr ""
+msgstr "MX-записи"
 
 #: src/views/calendars/CalendarView.vue:85
 msgid "My calendars"
-msgstr ""
+msgstr "Мои календари"
 
 #: src/components/account/FidoAuthForm.vue:92
-#, fuzzy
 msgid "name"
-msgstr "Логин пользователя"
+msgstr "название"
 
 #: src/components/account/FidoAuthForm.vue:130
 #: src/components/account/FilterForm.vue:7
@@ -1929,89 +1857,82 @@ msgstr "Логин пользователя"
 #: src/views/account/FiltersView.vue:148
 #: src/views/admin/InformationView.vue:145
 msgid "Name"
-msgstr "Логин"
+msgstr "Имя"
 
 #: src/components/admin/domains/form_steps/DomainOptionsForm.vue:12
 msgid "Name of the administrator"
-msgstr ""
+msgstr "Имя администратора"
 
 #: src/components/admin/imap_migration/form_steps/ProviderAssociatedForm.vue:6
 msgid "Name of the domain to migrate"
-msgstr ""
+msgstr "Имя домена для миграции"
 
 #: src/components/admin/imap_migration/ProviderForm.vue:14
-#, fuzzy
 msgid "Name:"
-msgstr "Логин"
+msgstr "Название:"
 
 #: src/components/admin/domains/DomainEditForm.vue:16
-#, fuzzy
 msgid "Name: "
-msgstr "Логин"
+msgstr "Имя:"
 
 #: src/components/account/FidoAuthForm.vue:32
 msgid "Never"
-msgstr ""
+msgstr "Никогда"
 
 #: src/components/admin/identities/AccountSummary.vue:16
 #: src/components/admin/identities/IdentityList.vue:123
 msgid "Never logged-in"
-msgstr ""
+msgstr "Ещё ни разу не входил"
 
 #: src/components/admin/identities/AccountCreationForm.vue:4
 #: src/components/admin/imap_migration/MigrationsList.vue:83
 msgid "New account"
-msgstr "Новый аккаунт"
+msgstr "Новая учётная запись"
 
 #: src/components/admin/identities/AliasCreationForm.vue:4
 msgid "New alias"
-msgstr "Новый синоним"
+msgstr "Новый псевдоним"
 
 #: src/components/calendars/CalendarForm.vue:8
 #: src/views/calendars/CalendarView.vue:81
-#, fuzzy
 msgid "New calendar"
-msgstr "Новый синоним"
+msgstr "Новый календарь"
 
 #: src/components/contacts/ContactForm.vue:182
-#, fuzzy
 msgid "New contact"
-msgstr "Новый аккаунт"
+msgstr "Новый контакт"
 
 #: src/components/account/FidoAuthForm.vue:61
 msgid "New device name"
-msgstr ""
+msgstr "Название нового устройства"
 
 #: src/components/admin/domains/DomainCreationForm.vue:4
 msgid "New domain"
 msgstr "Новый домен"
 
 #: src/components/calendars/EventForm.vue:133
-#, fuzzy
 msgid "New event"
-msgstr "Новый аккаунт"
+msgstr "Новое событие"
 
 #: src/components/account/FilterForm.vue:192
-#, fuzzy
 msgid "New filter"
-msgstr "Е-майл адрес"
+msgstr "Новый фильтр"
 
 #: src/components/admin/imap_migration/ProviderCreationForm.vue:4
-#, fuzzy
 msgid "New provider"
-msgstr "Е-майл адрес"
+msgstr "Новый провайдер"
 
 #: src/components/account/RecoveryCodesResetDialog.vue:4
 msgid "New recovery codes"
-msgstr ""
+msgstr "Новые коды восстановления"
 
 #: src/components/tools/CreationForm.vue:73
 msgid "Next"
-msgstr "Следующая"
+msgstr "Далее"
 
 #: src/components/tools/YesNoDefaultField.vue:4 src/plugins/filters.js:10
 msgid "no"
-msgstr ""
+msgstr "нет"
 
 #: src/components/account/FidoAuthForm.vue:188
 #: src/components/admin/domains/DNSDetail.vue:244
@@ -2022,156 +1943,149 @@ msgstr ""
 #: src/components/tools/CreationForm.vue:142
 #: src/layouts/webmail/WebmailLayout.vue:195
 msgid "No"
-msgstr ""
+msgstr "Нет"
 
 #: src/components/admin/imap_migration/ProviderForm.vue:41
-#, fuzzy
 msgid "No associated domains"
-msgstr "Список квот"
+msgstr "Нет связанных доменов"
 
 #: src/mixins/importExport.js:8
 msgid "No data to export"
-msgstr ""
+msgstr "Нет данных для экспорта"
 
 #: src/components/admin/identities/DomainAdminDomains.vue:13
 msgid "No domain managed"
-msgstr ""
+msgstr "Нет управляемых доменов"
 
 #: src/components/admin/identities/IdentityList.vue:143
 #: src/components/admin/identities/IdentityList.vue:172
-#, fuzzy
 msgid "No mailbox"
-msgstr "Новый синоним"
+msgstr "Нет почтового ящика"
 
 #: src/components/webmail/EmailList.vue:165
 msgid "No message yet in this mailbox"
-msgstr ""
+msgstr "В этом ящике пока нет писем"
 
 #: src/components/tools/ResourcesView.vue:37
 msgid "No quota"
-msgstr ""
+msgstr "Без квоты"
 
 #: src/components/admin/identities/AccountSenderAddresses.vue:10
 msgid "No sender address defined for this account"
-msgstr ""
+msgstr "Не указан адрес отправителя для этой учётной записи"
 
 #: src/components/admin/domains/DomainEditForm.vue:93
 msgid "No sending limit"
-msgstr ""
+msgstr "Без лимита отправки"
 
 #: src/components/account/BackupCodeAuthForm.vue:43
 msgid "No two-factor authentificator is yet set for your account."
 msgstr ""
+"Для вашей учётной записи ещё не настроена двухфакторная аутентификация"
 
 #: src/plugins/rules.js:7
 msgid "Not a valid email"
-msgstr ""
+msgstr "Неверный адрес электронной почты"
 
 #: src/components/admin/domains/DNSDetail.vue:137
 msgid "Not generated"
-msgstr "Получатель не определен"
+msgstr "Не создан"
 
 #: src/components/contacts/ContactForm.vue:129
 msgid "Note"
-msgstr ""
+msgstr "Заметка"
 
 #: src/components/shared/TopMenu.vue:15
-#, fuzzy
 msgid "Notifications"
-msgstr "Дата последней модификации"
+msgstr "Уведомления"
 
 #: src/components/admin/identities/AccountEditForm.vue:192
-#, fuzzy
 msgid "Number of allowed mailbox aliases:"
-msgstr "Почтовые ящики"
+msgstr "Разрешено псевдонимов ящика:"
 
 #: src/components/admin/identities/AccountEditForm.vue:186
 msgid "Number of allowed mailboxes:"
-msgstr ""
+msgstr "Разрешено почтовых ящиков:"
 
 #: src/components/admin/identities/AccountEditForm.vue:154
 msgid "Number of associated alias:"
-msgstr ""
+msgstr "Количество псевдонимов:"
 
 #: src/components/admin/imap_migration/ProviderForm.vue:37
-#, fuzzy
 msgid "Number of associated domains:"
-msgstr "Список квот"
+msgstr "Количество связанных доменов:"
 
 #: src/components/admin/domains/form_steps/DomainLimitationsForm.vue:34
 msgid ""
 "Number of messages this domain can send per day. Leave empty for no limit."
-msgstr ""
+msgstr "Лимит писем в сутки для домена. Оставьте пустым — без ограничений."
 
 #: src/components/admin/identities/form_steps/AccountMailboxForm.vue:28
 msgid ""
 "Number of messages this mailbox can send per day. Leave empty for no limit."
-msgstr ""
+msgstr "Лимит писем в сутки для ящика. Оставьте пустым — без ограничений."
 
 #: src/components/tools/ConfirmDialog.vue:56
 msgid "OK"
-msgstr ""
+msgstr "ОК"
 
 #: src/components/admin/imap_migration/MigrationsList.vue:82
-#, fuzzy
 msgid "Old account"
-msgstr "Новый аккаунт"
+msgstr "Старая учётная запись"
 
 #: src/components/webmail/EmailList.vue:93
 msgid "on"
-msgstr ""
+msgstr "включено"
 
 #: src/views/admin/InformationView.vue:103
 msgid "One or more updates are available"
 msgstr "Доступны одно или более обновлений."
 
 #: src/components/account/TotpAuthForm.vue:6
-#, fuzzy
 msgid "One-time passwords"
-msgstr "Изменить пароль"
+msgstr "Одноразовые пароли"
 
 #: src/components/admin/alarms/AlarmList.vue:45
 msgid "Opened"
-msgstr ""
+msgstr "Открыто"
 
 #: src/views/admin/alarms/AlarmsView.vue:4
 msgid "Opened alarms"
-msgstr ""
+msgstr "Активные напоминания"
 
 #: src/components/admin/domains/DomainCreationForm.vue:146
 #: src/components/admin/domains/DomainCreationForm.vue:239
 msgid "Options"
-msgstr "Опции"
+msgstr "Параметры"
 
 #: src/components/admin/domains/DomainPolicyForm.vue:69
 msgid "or more is spam"
-msgstr ""
+msgstr "и выше — считается спамом"
 
 #: src/components/admin/domains/DomainPolicyForm.vue:84
 msgid "or more throw spam message away"
-msgstr ""
+msgstr "и выше — письмо отбрасывается"
 
 #: src/components/account/ProfileForm.vue:30
 msgid "or suggest a new language"
-msgstr ""
+msgstr "или предложите новый язык"
 
 #: src/components/tools/ParametersForm.vue:189
-#, fuzzy
 msgid "Parameters updated"
-msgstr "Профиль обновлен"
+msgstr "Настройки сохранены"
 
 #: src/components/webmail/MailboxForm.vue:13
 msgid "Parent mailbox"
-msgstr ""
+msgstr "Родительский ящик"
 
 #: src/components/admin/dmarc/DmarcAligmentChart.vue:128
 #: src/components/admin/dmarc/DmarcAligmentChart.vue:148
 msgid "Partially aligned"
-msgstr ""
+msgstr "Частичное выравнивание"
 
 #: src/components/admin/dmarc/DmarcAligmentChart.vue:54
 msgid "Partially trusted sources / Forwarders"
-msgstr ""
+msgstr "Частично доверенные источники / пересылки"
 
 #: src/components/account/BackupCodeAuthForm.vue:19
 #: src/components/account/ProfileForm.vue:69
@@ -2184,17 +2098,15 @@ msgstr "Пароль"
 #: src/components/admin/identities/AccountCreationForm.vue:214
 #: src/components/admin/identities/form_steps/AccountPasswordSubForm.vue:104
 msgid "Password copied to clipboard"
-msgstr ""
+msgstr "Пароль скопирован в буфер обмена"
 
 #: src/components/admin/identities/form_steps/AccountPasswordSubForm.vue:99
-#, fuzzy
 msgid "Password mismatch"
-msgstr "Пароли не совпадают"
+msgstr "Пароль не совпадает"
 
 #: src/components/account/ProfileForm.vue:149
-#, fuzzy
 msgid "Password updated"
-msgstr "Перенаправление обновлено"
+msgstr "Пароль изменён"
 
 #: src/plugins/rules.js:43
 msgid "Passwords mismatch"
@@ -2204,15 +2116,15 @@ msgstr "Пароли не совпадают"
 #: src/components/admin/domains/DNSDetail.vue:51
 #: src/components/admin/domains/DNSStatusChip.vue:21
 msgid "Pending"
-msgstr ""
+msgstr "В ожидании"
 
 #: src/components/tools/TimeSerieChart.vue:9
 msgid "Period"
-msgstr ""
+msgstr "Период"
 
 #: src/components/contacts/ContactList.vue:127
 msgid "Phone"
-msgstr ""
+msgstr "Телефон"
 
 #: src/components/account/ProfileForm.vue:47
 #: src/components/account/ProfileForm.vue:50
@@ -2221,44 +2133,45 @@ msgstr ""
 #: src/components/admin/identities/IdentityList.vue:285
 #: src/components/contacts/PhoneNumberField.vue:5
 msgid "Phone number"
-msgstr ""
+msgstr "Номер телефона"
 
 #: src/components/account/TotpAuthForm.vue:39
 msgid "Pin code"
-msgstr ""
+msgstr "Пин-код"
 
 #: src/components/admin/identities/form_steps/AliasRecipientForm.vue:58
 msgid "Please add at least one recipient."
-msgstr ""
+msgstr "Укажите хотя бы одного получателя"
 
 #: src/views/admin/InformationView.vue:80
 msgid ""
 "Please note that you will see this message until <strong>ALL</strong> user "
 "passwords have been converted using the new scheme."
 msgstr ""
+"Это сообщение будет показываться, пока <strong>ВСЕ </strong>пароли "
+"пользователей не будут переведены на новую схему"
 
 #: src/components/admin/imap_migration/ProviderCreationForm.vue:55
 #: src/components/admin/imap_migration/ProvidersList.vue:101
 msgid "Port"
-msgstr ""
+msgstr "Порт"
 
 #: src/components/contacts/ContactForm.vue:50
-#, fuzzy
 msgid "Position"
-msgstr "Подтверждение"
+msgstr "Должность"
 
 #: src/components/admin/domains/DNSStatusChip.vue:24
 msgid "Problem"
-msgstr ""
+msgstr "Проблема"
 
 #: src/components/account/APISetupForm.vue:99
 msgid "Proceed"
-msgstr ""
+msgstr "Продолжить"
 
 #: src/components/admin/identities/AccountEditForm.vue:70
 #: src/views/account/SettingsView.vue:8
 msgid "Profile"
-msgstr ""
+msgstr "Профиль"
 
 #: src/components/account/ProfileForm.vue:130
 msgid "Profile updated"
@@ -2267,56 +2180,49 @@ msgstr "Профиль обновлен"
 #: src/components/tools/ImportForm.vue:10
 msgid "Provide a CSV file where lines respect one of the following formats:"
 msgstr ""
+"Загрузите CSV-файл, в котором строки имеют один из следующих форматов:"
 
 #: src/components/webmail/ComposeEmailForm.vue:124
 #: src/components/webmail/ComposeEmailForm.vue:54
 #: src/components/webmail/ComposeEmailForm.vue:97
-#, fuzzy
 msgid "Provide one or more addresses"
-msgstr "Ошибочный запрос"
+msgstr "Укажите один или несколько адресов"
 
 #: src/components/admin/imap_migration/MigrationsList.vue:81
-#, fuzzy
 msgid "Provider"
-msgstr "Домен создан"
+msgstr "Провайдер"
 
 #: src/components/admin/imap_migration/ProviderCreationForm.vue:127
-#, fuzzy
 msgid "Provider created"
-msgstr "Домен создан"
+msgstr "Провайдер создан"
 
 #: src/stores/providers.store.js:51
-#, fuzzy
 msgid "Provider deleted"
-msgstr "Домен создан"
+msgstr "Провайдер удалён"
 
 #: src/components/admin/imap_migration/form_steps/ProviderGeneralForm.vue:5
-#, fuzzy
 msgid "Provider name"
-msgstr "Домен создан"
+msgstr "Название провайдера"
 
 #: src/components/admin/imap_migration/ProviderForm.vue:140
-#, fuzzy
 msgid "Provider updated"
-msgstr "Профиль обновлен"
+msgstr "Провайдер обновлён"
 
 #: src/views/admin/imap_migration/ProvidersView.vue:4
-#, fuzzy
 msgid "Providers"
-msgstr "Е-майл адрес"
+msgstr "Провайдеры"
 
 #: src/views/quarantine/QuarantineView.vue:4
 msgid "Quarantine"
-msgstr ""
+msgstr "Карантин"
 
 #: src/views/quarantine/MessageView.vue:4
-#, fuzzy
 msgid "Quarantined message"
-msgstr "Импорт доменов"
+msgstr "Письмо в карантине"
 
 #: src/components/admin/logs/MessageList.vue:46
 msgid "Queue ID"
-msgstr ""
+msgstr "ID очереди"
 
 #: src/components/admin/domains/DomainCreationForm.vue:191
 #: src/components/admin/domains/DomainList.vue:221
@@ -2327,58 +2233,60 @@ msgstr ""
 #: src/components/admin/identities/form_steps/AccountMailboxForm.vue:3
 #: src/components/admin/identities/IdentityList.vue:278
 msgid "Quota"
-msgstr ""
+msgstr "Квота"
 
 #: src/components/admin/identities/form_steps/AccountMailboxForm.vue:15
 msgid ""
-"Quota for this mailbox, can be expressed in KB, MB (default) or GB. Define a "
-"custom value or use domain's default one. Leave empty to define an unlimited "
-"value (not allowed for domain administrators)."
+"Quota for this mailbox, can be expressed in KB, MB (default) or GB. Define a"
+" custom value or use domain's default one. Leave empty to define an "
+"unlimited value (not allowed for domain administrators)."
 msgstr ""
-"Квота в мегабайтах для этого почтового ящика. Определите собственное "
-"значение или используйте значение по умолчанию для родительского домена. "
-"Оставьте пустым для неограниченного значения.  (Не разрешено администраторам "
-"домена)"
+"Квота для этого почтового ящика может быть выражена в КБ, МБ (по умолчанию) "
+"или ГБ. Задайте собственное значение или используйте значение по умолчанию "
+"для домена. Оставьте поле пустым, чтобы задать неограниченное значение "
+"(недоступно для администраторов домена)."
 
 #: src/components/admin/domains/form_steps/DomainLimitationsForm.vue:7
 msgid ""
 "Quota shared between mailboxes. Can be expressed in KB, MB (default) or GB. "
 "A value of 0 means no quota."
 msgstr ""
+"Квота распределяется между почтовыми ящиками. Может быть выражена в КБ, МБ "
+"(по умолчанию) или ГБ. Значение 0 означает отсутствие квоты."
 
 #: src/components/admin/domains/DomainEditForm.vue:81
 #: src/components/admin/identities/AccountEditForm.vue:110
 #: src/components/admin/identities/AccountEditForm.vue:116
 msgid "Quota: "
-msgstr ""
+msgstr "Квота:"
 
 #: src/components/admin/identities/AliasCreationForm.vue:56
 #: src/components/admin/identities/form_steps/AliasGeneralForm.vue:6
 msgid "Random address"
-msgstr "Ошибочный запрос"
+msgstr "Случайный адрес"
 
 #: src/components/admin/domains/DomainCreationForm.vue:256
 #: src/components/admin/identities/AccountCreationForm.vue:107
 #: src/components/admin/identities/form_steps/AccountPasswordSubForm.vue:21
 msgid "Random password"
-msgstr "Ошибочный запрос"
+msgstr "Случайный пароль"
 
 #: src/components/admin/domains/DomainDKIMKey.vue:9
 msgid "Raw format. Click to copy"
-msgstr ""
+msgstr "Исходный формат. Кликните для копирования"
 
 #: src/views/account/FiltersView.vue:44
 msgid "Raw mode"
-msgstr ""
+msgstr "Исходный режим"
 
 #: src/components/calendars/CalendarAccessRulesForm.vue:21
 #: src/components/calendars/CalendarAccessRulesForm.vue:43
 msgid "Read"
-msgstr ""
+msgstr "Читать"
 
 #: src/components/account/ForwardForm.vue:4
 msgid "Recipient(s)"
-msgstr "Получатели"
+msgstr "Получатель(и)"
 
 #: src/components/admin/identities/AliasCreationForm.vue:77
 #: src/components/admin/identities/AliasCreationForm.vue:80
@@ -2391,83 +2299,80 @@ msgstr "Получатели"
 
 #: src/components/account/TotpAuthForm.vue:45
 msgid "Register"
-msgstr ""
+msgstr "Зарегистрировать"
 
 #: src/components/account/TotpAuthForm.vue:115
-#, fuzzy
 msgid "Register authenticator"
-msgstr "Аутентификация"
+msgstr "Зарегистрировать устройство-аутентификатор"
 
 #: src/components/account/FidoAuthForm.vue:21
 msgid "Registered Webauthn devices"
-msgstr ""
+msgstr "Зарегистрированные устройства WebAuthn"
 
 #: src/components/admin/domains/DomainPolicy.vue:70
 msgid "Rejection threshold"
-msgstr ""
+msgstr "Порог отклонения"
 
 #: src/components/tools/TimeSerieChart.vue:27
 msgid "Relative time ranges"
-msgstr ""
+msgstr "Относительный период"
 
 #: src/components/admin/domains/DomainList.vue:67
 msgid "Relay"
-msgstr ""
+msgstr "Ретрансляция"
 
 #: src/components/admin/domains/form_steps/DomainGeneralForm.vue:66
-#, fuzzy
 msgid "Relay domain"
-msgstr "Новый домен"
+msgstr "Ретранслируемый домен"
 
 #: src/views/quarantine/MessageView.vue:21
-#, fuzzy
 msgid "Release message"
-msgstr "использование (%%)"
+msgstr "Выпустить письмо"
 
 #: src/components/quarantine/QuarantineList.vue:371
 #: src/views/quarantine/MessageView.vue:181
 msgid "Release request sent"
-msgstr ""
+msgstr "Запрос на выпуск отправлен"
 
 #: src/views/quarantine/QuarantineView.vue:12
 msgid "release requests"
-msgstr ""
+msgstr "запросы на выпуск"
 
 #: src/components/quarantine/QuarantineList.vue:72
 msgid "Release selection"
-msgstr ""
+msgstr "Выпустить выбранные"
 
 #: src/components/admin/alarms/AlarmList.vue:132
 msgid "Reload"
-msgstr ""
+msgstr "Обновить"
 
 #: src/components/account/FilterForm.vue:135
 msgid "Remove action"
-msgstr ""
+msgstr "Удалить действие"
 
 #: src/components/account/FilterForm.vue:68
 msgid "Remove condition"
-msgstr ""
+msgstr "Удалить условие"
 
 #: src/components/admin/identities/AccountSenderAddresses.vue:36
 msgid "Remove this address"
-msgstr ""
+msgstr "Удалить этот адрес"
 
 #: src/components/admin/domains/DomainAdminList.vue:50
 msgid "Remove this administrator"
-msgstr ""
+msgstr "Удалить этого администратора"
 
 #: src/components/admin/alarms/AlarmList.vue:156
 msgid "Reopen alarm"
-msgstr ""
+msgstr "Возобновить напоминание"
 
 #: src/views/webmail/EmailView.vue:12
 msgid "Reply"
-msgstr ""
+msgstr "Ответить"
 
 #: src/views/webmail/EmailView.vue:19
 msgid "Reply all"
-msgstr ""
+msgstr "Ответить всем"
 
 #: src/components/admin/identities/form_steps/AccountRoleForm.vue:100
 msgid "Reseller"
@@ -2475,7 +2380,7 @@ msgstr "Реселлер"
 
 #: src/components/account/BackupCodeAuthForm.vue:35
 msgid "Reset recovery codes"
-msgstr ""
+msgstr "Сбросить коды восстановления"
 
 #: src/components/admin/domains/DomainEditForm.vue:150
 #: src/components/admin/identities/AccountEditForm.vue:172
@@ -2507,11 +2412,11 @@ msgstr "Сохранить"
 
 #: src/views/admin/InformationView.vue:51
 msgid "Save your changes"
-msgstr ""
+msgstr "Сохранить изменения"
 
 #: src/components/quarantine/QuarantineList.vue:232
 msgid "Score"
-msgstr ""
+msgstr "Баллы"
 
 #: src/components/admin/alarms/AlarmList.vue:22
 #: src/components/admin/domains/DomainList.vue:24
@@ -2525,100 +2430,93 @@ msgstr "Поиск"
 
 #: src/components/quarantine/QuarantineList.vue:27
 #: src/components/webmail/EmailList.vue:14
-#, fuzzy
 msgid "Search in messages"
-msgstr "Импорт доменов"
+msgstr "Поиск по письмам"
 
 #: src/components/account/ProfileForm.vue:54
 #: src/components/admin/identities/AccountSummary.vue:33
 #: src/components/admin/identities/form_steps/AccountProfileForm.vue:19
 #: src/components/admin/identities/IdentityList.vue:289
 msgid "Secondary email"
-msgstr ""
+msgstr "Дополнительная электронная почта"
 
 #: src/components/admin/imap_migration/form_steps/ProviderGeneralForm.vue:27
 #: src/components/admin/imap_migration/ProviderCreationForm.vue:57
 #: src/components/admin/imap_migration/ProvidersList.vue:102
 msgid "Secured"
-msgstr ""
+msgstr "Защищено"
 
 #: src/views/account/FiltersView.vue:10
 msgid "Select a filter set"
-msgstr ""
+msgstr "Выберите набор фильтров"
 
 #: src/components/admin/domains/DomainAdminList.vue:21
 msgid "Select an account"
-msgstr ""
+msgstr "Выберите учётную запись"
 
 #: src/components/calendars/ImportEventsForm.vue:17
 msgid "Select an ICS file"
-msgstr ""
+msgstr "Выберите файл .ics"
 
 #: src/components/calendars/ImportEventsForm.vue:10
 msgid "Select an ICS file to import and click on the Send button"
-msgstr ""
+msgstr "Выберите файл .ics для импорта и нажмите «Импортировать»"
 
 #: src/components/tools/ImportForm.vue:22
 msgid "Select file"
-msgstr ""
+msgstr "Выбрать файл"
 
 #: src/components/quarantine/QuarantineList.vue:358
-#, fuzzy
 msgid "Selection deleted"
-msgstr "Дата создания"
+msgstr "Выбранное удалено"
 
 #: src/components/quarantine/QuarantineList.vue:401
 msgid "Selection is being processed..."
-msgstr ""
+msgstr "Идёт обработка выбранного…"
 
 #: src/components/quarantine/QuarantineList.vue:373
 msgid "Selection released"
-msgstr ""
+msgstr "Выбранные письма выпущены"
 
 #: src/components/calendars/ImportEventsForm.vue:30
 #: src/components/webmail/ComposeEmailForm.vue:13
-#, fuzzy
 msgid "Send"
-msgstr "Новый аккаунт"
+msgstr "Отправить"
 
 #: src/components/admin/identities/AccountEditForm.vue:122
-#, fuzzy
 msgid "Send only"
-msgstr "Новый аккаунт"
+msgstr "Только отправка"
 
 #: src/components/admin/identities/AccountCreationForm.vue:139
 #: src/components/admin/identities/form_steps/AccountMailboxForm.vue:40
-#, fuzzy
 msgid "Send only account"
-msgstr "Новый аккаунт"
+msgstr "Отправить только учётную запись"
 
 #: src/components/admin/identities/AccountSenderAddresses.vue:97
-#, fuzzy
 msgid "Sender address added"
-msgstr "Ошибочный запрос"
+msgstr "Адрес отправителя добавлен"
 
 #: src/components/admin/identities/AccountSenderAddresses.vue:104
-#, fuzzy
 msgid "Sender address deleted"
-msgstr "Ошибочный запрос"
+msgstr "Адрес отправителя удалён"
 
 #: src/components/admin/identities/AccountSenderAddresses.vue:4
 msgid "Sender addresses"
-msgstr "Ошибочный запрос"
+msgstr "Адреса отправителей"
 
 #: src/components/admin/domains/DomainSummary.vue:38
 #: src/components/admin/identities/AccountSummary.vue:79
 #: src/components/admin/identities/IdentityList.vue:164
 msgid "Sending forbidden"
-msgstr ""
+msgstr "Отправка запрещена"
 
 #: src/components/admin/domains/DomainList.vue:219
 msgid "Sending limit"
-msgstr ""
+msgstr "Лимит отправки"
 
 #: src/components/admin/domains/DomainEditForm.vue:87
 msgid "Sending limit: "
-msgstr ""
+msgstr "Лимит отправки:"
 
 #: src/components/tools/ImportForm.vue:31
 msgid "Separator"
@@ -2628,11 +2526,11 @@ msgstr "Разделитель"
 #: src/components/admin/domains/form_steps/DomainTransportForm.vue:3
 #: src/components/admin/domains/RelayDomainSummary.vue:8
 msgid "Service"
-msgstr ""
+msgstr "Сервис"
 
 #: src/components/admin/domains/DomainEditForm.vue:121
 msgid "Service: "
-msgstr ""
+msgstr "Сервис:"
 
 #: src/layouts/account/AccountLayout.vue:27
 #: src/layouts/admin/AdminLayout.vue:123
@@ -2641,11 +2539,11 @@ msgstr "Настройки"
 
 #: src/components/account/FidoAuthForm.vue:69
 msgid "Setup device"
-msgstr ""
+msgstr "Настроить устройство"
 
 #: src/components/admin/domains/DNSDetail.vue:119
 msgid "Show key"
-msgstr ""
+msgstr "Показать ключ"
 
 #: src/components/admin/identities/form_steps/AccountRoleForm.vue:81
 msgid "Simple user"
@@ -2653,98 +2551,100 @@ msgstr "Обычный пользователь"
 
 #: src/components/admin/domains/DomainPolicy.vue:60
 msgid "Spam classification threshold"
-msgstr ""
+msgstr "Порог определения спама"
 
 #: src/components/admin/domains/DomainPolicy.vue:17
-#, fuzzy
 msgid "Spam filters"
-msgstr "использование (%%)"
+msgstr "Спам-фильтры"
 
 #: src/components/admin/domains/DomainPolicy.vue:79
 #: src/components/admin/domains/DomainPolicyForm.vue:34
 msgid "Spam marker"
-msgstr ""
+msgstr "Метка спама"
 
 #: src/components/admin/identities/AccountSenderAddresses.vue:17
 msgid "Specify an email address"
-msgstr ""
+msgstr "Укажите адрес электронной почты"
 
 #: src/components/admin/domains/DNSDetail.vue:87
 msgid "SPF record found"
-msgstr ""
+msgstr "SPF-запись найдена"
 
 #: src/components/admin/domains/DNSDetail.vue:90
 msgid "SPF record not found"
-msgstr ""
+msgstr "SPF-запись не найдена"
 
 #: src/components/admin/identities/form_steps/AccountAliasForm.vue:6
 #: src/components/admin/identities/form_steps/AliasRecipientForm.vue:6
 msgid "Start typing a name here..."
-msgstr ""
+msgstr "Начните вводить имя…"
 
 #: src/components/contacts/ContactForm.vue:121
 msgid "State/Province"
-msgstr ""
+msgstr "Регион"
 
 #: src/components/admin/dashboard/GlobalStatisticsWidget.vue:2
 #: src/layouts/admin/AdminLayout.vue:74
 #: src/views/admin/domains/DomainView.vue:25
 #: src/views/admin/monitoring/StatisticsView.vue:3
-#, fuzzy
 msgid "Statistics"
 msgstr "Статистика"
 
 #: src/components/admin/alarms/AlarmList.vue:103
 #: src/components/admin/logs/MessageList.vue:48
 msgid "Status"
-msgstr "Статистика"
+msgstr "Состояние"
 
 #: src/components/account/AutoReplyForm.vue:12
 #: src/components/quarantine/QuarantineList.vue:235
 #: src/components/quarantine/QuarantineList.vue:49
 #: src/components/webmail/ComposeEmailForm.vue:137
 msgid "Subject"
-msgstr ""
+msgstr "Тема"
 
 #: src/components/tools/CreationForm.vue:25
 #: src/components/tools/CreationForm.vue:79
 msgid "Summary"
-msgstr ""
+msgstr "Обзор"
 
 #: src/components/admin/identities/form_steps/AccountRoleForm.vue:109
 msgid "Super administrator"
-msgstr "Супер администратор"
+msgstr "Суперадминистратор"
 
 #: src/components/contacts/ContactList.vue:202
 msgid "Synchronization started"
-msgstr ""
+msgstr "Синхронизация запущена"
 
 #: src/components/contacts/ContactList.vue:31
 msgid "Synchronize contacts with address book"
-msgstr ""
+msgstr "Синхронизировать контакты с адресной книгой"
 
 #: src/components/admin/identities/IdentityList.vue:293
-#, fuzzy
 msgid "TFA enabled"
-msgstr "Разрешено"
+msgstr "Двухфакторная аутентификация включена"
 
 #: src/components/account/AutoReplyForm.vue:24
 msgid ""
 "The content of your answer. You can use the following variables, which will "
-"be automatically replaced by the appropriate value: %(name)s, %(fromdate)s, %"
-"(untildate)s"
+"be automatically replaced by the appropriate value: %(name)s, %(fromdate)s, "
+"%(untildate)s"
 msgstr ""
+"Содержимое вашего ответа. Вы можете использовать следующие переменные, "
+"которые будут автоматически заменены соответствующим значением: %(name)s, "
+"%(fromdate)s,%(untildate)s"
 
 #: src/components/calendars/CalendarDetail.vue:19
 #: src/components/contacts/AddressBookInfo.vue:19
 msgid "The credentials are the same than the ones you use to access Modoboa."
-msgstr ""
+msgstr "Используйте тот же логин и пароль, что и для входа в Modoboa"
 
 #: src/components/tools/ImportForm.vue:16
 msgid ""
 "The first element of each line is mandatory and must be equal to one of the "
 "previous values."
 msgstr ""
+"Первый элемент каждой строки обязателен и должен быть одним из указанных "
+"выше типов"
 
 #: src/components/account/RecoveryCodesResetDialog.vue:9
 #: src/components/account/TotpAuthForm.vue:61
@@ -2754,25 +2654,30 @@ msgid ""
 "to save them in a safe place, otherwise you won't be able to access your "
 "account anymore."
 msgstr ""
+"Эти коды восстановления можно использовать по одному разу, если вы потеряете"
+" телефон или ключ. Сохраните их в надёжном месте — иначе доступ к учётной "
+"записи будет утерян навсегда."
 
 #: src/views/admin/InformationView.vue:22
 msgid ""
-"The password scheme you are using has been deprecated and will be removed in "
-"the next minor version. The procedure to upgrade to a stronger scheme is as "
-"follows:"
+"The password scheme you are using has been deprecated and will be removed in"
+" the next minor version. The procedure to upgrade to a stronger scheme is as"
+" follows:"
 msgstr ""
+"Используемая схема шифрования паролей устарела и будет удалена в следующей "
+"версии. Порядок перехода на более надёжную схему:"
 
 #: src/components/account/ProfileForm.vue:34
 msgid "there"
-msgstr ""
+msgstr "там"
 
 #: src/components/admin/domains/DomainPolicyForm.vue:56
 msgid "Thresholds"
-msgstr ""
+msgstr "Пороги"
 
 #: src/components/calendars/EventForm.vue:12
 msgid "Title"
-msgstr ""
+msgstr "Название"
 
 #: src/components/admin/logs/MessageList.vue:49
 #: src/components/calendars/EventForm.vue:34
@@ -2782,83 +2687,88 @@ msgstr ""
 #: src/components/webmail/ComposeEmailForm.vue:46
 #: src/views/webmail/EmailView.vue:109
 msgid "To"
-msgstr ""
+msgstr "Кому"
 
 #: src/components/contacts/AddressBookInfo.vue:9
 msgid ""
-"To access this address book from the outside (such as Mozilla Thunderbird or "
-"your smartphone), use the following URL:"
+"To access this address book from the outside (such as Mozilla Thunderbird or"
+" your smartphone), use the following URL:"
 msgstr ""
+"Для доступа к этой адресной книге извне (например из Mozilla Thunderbird или"
+" со смартфона) используйте следующий URL:"
 
 #: src/components/calendars/CalendarDetail.vue:9
 msgid ""
 "To access this calendar from the outside (such as Mozilla Thunderbird or "
 "your smartphone), use the following URL:"
 msgstr ""
+"Чтобы получить доступ к этому календарю извне (например, из Mozilla "
+"Thunderbird или со смартфона), используйте следующий URL-адрес:"
 
 #: src/components/admin/dmarc/DmarcAligmentChart.vue:140
 #: src/components/admin/dmarc/DmarcSourceTable.vue:12
 msgid "Total"
-msgstr ""
+msgstr "Всего"
 
 #: src/components/admin/identities/IdentityList.vue:297
-#, fuzzy
 msgid "TOTP enabled"
-msgstr "Разрешено"
+msgstr "TOTP включены"
 
 #: src/components/admin/domains/DomainCreationForm.vue:152
 #: src/components/admin/domains/DomainCreationForm.vue:215
 #: src/components/admin/domains/DomainEditForm.vue:113
 #: src/components/admin/domains/RelayDomainSummary.vue:4
 msgid "Transport"
-msgstr ""
+msgstr "Транспорт"
 
 #: src/components/admin/alarms/AlarmList.vue:102
 msgid "Triggered"
-msgstr ""
+msgstr "Сработало"
 
 #: src/components/admin/dmarc/DmarcAligmentChart.vue:48
-#, fuzzy
 msgid "Trusted sources"
-msgstr "Ресурсы"
+msgstr "Доверенные источники"
 
 #: src/views/account/SettingsView.vue:11
-#, fuzzy
 msgid "Two-factor auth"
-msgstr "Аутентификация"
+msgstr "Двухфакторная аутентификация"
 
 #: src/components/account/TotpAuthForm.vue:109
 msgid ""
 "Two-factor authentication (2FA) using one-time passwords is not yet "
 "activated for your account."
 msgstr ""
+"Для вашей учётной записи ещё не включена двухфакторная аутентификация (2FA) "
+"с одноразовыми паролями."
 
 #: src/components/account/TotpAuthForm.vue:78
 msgid ""
 "Two-factor authentication using one-time passwords is enabled for your "
 "account."
 msgstr ""
+"Для вашей учётной записи включена двухфакторная аутентификация с "
+"одноразовыми паролями."
 
 #: src/components/admin/domains/DomainCreationForm.vue:165
 #: src/components/admin/domains/form_steps/DomainGeneralForm.vue:13
 msgid "Type"
-msgstr ""
+msgstr "Тип"
 
 #: src/components/admin/domains/DomainEditForm.vue:20
 msgid "Type: "
-msgstr ""
+msgstr "Тип:"
 
 #: src/components/admin/domains/DNSStatusChip.vue:29
 msgid "Unknown"
-msgstr "Неизвестное"
+msgstr "Неизвестно"
 
 #: src/components/admin/dmarc/DmarcAligmentChart.vue:68
 msgid "Unknown sources / Threats"
-msgstr ""
+msgstr "Неизвестные источники / Угрозы"
 
 #: src/components/admin/identities/form_steps/AccountMailboxForm.vue:115
 msgid "unlimited"
-msgstr "Не лимитировано"
+msgstr "не ограничено"
 
 #: src/components/admin/domains/DomainList.vue:107
 #: src/components/admin/domains/DomainList.vue:118
@@ -2869,13 +2779,12 @@ msgstr "Не лимитировано"
 #: src/components/admin/identities/IdentityList.vue:139
 #: src/components/admin/identities/IdentityList.vue:168
 #: src/components/tools/ResourcesView.vue:9
-#, fuzzy
 msgid "Unlimited"
-msgstr "Не лимитировано"
+msgstr "Не ограничено"
 
 #: src/components/account/AutoReplyForm.vue:47
 msgid "Until"
-msgstr ""
+msgstr "По"
 
 #: src/components/account/FilterForm.vue:195
 #: src/components/account/ForwardForm.vue:25
@@ -2886,36 +2795,31 @@ msgstr ""
 #: src/components/contacts/ContactForm.vue:185
 #: src/components/webmail/MailboxForm.vue:79
 msgid "Update"
-msgstr "Обновление"
+msgstr "Обновить"
 
 #: src/components/account/AutoReplyForm.vue:58
-#, fuzzy
 msgid "Update auto-reply"
-msgstr "Пароль"
+msgstr "Сохранить автоответ"
 
 #: src/components/webmail/ContactCard.vue:23
-#, fuzzy
 msgid "Update contact"
-msgstr "Новый аккаунт"
+msgstr "Сохранить контакт"
 
 #: src/components/account/ProfileForm.vue:79
-#, fuzzy
 msgid "Update Password"
-msgstr "Пароль"
+msgstr "Изменить пароль"
 
 #: src/components/account/ProfileForm.vue:62
-#, fuzzy
 msgid "Update settings"
-msgstr "Настройки"
+msgstr "Сохранить настройки"
 
 #: src/components/admin/domains/DNSDetail.vue:190
 msgid "Updated"
-msgstr "Обновление"
+msgstr "Обновлено"
 
 #: src/components/account/FidoAuthForm.vue:133
-#, fuzzy
 msgid "Use count"
-msgstr "Новый аккаунт"
+msgstr "Количество использований"
 
 #: src/components/admin/identities/form_steps/AccountMailboxForm.vue:112
 msgid "Use domain default value"
@@ -2923,43 +2827,41 @@ msgstr "Используются значения домена по умолча
 
 #: src/composables/amavis.js:39
 msgid "User's database"
-msgstr ""
+msgstr "База данных пользователя"
 
 #: src/components/admin/domains/DomainAdminList.vue:111
 #: src/components/admin/identities/AccountCreationForm.vue:99
 #: src/components/admin/identities/form_steps/AccountGeneralForm.vue:3
 msgid "Username"
-msgstr "Логин пользователя"
+msgstr "Логин"
 
 #: src/components/admin/identities/AccountEditForm.vue:39
-#, fuzzy
 msgid "Username:"
-msgstr "Логин пользователя"
+msgstr "Логин:"
 
 #: src/components/admin/domains/DNSStatusChip.vue:27
 msgid "Valid"
-msgstr ""
+msgstr "Действует"
 
 #: src/components/account/FilterForm.vue:49
 msgid "Value"
-msgstr ""
+msgstr "Значение"
 
 #: src/views/quarantine/MessageView.vue:68
 msgid "View full headers"
-msgstr ""
+msgstr "Показать все заголовки"
 
 #: src/components/admin/domains/DomainPolicy.vue:31
-#, fuzzy
 msgid "Virus filters"
-msgstr "Е-майл адрес"
+msgstr "Антивирусные фильтры"
 
 #: src/components/admin/dashboard/NewsFeedWidget.vue:21
 msgid "Visit the official weblog for more information"
-msgstr ""
+msgstr "Подробности — в официальном блоге"
 
 #: src/components/admin/domains/DNSDetail.vue:238
 msgid "warning"
-msgstr ""
+msgstr "предупреждение"
 
 #: src/components/account/APISetupForm.vue:94
 #: src/components/account/FidoAuthForm.vue:184
@@ -2971,19 +2873,19 @@ msgstr ""
 #: src/layouts/webmail/WebmailLayout.vue:190
 #: src/views/calendars/CalendarView.vue:247
 msgid "Warning"
-msgstr ""
+msgstr "Внимание"
 
 #: src/components/account/FidoAuthForm.vue:6
 msgid "WebAuthn"
-msgstr ""
+msgstr "WebAuthn"
 
 #: src/components/admin/identities/IdentityList.vue:301
 msgid "WebAutn enabled"
-msgstr ""
+msgstr "WebAuthn включён"
 
 #: src/views/webmail/MailboxView.vue:4
 msgid "Webmail"
-msgstr ""
+msgstr "Веб-почта"
 
 #: src/components/tools/TimeSerieChart.vue:111
 msgid "Week"
@@ -2996,20 +2898,20 @@ msgstr "Добро пожаловать в Modoboa!"
 #: src/components/quarantine/QuarantineList.vue:389
 #: src/views/quarantine/MessageView.vue:219
 msgid "Which database should be used for this learning:"
-msgstr ""
+msgstr "В какую базу сохранять результаты обучения:"
 
 #: src/components/admin/domains/form_steps/DomainOptionsForm.vue:25
 msgid "With a mailbox"
-msgstr ""
+msgstr "С почтовым ящиком"
 
 #: src/components/admin/domains/DomainCreationForm.vue:261
 msgid "With mailbox"
-msgstr ""
+msgstr "С ящиком"
 
 #: src/components/calendars/CalendarAccessRulesForm.vue:26
 #: src/components/calendars/CalendarAccessRulesForm.vue:44
 msgid "Write"
-msgstr ""
+msgstr "Запись"
 
 #: src/components/tools/TimeSerieChart.vue:113
 msgid "Year"
@@ -3017,7 +2919,7 @@ msgstr "Год"
 
 #: src/components/tools/YesNoDefaultField.vue:3 src/plugins/filters.js:10
 msgid "yes"
-msgstr ""
+msgstr "да"
 
 #: src/components/account/FidoAuthForm.vue:189
 #: src/components/admin/domains/DNSDetail.vue:245
@@ -3028,37 +2930,42 @@ msgstr ""
 #: src/components/tools/CreationForm.vue:141
 #: src/layouts/webmail/WebmailLayout.vue:194
 msgid "Yes"
-msgstr ""
+msgstr "Да"
 
 #: src/components/account/BackupCodeAuthForm.vue:13
 msgid ""
 "You already have generated backup codes for this account. If you don't "
 "remember them or have used them all, you can generate new ones."
 msgstr ""
+"У вас уже есть резервные коды. Если вы их потеряли или использовали все — "
+"можно создать новые."
 
 #: src/components/account/APISetupForm.vue:95
 msgid "You are about to delete your API access token"
-msgstr ""
+msgstr "Вы собираетесь удалить свой токен доступа к API"
 
 #: src/components/calendars/CalendarDetail.vue:26
 msgid ""
 "You can also share a read-only version of this calendar using the following "
 "URL: "
 msgstr ""
+"Вы также можете поделиться версией этого календаря, доступной только для "
+"чтения, используя следующий URL-адрес:"
 
 #: src/components/admin/identities/form_steps/AccountGeneralForm.vue:41
 msgid "You can update your password from the Account section"
-msgstr ""
+msgstr "Вы можете изменить пароль в разделе «Учётная запись»"
 
 #: src/components/tools/ImportForm.vue:20
 msgid "You can use a different character as separator."
-msgstr ""
+msgstr "Можно использовать любой другой символ в качестве разделителя."
 
 #: src/components/account/FidoAuthForm.vue:14
 msgid ""
 "You don't have any WebAuthN device registered as a second authentication "
 "method."
 msgstr ""
+"У вас пока нет зарегистрированных устройств WebAuthn для второго фактора"
 
 #: src/views/admin/InformationView.vue:71
 msgid ""
@@ -3066,125 +2973,32 @@ msgid ""
 "version of Modoboa, otherwise <strong>you will be unable to connect to the "
 "web interface anymore</strong>."
 msgstr ""
+"Эту процедуру необходимо выполнить <strong>ДО</strong> обновления Modoboa, "
+"иначе <strong>вы больше не сможете войти в веб-интерфейс</strong>."
 
 #: src/components/admin/imap_migration/form_steps/ProviderAssociatedForm.vue:115
 msgid "You need to bind at least one domain to the provider."
-msgstr ""
+msgstr "Нужно привязать к провайдеру хотя бы один домен."
 
 #: src/components/account/APISetupForm.vue:4
 msgid "Your API token has not been generated yet."
-msgstr ""
+msgstr "Ваш API токен еще не сгенерирован."
 
 #: src/components/account/APISetupForm.vue:20
 msgid "Your API token is:"
-msgstr ""
+msgstr "Ваш API токен:"
 
 #: src/components/account/FidoAuthForm.vue:76
 msgid "Your browser does not seem compatible with WebAuthN"
-msgstr ""
+msgstr "Ваш браузер не поддерживает WebAuthn"
 
 #: src/components/contacts/ContactForm.vue:95
 msgid "Zip code"
-msgstr ""
+msgstr "Почтовый индекс"
 
 #: src/views/admin/domains/DomainsView.vue:18
 #: src/views/admin/identities/IdentitiesView.vue:18
 #: src/views/admin/imap_migration/ProvidersView.vue:15
 msgctxt "male"
 msgid "New"
-msgstr ""
-
-#~ msgid "Tags"
-#~ msgstr "Теги"
-
-#, fuzzy
-#~ msgctxt "female"
-#~ msgid "Enabled"
-#~ msgstr "Разрешено"
-
-#, fuzzy
-#~ msgid "disabled"
-#~ msgstr "Разрешен"
-
-#, fuzzy
-#~ msgid "account"
-#~ msgstr "Добавить аккаунт"
-
-#, fuzzy
-#~ msgid "Account successfully deleted"
-#~ msgstr "Аккаунт создан"
-
-#, fuzzy
-#~ msgid "alias"
-#~ msgstr "Синоним"
-
-#, fuzzy
-#~ msgid "Alias successfully created"
-#~ msgstr "Синоним создан"
-
-#, fuzzy
-#~ msgid "Aliases:"
-#~ msgstr "Синоним(ы)"
-
-#, fuzzy
-#~ msgid "domain"
-#~ msgstr "Домены"
-
-#, fuzzy
-#~ msgid "Invalid password"
-#~ msgstr "Ошибочный запрос"
-
-#, fuzzy
-#~ msgid "Mailbox aliases:"
-#~ msgstr "Почтовые ящики"
-
-#, fuzzy
-#~ msgid "Mailbox:"
-#~ msgstr "Почтовые ящики"
-
-#~ msgid "Change password"
-#~ msgstr "Изменить пароль"
-
-#, fuzzy
-#~ msgid "Forgot password?"
-#~ msgstr "Забыли пароль?"
-
-#, fuzzy
-#~ msgid "Password recovery"
-#~ msgstr "Пароль"
-
-#~ msgid "Submit"
-#~ msgstr "Подтвердить"
-
-#, fuzzy
-#~ msgid "Two-factor authentication"
-#~ msgstr "Аутентификация"
-
-#, fuzzy
-#~ msgid "User unknown."
-#~ msgstr "Неизвестное"
-
-#, fuzzy
-#~ msgid "Enable 2FA"
-#~ msgstr "Разрешено"
-
-#, fuzzy
-#~ msgid "Forgot password"
-#~ msgstr "Забыли пароль?"
-
-#~ msgid "Remember me"
-#~ msgstr "Запомнить меня"
-
-#~ msgid "API"
-#~ msgstr "API"
-
-#~ msgid "Generate a random password for the administrator."
-#~ msgstr "Создание администратора домена"
-
-#, fuzzy
-#~ msgid "Account not found!"
-#~ msgstr "Аккаунт создан"
-
-#, fuzzy
-#~ msgid "Identities deleted"
-#~ msgstr "Пользователи"
+msgstr "Новый"
