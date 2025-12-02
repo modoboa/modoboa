@@ -134,6 +134,13 @@ class ViewSetTestCase(DataMixin, ModoAPITestCase):
             models.EmailProviderDomain.objects.filter(name="gmail.com").exists()
         )
 
+        response = self.client.post(url, data, format="json")
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(
+            response.json()["error"],
+            "Migrated domain with name gmail.com already exists",
+        )
+
     def test_update_provider(self):
         provider_domain = factories.EmailProviderDomainFactory(name="outlook.com")
         url = reverse("v2:emailprovider-detail", args=[provider_domain.provider.pk])
