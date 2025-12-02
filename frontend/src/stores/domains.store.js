@@ -22,9 +22,17 @@ export const useDomainsStore = defineStore('domains', () => {
     }
   }
 
+  function getDomainName(domainId) {
+    if (typeof domainId === 'object') {
+      return domainId.name
+    }
+    return domains.value.find((domain) => domain.pk === domainId).name
+  }
+
   return {
     domainsLoaded,
     domains,
+    getDomainName,
     getDomains,
     $reset,
   }

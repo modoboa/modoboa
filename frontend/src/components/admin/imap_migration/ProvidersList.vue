@@ -10,7 +10,7 @@
       item-value="name"
       single-expand
       show-select
-      @click:row="(item, slot) => slot.expand(!slot.isExpanded)"
+      @click:row="expandRow"
     >
       <template #top>
         <v-toolbar color="white" flat>
@@ -41,7 +41,7 @@
           <v-btn
             variant="text"
             icon="mdi-reload"
-            @click="reloadProviders"
+            @click="providersStore.getProviders()"
           ></v-btn>
           <v-spacer></v-spacer>
         </v-toolbar>
@@ -53,21 +53,31 @@
       </template>
       <template #[`item.domains`]="{ item }">
         <v-chip v-if="item.domains.length > 0">
-          {{ item.domains.length }} associated domain(s)
+          {{
+            $ngettext(
+              '%{count} associated domain',
+              '%{count} associated domains',
+              item.domains.length,
+              { count: item.domains.length }
+            )
+          }}
         </v-chip>
-        <v-chip v-else> No associated domain </v-chip>
+        <v-chip v-else>{{ $gettext('No associated domain') }}</v-chip>
       </template>
-      <template #[`expanded-item`]="{ headers, item }">
-        <td :colspan="headers.length">
-          <v-chip v-for="(domain, index) in item.domains" :key="index">
-            <template v-if="domain.new_domain">
-              {{ domain.name }} --> {{ domain.new_domain.name }}
-            </template>
-            <template v-else>
-              {{ domain.name }} --> {{ domain.name }}
-            </template>
-          </v-chip>
-        </td>
+      <template #[`expanded-row`]="{ columns, item }">
+        <tr>
+          <td :colspan="columns.length">
+            <v-chip v-for="(domain, index) in item.domains" :key="index">
+              <template v-if="domain.new_domain">
+                {{ domain.name }} -->
+                {{ domainsStore.getDomainName(domain.new_domain) }}
+              </template>
+              <template v-else>
+                {{ domain.name }} --> {{ domain.name }}
+              </template>
+            </v-chip>
+          </td>
+        </tr>
       </template>
       <template #[`item.actions`]="{ item }">
         <v-menu offset-y>
@@ -82,13 +92,14 @@
 </template>
 
 <script setup>
-import { useProvidersStore } from '@/stores'
+import { useDomainsStore, useProvidersStore } from '@/stores'
 import MenuItems from '@/components/tools/MenuItems'
 import { useGettext } from 'vue3-gettext'
 import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
 
 const { $gettext } = useGettext()
+const domainsStore = useDomainsStore()
 const providersStore = useProvidersStore()
 const router = useRouter()
 
@@ -121,6 +132,10 @@ function editProvider(provider) {
   router.push({ name: 'ProviderEdit', params: { id: provider.id } })
 }
 
+const expandRow = (event, slot) => {
+  slot.toggleExpand(slot.internalItem)
+}
+
 function getMenuItems() {
   const result = []
   result.push({
@@ -137,11 +152,8 @@ function getMenuItems() {
   return result
 }
 
-function reloadProviders() {
-  providersStore.getProviders()
-}
-
 if (!providersLoaded.value) {
-  reloadProviders()
+  await providersStore.getProviders()
 }
+await domainsStore.getDomains()
 </script>
