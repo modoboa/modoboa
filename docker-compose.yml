@@ -1,6 +1,6 @@
 services:
   redis:
-    image: redis:7-alpine
+    image: redis:8-alpine
     ports:
       - 6379:6379
     command: redis-server --save 60 1 --loglevel warning
@@ -68,6 +68,7 @@ services:
              python3 manage.py runserver_plus 0.0.0.0:8000 --cert-file cert.crt"
     depends_on:
       - radicale
+      - redis
     volumes:
       - .:/code
     networks:
