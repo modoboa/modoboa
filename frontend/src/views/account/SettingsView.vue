@@ -1,50 +1,52 @@
 <template>
-  <v-toolbar flat>
-    <v-toolbar-title>{{ $gettext('Account settings') }}</v-toolbar-title>
-  </v-toolbar>
-  <div class="pa-4">
-    <v-tabs v-model="tab" color="primary" class="mb-4">
-      <v-tab value="profile">
-        {{ $gettext('Profile') }}
-      </v-tab>
-      <v-tab value="security">
-        {{ $gettext('Two-factor auth') }}
-      </v-tab>
-      <v-tab v-if="authStore.userHasMailbox" value="forward">
-        {{ $gettext('Forward') }}
-      </v-tab>
-      <v-tab v-if="authStore.userHasMailbox" value="autoreply">
-        {{ $gettext('Auto-reply message') }}
-      </v-tab>
-      <v-tab
-        v-if="authStore.authUser.role === constants.SUPER_ADMIN"
-        value="api"
-      >
-        {{ $gettext('API access') }}
-      </v-tab>
-    </v-tabs>
-    <v-tabs-window v-model="tab">
-      <v-tabs-window-item value="profile">
-        <ProfileForm />
-      </v-tabs-window-item>
-      <v-tabs-window-item value="security">
-        <TotpAuthForm />
-        <FidoAuthForm />
-        <BackupCodeAuthForm />
-      </v-tabs-window-item>
-      <v-tabs-window-item v-if="authStore.userHasMailbox" value="forward">
-        <ForwardForm />
-      </v-tabs-window-item>
-      <v-tabs-window-item v-if="authStore.userHasMailbox" value="autoreply">
-        <AutoReplyForm />
-      </v-tabs-window-item>
-      <v-tabs-window-item
-        v-if="authStore.authUser.role === constants.SUPER_ADMIN"
-        value="api"
-      >
-        <APISetupForm />
-      </v-tabs-window-item>
-    </v-tabs-window>
+  <div>
+    <v-toolbar flat>
+      <v-toolbar-title>{{ $gettext('Account settings') }}</v-toolbar-title>
+    </v-toolbar>
+    <div class="pa-4">
+      <v-tabs v-model="tab" color="primary" class="mb-4">
+        <v-tab value="profile">
+          {{ $gettext('Profile') }}
+        </v-tab>
+        <v-tab value="security">
+          {{ $gettext('Two-factor auth') }}
+        </v-tab>
+        <v-tab v-if="authStore.userHasMailbox" value="forward">
+          {{ $gettext('Forward') }}
+        </v-tab>
+        <v-tab v-if="authStore.userHasMailbox" value="autoreply">
+          {{ $gettext('Auto-reply message') }}
+        </v-tab>
+        <v-tab
+          v-if="authStore.authUser.role === constants.SUPER_ADMIN"
+          value="api"
+        >
+          {{ $gettext('API access') }}
+        </v-tab>
+      </v-tabs>
+      <v-tabs-window v-model="tab">
+        <v-tabs-window-item value="profile">
+          <ProfileForm />
+        </v-tabs-window-item>
+        <v-tabs-window-item value="security">
+          <TotpAuthForm />
+          <FidoAuthForm />
+          <BackupCodeAuthForm />
+        </v-tabs-window-item>
+        <v-tabs-window-item v-if="authStore.userHasMailbox" value="forward">
+          <ForwardForm />
+        </v-tabs-window-item>
+        <v-tabs-window-item v-if="authStore.userHasMailbox" value="autoreply">
+          <AutoReplyForm />
+        </v-tabs-window-item>
+        <v-tabs-window-item
+          v-if="authStore.authUser.role === constants.SUPER_ADMIN"
+          value="api"
+        >
+          <APISetupForm />
+        </v-tabs-window-item>
+      </v-tabs-window>
+    </div>
   </div>
 </template>
 

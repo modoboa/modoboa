@@ -104,10 +104,11 @@ async function submit() {
 accountApi.getARMessage().then((resp) => {
   form.value = resp.data
   if (form.value.fromdate) {
-    form.value.fromdate = form.value.fromdate.slice(0, -4)
+    form.value.fromdate = form.value.fromdate.slice(0, -6)
+    console.log(form.value.fromdate)
   }
   if (form.value.untildate) {
-    form.value.untildate = form.value.untildate.slice(0, -4)
+    form.value.untildate = form.value.untildate.slice(0, -6)
   }
 })
 </script>
