@@ -35,6 +35,7 @@ class EmailProviderDomainSerializer(serializers.ModelSerializer):
     id = serializers.IntegerField(required=False)
 
     class Meta:
+        extra_kwargs = {"name": {"validators": []}}
         fields = ("id", "name", "new_domain")
         model = models.EmailProviderDomain
 
@@ -56,6 +57,19 @@ class EmailProviderSerializer(serializers.ModelSerializer):
         if domains:
             to_create = []
             for domain in domains:
+                if models.EmailProviderDomain.objects.filter(
+                    name=domain["name"]
+                ).exists():
+                    raise serializers.ValidationError(
+                        {
+                            "error": (
+                                _("Migrated domain with name {} already exists").format(
+                                    domain["name"]
+                                )
+                            )
+                        }
+                    )
+
                 to_create.append(
                     models.EmailProviderDomain(provider=provider, **domain)
                 )
