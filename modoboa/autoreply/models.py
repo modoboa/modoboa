@@ -38,9 +38,9 @@ class ARmessage(models.Model):
         days = request.localconfig.parameters.get_value("tracking_period")
         context["fromdate"] = localize(self.fromdate)
         fromdate = self.fromdate.isoformat()
-        fromdate, tz = fromdate.split("+")
-        tz = f"+{tz.replace(':', '')}"
-        condition = [("currentdate", ":zone", tz, ":value", "ge", "iso8601", fromdate)]
+        datepart = fromdate[:-6]
+        tz = fromdate[-6:].replace(":", "")
+        condition = [("currentdate", ":zone", tz, ":value", "ge", "iso8601", datepart)]
         if self.untildate:
             context["untildate"] = localize(self.untildate)
             condition.append(
@@ -51,7 +51,7 @@ class ARmessage(models.Model):
                     ":value",
                     "lt",
                     "iso8601",
-                    self.untildate.isoformat().split("+")[0],
+                    self.untildate.isoformat()[:-6],
                 )
             )
         content = self.content % context
