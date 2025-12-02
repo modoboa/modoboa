@@ -35,7 +35,6 @@ class EmailProviderDomainSerializer(serializers.ModelSerializer):
     id = serializers.IntegerField(required=False)
 
     class Meta:
-        extra_kwargs = {"name": {"validators": []}}
         fields = ("id", "name", "new_domain")
         model = models.EmailProviderDomain
 
