@@ -77,6 +77,7 @@ const provider = ref({
 })
 
 // forms ref
+const form = ref()
 const general = ref()
 const associated = ref()
 
@@ -104,13 +105,12 @@ function getForm(step) {
 }
 
 function getVFormRef(step) {
-  console.log(provider.value)
   return formStepsComponents[step.name].value.vFormRef
 }
 
 function validateProvider() {}
 
-function submit() {
+async function submit() {
   const data = { ...provider.value }
   data.domains = []
   for (const domain of provider.value.domains) {
@@ -123,10 +123,13 @@ function submit() {
       data.domains.push(domain)
     }
   }
-  providersStore.createProvider(data).then(() => {
+  try {
+    await providersStore.createProvider(data)
     busStore.displayNotification({ msg: $gettext('Provider created') })
     close()
-  })
+  } finally {
+    form.value.working = false
+  }
 }
 </script>
 
