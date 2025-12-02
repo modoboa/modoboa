@@ -177,6 +177,10 @@ async function saveEvent() {
   working.value = true
   try {
     var data = JSON.parse(JSON.stringify(form.value))
+    const fromDate = new Date(data.start)
+    data.start = fromDate.toISOString()
+    const toDate = new Date(data.end)
+    data.end = toDate.toISOString()
     if (!props.event) {
       await api.createUserEvent(form.value.calendar, data)
       busStore.displayNotification({ msg: $gettext('Event added') })
