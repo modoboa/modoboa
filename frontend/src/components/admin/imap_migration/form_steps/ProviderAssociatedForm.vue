@@ -11,7 +11,7 @@
     <v-autocomplete
       v-model="domain.new_domain"
       :label="$gettext('Local domain (optional)')"
-      :items="localDomains"
+      :items="domainsStore.domains"
       item-title="name"
       return-object
       variant="outlined"
@@ -30,7 +30,7 @@
     @click:close="removeDomain(index)"
   >
     <template v-if="domain.new_domain">
-      {{ domain.name }} --> {{ getDomainName(domain.new_domain) }}
+      {{ domain.name }} --> {{ domainsStore.getDomainName(domain.new_domain) }}
     </template>
     <template v-else>
       {{ domain.name }}
@@ -42,13 +42,14 @@
   </v-form>
 </template>
 
-<script setup lang="js">
-import domainsApi from '@/api/domains'
+<script setup>
+import { useDomainsStore } from '@/stores'
 import providerApi from '@/api/imap_migration/providers'
 import { ref, watch } from 'vue'
 import { useGettext } from 'vue3-gettext'
 
 const { $gettext } = useGettext()
+const domainsStore = useDomainsStore()
 
 const props = defineProps({ modelValue: { type: Array, default: null } })
 const emit = defineEmits(['update:modelValue'])
@@ -60,7 +61,6 @@ const domain = ref({
   name: '',
   new_domain: '',
 })
-const localDomains = ref([])
 
 watch(
   () => props.modelValue,
@@ -106,11 +106,6 @@ function onKeyDown(e) {
   }
 }
 
-function getDomainName(domainId) {
-  console.log(localDomains.value)
-  return localDomains.value.find((domain) => domain.pk === domainId).name
-}
-
 function atLeastOneAssDomain() {
   if (domains.value.length === 0) {
     return $gettext('You need to bind at least one domain to the provider.')
@@ -120,6 +115,7 @@ function atLeastOneAssDomain() {
 
 defineExpose({ vFormRef })
 
-const resp = await domainsApi.getDomains({ page_size: 0 })
-localDomains.value = resp.data.results
+if (!domainsStore.domainsLoaded) {
+  await domainsStore.getDomains()
+}
 </script>
