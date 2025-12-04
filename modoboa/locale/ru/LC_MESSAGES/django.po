@@ -538,7 +538,7 @@ msgstr "адрес"
 
 #: admin/models/alias.py:119
 msgid "The alias address."
-msgstr "Адрес псевдонима"
+msgstr "Адрес алиаса"
 
 #: admin/models/alias.py:123 admin/models/domain.py:45
 #: admin/models/domain_alias.py:45 autoreply/models.py:25
