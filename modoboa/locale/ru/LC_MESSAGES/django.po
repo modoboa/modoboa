@@ -384,11 +384,11 @@ msgstr "Домены, на которые запрещено ставить ал
 
 #: admin/app_settings.py:270
 msgid "Alias target allow list"
-msgstr "Список разрешенных целевых псевдонимов"
+msgstr "Список разрешенных целевых алиасов"
 
 #: admin/app_settings.py:272
 msgid "A list of domains that aliases can target (comma separated)."
-msgstr "Список доменов, на которые могут быть нацелены псевдонимы (через запятую)."
+msgstr "Список доменов, на которые могут быть нацелены алиасы (через запятую)."
 
 #: admin/app_settings.py:326 core/api/v2/viewsets.py:174
 msgid "Administration"
