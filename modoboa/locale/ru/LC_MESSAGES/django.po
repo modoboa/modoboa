@@ -641,7 +641,7 @@ msgstr "{}: квота почтового ящика по умолчанию н�
 
 #: admin/models/domain_alias.py:36
 msgid "The alias name"
-msgstr "Имя псевдонима"
+msgstr "Имя алиаса"
 
 #: admin/models/domain_alias.py:40
 msgid "target"
