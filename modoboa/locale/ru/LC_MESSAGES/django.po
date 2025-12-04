@@ -100,7 +100,7 @@ msgstr "Список получателей"
 
 #: admin/api/v1/serializers.py:515 admin/api/v2/viewsets.py:313
 msgid "This alias already exists"
-msgstr "Этот псевдоним уже существует"
+msgstr "Этот алиас уже существует"
 
 #: admin/api/v1/serializers.py:551
 msgid "You don't have access to this domain."
