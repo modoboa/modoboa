@@ -356,11 +356,11 @@ msgstr "При автоматическом создании учётной за
 
 #: admin/app_settings.py:230
 msgid "Create an alias when a mailbox is renamed"
-msgstr "Создать псевдоним при переименовании почтового ящика"
+msgstr "Создать алиас при переименовании почтового ящика"
 
 #: admin/app_settings.py:233
 msgid "Create an alias using the old address when a mailbox is renamed."
-msgstr "При переименовании ящика создавать псевдоним со старым адресом."
+msgstr "При переименовании ящика создавать алиас со старым адресом."
 
 #: admin/app_settings.py:245
 msgid "Aliases"
