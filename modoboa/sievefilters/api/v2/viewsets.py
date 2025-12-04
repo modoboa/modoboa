@@ -99,6 +99,16 @@ class FilterSetViewSet(viewsets.ViewSet):
             return response.Response({"error": str(err)}, status=400)
         return response.Response()
 
+    @action(methods=["post"], detail=False)
+    def deactivate_active(self, request):
+        """Deactivate the current active filterset."""
+        sclient = self.get_sieve_client(request)
+        try:
+            sclient.activatescript("")
+        except SieveClientError as err:
+            return response.Response({"error": str(err)}, status=400)
+        return response.Response()
+
     @action(methods=["get"], detail=True)
     def download(self, request, pk):
         """Download the content of an existing filter set."""

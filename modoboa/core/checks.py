@@ -100,6 +100,11 @@ def check_dovecot_oauth_app(*args, **kwargs):
 
 @register(deploy=True)
 def check_radicale_oauth_app(*args, **kwargs):
+    if (
+        "modoboa.contacts" not in settings.MODOBOA_APPS
+        and "modoboa.calendars" not in settings.MODOBOA_APPS
+    ):
+        return []
     error = []
     if not oauth_app_exists("Radicale"):
         error.append(E002)

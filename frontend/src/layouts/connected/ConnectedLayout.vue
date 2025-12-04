@@ -54,15 +54,19 @@ const props = defineProps({
 
 const authUser = computed(() => authStore.authUser)
 const notificationColor = computed(() => busStore.notificationColor)
+const notificationTimeout = computed(() => busStore.notificationTimeout)
 const notification = computed(() => busStore.notification)
 const snackbar = ref(false)
-
-const notificationTimeout = 2000
 
 busStore.$onAction(({ name, after }) => {
   if (name === 'displayNotification') {
     after(() => {
       snackbar.value = true
+    })
+  }
+  if (name === 'hideNotification') {
+    after(() => {
+      snackbar.value = false
     })
   }
 }, true)

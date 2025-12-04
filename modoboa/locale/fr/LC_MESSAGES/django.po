@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-08-28 09:41+0200\n"
+"POT-Creation-Date: 2025-12-02 16:07+0100\n"
 "PO-Revision-Date: 2011-07-01 08:15+0000\n"
 "Last-Translator: Antoine Nguyen <tonio@ngyn.org>, 2016-2017,2020,2023-2025\n"
 "Language-Team: French (http://app.transifex.com/tonio/modoboa/language/fr/)\n"
@@ -48,14 +48,14 @@ msgid "Cannot be greater than domain quota"
 msgstr "Ne peut pas être supérieur au quota du domaine"
 
 #: admin/api/v1/serializers.py:168 admin/api/v1/serializers.py:364
-#: admin/api/v2/serializers.py:564 admin/models/alias.py:44
+#: admin/api/v2/serializers.py:570 admin/models/alias.py:45
 msgid "Permission denied."
 msgstr "Permission refusée."
 
 #: admin/api/v1/serializers.py:231 admin/api/v2/serializers.py:90
-#: admin/api/v2/serializers.py:486 core/api/v2/serializers.py:255
-#: core/api/v2/serializers.py:257 core/api/v2/serializers.py:266
-#: transport/backends.py:40
+#: admin/api/v2/serializers.py:491 amavis/serializers.py:39
+#: core/api/v2/serializers.py:255 core/api/v2/serializers.py:257
+#: core/api/v2/serializers.py:266 transport/backends.py:40
 msgid "This field is required"
 msgstr "Ce champ est requis"
 
@@ -64,7 +64,7 @@ msgid ""
 "List of administered domains (resellers and domain administrators only)."
 msgstr "Liste des domaines administrés (revendeurs et administrateurs de domaine seulement)."
 
-#: admin/api/v1/serializers.py:337 admin/api/v2/serializers.py:546
+#: admin/api/v1/serializers.py:337 admin/api/v2/serializers.py:552
 msgid "Not allowed for this role."
 msgstr "Non autorisé pour ce rôle."
 
@@ -72,13 +72,13 @@ msgstr "Non autorisé pour ce rôle."
 msgid "Must be equal to mailbox full_address"
 msgstr "Doit être égale au champ full_address dans mailbox"
 
-#: admin/api/v1/serializers.py:397 admin/api/v2/serializers.py:598
+#: admin/api/v1/serializers.py:397 admin/api/v2/serializers.py:604
 #: calendars/serializers.py:175 calendars/serializers.py:177
 #: pdfcredentials/api/v2/serializers.py:91
 msgid "This field is required."
 msgstr "Ce champ est requis."
 
-#: admin/api/v1/serializers.py:409 admin/api/v2/serializers.py:615
+#: admin/api/v1/serializers.py:409 admin/api/v2/serializers.py:621
 msgid "Local domain {} does not exist"
 msgstr "Le domaine local {} n'existe pas"
 
@@ -86,7 +86,7 @@ msgstr "Le domaine local {} n'existe pas"
 msgid "A list of recipient"
 msgstr "Une liste de destinataire"
 
-#: admin/api/v1/serializers.py:515 admin/api/v2/viewsets.py:286
+#: admin/api/v1/serializers.py:515 admin/api/v2/viewsets.py:313
 msgid "This alias already exists"
 msgstr "Cet alias existe déjà"
 
@@ -119,47 +119,47 @@ msgstr "Vous ne pouvez pas définir de quota illimité"
 msgid "User '%s' already exists"
 msgstr "L'utilisateur '%s' existe déjà"
 
-#: admin/api/v2/serializers.py:250 admin/api/v2/serializers.py:256
+#: admin/api/v2/serializers.py:255 admin/api/v2/serializers.py:261
 msgid "Must be a positive integer"
 msgstr "Doit être un entier positif"
 
-#: admin/api/v2/serializers.py:265
+#: admin/api/v2/serializers.py:270
 msgid "openssl not found, please make sure it is installed."
 msgstr "impossible de trouver openssl, veuillez vous assurer vous qu'il est installé."
 
-#: admin/api/v2/serializers.py:268 pdfcredentials/api/v2/serializers.py:84
+#: admin/api/v2/serializers.py:273 pdfcredentials/api/v2/serializers.py:84
 msgid "Directory not found."
 msgstr "Répertoire introuvable."
 
-#: admin/api/v2/serializers.py:279
+#: admin/api/v2/serializers.py:284
 msgid "This field only allows valid IP addresses (or networks)"
 msgstr "Ce champ n'autorise que des adresses IP correctes (ou des réseaux)"
 
-#: admin/api/v2/serializers.py:292
+#: admin/api/v2/serializers.py:297
 msgid "Please disable imap migration before disabling this option."
 msgstr "Veuillez désactiver la migration IMAP avant de désactiver cette option"
 
-#: admin/api/v2/serializers.py:305
+#: admin/api/v2/serializers.py:310
 msgid "Define at least one authorized network / address"
 msgstr "Définissez au moins un réseau / une adresse autorisé"
 
-#: admin/api/v2/serializers.py:581
+#: admin/api/v2/serializers.py:587
 msgid "The left part of an email address can't be more than 64 characters."
 msgstr "La partie gauche d'un courriel ne peut pas faire plus de 64 caractères."
 
-#: admin/api/v2/serializers.py:603
+#: admin/api/v2/serializers.py:609
 msgid "A mailbox is required to create aliases."
 msgstr "Une boîte aux lettres est requises pour créer des alias"
 
-#: admin/api/v2/serializers.py:772
+#: admin/api/v2/serializers.py:782
 msgid "Unknown status"
 msgstr "Statut inconnu"
 
-#: admin/api/v2/viewsets.py:84
+#: admin/api/v2/viewsets.py:95
 msgid "You don't have access to this domain"
 msgstr "Vous n'avez pas accès à ce domaine"
 
-#: admin/api/v2/viewsets.py:87
+#: admin/api/v2/viewsets.py:98
 msgid "You can't delete your own domain"
 msgstr "Vous ne pouvez pas supprimer votre propre domaine"
 
@@ -350,7 +350,35 @@ msgstr "Créer un alias quand une boite aux lettres est renommée"
 msgid "Create an alias using the old address when a mailbox is renamed."
 msgstr "Créer un alias en utilisant l'ancienne adresse quand une boite aux lettres est renommée."
 
-#: admin/app_settings.py:287 core/api/v2/viewsets.py:174
+#: admin/app_settings.py:245
+msgid "Aliases"
+msgstr "Alias"
+
+#: admin/app_settings.py:251
+msgid "Alias can target any domain"
+msgstr "Les alias peuvent cibler n'importe quel domaine"
+
+#: admin/app_settings.py:253
+msgid "Allow aliases to target any domain, not just the local domains."
+msgstr "Autoriser les alias à cibler n'importe quel domaine, pas uniquement les domaines locaux."
+
+#: admin/app_settings.py:260
+msgid "Alias target block list"
+msgstr "Cibles interdites pour les alias"
+
+#: admin/app_settings.py:262
+msgid "A list of domains that aliases cannot target (comma separated)."
+msgstr "Une liste de domaines que les alias ne peuvent pas cibler (séparés par une virgule)."
+
+#: admin/app_settings.py:270
+msgid "Alias target allow list"
+msgstr "Cibles autorisées pour les alias"
+
+#: admin/app_settings.py:272
+msgid "A list of domains that aliases can target (comma separated)."
+msgstr "Une liste de domaines que les alias peuvent cibler (séparés par une virgule)."
+
+#: admin/app_settings.py:326 core/api/v2/viewsets.py:174
 msgid "Administration"
 msgstr "Administration"
 
@@ -379,58 +407,54 @@ msgstr "alias de domaine"
 msgid "Account import failed (%s): domain does not exist"
 msgstr "L'import du compte a échoué (%s): le domaine n'existe pas"
 
-#: admin/handlers.py:242 admin/models/mailbox.py:342
-msgid "Mailbox {} already exists"
-msgstr "La boite {} existe déjà"
-
-#: admin/handlers.py:251
+#: admin/handlers.py:246
 #, python-format
 msgid "Account import failed (%s): wrong quota value"
 msgstr "L'import du compte a échoué (%s): mauvais quota"
 
-#: admin/lib.py:121
+#: admin/lib.py:126
 msgid "You are not allowed to import domains"
 msgstr "Vous n'êtes pas autorisé à importer des domaines"
 
-#: admin/lib.py:130
+#: admin/lib.py:135
 msgid "You are not allowed to import domain aliases."
 msgstr "Vous n'êtes pas autorisé à importer des alias de domaine."
 
-#: admin/lib.py:222 admin/tests/test_mx.py:153 admin/tests/test_mx.py:166
+#: admin/lib.py:227 admin/tests/test_mx.py:153 admin/tests/test_mx.py:166
 #: admin/tests/test_mx.py:171
 #, python-format
 msgid "No DNS record found for %s"
 msgstr "Aucun enregistrement DNS trouvé pour %s."
 
-#: admin/lib.py:225
+#: admin/lib.py:230
 #, python-format
 msgid "No %(type)s record for %(name)s"
 msgstr "Aucun enregistrement %(type)s trouvé pour %(name)s"
 
-#: admin/lib.py:229 admin/tests/test_mx.py:156
+#: admin/lib.py:234 admin/tests/test_mx.py:156
 msgid "No working name servers found"
 msgstr "Aucun serveur de noms fonctionnel trouvé"
 
-#: admin/lib.py:232 admin/tests/test_mx.py:160
+#: admin/lib.py:237 admin/tests/test_mx.py:160
 #, python-format
 msgid "DNS resolution timeout, unable to query %s at the moment"
 msgstr "Timeout de résolution DNS, impossible de requêter %s pour l'instant"
 
-#: admin/lib.py:236
+#: admin/lib.py:241
 msgid "DNS name is too long: {}"
 msgstr "Nom DNS trop long : {}"
 
-#: admin/lib.py:267
+#: admin/lib.py:272
 #, python-brace-format
 msgid "Invalid IP address format for {domain}; {addr}"
 msgstr "Format d'adresse IP incorrect pour {domain}; {addr}"
 
-#: admin/lib.py:360
+#: admin/lib.py:365
 #, python-format
 msgid "Object already exists: %s"
 msgstr "L'objet existe déjà : %s"
 
-#: admin/lib.py:364
+#: admin/lib.py:369
 #, python-format
 msgid "%d objects imported successfully"
 msgstr "%d objets importés avec succès"
@@ -492,48 +516,52 @@ msgstr "[modoboa] problème(s) de MX pour le domaine {}"
 msgid "[modoboa] DNSBL issue(s) for domain {}"
 msgstr "[modoboa] Problème(s) DNSBL pour le domaine {}"
 
-#: admin/models/alias.py:42
+#: admin/models/alias.py:43
 msgid "Domain not found."
 msgstr "Domaine introuvable."
 
-#: admin/models/alias.py:97 admin/models/mailbox.py:85
+#: admin/models/alias.py:117 admin/models/mailbox.py:85
 msgid "address"
 msgstr "Adresse"
 
-#: admin/models/alias.py:99
+#: admin/models/alias.py:119
 msgid "The alias address."
 msgstr "L'adresse de l'alias"
 
-#: admin/models/alias.py:103 admin/models/domain.py:45
+#: admin/models/alias.py:123 admin/models/domain.py:45
 #: admin/models/domain_alias.py:45 autoreply/models.py:25
 msgid "enabled"
 msgstr "Activé"
 
-#: admin/models/alias.py:104 admin/models/domain_alias.py:46
+#: admin/models/alias.py:124 admin/models/domain_alias.py:46
 msgid "Check to activate this alias"
 msgstr "Cocher pour activer cet alias"
 
-#: admin/models/alias.py:108
+#: admin/models/alias.py:128
 msgid "Description"
 msgstr "Description"
 
-#: admin/models/alias.py:109
+#: admin/models/alias.py:129
 msgid "Expire at"
 msgstr "Expire le"
 
-#: admin/models/alias.py:150
+#: admin/models/alias.py:170
 msgid "alias"
 msgstr "alias"
 
-#: admin/models/alias.py:183
+#: admin/models/alias.py:203
 msgid "Invalid address"
 msgstr "Adresse invalide"
 
-#: admin/models/alias.py:202
+#: admin/models/alias.py:206
+msgid "Target domain not allowed"
+msgstr "Domaine cible non autorisé"
+
+#: admin/models/alias.py:224
 msgid "Local recipient {}@{} not found"
 msgstr "Destinataire local {}@{} introuvable"
 
-#: admin/models/alias.py:251
+#: admin/models/alias.py:273
 msgid "Invalid line: {}"
 msgstr "Ligne incorrecte : {}"
 
@@ -641,6 +669,10 @@ msgstr "{} : quota du domaine dépassé"
 msgid "Domain does not exist"
 msgstr "Domaine inexistant"
 
+#: admin/models/mailbox.py:342
+msgid "Mailbox {} already exists"
+msgstr "La boite {} existe déjà"
+
 #: admin/templates/admin/notifications/domain_in_dnsbl.html:3
 #, python-format
 msgid ""
@@ -674,6 +706,318 @@ msgstr "Format d'adresse IP incorrect pour %(domain)s; %(addr)s"
 #, python-format
 msgid "No AAAA record for %s"
 msgstr "Aucun enregistrement AAAA trouvé pour %s"
+
+#: amavis/app_settings.py:11
+msgid "Amavis settings"
+msgstr "Paramètres Amavis"
+
+#: amavis/app_settings.py:17
+msgid "Localpart is case sensitive"
+msgstr "La phrase est sensible à la casse"
+
+#: amavis/app_settings.py:19
+msgid "Value should match amavisd.conf variable $localpart_is_case_sensitive"
+msgstr "La valeur doit correspondre à la variable $localpart_is_case_sensitive dans amavisd.conf"
+
+#: amavis/app_settings.py:27
+msgid "Recipient delimiter"
+msgstr "Séparateur de destinataire"
+
+#: amavis/app_settings.py:29
+msgid "Value should match amavisd.conf variable $recipient_delimiter"
+msgstr "La valeur doit correspondre à la variable $recipient_delimiter de amavisd.conf"
+
+#: amavis/app_settings.py:41
+msgid "Quarantine settings"
+msgstr "Paramètres de quarantaine"
+
+#: amavis/app_settings.py:47
+msgid "Maximum message age"
+msgstr "Age maximal des messages"
+
+#: amavis/app_settings.py:49
+msgid "Quarantine messages maximum age (in days) before deletion"
+msgstr "Age maximum (en jours) des messages en quarantaine avant suppression"
+
+#: amavis/app_settings.py:60
+msgid "Message releasing"
+msgstr "Libération de message"
+
+#: amavis/app_settings.py:66
+msgid "Remove released messages"
+msgstr "Supprimer les messages libérés"
+
+#: amavis/app_settings.py:68
+msgid "Remove messages marked as released while cleaning up the database"
+msgstr "Supprimer les messages marqués comme relâchés pendant le nettoyage de la base de données"
+
+#: amavis/app_settings.py:76
+msgid "Amavis connection mode"
+msgstr "Mode de connexion à Amavis"
+
+#: amavis/app_settings.py:78
+msgid "Mode used to access the PDP server"
+msgstr "Mode utilisé pour accéder au serveur PDP"
+
+#: amavis/app_settings.py:85
+msgid "PDP server address"
+msgstr "Adresse du serveur PDP"
+
+#: amavis/app_settings.py:87
+msgid "PDP server address (if inet mode)"
+msgstr "Adresse du serveur PDP (en mode inet)"
+
+#: amavis/app_settings.py:95
+msgid "PDP server port"
+msgstr "Port du serveur PDP"
+
+#: amavis/app_settings.py:97
+msgid "PDP server port (if inet mode)"
+msgstr "Port du serveur PDP (en mode inet)"
+
+#: amavis/app_settings.py:105
+msgid "PDP server socket"
+msgstr "Socket du serveur PDP"
+
+#: amavis/app_settings.py:107
+msgid "Path to the PDP server socket (if unix mode)"
+msgstr "Emplacement de la socket du serveur PDP (en mode unix)"
+
+#: amavis/app_settings.py:115
+msgid "Allow direct release"
+msgstr "Autoriser la libération directe"
+
+#: amavis/app_settings.py:117
+msgid "Allow users to directly release their messages"
+msgstr "Autoriser les utilisateurs à relâcher directement leurs messages"
+
+#: amavis/app_settings.py:124
+msgid "Enable self-service mode"
+msgstr "Activer le mode 'libre service'"
+
+#: amavis/app_settings.py:126
+msgid "Activate the 'self-service' mode"
+msgstr "Activer le mode 'libre service'"
+
+#: amavis/app_settings.py:133
+msgid "Notifications sender"
+msgstr "Emetteur des notifications"
+
+#: amavis/app_settings.py:135
+msgid "The e-mail address used to send notitications"
+msgstr "L'adresse e-mail utilisée pour envoyer les notifications"
+
+#: amavis/app_settings.py:146
+msgid "Manual learning"
+msgstr "Apprentissage manuel"
+
+#: amavis/app_settings.py:152
+msgid "Enable manual learning"
+msgstr "Activer l'apprentissage manuel"
+
+#: amavis/app_settings.py:154
+msgid "Allow super administrators to manually train Spamassassin"
+msgstr "Autorise les super administrateurs à entrainer manuellement Spamassassin"
+
+#: amavis/app_settings.py:161
+msgid "Is Spamassassin local?"
+msgstr "Spamassassin est il local?"
+
+#: amavis/app_settings.py:163
+msgid "Tell if Spamassassin is running on the same server than modoboa"
+msgstr "Indique si Spamassassin tourne sur le même serveur que Modoboa"
+
+#: amavis/app_settings.py:171
+msgid "Default user"
+msgstr "Utilisateur par défaut"
+
+#: amavis/app_settings.py:173
+msgid "Name of the user owning the default bayesian database"
+msgstr "Nom de l'utilisateur possédant la base bayesienne par défaut"
+
+#: amavis/app_settings.py:181
+msgid "Spamd address"
+msgstr "Adresse de spamd"
+
+#: amavis/app_settings.py:183
+msgid "The IP address where spamd can be reached"
+msgstr "L'adresse IP à laquelle spamd peut etre joint"
+
+#: amavis/app_settings.py:191
+msgid "Spamd port"
+msgstr "Port de spamd"
+
+#: amavis/app_settings.py:193
+msgid "The TCP port spamd is listening on"
+msgstr "Le port TCP sur lequel écoute spamd"
+
+#: amavis/app_settings.py:202
+msgid "Enable per-domain manual learning"
+msgstr "Activer l'apprentissage manuel niveau domaine"
+
+#: amavis/app_settings.py:205
+msgid ""
+"Allow domain administrators to train Spamassassin (within dedicated per-"
+"domain databases)"
+msgstr "Autorise les administrateurs de domaine à entrainer Spamassassin (au sein de bases dédiées par domaine)"
+
+#: amavis/app_settings.py:215
+msgid "Enable per-user manual learning"
+msgstr "Activer l'apprentissage manuel par utilisateur"
+
+#: amavis/app_settings.py:218
+msgid ""
+"Allow simple users to personally train Spamassassin (within a dedicated "
+"database)"
+msgstr "Autorise les utilisateur à entrainer personnellement Spamassassin (au sein d'une base dédiée)"
+
+#: amavis/app_settings.py:236 webmail/app_settings.py:118
+msgid "Display"
+msgstr "Affichage"
+
+#: amavis/app_settings.py:243 webmail/app_settings.py:144
+msgid "Number of displayed emails per page"
+msgstr "Nombre de messages affichés par page"
+
+#: amavis/app_settings.py:246
+msgid "Set the maximum number of messages displayed in a page"
+msgstr "Définir le nombre maximal de messages affichés dans une page"
+
+#: amavis/app_settings.py:266 amavis/app_settings.py:273
+msgid "Amavis"
+msgstr "Amavis"
+
+#: amavis/checks/settings_checks.py:8
+msgid ""
+"AMAVIS_DEFAULT_DATABASE_ENCODING does not match the character encoding used "
+"by the Amavis database."
+msgstr "AMAVIS_DEFAULT_DATABASE_ENCODING ne correspond pas à l'encodage de caractère utilisé par la base de données Amavis."
+
+#: amavis/checks/settings_checks.py:12
+msgid ""
+"Check your database character encoding and set/update "
+"AMAVIS_DEFAULT_DATABASE_ENCODING."
+msgstr "Vérifiez l'encodage de caractère utilisé par votre base de données et renseignez / mettez à jour AMAVIS_DEFAULT_DATABASE_ENCODING."
+
+#: amavis/checks/settings_checks.py:19
+msgid "Modoboa Amavis has not been tested using the selected database engine."
+msgstr "Modoboa Amavis n'a pas été testé avec le moteur de base de données selectionné."
+
+#: amavis/checks/settings_checks.py:20
+msgid "Try using PostgreSQL, MySQL or MariaDB."
+msgstr "Essayez avec PostgreSQL, MySQL ou MariaDB."
+
+#: amavis/handlers.py:141
+msgid "Pending requests"
+msgstr "Requêtes en attente"
+
+#: amavis/lib.py:59
+#, python-format
+msgid "Connection to amavis failed: %s"
+msgstr "La connexion avec amavis a échoué : %s"
+
+#: amavis/lib.py:133
+msgid "Failed to find {} binary"
+msgstr "Impossible de trouver le binaire {}"
+
+#: amavis/lib.py:148
+msgid "No recipient found"
+msgstr "Aucun destinataire trouvé"
+
+#: amavis/lib.py:159
+msgid "Local domain not found"
+msgstr "Domaine local non trouvé"
+
+#: amavis/management/commands/amnotify.py:59
+msgid "[modoboa] Pending release requests"
+msgstr "[modoboa] requêtes de libération en attente"
+
+#: amavis/models.py:101
+msgid "Virus filter"
+msgstr "Filtrage des virus"
+
+#: amavis/models.py:105 amavis/models.py:119 amavis/models.py:133
+msgid "yes"
+msgstr "oui"
+
+#: amavis/models.py:106 amavis/models.py:120 amavis/models.py:134
+msgid "no"
+msgstr "non"
+
+#: amavis/models.py:107 amavis/models.py:121 amavis/models.py:135
+msgid "default"
+msgstr "défaut"
+
+#: amavis/models.py:111
+msgid "Bypass virus checks or not. Choose 'default' to use global settings."
+msgstr "Désactiver le filtrage des virus ou non. Choisir 'défaut' pour utiliser les paramètres globaux."
+
+#: amavis/models.py:115
+msgid "Spam filter"
+msgstr "Filtrage du spam"
+
+#: amavis/models.py:125
+msgid "Bypass spam checks or not. Choose 'default' to use global settings."
+msgstr "Désactiver le filtrage du spam ou non. Choisir 'défaut' pour utiliser les paramètres globaux."
+
+#: amavis/models.py:129
+msgid "Banned filter"
+msgstr "Filtrage des messages bannis"
+
+#: amavis/models.py:139
+msgid "Bypass banned checks or not. Choose 'default' to use global settings."
+msgstr "Désactiver le filtrage des messages bannis ou non. Choisir 'défaut' pour utiliser les paramètres globaux."
+
+#: amavis/models.py:170
+msgid "Spam marker"
+msgstr "Marquage du spam"
+
+#: amavis/models.py:176
+msgid ""
+"Modify spam subject using the specified text. Choose 'default' to use global"
+" settings."
+msgstr "Modifier le sujet du spam en utilisant le texte spécifié. Choisir 'défaut' pour utiliser les paramètres globaux."
+
+#: amavis/templates/amavis/notifications/pending_requests.html:3
+#, python-format
+msgid "%(counter)s release request is pending for action."
+msgid_plural "%(counter)s release requests are pending for action."
+msgstr[0] "%(counter)s demande de déblocage est en attente d'une action"
+msgstr[1] "%(counter)s demandes de déblocage sont en attente d'une action"
+msgstr[2] "%(counter)s demandes de déblocage sont en attente d'une action"
+
+#: amavis/templates/amavis/notifications/pending_requests.html:8
+msgid "Sketch:"
+msgstr "Aperçu :"
+
+#: amavis/templates/amavis/notifications/pending_requests.html:10
+msgid "From:"
+msgstr "De :"
+
+#: amavis/templates/amavis/notifications/pending_requests.html:11
+msgid "To:"
+msgstr "A :"
+
+#: amavis/templates/amavis/notifications/pending_requests.html:12
+msgid "Date:"
+msgstr "Date :"
+
+#: amavis/templates/amavis/notifications/pending_requests.html:13
+msgid "Subject:"
+msgstr "Sujet :"
+
+#: amavis/templates/amavis/notifications/pending_requests.html:14
+msgid "Act on this message:"
+msgstr "Agir sur ce message :"
+
+#: amavis/templates/amavis/notifications/pending_requests.html:16
+#, python-format
+msgid "Please visit %(listingurl)s for a full listing."
+msgstr "Veuillez visiter %(listingurl)s pour une liste complète."
+
+#: amavis/viewsets.py:122
+msgid "Invalid request"
+msgstr "Requête invalide"
 
 #: autoreply/api/v2/serializers.py:27
 msgid "Value can't be less than 1 day"
@@ -789,7 +1133,7 @@ msgid ""
 "Maximum size in bytes of imported ICS files (or KB, MB, GB if specified)"
 msgstr "Taille maximale en octets des fichiers ICS importés (ou KB, MB, GB si précisé)"
 
-#: calendars/app_settings.py:89 core/api/v2/viewsets.py:195
+#: calendars/app_settings.py:89 core/api/v2/viewsets.py:205
 msgid "Calendars"
 msgstr "Calendriers"
 
@@ -823,7 +1167,7 @@ msgstr "Fréquence de synchronisation"
 msgid "Interval in seconds between 2 synchronization requests"
 msgstr "Intervalle en secondes entre 2 requêtes de synchronisation"
 
-#: contacts/app_settings.py:51 core/api/v2/viewsets.py:185
+#: contacts/app_settings.py:51 core/api/v2/viewsets.py:195
 msgid "Contacts"
 msgstr "Contacts"
 
@@ -871,12 +1215,12 @@ msgstr "Code PIN non valide"
 msgid "2FA is already enabled"
 msgstr "2FA est déjà activf"
 
-#: core/api/v1/serializers.py:86
+#: core/api/v1/serializers.py:87
 #, python-format
 msgid "Failed TFA settings editing attempt from '%(addr)s' as user '%(user)s'"
 msgstr "Echec de modification des paramètres TFA depuis '%(addr)s' en tant qu'utilisateur '%(user)s'"
 
-#: core/api/v1/serializers.py:91 core/api/v2/serializers.py:445
+#: core/api/v1/serializers.py:93 core/api/v2/serializers.py:445
 msgid "Invalid password"
 msgstr "Mot de passe incorrect"
 
@@ -905,8 +1249,8 @@ msgstr "Nombre invalide de tours"
 msgid "This code is invalid"
 msgstr "Ce code n'est pas valide"
 
-#: core/api/v2/serializers.py:503 core/views/auth.py:194
-#: core/views/auth.py:247
+#: core/api/v2/serializers.py:503 core/views/auth.py:213
+#: core/views/auth.py:266
 msgid "Please use the following code to recover your Modoboa password: {}"
 msgstr "Veuillez utiliser le code suivant pour récupérer votre mot de passe Modoboa : {}"
 
@@ -914,15 +1258,23 @@ msgstr "Veuillez utiliser le code suivant pour récupérer votre mot de passe Mo
 msgid "Administration console"
 msgstr "Interface d'administration"
 
-#: core/api/v2/viewsets.py:187
+#: core/api/v2/viewsets.py:184 dmarc/models.py:11
+msgid "Quarantine"
+msgstr "Quarantaine"
+
+#: core/api/v2/viewsets.py:186
+msgid "Amavis quarantine"
+msgstr "Quarantaine amavis"
+
+#: core/api/v2/viewsets.py:197
 msgid "Address book"
 msgstr "Carnet d'adresse"
 
-#: core/api/v2/viewsets.py:197
+#: core/api/v2/viewsets.py:207
 msgid "Calendar"
 msgstr "Calendrier"
 
-#: core/api/v2/viewsets.py:205 core/api/v2/viewsets.py:207
+#: core/api/v2/viewsets.py:215 core/api/v2/viewsets.py:217
 #: webmail/app_settings.py:258 webmail/app_settings.py:265
 msgid "Webmail"
 msgstr "Webmail"
@@ -1569,7 +1921,7 @@ msgstr "Vous ne pouvez pas supprimer votre propre compte"
 msgid "One or more updates are available"
 msgstr "Une ou plusieurs mises à jour sont disponibles!"
 
-#: core/handlers.py:138
+#: core/handlers.py:140
 #, python-format
 msgid "You are still using a deprecated password scheme (%s)"
 msgstr "Vous utilisez encore une méthode de chiffrement de mot de passe obsolète (%s)"
@@ -1729,22 +2081,22 @@ msgstr[2] "\nLes mises à jour suivantes sont disponibles :\n"
 msgid "The core part of Modoboa"
 msgstr "Le coeur de Modoboa"
 
-#: core/views/auth.py:65
+#: core/views/auth.py:82
 #, python-format
 msgid "User '%s' successfully logged in"
 msgstr "Utiliseur '%s' connecté avec succès"
 
-#: core/views/auth.py:109
+#: core/views/auth.py:128
 #, python-format
 msgid "Password scheme mismatch. Updating %s password"
 msgstr "La méthode de chiffrement du mot de passe diffère. Mise à jour du mot de passe de %s"
 
-#: core/views/auth.py:116
+#: core/views/auth.py:135
 #, python-format
 msgid "Password hash parameter missmatch. Updating %s password"
 msgstr "Le paramètre de hash du mot de passe ne correspond pas. Mise à jour %s du mot de passe"
 
-#: core/views/auth.py:154
+#: core/views/auth.py:173
 msgid "User '{}' successfully logged out"
 msgstr "Utilisateur '{}' déconnecté avec succès"
 
@@ -1772,10 +2124,6 @@ msgstr "Non résolu"
 #: webmail/constants.py:18
 msgid "None"
 msgstr "Aucun"
-
-#: dmarc/models.py:11
-msgid "Quarantine"
-msgstr "Quarantaine"
 
 #: dmarc/models.py:12
 msgid "Reject"
@@ -1901,7 +2249,11 @@ msgstr "Tag obligatoire p introuvable"
 msgid "Public key mismatchs"
 msgstr "La clé publique ne correspond pas"
 
-#: imap_migration/api/v2/serializers.py:117
+#: imap_migration/api/v2/serializers.py:66
+msgid "Migrated domain with name {} already exists"
+msgstr "Un domaine migré avec le nom {} existe déjà"
+
+#: imap_migration/api/v2/serializers.py:130
 msgid "Access denied"
 msgstr "Accès refusé"
 
@@ -2574,7 +2926,7 @@ msgstr "Emplacement du dashboard rspamd. Peut être soit une URL relative (ie. '
 msgid "Rspamd"
 msgstr "Rspamd"
 
-#: sievefilters/api/v2/viewsets.py:193
+#: sievefilters/api/v2/viewsets.py:203
 #, python-format
 msgid "Filter %s already exists"
 msgstr "Le filtre %s existe déjà"
@@ -2897,10 +3249,6 @@ msgstr "Authentification requise"
 msgid "Server needs authentication"
 msgstr "Le serveur nécessite une authentification"
 
-#: webmail/app_settings.py:118
-msgid "Display"
-msgstr "Affichage"
-
 #: webmail/app_settings.py:124
 msgid "Default message display mode"
 msgstr "Mode d'affichage par défaut"
@@ -2916,10 +3264,6 @@ msgstr "Activer l'affichage des liens HTML"
 #: webmail/app_settings.py:136
 msgid "Enable/Disable HTML links display"
 msgstr "Activer/Désactiver l'affichage des liens HTML"
-
-#: webmail/app_settings.py:144
-msgid "Number of displayed emails per page"
-msgstr "Nombre de messages affichés par page"
 
 #: webmail/app_settings.py:147
 msgid "Sets the maximum number of messages displayed in a page"
@@ -3041,7 +3385,7 @@ msgstr "Envoyés"
 msgid "Trash"
 msgstr "Corbeille"
 
-#: webmail/viewsets.py:343
+#: webmail/viewsets.py:357
 #, python-format
 msgid "Attachment is too big (limit: %s)"
 msgstr "La pièce jointe est trop grosse (limite : %s)"

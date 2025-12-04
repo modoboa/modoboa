@@ -1,5 +1,6 @@
 module.exports = {
   output: {
+    flat: false,
     path: './src/locale',
     locales: [
       'en',
