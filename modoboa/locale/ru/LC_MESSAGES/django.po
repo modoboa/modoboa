@@ -376,11 +376,11 @@ msgstr "Разрешить алиасам указывать любой доме
 
 #: admin/app_settings.py:260
 msgid "Alias target block list"
-msgstr "Список целевых блокировок псевдонимов"
+msgstr "Список целевых блокировок алиасов"
 
 #: admin/app_settings.py:262
 msgid "A list of domains that aliases cannot target (comma separated)."
-msgstr "Домены, на которые запрещено ставить псевдонимы (через запятую)"
+msgstr "Домены, на которые запрещено ставить алиасы (через запятую)"
 
 #: admin/app_settings.py:270
 msgid "Alias target allow list"
