@@ -372,7 +372,7 @@ msgstr "Алиасы могут указывать на любой домен"
 
 #: admin/app_settings.py:253
 msgid "Allow aliases to target any domain, not just the local domains."
-msgstr "Разрешить псевдонимам указывать любой домен, а не только локальные домены."
+msgstr "Разрешить алиасам указывать любой домен, а не только локальные домены."
 
 #: admin/app_settings.py:260
 msgid "Alias target block list"
