@@ -368,7 +368,7 @@ msgstr "Алиасы"
 
 #: admin/app_settings.py:251
 msgid "Alias can target any domain"
-msgstr "Псевдонимы могут указывать на любой домен"
+msgstr "Алиасы могут указывать на любой домен"
 
 #: admin/app_settings.py:253
 msgid "Allow aliases to target any domain, not just the local domains."
