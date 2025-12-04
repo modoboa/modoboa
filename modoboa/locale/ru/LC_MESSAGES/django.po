@@ -547,7 +547,7 @@ msgstr "включён"
 
 #: admin/models/alias.py:124 admin/models/domain_alias.py:46
 msgid "Check to activate this alias"
-msgstr "Отметить для активации псевдоним"
+msgstr "Отметить для активации алиаса"
 
 #: admin/models/alias.py:128
 msgid "Description"
@@ -559,7 +559,7 @@ msgstr "Истекает в"
 
 #: admin/models/alias.py:170
 msgid "alias"
-msgstr "псевдоним"
+msgstr "алиас"
 
 #: admin/models/alias.py:203
 msgid "Invalid address"
