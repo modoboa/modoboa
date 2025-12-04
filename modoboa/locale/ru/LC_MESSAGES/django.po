@@ -2427,7 +2427,7 @@ msgstr "Алиасы доменов"
 msgid ""
 "Maximum number of allowed domain aliases for a new administrator. (0 to deny"
 " any creation, -1 to allow unlimited creations)"
-msgstr "Максимальное количество разрешенных псевдонимов доменов для нового администратора (0 для запрета на создание, -1 для снятия ограничений)"
+msgstr "Максимальное количество разрешенных алиасов доменов для нового администратора (0 для запрета на создание, -1 для снятия ограничений)"
 
 #: limits/app_settings.py:64
 msgid ""
