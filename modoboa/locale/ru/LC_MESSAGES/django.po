@@ -49,7 +49,7 @@ msgstr "К почтовым ящикам применяется квота по 
 
 #: admin/api/v1/serializers.py:94
 msgid "domain alias with this name already exists"
-msgstr "псевдоним домена с таким именем уже существует"
+msgstr "алиас домена с таким именем уже существует"
 
 #: admin/api/v1/serializers.py:104
 msgid "No authorized MX record found for this domain"
