@@ -141,7 +141,7 @@ class Caldav_Backend(CalendarBackend):
 
     def get_events(self, start, end):
         """Retrieve a list of events."""
-        orig_events = self.remote_cal.date_search(start, end)
+        orig_events = self.remote_cal.search(start=start, end=end)
         events = []
         for event in orig_events:
             events.append(self._serialize_event(event))
