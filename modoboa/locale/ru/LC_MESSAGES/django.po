@@ -649,7 +649,7 @@ msgstr "адресат"
 
 #: admin/models/domain_alias.py:41
 msgid "The domain this alias points to"
-msgstr "Домен, на который указывает этот псевдоним"
+msgstr "Домен, на который указывает этот алиас"
 
 #: admin/models/domain_alias.py:79
 #, python-format
