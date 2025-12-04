@@ -2438,7 +2438,7 @@ msgstr "Максимальное количество разрешенных п�
 #: limits/app_settings.py:73 limits/app_settings.py:146 limits/constants.py:39
 #: limits/constants.py:92
 msgid "Mailbox aliases"
-msgstr "Псевдонимы почтового ящика"
+msgstr "Алиасы почтового ящика"
 
 #: limits/app_settings.py:76
 msgid ""
