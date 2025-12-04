@@ -412,7 +412,7 @@ msgstr "Закрыто"
 
 #: admin/handlers.py:179
 msgid "domain alias"
-msgstr "псевдоним домена"
+msgstr "алиас домена"
 
 #: admin/handlers.py:227
 #, python-format
