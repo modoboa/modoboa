@@ -53,7 +53,7 @@ class Calendar:
         res = objects.Event(url=url, data=EV1, parent=self)
         return res
 
-    def date_search(self, start, end):
+    def search(self, **kwargs):
         return [
             objects.Event(data=EV1, parent=self),
             objects.Event(data=EV2, parent=self),
