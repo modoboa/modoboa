@@ -2421,7 +2421,7 @@ msgstr "Максимальное количество разрешенных д�
 #: limits/app_settings.py:49 limits/app_settings.py:123 limits/constants.py:22
 #: limits/constants.py:76
 msgid "Domain aliases"
-msgstr "Псевдонимы доменов"
+msgstr "Алиасы доменов"
 
 #: limits/app_settings.py:52
 msgid ""
