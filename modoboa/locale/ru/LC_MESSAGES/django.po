@@ -364,7 +364,7 @@ msgstr "При переименовании ящика создавать али
 
 #: admin/app_settings.py:245
 msgid "Aliases"
-msgstr "Псевдонимы"
+msgstr "Алиасы"
 
 #: admin/app_settings.py:251
 msgid "Alias can target any domain"
