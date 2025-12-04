@@ -2522,7 +2522,7 @@ msgstr "Общая квота на все домены реселлера"
 
 #: limits/constants.py:77
 msgid "Maximum number of domain aliases allowed for this domain."
-msgstr "Максимальное количество псевдонимов домена, разрешенное для этого домена."
+msgstr "Максимальное количество алиасов домена, разрешенное для этого домена."
 
 #: limits/constants.py:85
 msgid "Maximum number of mailboxes allowed for this domain."
