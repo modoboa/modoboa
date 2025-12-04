@@ -430,7 +430,7 @@ msgstr "У вас нет прав на импорт доменов"
 
 #: admin/lib.py:135
 msgid "You are not allowed to import domain aliases."
-msgstr "У вас нет прав на импорт псевдонимов доменов."
+msgstr "У вас нет прав на импорт алиасов доменов."
 
 #: admin/lib.py:227 admin/tests/test_mx.py:153 admin/tests/test_mx.py:166
 #: admin/tests/test_mx.py:171
