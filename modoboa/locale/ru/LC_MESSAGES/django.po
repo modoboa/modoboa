@@ -2444,7 +2444,7 @@ msgstr "Алиасы почтового ящика"
 msgid ""
 "Maximum number of allowed aliases for a new administrator. (0 to deny any "
 "creation, -1 to allow unlimited creations)"
-msgstr "Максимальное количество разрешенных псевдонимов для нового администратора (0 для запрета на создание, -1 для снятия ограничений)"
+msgstr "Максимальное количество разрешенных алиасов для нового администратора (0 для запрета на создание, -1 для снятия ограничений)"
 
 #: limits/app_settings.py:84 limits/constants.py:59
 msgid "Quota"
@@ -2478,7 +2478,7 @@ msgstr "Максимальное количество администратор
 msgid ""
 "Maximum number of allowed domain aliases for a new domain. (0 to deny any "
 "creation, -1 to allow unlimited creations)"
-msgstr "Максимальное количество псевдонимов домена для нового домена (0 — запрет на создание, -1 — без ограничений)"
+msgstr "Максимальное количество алиасов домена для нового домена (0 — запрет на создание, -1 — без ограничений)"
 
 #: limits/app_settings.py:138
 msgid ""
