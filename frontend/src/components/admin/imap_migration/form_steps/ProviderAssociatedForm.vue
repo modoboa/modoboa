@@ -24,7 +24,7 @@
   <v-spacer />
   <v-chip
     v-for="(domain, index) in domains"
-    :key="index"
+    :key="domain"
     class="mr-2 mt-2"
     closable
     @click:close="removeDomain(index)"
