@@ -127,9 +127,12 @@ async function save() {
     data.domains = []
     for (const domain of editedProvider.value.domains) {
       if (domain.new_domain) {
+        const newDomain = Number.isInteger(domain.new_domain)
+          ? domain.new_domain
+          : domain.new_domain.pk
         data.domains.push({
           name: domain.name,
-          new_domain: domain.new_domain.pk || domain.new_domain.id,
+          new_domain: newDomain,
         })
       } else {
         data.domains.push(domain)

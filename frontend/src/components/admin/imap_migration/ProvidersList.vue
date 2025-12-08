@@ -67,7 +67,11 @@
       <template #[`expanded-row`]="{ columns, item }">
         <tr>
           <td :colspan="columns.length">
-            <v-chip v-for="(domain, index) in item.domains" :key="index">
+            <v-chip
+              v-for="(domain, index) in item.domains"
+              :key="index"
+              class="mr-2"
+            >
               <template v-if="domain.new_domain">
                 {{ domain.name }} -->
                 {{ domainsStore.getDomainName(domain.new_domain) }}
