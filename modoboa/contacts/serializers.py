@@ -14,7 +14,7 @@ class AddressBookSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.AddressBook
-        fields = ("pk", "name", "url", "last_sync")
+        fields = ("pk", "name", "url", "last_sync", "syncing")
 
 
 class EmailAddressSerializer(serializers.ModelSerializer):
