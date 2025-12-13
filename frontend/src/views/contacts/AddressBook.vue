@@ -1,16 +1,18 @@
 <template>
-  <div class="text-h5 ml-4">
-    {{ $gettext('Contacts') }}
+  <div>
+    <div class="text-h5 ml-4">
+      {{ $gettext('Contacts') }}
+    </div>
+    <ContactList @edit-category="openCategoryForm" />
+    <v-dialog v-model="showCategoryForm" persistent max-width="800px">
+      <CategoryForm
+        :category="contactsStore.currentCategory"
+        @close="closeForm"
+        @added="fetchCategories"
+        @updated="fetchCategories"
+      />
+    </v-dialog>
   </div>
-  <ContactList @edit-category="openCategoryForm" />
-  <v-dialog v-model="showCategoryForm" persistent max-width="800px">
-    <CategoryForm
-      :category="contactsStore.currentCategory"
-      @close="closeForm"
-      @added="fetchCategories"
-      @updated="fetchCategories"
-    />
-  </v-dialog>
 </template>
 
 <script setup>

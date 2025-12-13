@@ -5,9 +5,10 @@ import os
 import httmock
 
 from django.core import management
-
 from django.urls import reverse
 from django.utils import timezone
+
+from django_rq import get_worker
 
 from modoboa.admin import factories as admin_factories
 from modoboa.core import models as core_models
@@ -65,13 +66,25 @@ class TestDataMixin:
             )
         self.assertEqual(response.status_code, 200)
 
+    def disable_cdav_sync(self):
+        url = reverse("v2:parameter-user-detail", args=["contacts"])
+        response = self.client.put(
+            url,
+            {
+                "enable_carddav_sync": False,
+                "sync_frequency": 300,
+            },
+            format="json",
+        )
+        self.assertEqual(response.status_code, 200)
+
 
 class ViewsTestCase(TestDataMixin, ModoAPITestCase):
     """Check views."""
 
     def test_user_settings(self):
         """Check that remote collection creation request is sent."""
-        # 1. Addressbook with contacts must be synced manually
+        # 1. Addressbook with contacts must be synced manuelle
         self.client.force_authenticate(self.user)
         self.enable_cdav_sync()
         self.addressbook.refresh_from_db()
@@ -87,6 +100,10 @@ class ViewsTestCase(TestDataMixin, ModoAPITestCase):
         self.enable_cdav_sync()
         abook.refresh_from_db()
         self.assertIsNot(abook.last_sync, None)
+        # And disable sync.
+        self.disable_cdav_sync()
+        abook.refresh_from_db()
+        self.assertIs(abook.last_sync, None)
 
 
 class AddressBookViewSetTestCase(TestDataMixin, ModoAPITestCase):
@@ -118,10 +135,13 @@ class AddressBookViewSetTestCase(TestDataMixin, ModoAPITestCase):
         data = {"username": self.user.username, "password": "toto"}
         response = self.client.post(reverse("core:login"), data)
         self.enable_cdav_sync()
-        self.user.addressbook_set.update(last_sync=timezone.now())
+        last_sync = timezone.now()
+        self.user.addressbook_set.update(last_sync=last_sync)
         with httmock.HTTMock(mocks.options_mock, mocks.report_mock, mocks.get_mock):
             response = self.client.get(reverse("api:addressbook-sync-from-cdav"))
+            get_worker("modoboa").work(burst=True)
         self.assertEqual(response.status_code, 200)
+        self.assertIsNot(self.user.addressbook_set.first().sync_token, None)
 
 
 class CategoryViewSetTestCase(TestDataMixin, ModoAPITestCase):

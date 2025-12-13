@@ -49,12 +49,17 @@ def push_addressbook_to_carddav(request, addressbook):
     addressbook.save(update_fields=["last_sync", "sync_token"])
 
 
-def sync_addressbook_from_cdav(request, addressbook):
+def sync_addressbook_from_cdav(addressbook_id: int, access_token: str):
     """Fetch changes from CardDAV server."""
-    clt = get_cdav_client_from_request(request, addressbook)
+    addressbook = models.AddressBook.objects.get(id=addressbook_id)
+    if addressbook.syncing:
+        return
+    clt = get_cdav_client(addressbook, addressbook.user.email, access_token)
     changes = clt.sync_vcards(addressbook.sync_token)
     if not len(changes["cards"]):
         return
+    addressbook.syncing = True
+    addressbook.save()
     for card in changes["cards"]:
         # UID sometimes embded .vcf extension, sometimes not...
         long_uid = card["href"].split("/")[-1]
@@ -73,7 +78,8 @@ def sync_addressbook_from_cdav(request, addressbook):
             models.Contact.objects.filter(uid__in=[long_uid, short_uid]).delete()
     addressbook.last_sync = timezone.now()
     addressbook.sync_token = changes["token"]
-    addressbook.save(update_fields=["last_sync", "sync_token"])
+    addressbook.syncing = False
+    addressbook.save(update_fields=["last_sync", "sync_token", "syncing"])
 
 
 def push_contact_to_cdav(request, contact):

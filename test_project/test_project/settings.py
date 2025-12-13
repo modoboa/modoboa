@@ -353,6 +353,11 @@ LOGGING = {
             "class": "django.utils.log.AdminEmailHandler",
             "include_html": True,
         },
+        "syslog": {
+            "class": "logging.handlers.SysLogHandler",
+            "facility": SysLogHandler.LOG_SYSLOG,
+            "formatter": "syslog",
+        },
         "syslog-auth": {
             "class": "logging.handlers.SysLogHandler",
             "facility": SysLogHandler.LOG_AUTH,
@@ -376,6 +381,7 @@ LOGGING = {
             "propagate": False,
         },
         "modoboa.admin": {"handlers": ["modoboa"], "level": "INFO", "propagate": False},
+        "modoboa.dns": {"handlers": ["syslog"], "level": "INFO", "propagate": False},
         "django.server": {
             "handlers": ["django.server"],
             "level": "INFO",

@@ -2,12 +2,18 @@ import os
 import shutil
 
 from django.core import management
+from django.test import modify_settings
 from django.urls import reverse
 
 from modoboa.admin import factories as admin_factories, models as admin_models
 from modoboa.lib.tests import ModoAPITestCase
 
 
+@modify_settings(
+    INSTALLED_APPS={
+        "append": "modoboa.rspamd",
+    }
+)
 class ManagementCommandTestCase(ModoAPITestCase):
 
     @classmethod
