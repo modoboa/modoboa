@@ -82,3 +82,17 @@ class ParametersAPITestCase(ModoAPITestCase):
         }
         response = self.client.put(url, data, format="json")
         self.assertEqual(response.status_code, 200)
+
+
+@modify_settings(
+    MODOBOA_APPS={
+        "append": "modoboa.rspamd",
+    }
+)
+class CapabilitiesAPITestCase(ModoAPITestCase):
+
+    def test_get(self):
+        url = reverse("v2:capabilities")
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertIn("rspamd", response.json()["capabilities"])
