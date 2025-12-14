@@ -3,12 +3,13 @@
 import os
 
 import httmock
+from rq import SimpleWorker
 
 from django.core import management
 from django.urls import reverse
 from django.utils import timezone
 
-from django_rq import get_worker
+import django_rq
 
 from modoboa.admin import factories as admin_factories
 from modoboa.core import models as core_models
@@ -137,11 +138,16 @@ class AddressBookViewSetTestCase(TestDataMixin, ModoAPITestCase):
         self.enable_cdav_sync()
         last_sync = timezone.now()
         self.user.addressbook_set.update(last_sync=last_sync)
+        addressbook = self.user.addressbook_set.first()
+        self.assertEqual(addressbook.sync_token, "")
         with httmock.HTTMock(mocks.options_mock, mocks.report_mock, mocks.get_mock):
             response = self.client.get(reverse("api:addressbook-sync-from-cdav"))
-            get_worker("modoboa").work(burst=True)
+            queue = django_rq.get_queue("modoboa")
+            worker = SimpleWorker([queue], connection=queue.connection)
+            worker.work(burst=True)
         self.assertEqual(response.status_code, 200)
-        self.assertIsNot(self.user.addressbook_set.first().sync_token, None)
+        addressbook.refresh_from_db()
+        self.assertNotEqual(addressbook.sync_token, "")
 
 
 class CategoryViewSetTestCase(TestDataMixin, ModoAPITestCase):
