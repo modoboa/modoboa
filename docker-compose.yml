@@ -17,7 +17,7 @@ services:
     profiles: [ldap]
 
   mariadb:
-    image: mariadb:10
+    image: mariadb:11
     restart: unless-stopped
     environment:
       MARIADB_ROOT_PASSWORD: Password1000
