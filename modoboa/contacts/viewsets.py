@@ -1,6 +1,7 @@
 """Contacts viewsets."""
 
 import django_filters.rest_framework
+import django_rq
 from rest_framework.decorators import action
 from rest_framework import filters, response, viewsets
 from rest_framework.permissions import IsAuthenticated
@@ -40,7 +41,8 @@ class AddressBookViewSet(viewsets.GenericViewSet):
         if not abook.last_sync:
             return response.Response()
         if request.user.parameters.get_value("enable_carddav_sync", app="contacts"):
-            tasks.sync_addressbook_from_cdav(request, abook)
+            queue = django_rq.get_queue("modoboa")
+            queue.enqueue(tasks.sync_addressbook_from_cdav, abook.pk, str(request.auth))
         return response.Response({})
 
 

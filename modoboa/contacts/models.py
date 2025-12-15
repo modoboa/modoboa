@@ -22,6 +22,7 @@ class AddressBook(models.Model):
     name = models.CharField(max_length=50)
     sync_token = models.TextField(blank=True)
     last_sync = models.DateTimeField(null=True)
+    syncing = models.BooleanField(default=False)
     user = models.ForeignKey("core.User", on_delete=models.CASCADE)
     _path = models.TextField()
 

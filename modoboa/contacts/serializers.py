@@ -14,7 +14,7 @@ class AddressBookSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.AddressBook
-        fields = ("pk", "name", "url", "last_sync")
+        fields = ("pk", "name", "url", "last_sync", "syncing")
 
 
 class EmailAddressSerializer(serializers.ModelSerializer):
@@ -235,9 +235,12 @@ class UserPreferencesSerializer(serializers.Serializer):
 
     def post_save(self, request):
         """Create remote cal if necessary."""
-        if not self.validated_data["enable_carddav_sync"]:
-            return
         abook = request.user.addressbook_set.first()
+        if not self.validated_data["enable_carddav_sync"]:
+            abook.last_sync = None
+            abook.sync_token = ""
+            abook.save(update_fields=["last_sync", "sync_token"])
+            return
         if abook.last_sync:
             return
         tasks.create_cdav_addressbook(abook, request.auth)
