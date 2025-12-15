@@ -2,12 +2,18 @@ import os
 import shutil
 
 from django.core import management
+from django.test import modify_settings
 from django.urls import reverse
 
 from modoboa.admin import factories as admin_factories, models as admin_models
 from modoboa.lib.tests import ModoAPITestCase
 
 
+@modify_settings(
+    INSTALLED_APPS={
+        "append": "modoboa.rspamd",
+    }
+)
 class ManagementCommandTestCase(ModoAPITestCase):
 
     @classmethod
@@ -76,3 +82,17 @@ class ParametersAPITestCase(ModoAPITestCase):
         }
         response = self.client.put(url, data, format="json")
         self.assertEqual(response.status_code, 200)
+
+
+@modify_settings(
+    MODOBOA_APPS={
+        "append": "modoboa.rspamd",
+    }
+)
+class CapabilitiesAPITestCase(ModoAPITestCase):
+
+    def test_get(self):
+        url = reverse("v2:capabilities")
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertIn("rspamd", response.json()["capabilities"])
