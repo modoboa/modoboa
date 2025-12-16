@@ -193,18 +193,18 @@ class ContactViewSetTestCase(TestDataMixin, ModoAPITestCase):
         url = reverse("api:contact-list")
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(len(response.data.results), 3)
+        self.assertEqual(len(response.data["results"]), 3)
 
         response = self.client.get(f"{url}?search=homer")
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(len(response.data.results), 1)
+        self.assertEqual(len(response.data["results"]), 1)
 
     def test_filter_by_category(self):
         """Check filtering."""
         url = reverse("api:contact-list")
         response = self.client.get(f"{url}?category={self.category.name}")
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(len(response.data.results), 1)
+        self.assertEqual(len(response.data["results"]), 1)
 
     def test_create_contact(self):
         """Create a new contact."""
