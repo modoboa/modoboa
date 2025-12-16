@@ -1,7 +1,16 @@
 <template>
   <div>
     <v-card class="mt-6">
-      <v-data-table :headers="headers" :items="contacts">
+      <v-data-table-server
+        :headers="headers"
+        :items="contacts"
+        :items-length="totalContacts"
+        :loading="loading"
+        :search="search"
+        item-value="pk"
+        show-expand
+        @update:options="fetchContacts"
+      >
         <template #top>
           <v-toolbar color="white" flat>
             <v-text-field
@@ -66,19 +75,27 @@
             ></v-progress-circular>
           </v-toolbar>
         </template>
-        <template #[`item.display_name`]="{ item }">
-          <template v-if="item.display_name">
-            {{ item.display_name }}
-          </template>
-          <template v-else>
-            {{ item.first_name }} {{ item.last_name }}
-          </template>
-        </template>
-        <template #[`item.emails`]="{ item }">
-          {{ displayEmails(item.emails) }}
-        </template>
-        <template #[`item.phone_numbers`]="{ item }">
-          {{ displayPhoneNumbers(item.phone_numbers) }}
+        <template
+          #[`item.data-table-expand`]="{
+            internalItem,
+            isExpanded,
+            toggleExpand,
+          }"
+        >
+          <v-btn
+            :append-icon="
+              isExpanded(internalItem) ? 'mdi-chevron-up' : 'mdi-chevron-down'
+            "
+            :text="isExpanded(internalItem) ? 'Collapse' : 'More info'"
+            class="text-none"
+            color="medium-emphasis"
+            size="small"
+            variant="text"
+            width="105"
+            border
+            slim
+            @click="toggleExpand(internalItem)"
+          ></v-btn>
         </template>
         <template #[`item.actions`]="{ item }">
           <div class="text-right">
@@ -91,7 +108,53 @@
             </v-menu>
           </div>
         </template>
-      </v-data-table>
+        <template #expanded-row="{ columns, item }">
+          <tr>
+            <td :colspan="columns.length" class="pa-4">
+              <v-card v-if="item.emails.length" class="mb-4">
+                <v-card-title class="bg-surface-light">
+                  <v-icon icon="mdi-email" class="mr-4"></v-icon
+                  >{{ $gettext('Email addresses') }}
+                </v-card-title>
+                <v-card-text class="pt-4">
+                  <v-row v-for="email in item.emails" :key="email" class="mt-2">
+                    <v-col cols="2">
+                      <v-chip size="small" color="info">{{
+                        email.type
+                      }}</v-chip>
+                    </v-col>
+                    <v-col cols="10">
+                      {{ email.address }}
+                    </v-col>
+                  </v-row>
+                </v-card-text>
+              </v-card>
+              <v-card v-if="item.phone_numbers.length" class="mb-4">
+                <v-card-title class="bg-surface-light">
+                  <v-icon icon="mdi-phone" class="mr-4"></v-icon
+                  >{{ $gettext('Phone numbers') }}
+                </v-card-title>
+                <v-card-text class="pt-4">
+                  <v-row
+                    v-for="number in item.phone_numbers"
+                    :key="number"
+                    class="mt-2"
+                  >
+                    <v-col cols="2">
+                      <v-chip size="small" color="info">{{
+                        number.type
+                      }}</v-chip>
+                    </v-col>
+                    <v-col cols="10">
+                      {{ number.number }}
+                    </v-col>
+                  </v-row>
+                </v-card-text>
+              </v-card>
+            </td>
+          </tr>
+        </template>
+      </v-data-table-server>
     </v-card>
     <v-dialog v-model="showForm" persistent max-width="800px">
       <ContactForm
@@ -137,18 +200,20 @@ const { displayNotification } = useBusStore()
 
 const addressBook = ref({})
 const contacts = ref([])
+const totalContacts = ref(0)
 const search = ref('')
 const selectedContact = ref(null)
 const showAddressBookInfo = ref(false)
 const showForm = ref(false)
 const showCategoriesForm = ref(false)
 const preferences = ref({})
+const loading = ref(false)
 
 const headers = [
-  { key: 'display_name', title: $gettext('Display name') },
-  { key: 'emails', title: $gettext('E-mail') },
-  { key: 'phone_numbers', title: $gettext('Phone') },
-  { key: 'actions', title: $gettext('Actions'), align: 'end' },
+  { key: 'first_name', title: $gettext('First name') },
+  { key: 'last_name', title: $gettext('Last name') },
+  { width: 1, key: 'data-table-expand' },
+  { key: 'actions', title: $gettext('Actions'), align: 'end', sortable: false },
 ]
 
 const contactActions = [
@@ -183,10 +248,6 @@ function closeForm() {
 
 function displayEmails(emails) {
   return emails.map((email) => email.address).join(', ')
-}
-
-function displayPhoneNumbers(phoneNumbers) {
-  return phoneNumbers.map((phoneNumber) => phoneNumber.number).join(', ')
 }
 
 function editContact(contact) {
@@ -224,10 +285,28 @@ async function fetchPreferences() {
   preferences.value = resp.data.params
 }
 
-function fetchContacts() {
-  return contactsApi.getContacts(route.params).then((resp) => {
-    contacts.value = resp.data
-  })
+async function fetchContacts(options) {
+  const params = {
+    page: options?.page || 1,
+    page_size: options?.itemsPerPage || 10,
+    ...route.params,
+  }
+  if (options?.sortBy) {
+    params.ordering = options.sortBy
+      .map((item) => (item.order !== 'asc' ? `-${item.key}` : item.key))
+      .join(',')
+  }
+  if (search.value !== '') {
+    params.search = search.value
+  }
+  loading.value = true
+  try {
+    const resp = await contactsApi.getContacts(params)
+    contacts.value = resp.data.results
+    totalContacts.value = resp.data.count
+  } finally {
+    loading.value = false
+  }
 }
 
 function syncToAddressBook() {
@@ -268,7 +347,6 @@ function startAutomaticSync() {
 
 await fetchAddressBook()
 await fetchPreferences()
-await fetchContacts()
 
 watch(preferences, (value) => {
   if (value) {

@@ -59,7 +59,7 @@ dependencies = [
 	"ovh",
 	"oath",
         "packaging",
-	"redis>=4.2.0rc1",
+	"redis>=7.1.0",
 	"rrdtool-bindings>=0.2.0",
 	"qrcode",
 	"aiosmtplib",
