@@ -1,5 +1,5 @@
 <template>
-  <ConnectedLayout color="grey" :menu-items="userSettingsMenuItems" />
+  <ConnectedLayout :menu-items="userSettingsMenuItems" />
 </template>
 
 <script setup>
@@ -21,6 +21,7 @@ const userSettingsMenuItems = computed(() => {
   const appIcons = {
     contacts: 'mdi-contacts-outline',
     webmail: 'mdi-at',
+    amavis: 'mdi-server-security',
   }
 
   result.push({
