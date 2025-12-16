@@ -6,6 +6,8 @@ from rest_framework.decorators import action
 from rest_framework import filters, response, viewsets
 from rest_framework.permissions import IsAuthenticated
 
+from modoboa.lib import pagination
+
 from . import models
 from . import serializers
 from . import tasks
@@ -72,10 +74,12 @@ class ContactViewSet(viewsets.ModelViewSet):
     """Contact ViewSet."""
 
     filter_backends = [
+        filters.OrderingFilter,
         filters.SearchFilter,
         django_filters.rest_framework.DjangoFilterBackend,
     ]
     filterset_class = ContactFilter
+    pagination_class = pagination.CustomPageNumberPagination
     permission_classes = [IsAuthenticated]
     search_fields = ("^first_name", "^last_name", "^emails__address")
     serializer_class = serializers.ContactSerializer
