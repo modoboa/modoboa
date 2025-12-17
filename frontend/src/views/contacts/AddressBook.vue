@@ -3,10 +3,10 @@
     <div class="text-h5 ml-4">
       {{ $gettext('Contacts') }}
     </div>
-    <ContactList @edit-category="openCategoryForm" />
+    <ContactList @edit-category="openEditCategoryForm" />
     <v-dialog v-model="showCategoryForm" persistent max-width="800px">
       <CategoryForm
-        :category="contactsStore.currentCategory"
+        :category="selectedCategory"
         @close="closeForm"
         @added="fetchCategories"
         @updated="fetchCategories"
@@ -17,7 +17,7 @@
 
 <script setup>
 import { computed, ref, watch } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 import { useGettext } from 'vue3-gettext'
 import { useContactsStore, useLayoutStore } from '@/stores'
 import contactsApi from '@/api/contacts'
@@ -25,11 +25,13 @@ import ContactList from '@/components/contacts/ContactList.vue'
 import CategoryForm from '@/components/contacts/CategoryForm.vue'
 
 const router = useRouter()
+const route = useRoute()
 const { $gettext } = useGettext()
 const contactsStore = useContactsStore()
 const layoutStore = useLayoutStore()
 
 const categories = ref([])
+const selectedCategory = ref(null)
 const showCategoryForm = ref(false)
 
 const leftMenuItems = computed(() => {
@@ -63,7 +65,13 @@ function openCategoryForm() {
   showCategoryForm.value = true
 }
 
+function openEditCategoryForm() {
+  selectedCategory.value = contactsStore.currentCategory
+  showCategoryForm.value = true
+}
+
 function closeForm() {
+  selectedCategory.value = null
   showCategoryForm.value = false
 }
 
@@ -78,7 +86,7 @@ function filterByCategory(category) {
 }
 
 function fetchCategories() {
-  contactsApi.getCategories().then((resp) => {
+  return contactsApi.getCategories().then((resp) => {
     categories.value = resp.data
   })
 }
@@ -87,5 +95,12 @@ fetchCategories()
 
 watch(leftMenuItems, (value) => {
   layoutStore.setLeftMenuItems(value)
+})
+watch(categories, () => {
+  if (route.params.category && !contactsStore.currentCategory) {
+    contactsStore.setCurrentCategory(
+      categories.value.find((item) => item.name === route.params.category)
+    )
+  }
 })
 </script>
