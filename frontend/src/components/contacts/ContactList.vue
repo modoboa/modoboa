@@ -7,6 +7,9 @@
         :items-length="totalContacts"
         :loading="loading"
         :search="search"
+        :page="currentPage"
+        :items-per-page="itemsPerPage"
+        :sort-by="sortBy"
         item-value="pk"
         show-expand
         @update:options="fetchContacts"
@@ -208,6 +211,9 @@ const showForm = ref(false)
 const showCategoriesForm = ref(false)
 const preferences = ref({})
 const loading = ref(false)
+const currentPage = ref(1)
+const itemsPerPage = ref(10)
+const sortBy = ref([{ key: 'first_name', order: 'asc' }])
 
 const headers = [
   { key: 'first_name', title: $gettext('First name') },
@@ -269,10 +275,10 @@ function closeCategoriesForm() {
   selectedContact.value = null
 }
 
-function deleteContact(contact) {
-  contactsApi.deleteContact(contact.pk).then(() => {
-    fetchContacts()
-  })
+async function deleteContact(contact) {
+  await contactsApi.deleteContact(contact.pk)
+  displayNotification({ msg: $gettext('Contact removed') })
+  await fetchContacts()
 }
 
 async function fetchAddressBook() {
@@ -286,13 +292,18 @@ async function fetchPreferences() {
 }
 
 async function fetchContacts(options) {
+  if (options) {
+    currentPage.value = options.page
+    itemsPerPage.value = options.itemsPerPage
+    sortBy.value = options.sortBy
+  }
   const params = {
-    page: options?.page || 1,
-    page_size: options?.itemsPerPage || 10,
+    page: currentPage.value,
+    page_size: itemsPerPage.value,
     ...route.params,
   }
-  if (options?.sortBy) {
-    params.ordering = options.sortBy
+  if (sortBy.value.length) {
+    params.ordering = sortBy.value
       .map((item) => (item.order !== 'asc' ? `-${item.key}` : item.key))
       .join(',')
   }
