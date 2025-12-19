@@ -181,17 +181,32 @@ Required changes to :file:`settings.py`
      'autoconfig.<MY DOMAIN>',
      'autodiscover.<MY DOMAIN>',
 
-- Add the following variable:
+- Add and adjust the following variable:
 
   .. sourcecode:: python
 
+     # E-Mail client settings used for AutoDiscovery information served to clients
+     #
+     # Not used for Modoboa WebMail; configure that in the Modoboa admin settings.
+     #
+     #  * HOSTNAME: External hostname that clients should connect to
+     #     * Supports Thunderbird-style placeholders to substitute values from the
+     #       email address originally entered into the mail client:
+     #       %EMAILADDRESS%, %EMAILLOCALPART%, %EMAILDOMAIN%
+     #  * SOCKET_TYPE: Actually the encryption settings
+     #     * May be one of: 'SSL' (immediate TLS), 'STARTTLS' or 'plain' (bad)
+     #  * PORT: TCP port that the client should use when connecting to the server
      EMAIL_CLIENT_CONNECTION_SETTINGS = {
          "imap": {
              "HOSTNAME": "<YOUR HOSTNAME HERE>",
              "SOCKET_TYPE": "SSL",
              "PORT": 993,
          },
-         "smtp": {"HOSTNAME": "<YOUR HOSTNAME HERE>", "SOCKET_TYPE": "STARTTLS", "PORT": 587},
+         "smtp": {
+             "HOSTNAME": "<YOUR HOSTNAME HERE>",
+             "SOCKET_TYPE": "STARTTLS",
+             "PORT": 587
+         },
      }
 
 - Remove ``rest_framework.authentication.SessionAuthentication`` from ``REST_FRAMEWORK`` variable:
