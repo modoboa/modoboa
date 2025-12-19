@@ -1,3 +1,4 @@
+import copy
 import plistlib
 import uuid
 
@@ -10,6 +11,19 @@ from django.views.decorators.csrf import csrf_exempt
 from modoboa.lib.email_utils import split_address
 
 
+def gen_subst_conn_settings(emailaddress: str, local_part: str, domain: str):
+    conn_settings = copy.deepcopy(settings.EMAIL_CLIENT_CONNECTION_SETTINGS)
+    for proto, proto_settings in conn_settings.items():
+        for name, value in proto_settings.items():
+            if isinstance(value, str):
+                value = value.replace("%EMAILADDRESS%", emailaddress)
+                value = value.replace("%EMAILLOCALPART%", local_part)
+                value = value.replace("%EMAILDOMAIN%", domain)
+                # %REALNAME% is skipped since it useless and hard cross-protocol
+                proto_settings[name] = value
+    return conn_settings
+
+
 class ConfigBaseMixin:
 
     content_type = "application/xml"
@@ -19,11 +33,14 @@ class ConfigBaseMixin:
         return {
             "emailaddress": emailaddress,
             "domain": domain,
-            "connection_settings": settings.EMAIL_CLIENT_CONNECTION_SETTINGS,
+            "connection_settings": gen_subst_conn_settings(emailaddress, local_part, domain),
         }
 
 
 class AutoConfigView(ConfigBaseMixin, generic.TemplateView):
+
+    # Format documentation:
+    # https://wiki.mozilla.org/Thunderbird:Autoconfiguration:ConfigFileFormat
 
     http_method_names = ["get"]
     template_name = "autoconfig/autoconfig.xml"
@@ -33,6 +50,12 @@ class AutoConfigView(ConfigBaseMixin, generic.TemplateView):
         if not emailaddress:
             raise Http404
         context = super().get_context_data(**kwargs)
+        # Technically Thunderbird clients could also do placeholder
+        # substitution client-side, but for cross-platform consistency we
+        # always do it server-side
+        #
+        # (Plus what are the odds that there ISN’T a broken client out there
+        # that would mess this up?)
         context.update(self.get_common_context(emailaddress))
         return context
 
@@ -65,11 +88,10 @@ class MobileConfigView(generic.View):
         if not emailaddress:
             raise Http404
         local_part, domain = split_address(emailaddress)
+        conn_settings = gen_subst_conn_settings(emailaddress, local_part, domain)
         parts = domain.split(".")
         parts.reverse()
         reverse_domain = ".".join(parts)
-        imap_settings = settings.EMAIL_CLIENT_CONNECTION_SETTINGS["imap"]
-        smtp_settings = settings.EMAIL_CLIENT_CONNECTION_SETTINGS["smtp"]
         profile = {
             "PayloadType": "Configuration",
             "PayloadVersion": 1,
@@ -88,14 +110,14 @@ class MobileConfigView(generic.View):
                     "EmailAccountType": "EmailTypeIMAP",
                     "EmailAddress": emailaddress,
                     # incoming
-                    "IncomingMailServerHostName": imap_settings["HOSTNAME"],
-                    "IncomingMailServerPortNumber": imap_settings["PORT"],
+                    "IncomingMailServerHostName": conn_settings["imap"]["HOSTNAME"],
+                    "IncomingMailServerPortNumber": conn_settings["imap"]["PORT"],
                     "IncomingMailServerUseSSL": True,
                     "IncomingMailServerUsername": emailaddress,
                     # outgoing
-                    "OutgoingMailServerHostName": smtp_settings["HOSTNAME"],
-                    "OutgoingMailServerPortNumber": smtp_settings["PORT"],
-                    "OutgoingMailServerUseSSL": True,
+                    "OutgoingMailServerHostName": conn_settings["smtp"]["HOSTNAME"],
+                    "OutgoingMailServerPortNumber": conn_settings["smtp"]["PORT"],
+                    "IncomingMailServerUseSSL": True,
                     "OutgoingMailServerUsername": emailaddress,
                     "OutgoingPasswordSameAsIncomingPassword": True,
                 }
