@@ -81,6 +81,12 @@ class AutoDiscoverView(ConfigBaseMixin, generic.TemplateView):
 
 class MobileConfigView(generic.View):
 
+    # Format documentation:
+    # https://developer.apple.com/documentation/devicemanagement/mail
+    #
+    # More readable version:
+    # https://github.com/ProfileCreator/Configuration-Profile-Reference/blob/master/markdown/Email%20Payload.md
+
     http_method_names = ["get"]
 
     def get(self, request, *args, **kwargs):
@@ -110,14 +116,16 @@ class MobileConfigView(generic.View):
                     "EmailAccountType": "EmailTypeIMAP",
                     "EmailAddress": emailaddress,
                     # incoming
+                    "IncomingMailServerAuthentication": "EmailAuthPassword",
                     "IncomingMailServerHostName": conn_settings["imap"]["HOSTNAME"],
                     "IncomingMailServerPortNumber": conn_settings["imap"]["PORT"],
-                    "IncomingMailServerUseSSL": True,
+                    "IncomingMailServerUseSSL": conn_settings["imap"]["SOCKET_TYPE"].upper() == "SSL",  # `false` means StartTLS
                     "IncomingMailServerUsername": emailaddress,
                     # outgoing
+                    "OutgoingMailServerAuthentication": "EmailAuthPassword",
                     "OutgoingMailServerHostName": conn_settings["smtp"]["HOSTNAME"],
                     "OutgoingMailServerPortNumber": conn_settings["smtp"]["PORT"],
-                    "IncomingMailServerUseSSL": True,
+                    "IncomingMailServerUseSSL": conn_settings["smtp"]["SOCKET_TYPE"].upper() == "SSL",  # `false` means StartTLS
                     "OutgoingMailServerUsername": emailaddress,
                     "OutgoingPasswordSameAsIncomingPassword": True,
                 }
