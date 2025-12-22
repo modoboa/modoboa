@@ -174,7 +174,7 @@ class Command(BaseCommand):
             oauth_authority_url = "/api/o"
             if not options["relative_urls_in_config"]:
                 api_base_url = f"{base_uri}{api_base_url}"
-                api_doc_url = f"{base_uri}{base_uri}"
+                api_doc_url = f"{base_uri}{api_doc_url}"
                 oauth_authority_url = f"{base_uri}{oauth_authority_url}"
                 oauth_post_logout_redirect_uri = base_uri
             else:
