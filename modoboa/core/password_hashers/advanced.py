@@ -39,11 +39,15 @@ class BLFCRYPTHasher(PasswordHasher):
         # when using the bcrypt hasher.
         # rounds = parameters.get_global_parameter("rounds_number")
         # To get around this, I use the default of 12.
+        if isinstance(clearvalue, str):
+            clearvalue = clearvalue.encode("utf-8")
         rounds = 12
-        return bcrypt.using(rounds=rounds).hash(clearvalue)
+        return bcrypt.using(rounds=rounds).hash(clearvalue[:72])
 
     def verify(self, clearvalue, hashed_value):
-        return bcrypt.verify(clearvalue, hashed_value)
+        if isinstance(clearvalue, str):
+            clearvalue = clearvalue.encode("utf-8")
+        return bcrypt.verify(clearvalue[:72], hashed_value)
 
 
 class MD5CRYPTHasher(PasswordHasher):
