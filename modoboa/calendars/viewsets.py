@@ -21,7 +21,9 @@ from . import serializers
 
 def parse_date_from_iso(value):
     """Return a tz aware datetime parsed from an ISO date."""
-    return dateutil.parser.parse(value)
+    result = dateutil.parser.parse(value)
+    print(result)
+    return result
 
 
 class CheckTokenMixin:
