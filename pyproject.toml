@@ -42,8 +42,8 @@ dependencies = [
 	"uritemplate",
 	"django-oauth-toolkit",
 	"django-cors-headers",
-	"passlib~=1.7.4",
-	"bcrypt==4.3.0", # Requires libffi-dev and python-dev
+	"libpass>=1.9.3",
+	"bcrypt~=5.0", # Requires libffi-dev and python-dev
 	"asgiref",
 	"dnspython==2.8.0",
 	"feedparser==6.0.12",
