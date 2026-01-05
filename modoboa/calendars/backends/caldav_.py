@@ -80,17 +80,15 @@ class Caldav_Backend(CalendarBackend):
     def create_event(self, data):
         """Create a new event."""
         uid = uuid.uuid4()
-        cal = vobject.iCalendar()
-        cal.add("vevent")
-        cal.vevent.add("uid").value = str(uid)
-        cal.vevent.add("summary").value = data["title"]
         if not data["allDay"]:
-            cal.vevent.add("dtstart").value = data["start"]
-            cal.vevent.add("dtend").value = data["end"]
+            dtstart = data["start"]
+            dtend = data["end"]
         else:
-            cal.vevent.add("dtstart").value = data["start"].date()
-            cal.vevent.add("dtend").value = data["end"].date()
-        self.remote_cal.add_event(cal)
+            dtstart = data["start_date"]
+            dtend = data["end_date"]
+        self.remote_cal.save_event(
+            uid=uid, dtstart=dtstart, dtend=dtend, summary=data["title"]
+        )
         return uid
 
     def update_event(self, uid, original_data):
@@ -102,8 +100,8 @@ class Caldav_Backend(CalendarBackend):
         if "title" in data:
             orig_evt.summary.value = data["title"]
         if data.get("allDay"):
-            data["start"] = data["start"].date()
-            data["end"] = data["end"].date()
+            data["start"] = data["start_date"]
+            data["end"] = data["end_date"]
         if "start" in data:
             del orig_evt.contents["dtstart"]
             orig_evt.add("dtstart").value = data["start"]
