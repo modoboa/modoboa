@@ -47,11 +47,11 @@ class Migration(models.Model):
         return self.username
 
     @property
-    def password(self):
+    def password(self) -> str:
         """Password getter."""
-        return decrypt(self._password)
+        return decrypt(self._password).replace("%", "%%")
 
     @password.setter
-    def password(self, value):
+    def password(self, value: str) -> None:
         """Password setter."""
         self._password = encrypt(value)
