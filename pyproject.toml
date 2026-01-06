@@ -70,9 +70,8 @@ dependencies = [
 	"defusedxml>=0.6.0",
 	"python-magic>=0.4.24",
 	# RQ
-	"rq>=1.13.0",
+	"rq>=2.4.0",
 	"django-rq",
-	"rq-scheduler",
 	# Sieve
 	"sievelib>=1.4.1",
         # User
