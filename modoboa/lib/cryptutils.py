@@ -27,12 +27,12 @@ def _get_fernet():
     return Fernet(secret_key)
 
 
-def encrypt(clear_value):
+def encrypt(clear_value: bytes) -> str:
     """Encrypt a value using secret_key."""
     return smart_str(_get_fernet().encrypt(smart_bytes(clear_value)))
 
 
-def decrypt(encrypted_value):
+def decrypt(encrypted_value: bytes) -> str:
     """Decrypt a value using secret_key."""
     return smart_str(_get_fernet().decrypt(smart_bytes(encrypted_value)))
 

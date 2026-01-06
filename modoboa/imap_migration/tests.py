@@ -115,6 +115,27 @@ class ManagementCommandTestCase(DataMixin, ModoTestCase):
         conf.read(path)
         self.assertTrue(conf.has_section("Account user@test.com"))
 
+    def test_password_escaping(self):
+        """Check that passwords are escaped when needed."""
+        self.migration.password = "%Test1234"
+        self.migration.save()
+        path = os.path.join(self.workdir, "offlineimap.conf")
+        call_command("generate_offlineimap_config", "--output", path)
+        self.assertTrue(os.path.exists(path))
+        conf = configparser.ConfigParser()
+        conf.read(path)
+        section = "Repository Local_user@test.com"
+        self.assertEqual(conf.get(section, "remotepass"), "%Test1234")
+
+        self.migration.password = "Test&1234"
+        self.migration.save()
+        call_command("generate_offlineimap_config", "--output", path)
+        self.assertTrue(os.path.exists(path))
+        conf = configparser.ConfigParser()
+        conf.read(path)
+        section = "Repository Local_user@test.com"
+        self.assertEqual(conf.get(section, "remotepass"), self.migration.password)
+
 
 class ViewSetTestCase(DataMixin, ModoAPITestCase):
     """ViewSet related tests."""
