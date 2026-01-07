@@ -94,6 +94,7 @@ dev = [
 ]
 mysql = ["mysqlclient<2.2.8"]
 postgresql = ["psycopg[binary]>=3.1"]
+bsd = ["psycopg[c]>=3.1"]
 test = [
 	"argon2-cffi>=16.1.0",
 	"factory-boy<3.4.0",
