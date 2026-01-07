@@ -301,7 +301,10 @@ class IMAPconnector:
                 key = "SUBJECT"
             else:
                 continue
-            criterions = or_criterion(criterions, f'({key} "{pattern}")')
+            if pattern:
+                criterions = or_criterion(criterions, f'({key} "{pattern}")')
+            else:
+                criterions = "ALL"
         self.criterions = [bytearray(criterions, "utf8")]
 
     def messages_count(self, **kwargs) -> int:
