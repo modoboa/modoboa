@@ -3,6 +3,8 @@
 import datetime
 import logging
 
+from django.core.management import call_command
+
 from modoboa.core.models import Log
 from modoboa.maillog.models import Maillog
 from modoboa.parameters import tools as param_tools
@@ -26,3 +28,7 @@ def clean_logs():
     )
     limit = timezone.now() - datetime.timedelta(message_history_maximum_age)
     Maillog.objects.filter(date__lt=limit).delete()
+
+
+def communicate_with_public_api():
+    call_command("communicate_with_public_api")
