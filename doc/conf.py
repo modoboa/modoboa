@@ -54,7 +54,7 @@ master_doc = "index"
 
 # General information about the project.
 project = "Modoboa"
-copyright = "2025, Antoine Nguyen"  # NOQA:A001
+copyright = "2026, Antoine Nguyen"  # NOQA:A001
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
