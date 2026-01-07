@@ -28,7 +28,7 @@ classifiers = [
 keywords = ["email"]
 license = {file = "LICENSE"}
 dependencies = [
-	"django==5.2.9",
+	"django==5.2.10",
 	"django-phonenumber-field[phonenumbers]==8.4.0",
 	"django-reversion==6.1.0",
 	"django-xforwardedfor-middleware==2.0",
