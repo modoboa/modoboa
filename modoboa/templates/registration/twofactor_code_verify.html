@@ -25,7 +25,7 @@
         <input type="hidden" id="id_next" name="next" value="{{ nextlocation }}">
         <div class="input-group{% if form.tfa_code.errors %} error{% endif %}">
           <label>{% translate "One-time password" %}</label>
-          <input id="id_tfa_code" name="tfa_code" required>
+          <input id="id_tfa_code" name="tfa_code" required autofocus>
           <span class="error-message">
             {% for error in form.tfa_code.errors %}
               {{ error }}
