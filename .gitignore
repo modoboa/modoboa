@@ -24,6 +24,7 @@ node_modules
 /frontend/webpack-stats.json
 /frontend/src/translations.json
 /frontend/.__mf__temp/
+.vitepress/
 
 # TOX stuff
 test_project/modoboa.db
