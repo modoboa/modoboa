@@ -38,6 +38,17 @@ SITE_ID = 1
 # The email address that error messages come from, such as those sent to ADMINS
 #SERVER_EMAIL = 'webmaster@example.net'
 
+# E-Mail client settings used for AutoDiscovery information served to clients
+#
+# Not used for Modoboa WebMail; configure that in the Modoboa admin settings.
+#
+#  * HOSTNAME: External hostname that clients should connect to
+#     * Supports Thunderbird-style placeholders to substitute values from the
+#       email address originally entered into the mail client:
+#       %EMAILADDRESS%, %EMAILLOCALPART%, %EMAILDOMAIN%
+#  * SOCKET_TYPE: Actually the encryption settings
+#     * May be one of: 'SSL' (immediate TLS), 'STARTTLS' or 'plain' (bad)
+#  * PORT: TCP port that the client should use when connecting to the server
 EMAIL_CLIENT_CONNECTION_SETTINGS = {
     'imap': {
         'HOSTNAME': '{{ allowed_host }}',
