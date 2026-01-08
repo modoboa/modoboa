@@ -27,8 +27,8 @@ jobs:
           cache: true
 
       - name: Install dependencies
-        run: pnpm install
+        run: cd doc-ng && pnpm install
 
       - name: Build documentation
-        run: pnpm run build
+        run: cd doc-ng && pnpm run build
       
