@@ -2,7 +2,7 @@
 Modoboa (`website <https://modoboa.org/>`_)
 ############################################
 
-|workflow| |codecov| |latest-version|
+|workflow| |codecov| |latest-version| |deepwiki|
 
 `Modoboa <https://modoboa.org>`_ is a mail hosting and management platform including a modern
 and simplified Web User Interface. It provides useful components such
@@ -79,3 +79,5 @@ If you have any questions, you can get help through the following platforms:
 .. |workflow| image:: https://github.com/modoboa/modoboa/actions/workflows/modoboa.yml/badge.svg
 .. |codecov| image:: https://codecov.io/gh/modoboa/modoboa/graph/badge.svg?token=1E5eBxJO33
    :target: https://codecov.io/gh/modoboa/modoboa
+.. |deepwiki| image:: https://deepwiki.com/badge.svg
+   :target: https://deepwiki.com/modoboa/modoboa
