@@ -116,11 +116,11 @@ class EventSerializer(serializers.Serializer):
 
     id = serializers.CharField(read_only=True)
     title = serializers.CharField()
-    start = serializers.DateTimeField()
-    end = serializers.DateTimeField()
+    start = serializers.DateTimeField(required=False)
+    end = serializers.DateTimeField(required=False)
     allDay = serializers.BooleanField(default=False)
     color = serializers.CharField(read_only=True)
-    description = serializers.CharField(required=False)
+    description = serializers.CharField(required=False, allow_blank=True)
 
     attendees = AttendeeSerializer(many=True, required=False)
 
@@ -147,10 +147,13 @@ class WritableEventSerializer(EventSerializer):
     )
     new_calendar_type = serializers.CharField(required=False)
 
+    start_date = serializers.DateField(required=False)
+    end_date = serializers.DateField(required=False)
+
     def __init__(self, *args, **kwargs):
         """Set calendar list."""
         calendar_type = kwargs.pop("calendar_type")
-        super(EventSerializer, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.update_calendar_field(calendar_type)
 
     def update_calendar_field(self, calendar_type):
@@ -170,11 +173,13 @@ class WritableEventSerializer(EventSerializer):
     def validate(self, data):
         """Make sure dates are present with allDay flag."""
         errors = {}
-        if "allDay" in data:
-            if "start" not in data:
-                errors["start"] = _("This field is required.")
-            if "end" not in data:
-                errors["end"] = _("This field is required.")
+        if data.get("allDay", False):
+            mandatory_fields = ["start_date", "end_date"]
+        else:
+            mandatory_fields = ["start", "end"]
+        for field in mandatory_fields:
+            if not data.get(field):
+                errors[field] = _("This field is required.")
         if errors:
             raise serializers.ValidationError(errors)
         return data

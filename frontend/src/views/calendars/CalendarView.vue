@@ -1,43 +1,128 @@
 <template>
-  <div class="text-h5 ml-4 mb-6">
-    {{ $gettext('Calendar') }}
-  </div>
-  <FullCalendar ref="calendarRef" :options="calendarOptions" />
+  <div style="display: grid; grid-template-rows: auto auto 1fr; height: 96vh">
+    <div class="text-h5 ml-4 mb-6">
+      {{ $gettext('Calendar') }}
+    </div>
 
-  <v-dialog v-model="showInformation" persistent max-width="800px">
-    <CalendarDetail :calendar="selectedCalendar" @close="closeInformation" />
-  </v-dialog>
-  <v-dialog v-model="showCalendarForm" persistent max-width="800px">
-    <CalendarForm
-      :initial-calendar="selectedCalendar"
-      @color-changed="refreshCalendarEvents"
-      @close="closeCalendarForm"
-    />
-  </v-dialog>
-  <v-dialog v-model="showEventForm" persistent max-width="800px">
-    <EventForm
-      :info="selectInfo"
-      :event="selectedEvent"
-      @refresh-calendar="refreshCalendarEvents"
-      @close="closeEventForm"
-    />
-  </v-dialog>
-  <v-dialog v-model="showAccessRulesForm" persistent max-width="800px">
-    <CalendarAccessRulesForm
-      v-if="selectedCalendar"
-      :calendar-pk="selectedCalendar.pk"
-      @close="closeAccessRulesForm"
-    />
-  </v-dialog>
-  <v-dialog v-model="showImportEventsForm" persistent max-width="800px">
-    <ImportEventsForm
-      v-if="selectedCalendar"
-      :calendar="selectedCalendar"
-      @events-imported="refreshCalendarEvents"
-      @close="closeImportEventsForm"
-    />
-  </v-dialog>
-  <ConfirmDialog ref="confirm" />
+    <v-toolbar v-if="calendarRef" color="white" flat>
+      <v-btn
+        class="me-4"
+        color="grey-darken-2"
+        variant="outlined"
+        @click="setToday"
+      >
+        {{ $gettext('Today') }}
+      </v-btn>
+      <v-btn
+        color="grey-darken-2"
+        size="small"
+        variant="text"
+        icon
+        @click="goPrev"
+      >
+        <v-icon size="small"> mdi-chevron-left </v-icon>
+      </v-btn>
+      <v-btn
+        color="grey-darken-2"
+        size="small"
+        variant="text"
+        icon
+        @click="goNext"
+      >
+        <v-icon size="small"> mdi-chevron-right </v-icon>
+      </v-btn>
+      <v-toolbar-title>
+        {{ calendarRef.title }}
+      </v-toolbar-title>
+      <v-menu location="bottom end">
+        <template #activator="{ props }">
+          <v-btn color="grey-darken-2" variant="outlined" v-bind="props">
+            <span>{{ typeToLabel[ctype] }}</span>
+            <v-icon end> mdi-menu-down </v-icon>
+          </v-btn>
+        </template>
+        <v-list>
+          <v-list-item @click="ctype = 'day'">
+            <v-list-item-title>{{ $gettext('Day') }}</v-list-item-title>
+          </v-list-item>
+          <v-list-item @click="ctype = 'week'">
+            <v-list-item-title>{{ $gettext('Week') }}</v-list-item-title>
+          </v-list-item>
+          <v-list-item @click="ctype = 'month'">
+            <v-list-item-title>{{ $gettext('Month') }}</v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
+    </v-toolbar>
+
+    <div style="overflow: auto">
+      <v-calendar
+        ref="calendarRef"
+        v-model="focus"
+        :events="events"
+        first-day-of-week="1"
+        :type="ctype"
+        :locale="current"
+        event-name="title"
+        :event-color="getEventColor"
+        :event-ripple="false"
+        @mousedown:event="startDrag"
+        @mousedown:time="startTime"
+        @click:event="eventClickCallback"
+        @click:day="dayClickCallback"
+        @mouseleave="cancelDrag"
+        @mousemove:time="mouseMove"
+        @mouseup:time="endDrag"
+        @change="fetchUserEvents"
+      >
+        <template #event="{ event, timed, eventSummary }">
+          <div class="v-event-draggable">
+            <component :is="eventSummary"></component>
+          </div>
+          <div
+            v-if="timed"
+            class="v-event-drag-bottom"
+            @mousedown.stop="extendBottom(event)"
+          ></div>
+        </template>
+      </v-calendar>
+    </div>
+
+    <v-dialog v-model="showInformation" persistent max-width="800px">
+      <CalendarDetail :calendar="selectedCalendar" @close="closeInformation" />
+    </v-dialog>
+    <v-dialog v-model="showCalendarForm" persistent max-width="800px">
+      <CalendarForm
+        :initial-calendar="selectedCalendar"
+        @color-changed="refreshCalendarEvents"
+        @close="closeCalendarForm"
+      />
+    </v-dialog>
+    <v-dialog v-model="showEventForm" persistent max-width="800px">
+      <EventForm
+        :info="selectInfo"
+        :event="selectedEvent"
+        @refresh-calendar="refreshCalendarEvents"
+        @close="closeEventForm"
+      />
+    </v-dialog>
+    <v-dialog v-model="showAccessRulesForm" persistent max-width="800px">
+      <CalendarAccessRulesForm
+        v-if="selectedCalendar"
+        :calendar-pk="selectedCalendar.pk"
+        @close="closeAccessRulesForm"
+      />
+    </v-dialog>
+    <v-dialog v-model="showImportEventsForm" persistent max-width="800px">
+      <ImportEventsForm
+        v-if="selectedCalendar"
+        :calendar="selectedCalendar"
+        @events-imported="refreshCalendarEvents"
+        @close="closeImportEventsForm"
+      />
+    </v-dialog>
+    <ConfirmDialog ref="confirm" />
+  </div>
 </template>
 
 <script setup>
@@ -53,10 +138,6 @@ import CalendarDetail from '@/components/calendars/CalendarDetail'
 import ConfirmDialog from '@/components/tools/ConfirmDialog'
 import EventForm from '@/components/calendars/EventForm'
 import ImportEventsForm from '@/components/calendars/ImportEventsForm'
-import FullCalendar from '@fullcalendar/vue3'
-import dayGridPlugin from '@fullcalendar/daygrid'
-import interactionPlugin from '@fullcalendar/interaction'
-import timeGridPlugin from '@fullcalendar/timegrid'
 
 const { $gettext, current } = useGettext()
 const layoutStore = useLayoutStore()
@@ -64,6 +145,7 @@ const busStore = useBusStore()
 
 const calendarRef = ref()
 const confirm = ref()
+const events = ref([])
 const selectInfo = ref()
 const selectedCalendar = ref(null)
 const selectedEvent = ref(null)
@@ -73,6 +155,21 @@ const showCalendarForm = ref(false)
 const showInformation = ref(false)
 const showEventForm = ref(false)
 const showImportEventsForm = ref(false)
+const ctype = ref('week')
+const focus = ref('')
+const dragEvent = ref(null)
+const dragTime = ref(null)
+const createEvent = ref(null)
+const createStart = ref(null)
+const extendOriginal = ref(null)
+const updating = ref(false)
+const moving = ref(false)
+
+const typeToLabel = {
+  day: $gettext('Day'),
+  week: $gettext('Week'),
+  month: $gettext('Month'),
+}
 
 const leftMenuItems = computed(() => {
   const result = [
@@ -121,21 +218,36 @@ const leftMenuItems = computed(() => {
   return result
 })
 
-async function fetchUserCalendarEvents(
-  calendarPk,
-  info,
-  successCallback,
-  failureCallback
-) {
-  try {
-    const resp = await api.getUserCalendarEvents(calendarPk, {
-      start: info.startStr,
-      end: info.endStr,
+async function fetchUserEvents({ start, end }) {
+  let newEvents = []
+  for (const calendar of userCalendars.value) {
+    const resp = await api.getUserCalendarEvents(calendar.pk, {
+      start: start.date,
+      end: end.date,
     })
-    successCallback(resp.data)
-  } catch (err) {
-    failureCallback(err)
+    newEvents = newEvents.concat(
+      resp.data.map((event) => {
+        const newEvent = { ...event }
+        newEvent.start = Date.parse(event.start)
+        newEvent.end = Date.parse(event.end)
+        newEvent.timed = !event.allDay
+        return newEvent
+      })
+    )
   }
+  events.value = newEvents
+}
+
+const setToday = () => {
+  focus.value = ''
+}
+
+const goPrev = () => {
+  calendarRef.value.prev()
+}
+
+const goNext = () => {
+  calendarRef.value.next()
 }
 
 function openCalendarForm() {
@@ -178,39 +290,47 @@ function closeImportEventsForm() {
   showImportEventsForm.value = false
 }
 
-function fetchUserCalendars() {
-  api.getUserCalendars().then((resp) => {
-    userCalendars.value = resp.data
-  })
+async function fetchUserCalendars() {
+  const resp = await api.getUserCalendars()
+  userCalendars.value = resp.data
 }
 
 function refreshCalendarEvents(calendarPk) {
-  const fullc = calendarRef.value.getApi()
-  const evtSource = fullc.getEventSourceById(`user-${calendarPk}`)
-  evtSource.refetch()
+  fetchUserEvents({
+    start: calendarRef.value.renderProps.start,
+    end: calendarRef.value.renderProps.end,
+  })
 }
 
-function selectCallback(info) {
-  selectInfo.value = info
-  showEventForm.value = true
-}
-
-async function eventClickCallback(info) {
-  const resp = await api.getUserEvent(
-    info.event.extendedProps.calendar.pk,
-    info.event.id
-  )
-  selectedEvent.value = resp.data
-  showEventForm.value = true
-}
-
-function updateEventDates(calEvent) {
-  var data = {
-    start: calEvent.start,
-    end: calEvent.end,
+async function eventClickCallback(nativeEvent, { event }) {
+  if (!updating.value && !moving.value) {
+    selectedEvent.value = event
+    showEventForm.value = true
   }
-  const evtCalendar = calEvent.extendedProps.calendar
-  if (calEvent.allDay) {
+}
+
+const dayClickCallback = (nativeEvent, { date, time }) => {
+  if (!selectedEvent.value) {
+    const startDate = new Date(date)
+    const endDate = new Date(date)
+    selectInfo.value = {
+      color: '#2196F3',
+      start: startDate,
+      end: endDate,
+      timed: false,
+    }
+    showEventForm.value = true
+  }
+}
+
+async function updateEventDates(calEvent) {
+  updating.value = true
+  var data = {
+    start: DateTime.fromMillis(calEvent.start).toJSDate(),
+    end: calEvent.end ? DateTime.fromMillis(calEvent.end).toJSDate() : null,
+  }
+  const evtCalendar = calEvent.calendar
+  if (!calEvent.timed) {
     const end = DateTime.fromJSDate(data.start)
     end.plus({ days: 1 })
     data.start.setHours(0, 0, 0)
@@ -221,15 +341,154 @@ function updateEventDates(calEvent) {
     end.plus({ hours: 1 })
     data.end = end
   }
-  api.patchUserEvent(evtCalendar.pk, calEvent.id, data).then((response) => {
+  try {
+    await api.patchUserEvent(evtCalendar.pk, calEvent.id, data)
     busStore.displayNotification({ msg: $gettext('Event updated') })
-  })
+  } finally {
+    updating.value = false
+  }
 }
 function eventDropCallback(info) {
   updateEventDates(info.event)
 }
 function eventResizeCallback(info) {
   updateEventDates(info.event)
+}
+
+const roundTime = (time, down = true) => {
+  const roundTo = 15 // minutes
+  const roundDownTime = roundTo * 60 * 1000
+
+  return down
+    ? time - (time % roundDownTime)
+    : time + (roundDownTime - (time % roundDownTime))
+}
+const toTime = (tms) => {
+  return new Date(
+    tms.year,
+    tms.month - 1,
+    tms.day,
+    tms.hour,
+    tms.minute
+  ).getTime()
+}
+
+const getEventColor = (event) => {
+  const rgb = parseInt(event.color.substring(1), 16)
+  const r = (rgb >> 16) & 0xff
+  const g = (rgb >> 8) & 0xff
+  const b = (rgb >> 0) & 0xff
+
+  return event === dragEvent.value
+    ? `rgba(${r}, ${g}, ${b}, 0.7)`
+    : event === createEvent.value
+      ? `rgba(${r}, ${g}, ${b}, 0.7)`
+      : event.color
+}
+
+const startDrag = (nativeEvent, { event, timed }) => {
+  console.log('startDrag')
+  if (event && timed) {
+    dragEvent.value = event
+    dragTime.value = null
+    extendOriginal.value = null
+  }
+}
+
+const startTime = (nativeEvent, tms) => {
+  console.log('startTime')
+  const mouse = toTime(tms)
+
+  if (dragEvent.value && dragTime.value === null) {
+    const start = dragEvent.value.start
+
+    dragTime.value = mouse - start
+  } else {
+    createStart.value = roundTime(mouse)
+    createEvent.value = {
+      title: $gettext('New event'),
+      color: '#2196F3',
+      start: createStart.value,
+      end: createStart.value,
+      timed: true,
+    }
+
+    events.value.push(createEvent.value)
+  }
+}
+
+const mouseMove = (nativeEvent, tms) => {
+  const mouse = toTime(tms)
+
+  if (dragEvent.value && dragTime.value !== null) {
+    moving.value = true
+    const start = dragEvent.value.start
+    const end = dragEvent.value.end
+    const duration = end - start
+    const newStartTime = mouse - dragTime.value
+    const newStart = roundTime(newStartTime)
+    const newEnd = newStart + duration
+
+    dragEvent.value.start = newStart
+    dragEvent.value.end = newEnd
+  } else if (createEvent.value && createStart.value !== null) {
+    moving.value = true
+    const mouseRounded = roundTime(mouse, false)
+    const min = Math.min(mouseRounded, createStart.value)
+    const max = Math.max(mouseRounded, createStart.value)
+
+    createEvent.value.start = min
+    createEvent.value.end = max
+  }
+}
+
+const extendBottom = (event) => {
+  createEvent.value = event
+  createStart.value = event.start
+  extendOriginal.value = event.end
+}
+
+const endDrag = (nativeEvent, params) => {
+  console.log('endDrag')
+  if (createEvent.value && !extendOriginal.value) {
+    selectInfo.value = createEvent.value
+    showEventForm.value = true
+  } else {
+    if (moving.value) {
+      if (dragEvent.value) {
+        updateEventDates(dragEvent.value)
+      } else if (createEvent.value) {
+        updateEventDates(createEvent.value)
+      }
+    }
+
+    dragTime.value = null
+    dragEvent.value = null
+    createEvent.value = null
+    createStart.value = null
+    extendOriginal.value = null
+    moving.value = false
+  }
+}
+
+const cancelDrag = () => {
+  console.log('cancelDrag')
+  if (createEvent.value) {
+    if (extendOriginal.value) {
+      createEvent.value.end = extendOriginal.value
+    } else {
+      const i = events.value.indexOf(createEvent.value)
+      if (i !== -1) {
+        events.value.splice(i, 1)
+      }
+    }
+  }
+
+  createEvent.value = null
+  createStart.value = null
+  dragTime.value = null
+  dragEvent.value = null
+  moving.value = false
 }
 
 function closeEventForm() {
@@ -255,36 +514,37 @@ async function deleteCalendar(calendarPk) {
   const fullc = calendarRef.value.getApi()
   const evtSource = fullc.getEventSourceById(`user-${calendarPk}`)
   evtSource.remove()
-  fetchUserCalendars()
+  await fetchUserCalendars()
   busStore.displayNotification({ msg: $gettext('Calendar deleted') })
 }
 
-const calendarOptions = {
-  plugins: [timeGridPlugin, dayGridPlugin, interactionPlugin],
-  headerToolbar: {
-    left: 'prev,next today',
-    center: 'title',
-    right: 'dayGridMonth,timeGridWeek,timeGridDay',
-  },
-  scrollTime: '09:00:00',
-  height: '100%',
-  firstDay: 1,
-  initialView: 'timeGridWeek',
-  locale: current,
-  selectable: true,
-  selectMirror: true,
-  editable: true,
-  dayMaxEventRows: true,
-  businessHours: {
-    daysOfWeek: [1, 2, 3, 4, 5],
-    startTime: '09:00',
-    endTime: '18:00',
-  },
-  select: selectCallback,
-  eventClick: eventClickCallback,
-  eventDrop: eventDropCallback,
-  eventResize: eventResizeCallback,
-}
+/* const calendarOptions = {
+ *   plugins: [timeGridPlugin, dayGridPlugin, interactionPlugin],
+ *   headerToolbar: {
+ *     left: 'prev,next today',
+ *     center: 'title',
+ *     right: 'dayGridMonth,timeGridWeek,timeGridDay',
+ *   },
+ *   scrollTime: '09:00:00',
+ *   height: '100%',
+ *   firstDay: 1,
+ *   initialView: 'timeGridWeek',
+ *   locale: current,
+ *   selectable: true,
+ *   selectMirror: true,
+ *   editable: true,
+ *   dayMaxEventRows: true,
+ *   businessHours: {
+ *     daysOfWeek: [1, 2, 3, 4, 5],
+ *     startTime: '09:00',
+ *     endTime: '18:00',
+ *     },
+ *     select: selectCallback,
+ *     eventClick: eventClickCallback,
+ *     eventDrop: eventDropCallback,
+ *     eventResize: eventResizeCallback,
+ *   }
+ *  */
 
 watch(
   leftMenuItems,
@@ -294,23 +554,65 @@ watch(
   { immediate: true }
 )
 
-watch(userCalendars, (value) => {
-  const fullc = calendarRef.value.getApi()
-  if (!fullc) {
-    return
-  }
-  for (const calendar of value) {
-    const evtSource = fullc.getEventSourceById(`user-${calendar.pk}`)
-    if (!evtSource) {
-      fullc.addEventSource({
-        id: `user-${calendar.pk}`,
-        events: fetchUserCalendarEvents.bind(this, calendar.pk),
-      })
-    }
-  }
-})
+/* watch(userCalendars, (value) => {
+ *   const fullc = calendarRef.value.getApi()
+ *   if (!fullc) {
+ *     return
+ *   }
+ *   for (const calendar of value) {
+ *     fetchUserCalendars(
+ *     const evtSource = fullc.getEventSourceById(`user-${calendar.pk}`)
+ *     if (!evtSource) {
+ *       fullc.addEventSource({
+ *         id: `user-${calendar.pk}`,
+ *         events: fetchUserCalendarEvents.bind(this, calendar.pk),
+ *       })
+ *     }
+ *   }
+ * })
+ *  */
 
 onMounted(() => {
-  fetchUserCalendars()
+  calendarRef.value.scrollToTime('07:00')
+  calendarRef.value.checkChange()
 })
+
+await fetchUserCalendars()
 </script>
+
+<style scoped>
+.v-event-draggable {
+  padding-left: 6px;
+}
+
+.v-event-timed {
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.v-event-drag-bottom {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 4px;
+  height: 4px;
+  cursor: ns-resize;
+
+  &::after {
+    display: none;
+    position: absolute;
+    left: 50%;
+    height: 4px;
+    border-top: 1px solid white;
+    border-bottom: 1px solid white;
+    width: 16px;
+    margin-left: -8px;
+    opacity: 0.8;
+    content: '';
+  }
+
+  &:hover::after {
+    display: block;
+  }
+}
+</style>

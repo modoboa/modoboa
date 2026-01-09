@@ -26,7 +26,7 @@
             :error-messages="formErrors.start"
             density="compact"
             variant="outlined"
-            type="datetime-local"
+            :type="dateType"
             class="mr-4"
           />
           <v-text-field
@@ -36,7 +36,7 @@
             :error-messages="formErrors.end"
             density="compact"
             variant="outlined"
-            type="datetime-local"
+            :type="dateType"
           />
         </div>
         <div class="d-flex mb-3">
@@ -133,14 +133,27 @@ const title = computed(() => {
   return props.event ? $gettext('Edit event') : $gettext('New event')
 })
 
+const dateType = computed(() => {
+  return form.value.allDay ? 'date' : 'datetime-local'
+})
+
 watch(
   () => props.info,
   (value) => {
     if (value) {
+      const start =
+        typeof value.start === 'number'
+          ? DateTime.fromMillis(value.start)
+          : DateTime.fromJSDate(value.start)
+      const end =
+        typeof value.end === 'number'
+          ? DateTime.fromMillis(value.end)
+          : DateTime.fromJSDate(value.end)
+      const format = value.timed ? 'yyyy-MM-dd HH:mm' : 'yyyy-MM-dd'
       form.value = {
-        start: DateTime.fromISO(value.startStr).toFormat('yyyy-MM-dd HH:mm'),
-        end: DateTime.fromISO(value.endStr).toFormat('yyyy-MM-dd HH:mm'),
-        allDay: value.allDay,
+        start: start.toFormat(format),
+        end: end.toFormat(format),
+        allDay: !value.timed,
       }
     }
   },
@@ -153,10 +166,9 @@ watch(
     if (value) {
       form.value = { ...value }
       form.value.calendar = form.value.calendar.pk
-      form.value.start = DateTime.fromISO(value.start).toFormat(
-        'yyyy-MM-dd HH:mm'
-      )
-      form.value.end = DateTime.fromISO(value.end).toFormat('yyyy-MM-dd HH:mm')
+      const format = form.value.timed ? 'yyyy-MM-dd HH:mm' : 'yyyy-MM-dd'
+      form.value.start = DateTime.fromMillis(value.start).toFormat(format)
+      form.value.end = DateTime.fromMillis(value.end).toFormat(format)
       api.getAttendees().then((resp) => {
         attendees.value = resp.data
       })
@@ -176,11 +188,21 @@ async function saveEvent() {
   }
   working.value = true
   try {
-    var data = JSON.parse(JSON.stringify(form.value))
-    const fromDate = new Date(data.start)
-    data.start = fromDate.toISOString()
-    const toDate = new Date(data.end)
-    data.end = toDate.toISOString()
+    const data = {
+      title: form.value.title,
+      description: form.value.description,
+      allDay: form.value.allDay,
+      attendees: form.value.attendees,
+      calendar: form.value.calendar,
+    }
+
+    if (data.allDay) {
+      data.start_date = form.value.start
+      data.end_date = form.value.end
+    } else {
+      data.start = new Date(form.value.start).toISOString()
+      data.end = new Date(form.value.end).toISOString()
+    }
     if (!props.event) {
       await api.createUserEvent(form.value.calendar, data)
       busStore.displayNotification({ msg: $gettext('Event added') })
