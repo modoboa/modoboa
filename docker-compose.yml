@@ -38,7 +38,22 @@ services:
       PYTHONPATH: ".."
       PYTHONUNBUFFERED: 1
     command: >
-      sh -c "cd test_project; python3 manage.py rqworker dkim modoboa"
+      sh -c "cd test_project; python3 manage.py rqworker dkim modoboa dovecot"
+    volumes:
+      - .:/code
+
+  rq-scheduler:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.dev
+    environment:
+      DB: "SQLITE"
+      DEBUG: 1
+      REDIS_HOST: redis
+      PYTHONPATH: ".."
+      PYTHONUNBUFFERED: 1
+    command: >
+      sh -c "cd test_project; python3 manage.py rqcron test_project/cron_config.py"
     volumes:
       - .:/code
 

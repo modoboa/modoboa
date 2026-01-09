@@ -303,6 +303,9 @@ RQ_QUEUES = {
     "modoboa": {
         "URL": REDIS_URL,
     },
+    "dovecot": {
+        "URL": REDIS_URL,
+    },
 }
 
 # CACHE
@@ -382,6 +385,7 @@ LOGGING = {
         },
         "modoboa.admin": {"handlers": ["modoboa"], "level": "INFO", "propagate": False},
         "modoboa.dns": {"handlers": ["syslog"], "level": "INFO", "propagate": False},
+        "modoboa.jobs": {"handlers": ["syslog"], "level": "INFO", "propagate": False},
         "django.server": {
             "handlers": ["django.server"],
             "level": "INFO",
