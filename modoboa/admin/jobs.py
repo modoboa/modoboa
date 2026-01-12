@@ -4,8 +4,14 @@ import logging
 import os
 import shutil
 
+from django.db.models import F
+from django.utils import timezone
+
+import django_rq
+
+from modoboa.admin import models
 from modoboa.admin.app_settings import load_admin_settings
-from modoboa.admin.models.mailbox import MailboxOperation
+from modoboa.admin.dns_checker import DNSChecker
 from modoboa.lib.sysutils import exec_cmd
 from modoboa.parameters import tools as param_tools
 
@@ -56,8 +62,25 @@ def handle_mailbox_operations():
     load_admin_settings()
     if not param_tools.get_global_parameter("handle_mailboxes"):
         return
-    for ope in MailboxOperation.objects.all():
+    for ope in models.MailboxOperation.objects.all():
         if ope.type == "rename":
             rename_mailbox(ope)
         elif ope.type == "delete":
             delete_mailbox(ope)
+
+
+def launch_domain_dns_checks(domain_id: int):
+    domain = models.Domain.objects.get(id=domain_id)
+    DNSChecker().run(domain)
+
+
+def handle_dns_checks():
+    """Launch DNS checks for every possible domain."""
+    minute = timezone.now().minute
+    queue = django_rq.get_queue("modoboa")
+    for domain in models.Domain.objects.annotate(slot=F("id") % 60).filter(
+        enable_dns_checks=True, slot=minute
+    ):
+        if domain.uses_a_reserved_tld:
+            continue
+        queue.enqueue(launch_domain_dns_checks, domain.id)
