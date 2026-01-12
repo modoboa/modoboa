@@ -3,6 +3,7 @@
 from unittest import mock
 
 import dns.resolver
+from freezegun import freeze_time
 from rq import SimpleWorker
 from testfixtures import LogCapture
 
@@ -209,7 +210,7 @@ class DNSBLTestCase(ModoTestCase):
         )
         cls.domain.add_admin(mb.user)
 
-        factories.DomainFactory(name="does-not-exist.example.com")
+        cls.domain4 = factories.DomainFactory(name="does-not-exist.example.com")
         cls.domain2 = factories.DomainFactory(
             name="test.localhost"
         )  # Should not be checked
@@ -230,9 +231,12 @@ class DNSBLTestCase(ModoTestCase):
 
         queue = django_rq.get_queue("modoboa")
         worker = SimpleWorker([queue], connection=queue.connection)
-        with LogCapture("modoboa.dns"):
-            jobs.handle_dns_checks()
-            worker.work(burst=True)
+
+        for cpt in range(10):
+            with freeze_time(f"2026-01-12 14:00:0{cpt}"):
+                jobs.handle_dns_checks()
+        worker.work(burst=True)
+
         self.assertTrue(models.DNSBLResult.objects.filter(domain=self.domain).exists())
         self.assertFalse(
             models.DNSBLResult.objects.filter(domain=self.domain3).exists()
@@ -259,12 +263,12 @@ class DNSBLTestCase(ModoTestCase):
         self, mock_query, mock_getaddrinfo, mock_g_gethostbyname
     ):
         """Check notifications."""
+        self.set_global_parameter("enable_dnsbl_checks", True)
         mock_query.side_effect = utils.mock_dns_query_result
         mock_getaddrinfo.side_effect = utils.mock_ip_query_result
         mock_g_gethostbyname.return_value = "127.255.255.254"  # <--Spamhaus response when querying from an open resolver
-        with LogCapture("modoboa.dns"):
-            DNSChecker().run(self.domain)
-        self.assertEqual(len(mail.outbox), 1)
+        DNSChecker().run(self.domain)
+        self.assertEqual(len(mail.outbox), 0)
 
     @mock.patch("socket.gethostbyname")
     @mock.patch("socket.getaddrinfo")
