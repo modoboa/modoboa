@@ -68,11 +68,13 @@
         :event-ripple="false"
         @mousedown:event="startDrag"
         @mousedown:time="startTime"
-        @click:event="eventClickCallback"
+        @mousedown:day="startDay"
         @click:day="dayClickCallback"
         @mouseleave="cancelDrag"
         @mousemove:time="mouseMove"
+        @mousemove:day="mouseMoveDay"
         @mouseup:time="endDrag"
+        @mouseup:day="endDragDay"
         @change="fetchUserEvents"
       >
         <template #event="{ event, timed, eventSummary }">
@@ -159,6 +161,7 @@ const ctype = ref('week')
 const focus = ref('')
 const dragEvent = ref(null)
 const dragTime = ref(null)
+const dragDay = ref(null)
 const createEvent = ref(null)
 const createStart = ref(null)
 const extendOriginal = ref(null)
@@ -295,21 +298,14 @@ async function fetchUserCalendars() {
   userCalendars.value = resp.data
 }
 
-function refreshCalendarEvents(calendarPk) {
+function refreshCalendarEvents() {
   fetchUserEvents({
     start: calendarRef.value.renderProps.start,
     end: calendarRef.value.renderProps.end,
   })
 }
 
-async function eventClickCallback(nativeEvent, { event }) {
-  if (!updating.value && !moving.value) {
-    selectedEvent.value = event
-    showEventForm.value = true
-  }
-}
-
-const dayClickCallback = (nativeEvent, { date, time }) => {
+const dayClickCallback = (nativeEvent, { date }) => {
   if (!selectedEvent.value) {
     const startDate = new Date(date)
     const endDate = new Date(date)
@@ -331,10 +327,8 @@ async function updateEventDates(calEvent) {
   }
   const evtCalendar = calEvent.calendar
   if (!calEvent.timed) {
-    const end = DateTime.fromJSDate(data.start)
-    end.plus({ days: 1 })
-    data.start.setHours(0, 0, 0)
-    data.end = end
+    data.start_date = data.start.toISOString().split('T')[0]
+    data.end_date = data.end.toISOString().split('T')[0]
     data.allDay = calEvent.allDay
   } else if (!calEvent.end) {
     const end = DateTime.fromJSDate(data.start)
@@ -347,12 +341,6 @@ async function updateEventDates(calEvent) {
   } finally {
     updating.value = false
   }
-}
-function eventDropCallback(info) {
-  updateEventDates(info.event)
-}
-function eventResizeCallback(info) {
-  updateEventDates(info.event)
 }
 
 const roundTime = (time, down = true) => {
@@ -387,16 +375,18 @@ const getEventColor = (event) => {
 }
 
 const startDrag = (nativeEvent, { event, timed }) => {
-  console.log('startDrag')
-  if (event && timed) {
+  if (event) {
     dragEvent.value = event
-    dragTime.value = null
-    extendOriginal.value = null
+    if (timed) {
+      dragTime.value = null
+      extendOriginal.value = null
+    } else {
+      dragDay.value = null
+    }
   }
 }
 
 const startTime = (nativeEvent, tms) => {
-  console.log('startTime')
   const mouse = toTime(tms)
 
   if (dragEvent.value && dragTime.value === null) {
@@ -414,6 +404,14 @@ const startTime = (nativeEvent, tms) => {
     }
 
     events.value.push(createEvent.value)
+  }
+}
+
+const startDay = (nativeEvent, tms) => {
+  const mouse = toTime(tms)
+
+  if (dragEvent.value && dragDay.value === null) {
+    dragDay.value = mouse - dragEvent.value.start
   }
 }
 
@@ -442,14 +440,29 @@ const mouseMove = (nativeEvent, tms) => {
   }
 }
 
+const mouseMoveDay = (nativeEvent, tms) => {
+  const mouse = toTime(tms)
+  if (dragEvent.value && dragDay.value !== null) {
+    moving.value = true
+    const start = dragEvent.value.start
+    const end = dragEvent.value.end
+    const duration = end - start
+    const newStartTime = mouse - dragDay.value
+    const newStart = roundTime(newStartTime)
+    const newEnd = newStart + duration
+
+    dragEvent.value.start = newStart
+    dragEvent.value.end = newEnd
+  }
+}
+
 const extendBottom = (event) => {
   createEvent.value = event
   createStart.value = event.start
   extendOriginal.value = event.end
 }
 
-const endDrag = (nativeEvent, params) => {
-  console.log('endDrag')
+const endDrag = () => {
   if (createEvent.value && !extendOriginal.value) {
     selectInfo.value = createEvent.value
     showEventForm.value = true
@@ -460,6 +473,9 @@ const endDrag = (nativeEvent, params) => {
       } else if (createEvent.value) {
         updateEventDates(createEvent.value)
       }
+    } else {
+      selectedEvent.value = dragEvent.value
+      showEventForm.value = true
     }
 
     dragTime.value = null
@@ -471,8 +487,21 @@ const endDrag = (nativeEvent, params) => {
   }
 }
 
+const endDragDay = () => {
+  if (dragEvent.value) {
+    if (moving.value) {
+      updateEventDates(dragEvent.value)
+    } else {
+      selectedEvent.value = dragEvent.value
+      showEventForm.value = true
+    }
+  }
+  dragEvent.value = null
+  dragDay.value = null
+  moving.value = false
+}
+
 const cancelDrag = () => {
-  console.log('cancelDrag')
   if (createEvent.value) {
     if (extendOriginal.value) {
       createEvent.value.end = extendOriginal.value
@@ -511,40 +540,11 @@ async function deleteCalendar(calendarPk) {
     return
   }
   await api.deleteUserCalendar(calendarPk)
-  const fullc = calendarRef.value.getApi()
-  const evtSource = fullc.getEventSourceById(`user-${calendarPk}`)
-  evtSource.remove()
   await fetchUserCalendars()
+  events.value = []
+  calendarRef.value.checkChange()
   busStore.displayNotification({ msg: $gettext('Calendar deleted') })
 }
-
-/* const calendarOptions = {
- *   plugins: [timeGridPlugin, dayGridPlugin, interactionPlugin],
- *   headerToolbar: {
- *     left: 'prev,next today',
- *     center: 'title',
- *     right: 'dayGridMonth,timeGridWeek,timeGridDay',
- *   },
- *   scrollTime: '09:00:00',
- *   height: '100%',
- *   firstDay: 1,
- *   initialView: 'timeGridWeek',
- *   locale: current,
- *   selectable: true,
- *   selectMirror: true,
- *   editable: true,
- *   dayMaxEventRows: true,
- *   businessHours: {
- *     daysOfWeek: [1, 2, 3, 4, 5],
- *     startTime: '09:00',
- *     endTime: '18:00',
- *     },
- *     select: selectCallback,
- *     eventClick: eventClickCallback,
- *     eventDrop: eventDropCallback,
- *     eventResize: eventResizeCallback,
- *   }
- *  */
 
 watch(
   leftMenuItems,
@@ -553,24 +553,6 @@ watch(
   },
   { immediate: true }
 )
-
-/* watch(userCalendars, (value) => {
- *   const fullc = calendarRef.value.getApi()
- *   if (!fullc) {
- *     return
- *   }
- *   for (const calendar of value) {
- *     fetchUserCalendars(
- *     const evtSource = fullc.getEventSourceById(`user-${calendar.pk}`)
- *     if (!evtSource) {
- *       fullc.addEventSource({
- *         id: `user-${calendar.pk}`,
- *         events: fetchUserCalendarEvents.bind(this, calendar.pk),
- *       })
- *     }
- *   }
- * })
- *  */
 
 onMounted(() => {
   calendarRef.value.scrollToTime('07:00')

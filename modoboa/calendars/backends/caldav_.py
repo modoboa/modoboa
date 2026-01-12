@@ -6,6 +6,7 @@ import uuid
 import caldav
 from caldav.elements import dav, ical
 from caldav import Calendar
+from dateutil.relativedelta import relativedelta
 import vobject
 
 from django.utils import timezone
@@ -53,8 +54,10 @@ class Caldav_Backend(CalendarBackend):
             start = datetime.datetime.combine(
                 vevent.dtstart.value, datetime.time.min
             ).replace(tzinfo=tz)
+            # Small back to make vuetify calendar happy. 'All day' events are generally
+            # created from one day to the day after (even for a 1 day duration...)
             end = datetime.datetime.combine(
-                vevent.dtend.value, datetime.time.min
+                vevent.dtend.value - relativedelta(days=1), datetime.time.min
             ).replace(tzinfo=tz)
         result.update({"allDay": all_day, "start": start, "end": end})
         if "attendee" in vevent.contents:
@@ -85,7 +88,8 @@ class Caldav_Backend(CalendarBackend):
             dtend = data["end"]
         else:
             dtstart = data["start_date"]
-            dtend = data["end_date"]
+            # Ensure consistent behavior with other calendar clients (like TB.)
+            dtend = data["end_date"] + relativedelta(days=1)
         self.remote_cal.save_event(
             uid=uid, dtstart=dtstart, dtend=dtend, summary=data["title"]
         )
@@ -139,7 +143,9 @@ class Caldav_Backend(CalendarBackend):
 
     def get_events(self, start, end):
         """Retrieve a list of events."""
-        orig_events = self.remote_cal.search(server_expand=True, start=start, end=end)
+        orig_events = self.remote_cal.search(
+            server_expand=False, start=start, end=end, event=True
+        )
         events = []
         for event in orig_events:
             events.append(self._serialize_event(event))

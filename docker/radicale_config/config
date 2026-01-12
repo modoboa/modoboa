@@ -153,6 +153,8 @@ type = none
 
 level = debug
 
+request_content_on_debug = true
+
 [headers]
 
 # Additional HTTP headers
