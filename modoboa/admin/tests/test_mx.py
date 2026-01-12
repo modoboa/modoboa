@@ -229,12 +229,17 @@ class DNSBLTestCase(ModoTestCase):
         mock_g_gethostbyname.return_value = "1.2.3.4"
         self.assertEqual(models.DNSBLResult.objects.count(), 0)
 
+        with freeze_time(f"2026-01-12 14:{self.domain.id % 60:02}"):
+            jobs.handle_dns_checks()
+        with freeze_time(f"2026-01-12 14:{self.domain2.id % 60:02}"):
+            jobs.handle_dns_checks()
+        with freeze_time(f"2026-01-12 14:{self.domain3.id % 60:02}"):
+            jobs.handle_dns_checks()
+        with freeze_time(f"2026-01-12 14:{self.domain4.id % 60:02}"):
+            jobs.handle_dns_checks()
+
         queue = django_rq.get_queue("modoboa")
         worker = SimpleWorker([queue], connection=queue.connection)
-
-        for cpt in range(10):
-            with freeze_time(f"2026-01-12 14:00:0{cpt}"):
-                jobs.handle_dns_checks()
         worker.work(burst=True)
 
         self.assertTrue(models.DNSBLResult.objects.filter(domain=self.domain).exists())

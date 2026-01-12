@@ -1,5 +1,5 @@
 [run]
 branch = True
-concurrency = multiprocessing, greenlet
+concurrency = multiprocessing
 parallel = True
 source = ../modoboa
