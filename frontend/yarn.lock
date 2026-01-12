@@ -245,35 +245,6 @@
   resolved "https://registry.yarnpkg.com/@floating-ui/utils/-/utils-0.2.10.tgz#a2a1e3812d14525f725d011a73eceb41fef5bc1c"
   integrity sha512-aGTxbpbg8/b5JfU1HXSrbH3wXZuLPJcNEcZQFMxLs3oSzgtVu6nFPkbbGGUvBcUjKV2YyB9Wxxabo+HEH9tcRQ==
 
-"@fullcalendar/core@^6.1.15":
-  version "6.1.19"
-  resolved "https://registry.yarnpkg.com/@fullcalendar/core/-/core-6.1.19.tgz#60379111ba0cfb9fd9bc6594fee47cf855fc77b2"
-  integrity sha512-z0aVlO5e4Wah6p6mouM0UEqtRf1MZZPt4mwzEyU6kusaNL+dlWQgAasF2cK23hwT4cmxkEmr4inULXgpyeExdQ==
-  dependencies:
-    preact "~10.12.1"
-
-"@fullcalendar/daygrid@^6.1.15", "@fullcalendar/daygrid@~6.1.19":
-  version "6.1.19"
-  resolved "https://registry.yarnpkg.com/@fullcalendar/daygrid/-/daygrid-6.1.19.tgz#1d70a7f3f4cc13d3f27f55ed6880aae09a1a367b"
-  integrity sha512-IAAfnMICnVWPjpT4zi87i3FEw0xxSza0avqY/HedKEz+l5MTBYvCDPOWDATpzXoLut3aACsjktIyw9thvIcRYQ==
-
-"@fullcalendar/interaction@^6.1.15":
-  version "6.1.19"
-  resolved "https://registry.yarnpkg.com/@fullcalendar/interaction/-/interaction-6.1.19.tgz#48d85601a4203ede7cb400323fe5a9c163e28804"
-  integrity sha512-GOciy79xe8JMVp+1evAU3ytdwN/7tv35t5i1vFkifiuWcQMLC/JnLg/RA2s4sYmQwoYhTw/p4GLcP0gO5B3X5w==
-
-"@fullcalendar/timegrid@^6.1.15":
-  version "6.1.19"
-  resolved "https://registry.yarnpkg.com/@fullcalendar/timegrid/-/timegrid-6.1.19.tgz#bb4b2e3039c995b61284ee5b76ad9dcc696b71ce"
-  integrity sha512-OuzpUueyO9wB5OZ8rs7TWIoqvu4v3yEqdDxZ2VcsMldCpYJRiOe7yHWKr4ap5Tb0fs7Rjbserc/b6Nt7ol6BRg==
-  dependencies:
-    "@fullcalendar/daygrid" "~6.1.19"
-
-"@fullcalendar/vue3@^6.1.15":
-  version "6.1.19"
-  resolved "https://registry.yarnpkg.com/@fullcalendar/vue3/-/vue3-6.1.19.tgz#43cecccfaca27679823b98c73ba2e042c60e98cb"
-  integrity sha512-j5eUSxx0xIy3ADljo0f5B9PhjqXnCQ+7nUMPfsslc2eGVjp4F74YvY3dyd6OBbg13IvpsjowkjncGipYMQWmTA==
-
 "@humanfs/core@^0.19.1":
   version "0.19.1"
   resolved "https://registry.yarnpkg.com/@humanfs/core/-/core-0.19.1.tgz#17c55ca7d426733fe3c561906b8173c336b40a77"
@@ -1936,11 +1907,6 @@ postcss@^8.5.3, postcss@^8.5.6:
     picocolors "^1.1.1"
     source-map-js "^1.2.1"
 
-preact@~10.12.1:
-  version "10.12.1"
-  resolved "https://registry.yarnpkg.com/preact/-/preact-10.12.1.tgz#8f9cb5442f560e532729b7d23d42fd1161354a21"
-  integrity sha512-l8386ixSsBdbreOAkqtrwqHwdvR35ID8c3rKPa8lCWuO86dBi32QWHV4vfsZK1utLLFMvw+Z5Ad4XLkZzchscg==
-
 prelude-ls@^1.2.1:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/prelude-ls/-/prelude-ls-1.2.1.tgz#debc6489d7a6e6b0e7611888cec880337d316396"
@@ -2449,10 +2415,10 @@ vue@^3.4.31:
     "@vue/server-renderer" "3.5.24"
     "@vue/shared" "3.5.24"
 
-vuetify@^3.10.11:
-  version "3.10.11"
-  resolved "https://registry.yarnpkg.com/vuetify/-/vuetify-3.10.11.tgz#d2da1ffe9ffcd15e9192c31e08cc0469e57e705b"
-  integrity sha512-hfllXT0/C3O5nZyIRalaDU7ClMIrKrKAbjH0T8xbSUb7FcJrHOqPZfEkSXwrKxajv6EA1rwEOvCZoLDhunnjrQ==
+vuetify@^3.11.0:
+  version "3.11.4"
+  resolved "https://registry.yarnpkg.com/vuetify/-/vuetify-3.11.4.tgz#14e41b7a7b821501039251fdf952cec520e505d9"
+  integrity sha512-614MKpopMzNjkQVD5CS/xr77p4CqtF2wNqQByAi7oTEcKzA+gOsy5O3l97ZIqomNidOSGXyVg5s6t5bNO9p4+Q==
 
 w3c-keyname@^2.2.0:
   version "2.2.8"
