@@ -49,6 +49,9 @@ class Calendar:
     def add_event(self, data):
         return True
 
+    def save_event(self, *args, **kwargs):
+        return True
+
     def event_by_url(self, url):
         res = objects.Event(url=url, data=EV1, parent=self)
         return res
