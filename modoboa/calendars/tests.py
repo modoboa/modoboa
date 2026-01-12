@@ -428,8 +428,8 @@ class EventViewSetTestCase(TestDataMixin, ModoAPITestCase):
         url = f"/api/v2/user-calendars/{self.calendar.pk}/events/"
         data = {
             "title": "Test event",
-            "start": "2018-03-27T00:00:00Z",
-            "end": "2018-03-28T00:00:00Z",
+            "start_date": "2018-03-27",
+            "end_date": "2018-03-28",
             "allDay": True,
             "color": "#ffdddd",
             "description": "Description",
@@ -461,8 +461,8 @@ class EventViewSetTestCase(TestDataMixin, ModoAPITestCase):
         url = f"/api/v2/user-calendars/{self.calendar.pk}/events/1234/"
         data = {
             "title": "Test event",
-            "start": "2018-03-27T00:00:00Z",
-            "end": "2018-03-28T00:00:00Z",
+            "start_date": "2018-03-27",
+            "end_date": "2018-03-28",
             "allDay": True,
             "color": "#ffdddd",
             "description": "Description",
@@ -483,8 +483,8 @@ class EventViewSetTestCase(TestDataMixin, ModoAPITestCase):
 
         url = f"/api/v2/user-calendars/{self.calendar.pk}/events/1234/"
         data = {
-            "start": "2018-03-27T00:00:00Z",
-            "end": "2018-03-28T00:00:00Z",
+            "start_date": "2018-03-27",
+            "end_date": "2018-03-28",
             "allDay": True,
         }
         response = self.client.patch(url, data=data, format="json")
@@ -496,8 +496,8 @@ class EventViewSetTestCase(TestDataMixin, ModoAPITestCase):
         self.client.post(reverse("core:login"), data)
         data = {
             "title": "Test event",
-            "start": "2018-03-27T00:00:00Z",
-            "end": "2018-03-28T00:00:00Z",
+            "start_date": "2018-03-27",
+            "end_date": "2018-03-28",
             "allDay": True,
             "color": "#ffdddd",
             "description": "Description",
