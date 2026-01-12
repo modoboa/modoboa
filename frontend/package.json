@@ -15,11 +15,6 @@
     "gettext:compile": "vue-gettext-compile"
   },
   "dependencies": {
-    "@fullcalendar/core": "^6.1.15",
-    "@fullcalendar/daygrid": "^6.1.15",
-    "@fullcalendar/interaction": "^6.1.15",
-    "@fullcalendar/timegrid": "^6.1.15",
-    "@fullcalendar/vue3": "^6.1.15",
     "@mdi/font": "^7.3.67",
     "@tiptap/extension-highlight": "^3.11.0",
     "@tiptap/extension-text-align": "^3.11.0",
