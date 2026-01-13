@@ -34,6 +34,7 @@ export default defineConfig({
           { text: 'Getting Started', link: '/contributing/getting_start' },
           { text: 'Write a Plugin', link: '/contributing/plugin_api' },
           { text: 'Translate', link: '/contributing/translation' },
+          { text: 'REST API', link: '/rest_api' },
           { text: 'Contributors', link: '/contributors' },
         ],
       },
@@ -114,4 +115,54 @@ export default defineConfig({
   cleanUrls: true,
   outDir: './dist',
   lastUpdated: true,
+  transformPageData(pageData) {
+    // console.log(pageData);
+
+    const baseUrl = process.env.READTHEDOCS_CANONICAL_URL
+      ? new URL(process.env.READTHEDOCS_CANONICAL_URL).pathname.replace(/\/$/, '')
+      : ''
+
+    const canonicalUrl = baseUrl + '/' + pageData.relativePath.replace(/\.md$/, "").replace(/^index$/, "");
+    
+    let updtDate = new Date();
+    // If no commit for a page (dev in progress), lastUpdated == NaN
+    // Ensure lastUpdated is defined and a number before passing it to isNaN/new Date
+    if (typeof pageData.lastUpdated === 'number' && !isNaN(pageData.lastUpdated)) {
+      updtDate = new Date(pageData.lastUpdated);
+    }
+
+    pageData.frontmatter.head ??= [];
+		pageData.frontmatter.head.push([
+			"link",
+			{ rel: "canonical", href: canonicalUrl },
+		]);
+		pageData.frontmatter.head.push([
+			"meta",
+			{ property: "og:title", content: pageData.frontmatter.title },
+		]);
+		pageData.frontmatter.head.push([
+			"meta",
+			{ property: "og:description", content: pageData.frontmatter.description },
+		]);
+		pageData.frontmatter.head.push([
+			"meta",
+			{ property: "og:type", content: 'article' },
+		]);
+		pageData.frontmatter.head.push([
+			"meta",
+			{ property: "og:url", content: canonicalUrl },
+		]);
+
+    // TODO: Uncomment when modoboa image is available on the public folder
+    // pageData.frontmatter.head.push([
+		// 	"meta",
+		// 	{ property: "og:image", content: 'https://xxxx/modoboa.png' },
+		// ]);
+
+    pageData.frontmatter.head.push([
+			"meta",
+			{ property: "og:locale", content: 'en_GB' },
+		]);
+
+  }
 })

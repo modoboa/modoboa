@@ -1,3 +1,12 @@
+---
+title: manual step to install webserver component on modoboa
+description: This guide describe how to install webserver on the modoboa platform
+head:
+  - - meta
+    - name: 'keywords'
+      content: 'modoboa, installation, webserver, nginx, apache, wsgi' 
+---
+
 # Web server {#webserver}
 
 ::: info

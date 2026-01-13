@@ -1,3 +1,12 @@
+---
+title: Getting stated with modoboa
+description: Discover how to develop and extend modoboa
+head:
+  - - meta
+    - name: 'keywords'
+      content: 'modoboa, getting started, backend, frontend, docker' 
+---
+
 # Getting started
 
 You would like to work on Modoboa but you don\'t know where to start?

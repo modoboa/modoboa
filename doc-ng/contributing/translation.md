@@ -1,11 +1,20 @@
+---
+title: translation guide for modoboa
+description: How to help to translate modoboa for your natural language
+head:
+  - - meta
+    - name: 'keywords'
+      content: 'modoboa, i18n, translation, transifex, makemessages, backend, frontend' 
+---
+
 # Translation
 
 Modoboa needs you to translate the project ! Feel free to join the
 translation team.
 
 The project is using Transifex. To start with translation, you will need
-to create an account and join [modoboa\'s
-team](https://app.transifex.com/tonio/modoboa/dashboard/)
+to create an account and join 
+[modoboa's team](https://app.transifex.com/tonio/modoboa/dashboard/)
 
 ## API
 

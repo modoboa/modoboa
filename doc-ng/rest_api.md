@@ -1,3 +1,12 @@
+---
+title: REST API to control your Modoboa instance.
+description: Guide to describe the use of the REST API to manage your modoboa instance
+head:
+  - - meta
+    - name: 'keywords'
+      content: 'modoboa, rest api, swagger, authorization, token' 
+---
+
 # REST API
 
 To ease the integration with external sources (software or other), Modoboa provides a REST API.
@@ -9,19 +18,19 @@ Every installed instance comes with a ready-to-use API and a documentation.
 - New API+Docs: *https://\<hostname\>/api/schema-v2/swagger/*
 - Old API: *http://\<hostname\>/api/v1/*
 
-::: info
+::: warning
 You need to be logged in for the API docs to show.
 :::
 
 **Examples:**
 
-* [new example](https://demo.modoboa.org/api/schema-v2/swagger/)
+* [Demo Instance](https://demo.modoboa.org/api/schema-v2/swagger/ "Demo Instance Swagger API")
 
 documentation is available on the official demo.
 
 Using this API requires an authentication and for now, only a token
 based authentication is supported. To get a valid token, log-in to your
-instance with a super administrator, go to *Settings \> API* and
+instance with a super administrator, go to `Settings > API` and
 activate the API access. Press the Update button and wait until the page
 is reloaded, the token will be displayed.
 

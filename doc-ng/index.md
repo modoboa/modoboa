@@ -1,6 +1,8 @@
 ---
 # https://vitepress.dev/reference/default-theme-home-page
 layout: home
+title: "Modoboa, the Mail hosting and management platform"
+description: "Web User Interface designed to work with Postfix and Dovecot"
 
 hero:
   name: "Modoboa"

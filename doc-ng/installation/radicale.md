@@ -1,3 +1,12 @@
+---
+title: manual step to install radicale component on modoboa
+description: This guide describe how to install radicale on the modoboa platform
+head:
+  - - meta
+    - name: 'keywords'
+      content: 'modoboa, installation, radicale, oauth2' 
+---
+
 # Radicale
 
 This page is displaying how to install and use radicale when either

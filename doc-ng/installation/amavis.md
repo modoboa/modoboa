@@ -1,3 +1,12 @@
+---
+title: manual step to install amavis component on modoboa
+description: This guide describe how to install amavis on the modoboa platform
+head:
+  - - meta
+    - name: 'keywords'
+      content: 'modoboa, installation, amavis, mysql, postgresql, quarantine' 
+---
+
 # Amavis
 
 ## Quick Amavis setup

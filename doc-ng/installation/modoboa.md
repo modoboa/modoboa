@@ -1,3 +1,12 @@
+---
+title: manual step to install core component on modoboa
+description: This guide describe how to install core on the modoboa platform
+head:
+  - - meta
+    - name: 'keywords'
+      content: 'modoboa, installation, core, mysql, postgresql, cron' 
+---
+
 # Modoboa 
 
 This section describes the installation of the web interface (a [Django](https://www.djangoproject.com/) project).

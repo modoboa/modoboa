@@ -1,5 +1,13 @@
-# Automatic Installer
+---
+title: Guide to install modoboa with the automatic installer
+description: This guide describe how to install modoboa with the automatic installer
+head:
+  - - meta
+    - name: 'keywords'
+      content: 'modoboa, installation, webserver, nginx, apache, wsgi' 
+---
 
+# Automatic Installer
 
 ## Introduction
 

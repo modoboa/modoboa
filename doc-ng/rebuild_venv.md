@@ -1,3 +1,12 @@
+---
+title: How to rebuild your virtual environment
+description: Procedure to repair your broken environment
+head:
+  - - meta
+    - name: 'keywords'
+      content: 'modoboa, virtualenv, broken, ubuntu' 
+---
+
 # Rebuild Virtualenv
 
 Sometimes when upgrading your Operating System (eg from Ubuntu 17.04 to
