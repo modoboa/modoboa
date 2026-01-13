@@ -11,11 +11,10 @@ from modoboa.maillog import jobs as maillog_jobs
 
 register(core_jobs.clean_logs, queue_name="modoboa", cron="0 0 * * *")
 
-# Random start for this one to avoid a DDoS on the API...
 register(
     core_jobs.communicate_with_public_api,
     queue_name="modoboa",
-    cron="12 2,14 * * *",
+    cron="{{ minute }} {{ hour_start }},{{ hour_end }} * * *",
 )
 
 register(admin_jobs.handle_mailbox_operations, queue_name="dovecot", cron="* * * * *")
