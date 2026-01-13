@@ -48,7 +48,6 @@ dependencies = [
 	"dnspython==2.8.0",
 	"feedparser==6.0.12",
 	"fido2==2.0.0",
-	"gevent==25.9.1",
 	"progressbar33==2.4",
 	"python-dateutil",
 	"cryptography",
@@ -70,7 +69,7 @@ dependencies = [
 	"defusedxml>=0.6.0",
 	"python-magic>=0.4.24",
 	# RQ
-	"rq>=1.13.0",
+	"rq>=2.4.0",
 	"django-rq",
 	# Sieve
 	"sievelib>=1.4.1",
@@ -102,6 +101,7 @@ test = [
 	"factory-boy<3.4.0",
 	"httmock==1.4.0",
 	"testfixtures==8.3.0",
+        "freezegun",
 	"tox",
 ]
 ldap = ["django-auth-ldap<6.0.0"]

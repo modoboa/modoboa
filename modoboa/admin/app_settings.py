@@ -111,6 +111,18 @@ GLOBAL_PARAMETERS_STRUCT = collections.OrderedDict(
                             },
                         ),
                         (
+                            "enable_dns_notifications",
+                            {
+                                "label": gettext_lazy(
+                                    "Notify domain admins about DNS issues"
+                                ),
+                                "help_text": gettext_lazy(
+                                    "Send a notification by email to domain administrators "
+                                    "when DNS issues are encountered"
+                                ),
+                            },
+                        ),
+                        (
                             "custom_dns_server",
                             {
                                 "label": gettext_lazy("Custom DNS server"),

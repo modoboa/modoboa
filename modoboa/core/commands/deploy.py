@@ -3,6 +3,7 @@
 import getpass
 import os
 from os.path import isfile
+import random
 import shutil
 import subprocess
 import sys
@@ -258,6 +259,18 @@ class DeployCommand(Command):
 
         shutil.copyfile(f"{self._templates_dir}/urls.py.tpl", f"{path}/urls.py")
         os.mkdir(f"{parsed_args.name}/media")
+
+        hour = random.randint(0, 6)
+        tpl = self._render_template(
+            f"{self._templates_dir}/cron_config.py.tpl",
+            {
+                "minute": random.randint(1, 59),
+                "hour_start": hour,
+                "hour_end": hour + 12,
+            },
+        )
+        with open(f"{path}/cron_config.py", "w") as fp:
+            fp.write(tpl)
 
         if isfile(f"{path}/settings.pyc"):
             os.unlink(f"{path}/settings.pyc")
