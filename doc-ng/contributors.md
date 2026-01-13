@@ -1,5 +1,6 @@
 # Contributors
 
+- [6clones](https://www.6clones.fr/)
 - [Antidot](http://antidot.com)
 - [Bearstech](http://bearstech.com)
 - [CAP-REL](https://cap-rel.fr/)

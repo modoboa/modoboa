@@ -2,11 +2,11 @@
 
 You will need a Server to perform well with at least:
 
-- CPU: 2
-- RAM: 2GB
+- CPU: 4
+- RAM: 4GB
 - Disk: 10GB
-- Python 3.8+
-- Postgres 12+ or MariaDB 10.4+ or MySQL 8+ or sqlite3 or LDAP
+- Python 3.10+
+- Postgres 14+ or MariaDB 10.5+ or MySQL 8.0.11+ or sqlite3
 
 ::: warning
 
