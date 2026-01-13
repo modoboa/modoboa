@@ -2,7 +2,7 @@
 
 ## Introduction
 
-Modoboa offers a plugin API to expand its capabilities. 
+Modoboa offers a plugin API to expand its capabilities.
 
 The current implementation provides the following possibilities:
 
@@ -12,7 +12,7 @@ The current implementation provides the following possibilities:
 
 ::: tip
 Plugins are nothing more than Django applications with an extra piece of
-code that integrates them into Modoboa. 
+code that integrates them into Modoboa.
 :::
 
 The `modo_extension.py` file will contain a complete description of the plugin:
@@ -20,7 +20,7 @@ The `modo_extension.py` file will contain a complete description of the plugin:
 - Admin and user parameters
 - Custom menu entries
 
-The communication between both applications is provided by 
+The communication between both applications is provided by
 [Django signals](https://docs.djangoproject.com/en/5.2/topics/signals/).
 
 The following subsections describe the plugin architecture and explain
@@ -56,7 +56,7 @@ class MyExtension(ModoExtension):
         """This method is called when Modoboa loads available and activated plugins.
 
         Declare parameters and register events here.
-        """ 
+        """
         pass
 
     def load_initial_data(self):
@@ -66,8 +66,8 @@ class MyExtension(ModoExtension):
 exts_pool.register_extension(MyExtension)
 ```
 
-Once done, simply add your extension's module name to the `MODOBOA_APPS` 
-variable located inside `settings.py`. 
+Once done, simply add your extension's module name to the `MODOBOA_APPS`
+variable located inside `settings.py`.
 
 Finally, run the following commands:
 
@@ -88,7 +88,7 @@ A plugin can declare its own parameters. There are two levels available:
 
 #### Playing with parameters
 
-Parameters are defined using [Django forms](https://docs.djangoproject.com/en/1.9/topics/forms/) 
+Parameters are defined using [Django forms](https://docs.djangoproject.com/en/1.9/topics/forms/)
 and Modoboa adds two special forms you can inherit depending on the level of parameter(s) you want to add:
 
 * `modoboa.parameters.forms.AdminParametersForm`: for general parameters
@@ -106,7 +106,7 @@ Replace:
 
 ### Custom role permissions
 
-Modoboa uses Django's internal permission system. 
+Modoboa uses Django's internal permission system.
 
 Administrative roles are nothing more than groups (`Group` instances).
 
@@ -131,63 +131,4 @@ PERMISSIONS = {
 def extra_role_permissions(sender, role, **kwargs):
    """Add permissions to the Resellers group."""
    return constants.PERMISSIONS.get(role, [])
-```
-
-### Extending admin forms
-
-The forms used to edit objects (account, domain, etc.) through the admin panel are composed of tabs. 
-
-You can extend them (ie. add new tabs) in a pretty easy way thanks to custom signals.
-
-#### Account
-
-To add a new tab to the account edition form, define new listeners
-(handlers) for the following signals:
-
-* `modoboa.admin.signals.extra_account_forms`
-* `modoboa.admin.signals.get_account_form_instances`
-* `modoboa.admin.signals.check_extra_account_form` (optional)
-
-Example:
-
-``` python
-from django.dispatch import receiver
-from modoboa.admin import signals as admin_signals
-
-
-@receiver(admin_signals.extra_account_forms)
-def extra_account_form(sender, user, account, **kwargs):
-    return [
-        {"id": "tabid", "title": "Title", "cls": MyFormClass}
-    ]
-
-@receiver(admin_signals.get_account_form_instances)
-def fill_my_tab(sender, user, account, **kwargs):
-    return {"id": my_instance}
-```
-
-#### Domain
-
-To add a new tab to the domain edition form, define new listeners
-(handlers) for the following signals:
-
-* `modoboa.admin.signals.extra_domain_forms`
-* `modoboa.admin.signals.get_domain_form_instances`
-
-Example:
-
-``` python
-from django.dispatch import receiver
-from modoboa.admin import signals as admin_signals
-
-
-@receiver(admin_signals.extra_domain_forms)
-def extra_account_form(sender, user, domain, **kwargs):
-    return [
-        {"id": "tabid", "title": "Title", "cls": MyFormClass}
-    ]
-
-@receiver(admin_signals.get_domain_form_instances)
-def fill_my_tab(sender, user, domain, **kwargs):
-    return {"id": my_instance}
 ```
