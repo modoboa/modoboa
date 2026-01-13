@@ -8,7 +8,7 @@ export default defineConfig({
   base: process.env.READTHEDOCS_CANONICAL_URL
     ? new URL(process.env.READTHEDOCS_CANONICAL_URL).pathname.replace(/\/$/, '')
     : '',
-  title: 'Modoboa Documentation ',
+  title: 'Modoboa',
   titleTemplate: ':title',
   description: 'Modoboa documentation',
   srcExclude: ['public/**/*.md'],
