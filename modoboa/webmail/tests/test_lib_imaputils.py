@@ -16,7 +16,7 @@ class ImapUtilsTestCase(unittest.TestCase):
         """Test with Criterion and pattern"""
         self.imap_connector.criterions = []
         self.imap_connector.parse_search_parameters("from_addr", "bob")
-        result = [bytearray('FROM "bob"', "utf8")]
+        result = [bytearray('(FROM "bob")', "utf8")]
         self.assertEqual(self.imap_connector.criterions, result)
 
     def test_criterions_one_criterion_without_pattern(self):
