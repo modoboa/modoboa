@@ -18,6 +18,7 @@ from modoboa.lib.tests import ModoAPITestCase
 from modoboa.admin.factories import populate_database
 
 from . import factories
+from . import jobs
 from . import models
 from . import mocks
 
@@ -106,7 +107,7 @@ class AccessRuleTestCase(ModoAPITestCase):
         self.assertEqual(cfg.get(section, "permissions"), "Rr")
 
         # Call a second time
-        management.call_command("generate_rights", verbosity=False)
+        jobs.generate_rights()
 
     def test_rights_file_generation_with_admin(self):
         self.set_global_parameter(

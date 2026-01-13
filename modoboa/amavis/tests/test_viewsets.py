@@ -4,14 +4,13 @@ from unittest import mock
 from rq import SimpleWorker
 
 from django.core import mail
-from django.core.management import call_command
 from django.test import override_settings
 from django.urls import reverse
 
 import django_rq
 
 from modoboa.admin import factories as admin_factories, models as admin_models
-from modoboa.amavis import factories, models
+from modoboa.amavis import factories, jobs, models
 from modoboa.amavis.utils import smart_str
 from modoboa.core import models as core_models
 from modoboa.lib.tests import ModoAPITestCase
@@ -204,7 +203,7 @@ class QuarantineViewSetTestCase(TestDataMixin, ModoAPITestCase):
         self.assertEqual(self.msgrcpt.rs, "p")
 
         # Send notification to admins
-        call_command("amnotify")
+        jobs.amnotify()
         self.assertEqual(len(mail.outbox), 1)
 
     def _test_mark_selection(self, action, status):
