@@ -1,3 +1,12 @@
+---
+title: Requirements to install Modoboa on a server
+description: Minimal requirements to install Modoboa on a server
+head:
+  - - meta
+    - name: 'keywords'
+      content: 'modoboa, installation, requirements, cpu, ram, disk, python' 
+---
+
 # Requirements
 
 You will need a Server to perform well with at least:

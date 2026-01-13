@@ -1,3 +1,13 @@
+---
+title: Migrate to modoboa
+description: Migrate from actual provider to modoboa
+head:
+  - - meta
+    - name: 'keywords'
+      content: 'modoboa, imap, migration, constraint, offlineimap' 
+---
+
+
 # Moving to Modoboa
 
 You have an existing platform and you\'d like to move to Modoboa, the

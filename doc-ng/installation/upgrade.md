@@ -1,3 +1,12 @@
+---
+title: Guide to update a Modoboa instance to the last version
+description: This guide perform how to upgrade your current Modoboa instance to the last version available
+head:
+  - - meta
+    - name: 'keywords'
+      content: 'modoboa, installation, upgrade, procedure' 
+---
+
 # Upgrade
 
 ## Modoboa

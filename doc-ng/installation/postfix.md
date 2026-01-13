@@ -1,3 +1,12 @@
+---
+title: manual step to install postfix component on modoboa
+description: This guide describe how to install postfix on the modoboa platform
+head:
+  - - meta
+    - name: 'keywords'
+      content: 'modoboa, installation, postfix, mysql, postgresql, smtp, alias, relay, virtual' 
+---
+
 # Postfix
 
 This section gives an example about building a simple virtual hosting

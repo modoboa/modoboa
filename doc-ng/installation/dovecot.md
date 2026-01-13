@@ -1,3 +1,12 @@
+---
+title: manual step to install dovecot component on modoboa
+description: This guide describe how to install dovecot on the modoboa platform
+head:
+  - - meta
+    - name: 'keywords'
+      content: 'modoboa, installation, dovecot, mysql, postgresql, imapd' 
+---
+
 # Dovecot
 
 ## introduction

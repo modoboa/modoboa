@@ -1,3 +1,12 @@
+---
+title: manual step to install opendkim component on modoboa
+description: This guide describe how to install opendkim on the modoboa platform
+head:
+  - - meta
+    - name: 'keywords'
+      content: 'modoboa, installation, opendkim, mysql, postgresql, dkim' 
+---
+
 # OpenDKIM
 
 Modoboa can generate [DKIM](https://en.wikipedia.org/wiki/DomainKeys_Identified_Mail) keys

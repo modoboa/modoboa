@@ -1,3 +1,12 @@
+---
+title: plugin development guide for modoboa
+description: Discover how to develop a plugin for modoboa to extend functionnalities
+head:
+  - - meta
+    - name: 'keywords'
+      content: 'modoboa, plugin, extension, api, navigation, Django signals' 
+---
+
 # Create a new plugin
 
 ## Introduction
