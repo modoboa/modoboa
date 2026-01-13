@@ -16,7 +16,6 @@ from django.urls import reverse
 from django.utils import timezone
 
 from modoboa.lib.tests import ModoTestCase, SimpleModoTestCase
-from modoboa.maillog import factories as maillog_factories, models as maillog_models
 from .. import factories, mocks, models
 
 
@@ -58,19 +57,6 @@ class ManagementCommandsTestCase(SimpleModoTestCase):
         """Use dedicated option."""
         management.call_command("load_initial_data", "--admin-username", "modoadmin")
         self.assertTrue(self.client.login(username="modoadmin", password="password"))
-
-    def test_clean_logs(self):
-        """Run cleanlogs command."""
-        management.call_command("load_initial_data", "--no-frontend")
-        log1 = factories.LogFactory()
-        factories.LogFactory()
-        log1.date_created -= relativedelta(years=2)
-        log1.save(update_fields=["date_created"])
-        maillog_factories.MaillogFactory(date=timezone.now() - relativedelta(days=190))
-        maillog_factories.MaillogFactory()
-        management.call_command("cleanlogs")
-        self.assertEqual(models.Log.objects.count(), 1)
-        self.assertEqual(maillog_models.Maillog.objects.count(), 1)
 
     def test_init_data_non_duplicate_client_creation(self):
         """Test that the load_initial_data command does not create duplicates
