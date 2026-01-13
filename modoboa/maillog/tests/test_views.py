@@ -11,6 +11,7 @@ from django.test import override_settings
 
 from modoboa.admin import factories as admin_factories
 from modoboa.lib.tests import SimpleModoTestCase
+from modoboa.maillog import jobs
 
 
 class RunCommandsMixin:
@@ -36,14 +37,14 @@ class RunCommandsMixin:
         with open(path, "w") as fp:
             fp.write(content)
         self.set_global_parameter("logfile", path)
-        call_command("logparser")
+        jobs.logparser()
 
     def run_update_statistics(self, rebuild=False):
         """Run update_statistics command."""
-        args = []
         if rebuild:
-            args.append("--rebuild")
-        call_command("update_statistics", *args)
+            call_command("update_statistics", ["--rebuild"])
+        else:
+            jobs.update_statistics()
 
 
 @override_settings(RRDTOOL_TEST_MODE=True)

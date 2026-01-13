@@ -3,12 +3,18 @@
 from unittest import mock
 
 import dns.resolver
+from freezegun import freeze_time
+from rq import SimpleWorker
 from testfixtures import LogCapture
 
-from django.core import mail, management
+from django.core import mail
 from django.test import override_settings
 from django.utils.translation import gettext as _
 
+import django_rq
+
+from modoboa.admin import jobs
+from modoboa.admin.dns_checker import DNSChecker
 from modoboa.core import models as core_models, factories as core_factories
 from modoboa.lib.tests import ModoTestCase
 from . import utils
@@ -44,26 +50,26 @@ class MXTestCase(ModoTestCase):
         cls.localconfig.save()
         models.MXRecord.objects.all().delete()
 
-    @mock.patch("gevent.socket.gethostbyname")
+    @mock.patch("socket.gethostbyname")
     @mock.patch("socket.getaddrinfo")
     @mock.patch.object(dns.resolver.Resolver, "resolve")
-    def test_management_command(
-        self, mock_query, mock_getaddrinfo, mock_g_gethostbyname
-    ):
+    def test_dns_checker(self, mock_query, mock_getaddrinfo, mock_g_gethostbyname):
         """Check that command works fine."""
         mock_query.side_effect = utils.mock_dns_query_result
         mock_getaddrinfo.side_effect = utils.mock_ip_query_result
         mock_g_gethostbyname.return_value = "1.2.3.4"
+        self.set_global_parameter("enable_dnsbl_checks", False)
+
         self.assertEqual(models.MXRecord.objects.count(), 0)
         with LogCapture("modoboa.dns"):
-            management.call_command("modo", "check_mx", "--no-dnsbl", "--ttl=0")
+            DNSChecker().run(self.domain, ttl=0)
         self.assertTrue(models.MXRecord.objects.filter(domain=self.domain).exists())
 
         # we passed a ttl to 0. this will reset the cache this time
         qs = models.MXRecord.objects.filter(domain=self.domain)
         id_ = qs[0].id
         with LogCapture("modoboa.dns"):
-            management.call_command("modo", "check_mx", "--no-dnsbl", "--ttl=7200")
+            DNSChecker().run(self.domain)
         qs = models.MXRecord.objects.filter(domain=self.domain)
         self.assertNotEqual(id_, qs[0].id)
         id_ = qs[0].id
@@ -71,40 +77,11 @@ class MXTestCase(ModoTestCase):
         # assume that mxrecords ids are the same. means that we taking care of
         # ttl
         with LogCapture("modoboa.dns"):
-            management.call_command("modo", "check_mx", "--no-dnsbl")
+            DNSChecker().run(self.domain)
         qs = models.MXRecord.objects.filter(domain=self.domain)
         self.assertEqual(id_, qs[0].id)
 
-    @mock.patch("gevent.socket.gethostbyname")
-    @mock.patch("socket.getaddrinfo")
-    @mock.patch.object(dns.resolver.Resolver, "resolve")
-    def test_single_domain_update(
-        self, mock_query, mock_getaddrinfo, mock_g_gethostbyname
-    ):
-        """Update only one domain."""
-        mock_query.side_effect = utils.mock_dns_query_result
-        mock_getaddrinfo.side_effect = utils.mock_ip_query_result
-        mock_g_gethostbyname.return_value = "1.2.3.4"
-        with LogCapture("modoboa.dns"):
-            management.call_command("modo", "check_mx", "--domain", self.domain.name)
-        self.assertTrue(models.MXRecord.objects.filter(domain=self.domain).exists())
-        self.assertFalse(
-            models.MXRecord.objects.filter(domain=self.bad_domain).exists()
-        )
-
-        with LogCapture("modoboa.dns"):
-            management.call_command(
-                "modo", "check_mx", "--domain", str(self.bad_domain.pk)
-            )
-        self.assertFalse(
-            models.MXRecord.objects.filter(domain=self.bad_domain).exists()
-        )
-        self.assertEqual(len(mail.outbox), 1)
-
-        with LogCapture("modoboa.dns"):
-            management.call_command("modo", "check_mx", "--domain", "toto.com")
-
-    @mock.patch("gevent.socket.gethostbyname")
+    @mock.patch("socket.gethostbyname")
     @mock.patch("socket.getaddrinfo")
     @mock.patch.object(dns.resolver.Resolver, "resolve")
     def test_invalid_mx(self, mock_query, mock_getaddrinfo, mock_g_gethostbyname):
@@ -112,6 +89,8 @@ class MXTestCase(ModoTestCase):
         mock_query.side_effect = utils.mock_dns_query_result
         mock_getaddrinfo.side_effect = utils.mock_ip_query_result
         mock_g_gethostbyname.return_value = "1.2.3.4"
+        self.set_global_parameter("enable_dnsbl_checks", False)
+
         domain = factories.DomainFactory(name="invalid-mx.com")
         # Add domain admin with mailbox
         mb = factories.MailboxFactory(
@@ -122,14 +101,10 @@ class MXTestCase(ModoTestCase):
         )
         domain.add_admin(mb.user)
         with LogCapture("modoboa.dns"):
-            management.call_command(
-                "modo", "check_mx", "--domain", domain.name, "--no-dnsbl"
-            )
+            DNSChecker().run(domain)
         self.assertEqual(domain.alarms.count(), 1)
         with LogCapture("modoboa.dns"):
-            management.call_command(
-                "modo", "check_mx", "--domain", domain.name, "--no-dnsbl"
-            )
+            DNSChecker().run(domain)
         self.assertEqual(domain.alarms.count(), 1)
         self.assertEqual(len(mail.outbox), 1)
 
@@ -226,7 +201,16 @@ class DNSBLTestCase(ModoTestCase):
         """Create some data."""
         super().setUpTestData()
         cls.domain = factories.DomainFactory(name="modoboa.org")
-        factories.DomainFactory(name="does-not-exist.example.com")
+        # Add domain admin with mailbox
+        mb = factories.MailboxFactory(
+            address="admin",
+            domain=cls.domain,
+            user__username="admin@modoboa.org",
+            user__groups=("DomainAdmins",),
+        )
+        cls.domain.add_admin(mb.user)
+
+        cls.domain4 = factories.DomainFactory(name="does-not-exist.example.com")
         cls.domain2 = factories.DomainFactory(
             name="test.localhost"
         )  # Should not be checked
@@ -235,19 +219,29 @@ class DNSBLTestCase(ModoTestCase):
         )
         models.DNSBLResult.objects.all().delete()
 
-    @mock.patch("gevent.socket.gethostbyname")
+    @mock.patch("socket.gethostbyname")
     @mock.patch("socket.getaddrinfo")
     @mock.patch.object(dns.resolver.Resolver, "resolve")
-    def test_management_command(
-        self, mock_query, mock_getaddrinfo, mock_g_gethostbyname
-    ):
+    def test_job(self, mock_query, mock_getaddrinfo, mock_g_gethostbyname):
         """Check that command works fine."""
         mock_query.side_effect = utils.mock_dns_query_result
         mock_getaddrinfo.side_effect = utils.mock_ip_query_result
         mock_g_gethostbyname.return_value = "1.2.3.4"
         self.assertEqual(models.DNSBLResult.objects.count(), 0)
-        with LogCapture("modoboa.dns"):
-            management.call_command("modo", "check_mx")
+
+        with freeze_time(f"2026-01-12 14:{self.domain.id % 60:02}"):
+            jobs.handle_dns_checks()
+        with freeze_time(f"2026-01-12 14:{self.domain2.id % 60:02}"):
+            jobs.handle_dns_checks()
+        with freeze_time(f"2026-01-12 14:{self.domain3.id % 60:02}"):
+            jobs.handle_dns_checks()
+        with freeze_time(f"2026-01-12 14:{self.domain4.id % 60:02}"):
+            jobs.handle_dns_checks()
+
+        queue = django_rq.get_queue("modoboa")
+        worker = SimpleWorker([queue], connection=queue.connection)
+        worker.work(burst=True)
+
         self.assertTrue(models.DNSBLResult.objects.filter(domain=self.domain).exists())
         self.assertFalse(
             models.DNSBLResult.objects.filter(domain=self.domain3).exists()
@@ -255,7 +249,7 @@ class DNSBLTestCase(ModoTestCase):
         self.assertFalse(self.domain.uses_a_reserved_tld)
         self.assertTrue(self.domain2.uses_a_reserved_tld)
 
-    @mock.patch("gevent.socket.gethostbyname")
+    @mock.patch("socket.gethostbyname")
     @mock.patch("socket.getaddrinfo")
     @mock.patch.object(dns.resolver.Resolver, "resolve")
     def test_notifications(self, mock_query, mock_getaddrinfo, mock_g_gethostbyname):
@@ -264,24 +258,24 @@ class DNSBLTestCase(ModoTestCase):
         mock_getaddrinfo.side_effect = utils.mock_ip_query_result
         mock_g_gethostbyname.return_value = "127.0.0.4"
         with LogCapture("modoboa.dns"):
-            management.call_command("modo", "check_mx", "--email", "user@example.test")
-        self.assertEqual(len(mail.outbox), 2)
+            DNSChecker().run(self.domain)
+        self.assertEqual(len(mail.outbox), 1)
 
-    @mock.patch("gevent.socket.gethostbyname")
+    @mock.patch("socket.gethostbyname")
     @mock.patch("socket.getaddrinfo")
     @mock.patch.object(dns.resolver.Resolver, "resolve")
     def test_notifications_wrong_dnsbl_response(
         self, mock_query, mock_getaddrinfo, mock_g_gethostbyname
     ):
         """Check notifications."""
+        self.set_global_parameter("enable_dnsbl_checks", True)
         mock_query.side_effect = utils.mock_dns_query_result
         mock_getaddrinfo.side_effect = utils.mock_ip_query_result
         mock_g_gethostbyname.return_value = "127.255.255.254"  # <--Spamhaus response when querying from an open resolver
-        with LogCapture("modoboa.dns"):
-            management.call_command("modo", "check_mx", "--email", "user@example.test")
-        self.assertEqual(len(mail.outbox), 1)
+        DNSChecker().run(self.domain)
+        self.assertEqual(len(mail.outbox), 0)
 
-    @mock.patch("gevent.socket.gethostbyname")
+    @mock.patch("socket.gethostbyname")
     @mock.patch("socket.getaddrinfo")
     @mock.patch.object(dns.resolver.Resolver, "resolve")
     def test_management_command_no_dnsbl(
@@ -291,9 +285,10 @@ class DNSBLTestCase(ModoTestCase):
         mock_query.side_effect = utils.mock_dns_query_result
         mock_getaddrinfo.side_effect = utils.mock_ip_query_result
         mock_g_gethostbyname.return_value = "1.2.3.4"
+        self.set_global_parameter("enable_dnsbl_checks", False)
         self.assertEqual(models.DNSBLResult.objects.count(), 0)
         with LogCapture("modoboa.dns"):
-            management.call_command("modo", "check_mx", "--no-dnsbl")
+            DNSChecker().run(self.domain)
         self.assertFalse(models.DNSBLResult.objects.filter(domain=self.domain).exists())
 
 
@@ -306,7 +301,7 @@ class DNSChecksTestCase(ModoTestCase):
         super().setUpTestData()
         cls.domain = factories.DomainFactory(name="dns-checks.com")
 
-    @mock.patch("gevent.socket.gethostbyname")
+    @mock.patch("socket.gethostbyname")
     @mock.patch("socket.getaddrinfo")
     @mock.patch.object(dns.resolver.Resolver, "resolve")
     def test_management_command(
@@ -316,13 +311,14 @@ class DNSChecksTestCase(ModoTestCase):
         mock_query.side_effect = utils.mock_dns_query_result
         mock_getaddrinfo.side_effect = utils.mock_ip_query_result
         mock_g_gethostbyname.return_value = "1.2.3.4"
+        self.set_global_parameter("enable_dnsbl_checks", False)
 
         self.domain.enable_dkim = True
         self.domain.dkim_public_key = "XXXXX"
         self.domain.save(update_fields=["enable_dkim", "dkim_public_key"])
 
         with LogCapture("modoboa.dns"):
-            management.call_command("modo", "check_mx", "--no-dnsbl", "--ttl=0")
+            DNSChecker().run(self.domain, ttl=0)
 
         self.assertIsNot(self.domain.spf_record, None)
         self.assertIsNot(self.domain.dkim_record, None)
