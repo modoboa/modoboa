@@ -1,6 +1,5 @@
 """mailutils tests"""
 
-import io
 import unittest
 
 from modoboa.webmail.lib.imaputils import IMAPconnector
@@ -23,7 +22,7 @@ class ImapUtilsTestCase(unittest.TestCase):
         """Test with both Criterion and pattern"""
         self.imap_connector.criterions = []
         self.imap_connector.parse_search_parameters("both", "bob")
-        result = [bytearray('(FROM "bob") OR (SUBJECT "bob")', "utf8")]
+        result = [bytearray('OR (FROM "bob") (SUBJECT "bob")', "utf8")]
         self.assertEqual(self.imap_connector.criterions, result)
 
     def test_criterions_one_criterion_without_pattern(self):
