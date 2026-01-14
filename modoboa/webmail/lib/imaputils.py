@@ -292,16 +292,21 @@ class IMAPconnector:
             return f"OR {old} {c}"
 
         if criterion == "both":
-            criterion = "from_addr, subject"
-        criterions = ""
-        for c in criterion.split(","):
-            if c == "from_addr":
-                key = "FROM"
-            elif c == "subject":
-                key = "SUBJECT"
-            else:
-                continue
-            criterions = or_criterion(criterions, f'({key} "{pattern}")')
+            criterion = "from_addr,subject"
+
+        if not pattern:
+            criterions = "ALL"
+        else:
+            criterions = ""
+            for c in criterion.split(","):
+                if c == "from_addr":
+                    key = "FROM"
+                elif c == "subject":
+                    key = "SUBJECT"
+                else:
+                    continue
+                criterions = or_criterion(criterions, f'({key} "{pattern}")')
+
         self.criterions = [bytearray(criterions, "utf8")]
 
     def messages_count(self, **kwargs) -> int:
