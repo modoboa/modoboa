@@ -31,7 +31,11 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         """Entry point."""
-        loop = asyncio.get_event_loop()
+        try:
+            loop = asyncio.get_event_loop()
+        except RuntimeError:
+            loop = asyncio.new_event_loop()
+            asyncio.set_event_loop(loop)
         coro = asyncio.start_server(
             core.new_connection, options["host"], options["port"]
         )
