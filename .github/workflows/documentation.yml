@@ -1,0 +1,33 @@
+on:
+  push:
+    branches: [ master ]
+    paths-ignore:
+      - 'modoboa/**'
+      - 'frontend/**'
+      - 'doc/**'
+  pull_request:
+    branches: [ master ]
+    paths-ignore:
+      - 'modoboa/**'
+      - 'frontend/**'
+      - 'doc/**'
+
+jobs:
+  cache-and-install:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        name: Install pnpm
+        with:
+          version: 10
+          cache: true
+
+      - name: Install dependencies
+        run: cd doc-ng && pnpm install
+
+      - name: Build documentation
+        run: cd doc-ng && pnpm run build
