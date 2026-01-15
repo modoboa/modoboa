@@ -11,6 +11,10 @@ on:
       - 'frontend/**'
       - 'doc/**'
       - 'doc-ng/**'
+      - '.editorconfig'
+      - '.readthedocs.yml'
+      - '.pre-commit-config.yaml'
+      - '.gitignore'
   pull_request:
     branches: [ master ]
     paths-ignore:
@@ -18,6 +22,10 @@ on:
       - 'frontend/**'
       - 'doc/**'
       - 'doc-ng/**'
+      - '.editorconfig'
+      - '.readthedocs.yml'
+      - '.pre-commit-config.yaml'
+      - '.gitignore'
   release:
     branches: [ master ]
     types: [ published ]

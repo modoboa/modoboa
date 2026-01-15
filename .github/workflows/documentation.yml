@@ -31,4 +31,3 @@ jobs:
 
       - name: Build documentation
         run: cd doc-ng && pnpm run build
-      
