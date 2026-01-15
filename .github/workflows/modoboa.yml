@@ -10,12 +10,22 @@ on:
       - 'modoboa/**.po'
       - 'frontend/**'
       - 'doc/**'
+      - 'doc-ng/**'
+      - '.editorconfig'
+      - '.readthedocs.yml'
+      - '.pre-commit-config.yaml'
+      - '.gitignore'
   pull_request:
     branches: [ master ]
     paths-ignore:
       - 'modoboa/**.po'
       - 'frontend/**'
       - 'doc/**'
+      - 'doc-ng/**'
+      - '.editorconfig'
+      - '.readthedocs.yml'
+      - '.pre-commit-config.yaml'
+      - '.gitignore'
   release:
     branches: [ master ]
     types: [ published ]

@@ -1,10 +1,17 @@
 version: 2
-sphinx:
-  configuration: doc/conf.py
+
 build:
-  os: "ubuntu-22.04"
+  os: ubuntu-lts-latest
   tools:
-    python: "3.10"
-python:
-  install:
-    - requirements: doc/requirements.txt
+    nodejs: "latest"
+  jobs:
+    install:
+      - npm install vitepress
+    build:
+      html:
+        # The site was created by running `vitepress init`
+        # and following the official guide
+        # https://vitepress.dev/guide/getting-started
+        - ./node_modules/.bin/vitepress build doc-ng
+        - mkdir -p $READTHEDOCS_OUTPUT/
+        - mv doc-ng/dist $READTHEDOCS_OUTPUT/html

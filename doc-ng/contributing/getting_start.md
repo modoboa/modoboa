@@ -1,0 +1,150 @@
+---
+title: Getting stated with modoboa
+description: Discover how to develop and extend modoboa
+head:
+  - - meta
+    - name: 'keywords'
+      content: 'modoboa, getting started, backend, frontend, docker' 
+---
+
+# Getting started
+
+You would like to work on Modoboa but you don\'t know where to start?
+You're at the right place! Browse this page to learn useful tips.
+
+## With Docker
+
+A docker image is available for developers. 
+
+To use it, you must install docker and docker-compose
+
+* [docker](https://docs.docker.com/install/) and
+* [docker-compose](https://docs.docker.com/compose/install/) first.
+
+If not already done, clone the repo and open it:
+
+```shell
+$ git clone https://github.com/modoboa/modoboa.git
+$ cd modoboa
+```
+
+Then, just run the following command:
+
+```shell
+$ docker-compose up
+```
+
+Then if not done already, run this command to create an OIDC application in order to be able to log in from the frontend:
+
+``` bash
+$ docker exec modoboa-api '/bin/sh -c python3 /code/test_project/manage.py createapplication --name frontend --client-id "LVQbfIIX3khWR3nDvix1u9yEGHZUxcx53bhJ7FlD" --user 1 --algorithm RS256 --redirect-uris 'https://localhost:3000/login/logged' public authorization-code'
+$ docker exec modoboa-api '/bin/sh -c python3 /code/test_project/manage.py createapplication --name Dovecot --skip-authorization --client-id=dovecot --client-secret=Toto12345 confidential client-credentials'
+```
+
+It will start the docker environment and make a Modoboa instance available at `https://localhost:8000`
+and the new admin interface at `https://localhost:3000`.
+
+If you don't want to use docker or need a more complex development setup, go to the next section.
+
+## Without Docker
+
+### Prepare a virtual environment
+
+A [virtual environment](https://docs.python.org/fr/3/library/venv.html)
+is a good way to setup a development environment on your machine.
+
+To do so, run the following commands:
+
+```shell
+$ python3 -m venv <path>
+$ source <path>/bin/activate
+$ git clone https://github.com/modoboa/modoboa.git
+$ cd modoboa
+$ pip install -e .[dev]
+```
+
+This will create a symbolic link to your local copy so any modification
+you make will be automatically available in your environment,
+no need to copy them.
+
+### Deploy an instance for development
+
+::: warning
+Make sure to `create a database <database>` before running this step. 
+
+The format of the database url is also described in this page.
+:::
+
+Now that you have setup a development environment, you can deploy a test instance and run it:
+
+```shell
+$ cd <path>
+$ modoboa-admin.py deploy --dburl default:<database url> --domain localhost --devel instance
+$ python manage.py runserver
+```
+
+You're ready to go! You should be able to access Modoboa at `http://localhost:8000` using `admin:password` as credentials.
+
+## Frontend
+
+The 2.0 version of Modoboa introduces a completely new interface written with the [Vue.js](https://vuejs.org/) framework. 
+
+The source files are located in the `frontend/`{.interpreted-text role="file"} directory.
+
+To set it up, you will need to install NodeJS and Yarn - to manage the
+dependencies. 
+
+Then, navigate to the `frontend/` directory and run:
+
+```shell
+$ yarn install
+```
+
+You can now build it and serve it - while running your instance too to
+serve the API - with:
+
+```shell
+$ yarn serve
+```
+
+## Tests
+
+If you deployed an instance for development, you can launch the tests from it with:
+
+```shell
+$ python manage.py test modoboa
+```
+
+You could also test just some them, i.e.:
+
+```shell
+$ python manage.py test modoboa.core.tests.test_authentication
+```
+
+Alternatively, you can use [tox](https://tox.readthedocs.io) 
+from the repository to run all the tests and check the coverage with:
+
+```shell
+$ tox
+```
+
+You could limit the environment to a specific Python version with the `-e py<version>` argument.
+
+Note that it is also possible to quickly run a test instance without any deployment - e.g. to preview some changes - by running:
+
+```shell
+$ tox -e serve
+```
+
+## Documentation
+
+The source files are located in the `/doc-ng/`[ folder and are
+written in markdown. 
+
+They are formatted in HTML and compiled thanks to VitePress
+
+To build it and see the result, run:
+
+```shell
+$ npm run dev
+```
