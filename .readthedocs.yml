@@ -14,4 +14,4 @@ build:
         # https://vitepress.dev/guide/getting-started
         - ./node_modules/.bin/vitepress build doc-ng
         - mkdir -p $READTHEDOCS_OUTPUT/
-        - mv doc-ng/.vitepress/dist $READTHEDOCS_OUTPUT/html
+        - mv doc-ng/dist $READTHEDOCS_OUTPUT/html
