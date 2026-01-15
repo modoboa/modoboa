@@ -3,10 +3,10 @@
 import asyncio
 from aiosmtplib import send
 from unittest.mock import AsyncMock
+import multiprocessing
 from multiprocessing import Process
 import socket
 import time
-
 
 from django import db
 from django.core.management import call_command
@@ -20,6 +20,8 @@ from modoboa.lib.tests import ModoAPITestCase, ParametersMixin
 from modoboa.policyd import core as policyd_core
 
 from . import constants
+
+multiprocessing.set_start_method("fork")
 
 
 def start_policy_daemon():
@@ -56,7 +58,7 @@ class PolicyDaemonTestCase(RedisTestCaseMixin, ParametersMixin, TransactionTestC
         self.process.daemon = True
         self.process.start()
         # Wait a bit for the daemon to start
-        self.process.join(0.1)
+        self.process.join(1.0)
 
     def set_domain_limit(self, name, value):
         """Set daily limit for domain."""
