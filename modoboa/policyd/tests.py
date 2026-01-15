@@ -21,6 +21,8 @@ from modoboa.policyd import core as policyd_core
 
 from . import constants
 
+multiprocessing.set_start_method("fork")
+
 
 def start_policy_daemon():
     call_command("policy_daemon")
@@ -52,7 +54,6 @@ class PolicyDaemonTestCase(RedisTestCaseMixin, ParametersMixin, TransactionTestC
 
         db.connections.close_all()
         self.send_mock = AsyncMock(send)
-        multiprocessing.set_start_method("fork")
         self.process = Process(target=start_policy_daemon)
         self.process.daemon = True
         self.process.start()
