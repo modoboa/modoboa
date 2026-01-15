@@ -56,7 +56,7 @@ class PolicyDaemonTestCase(RedisTestCaseMixin, ParametersMixin, TransactionTestC
         self.process.daemon = True
         self.process.start()
         # Wait a bit for the daemon to start
-        self.process.join(0.1)
+        self.process.join(1.0)
 
     def set_domain_limit(self, name, value):
         """Set daily limit for domain."""
