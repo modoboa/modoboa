@@ -1,4 +1,4 @@
-FROM python:3.12-alpine3.20 AS base
+FROM python:3.14-alpine AS base
 
 LABEL org.opencontainers.image.authors="Antoine Nguyen <tonio@ngyn.org>"
 
