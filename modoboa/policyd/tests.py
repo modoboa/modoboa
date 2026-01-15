@@ -3,10 +3,10 @@
 import asyncio
 from aiosmtplib import send
 from unittest.mock import AsyncMock
+import multiprocessing
 from multiprocessing import Process
 import socket
 import time
-
 
 from django import db
 from django.core.management import call_command
@@ -52,6 +52,7 @@ class PolicyDaemonTestCase(RedisTestCaseMixin, ParametersMixin, TransactionTestC
 
         db.connections.close_all()
         self.send_mock = AsyncMock(send)
+        multiprocessing.set_start_method("fork")
         self.process = Process(target=start_policy_daemon)
         self.process.daemon = True
         self.process.start()
