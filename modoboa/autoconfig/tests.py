@@ -10,7 +10,8 @@ class ViewsTestCase(TestCase):
         url = reverse("autoconfig:autoconfig")
 
         resp = self.client.get(url)
-        self.assertEqual(resp.status_code, 404)
+        self.assertEqual(resp.status_code, 200)
+        self.assertIn(b"%EMAILLOCALPART%@%EMAILDOMAIN%", resp.content)
 
         resp = self.client.get(f"{url}?emailaddress=test@test.com")
         self.assertEqual(resp.status_code, 200)
