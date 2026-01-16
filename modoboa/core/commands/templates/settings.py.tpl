@@ -313,6 +313,13 @@ RQ_QUEUES = {
         'DB': REDIS_QUOTA_DB,
         'URL': REDIS_URL,
     },
+    'privileged': {
+        'HOST': REDIS_HOST,
+        'PORT': REDIS_PORT,
+        'DB': REDIS_QUOTA_DB,
+        'URL': REDIS_URL,
+    },
+
 }
 
 # CACHE

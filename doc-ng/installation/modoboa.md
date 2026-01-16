@@ -309,6 +309,19 @@ numprocs=1
 stopsignal=TERM
 ```
 
+## Privileged worker
+``` ini
+[program:modoboa-privileged-worker]
+autostart=true
+autorestart=true
+command=<path to Python binary inside the virtual environment> <path to Modoboa instance>/manage.py rqworker privileged
+directory=<modoboa user home dir>
+user=root
+redirect_stderr=true
+numprocs=1
+stopsignal=TERM
+```
+
 ## General worker
 ``` ini
 [program:modoboa-base-worker]
