@@ -18,33 +18,35 @@
         @drop="onDrop(mailbox)"
       >
         <v-icon :icon="iconByMailboxType[mailbox.type]" class="mr-4" />
-        <template v-if="mailbox.name === route.query.mailbox">
-          <span v-if="currentMailboxUnseen > 0" class="font-weight-bold">
-            {{ getMailboxLabel(mailbox) }} ({{
-              getCurrentMailboxUnseen(mailbox)
-            }})
-          </span>
-          <span v-else>
-            {{ getMailboxLabel(mailbox) }}
-          </span>
+        <template v-if="!props.rail">
+          <template v-if="mailbox.name === route.query.mailbox">
+            <span v-if="currentMailboxUnseen > 0" class="font-weight-bold">
+              {{ getMailboxLabel(mailbox) }} ({{
+                getCurrentMailboxUnseen(mailbox)
+              }})
+            </span>
+            <span v-else>
+              {{ getMailboxLabel(mailbox) }}
+            </span>
+          </template>
+          <template v-else>
+            <span v-if="mailbox.unseen > 0" class="font-weight-bold">
+              {{ getMailboxLabel(mailbox) }} ({{ mailbox.unseen }})
+            </span>
+            <span v-else>
+              {{ getMailboxLabel(mailbox) }}
+            </span>
+          </template>
+          <v-spacer />
+          <v-btn
+            v-if="mailbox.sub"
+            :icon="getMailboxState(mailbox) ? 'mdi-minus' : 'mdi-plus'"
+            size="xsmall"
+            variant="flat"
+            color="transparent"
+            @click="toggleMailbox(mailbox)"
+          />
         </template>
-        <template v-else>
-          <span v-if="mailbox.unseen > 0" class="font-weight-bold">
-            {{ getMailboxLabel(mailbox) }} ({{ mailbox.unseen }})
-          </span>
-          <span v-else>
-            {{ getMailboxLabel(mailbox) }}
-          </span>
-        </template>
-        <v-spacer />
-        <v-btn
-          v-if="mailbox.sub"
-          :icon="getMailboxState(mailbox) ? 'mdi-minus' : 'mdi-plus'"
-          size="xsmall"
-          variant="flat"
-          color="transparent"
-          @click.stop="toggleMailbox(mailbox)"
-        />
       </div>
       <MailboxList
         v-if="getMailboxState(mailbox) && mailbox.sub && mailbox.sub.length"
@@ -83,6 +85,10 @@ const props = defineProps({
     default: true,
   },
   allowUnselect: {
+    type: Boolean,
+    default: false,
+  },
+  rail: {
     type: Boolean,
     default: false,
   },
@@ -194,9 +200,12 @@ watch(
   &:hover {
     border-radius: 5px;
   }
-}
 
-.mailbox * {
-  pointer-events: none;
+  i {
+    pointer-events: none;
+  }
+  span {
+    pointer-events: none;
+  }
 }
 </style>
