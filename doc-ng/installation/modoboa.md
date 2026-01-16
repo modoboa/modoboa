@@ -4,14 +4,14 @@ description: This guide describe how to install core on the modoboa platform
 head:
   - - meta
     - name: 'keywords'
-      content: 'modoboa, installation, core, mysql, postgresql, cron' 
+      content: 'modoboa, installation, core, mysql, postgresql, cron'
 ---
 
-# Modoboa 
+# Modoboa
 
 This section describes the installation of the web interface (a [Django](https://www.djangoproject.com/) project).
 
-This proposed configuration is the one you can find with `modoboa-installer`. 
+This proposed configuration is the one you can find with `modoboa-installer`.
 
 For up to date configuration, [take a look here](https://github.com/modoboa/modoboa-installer/tree/master/modoboa_installer/scripts/files/modoboa/)
 
@@ -35,18 +35,18 @@ $ source ./env/bin/activate          # activate the virtual environment
 
 ::: warning
 Modoboa depends on external tools and some of them require compilation
-so you need a compiler and a few C libraries. 
+so you need a compiler and a few C libraries.
 :::
 
 ::: tip INFORMATION
 Make sure to install the following system packages according to your distribution:
 
 * Debian / Ubuntu
-  * build-essential 
+  * build-essential
   * python3-dev
-  * libxml2-dev 
+  * libxml2-dev
   * libxslt-dev
-  * libjpeg-dev 
+  * libjpeg-dev
   * librrd-dev
   * rrdtool
   * libffi-dev
@@ -54,8 +54,8 @@ Make sure to install the following system packages according to your distributio
   * libcairo2-dev
 
 * CentOS / Redhat
-  * gcc 
-  * gcc-c++ 
+  * gcc
+  * gcc-c++
   * python3-devel
   * libxml2-devel
   * libxslt-devel
@@ -67,13 +67,13 @@ Make sure to install the following system packages according to your distributio
 ::: info
 
 Alternatively, you could rely on your distribution packages for the
-Modoboa dependencies which require compilation 
+Modoboa dependencies which require compilation
 * e.g. `rrdtool` - if the version is compatible.
-  In this case, you have to create your virtual environment 
+  In this case, you have to create your virtual environment
   with the `--system-site-packages` option, and the required
   system packages will be:
 
-  * python3-wheel 
+  * python3-wheel
   * python3-rrdtool
   * rrdtool
 :::
@@ -100,7 +100,7 @@ Thanks to Django, Modoboa is compatible with the following databases:
 Since the last one does not require particular actions, only the first
 two ones are described.
 
-You should also read the notes for those database backends on the 
+You should also read the notes for those database backends on the
 [official Django documentation](https://docs.djangoproject.com/en/stable/ref/databases/).
 
 ### PostgreSQL
@@ -117,7 +117,7 @@ starting modoboa 2.2.0 minimum version required is 3.1 and it has not
 yet it these distro yet Prior modoboa version can run with `python3-psycopg2`.
 :::
 
-Then, create a user and a database. 
+Then, create a user and a database.
 
 For example, to create the `modoboa` database owned by a `modoboa` user,
 run the following commands on your PostgreSQL server as `root` or admin user:
@@ -135,7 +135,7 @@ Install the corresponding Python binding:
 (env)$ pip install mysqlclient
 ```
 
-::: tip 
+::: tip
 Alternatively, you can install the `python3-mysqldb` package instead on
 Debian-based distributions if your virtual environment was created with
 `--system-site-packages` option.
@@ -227,23 +227,8 @@ Create a new file, for example `/etc/cron.d/modoboa` and put the following conte
 PYTHON=<path to Python binary inside the virtual environment>
 INSTANCE=<path to Modoboa instance>
 
-# Operations on mailboxes
-*     *  *  *  *  <mailbox user>    $PYTHON $INSTANCE/manage.py handle_mailbox_operations
-
-# Generate DKIM keys (they will belong to the user running this job)
-*     *  *  *  *  root     umask 077 && $PYTHON $INSTANCE/manage.py modo manage_dkim_keys
-
 # Sessions table cleanup
 0     0  *  *  *  root  $PYTHON $INSTANCE/manage.py clearsessions
-# Logs table cleanup
-0     0  *  *  *  root  $PYTHON $INSTANCE/manage.py cleanlogs
-# Logs parsing
-*/15  *  *  *  *  root     $PYTHON $INSTANCE/manage.py logparser &> /dev/null
-0     *  *  *  *  modoboa  $PYTHON $INSTANCE/manage.py update_statistics
-# DNSBL checks
-*/30  *  *  *  *  modoboa  $PYTHON $INSTANCE/manage.py modo check_mx
-# Public API communication
-0     *  *  *  *  modoboa  $PYTHON $INSTANCE/manage.py communicate_with_public_api
 ```
 
 ::: tip TIPS
@@ -259,7 +244,7 @@ the UI are updated once per day only.
 
 ## Policy daemon {#policy_daemon}
 
-Modoboa comes with a built-in 
+Modoboa comes with a built-in
 [Policy Daemon for Postfix](http://www.postfix.org/SMTPD_POLICY_README.html).
 Current features are:
 
@@ -304,13 +289,40 @@ A worker needs to be launched in the venv.
 You can launch it manually using the following command:
 
 ``` shell
-(env)> rq worker high default low
+(env)> rq worker modoboa dkim dovecot
 ```
 
 But we recommend an automatic start using `systemd` or `supervisor`.
 
-Here is a configuration example for `supervisor`:
+You'll find configuration examples for `supervisor` in next sections.
 
+## Cron scheduler
+``` ini
+[program:rq-scheduler]
+autostart=true
+autorestart=true
+command=<path to Python binary inside the virtual environment> <path to Modoboa instance>/manage.py rqcron <path to Modoboa instance>/instance/cron_config.py
+directory=<modoboa user home dir>
+user=<modoboa user>
+redirect_stderr=true
+numprocs=1
+stopsignal=TERM
+```
+
+## General worker
+``` ini
+[program:modoboa-base-worker]
+autostart=true
+autorestart=true
+command=<path to Python binary inside the virtual environment> <path to Modoboa instance>/manage.py rqworker modoboa
+directory=<modoboa user home dir>
+user=<modoboa user>
+redirect_stderr=true
+numprocs=1
+stopsignal=TERM
+```
+
+## DKIM worker
 ``` ini
 [program:modoboa-dkim-worker]
 autostart=true
@@ -318,6 +330,19 @@ autorestart=true
 command=<path to Python binary inside the virtual environment> <path to Modoboa instance>/manage.py rqworker dkim
 directory=<modoboa user home dir>
 user=<opendkim user>
+redirect_stderr=true
+numprocs=1
+stopsignal=TERM
+```
+
+## Dovecot worker
+``` ini
+[program:modoboa-dkim-worker]
+autostart=true
+autorestart=true
+command=<path to Python binary inside the virtual environment> <path to Modoboa instance>/manage.py rqworker dovecot
+directory=<modoboa user home dir>
+user=vmail
 redirect_stderr=true
 numprocs=1
 stopsignal=TERM
