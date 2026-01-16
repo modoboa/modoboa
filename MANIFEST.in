@@ -4,4 +4,4 @@ recursive-include modoboa/frontend_dist *
 recursive-include modoboa *.html *.js *.css *.png *.po *.mo *.json *.gif *.ttf *.woff *.woff2
 recursive-include modoboa/core/templates *.tpl
 recursive-include modoboa/core/commands/templates *.tpl
-recursive-include doc *
+recursive-include doc-ng *
