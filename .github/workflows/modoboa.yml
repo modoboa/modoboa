@@ -9,7 +9,6 @@ on:
     paths-ignore:
       - 'modoboa/**.po'
       - 'frontend/**'
-      - 'doc/**'
       - 'doc-ng/**'
       - '.editorconfig'
       - '.readthedocs.yml'
@@ -20,7 +19,6 @@ on:
     paths-ignore:
       - 'modoboa/**.po'
       - 'frontend/**'
-      - 'doc/**'
       - 'doc-ng/**'
       - '.editorconfig'
       - '.readthedocs.yml'
