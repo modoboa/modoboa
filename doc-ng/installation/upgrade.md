@@ -200,7 +200,12 @@ Replace `<minute>`, `<hour_start>` and `<hour_end>` variables with random values
 
 ### RQ update
 
-Make sure all [RQ related processes are configured and started](modoboa/#rq-daemon).
+Make sure all [RQ related processes are configured and started](./modoboa#rq-daemon).
+
+### Cron tasks cleanup
+
+Make sure to remove deprecated cron tasks. Follow [installation
+instructions](./modoboa#cron-jobs) to know the up-to-date list.
 
 ## Version 2.6.1
 
