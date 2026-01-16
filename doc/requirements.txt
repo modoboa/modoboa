@@ -1,2 +1,0 @@
-docutils<0.23
-sphinx_rtd_theme

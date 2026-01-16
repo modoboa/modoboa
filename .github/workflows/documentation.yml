@@ -4,13 +4,11 @@ on:
     paths-ignore:
       - 'modoboa/**'
       - 'frontend/**'
-      - 'doc/**'
   pull_request:
     branches: [ master ]
     paths-ignore:
       - 'modoboa/**'
       - 'frontend/**'
-      - 'doc/**'
 
 jobs:
   cache-and-install:
