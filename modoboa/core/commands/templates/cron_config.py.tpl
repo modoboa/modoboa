@@ -20,10 +20,10 @@ register(
 register(admin_jobs.handle_mailbox_operations, queue_name="dovecot", cron="* * * * *")
 register(admin_jobs.handle_dns_checks, queue_name="modoboa", cron="* * * * *")
 
-register(maillog_jobs.logparser, queue_name="modoboa", cron="*/5 * * * *")
+register(maillog_jobs.logparser, queue_name="privileged", cron="*/5 * * * *")
 register(maillog_jobs.update_statistics, queue_name="modoboa", cron="0 * * * *")
 
-register(calendars_jobs.generate_rights, queue_name="modoboa", cron="*/2 * * * *")
+register(calendars_jobs.generate_rights, queue_name="privileged", cron="*/2 * * * *")
 
 if "modoboa.amavis" in settings.MODOBOA_APPS:
     register(amavis_jobs.qcleanup, queue_name="modoboa", cron="0 0 * * *")
