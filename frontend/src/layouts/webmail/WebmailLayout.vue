@@ -6,7 +6,6 @@
         :rail="rail"
         permanent
         color="primary"
-        app
       >
         <template #prepend>
           <div class="d-flex align-center">
@@ -21,10 +20,19 @@
 
           <div class="d-flex justify-center mb-4">
             <v-btn
+              v-if="!rail"
               :text="$gettext('Compose')"
               color="secondary"
               variant="flat"
               prepend-icon="mdi-pencil"
+              @click="openComposeForm"
+            />
+            <v-btn
+              v-else
+              icon="mdi-pencil"
+              color="secondary"
+              variant="flat"
+              size="small"
               @click="openComposeForm"
             />
           </div>
@@ -33,6 +41,7 @@
           v-model="selectedMailbox"
           :mailboxes="userMailboxes"
           class="mr-2"
+          :rail="rail"
           @update:model-value="openMailbox"
         />
         <template #append>
