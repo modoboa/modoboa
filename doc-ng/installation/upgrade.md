@@ -4,7 +4,7 @@ description: This guide perform how to upgrade your current Modoboa instance to 
 head:
   - - meta
     - name: 'keywords'
-      content: 'modoboa, installation, upgrade, procedure' 
+      content: 'modoboa, installation, upgrade, procedure'
 ---
 
 # Upgrade
@@ -12,19 +12,19 @@ head:
 ## Modoboa
 
 ::: tip
-In this doc, `by default` means that you used [modoboa installer](https://github.com/modoboa/modoboa-installer) 
+In this doc, `by default` means that you used [modoboa installer](https://github.com/modoboa/modoboa-installer)
 to install modoboa and that your didn't change your configuration.
 :::
 
 ::: warning
-The new version you are going to install may need to modify your database. 
+The new version you are going to install may need to modify your database.
 
-Before you start, make sure to backup everything !!! 
+Before you start, make sure to backup everything !!!
 ::::
 
-Most of the time, upgrading your installation to a newer Modoboa version only requires a few actions. 
+Most of the time, upgrading your installation to a newer Modoboa version only requires a few actions.
 
-In every case, you will need to apply the specific actions if the version you are installing requires it, 
+In every case, you will need to apply the specific actions if the version you are installing requires it,
 and then apply the general ones.
 
 In case you use a dedicated user and/or a virtualenv, do not forget to use them:
@@ -35,7 +35,7 @@ $ source <virtuenv_path>/bin/activate
 ```
 
 ::: info Be Careful
-Check the `specific_upgrade_instructions` 
+Check the `specific_upgrade_instructions`
 before running the following commands.
 :::
 
@@ -59,7 +59,7 @@ $ sudo systemctl restart supervisor
 
 Finally, restart your web server.
 
-Sometimes, you might need to upgrade postfix map files too. 
+Sometimes, you might need to upgrade postfix map files too.
 
 To do so, just run the `generate_postfix_maps` command on the same directory than
 the one used for installation (`/etc/postfix` by default).
@@ -75,7 +75,7 @@ Then, `reload postfix`.
 ## Modoboa installer
 
 ::: warning
-It is important to keep the installer updated because it works on rolling release. 
+It is important to keep the installer updated because it works on rolling release.
 :::
 
 To do that, go to modoboa-installer directory then:
@@ -96,9 +96,9 @@ $ git reset --hard origin/master
 Do not open an issue after an upgrade if you have not updated your extensions !
 :::
 
-If a new version is available for an extension you're using, it is recommanded to install it. 
+If a new version is available for an extension you're using, it is recommanded to install it.
 
-It may even be required. Upgrading an extensions is pretty and the procedure is almost 
+It may even be required. Upgrading an extensions is pretty and the procedure is almost
 the same than the one used for Modoboa.
 
 In case you use a dedicated user and/or a virtualenv, **do not forget** to use them:
@@ -133,7 +133,7 @@ The section below containt specific migration steps to upgrade Modoboa instance.
 
 ## Version 2.6.1
 
-### Required changes to `settings.py` 
+### Required changes to `settings.py`
 
 * Add the following lines to `LOGGING` variable:
 
@@ -177,9 +177,20 @@ New built-in auto-configuration service.
   'autodiscover.<MY DOMAIN>',
   ```
 
-* Add the following variable:
+* Add and adjust the following variable:
 
   ``` python
+  # E-Mail client settings used for AutoDiscovery information served to clients
+  #
+  # Not used for Modoboa WebMail; configure that in the Modoboa admin settings.
+  #
+  #  * HOSTNAME: External hostname that clients should connect to
+  #     * Supports Thunderbird-style placeholders to substitute values from the
+  #       email address originally entered into the mail client:
+  #       %EMAILADDRESS%, %EMAILLOCALPART%, %EMAILDOMAIN%
+  #  * SOCKET_TYPE: Actually the encryption settings
+  #     * May be one of: 'SSL' (immediate TLS), 'STARTTLS' or 'plain' (bad)
+  #  * PORT: TCP port that the client should use when connecting to the server
   EMAIL_CLIENT_CONNECTION_SETTINGS = {
       "imap": {
           "HOSTNAME": "<YOUR HOSTNAME HERE>",
@@ -206,9 +217,9 @@ New built-in auto-configuration service.
 
 ## Version 2.5.0
 
-Amavis plugin integrated into Modoboa core repository. 
+Amavis plugin integrated into Modoboa core repository.
 
-If you are using Amavis content filter and the quarantine plugin, 
+If you are using Amavis content filter and the quarantine plugin,
 the following upgrade instructions, otherwise proceed with regular upgrade instructions.
 
 ### Pre update
@@ -265,7 +276,7 @@ the following upgrade instructions, otherwise proceed with regular upgrade instr
 ## Version 2.4.0
 
 ::: warning
-The `modoboa-amavis` extension has not been migrated into the core Modoboa package yet. 
+The `modoboa-amavis` extension has not been migrated into the core Modoboa package yet.
 
 If you are using it, **you cannot install version 2.4.0 yet**.
 :::
@@ -300,7 +311,7 @@ Legacy web interface has been removed and almost all extensions have been integr
   ```
 
 ::: warning
-MariaDB 10.7+ users might have login issues (see this [discussion](https://github.com/modoboa/modoboa/discussions/3582)). 
+MariaDB 10.7+ users might have login issues (see this [discussion](https://github.com/modoboa/modoboa/discussions/3582)).
 
 For those impacted, run the followed SQL queries:
 
@@ -352,7 +363,7 @@ $ echo "ALTER TABLE `oauth2_provider_refreshtoken` MODIFY `token_family` uuid;" 
 
 ### Radicale configuration changes
 
-You must enable oauth2 authentication in Radicale to make the calendar and contact feature work. 
+You must enable oauth2 authentication in Radicale to make the calendar and contact feature work.
 
 Follow this `guide <radicale_oauth2>`.
 
@@ -367,8 +378,8 @@ Follow this `guide <radicale_oauth2>`.
 * Remove `autoreply` service definition from postfix's `master.cf` file if you were using it
 
 * Make sure `/etc/uwsgi/sites-enabled/<modoboa_conf_file>` contains `max-requests=5000` and that
-  `process` is superior or equal to 4. 
-  
+  `process` is superior or equal to 4.
+
   Don't forget to restart uwsgi service after the configuration change.
 
 * Then proceed with regular upgrade instructions
@@ -377,9 +388,9 @@ Follow this `guide <radicale_oauth2>`.
 
 ::: warning
 The `crypt ({CRYPT})` password scheme has been marked as deprecated and
-will be removed from Modoboa starting with version **2.4.0**. 
+will be removed from Modoboa starting with version **2.4.0**.
 
-If you are still using this weak scheme, you must change to something safer **ASAP**. 
+If you are still using this weak scheme, you must change to something safer **ASAP**.
 
 Installations still using this scheme won't be able to install Modoboa 2.4 and upper...
 :::
@@ -398,7 +409,7 @@ This will silence a [warning sent by django-ckeditor](https://github.com/modoboa
 ## Version 2.3.0
 
 ::: warning
-For this particular version, it is really important that you apply new migrations **AFTER** the following instructions. 
+For this particular version, it is really important that you apply new migrations **AFTER** the following instructions.
 
 If you don't, you'll get into trouble\...
 :::
@@ -433,7 +444,7 @@ extension, you need to perfome a few commands:
 
 ### Required changes to `settings.py`
 
-Some changes are required to your `settings.py` file. 
+Some changes are required to your `settings.py` file.
 
 These changes will not be performed by the installer.
 
@@ -573,7 +584,7 @@ Then, apply this last modification to your settings:
 
 ### Docevot configuration changes
 
-You must enable oauth2 authentication in Dovecot to make the filters editor work in the new UI. 
+You must enable oauth2 authentication in Dovecot to make the filters editor work in the new UI.
 Follow this [guide](https://doc.dovecot.org/2.4.2/core/config/auth/databases/oauth2.html).
 
 ### Post update
@@ -584,9 +595,9 @@ Run this command to be sure to have everything set.
 $ python manage.py modo repair
 ```
 
-You need to set the `buffer-size` to `8192` in uwsgi config. 
+You need to set the `buffer-size` to `8192` in uwsgi config.
 
-Edit the value in `/etc/uwsgi/apps-available/automx_instance.ini` 
+Edit the value in `/etc/uwsgi/apps-available/automx_instance.ini`
 to match at least 8192 or add it if it was not set:
 
 ``` ini
@@ -602,7 +613,7 @@ The installer will take care of that if you use it to upgrade.
 ::: warning
 [SORBS DNS has been deprecated](https://www.mail-archive.com/mailop@mailop.org/msg22064.html).
 
-If you were using them with postfix, you need to update your configuration by removing any reference to it. 
+If you were using them with postfix, you need to update your configuration by removing any reference to it.
 
 For example:
 
@@ -634,11 +645,11 @@ numprocs=1
 stopsignal=TERM
 ```
 
-* `python env path` : Python executable located in your virtual environment created for modoboa. 
-You will find it here `/srv/modoboa/venv/bin/python` by default. 
-* `manage.py instance path`: Path to manage.py of your modoboa instance. 
-  You will find it here : `/srv/modoboa/instance/manage.py`by default. 
-* `Modoboa home dir`: Home dir of the user running modooba. 
+* `python env path` : Python executable located in your virtual environment created for modoboa.
+You will find it here `/srv/modoboa/venv/bin/python` by default.
+* `manage.py instance path`: Path to manage.py of your modoboa instance.
+  You will find it here : `/srv/modoboa/instance/manage.py`by default.
+* `Modoboa home dir`: Home dir of the user running modooba.
   You will find it here `/srv/modoboa/` by default.
 * `modoboa user` : User managing dkim signing (modoboa by default).
 
@@ -709,11 +720,11 @@ pip install psycopg[binary]>=3.1
 :::
 
 RQ has been added. This should replace the use of cron jobs in the
-future. 
+future.
 
 For now, only `manage_dkim_keys` has been migrated.
 
-This will make the dkim key generation asynchronous 
+This will make the dkim key generation asynchronous
 but the task will be started as soon as the generation is required.
 
 Follow these instructions to perform the update in case you used
@@ -760,12 +771,12 @@ numprocs=1
 stopsignal=TERM
 ```
 
-* `python env path` : Python executable located in your virtual environment created for modoboa. 
-  You will find it here `/srv/modoboa/venv/bin/python` by default. 
-* `manage.py instance path`: Path to manage.py of your modoboa instance. 
-  You will find it here : `/srv/modoboa/instance/manage.py`by default. 
-* `Modoboa home dir`: Home dir of the user running modooba. 
-  You will find it here `/srv/modoboa/` by default. 
+* `python env path` : Python executable located in your virtual environment created for modoboa.
+  You will find it here `/srv/modoboa/venv/bin/python` by default.
+* `manage.py instance path`: Path to manage.py of your modoboa instance.
+  You will find it here : `/srv/modoboa/instance/manage.py`by default.
+* `Modoboa home dir`: Home dir of the user running modooba.
+  You will find it here `/srv/modoboa/` by default.
 * `dkim manager user` : User managing dkim signing (opendkim by default).
 
 You can help you with `/etc/supervisor/conf.d/policyd.conf` (by default).
@@ -778,7 +789,7 @@ $ supervisorctl reread && supervisorctl update
 
 Admins now have the option to setup a send-only mailbox.
 
-Send-only mailboxes do not have access to IMAP. 
+Send-only mailboxes do not have access to IMAP.
 
 You need to change your dovecot configuration to enable it.
 
@@ -796,7 +807,7 @@ password_query = SELECT email AS user, password, '%{home_dir}/%%d/%%n' AS userdb
 
 You basically simply need:
 
-* add `(mb.is_send_only IS NOT TRUE OR '%s' NOT IN ('imap', 'pop3', 'lmtp')) AND` for `user_query` after `WHERE` 
+* add `(mb.is_send_only IS NOT TRUE OR '%s' NOT IN ('imap', 'pop3', 'lmtp')) AND` for `user_query` after `WHERE`
 * add`(mb.is_send_only IS NOT TRUE OR '%s' NOT IN ('imap', 'pop3')) AND` for `password_query` after `WHERE`.
 
 If you use `MySQL`: Change `user_query` and `password_query` in `/etc/dovecot/dovecot-sql-master.ext`:
@@ -807,8 +818,8 @@ If you use `MySQL`: Change `user_query` and `password_query` in `/etc/dovecot/do
     password_query = SELECT email AS user, password, '%{home_dir}/%%d/%%n' AS userdb_home, %mailboxes_owner_uid AS userdb_uid, %mailboxes_owner_gid AS userdb_gid, CONCAT('*:bytes=', mb.quota, 'M') AS userdb_quota_rule FROM core_user u INNER JOIN admin_mailbox mb ON u.id=mb.user_id INNER JOIN admin_domain dom ON mb.domain_id=dom.id WHERE (mb.is_send_only=0 OR '%s' NOT IN ('imap', 'pop3')) AND u.email='%%u' AND u.is_active=1 AND dom.enabled=1
 ```
 
-You basically simply need 
-* add `(mb.is_send_only=0 OR '%s' NOT IN ('imap', 'pop3', 'lmtp')) AND` for `user_query` after `WHERE` 
+You basically simply need
+* add `(mb.is_send_only=0 OR '%s' NOT IN ('imap', 'pop3', 'lmtp')) AND` for `user_query` after `WHERE`
 * `(mb.is_send_only=0 OR '%s' NOT IN ('imap', 'pop3'))` for `password_query` after `WHERE`.
 
 ## Version 2.1.0
@@ -953,7 +964,7 @@ REST_FRAMEWORK = {
 }
 ```
 
-* You can edit the `DEFAULT_THROTTLE_RATES` to whatever value suits you:   
+* You can edit the `DEFAULT_THROTTLE_RATES` to whatever value suits you:
 
     * `user` is for every endpoint, it is per user or per ip if not logged.
     * `ddos` is per api endpoint and per user or per ip if not logged.
@@ -1027,7 +1038,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 #### Migration issue for Postgres/OpenDKIM users
 
-The [migration will probably fail](https://github.com/modoboa/modoboa/issues/2508) 
+The [migration will probably fail](https://github.com/modoboa/modoboa/issues/2508)
 because of the additional view created for OpenDKIM.
 
 To make it work, you first need to drop the view:
@@ -1085,7 +1096,7 @@ GRANT
 #### New admin interface
 
 ::: tip INFORMATION
-This new release brings a new admin interface written with Vue.js framework. 
+This new release brings a new admin interface written with Vue.js framework.
 :::
 
 It is a work in progress and all features are not yet
@@ -1093,7 +1104,7 @@ implemented - i.e. extensions integration - but you could give it a try.
 It uses a new API version but the old one is still available.
 
 You will need to copy the frontend files in the folder you specified in
-your web server configuration. 
+your web server configuration.
 
 If you used the installer, the folder should be `/srv/modoboa/instance/frontend`:
 
@@ -1102,7 +1113,7 @@ mkdir /srv/modoboa/instance/frontend
 cp -r /srv/modoboa/env/lib/pythonX.X/site-packages/modoboa/frontend_dist/* /srv/modoboa/instance/frontend
 ```
 
-Then, edit the `/srv/modoboa/instance/frontend/config.json` and update the `API_BASE_URL` 
+Then, edit the `/srv/modoboa/instance/frontend/config.json` and update the `API_BASE_URL`
 setting according to the hostname of your server:
 
 ``` json
@@ -1111,7 +1122,7 @@ setting according to the hostname of your server:
 }
 ```
 
-Finally, update the configuration of your web server to serve the frontend files. 
+Finally, update the configuration of your web server to serve the frontend files.
 
 For NGINX, you should add the following in the `server` block:
 
@@ -1269,7 +1280,7 @@ This version drops Python 2 support so don't forget to update all the extensions
 If you upgrade an existing python 2 installation, you will need to
 create a new Python 3 virtual environment.
 
-You can remove the existing virtual environment and replace it by the new one 
+You can remove the existing virtual environment and replace it by the new one
 so you won't have to modify your configuration files.
 :::
 
@@ -1291,7 +1302,7 @@ Then, reload postfix.
 
 ## Version 1.14.0
 
-This release introduces an optional LDAP synchronization process. 
+This release introduces an optional LDAP synchronization process.
 
 If you want to use it, please follow the `dedicated procedure` #ldap-sync .
 
@@ -1330,7 +1341,7 @@ SESSION_COOKIE_SECURE = True
 
 ### modoboa-postfix-autoreply 1.5.0
 
-Edit the `/etc/postfix/main.cf`  file and remove the `sql-autoreplies-transport.cf` map from the `transport_maps` if present. 
+Edit the `/etc/postfix/main.cf`  file and remove the `sql-autoreplies-transport.cf` map from the `transport_maps` if present.
 
 Remove the corresponding `proxy_read_maps` entry if relevant.
 
@@ -1414,7 +1425,7 @@ Replace `<driver>` and `<path>` by your values.
 If `transport_maps` contains `sql-relaydomains-transport.cf`, remove it.
 
 ::: warning
-If you make use of postfix's [proxymap server](http://www.postfix.org/proxymap.8.html), 
+If you make use of postfix's [proxymap server](http://www.postfix.org/proxymap.8.html),
 you must also update the `proxy_read_maps` setting.
 :::
 
@@ -1472,7 +1483,7 @@ Add the following lines:
 ``` python
 # Password validation rules
 AUTH_PASSWORD_VALIDATORS = [ # [!code ++]
-    { # [!code ++] 
+    { # [!code ++]
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator', # [!code ++]
     }, # [!code ++]
     { # [!code ++]
@@ -1498,8 +1509,8 @@ AUTH_PASSWORD_VALIDATORS = [ # [!code ++]
 
 ## Version 1.7.2
 
-API documentation has evolved (because of the upgrade to Django Rest Framework 3.6) 
-and CKeditor is now embedded by default (thanks to the `django-ckeditor` package). 
+API documentation has evolved (because of the upgrade to Django Rest Framework 3.6)
+and CKeditor is now embedded by default (thanks to the `django-ckeditor` package).
 
 Some configuration changes are required.
 
@@ -1540,15 +1551,15 @@ REST_FRAMEWORK = {
 ``` python
 # CKeditor
 
-CKEDITOR_UPLOAD_PATH = "uploads/" 
+CKEDITOR_UPLOAD_PATH = "uploads/"
 
-CKEDITOR_IMAGE_BACKEND = "pillow" 
+CKEDITOR_IMAGE_BACKEND = "pillow"
 
-CKEDITOR_RESTRICT_BY_USER = True 
+CKEDITOR_RESTRICT_BY_USER = True
 
-CKEDITOR_BROWSE_SHOW_DIRS = True 
+CKEDITOR_BROWSE_SHOW_DIRS = True
 
-CKEDITOR_ALLOW_NONIMAGE_FILES = False 
+CKEDITOR_ALLOW_NONIMAGE_FILES = False
 
 CKEDITOR_CONFIGS = {
     'default': {
@@ -1590,12 +1601,12 @@ $ python manage.py load_initial_data
 
 ## Version 1.7.0
 
-This version requires Django \>= 1.10 so you need to make some modifications. 
+This version requires Django \>= 1.10 so you need to make some modifications.
 
 It also brings internal API changes which are not
 backward compatible so installed extensions must be upgraded too.
 
-First of all, deactivate all installed extensions (edit the `settings.py` file 
+First of all, deactivate all installed extensions (edit the `settings.py` file
 and comment the corresponding lines in `MODOBOA_APPS`).
 
 Edit the `urls.py`  file of your local
@@ -1815,11 +1826,11 @@ Otherwise, you will have an internal error after upgrade. In particular:
 :::
 
 An interesting feature brougth by this version is the capability to make
-different checks about MX records. 
+different checks about MX records.
 
-For example, Modoboa can query main [DNSBL](https://en.wikipedia.org/wiki/DNSBL) providers for every defined domain. 
+For example, Modoboa can query main [DNSBL](https://en.wikipedia.org/wiki/DNSBL) providers for every defined domain.
 
-With this, you will quickly know if one the domains you manage is listed or not. 
+With this, you will quickly know if one the domains you manage is listed or not.
 
 To activate it, add the following line to your crontab:
 
@@ -1842,9 +1853,9 @@ Please also note that public API now uses TLS so you must update your configurat
 MODOBOA_API_URL = 'https://api.modoboa.org/1/'
 ```
 
-Finally, it is now possible to declare additional sender addresses on a per-account basis. 
+Finally, it is now possible to declare additional sender addresses on a per-account basis.
 
-You need to update your postfix configuration in order to use this functionality. 
+You need to update your postfix configuration in order to use this functionality.
 Just edit the `main.cf` file and change the following parameter:
 
 ```txt
@@ -1895,7 +1906,7 @@ You're done. The documentation is now available at the following address:
 https:// your instance address /docs/api/
 ```
 
-Finally, if you find a `TEMPLATE_CONTEXT_PROCESSORS` variable in your `settings.py` file, 
+Finally, if you find a `TEMPLATE_CONTEXT_PROCESSORS` variable in your `settings.py` file,
 make sure it looks like this:
 
 ```python
@@ -1922,7 +1933,7 @@ the `MODOBOA_APPS` variable:
 
 | Old name                    | New name               |
 | :-------------------------: | :--------------------: |
-| modoboa_admin               | modoboa.admin          | 
+| modoboa_admin               | modoboa.admin          |
 | modoboa_admin_limits        | modoboa.limits         |
 | modoboa_admin_relaydomains  | modoboa.relaydomains   |
 
@@ -2008,11 +2019,11 @@ DATABASES = {
 
 ## Version 1.3.0
 
-This release does not bring awesome new features but it is a necessary bridge to the future of Modoboa. 
+This release does not bring awesome new features but it is a necessary bridge to the future of Modoboa.
 
 All extensions now have their own git repository and the deploy process has been updated to reflect this change.
 
-Another important update is the use of Django 1.7. 
+Another important update is the use of Django 1.7.
 
 Besides its new features, the migration system has been reworked and is now more robust than before.
 
@@ -2068,7 +2079,7 @@ Here are the required steps:
 
 ## Version 1.2.0
 
-A new notification service let administrators know about new Modoboa versions. 
+A new notification service let administrators know about new Modoboa versions.
 
 To activate it, you need to update the `TEMPLATE_CONTEXT_PROCESSORS` variable like this:
 
@@ -2115,8 +2126,8 @@ If you plan to use the Radicale extension:
   ```
 
 ::: warning
-You also have to note that the `sitestatic`  directory has moved 
-from `<path to your site's dir>` to `<modoboa's root url>` (it's probably the parent directory). 
+You also have to note that the `sitestatic`  directory has moved
+from `<path to your site's dir>` to `<modoboa's root url>` (it's probably the parent directory).
 
 You have to adapt your web server configuration to reflect this change.
 :::

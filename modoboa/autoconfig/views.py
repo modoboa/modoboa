@@ -24,6 +24,10 @@ class ConfigBaseMixin:
 
 
 class AutoConfigView(ConfigBaseMixin, generic.TemplateView):
+    """
+    Format documentation:
+    https://wiki.mozilla.org/Thunderbird:Autoconfiguration:ConfigFileFormat
+    """
 
     http_method_names = ["get"]
     template_name = "autoconfig/autoconfig.xml"
@@ -31,7 +35,7 @@ class AutoConfigView(ConfigBaseMixin, generic.TemplateView):
     def get_context_data(self, **kwargs):
         emailaddress = self.request.GET.get("emailaddress")
         if not emailaddress:
-            raise Http404
+            emailaddress = "%EMAILLOCALPART%@%EMAILDOMAIN%"
         context = super().get_context_data(**kwargs)
         context.update(self.get_common_context(emailaddress))
         return context
@@ -88,14 +92,18 @@ class MobileConfigView(generic.View):
                     "EmailAccountType": "EmailTypeIMAP",
                     "EmailAddress": emailaddress,
                     # incoming
+                    "IncomingMailServerAuthentication": "EmailAuthPassword",
                     "IncomingMailServerHostName": imap_settings["HOSTNAME"],
                     "IncomingMailServerPortNumber": imap_settings["PORT"],
-                    "IncomingMailServerUseSSL": True,
+                    "IncomingMailServerUseSSL": imap_settings["SOCKET_TYPE"].upper()
+                    == "SSL",  # `false` means StartTLS
                     "IncomingMailServerUsername": emailaddress,
                     # outgoing
+                    "OutgoingMailServerAuthentication": "EmailAuthPassword",
                     "OutgoingMailServerHostName": smtp_settings["HOSTNAME"],
                     "OutgoingMailServerPortNumber": smtp_settings["PORT"],
-                    "OutgoingMailServerUseSSL": True,
+                    "OutgoingMailServerUseSSL": smtp_settings["SOCKET_TYPE"].upper()
+                    == "SSL",  # `false` means StartTLS,
                     "OutgoingMailServerUsername": emailaddress,
                     "OutgoingPasswordSameAsIncomingPassword": True,
                 }
