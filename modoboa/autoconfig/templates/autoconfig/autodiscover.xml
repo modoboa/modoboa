@@ -9,7 +9,16 @@
         <Type>IMAP</Type>
         <Server>{{ connection_settings.imap.HOSTNAME }}</Server>
         <Port>{{ connection_settings.imap.PORT }}</Port>
+        {% if connection_settings.imap.SOCKET_TYPE|upper == "SSL" %}
         <SSL>true</SSL>
+        <TLS>false</TLS>
+        {% elif connection_settings.imap.SOCKET_TYPE|upper == "STARTTLS" %}
+        <SSL>false</SSL>
+        <TLS>true</TLS>
+        {% elif connection_settings.imap.SOCKET_TYPE|lower == "plain" %}
+        <SSL>false</SSL>
+        <TLS>false</TLS>
+        {% endif %}
         <LoginName>{{ emailaddress }}</LoginName>
       </Protocol>
 
@@ -17,8 +26,13 @@
         <Type>SMTP</Type>
         <Server>{{ connection_settings.smtp.HOSTNAME }}</Server>
         <Port>{{ connection_settings.smtp.PORT }}</Port>
+        {% if connection_settings.smtp.SOCKET_TYPE|upper == "SSL" %}
+        <SSL>true</SSL>
+        <TLS>false</TLS>
+        {% elif connection_settings.smtp.SOCKET_TYPE|upper == "STARTTLS" %}
         <SSL>false</SSL>
         <TLS>true</TLS>
+        {% endif %}
         <LoginName>{{ emailaddress }}</LoginName>
       </Protocol>
 
