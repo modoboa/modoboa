@@ -350,7 +350,7 @@ stopsignal=TERM
 
 ## Dovecot worker
 ``` ini
-[program:modoboa-dkim-worker]
+[program:modoboa-dovecot-worker]
 autostart=true
 autorestart=true
 command=<path to Python binary inside the virtual environment> <path to Modoboa instance>/manage.py rqworker dovecot
