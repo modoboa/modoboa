@@ -55,18 +55,23 @@
         </router-link>
       </template>
       <template #[`item.actions`]="{ item }">
-        <v-menu offset-y>
+        <v-menu location="bottom">
           <template #activator="{ props }">
-            <v-btn icon="mdi-dots-horizontal" v-bind="props" />
+            <v-btn
+              icon="mdi-dots-horizontal"
+              v-bind="props"
+              size="small"
+              variant="text"
+            />
           </template>
-          <MenuItems :items="getMenuItems()" :object="item" />
+          <MenuItems :items="getMenuItems()" :obj="item" />
         </v-menu>
       </template>
     </v-data-table>
   </v-card>
 </template>
 
-<script setup lang="js">
+<script setup>
 import migrationApi from '@/api/imap_migration/migrations'
 import MenuItems from '@/components/tools/MenuItems'
 import { useBusStore } from '@/stores'
@@ -85,7 +90,7 @@ const headers = [
     title: $gettext('Actions'),
     value: 'actions',
     sortable: false,
-    align: 'right',
+    align: 'end',
   },
 ]
 
@@ -104,19 +109,19 @@ function deleteMigration(migration) {
   })
 }
 
-function getMigrations(filter) {
+async function getMigrations(filter) {
   loading.value = true
   let query = {}
   if (filter !== undefined) {
     query = { params: { search: filter } }
   }
-  migrationApi
-    .getMigrations(query)
-    .then((response) => {
-      migrations.value = response.data
-      totalMigrations.value = migrations.value.length
-    })
-    .finally(() => (loading.value = false))
+  try {
+    const response = await migrationApi.getMigrations(query)
+    migrations.value = response.data
+    totalMigrations.value = migrations.value.length
+  } finally {
+    loading.value = false
+  }
 }
 
 function getMenuItems() {
@@ -124,11 +129,11 @@ function getMenuItems() {
   result.push({
     label: $gettext('Delete'),
     icon: 'mdi-delete-outline',
-    onClick: deleteMigration(),
+    onClick: deleteMigration,
     color: 'red',
   })
   return result
 }
 
-getMigrations()
+await getMigrations()
 </script>
