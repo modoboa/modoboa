@@ -45,7 +45,7 @@ class ImapEmail(Email):
         self.imapc = self.imapc.__enter__()
         self.mbox, self.mailid = self.mailid.split(":")
         self.attachments: dict[str, str] = {}
-        self.To = []
+        self.To: list = []
 
     def __del__(self):
         self.imapc.__exit__()
@@ -70,9 +70,7 @@ class ImapEmail(Email):
         addressbook = self.request.user.addressbook_set.first()
         if not addressbook:
             return
-        contacts = [self.From]
-        if hasattr(self, "To"):
-            contacts += self.To
+        contacts = [self.From] + self.To
         if hasattr(self, "Cc"):
             contacts += self.Cc
         for contact in contacts:
