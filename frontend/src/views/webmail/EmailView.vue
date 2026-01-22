@@ -105,7 +105,7 @@
         <v-spacer />
         <span class="text-grey">{{ email.date }}</span>
       </div>
-      <div class="mt-2 text-grey">
+      <div v-if="email.to.length" class="mt-2 text-grey">
         {{ $gettext('To') }}
         <v-menu v-for="(rcpt, index) in email.to" :key="`to-${index}`">
           <template #activator="{ props }">
