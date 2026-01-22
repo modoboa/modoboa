@@ -45,6 +45,7 @@ class ImapEmail(Email):
         self.imapc = self.imapc.__enter__()
         self.mbox, self.mailid = self.mailid.split(":")
         self.attachments: dict[str, str] = {}
+        self.To: list = []
 
     def __del__(self):
         self.imapc.__exit__()
