@@ -21,6 +21,6 @@ def send_scheduled_messages():
     )
     queue = django_rq.get_queue("modoboa")
     for message in messages:
-        message.state = constants.SchedulingState.SENDING
+        message.status = constants.SchedulingState.SENDING
         message.save()
         queue.enqueue(send_scheduled_message, message_id=message.id)
