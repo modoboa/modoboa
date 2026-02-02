@@ -128,4 +128,13 @@ export default {
       `/webmail/compose-sessions/${sessionUid}/attachments/${name}/`
     )
   },
+  getScheduledMessage(messageId) {
+    return repository.get(`/webmail/scheduled-messages/${messageId}/`)
+  },
+  updateScheduledMessage(messageId, data) {
+    return repository.patch(`/webmail/scheduled-messages/${messageId}/`, data)
+  },
+  deleteScheduledMessage(messageId) {
+    return repository.delete(`/webmail/scheduled-messages/${messageId}/`)
+  },
 }

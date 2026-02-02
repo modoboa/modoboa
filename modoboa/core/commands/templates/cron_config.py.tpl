@@ -25,6 +25,8 @@ register(maillog_jobs.update_statistics, queue_name="modoboa", cron="0 * * * *")
 
 register(calendars_jobs.generate_rights, queue_name="privileged", cron="*/2 * * * *")
 
+register(webmail_jobs.send_scheduled_messages, queue_name="modoboa", cron="* * * * *")
+
 if "modoboa.amavis" in settings.MODOBOA_APPS:
     register(amavis_jobs.qcleanup, queue_name="modoboa", cron="0 0 * * *")
     register(amavis_jobs.amnotify, queue_name="modoboa", cron="0 12 * * *")

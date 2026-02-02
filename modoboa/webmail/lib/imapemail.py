@@ -18,6 +18,7 @@ from django.utils.translation import gettext as _
 from modoboa.contacts import models as contacts_models
 from modoboa.lib import u2u_decode
 from modoboa.lib.email_utils import Email
+from modoboa.webmail import constants
 
 from . import imapheader
 from .attachments import get_storage_path
@@ -51,13 +52,17 @@ class ImapEmail(Email):
 
     def fetch_headers(self, raw_addresses: bool = False) -> None:
         """Fetch message headers from server."""
+        requested_headers = self.headernames
+        if self.mbox == constants.MAILBOX_NAME_SCHEDULED:
+            requested_headers += [(constants.CUSTOM_HEADER_SCHEDULED_DATETIME, True)]
+        header_names = [header[0].upper() for header in requested_headers]
         msg = self.imapc.fetchmail(
-            self.mbox, self.mailid, readonly=False, what=" ".join(self.headers_as_list)
+            self.mbox, self.mailid, readonly=False, what=" ".join(header_names)
         )
-        headers = msg[f"BODY[HEADER.FIELDS ({self.headers_as_text})]"]
+        headers = msg[f"BODY[HEADER.FIELDS ({' '.join(header_names)})]"]
         self.fetch_body_structure(msg)
         msg = email.message_from_string(headers)
-        for hdr in self.headernames:
+        for hdr in requested_headers:
             label = hdr[0]
             hdrvalue = self.get_header(msg, label, raw=raw_addresses)
             if not hdrvalue:
@@ -109,14 +114,6 @@ class ImapEmail(Email):
         self.mformat = (
             self.dformat if self.dformat in self.bs.contents else fallback_fmt
         )
-
-    @property
-    def headers_as_list(self):
-        return [hdr[0].upper() for hdr in self.headernames]
-
-    @property
-    def headers_as_text(self):
-        return " ".join(self.headers_as_list)
 
     @property
     def subject(self):

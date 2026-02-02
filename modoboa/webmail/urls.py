@@ -13,5 +13,10 @@ router.register(
     viewsets.ComposeSessionViewSet,
     basename="webmail-compose-session",
 )
+router.register(
+    "scheduled-messages",
+    viewsets.ScheduledMessageViewSet,
+    basename="webmail-scheduled-message",
+)
 
 urlpatterns = router.urls
