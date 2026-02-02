@@ -10,16 +10,29 @@
           variant="flat"
           @click="close"
         />
-        <v-btn
-          class="ml-2"
-          color="primary"
-          variant="tonal"
-          prepend-icon="mdi-send"
-          :loading="working"
-          :text="$gettext('Send')"
-          @click="submit"
-        >
-        </v-btn>
+        <v-btn-group color="primary" rounded="lg" density="compact" divided>
+          <v-btn
+            class="ml-2"
+            prepend-icon="mdi-send"
+            :loading="working"
+            :text="$gettext('Send')"
+            @click="submit"
+          >
+          </v-btn>
+          <v-btn size="small" icon>
+            <v-icon icon="mdi-chevron-down" />
+            <v-menu activator="parent">
+              <v-list>
+                <v-list-item
+                  prepend-icon="mdi-send-clock-outline"
+                  :title="$gettext('Schedule sending')"
+                  @click="openSchedulingForm"
+                />
+              </v-list>
+            </v-menu>
+          </v-btn>
+        </v-btn-group>
+
         <v-btn
           class="ml-2"
           variant="tonal"
@@ -167,6 +180,12 @@
         @close="closeAttachmentDialog"
       />
     </v-dialog>
+    <v-dialog v-model="showSchedulingForm" max-width="800">
+      <EmailSchedulingForm
+        @schedule="scheduleAndSubmit"
+        @close="closeSchedulingForm"
+      />
+    </v-dialog>
   </div>
 </template>
 
@@ -178,6 +197,7 @@ import { useAuthStore, useBusStore } from '@/stores'
 import debounce from 'debounce'
 import AttachmentsDialog from '@/components/webmail/AttachmentsDialog'
 import BodyEditor from '@/components/webmail/BodyEditor'
+import EmailSchedulingForm from '@/components/webmail/EmailSchedulingForm'
 import rules from '@/plugins/rules'
 import api from '@/api/webmail'
 import contactsApi from '@/api/contacts'
@@ -209,6 +229,7 @@ const formRef = ref()
 const showAttachmentsDialog = ref(false)
 const showCcField = ref(false)
 const showBccField = ref(false)
+const showSchedulingForm = ref(false)
 const working = ref(false)
 
 const close = () => {
@@ -275,12 +296,20 @@ const submit = async () => {
   try {
     await api.sendEmailFromComposeSession(route.query.uid, body)
     router.push({ name: 'MailboxView' })
-    displayNotification({ msg: $gettext('Email sent') })
+    const msg = body.scheduled_datetime
+      ? $gettext('Email scheduled')
+      : $gettext('Email seng')
+    displayNotification({ msg })
   } catch (error) {
     console.log(error)
   } finally {
     working.value = false
   }
+}
+
+const scheduleAndSubmit = async (datetime) => {
+  form.value.scheduled_datetime = datetime
+  await submit()
 }
 
 const openAttachmentsDialog = () => {
@@ -314,6 +343,21 @@ const initialize = (body) => {
     }
   }
   editorMode.value = body.editor_format
+}
+
+const openSchedulingForm = () => {
+  if (!form.value.to?.length) {
+    displayNotification({
+      msg: $gettext('You must provide one recipient at least'),
+      type: 'info',
+    })
+    return
+  }
+  showSchedulingForm.value = true
+}
+
+const closeSchedulingForm = () => {
+  showSchedulingForm.value = false
 }
 
 watch(

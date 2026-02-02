@@ -13,6 +13,7 @@ from modoboa.lib import imap_utf7  # noqa
 from modoboa.lib import oauth2
 from modoboa.lib.exceptions import InternalError
 from modoboa.parameters import tools as param_tools
+from modoboa.webmail import constants
 
 from ..exceptions import ImapError, WebmailInternalError
 from .fetch_parser import FetchResponseParser
@@ -490,6 +491,16 @@ class IMAPconnector:
                     "type": "sent",
                     "label": _("Sent"),
                 },
+            ]
+            if user.scheduledmessage_set.exists():
+                md_mailboxes += [
+                    {
+                        "name": constants.MAILBOX_NAME_SCHEDULED,
+                        "type": "scheduled",
+                        "label": _("Scheduled"),
+                    },
+                ]
+            md_mailboxes += [
                 {
                     "name": user.parameters.get_value("trash_folder"),
                     "type": "trash",
@@ -581,10 +592,30 @@ class IMAPconnector:
         self._cmd("COPY", msgset, self._encode_mbox_name(newmailbox))
         self._cmd("STORE", msgset, "+FLAGS", r"(\Deleted \Seen)")
 
-    def push_mail(self, mbox: str, msg):
+    def push_mail(self, mbox: str, msg) -> int:
+        """
+        Append a new message to a mailbox.
+
+        Return the UID of the created message.
+        """
         now = imaplib.Time2Internaldate(time.time())
         msg = bytes(msg)
-        return self.m.append(self._encode_mbox_name(mbox), r"(\Seen)", now, msg)
+        typ, data = self.m.append(self._encode_mbox_name(mbox), r"(\Seen)", now, msg)
+        response = data[0].decode()
+        m = re.match(r"\[APPENDUID \d+ (\d+)\].+", response)
+        if m:
+            return int(m.group(1))
+        raise WebmailInternalError("Failed to retrieve message UID")
+
+    def delete_mail(self, mbox: str, uid: int) -> None:
+        """
+        Delete given message (set \Deleted flag) and expunge mailbox.
+
+        Do not use directly.
+        """
+        self.select_mailbox(mbox, False)
+        self._cmd("STORE", f"{uid}".encode(), "+FLAGS", r"(\Deleted)")
+        self._cmd("EXPUNGE")
 
     def empty(self, mbox: str):
         self.select_mailbox(mbox, False)
@@ -610,7 +641,7 @@ class IMAPconnector:
             name = f"{parent}{self.hdelimiter}{name}"
         typ, data = self.m.create(self._encode_mbox_name(name))
         if typ == "NO":
-            raise WebmailInternalError(data[0])
+            raise WebmailInternalError(str(data[0]))
         return True
 
     def rename_folder(self, oldname: str, newname: str) -> bool:
@@ -699,6 +730,8 @@ class IMAPconnector:
             submessages = [start]
             mrange = str(start)
         headers = "DATE FROM TO CC SUBJECT"
+        if mbox == constants.MAILBOX_NAME_SCHEDULED:
+            headers += " X-SCHEDULED-ID X-SCHEDULED-DATETIME"
         query = (
             f"(FLAGS BODYSTRUCTURE RFC822.SIZE BODY.PEEK[HEADER.FIELDS ({headers})])"
         )

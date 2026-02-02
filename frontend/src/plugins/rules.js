@@ -22,6 +22,13 @@ function samePassword(value, confirmation) {
   return value === confirmation
 }
 
+function validateTime(value) {
+  if (!/^([01]\d|2[0-3]):?([0-5]\d)$/.test(value)) {
+    return $gettext('Not a valid time')
+  }
+  return true
+}
+
 export default {
   required: (value) =>
     (value !== '' &&
@@ -43,4 +50,5 @@ export default {
     samePassword(value, confirmation) || $gettext('Passwords mismatch'),
   portNumber: (value) =>
     (value > 0 && value < 65536) || $gettext('Invalid port number'),
+  time: (value) => validateTime(value),
 }

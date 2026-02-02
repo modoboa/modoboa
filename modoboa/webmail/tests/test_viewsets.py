@@ -1,24 +1,36 @@
 from datetime import timedelta
+import getpass
 from io import BytesIO
 import os
 import shutil
 import tempfile
 from unittest import mock
 
+from dateutil.relativedelta import relativedelta
+from freezegun import freeze_time
+from rq import SimpleWorker
+
 from django.core import mail
+from django.test import override_settings
 from django.urls import reverse
 from django.utils import timezone
 
+import django_rq
 from oauth2_provider.models import get_access_token_model, get_application_model
 
 from modoboa.core import models as core_models
+from modoboa.core.tests import utils
 from modoboa.admin import factories as admin_factories
 from modoboa.lib.tests import ModoAPITestCase
+from modoboa.webmail import factories, jobs, models
 from modoboa.webmail.lib.attachments import ComposeSessionManager
 from modoboa.webmail.mocks import IMAP4Mock
 
 Application = get_application_model()
 AccessToken = get_access_token_model()
+
+DOVEADM_TEST_PATH = utils.get_doveadm_test_path()
+DOVECOT_USER = getpass.getuser()
 
 
 def get_gif():
@@ -243,6 +255,11 @@ class UserEmailViewSetTestCase(WebmailTestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTrue(response.json()["subject"].startswith("Fwd:"))
 
+        # Scheduled message
+        response = self.client.get(f"{url}?mailbox=Scheduled&mailid=33")
+        self.assertEqual(response.status_code, 200)
+        self.assertIn("scheduled_datetime", response.json())
+
     def test_attachment(self):
         self.authenticate()
         url = reverse("v2:webmail-email-attachment")
@@ -368,3 +385,94 @@ class ComposeSessionViewSetTestCase(WebmailTestCase):
         self.assertEqual(response.status_code, 204)
         self.assertEqual(len(mail.outbox), 1)
         self.assertEqual(mail.outbox[0].from_email, '"Antoine Nguyen" <user@test.com>')
+
+    @override_settings(
+        DOVEADM_LOOKUP_PATH=[DOVEADM_TEST_PATH], DOVECOT_USER=DOVECOT_USER
+    )
+    def test_schedule_and_send(self):
+        self.authenticate()
+        uid = self._create_compose_session()
+        # Upload an attachment
+        url = reverse("v2:webmail-compose-session-attachments", args=[uid])
+        with self.settings(MEDIA_ROOT=self.workdir):
+            self.client.post(url, {"attachment": get_gif()})
+            # Schedule the message too early
+            scheduled_datetime = timezone.now()
+            url = reverse("v2:webmail-compose-session-send", args=[uid])
+            response = self.client.post(
+                url,
+                {
+                    "sender": self.user.email,
+                    "to": ["test@example.test"],
+                    "subject": "test",
+                    "body": "Test",
+                    "scheduled_datetime": scheduled_datetime.isoformat(),
+                },
+                format="json",
+            )
+            self.assertEqual(response.status_code, 400)
+            self.assertIn("scheduled_datetime", response.json())
+
+            scheduled_datetime = timezone.now() + relativedelta(hours=1)
+            response = self.client.post(
+                url,
+                {
+                    "sender": self.user.email,
+                    "to": ["test@example.test"],
+                    "cc": ["cc@example.test"],
+                    "subject": "test",
+                    "body": "Test",
+                    "scheduled_datetime": scheduled_datetime.isoformat(),
+                },
+                format="json",
+            )
+            self.assertEqual(response.status_code, 204)
+            self.assertEqual(len(mail.outbox), 0)
+            self.assertEqual(models.ScheduledMessage.objects.count(), 1)
+            self.assertEqual(models.MessageAttachment.objects.count(), 1)
+
+            with freeze_time(scheduled_datetime + relativedelta(minutes=1)):
+                jobs.send_scheduled_messages()
+                queue = django_rq.get_queue("modoboa")
+                worker = SimpleWorker([queue], connection=queue.connection)
+                worker.work(burst=True)
+
+            self.assertEqual(len(mail.outbox), 1)
+            self.assertEqual(models.ScheduledMessage.objects.count(), 0)
+            self.assertEqual(models.MessageAttachment.objects.count(), 0)
+
+
+@override_settings(DOVEADM_LOOKUP_PATH=[DOVEADM_TEST_PATH], DOVECOT_USER=DOVECOT_USER)
+class ScheduledMessageViewSetTestCase(WebmailTestCase):
+
+    def setUp(self):
+        super().setUp()
+        self.message = factories.ScheduledMessageFactory(
+            account=self.user, scheduled_datetime=timezone.now()
+        )
+
+    def test_listmailbox(self):
+        self.authenticate()
+        url = reverse("v2:webmail-email-list")
+        response = self.client.get(f"{url}?mailbox=Scheduled")
+        self.assertEqual(response.status_code, 200)
+        content = response.json()
+        self.assertEqual(content["count"], 1)
+        self.assertEqual(content["results"][0]["scheduled_id"], 1123)
+        self.assertIn("scheduled_datetime_raw", content["results"][0])
+
+    def test_delete(self):
+        self.authenticate()
+        url = reverse("v2:webmail-scheduled-message-detail", args=[self.message.id])
+        response = self.client.delete(url)
+        self.assertEqual(response.status_code, 204)
+        self.assertEqual(models.ScheduledMessage.objects.count(), 0)
+
+    def test_update(self):
+        self.authenticate()
+        url = reverse("v2:webmail-scheduled-message-detail", args=[self.message.id])
+        data = {"scheduled_datetime": timezone.now() + relativedelta(days=1)}
+        response = self.client.patch(url, data, format="json")
+        self.assertEqual(response.status_code, 200)
+        self.message.refresh_from_db()
+        self.assertEqual(self.message.imap_uid, 11)

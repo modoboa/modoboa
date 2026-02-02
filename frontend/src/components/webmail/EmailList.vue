@@ -24,6 +24,7 @@
         @keyup.enter="submitSearch"
       ></v-text-field>
       <v-btn
+        v-if="!inScheduledView"
         class="ml-2"
         color="error"
         variant="tonal"
@@ -33,28 +34,30 @@
         @click="deleteSelection"
       >
       </v-btn>
-      <v-btn
-        v-if="$route.params.mailbox !== 'Junk'"
-        class="ml-2"
-        color="warning"
-        variant="tonal"
-        icon="mdi-fire"
-        size="small"
-        :loading="working"
-        @click="markSelectionAsJunk"
-      >
-      </v-btn>
-      <v-btn
-        v-else
-        class="ml-2"
-        color="success"
-        variant="tonal"
-        icon="mdi-thumb-up"
-        size="small"
-        :loading="working"
-        @click="markSelectionAsNotJunk"
-      >
-      </v-btn>
+      <template v-if="!inScheduledView">
+        <v-btn
+          v-if="$route.params.mailbox !== 'Junk'"
+          class="ml-2"
+          color="warning"
+          variant="tonal"
+          icon="mdi-fire"
+          size="small"
+          :loading="working"
+          @click="markSelectionAsJunk"
+        >
+        </v-btn>
+        <v-btn
+          v-else
+          class="ml-2"
+          color="success"
+          variant="tonal"
+          icon="mdi-thumb-up"
+          size="small"
+          :loading="working"
+          @click="markSelectionAsNotJunk"
+        >
+        </v-btn>
+      </template>
       <v-btn class="ml-2" variant="tonal" icon size="small">
         <v-icon icon="mdi-cog" />
         <v-menu activator="parent">
@@ -80,7 +83,7 @@
               @click="() => flagSelection('unflagged')"
             />
             <v-list-item
-              v-if="$route.params.mailbox !== 'Trash'"
+              v-if="$route.query.mailbox === 'Trash'"
               :title="$gettext('Empty mailbox')"
               prepend-icon="mdi-trash-can"
               @click="emptyMailbox"
@@ -113,7 +116,23 @@
   </v-card>
   <v-skeleton-loader v-if="loading" type="card@2"></v-skeleton-loader>
   <template v-else>
-    <div class="emails position-absolute top-0 bottom-0 w-100 overflow-y-auto">
+    <v-alert
+      v-if="inScheduledView"
+      type="info"
+      variant="tonal"
+      density="compact"
+      class="mx-1"
+    >
+      {{
+        $gettext(
+          'Scheduled messages will be sent at the specified date and time. (visible on the right)'
+        )
+      }}
+    </v-alert>
+    <div
+      class="emails position-absolute bottom-0 w-100 overflow-y-auto"
+      :class="{ 'top-0': !inScheduledView, 'scheduling-top': inScheduledView }"
+    >
       <template v-if="emails.results?.length">
         <v-card
           v-for="email in emails.results"
@@ -138,20 +157,38 @@
               variant="flat"
               @click="toggleFollowState(email)"
             />
+            <v-menu v-if="inScheduledView" location="bottom">
+              <template #activator="{ props }">
+                <v-btn
+                  icon="mdi-dots-vertical"
+                  v-bind="props"
+                  size="small"
+                  variant="text"
+                >
+                </v-btn>
+              </template>
+              <MenuItems :items="getScheduledMessageActions()" :obj="email" />
+            </v-menu>
+
             <div class="ml-4 clickable" @click="openEmail(email.imapid)">
               <div>{{ email.subject }}</div>
               <div class="mt-1 text-grey">
-                <span
-                  v-if="email.from_address.name"
-                  :title="email.from_address.address"
-                  >{{ email.from_address.name }}</span
-                >
-                <span v-else>{{ email.from_address.address }}</span>
+                <EmailAddressList :addresses="getEmailAddresses(email)" />
               </div>
             </div>
             <v-spacer />
             <div class="text-right">
-              <div>{{ email.date }}</div>
+              <div v-if="!isScheduledDateOver(email)">
+                {{ getEmailDate(email) }}
+              </div>
+              <div
+                v-else
+                class="text-error font-weight-bold"
+                style="cursor: pointer"
+                @click="displaySchedulingError(email)"
+              >
+                {{ getEmailDate(email) }}
+              </div>
               <div class="mt-1">
                 <v-icon v-if="email.answered" icon="mdi-reply-outline" />
                 <v-icon v-if="email.forwarded" icon="mdi-share-outline" />
@@ -170,6 +207,28 @@
         variant="tonal"
       />
     </div>
+    <v-dialog v-model="showSchedulingForm" max-width="800">
+      <EmailSchedulingForm
+        :initial-date="selectedScheduledEmail.scheduled_datetime_raw"
+        @schedule="updateScheduledEmail"
+        @close="closeSchedulingForm"
+      />
+    </v-dialog>
+    <v-dialog v-model="showSchedulingError" max-width="400">
+      <v-card
+        max-width="400"
+        :text="schedulingError"
+        :title="$gettext('Sending failure')"
+      >
+        <template #:actions>
+          <v-btn
+            class="ms-auto"
+            :text="$gettext('Close')"
+            @click="showSchedulingError = false"
+          ></v-btn>
+        </template>
+      </v-card>
+    </v-dialog>
   </template>
 </template>
 
@@ -178,6 +237,10 @@ import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useGettext } from 'vue3-gettext'
 import { useBusStore, useWebmailStore } from '@/stores'
+import { DateTime } from 'luxon'
+import EmailAddressList from './EmailAddressList.vue'
+import EmailSchedulingForm from './EmailSchedulingForm.vue'
+import MenuItems from '@/components/tools/MenuItems.vue'
 import api from '@/api/webmail'
 
 const props = defineProps({
@@ -193,11 +256,15 @@ const webmailStore = useWebmailStore()
 const router = useRouter()
 const route = useRoute()
 
+const selectedScheduledEmail = ref(null)
 const loading = ref(false)
 const emails = ref({})
 const page = ref(1)
+const schedulingError = ref('')
 const search = ref('')
 const selectAll = ref(false)
+const showSchedulingError = ref(false)
+const showSchedulingForm = ref(false)
 const working = ref(false)
 
 let intervalId = null
@@ -205,6 +272,79 @@ let intervalId = null
 const currentMailbox = computed(() => {
   return route.query.mailbox || 'INBOX'
 })
+
+const inScheduledView = computed(() => props.mailbox === 'Scheduled')
+
+const getScheduledMessageActions = () => {
+  return [
+    {
+      label: $gettext('Reschedule'),
+      icon: 'mdi-send-clock-outline',
+      onClick: reScheduleMessage,
+    },
+    {
+      label: $gettext('Delete'),
+      icon: 'mdi-delete-outline',
+      onClick: deleteScheduledMessage,
+      color: 'red',
+    },
+  ]
+}
+
+const getEmailAddresses = (email) => {
+  if (inScheduledView.value) {
+    return email.recipients
+  }
+  return [email.from_address]
+}
+
+const getEmailDate = (email) => {
+  if (inScheduledView.value) {
+    return email.scheduled_datetime
+  }
+  return email.date
+}
+
+const isScheduledDateOver = (email) => {
+  if (!inScheduledView.value || !email.scheduled_datetime_raw) return false
+  const date = DateTime.fromISO(email.scheduled_datetime_raw)
+  return date < DateTime.now()
+}
+
+const reScheduleMessage = (email) => {
+  selectedScheduledEmail.value = email
+  showSchedulingForm.value = true
+}
+
+const updateScheduledEmail = async (datetime) => {
+  const data = {
+    scheduled_datetime: datetime,
+  }
+  await api.updateScheduledMessage(
+    selectedScheduledEmail.value.scheduled_id,
+    data
+  )
+  fetchEmails()
+  displayNotification({ msg: $gettext('Scheduling updated') })
+}
+
+const closeSchedulingForm = () => {
+  showSchedulingForm.value = false
+}
+
+const deleteScheduledMessage = async (email) => {
+  await api.deleteScheduledMessage(email.scheduled_id)
+  fetchEmails()
+  displayNotification({
+    msg: $gettext('Scheduled canceled and message move to trash folder'),
+  })
+}
+
+const displaySchedulingError = async (email) => {
+  const resp = await api.getScheduledMessage(email.scheduled_id)
+  schedulingError.value = resp.data.error
+  showSchedulingError.value = true
+}
 
 const openEmail = (emailid) => {
   router.push({
@@ -379,5 +519,8 @@ watch(page, () => {
 }
 .clickable {
   cursor: pointer;
+}
+.scheduling-top {
+  top: 45px;
 }
 </style>

@@ -106,6 +106,7 @@ const iconByMailboxType = {
   draft: 'mdi-file',
   junk: 'mdi-fire',
   sent: 'mdi-email-fast-outline',
+  scheduled: 'mdi-send-clock-outline',
   trash: 'mdi-trash-can-outline',
   normal: 'mdi-folder-outline',
 }
