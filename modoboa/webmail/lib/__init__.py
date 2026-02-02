@@ -7,7 +7,6 @@ from .imapemail import ImapEmail, ReplyModifier, ForwardModifier
 from .imaputils import BodyStructure, IMAPconnector, get_imapconnector, separate_mailbox
 from .signature import EmailSignature
 from .utils import decode_payload
-from .sendmail import send_mail, schedule_email
 
 
 __all__ = [
@@ -22,7 +21,5 @@ __all__ = [
     "decode_payload",
     "get_imapconnector",
     "save_attachment",
-    "send_mail",
-    "schedule_email",
     "separate_mailbox",
 ]

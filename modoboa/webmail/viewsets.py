@@ -14,6 +14,7 @@ from modoboa.lib.paginator import Paginator
 from modoboa.lib.viewsets import HasMailbox
 from modoboa.webmail import lib, models, serializers
 from modoboa.webmail.lib import attachments
+from modoboa.webmail.lib.sendmail import send_mail, schedule_email
 
 
 class UserMailboxViewSet(viewsets.GenericViewSet):
@@ -378,14 +379,14 @@ class ComposeSessionViewSet(viewsets.GenericViewSet):
         serializer.is_valid(raise_exception=True)
         manager = attachments.ComposeSessionManager(request.user.username)
         if serializer.validated_data["scheduled_datetime"]:
-            lib.schedule_email(
+            schedule_email(
                 request,
                 serializer.validated_data,
                 manager.get_content(pk)["attachments"],
             )
             return response.Response(status=204)
         else:
-            status, error = lib.send_mail(
+            status, error = send_mail(
                 request,
                 serializer.validated_data,
                 manager.get_content(pk)["attachments"],
