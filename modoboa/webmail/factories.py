@@ -4,7 +4,7 @@ import factory
 
 from modoboa.admin import factories as admin_factories
 
-from modoboa.webmail import constants, models
+from modoboa.webmail import models
 
 
 class ScheduledMessageFactory(factory.django.DjangoModelFactory):
@@ -13,7 +13,6 @@ class ScheduledMessageFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = models.ScheduledMessage
 
-    status = constants.SchedulingState.SCHEDULED
     account = factory.SubFactory(admin_factories.UserFactory)
     sender = "sender@test.com"
     subject = "Scheduled Message"

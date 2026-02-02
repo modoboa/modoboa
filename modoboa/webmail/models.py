@@ -23,7 +23,7 @@ class ScheduledMessage(models.Model):
     imap_uid = models.IntegerField(blank=True, null=True)
     status = models.CharField(
         choices=constants.EMAIL_SCHEDULING_STATES,
-        default=constants.SchedulingState.SCHEDULED,
+        default=constants.SchedulingState.SCHEDULED.value,
         max_length=15,
         db_index=True,
     )
@@ -57,7 +57,7 @@ class ScheduledMessage(models.Model):
             f"header {constants.CUSTOM_HEADER_SCHEDULED_ID} {self.id}"
         )
         if code:
-            self.status = constants.SchedulingState.MOVE_ERROR
+            self.status = constants.SchedulingState.MOVE_ERROR.value
             self.error = output
             self.save()
             return False

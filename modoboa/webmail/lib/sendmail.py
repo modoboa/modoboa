@@ -134,7 +134,7 @@ def send_scheduled_message(sched_msg: models.ScheduledMessage) -> bool:
             )
         else:
             error = str(inst.smtp_error)
-        sched_msg.status = constants.SchedulingState.SEND_ERROR
+        sched_msg.status = constants.SchedulingState.SEND_ERROR.value
         sched_msg.error = error
         sched_msg.save()
         return False
