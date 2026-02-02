@@ -419,6 +419,7 @@ class ComposeSessionViewSetTestCase(WebmailTestCase):
                 {
                     "sender": self.user.email,
                     "to": ["test@example.test"],
+                    "cc": ["cc@example.test"],
                     "subject": "test",
                     "body": "Test",
                     "scheduled_datetime": scheduled_datetime.isoformat(),

@@ -96,12 +96,13 @@ def schedule_email(
         mattachment = models.MessageAttachment(
             message=sched_msg,
         )
-        if "content-type" in attachment:
-            mattachment.content_type = attachment["content-type"]
-        elif "Content-Type" in attachment:
-            mattachment.content_type = attachment["Content-Type"]
-        else:
+        for header in ["content-type", "Content-Type"]:
+            if header in attachment:
+                mattachment.content_type = attachment[header]
+                break
+        if not mattachment.content_type:
             continue
+
         mattachment.file.name = attachment["tmpname"]
         if "fname" in attachment:
             mattachment.filename = attachment["fname"]
