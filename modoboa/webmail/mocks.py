@@ -1,5 +1,6 @@
 """Mock objects."""
 
+from modoboa.webmail import constants
 from modoboa.webmail.tests import data as tests_data
 
 
@@ -43,7 +44,10 @@ class IMAP4Mock:
             return "OK", [b"19"]
         elif command == "FETCH":
             uid = int(args[0])
-            data = tests_data.BODYSTRUCTURE_SAMPLE_WITH_FLAGS
+            if constants.CUSTOM_HEADER_SCHEDULED_ID.upper() in args[1]:
+                data = tests_data.BODYSTRUCTURE_SAMPLE_SCHEDULED
+            else:
+                data = tests_data.BODYSTRUCTURE_SAMPLE_WITH_FLAGS
             if uid == 46931:
                 if args[1] == "(BODYSTRUCTURE)":
                     data = tests_data.BODYSTRUCTURE_ONLY_4
@@ -62,7 +66,12 @@ class IMAP4Mock:
                 if args[1] == "(BODYSTRUCTURE)":
                     data = tests_data.BODYSTRUCTURE_EMPTY_MAIL
                 elif "HEADER.FIELDS" in args[1]:
-                    data = tests_data.BODYSTRUCTURE_EMPTY_MAIL_WITH_HEADERS
+                    if constants.CUSTOM_HEADER_SCHEDULED_DATETIME.upper() in args[1]:
+                        data = (
+                            tests_data.BODYSTRUCTURE_EMPTY_MAIL_WITH_HEADERS_SCHEDULED
+                        )
+                    else:
+                        data = tests_data.BODYSTRUCTURE_EMPTY_MAIL_WITH_HEADERS
                 else:
                     data = tests_data.EMPTY_BODY
             elif uid == 3444:
