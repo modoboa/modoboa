@@ -1,4 +1,5 @@
 from datetime import timedelta
+import getpass
 from io import BytesIO
 import os
 import shutil
@@ -10,6 +11,7 @@ from freezegun import freeze_time
 from rq import SimpleWorker
 
 from django.core import mail
+from django.test import override_settings
 from django.urls import reverse
 from django.utils import timezone
 
@@ -17,6 +19,7 @@ import django_rq
 from oauth2_provider.models import get_access_token_model, get_application_model
 
 from modoboa.core import models as core_models
+from modoboa.core.tests import utils
 from modoboa.admin import factories as admin_factories
 from modoboa.lib.tests import ModoAPITestCase
 from modoboa.webmail import factories, jobs, models
@@ -25,6 +28,9 @@ from modoboa.webmail.mocks import IMAP4Mock
 
 Application = get_application_model()
 AccessToken = get_access_token_model()
+
+DOVEADM_TEST_PATH = utils.get_doveadm_test_path()
+DOVECOT_USER = getpass.getuser()
 
 
 def get_gif():
@@ -427,6 +433,7 @@ class ComposeSessionViewSetTestCase(WebmailTestCase):
             self.assertEqual(models.MessageAttachment.objects.count(), 0)
 
 
+@override_settings(DOVEADM_LOOKUP_PATH=[DOVEADM_TEST_PATH], DOVECOT_USER=DOVECOT_USER)
 class ScheduledMessageViewSetTestCase(WebmailTestCase):
 
     def setUp(self):
