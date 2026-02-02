@@ -27,19 +27,19 @@ __all__ = [
 # according to https://en.wikipedia.org/wiki/Date_format_by_country
 # and https://en.wikipedia.org/wiki/Date_and_time_representation_by_country
 DATETIME_FORMATS = {
-    "cs": {"SHORT": "l, H:i", "LONG": "d. N Y H:i"},
-    "de": {"SHORT": "l, H:i", "LONG": "d. N Y H:i"},
-    "en": {"SHORT": "l, P", "LONG": "N j, Y P"},
-    "es": {"SHORT": "l, H:i", "LONG": "d. N Y H:i"},
-    "fr": {"SHORT": "l, H:i", "LONG": "d. N Y H:i"},
-    "it": {"SHORT": "l, H:i", "LONG": "d. N Y H:i"},
-    "ja_JP": {"SHORT": "l, P", "LONG": "N j, Y P"},
-    "nl": {"SHORT": "l, H:i", "LONG": "d. N Y H:i"},
-    "pl_PL": {"SHORT": "l, H:i", "LONG": "d. N Y H:i"},
-    "pt_PT": {"SHORT": "l, H:i", "LONG": "d. N Y H:i"},
-    "pt_BR": {"SHORT": "l, H:i", "LONG": "d. N Y H:i"},
-    "ru": {"SHORT": "l, H:i", "LONG": "d. N Y H:i"},
-    "sv": {"SHORT": "l, H:i", "LONG": "d. N Y H:i"},
+    "cs": {"SHORT": "l, H:i", "LONG": "d. N Y H:i", "TIME": "H:i"},
+    "de": {"SHORT": "l, H:i", "LONG": "d. N Y H:i", "TIME": "H:i"},
+    "en": {"SHORT": "l, P", "LONG": "N j, Y P", "TIME": "H:i"},
+    "es": {"SHORT": "l, H:i", "LONG": "d. N Y H:i", "TIME": "H:i"},
+    "fr": {"SHORT": "l, H:i", "LONG": "d. N Y H:i", "TIME": "H:i"},
+    "it": {"SHORT": "l, H:i", "LONG": "d. N Y H:i", "TIME": "H:i"},
+    "ja_JP": {"SHORT": "l, P", "LONG": "N j, Y P", "TIME": "H:i"},
+    "nl": {"SHORT": "l, H:i", "LONG": "d. N Y H:i", "TIME": "H:i"},
+    "pl_PL": {"SHORT": "l, H:i", "LONG": "d. N Y H:i", "TIME": "H:i"},
+    "pt_PT": {"SHORT": "l, H:i", "LONG": "d. N Y H:i", "TIME": "H:i"},
+    "pt_BR": {"SHORT": "l, H:i", "LONG": "d. N Y H:i", "TIME": "H:i"},
+    "ru": {"SHORT": "l, H:i", "LONG": "d. N Y H:i", "TIME": "H:i"},
+    "sv": {"SHORT": "l, H:i", "LONG": "d. N Y H:i", "TIME": "H:i"},
 }
 
 
@@ -120,6 +120,18 @@ def parse_date(value, **kwargs):
         fmt = "SHORT"
     return date_format(
         ndate, DATETIME_FORMATS.get(current_language, DATETIME_FORMATS.get("en"))[fmt]
+    )
+
+
+def parse_scheduled_datetime(value: str, **kwargs) -> str:
+    result = datetime.datetime.fromisoformat(value)
+    current_language = get_request().user.language
+    if timezone.now().date().day != result.date().day:
+        fmt = "LONG"
+    else:
+        fmt = "TIME"
+    return date_format(
+        result, DATETIME_FORMATS.get(current_language, DATETIME_FORMATS.get("en"))[fmt]
     )
 
 

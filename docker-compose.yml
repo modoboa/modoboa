@@ -41,6 +41,7 @@ services:
       sh -c "cd test_project; python3 manage.py rqworker dkim modoboa dovecot"
     volumes:
       - .:/code
+      - ./docker/radicale_config:/etc/radicale
 
   rq-scheduler:
     build:
