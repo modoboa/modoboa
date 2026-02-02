@@ -381,6 +381,9 @@ class ComposeSessionViewSetTestCase(WebmailTestCase):
         self.assertEqual(len(mail.outbox), 1)
         self.assertEqual(mail.outbox[0].from_email, '"Antoine Nguyen" <user@test.com>')
 
+    @override_settings(
+        DOVEADM_LOOKUP_PATH=[DOVEADM_TEST_PATH], DOVECOT_USER=DOVECOT_USER
+    )
     def test_schedule_and_send(self):
         self.authenticate()
         uid = self._create_compose_session()
