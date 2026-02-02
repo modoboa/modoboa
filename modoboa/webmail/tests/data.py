@@ -110,6 +110,18 @@ BODYSTRUCTURE_SAMPLE_WITH_FLAGS = [
     b")",
 ]
 
+BODYSTRUCTURE_SAMPLE_SCHEDULED = [
+    (
+        b'19 (UID 19 FLAGS (\\Seen) RFC822.SIZE 100000 BODYSTRUCTURE (("text" "plain" ("charset" "ISO-8859-1" "format" "flowed") NIL NIL "7bit" 2 1 NIL NIL NIL NIL)("message" "rfc822" ("name*" "ISO-8859-1\'\'%5B%49%4E%53%43%52%49%50%54%49%4F%4E%5D%20%52%E9%63%E9%70%74%69%6F%6E%20%64%65%20%76%6F%74%72%65%20%64%6F%73%73%69%65%72%20%64%27%69%6E%73%63%72%69%70%74%69%6F%6E%20%46%72%65%65%20%48%61%75%74%20%44%E9%62%69%74") NIL NIL "8bit" 3632 ("Wed, 13 Dec 2006 20:30:02 +0100" {70}',  # noqa
+        b"[INSCRIPTION] R\xe9c\xe9ption de votre dossier d'inscription Free Haut D\xe9bit",
+    ),  # noqa
+    (
+        b' (("Free Haut Debit" NIL "inscription" "freetelecom.fr")) (("Free Haut Debit" NIL "inscription" "freetelecom.fr")) ((NIL NIL "hautdebit" "freetelecom.fr")) ((NIL NIL "nguyen.antoine" "wanadoo.fr")) NIL NIL NIL "<20061213193125.9DA0919AC@dgroup2-2.proxad.net>") ("text" "plain" ("charset" "iso-8859-1") NIL NIL "8bit" 1428 38 NIL ("inline" NIL) NIL NIL) 76 NIL ("inline" ("filename*" "ISO-8859-1\'\'%5B%49%4E%53%43%52%49%50%54%49%4F%4E%5D%20%52%E9%63%E9%70%74%69%6F%6E%20%64%65%20%76%6F%74%72%65%20%64%6F%73%73%69%65%72%20%64%27%69%6E%73%63%72%69%70%74%69%6F%6E%20%46%72%65%65%20%48%61%75%74%20%44%E9%62%69%74")) NIL NIL) "mixed" ("boundary" "------------040706080908000209030901") NIL NIL NIL) BODY[HEADER.FIELDS (DATE FROM TO CC SUBJECT X-SCHEDULED-ID X-SCHEDULED-DATETIME)] {348}',  # noqa
+        b"Date: Tue, 19 Dec 2006 19:50:13 +0100\r\nFrom: Antoine Nguyen <nguyen.antoine@wanadoo.fr>\r\nTo: Antoine Nguyen <tonio@koalabs.org>\r\nSubject: [Fwd: [INSCRIPTION] =?ISO-8859-1?Q?R=E9c=E9ption_de_votre_?=\r\n =?ISO-8859-1?Q?dossier_d=27inscription_Free_Haut_D=E9bit=5D?=\r\nX-Scheduled-ID: 1123\r\nX-Scheduled-Datetime: 2026-02-02T15:37:59.022298+00:00\r\n\r\n",
+    ),
+    b")",
+]
+
 EMPTY_BODYSTRUCTURE = 'BODYSTRUCTURE (("text" "plain" ("charset" "us-ascii") NIL NIL "quoted-printable" 0 0 NIL NIL NIL NIL)("application" "zip" ("name" "hotmail.com!ngyn.org!1435428000!1435514400.zip") NIL NIL "base64" 978 NIL ("attachment" ("filename" "hotmail.com!ngyn.org!1435428000!1435514400.zip")) NIL NIL) "mixed" ("boundary" "--boundary_32281_b52cf564-2a50-4f96-aeb0-ef5f83b05463") NIL NIL NIL)'
 
 BODYSTRUCTURE_EMPTY_MAIL = [bytes(f"33 (UID 33 {EMPTY_BODYSTRUCTURE})", "utf-8")]
@@ -119,6 +131,15 @@ BODYSTRUCTURE_EMPTY_MAIL_WITH_HEADERS = [
         bytes(f"33 (UID 33 {EMPTY_BODYSTRUCTURE}", "utf-8")
         + b" BODY[HEADER.FIELDS (FROM TO CC DATE SUBJECT)] {235}",
         b"From: <Service.client10@maaf.fr>\r\nTo: <TONIO@NGYN.ORG>\r\nCc: \r\nSubject: Notre contact du 28/12/2011 - 192175092\r\nDate: Wed, 28 Dec 2011 13:29:17 +0100\r\nMessage-ID: <CABY0dkJspTaFn7v-1OG1nc9M0Qxn+VUTpcXzxyGNBnSnZtqMrw@mail.gmail.com>\r\n\r\n",
+    ),
+    b")",
+]
+
+BODYSTRUCTURE_EMPTY_MAIL_WITH_HEADERS_SCHEDULED = [
+    (
+        bytes(f"33 (UID 33 {EMPTY_BODYSTRUCTURE}", "utf-8")
+        + b" BODY[HEADER.FIELDS (FROM TO CC DATE SUBJECT X-SCHEDULED-DATETIME)] {293}",
+        b"From: <Service.client10@maaf.fr>\r\nTo: <TONIO@NGYN.ORG>\r\nCc: \r\nSubject: Notre contact du 28/12/2011 - 192175092\r\nDate: Wed, 28 Dec 2011 13:29:17 +0100\r\nMessage-ID: <CABY0dkJspTaFn7v-1OG1nc9M0Qxn+VUTpcXzxyGNBnSnZtqMrw@mail.gmail.com>\r\nX-Scheduled-Datetime: 2026-02-02T15:37:59.022298+00:00\r\n\r\n",
     ),
     b")",
 ]

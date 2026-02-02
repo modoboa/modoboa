@@ -255,6 +255,11 @@ class UserEmailViewSetTestCase(WebmailTestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTrue(response.json()["subject"].startswith("Fwd:"))
 
+        # Scheduled message
+        response = self.client.get(f"{url}?mailbox=Scheduled&mailid=33")
+        self.assertEqual(response.status_code, 200)
+        self.assertIn("scheduled_datetime", response.json())
+
     def test_attachment(self):
         self.authenticate()
         url = reverse("v2:webmail-email-attachment")
@@ -444,6 +449,16 @@ class ScheduledMessageViewSetTestCase(WebmailTestCase):
         self.message = factories.ScheduledMessageFactory(
             account=self.user, scheduled_datetime=timezone.now()
         )
+
+    def test_listmailbox(self):
+        self.authenticate()
+        url = reverse("v2:webmail-email-list")
+        response = self.client.get(f"{url}?mailbox=Scheduled")
+        self.assertEqual(response.status_code, 200)
+        content = response.json()
+        self.assertEqual(content["count"], 1)
+        self.assertEqual(content["results"][0]["scheduled_id"], 1123)
+        self.assertIn("scheduled_datetime_raw", content["results"][0])
 
     def test_delete(self):
         self.authenticate()
