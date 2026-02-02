@@ -11,18 +11,6 @@ from modoboa.webmail.lib.utils import create_message
 from . import get_imapconnector
 
 
-def create_message_from_scheduled_message(sched_msg: models.ScheduledMessage):
-    attachments = [attachment.to_dict() for attachment in sched_msg.attachments.all()]
-    result = create_message(sched_msg.account, sched_msg.to_dict(), attachments)
-    result.extra_headers.update(
-        {
-            constants.CUSTOM_HEADER_SCHEDULED_ID: sched_msg.id,
-            constants.CUSTOM_HEADER_SCHEDULED_DATETIME: sched_msg.scheduled_datetime.isoformat(),
-        }
-    )
-    return result
-
-
 def send_mail(request, attributes: dict, attachments: list) -> tuple[bool, str | None]:
     """
     Send a new email.
@@ -77,7 +65,7 @@ def schedule_email(
     request, attributes: dict, attachments: list
 ) -> models.ScheduledMessage:
     """Schedule a new email sending."""
-    message = models.ScheduledMessage(
+    sched_msg = models.ScheduledMessage(
         account=request.user,
         sender=attributes["sender"],
         scheduled_datetime=attributes["scheduled_datetime"],
@@ -88,25 +76,25 @@ def schedule_email(
     )
     for attr in ["cc", "bcc"]:
         if attr in attributes:
-            setattr(message, attr, ",".join(attributes[attr]))
-    message.save()
+            setattr(sched_msg, attr, ",".join(attributes[attr]))
+    sched_msg.save()
 
     # Save a copy of this message into an IMAP mailbox
-    msg = create_message_from_scheduled_message(message)
+    msg = sched_msg.to_email_message()
     with get_imapconnector(request) as imapc:
         try:
             imapc.create_folder(constants.MAILBOX_NAME_SCHEDULED)
         except WebmailInternalError:
             pass
         # TODO: deal with UID Validity
-        message.imap_uid = imapc.push_mail(
+        sched_msg.imap_uid = imapc.push_mail(
             constants.MAILBOX_NAME_SCHEDULED, msg.message()
         )
-        message.save()
+        sched_msg.save()
 
     for attachment in attachments:
         mattachment = models.MessageAttachment(
-            message=message,
+            message=sched_msg,
         )
         if "content-type" in attachment:
             mattachment.content_type = attachment["content-type"]
@@ -119,12 +107,12 @@ def schedule_email(
             mattachment.filename = attachment["fname"]
         mattachment.save()
 
-    return message
+    return sched_msg
 
 
 def send_scheduled_message(sched_msg: models.ScheduledMessage) -> bool:
     """Send a scheduled message using configured SMTP server."""
-    msg = create_message_from_scheduled_message(sched_msg)
+    msg = sched_msg.to_email_message()
     conf = dict(param_tools.get_global_parameters("webmail"))
     options = {
         "host": conf["scheduling_smtp_server"],
