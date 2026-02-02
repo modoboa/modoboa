@@ -378,7 +378,7 @@ class ComposeSessionViewSet(viewsets.GenericViewSet):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         manager = attachments.ComposeSessionManager(request.user.username)
-        if serializer.validated_data["scheduled_datetime"]:
+        if serializer.validated_data.get("scheduled_datetime"):
             schedule_email(
                 request,
                 serializer.validated_data,

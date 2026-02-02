@@ -491,11 +491,16 @@ class IMAPconnector:
                     "type": "sent",
                     "label": _("Sent"),
                 },
-                {
-                    "name": constants.MAILBOX_NAME_SCHEDULED,
-                    "type": "scheduled",
-                    "label": _("Scheduled"),
-                },
+            ]
+            if user.scheduledmessage_set.exists():
+                md_mailboxes += [
+                    {
+                        "name": constants.MAILBOX_NAME_SCHEDULED,
+                        "type": "scheduled",
+                        "label": _("Scheduled"),
+                    },
+                ]
+            md_mailboxes += [
                 {
                     "name": user.parameters.get_value("trash_folder"),
                     "type": "trash",

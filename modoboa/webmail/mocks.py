@@ -24,7 +24,7 @@ class IMAP4Mock:
         return "OK", None
 
     def append(self, *args, **kwargs):
-        pass
+        return "OK", [b"[APPENDUID 1234 11] ..."]  # noqa
 
     def create(self, name):
         return "OK", None
