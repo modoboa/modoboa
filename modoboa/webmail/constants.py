@@ -21,10 +21,10 @@ class SchedulingState(Enum):
 
 
 EMAIL_SCHEDULING_STATES = (
-    (SchedulingState.SCHEDULED, "scheduled"),
-    (SchedulingState.SENDING, "sending"),
-    (SchedulingState.SEND_ERROR, "send_error"),
-    (SchedulingState.MOVE_ERROR, "move_error"),
+    (SchedulingState.SCHEDULED.value, "scheduled"),
+    (SchedulingState.SENDING.value, "sending"),
+    (SchedulingState.SEND_ERROR.value, "send_error"),
+    (SchedulingState.MOVE_ERROR.value, "move_error"),
 )
 
 
