@@ -3,63 +3,57 @@
     <v-toolbar color="white">
       <v-btn icon="mdi-arrow-left" size="small" variant="flat" @click="close" />
 
-      <v-btn
-        color="primary"
-        variant="tonal"
-        prepend-icon="mdi-reply"
-        @click="() => replyToEmail()"
-      >
-        {{ $gettext('Reply') }}
-        <template #append>
-          <v-btn size="x-small" variant="plain">
-            <v-icon icon="mdi-chevron-down" />
-            <v-menu activator="parent">
-              <v-list>
-                <v-list-item
-                  :title="$gettext('Reply all')"
-                  @click="() => replyToEmail(true)"
-                />
-                <v-list-item
-                  :title="$gettext('Forward')"
-                  @click="forwardEmail"
-                />
-              </v-list>
-            </v-menu>
-          </v-btn>
-        </template>
-      </v-btn>
-      <v-btn
-        class="ml-2"
-        color="error"
-        variant="tonal"
-        icon="mdi-trash-can"
-        size="small"
-        :loading="working"
-        @click="deleteEmail"
-      >
-      </v-btn>
-      <v-btn
-        v-if="route.params.mailbox !== 'Junk'"
-        class="ml-2"
-        color="warning"
-        variant="tonal"
-        icon="mdi-fire"
-        size="small"
-        :loading="working"
-        @click="markEmailAsJunk"
-      >
-      </v-btn>
-      <v-btn
-        v-else
-        class="ml-2"
-        color="success"
-        variant="tonal"
-        icon="mdi-thumb-up"
-        size="small"
-        :loading="working"
-        @click="markEmailAsNotJunk"
-      >
-      </v-btn>
+      <v-btn-group color="primary" rounded="lg" density="compact" divided>
+        <v-btn prepend-icon="mdi-reply" @click="() => replyToEmail()">
+          {{ $gettext('Reply') }}
+        </v-btn>
+        <v-btn size="small" icon>
+          <v-icon icon="mdi-chevron-down" />
+          <v-menu activator="parent">
+            <v-list>
+              <v-list-item
+                :title="$gettext('Reply all')"
+                @click="() => replyToEmail(true)"
+              />
+              <v-list-item :title="$gettext('Forward')" @click="forwardEmail" />
+            </v-list>
+          </v-menu>
+        </v-btn>
+      </v-btn-group>
+      <template v-if="$route.query.mailbox !== 'Scheduled'">
+        <v-btn
+          class="ml-2"
+          color="error"
+          variant="tonal"
+          icon="mdi-trash-can"
+          size="small"
+          :loading="working"
+          @click="deleteEmail"
+        >
+        </v-btn>
+        <v-btn
+          v-if="route.params.mailbox !== 'Junk'"
+          class="ml-2"
+          color="warning"
+          variant="tonal"
+          icon="mdi-fire"
+          size="small"
+          :loading="working"
+          @click="markEmailAsJunk"
+        >
+        </v-btn>
+        <v-btn
+          v-else
+          class="ml-2"
+          color="success"
+          variant="tonal"
+          icon="mdi-thumb-up"
+          size="small"
+          :loading="working"
+          @click="markEmailAsNotJunk"
+        >
+        </v-btn>
+      </template>
       <v-btn class="ml-2" variant="tonal" icon size="small">
         <v-icon icon="mdi-cog" />
         <v-menu activator="parent">
@@ -140,6 +134,17 @@
         </template>
       </div>
     </div>
+    <v-alert
+      v-if="email?.scheduled_datetime"
+      ref="schedulingInfo"
+      type="info"
+      variant="tonal"
+      density="compact"
+      class="mx-1"
+    >
+      {{ $gettext('Message scheduled at:') }}
+      {{ $date(email.scheduled_datetime) }}
+    </v-alert>
     <iframe class="email-frame" />
   </div>
   <v-dialog v-model="showEmailSource" max-width="1200">
@@ -176,6 +181,7 @@ const email = ref(null)
 const emailSource = ref(null)
 const headers = ref(null)
 const loaded = ref(false)
+const schedulingInfo = ref()
 const showEmailSource = ref(false)
 const working = ref(false)
 
@@ -201,7 +207,12 @@ const close = () => {
 
 const resizeEmailIframe = () => {
   const iframe = document.querySelector('iframe')
-  const rect = headers.value.getBoundingClientRect()
+  let rect
+  if (schedulingInfo.value) {
+    rect = schedulingInfo.value.$el.getBoundingClientRect()
+  } else {
+    rect = headers.value.getBoundingClientRect()
+  }
   iframe.style.top = `${rect.bottom}px`
   iframe.style.width = `${rect.width - 24}px`
   iframe.style.height = `${window.innerHeight - rect.bottom - 32}px`
@@ -221,9 +232,11 @@ const fetchMailContent = () => {
         const iframe = document.createElement('iframe')
         iframe.classList.add('email-frame')
         document.querySelector('iframe').replaceWith(iframe)
-        const iframeDoc = iframe.contentDocument
-        iframeDoc.write(email.value.body)
-        iframeDoc.close()
+        if (email.value.body) {
+          const iframeDoc = iframe.contentDocument
+          iframeDoc.write(email.value.body)
+          iframeDoc.close()
+        }
         loaded.value = true
         nextTick(resizeEmailIframe)
       })

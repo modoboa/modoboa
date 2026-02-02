@@ -107,6 +107,43 @@ GLOBAL_PARAMETERS_STRUCT = collections.OrderedDict(
                 ),
             },
         ),
+        (
+            "scheduling",
+            {
+                "label": gettext_lazy("Scheduling settings"),
+                "params": collections.OrderedDict(
+                    [
+                        (
+                            "scheduling_smtp_server",
+                            {
+                                "label": gettext_lazy("Server address"),
+                                "help_text": gettext_lazy(
+                                    "Address of your SMTP server"
+                                ),
+                            },
+                        ),
+                        (
+                            "scheduling_smtp_secured_mode",
+                            {
+                                "label": gettext_lazy("Secured connection mode"),
+                                "help_text": gettext_lazy(
+                                    "Use a secured connection to access SMTP server"
+                                ),
+                            },
+                        ),
+                        (
+                            "scheduling_smtp_port",
+                            {
+                                "label": gettext_lazy("Server port"),
+                                "help_text": gettext_lazy(
+                                    "Listening port of your SMTP server"
+                                ),
+                            },
+                        ),
+                    ]
+                ),
+            },
+        ),
     ]
 )
 

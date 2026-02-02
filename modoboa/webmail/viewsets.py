@@ -5,14 +5,14 @@ from django.core.validators import validate_email
 from django.http import Http404, HttpResponse
 from django.utils.translation import gettext as _
 
-from rest_framework import parsers, response, viewsets
+from rest_framework import mixins, parsers, response, viewsets
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
 
 from modoboa.lib import exceptions
 from modoboa.lib.paginator import Paginator
 from modoboa.lib.viewsets import HasMailbox
-from modoboa.webmail import lib, serializers
+from modoboa.webmail import lib, models, serializers
 from modoboa.webmail.lib import attachments
 
 
@@ -156,11 +156,12 @@ class UserEmailViewSet(viewsets.GenericViewSet):
 
             content = imapc.fetch(page.id_start, page.id_stop, mbox=mailbox)
         content = [dict(msg) for msg in content]
+        first_index = (page_num - 1) * messages_per_page + 1
         serializer = self.get_serializer(
             {
                 "count": total,
-                "first_index": page_num * messages_per_page,
-                "last_index": (page_num * messages_per_page) + len(content),
+                "first_index": first_index,
+                "last_index": first_index + len(content) - 1,
                 "prev_page": page.previous_page_number if page.has_previous else None,
                 "next_page": page.next_page_number if page.has_next else None,
                 "results": content,
@@ -376,10 +377,38 @@ class ComposeSessionViewSet(viewsets.GenericViewSet):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         manager = attachments.ComposeSessionManager(request.user.username)
-        status, error = lib.send_mail(
-            request, serializer.validated_data, manager.get_content(pk)["attachments"]
-        )
-        if status:
-            attachments.remove_attachments_and_session(manager, pk)
+        if serializer.validated_data["scheduled_datetime"]:
+            lib.schedule_email(
+                request,
+                serializer.validated_data,
+                manager.get_content(pk)["attachments"],
+            )
             return response.Response(status=204)
+        else:
+            status, error = lib.send_mail(
+                request,
+                serializer.validated_data,
+                manager.get_content(pk)["attachments"],
+            )
+            if status:
+                attachments.remove_attachments_and_session(manager, pk)
+                return response.Response(status=204)
         return response.Response({"error": error}, status=400)
+
+
+class ScheduledMessageViewSet(
+    mixins.RetrieveModelMixin,
+    mixins.UpdateModelMixin,
+    mixins.DestroyModelMixin,
+    viewsets.GenericViewSet,
+):
+
+    permission_classes = (IsAuthenticated, HasMailbox)
+    serializer_class = serializers.ScheduledMessageSerializer
+
+    def get_queryset(self):
+        return models.ScheduledMessage.objects.filter(account=self.request.user)
+
+    def perform_destroy(self, instance):
+        if instance.delete_imap_copy():
+            instance.delete()

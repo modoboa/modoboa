@@ -1,10 +1,14 @@
 """Webmail serializers."""
 
+from django.utils.translation import gettext as _
+from django.utils import timezone
+
 from rest_framework import serializers
 
 from modoboa.lib import email_utils
-from modoboa.webmail import constants
+from modoboa.webmail import constants, models
 from modoboa.webmail.lib import imapheader, signature
+from modoboa.webmail.lib.imaputils import get_imapconnector
 
 
 class GlobalParametersSerializer(serializers.Serializer):
@@ -21,6 +25,13 @@ class GlobalParametersSerializer(serializers.Serializer):
     )
     smtp_port = serializers.IntegerField(default=25)
     smtp_authentication = serializers.BooleanField(default=False)
+
+    scheduling_smtp_server = serializers.CharField(default="127.0.0.1")
+    scheduling_smtp_secured_mode = serializers.ChoiceField(
+        default=constants.SmtpConnectionMode.NONE.value,
+        choices=constants.SMTP_CONNECTION_MODES,
+    )
+    scheduling_smtp_port = serializers.IntegerField(default=25)
 
 
 class UserPreferencesSerializer(serializers.Serializer):
@@ -116,6 +127,7 @@ class EmailHeadersSerializer(serializers.Serializer):
     imapid = serializers.CharField()
     subject = serializers.SerializerMethodField()
     from_address = serializers.SerializerMethodField()
+    recipients = serializers.SerializerMethodField()
     date = serializers.SerializerMethodField()
     size = serializers.IntegerField()
     answered = serializers.BooleanField(default=False)
@@ -123,6 +135,14 @@ class EmailHeadersSerializer(serializers.Serializer):
     forwarded = serializers.BooleanField(default=False)
     flagged = serializers.BooleanField(default=False)
     style = serializers.CharField(required=False)
+
+    scheduled_id = serializers.IntegerField(
+        source=constants.CUSTOM_HEADER_SCHEDULED_ID, required=False
+    )
+    scheduled_datetime = serializers.SerializerMethodField(required=False)
+    scheduled_datetime_raw = serializers.CharField(
+        source=constants.CUSTOM_HEADER_SCHEDULED_DATETIME, required=False
+    )
 
     def get_subject(self, obj) -> str:
         if "Subject" in obj:
@@ -134,9 +154,21 @@ class EmailHeadersSerializer(serializers.Serializer):
             return imapheader.parse_address(obj["From"])
         return ""
 
+    def get_recipients(self, obj):
+        if "To" in obj:
+            return imapheader.parse_address_list(obj["To"])
+        return ""
+
     def get_date(self, obj) -> str:
         if "Date" in obj:
             return imapheader.parse_date(obj["Date"])
+        return ""
+
+    def get_scheduled_datetime(self, obj) -> str:
+        if constants.CUSTOM_HEADER_SCHEDULED_DATETIME in obj:
+            return imapheader.parse_scheduled_datetime(
+                obj[constants.CUSTOM_HEADER_SCHEDULED_DATETIME]
+            )
         return ""
 
 
@@ -162,6 +194,11 @@ class EmailSerializer(serializers.Serializer):
     reply_to = serializers.EmailField(source="Reply_To", required=False)
     attachments = serializers.SerializerMethodField()
 
+    scheduled_datetime = serializers.DateTimeField(
+        source=constants.CUSTOM_HEADER_SCHEDULED_DATETIME.replace("-", "_"),
+        required=False,
+    )
+
     def get_attachments(self, email):
         result = []
         if email.attachments:
@@ -176,6 +213,13 @@ class MoveSelectionSerializer(serializers.Serializer):
     source = serializers.CharField()
     destination = serializers.CharField(required=False)
     selection = serializers.ListField(child=serializers.CharField())
+
+    def validate_source(self, value):
+        if value == constants.MAILBOX_NAME_SCHEDULED:
+            raise serializers.ValidationError(
+                _("Moving scheduled messages is forbidden")
+            )
+        return value
 
     def validate_selection(self, value):
         return [item for item in value if item.isdigit()]
@@ -198,7 +242,25 @@ class FlagSelectionSerializer(serializers.Serializer):
         return [item for item in value if item.isdigit()]
 
 
-class SendEmailSerializer(serializers.Serializer):
+class ScheduledDatetimeMixin:
+    """Mixin to inject scheduled_datetime logic into a serializer."""
+
+    scheduled_datetime = serializers.DateTimeField(required=False)
+
+    def validate_scheduled_datetime(self, value):
+        if value <= timezone.now():
+            raise serializers.ValidationError(
+                _("Only datetime in the future is allowed")
+            )
+        delta = value - timezone.now()
+        if delta.total_seconds() < 60:
+            raise serializers.ValidationError(
+                _("Provived datetime must be one minute in the future at least")
+            )
+        return value
+
+
+class SendEmailSerializer(ScheduledDatetimeMixin, serializers.Serializer):
 
     sender = serializers.EmailField()
     to = serializers.ListField(child=serializers.EmailField())
@@ -209,8 +271,7 @@ class SendEmailSerializer(serializers.Serializer):
 
     in_reply_to = serializers.CharField(required=False)
 
-    def validate_sender(self, value):
-        return value
+    scheduled_datetime = serializers.DateTimeField(required=False)
 
     def validate_to(self, value):
         return email_utils.prepare_addresses(value, "envelope")
@@ -239,3 +300,22 @@ class ComposeSessionSerializer(serializers.Serializer):
 class AllowedSenderSerializer(serializers.Serializer):
 
     address = serializers.EmailField()
+
+
+class ScheduledMessageSerializer(ScheduledDatetimeMixin, serializers.ModelSerializer):
+
+    class Meta:
+        model = models.ScheduledMessage
+        fields = ["error", "scheduled_datetime"]
+        read_only_fields = ["error"]
+
+    def update(self, instance, validated_data):
+        instance = super().update(instance, validated_data)
+        message = instance.to_email_message()
+        with get_imapconnector(self.context["request"]) as imapc:
+            imapc.delete_mail(constants.MAILBOX_NAME_SCHEDULED, instance.imap_uid)
+            instance.imap_uid = imapc.push_mail(
+                constants.MAILBOX_NAME_SCHEDULED, message.message()
+            )
+            instance.save()
+        return instance
