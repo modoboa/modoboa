@@ -68,7 +68,7 @@
               <v-combobox
                 v-model="form.to"
                 :items="contacts"
-                item-title="display_name"
+                :item-title="(item) => getItemTitle(item)"
                 return-object
                 :placeholder="$gettext('Provide one or more addresses')"
                 variant="outlined"
@@ -217,7 +217,7 @@ const emit = defineEmits(['onToggleHtmlMode'])
 const route = useRoute()
 const router = useRouter()
 const { $gettext } = useGettext()
-const { displayNotification } = useBusStore()
+const { displayNotification, reloadData } = useBusStore()
 const authStore = useAuthStore()
 
 const allowedSenders = ref([])
@@ -266,7 +266,7 @@ const initForm = () => {
   }
 }
 
-const submit = async () => {
+const submit = async (reload) => {
   const { valid } = await formRef.value.validate()
   if (!valid) {
     return
@@ -298,7 +298,10 @@ const submit = async () => {
     router.push({ name: 'MailboxView' })
     const msg = body.scheduled_datetime
       ? $gettext('Email scheduled')
-      : $gettext('Email seng')
+      : $gettext('Email sent')
+    if (reload) {
+      reloadData()
+    }
     displayNotification({ msg })
   } catch (error) {
     console.log(error)
@@ -309,7 +312,7 @@ const submit = async () => {
 
 const scheduleAndSubmit = async (datetime) => {
   form.value.scheduled_datetime = datetime
-  await submit()
+  await submit(true)
 }
 
 const openAttachmentsDialog = () => {
@@ -326,8 +329,8 @@ const lookForContacts = debounce(async (search) => {
   if (search) {
     const params = { search }
     const resp = await contactsApi.getContacts(params)
-    if (resp.data.length) {
-      contacts.value = resp.data
+    if (resp.data.count > 0) {
+      contacts.value = resp.data.results
     }
   } else {
     contacts.value = []
@@ -358,6 +361,13 @@ const openSchedulingForm = () => {
 
 const closeSchedulingForm = () => {
   showSchedulingForm.value = false
+}
+
+const getItemTitle = (item) => {
+  if (typeof item === 'string') {
+    return item
+  }
+  return item.display_name || `${item.first_name} ${item.last_name}`
 }
 
 watch(
