@@ -1,11 +1,13 @@
 import { computed, ref } from 'vue'
 import { defineStore } from 'pinia'
+import accountApi from '@/api/account'
 import capabilitiesApi from '@/api/capabilities'
 import notificationsApi from '@/api/notifications'
 
 export const useGlobalStore = defineStore('global', () => {
   const capabilities = ref([])
   const notifications = ref([])
+  const applications = ref([])
 
   async function fetchCapabilities() {
     const response = await capabilitiesApi.getCapabilities()
@@ -14,6 +16,12 @@ export const useGlobalStore = defineStore('global', () => {
   async function fetchNotifications() {
     const response = await notificationsApi.getNotifications()
     notifications.value = response.data
+  }
+  async function fetchAvailableApplications() {
+    if (!applications.value.length) {
+      const response = await accountApi.getAvailableApplications()
+      applications.value = response.data
+    }
   }
 
   function getNotificationById(id) {
@@ -33,14 +41,21 @@ export const useGlobalStore = defineStore('global', () => {
     return notifications.value.filter((notif) => notif.target === 'admin')
   })
 
+  const webmailEnabled = computed(
+    () => applications.value.find((app) => app.name === 'webmail') !== undefined
+  )
+
   return {
+    applications,
     capabilities,
     notifications,
     fetchCapabilities,
     fetchNotifications,
+    fetchAvailableApplications,
     getNotificationById,
     activeNotifications,
     adminNotifications,
+    webmailEnabled,
     $reset,
   }
 })
