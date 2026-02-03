@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import { useAuthStore } from '@/stores'
+import { useAuthStore, useGlobalStore } from '@/stores'
 import { useGlobalConfig } from '@/main'
 import constants from '@/constants.json'
 
@@ -494,11 +494,16 @@ router.beforeEach(async (to, from, next) => {
     const previousPage = window.location.href
     sessionStorage.setItem('previousPage', previousPage)
     const authStore = useAuthStore()
+    const globalStore = useGlobalStore()
     const isAuth = await authStore.validateAccess()
     if (isAuth) {
       if (to.meta.allowedRoles !== undefined) {
         if (to.meta.allowedRoles.indexOf(authStore.authUser.role) === -1) {
-          next({ name: 'AccountSettings' })
+          await globalStore.fetchAvailableApplications()
+          const nextPage = globalStore.webmailEnabled
+            ? 'MailboxView'
+            : 'AccountSettings'
+          next({ name: nextPage })
           return
         }
       }

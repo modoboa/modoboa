@@ -190,19 +190,12 @@ class CoreGlobalParametersSerializer(serializers.Serializer):
     log_maximum_age = serializers.IntegerField(default=365)
     message_history_maximum_age = serializers.IntegerField(default=180)
     items_per_page = serializers.IntegerField(default=30)
-    default_top_redirection = serializers.ChoiceField(
-        default="user", choices=[("user", _("User profile"))], required=False
-    )
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         sms_backend_fields = sms_backends.get_all_backend_serializer_settings()
         for field, definition in sms_backend_fields.items():
             self.fields[field] = definition["type"](**definition["attrs"])
-        # Choices serializer for default_top_redirection field
-        self.fields["default_top_redirection"].choices = (
-            app_settings.enabled_applications()
-        )
         # Populate choices of password_scheme
         self.fields["password_scheme"].choices = app_settings.get_password_scheme()
 

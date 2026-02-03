@@ -10,18 +10,6 @@ from modoboa.core.password_hashers.utils import cache_available_password_hasher
 from . import sms_backends
 
 
-def enabled_applications():
-    """Return the list of installed extensions."""
-    from modoboa.core.extensions import exts_pool
-
-    result = [("user", _("User profile"))]
-    for extension in exts_pool.list_all():
-        if "topredirection_url" not in extension:
-            continue
-        result.append((extension["name"], extension["label"]))
-    return sorted(result, key=lambda e: e[0])
-
-
 def get_password_scheme():
     available_schemes = cache.get("password_scheme_choice")
     if available_schemes is None:
@@ -737,16 +725,6 @@ GLOBAL_PARAMETERS_STRUCT = collections.OrderedDict(
                                 "label": gettext_lazy("Items per page"),
                                 "help_text": gettext_lazy(
                                     "Number of displayed items per page"
-                                ),
-                            },
-                        ),
-                        (
-                            "default_top_redirection",
-                            {
-                                "label": gettext_lazy("Default top redirection"),
-                                "help_text": gettext_lazy(
-                                    "The default redirection used when no application is "
-                                    "specified"
                                 ),
                             },
                         ),

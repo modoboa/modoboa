@@ -36,7 +36,6 @@ SETTINGS_SAMPLE = {
         "log_maximum_age": "365",
         "ldap_auth_method": "searchbind",
         "send_statistics": "True",
-        "default_top_redirection": "user",
         "sender_address": "noreply@modoboa.org",
         "ldap_server_port": "389",
         "rounds_number": "70000",
