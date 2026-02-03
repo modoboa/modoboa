@@ -16,7 +16,7 @@ RUN apk add --update openssl librrd python3-dev libffi-dev  \
 RUN python3 -m venv $VIRTUAL_ENV
 WORKDIR /tmp
 COPY . /tmp
-RUN python -m pip install -U pip pip-tools ruff
+RUN python -m pip install -U 'pip<26' pip-tools ruff
 RUN pip-compile --output-file=requirements.txt pyproject.toml
 RUN pip-compile --extra=mysql --output-file=mysql-requirements.txt pyproject.toml
 RUN pip-compile --extra=ldap --output-file=ldap-requirements.txt pyproject.toml
