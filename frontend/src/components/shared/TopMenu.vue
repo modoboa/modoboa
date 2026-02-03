@@ -94,11 +94,10 @@
 </template>
 
 <script setup>
-import { computed, onMounted, ref } from 'vue'
+import { computed, onMounted } from 'vue'
 import { getActivePinia } from 'pinia'
 import { useGettext } from 'vue3-gettext'
 import { useGlobalStore } from '@/stores'
-import accountApi from '@/api/account'
 
 const props = defineProps({
   user: {
@@ -114,8 +113,7 @@ const props = defineProps({
 const { $gettext } = useGettext()
 const globalStore = useGlobalStore()
 
-const applications = ref([])
-
+const applications = computed(() => globalStore.applications)
 const userInitials = computed(() => {
   if (props.user.first_name && props.user.last_name) {
     return `${props.user.first_name[0].toUpperCase()}${props.user.last_name[0].toUpperCase()}`
@@ -148,9 +146,7 @@ async function logout() {
 }
 
 onMounted(() => {
-  accountApi.getAvailableApplications().then((resp) => {
-    applications.value = resp.data
-  })
+  globalStore.fetchAvailableApplications()
   globalStore.fetchNotifications()
 })
 </script>
