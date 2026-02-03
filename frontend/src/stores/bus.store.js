@@ -45,6 +45,7 @@ export const useBusStore = defineStore('bus', () => {
     reloadMailboxCounters,
     dataKey,
     mbCounterKey,
+    reloadData,
     $reset,
   }
 })

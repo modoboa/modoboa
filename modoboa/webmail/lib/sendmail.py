@@ -65,10 +65,13 @@ def schedule_email(
     request, attributes: dict, attachments: list
 ) -> models.ScheduledMessage:
     """Schedule a new email sending."""
+    scheduled_datetime = attributes["scheduled_datetime"].replace(
+        second=0, microsecond=0
+    )
     sched_msg = models.ScheduledMessage(
         account=request.user,
         sender=attributes["sender"],
-        scheduled_datetime=attributes["scheduled_datetime"],
+        scheduled_datetime=scheduled_datetime,
         to=",".join(attributes["to"]),
         subject=attributes.get("subject", ""),
         body=attributes.get("body", ""),

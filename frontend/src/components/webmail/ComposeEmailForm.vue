@@ -318,8 +318,8 @@ const openAttachmentsDialog = () => {
 
 const closeAttachmentDialog = async () => {
   showAttachmentsDialog.value = false
-  const resp = await api.getUploadedAttachments(route.query.uid)
-  attachmentCount.value = resp.data.length
+  const resp = await api.getComposeSession(route.query.uid)
+  attachmentCount.value = resp.data.attachments.length
 }
 
 const lookForContacts = debounce(async (search) => {
