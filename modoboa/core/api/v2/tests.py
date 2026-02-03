@@ -74,7 +74,6 @@ CORE_SETTINGS = {
     "top_notifications_check_interval": 30,
     "log_maximum_age": 365,
     "items_per_page": 30,
-    "default_top_redirection": "user",
 }
 
 
