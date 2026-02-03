@@ -251,7 +251,7 @@ const props = defineProps({
 })
 
 const { $gettext, $ngettext } = useGettext()
-const { displayNotification, reloadMailboxCounters, reloadData } = useBusStore()
+const { displayNotification, reloadMailboxCounters } = useBusStore()
 const webmailStore = useWebmailStore()
 const router = useRouter()
 const route = useRoute()
@@ -324,7 +324,6 @@ const updateScheduledEmail = async (datetime) => {
     selectedScheduledEmail.value.scheduled_id,
     data
   )
-  reloadData()
   fetchEmails()
   displayNotification({ msg: $gettext('Scheduling updated') })
 }

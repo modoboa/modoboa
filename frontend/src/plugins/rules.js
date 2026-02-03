@@ -23,7 +23,7 @@ function samePassword(value, confirmation) {
 }
 
 function validateTime(value) {
-  if (!/^([01]\d|2[0-3]):?([0-5]\d)$/.test(value)) {
+  if (!/^([01]?\d|2[0-3]):?([0-5]\d)$/.test(value)) {
     return $gettext('Not a valid time')
   }
   return true

@@ -62,6 +62,12 @@ class ScheduledMessage(models.Model):
             self.save()
             return False
 
+        # Try to delete mailbox when empty
+        doveadm_cmd(
+            f"mailbox delete -u {self.account.email} -s -e "
+            f"{constants.MAILBOX_NAME_SCHEDULED}"
+        )
+
         return True
 
     def to_email_message(self) -> EmailMessage:

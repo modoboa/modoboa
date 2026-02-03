@@ -146,6 +146,8 @@ const mailboxQuotaTitle = computed(() => {
   return `${mailboxQuota.value.current} / ${mailboxQuota.value.limit} (${mailboxQuota.value.usage}%)`
 })
 
+const dataKey = computed(() => busStore.dataKey)
+
 function openMailbox(mailbox) {
   router.push({
     name: 'MailboxView',
@@ -212,12 +214,9 @@ const deleteMailbox = async () => {
   navigateToMailbox('INBOX')
 }
 
-watch(
-  () => busStore.dataKey,
-  () => {
-    fetchUserMailboxes()
-  }
-)
+watch(dataKey, () => {
+  fetchUserMailboxes()
+})
 
 await fetchUserMailboxes()
 const resp = await api.getUserMailboxQuota(route.query.mailbox || 'INBOX')
