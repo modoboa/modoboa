@@ -7,6 +7,7 @@ from modoboa.calendars import jobs as calendars_jobs
 from modoboa.core import jobs as core_jobs
 from modoboa.admin import jobs as admin_jobs
 from modoboa.maillog import jobs as maillog_jobs
+from modoboa.webmail import jobs as webmail_jobs
 
 
 register(core_jobs.clean_logs, queue_name="modoboa", cron="0 0 * * *")

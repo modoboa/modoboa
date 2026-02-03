@@ -15,8 +15,9 @@ def send_scheduled_message(message_id: int):
 
 
 def send_scheduled_messages():
+    now = timezone.now().replace(second=0, microsecond=0)
     messages = models.ScheduledMessage.objects.filter(
-        scheduled_datetime__lte=timezone.now(),
+        scheduled_datetime__lte=now,
         status=constants.SchedulingState.SCHEDULED.value,
     )
     queue = django_rq.get_queue("modoboa")

@@ -180,6 +180,7 @@ from modoboa.calendars import jobs as calendars_jobs
 from modoboa.core import jobs as core_jobs
 from modoboa.admin import jobs as admin_jobs
 from modoboa.maillog import jobs as maillog_jobs
+from modoboa.webmail import jobs as webmail_jobs
 
 
 register(core_jobs.clean_logs, queue_name="modoboa", cron="0 0 * * *")
@@ -197,6 +198,8 @@ register(maillog_jobs.logparser, queue_name="privileged", cron="*/5 * * * *")
 register(maillog_jobs.update_statistics, queue_name="modoboa", cron="0 * * * *")
 
 register(calendars_jobs.generate_rights, queue_name="privileged", cron="*/2 * * * *")
+
+register(webmail_jobs.send_scheduled_messages, queue_name="modoboa", cron="* * * * *")
 
 if "modoboa.amavis" in settings.MODOBOA_APPS:
     register(amavis_jobs.qcleanup, queue_name="modoboa", cron="0 0 * * *")
@@ -268,9 +271,6 @@ New built-in auto-configuration service.
   # Not used for Modoboa WebMail; configure that in the Modoboa admin settings.
   #
   #  * HOSTNAME: External hostname that clients should connect to
-  #     * Supports Thunderbird-style placeholders to substitute values from the
-  #       email address originally entered into the mail client:
-  #       %EMAILADDRESS%, %EMAILLOCALPART%, %EMAILDOMAIN%
   #  * SOCKET_TYPE: Actually the encryption settings
   #     * May be one of: 'SSL' (immediate TLS), 'STARTTLS' or 'plain' (bad)
   #  * PORT: TCP port that the client should use when connecting to the server
