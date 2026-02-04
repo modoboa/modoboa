@@ -2630,7 +2630,7 @@ msgid "Scheduling updated"
 msgstr "Kont krouet"
 
 #: src/components/webmail/EmailList.vue:339
-msgid "Scheduled canceled and message move to trash folder"
+msgid "Scheduled canceled and message moved to trash folder"
 msgstr ""
 
 #: src/components/webmail/EmailList.vue:393
