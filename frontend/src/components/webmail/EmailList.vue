@@ -336,7 +336,7 @@ const deleteScheduledMessage = async (email) => {
   await api.deleteScheduledMessage(email.scheduled_id)
   fetchEmails()
   displayNotification({
-    msg: $gettext('Scheduled canceled and message move to trash folder'),
+    msg: $gettext('Scheduled canceled and message moved to trash folder'),
   })
 }
 
