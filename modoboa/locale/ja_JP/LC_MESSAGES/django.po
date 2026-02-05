@@ -3233,7 +3233,7 @@ msgstr "サーバーが認証を求めています"
 
 #: webmail/app_settings.py:113
 msgid "Scheduling settings"
-msgstr "スケジュール設定"
+msgstr "送信予定設定"
 
 #: webmail/app_settings.py:161
 msgid "Default message display mode"
