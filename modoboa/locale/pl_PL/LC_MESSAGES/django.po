@@ -1,13 +1,15 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-#
+# 
 # Translators:
 # sin88 <sin@sin.waw.pl>, 2016
-# Dariusz Koryto <dariusz@koryto.eu>, 2016
+# Dariusz Koryto <dariusz@koryto.eu>, 2016,2026
+# Kacper Teterka <kacper.teterka@gmail.com>, 2021
 # Pedro M <zamowienia@ittf.pl>, 2017
 # KrystianPlichta <polandtorros@gmail.com>, 2021
 # Arkadiusz R, 2019
+# Rafal Wozniak <rwoz@rwoz.it>, 2021
 # sin88 <sin@sin.waw.pl>, 2016
 # Tomasz Proć <tomasz.proc@gmail.com>, 2017
 # Wojtek Gajda <vac@milowice.net>, 2018
@@ -16,36 +18,28 @@ msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-02-04 09:30+0100\n"
-"PO-Revision-Date: 2021-07-09 07:40+0000\n"
-"Last-Translator: KrystianPlichta <polandtorros@gmail.com>\n"
-"Language-Team: Polish (Poland) (http://www.transifex.com/tonio/modoboa/"
-"language/pl_PL/)\n"
-"Language: pl_PL\n"
+"PO-Revision-Date: 2011-07-01 08:15+0000\n"
+"Last-Translator: Dariusz Koryto <dariusz@koryto.eu>, 2016,2026\n"
+"Language-Team: Polish (Poland) (http://app.transifex.com/tonio/modoboa/language/pl_PL/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && "
-"(n%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && "
-"n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
+"Language: pl_PL\n"
+"Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && (n%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
 
 #: admin/api/v1/serializers.py:39
 msgid ""
 "Quota shared between mailboxes. Can be expressed in KB, MB (default) or GB. "
 "A value of 0 means no quota."
-msgstr ""
-"Miejsce dzielone między skrzynki. Może być wyrażone w KB, MB (domyślnie) lub "
-"GB. Wartość 0 oznacza brak limitu."
+msgstr "Miejsce dzielone między skrzynki. Może być wyrażone w KB, MB (domyślnie) lub GB. Wartość 0 oznacza brak limitu."
 
 #: admin/api/v1/serializers.py:46
 msgid "Default quota in MB applied to mailboxes. A value of 0 means no quota."
-msgstr ""
-"Domyślne ograniczenie (w MB) dla nowych skrzynek. Wartość 0 oznacza brak  "
-"ograniczenia."
+msgstr "Domyślny limit przydziału w MB zastosowany do skrzynek pocztowych. Wartość 0 oznacza brak ograniczenia."
 
 #: admin/api/v1/serializers.py:94
-#, fuzzy
 msgid "domain alias with this name already exists"
-msgstr "Alias z taką nazwą już istnieje"
+msgstr "alias domeny o tej nazwie już istnieje"
 
 #: admin/api/v1/serializers.py:104
 msgid "No authorized MX record found for this domain"
@@ -58,7 +52,7 @@ msgstr "Nie może być wyższa niż limit domeny"
 #: admin/api/v1/serializers.py:168 admin/api/v1/serializers.py:364
 #: admin/api/v2/serializers.py:571 admin/models/alias.py:45
 msgid "Permission denied."
-msgstr "Odmowa dostępu"
+msgstr "Odmowa dostępu."
 
 #: admin/api/v1/serializers.py:231 admin/api/v2/serializers.py:90
 #: admin/api/v2/serializers.py:492 amavis/serializers.py:39
@@ -70,8 +64,7 @@ msgstr "To pole jest obowiązkowe"
 #: admin/api/v1/serializers.py:243
 msgid ""
 "List of administered domains (resellers and domain administrators only)."
-msgstr ""
-"Lista administratorów domen (tylko resellerów i administratorów domen)."
+msgstr "Lista administratorów domen (tylko resellerów i administratorów domen)."
 
 #: admin/api/v1/serializers.py:337 admin/api/v2/serializers.py:553
 msgid "Not allowed for this role."
@@ -95,10 +88,8 @@ msgid "A list of recipient"
 msgstr "Lista odbiorców"
 
 #: admin/api/v1/serializers.py:515 admin/api/v2/viewsets.py:313
-#, fuzzy
-#| msgid "User '%s' already exists"
 msgid "This alias already exists"
-msgstr "Użytkownik '%s' już istnieje"
+msgstr "Alias już istnieje"
 
 #: admin/api/v1/serializers.py:551
 msgid "You don't have access to this domain."
@@ -118,7 +109,7 @@ msgstr "Katalog przechowywania kluczy DKIM nie został skonfigurowany"
 
 #: admin/api/v2/serializers.py:94
 msgid "This field is valid when type is relaydomain"
-msgstr ""
+msgstr "To pole jest ważne, gdy typ to relaydomain"
 
 #: admin/api/v2/serializers.py:101
 msgid "You can't define an unlimited quota."
@@ -143,11 +134,11 @@ msgstr "Katalog nie znaleziony."
 
 #: admin/api/v2/serializers.py:285
 msgid "This field only allows valid IP addresses (or networks)"
-msgstr ""
+msgstr "To pole akceptuje tylko prawidlowe adresy IP (lub sieci)"
 
 #: admin/api/v2/serializers.py:298
 msgid "Please disable imap migration before disabling this option."
-msgstr ""
+msgstr "Wyłącz migracjię IMAP przed wyłączeniem tej opcji."
 
 #: admin/api/v2/serializers.py:311
 msgid "Define at least one authorized network / address"
@@ -155,19 +146,15 @@ msgstr "Zdefiniuj przynajmniej jedną autoryzowaną sieć / adres"
 
 #: admin/api/v2/serializers.py:588
 msgid "The left part of an email address can't be more than 64 characters."
-msgstr ""
+msgstr "Lewa część adresu e-mail nie może zawierać więcej niż 64 znaki."
 
 #: admin/api/v2/serializers.py:610
-#, fuzzy
-#| msgid "A mailbox is required"
 msgid "A mailbox is required to create aliases."
-msgstr "Skrzynka jest obowiązkowa"
+msgstr "Skrzynka pocztowa jest wymagana do utworzenia aliasów."
 
 #: admin/api/v2/serializers.py:783
-#, fuzzy
-#| msgid "Unknown"
 msgid "Unknown status"
-msgstr "Nieznany"
+msgstr "Nieznany status"
 
 #: admin/api/v2/viewsets.py:95
 msgid "You don't have access to this domain"
@@ -195,33 +182,27 @@ msgstr "Poprawne MXy"
 
 #: admin/app_settings.py:37
 msgid ""
-"A list of IP or network address every MX record should match. A warning will "
-"be sent if a record does not respect it."
-msgstr ""
-"Lista adresów IP lub sieci dla każdego pasującego rekordu MX. Monit zostanie "
-"wysłany w przypadku błędu."
+"A list of IP or network address every MX record should match. A warning will"
+" be sent if a record does not respect it."
+msgstr "Lista adresów IP lub sieci dla każdego pasującego rekordu MX. Monit zostanie wysłany w przypadku błędu."
 
 #: admin/app_settings.py:47
 msgid "New domains must use authorized MX(s)"
-msgstr "Nowe domeny muszą używać autoryzowanych MX'ów"
+msgstr "Nowe domeny muszą używać autoryzowanych rekordów MX(ów)"
 
 #: admin/app_settings.py:51
 msgid ""
 "Prevent the creation of a new domain if its MX record does not use one of "
 "the defined addresses."
-msgstr ""
-"Zapobiegaj tworzeniu nowych domen jeśli ich MXy nie są jednym ze "
-"zdefiniowanych adresów."
+msgstr "Zapobiegaj tworzeniu nowych domen jeśli ich MXy nie są jednym ze zdefiniowanych adresów."
 
 #: admin/app_settings.py:59
-#, fuzzy
-#| msgid "Enable SPF checks"
 msgid "Enable IPV6 checks"
-msgstr "Włącz sprawdzanie rekordów SPF"
+msgstr "Włącz sprawdzanie IPv6"
 
 #: admin/app_settings.py:62
 msgid "Check if MX setup for ipv6 is valid"
-msgstr ""
+msgstr "Sprawdzić czy konfiguracja MX dla IPv6 jest poprawna"
 
 #: admin/app_settings.py:69
 msgid "Enable SPF checks"
@@ -253,9 +234,7 @@ msgstr "Włącz sprawdzanie poprawności autokonfiguracji"
 
 #: admin/app_settings.py:99
 msgid "Check if every domain has a valid records for autoconfiguration"
-msgstr ""
-"Sprawdza, czy każda domena ma prawidłowe rekordy pozwalające na "
-"autokonfigurację"
+msgstr "Sprawdza, czy każda domena ma prawidłowe rekordy pozwalające na autokonfigurację"
 
 #: admin/app_settings.py:107
 msgid "Enable DNSBL checks"
@@ -263,17 +242,17 @@ msgstr "Włącz sprawdzanie DNSBL"
 
 #: admin/app_settings.py:109
 msgid "Check every domain against major DNSBL providers"
-msgstr "Sprawdź każdą domenę po kątem głównych providerów DNSBL"
+msgstr "Sprawdza każdą domenę u głównych dostawców list DNSBL"
 
 #: admin/app_settings.py:117
 msgid "Notify domain admins about DNS issues"
-msgstr ""
+msgstr "Powiadom administratora domeny o problemach DNS"
 
 #: admin/app_settings.py:120
 msgid ""
 "Send a notification by email to domain administrators when DNS issues are "
 "encountered"
-msgstr ""
+msgstr "Wyślij powiadomienie e-mail do administratorów domeny, gdy pojawią się problemy DNS"
 
 #: admin/app_settings.py:128
 msgid "Custom DNS server"
@@ -292,10 +271,7 @@ msgid ""
 "Absolute path of the directory where DKIM private keys will be stored. Make "
 "sure this directory belongs to root user and is not readable by the outside "
 "world."
-msgstr ""
-"Ścieżka bezwzględna do katalogu w którym będą trzymane klucze prywatne DKIM. "
-"Upewnij się że właścicielem katalogu jest \"użytkownik root\" i że katalog "
-"nie jest publicznie dostępny do odczytu."
+msgstr "Ścieżka bezwzględna do katalogu w którym będą trzymane klucze prywatne DKIM. Upewnij się że właścicielem katalogu jest \"użytkownik root\" i że katalog nie jest publicznie dostępny do odczytu."
 
 #: admin/app_settings.py:149
 msgid "Default DKIM key length"
@@ -313,9 +289,7 @@ msgstr "Domyślne ograniczenie dla domeny"
 msgid ""
 "Default quota (in MB) applied to freshly created domains with no value "
 "specified. A value of 0 means no quota."
-msgstr ""
-"Domyślne ograniczenie (w MB) dla nowych domen, gdy nie zostało podane. (0 - "
-"brak ograniczenia)"
+msgstr "Domyślne ograniczenie (w MB) dla nowych domen, gdy nie zostało podane. (0 - brak ograniczenia)"
 
 #: admin/app_settings.py:168
 msgid "Default domain sending limit"
@@ -325,9 +299,7 @@ msgstr "Domyślny limit wysyłania dla domey"
 msgid ""
 "Number of messages freshly created domains will be allowed to send per day. "
 "Leave empty for no limit."
-msgstr ""
-"Liczba wiadomości, które świeżo utworzone domeny będą mogły wysłać dziennie. "
-"Pozostaw puste dla braku limitu."
+msgstr "Liczba wiadomości, które świeżo utworzone domeny będą mogły wysłać dziennie. Pozostaw puste dla braku limitu."
 
 #: admin/app_settings.py:182 limits/app_settings.py:61
 #: limits/app_settings.py:135 limits/constants.py:31 limits/constants.py:84
@@ -336,31 +308,23 @@ msgstr "Skrzynki pocztowe"
 
 #: admin/app_settings.py:188
 msgid "Handle mailboxes on filesystem"
-msgstr "Przechowuj skrzynka na filesystemie"
+msgstr "Postępowanie ze skrzynkami w systemie plików"
 
 #: admin/app_settings.py:190
 msgid ""
 "Rename or remove mailboxes on the filesystem when they get renamed or "
 "removed within Modoboa"
-msgstr ""
-"Zmieniaj lub usuwaj skrzynki na filesystemie jeśli zostały zmodyfikowane lub "
-"usuniętę przez Modoboa"
+msgstr "Zmieniaj lub usuwaj skrzynki na filesystemie jeśli zostały zmodyfikowane lub usuniętę przez Modoboa"
 
 #: admin/app_settings.py:198 admin/models/domain.py:36
 msgid "Default mailbox quota"
 msgstr "Domyślna przestrzeń dla konta pocztowego"
 
 #: admin/app_settings.py:200
-#, fuzzy
-#| msgid ""
-#| "Default mailbox quota (in MB) applied to freshly created mailboxes with "
-#| "no value specified. A value of 0 means no quota."
 msgid ""
 "Default mailbox quota (in MB) applied to freshly created domains with no "
 "value specified. A value of 0 means no quota."
-msgstr ""
-"Domyślny limit skrzynki (w MB) stosowany dla świeżo utworzonych skrzynek, "
-"dla których nie podano wartości. Wartość 0 oznacza brak limitu."
+msgstr "Domyślna pojemność skrzynki (w MB) dla nowo tworzonych domen bez podanej wartości. 0 oznacza brak limitu."
 
 #: admin/app_settings.py:209
 msgid "Default mailbox sending limit"
@@ -370,9 +334,7 @@ msgstr "Domyślny limit wysyłania skrzynki"
 msgid ""
 "Number of messages freshly created mailboxes will be allowed to send per "
 "day. Leave empty for no limit."
-msgstr ""
-"Liczba wiadomości, które będą mogły wysyłać świeżo utworzone skrzynki na "
-"dzień. Pozostaw puste dla braku limitu."
+msgstr "Liczba wiadomości, które będą mogły wysyłać świeżo utworzone skrzynki na dzień. Pozostaw puste dla braku limitu."
 
 #: admin/app_settings.py:219
 msgid "Automatic account removal"
@@ -387,8 +349,9 @@ msgid "Automatic domain/mailbox creation"
 msgstr "Automatyczne tworzenie domeny/skrzynki"
 
 #: admin/app_settings.py:233
-msgid "Create a domain and a mailbox when an account is automatically created."
-msgstr "Utwórz domenę i skrzynkę gdy tworzone jest konto"
+msgid ""
+"Create a domain and a mailbox when an account is automatically created."
+msgstr "Utwórz domenę i skrzynkę, kiedy konto jest tworzone automatycznie."
 
 #: admin/app_settings.py:242
 msgid "Create an alias when a mailbox is renamed"
@@ -399,34 +362,32 @@ msgid "Create an alias using the old address when a mailbox is renamed."
 msgstr "Utwórz alias używając starego adresu podczas zmiany nazwy skrzynki."
 
 #: admin/app_settings.py:257
-#, fuzzy
-#| msgid "alias"
 msgid "Aliases"
-msgstr "alias"
+msgstr "Alias"
 
 #: admin/app_settings.py:263
 msgid "Alias can target any domain"
-msgstr ""
+msgstr "Alias może wskazywać do dowolnej domeny"
 
 #: admin/app_settings.py:265
 msgid "Allow aliases to target any domain, not just the local domains."
-msgstr ""
+msgstr "Pozwól aliasu wskazywać do dowolnej domeny, nie tylko lokalnych."
 
 #: admin/app_settings.py:272
 msgid "Alias target block list"
-msgstr ""
+msgstr "Lista blokad celów aliasu"
 
 #: admin/app_settings.py:274
 msgid "A list of domains that aliases cannot target (comma separated)."
-msgstr ""
+msgstr "Lista domen, których aliasy nie mogą wskazywać (oddzielone przecinkami)."
 
 #: admin/app_settings.py:282
 msgid "Alias target allow list"
-msgstr ""
+msgstr "Lista dozwolonych celów aliasu"
 
 #: admin/app_settings.py:284
 msgid "A list of domains that aliases can target (comma separated)."
-msgstr ""
+msgstr "Lista domen, które aliasy mogą wskazywać (oddzielone przecinkami)."
 
 #: admin/app_settings.py:338 core/api/v2/viewsets.py:174
 msgid "Administration"
@@ -475,7 +436,7 @@ msgstr "[modoboa] Wykryto problem(y) z MX dla domeny {}"
 
 #: admin/dns_checker.py:224
 msgid "[modoboa] DNSBL issue(s) for domain {}"
-msgstr "[modoboa] DNSBL problem(y) dla domeny {}"
+msgstr "[modoboa] Problem(y) DNSBL dla domeny {}"
 
 #: admin/handlers.py:179
 msgid "domain alias"
@@ -497,7 +458,7 @@ msgstr "Nie masz uprawnień do importowania domen"
 
 #: admin/lib.py:135
 msgid "You are not allowed to import domain aliases."
-msgstr "Nie masz uprawnień do importowania aliasów."
+msgstr "Nie masz uprawnień do importowania aliasów domen."
 
 #: admin/lib.py:227 admin/tests/test_mx.py:139 admin/tests/test_mx.py:152
 #: admin/tests/test_mx.py:157
@@ -517,13 +478,11 @@ msgstr "Znaleziono nie działające serwery nazw"
 #: admin/lib.py:237 admin/tests/test_mx.py:146
 #, python-format
 msgid "DNS resolution timeout, unable to query %s at the moment"
-msgstr ""
-"Upłynąć czas na rozwiązanie nazwy w DNS, w tym momencie nie potrafię odpytać "
-"%s"
+msgstr "Upłynąć czas na rozwiązanie nazwy w DNS, w tym momencie nie potrafię odpytać %s"
 
 #: admin/lib.py:241
 msgid "DNS name is too long: {}"
-msgstr ""
+msgstr "Nazwa DNS jest za długa: {}"
 
 #: admin/lib.py:272
 #, python-brace-format
@@ -558,17 +517,15 @@ msgstr "Nie potrafię zdekodować pliku CSV używając kodowania %(encoding)s"
 msgid ""
 "DKIM path non-writable (either a permission issue or the directory does not "
 "exist)"
-msgstr ""
+msgstr "śeieżka DKIM jest niedostępna do zapisu (problem z uprawnieniami lub katalog nie istnieje)"
 
 #: admin/management/commands/subcommands/_manage_dkim_keys.py:52
 msgid "Failed to generate DKIM private key"
-msgstr ""
+msgstr "Nie udało się wygenerować prywatny klucz DKIM"
 
 #: admin/management/commands/subcommands/_manage_dkim_keys.py:62
-#, fuzzy
-#| msgid "Enable communication with Modoboa public API"
 msgid "Failed to generate DKIM public key"
-msgstr "Włącz komunikację z publicznym API Modoboa"
+msgstr "Nie udało się wygenerować publiczny klucz DKIM"
 
 #: admin/models/alias.py:43
 msgid "Domain not found."
@@ -585,7 +542,7 @@ msgstr "Adres aliasu."
 #: admin/models/alias.py:123 admin/models/domain.py:45
 #: admin/models/domain_alias.py:45 autoreply/models.py:25
 msgid "enabled"
-msgstr "włączone"
+msgstr "aktywny"
 
 #: admin/models/alias.py:124 admin/models/domain_alias.py:46
 msgid "Check to activate this alias"
@@ -608,20 +565,16 @@ msgid "Invalid address"
 msgstr "Niepoprawny adres"
 
 #: admin/models/alias.py:206
-#, fuzzy
-#| msgid "The domain name"
 msgid "Target domain not allowed"
-msgstr "Nazwa domeny"
+msgstr "Domena docelowa niedozwolona"
 
 #: admin/models/alias.py:224
 msgid "Local recipient {}@{} not found"
-msgstr "Lokalny odbiorca {}@{} nie został odnaleziony"
+msgstr "Lokalny odbiorcy {} nie znaleziony"
 
 #: admin/models/alias.py:273
-#, fuzzy
-#| msgid "Invalid line: %s"
 msgid "Invalid line: {}"
-msgstr "Niepoprawna linia: %s"
+msgstr "Niewłaściwa linia: []"
 
 #: admin/models/domain.py:27 admin/models/domain_alias.py:33
 msgid "name"
@@ -658,9 +611,7 @@ msgstr "Włącz podpisywanie DKIM"
 #: admin/models/domain.py:63
 msgid ""
 "If you activate this feature, a DKIM key will be generated for this domain."
-msgstr ""
-"Jeśli włączysz tą funkcjonalność, dla tej domeny zostanie wygenerowany klucz "
-"DKIM"
+msgstr "Jeśli włączysz tą funkcjonalność, dla tej domeny zostanie wygenerowany klucz DKIM"
 
 #: admin/models/domain.py:70
 msgid "Key length"
@@ -672,29 +623,20 @@ msgid "Invalid line"
 msgstr "Niepoprawna linia"
 
 #: admin/models/domain.py:331
-#, fuzzy
-#| msgid "No authorized MX record found for domain {}"
 msgid "{}: no authorized MX record found for domain"
-msgstr "Nie znaleziono autoryzowanego rekordu MX dla domeny {}"
+msgstr "Niepoprawną linię: {}{}: nie znaleziono autoryzowanego rekordu MX dla domeny"
 
 #: admin/models/domain.py:337
-#, fuzzy
-#| msgid "Invalid quota value for domain '{}'"
 msgid "{}: invalid quota value for domain"
-msgstr "Niepoprawna wartość przydziału (quoty) dla domeny {}"
+msgstr "{}: niepoprawna wartość limitu dla domeny"
 
 #: admin/models/domain.py:343
-#, fuzzy
-#| msgid "Invalid default mailbox quota value for domain '{}'"
 msgid "{}: invalid default mailbox quota value for domain"
-msgstr "Niepoprawna wartość domyślna przydziału (quoty) dla domeny '{}'"
+msgstr "{}: niepoprawn wartość limitu dla domeny{}: niepoprawn wartość domyślnego limitu skrzynki dla domeny"
 
 #: admin/models/domain.py:350
-#, fuzzy
-#| msgid "Default mailbox quota cannot be greater than domain quota"
 msgid "{}: default mailbox quota cannot be greater than domain quota"
-msgstr ""
-"Domyślna wartość przydziału (quota) nie może być wyższa niż przydział domeny"
+msgstr "{}: limit skrzynki nie może być większy niż limit domeny"
 
 #: admin/models/domain_alias.py:36
 msgid "The alias name"
@@ -711,7 +653,7 @@ msgstr "Alias domeny wskazuje na"
 #: admin/models/domain_alias.py:79
 #, python-format
 msgid "Unknown domain %s"
-msgstr "Nieznana domena %s"
+msgstr "Nieznana domena \"%s\""
 
 #: admin/models/mailbox.py:87
 msgid "Mailbox address (without the @domain.tld part)"
@@ -731,10 +673,8 @@ msgid "A quota is required"
 msgstr "Limit jest wymagany"
 
 #: admin/models/mailbox.py:256
-#, fuzzy
-#| msgid "Domain quota exceeded"
 msgid "{}: domain quota exceeded"
-msgstr "Przekroczono limit przydziału"
+msgstr "Limit domeny przekroczony"
 
 #: admin/models/mailbox.py:310
 msgid "Domain does not exist"
@@ -742,32 +682,26 @@ msgstr "Domena nie istnieje"
 
 #: admin/models/mailbox.py:342
 msgid "Mailbox {} already exists"
-msgstr "Skrzynka {} już istnieje"
+msgstr "Skrzynka [] już istnieje"
 
 #: admin/templates/admin/notifications/domain_in_dnsbl.html:3
 #, python-format
 msgid ""
 "Modoboa detected that domain %(domain)s is listed by the following DNSBL "
 "providers:"
-msgstr ""
-"Modoboa znalazło tą domenę %(domain)s na liście DNSBL poniższych providerów:"
+msgstr "Modoboa wykryła, że domena %(domain)s znajduje się na liście DNSBL następujących dostawców:"
 
 #: admin/templates/admin/notifications/domain_in_dnsbl.html:11
 msgid ""
 "The domain's reputation will be affected and there is a chance that emails "
 "coming from it are considered as spam. You should contact those providers "
 "and ask them to unlist detected IP address(es)."
-msgstr ""
-"Reputacja domeny zostanie naruszona i istnieje szansa, że wiadomości z niej "
-"pochodzące zostaną zakwalifikowane jako spam. Powinieneś skontaktować się z "
-"tymi dostawcami i poprosić o usunięcie wykrytych adresów (IP)."
+msgstr "Reputacja domeny zostanie naruszona i istnieje szansa, że wiadomości z niej pochodzące zostaną zakwalifikowane jako spam. Powinieneś skontaktować się z tymi dostawcami i poprosić o usunięcie wykrytych adresów (IP)."
 
 #: admin/templates/admin/notifications/domain_invalid_mx.html:3
 #, python-format
 msgid "Modoboa detected that domain %(domain)s has no valid MX record:"
-msgstr ""
-"Modoboa sygnalizuje że ta domena %(domain)s nie posiada poprawnego rekordu "
-"MX:"
+msgstr "Modoboa sygnalizuje że ta domena %(domain)s nie posiada poprawnego rekordu MX:"
 
 #: admin/tests/test_mx.py:141
 #, python-format
@@ -780,401 +714,332 @@ msgid "Invalid IP address format for %(domain)s; %(addr)s"
 msgstr "Nieprawidłowy format adresu IP dla %(domain)s; %(addr)s"
 
 #: admin/tests/test_mx.py:185
-#, fuzzy, python-format
-#| msgid "No MX record for %s"
+#, python-format
 msgid "No AAAA record for %s"
-msgstr "Brak wpisów MX dla %s"
+msgstr "Brak rekordu AAAA dla %s"
 
 #: amavis/app_settings.py:11
-#, fuzzy
-#| msgid "LDAP settings"
 msgid "Amavis settings"
-msgstr "Ustawienia IMAP"
+msgstr "Ustawienia Amavisa"
 
 #: amavis/app_settings.py:17
 msgid "Localpart is case sensitive"
-msgstr ""
+msgstr "Wielkość liter w nazwie użytkownika jest istotna"
 
 #: amavis/app_settings.py:19
 msgid "Value should match amavisd.conf variable $localpart_is_case_sensitive"
-msgstr ""
+msgstr "Wartość powinna odpowiadać zmiennej amavisd.conf $localpart_is_case_sensitiveKolory"
 
 #: amavis/app_settings.py:27
-#, fuzzy
-#| msgid "Recipient"
 msgid "Recipient delimiter"
-msgstr "Odbioraca"
+msgstr "Znak separatora odbiorców"
 
 #: amavis/app_settings.py:29
 msgid "Value should match amavisd.conf variable $recipient_delimiter"
-msgstr ""
+msgstr "Wartość powinna odpowiadać zmiennej amavisd.conf $recipient_delimiter"
 
 #: amavis/app_settings.py:41
-#, fuzzy
-#| msgid "Quantity"
 msgid "Quarantine settings"
-msgstr "Kwarantanna"
+msgstr "Ustawienia kwarantanny"
 
 #: amavis/app_settings.py:47
-#, fuzzy
-#| msgid "Maximum log record age"
 msgid "Maximum message age"
-msgstr "Max wiek wpisu w logu"
+msgstr "Maksymalny wiek wiadomości"
 
 #: amavis/app_settings.py:49
 msgid "Quarantine messages maximum age (in days) before deletion"
-msgstr ""
+msgstr "Maksymalny wiek wiadomości w kwarantannie (w dniach) przed jej usunięciem"
 
 #: amavis/app_settings.py:60
-#, fuzzy
-#| msgid "Message sending limit"
 msgid "Message releasing"
-msgstr "Limit wysyłania wiadomości"
+msgstr "Zwolnienie wiadomości"
 
 #: amavis/app_settings.py:66
-#, fuzzy
-#| msgid "Show greylisted messages"
 msgid "Remove released messages"
-msgstr "Pokaż greylistowane wiadomości"
+msgstr "Usuń uwolnione wiadomości"
 
 #: amavis/app_settings.py:68
 msgid "Remove messages marked as released while cleaning up the database"
-msgstr ""
+msgstr "Usuń wiadomości oznaczone jako uwolnione podczas czyszczenie bazy danych"
 
 #: amavis/app_settings.py:76
-#, fuzzy
-#| msgid "Use a secured connection"
 msgid "Amavis connection mode"
-msgstr "Użyj bezpiecznego polączenia"
+msgstr "Tryb połączenia Amavis"
 
 #: amavis/app_settings.py:78
-#, fuzzy
-#| msgid "Use an SSL/STARTTLS connection to access the LDAP server"
 msgid "Mode used to access the PDP server"
-msgstr "Użyj SSL/STARTTLS dla połączenia z serwerem LDAP"
+msgstr "Tryb używany w dostępie do serwera PDP"
 
 #: amavis/app_settings.py:85
-#, fuzzy
-#| msgid "SMTP server address"
 msgid "PDP server address"
-msgstr "Adres serwera SMTP"
+msgstr "Adres serwera PDP"
 
 #: amavis/app_settings.py:87
-#, fuzzy
-#| msgid "SMTP server address"
 msgid "PDP server address (if inet mode)"
-msgstr "Adres serwera SMTP"
+msgstr "Adres serwera PDP (dla trybu inet)"
 
 #: amavis/app_settings.py:95
-#, fuzzy
-#| msgid "SMTP server port"
 msgid "PDP server port"
-msgstr "Port serwera SMTP"
+msgstr "Port serwera PDP"
 
 #: amavis/app_settings.py:97
 msgid "PDP server port (if inet mode)"
-msgstr ""
+msgstr "Port serwera PDP (dla trybu inet)"
 
 #: amavis/app_settings.py:105
-#, fuzzy
-#| msgid "SMTP server port"
 msgid "PDP server socket"
-msgstr "Port serwera SMTP"
+msgstr "Gniazdo serwera PDP"
 
 #: amavis/app_settings.py:107
 msgid "Path to the PDP server socket (if unix mode)"
-msgstr ""
+msgstr "Ścieżka do gniazda serwera PDP (dla trybu unix)"
 
 #: amavis/app_settings.py:115
 msgid "Allow direct release"
-msgstr ""
+msgstr "Pozwól na bezpośrednie uwalnianie"
 
 #: amavis/app_settings.py:117
 msgid "Allow users to directly release their messages"
-msgstr ""
+msgstr "Pozwól użytkownikom na bezpośrednie uwalnianie ich wiadomości"
 
 #: amavis/app_settings.py:124
 msgid "Enable self-service mode"
-msgstr ""
+msgstr "Włącz tryb self-service"
 
 #: amavis/app_settings.py:126
 msgid "Activate the 'self-service' mode"
-msgstr ""
+msgstr "Aktywuj tryb self-service"
 
 #: amavis/app_settings.py:133
-#, fuzzy
-#| msgid "Notifications"
 msgid "Notifications sender"
-msgstr "Powiadomienia"
+msgstr "Nadawca powiadomień"
 
 #: amavis/app_settings.py:135
-#, fuzzy
-#| msgid "Email address used to send notifications."
 msgid "The e-mail address used to send notitications"
 msgstr "Adres e-mail używany do wysyłania powiadomień"
 
 #: amavis/app_settings.py:146
 msgid "Manual learning"
-msgstr ""
+msgstr "Ręczne uczenie"
 
 #: amavis/app_settings.py:152
 msgid "Enable manual learning"
-msgstr ""
+msgstr "Włącz ręczne uczenie"
 
 #: amavis/app_settings.py:154
-#, fuzzy
-#| msgid "Allow this administrator to access user mailboxes"
 msgid "Allow super administrators to manually train Spamassassin"
-msgstr "Zezwól temu administratorowi na dostęp do skrzynek użytkowników"
+msgstr "Zezwól super administratorom na ręczne trenowanie Spamassassin'a"
 
 #: amavis/app_settings.py:161
 msgid "Is Spamassassin local?"
-msgstr ""
+msgstr "Czy Spamassassin działa lokalnie"
 
 #: amavis/app_settings.py:163
 msgid "Tell if Spamassassin is running on the same server than modoboa"
-msgstr ""
+msgstr "Czy Spamassassin jest uruchomiony na tym samym serwerze co Modoboa"
 
 #: amavis/app_settings.py:171
-#, fuzzy
-#| msgid "Default top redirection"
 msgid "Default user"
-msgstr "Domyślne górne przekierowanie"
+msgstr "Domyślny uzytkownik"
 
 #: amavis/app_settings.py:173
 msgid "Name of the user owning the default bayesian database"
-msgstr ""
+msgstr "Nazwa użytkownika, włścicieciela bazy danych Bayes"
 
 #: amavis/app_settings.py:181
-#, fuzzy
-#| msgid "Sender address"
 msgid "Spamd address"
-msgstr "Adres nadawcy"
+msgstr "Adres spamd"
 
 #: amavis/app_settings.py:183
 msgid "The IP address where spamd can be reached"
-msgstr ""
+msgstr "IP pod którym dostępny jest spamd"
 
 #: amavis/app_settings.py:191
 msgid "Spamd port"
-msgstr ""
+msgstr "Port spamd"
 
 #: amavis/app_settings.py:193
 msgid "The TCP port spamd is listening on"
-msgstr ""
+msgstr "Port TCP na którym nasłuchuje spamd"
 
 #: amavis/app_settings.py:202
-#, fuzzy
-#| msgid "Enable per-domain limits"
 msgid "Enable per-domain manual learning"
-msgstr "Włącz limity na domenę"
+msgstr "Włącz ręczne uczenie per domena"
 
 #: amavis/app_settings.py:205
-#, fuzzy
-#| msgid "Allow this administrator to access user mailboxes"
 msgid ""
 "Allow domain administrators to train Spamassassin (within dedicated per-"
 "domain databases)"
-msgstr "Zezwól temu administratorowi na dostęp do skrzynek użytkowników"
+msgstr "Zezwól administratorom domen na trenowanie Spamassassin'a (w obrębie dedykowanych baz danych per domena)"
 
 #: amavis/app_settings.py:215
-#, fuzzy
-#| msgid "Enable per-domain limits"
 msgid "Enable per-user manual learning"
-msgstr "Włącz limity na domenę"
+msgstr "Włącz ręczne uczenie per uzytkownik"
 
 #: amavis/app_settings.py:218
 msgid ""
 "Allow simple users to personally train Spamassassin (within a dedicated "
 "database)"
-msgstr ""
+msgstr "Zezwól prostym użytkownikom na trenowanie Spamassassin'a (w obrębie dedykowanej bazy danych)"
 
 #: amavis/app_settings.py:236 webmail/app_settings.py:155
 msgid "Display"
 msgstr "Wyświetl"
 
 #: amavis/app_settings.py:243 webmail/app_settings.py:181
-#, fuzzy
-#| msgid "Number of displayed items per page"
 msgid "Number of displayed emails per page"
-msgstr "Liczba wyświetlanych wiadomości na stronie"
+msgstr "Liczba wyświetlanych wiadomości na stronię"
 
 #: amavis/app_settings.py:246
 msgid "Set the maximum number of messages displayed in a page"
-msgstr ""
+msgstr "Ustaw max liczbę wyśietlanych wiadomości na stronie "
 
 #: amavis/app_settings.py:266 amavis/app_settings.py:273
 msgid "Amavis"
-msgstr ""
+msgstr "Amavis"
 
 #: amavis/checks/settings_checks.py:8
 msgid ""
 "AMAVIS_DEFAULT_DATABASE_ENCODING does not match the character encoding used "
 "by the Amavis database."
-msgstr ""
+msgstr "AMAVIS_DEFAULT_DATABASE_ENCODING nie jest zgodne z kodowaniem używanym przez bazę danych Amavisa."
 
 #: amavis/checks/settings_checks.py:12
 msgid ""
 "Check your database character encoding and set/update "
 "AMAVIS_DEFAULT_DATABASE_ENCODING."
-msgstr ""
+msgstr "Sprawdź ustawienia kodowania znaków swojej bazy danych i ustaw/zaktualizuj AMAVIS_DEFAULT_DATABASE_ENCODING."
 
 #: amavis/checks/settings_checks.py:19
 msgid "Modoboa Amavis has not been tested using the selected database engine."
-msgstr ""
+msgstr "Modoboa Amavis nie był testowany z wybranym silnikiem bazodanowym."
 
 #: amavis/checks/settings_checks.py:20
 msgid "Try using PostgreSQL, MySQL or MariaDB."
-msgstr ""
+msgstr "Spróbuj użyć PostgreSQL, MySQL lub MariaDB."
 
 #: amavis/handlers.py:141
 msgid "Pending requests"
-msgstr ""
+msgstr "Oczekujące żądania"
 
 #: amavis/lib.py:59
-#, fuzzy, python-format
+#, python-format
 msgid "Connection to amavis failed: %s"
-msgstr "Błąd połączenia do serwera IMAP: %s"
+msgstr "Nieudane połączenie do amavis: %s"
 
 #: amavis/lib.py:133
-#, fuzzy
-#| msgid "Failed to locate rrdtool binary."
 msgid "Failed to find {} binary"
-msgstr "Nie znaleziono binarki rrdtool."
+msgstr "Nie znaleziono programu {} "
 
 #: amavis/lib.py:148
-#, fuzzy
-#| msgid "Local recipient {}@{} not found"
 msgid "No recipient found"
-msgstr "Lokalny odbiorca {}@{} nie został odnaleziony"
+msgstr "Brak odbiorców"
 
 #: amavis/lib.py:159
-#, fuzzy
-#| msgid "Domain not found."
 msgid "Local domain not found"
-msgstr "Domena nie znaleziona."
+msgstr "Domena lokalna nieznaleziona"
 
 #: amavis/management/commands/amnotify.py:59
-#, fuzzy
-#| msgid "%s: limit reached"
 msgid "[modoboa] Pending release requests"
-msgstr "Osiągnięto limit: %s"
+msgstr "[modoboa] Oczekujące żądania uwolnienia"
 
 #: amavis/models.py:101
-#, fuzzy
-#| msgid "Search filter"
 msgid "Virus filter"
-msgstr "Filtr wyszukiwania"
+msgstr "Filtr antywirus"
 
 #: amavis/models.py:105 amavis/models.py:119 amavis/models.py:133
 msgid "yes"
-msgstr ""
+msgstr "tak"
 
 #: amavis/models.py:106 amavis/models.py:120 amavis/models.py:134
 msgid "no"
-msgstr ""
+msgstr "nie"
 
 #: amavis/models.py:107 amavis/models.py:121 amavis/models.py:135
 msgid "default"
-msgstr ""
+msgstr "domyślne"
 
 #: amavis/models.py:111
 msgid "Bypass virus checks or not. Choose 'default' to use global settings."
-msgstr ""
+msgstr "Obejść sprawdzenia antywirusowe czy nie. Wybież 'domyślne' dla ustawienia globalnego."
 
 #: amavis/models.py:115
-#, fuzzy
-#| msgid "Search filter"
 msgid "Spam filter"
-msgstr "Filtr wyszukiwania"
+msgstr "Filtr spamu"
 
 #: amavis/models.py:125
 msgid "Bypass spam checks or not. Choose 'default' to use global settings."
-msgstr ""
+msgstr "Obejść sprawdzenia antyspamowe czy nie. Wybież 'domyślne' dla ustawienia globalnego."
 
 #: amavis/models.py:129
-#, fuzzy
-#| msgid "Search filter"
 msgid "Banned filter"
-msgstr "Filtr wyszukiwania"
+msgstr "Filtr zakazany"
 
 #: amavis/models.py:139
 msgid "Bypass banned checks or not. Choose 'default' to use global settings."
-msgstr ""
+msgstr "Obejść sprawdzenia zakazane czy nie. Wybież 'domyślne' dla ustawienia globalnego."
 
 #: amavis/models.py:170
 msgid "Spam marker"
-msgstr ""
+msgstr "Marker spamu"
 
 #: amavis/models.py:176
 msgid ""
-"Modify spam subject using the specified text. Choose 'default' to use global "
-"settings."
-msgstr ""
+"Modify spam subject using the specified text. Choose 'default' to use global"
+" settings."
+msgstr "Modyfikuj temat spamu wybranym tekstem. Wybież 'domyślne' dla ustawienia globalnego."
 
 #: amavis/templates/amavis/notifications/pending_requests.html:3
 #, python-format
 msgid "%(counter)s release request is pending for action."
 msgid_plural "%(counter)s release requests are pending for action."
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
+msgstr[0] "%(counter)s żądanie uwolnienia oczekuje na akcję."
+msgstr[1] "%(counter)s żądania uwolnienia oczekują na akcję."
+msgstr[2] "%(counter)s żądań uwolnienia oczekuje na akcję."
+msgstr[3] "%(counter)s żądań uwolnienia oczekuje na akcję."
 
 #: amavis/templates/amavis/notifications/pending_requests.html:8
 msgid "Sketch:"
-msgstr ""
+msgstr "Szkic:"
 
 #: amavis/templates/amavis/notifications/pending_requests.html:10
 msgid "From:"
-msgstr ""
+msgstr "Od:"
 
 #: amavis/templates/amavis/notifications/pending_requests.html:11
 msgid "To:"
-msgstr ""
+msgstr "Do:"
 
 #: amavis/templates/amavis/notifications/pending_requests.html:12
-#, fuzzy
-#| msgid "Date"
 msgid "Date:"
-msgstr "Data"
+msgstr "Data:"
 
 #: amavis/templates/amavis/notifications/pending_requests.html:13
-#, fuzzy
-#| msgid "Subject"
 msgid "Subject:"
-msgstr "Temat"
+msgstr "Temat:"
 
 #: amavis/templates/amavis/notifications/pending_requests.html:14
-#, fuzzy
-#| msgid "sent messages"
 msgid "Act on this message:"
-msgstr "Wysłane wiadomości"
+msgstr "Akcje na tej wiadomości:"
 
 #: amavis/templates/amavis/notifications/pending_requests.html:16
 #, python-format
 msgid "Please visit %(listingurl)s for a full listing."
-msgstr ""
+msgstr "Aby zobaczyć pełną listę odwiedź stronę %(listingurl)s"
 
 #: amavis/viewsets.py:122
-#, fuzzy
-#| msgid "Invalid address"
 msgid "Invalid request"
-msgstr "Niepoprawny adres"
+msgstr "Niepoprawne żądanie"
 
 #: autoreply/api/v2/serializers.py:27
 msgid "Value can't be less than 1 day"
-msgstr ""
+msgstr "Wartość nie może być mniejsza niż 1 dzień"
 
 #: autoreply/api/v2/serializers.py:47
-#, fuzzy
-#| msgid "This code is invalid"
 msgid "This date is over"
-msgstr "Data z przeszłości"
+msgstr "Ta data już minęła"
 
 #: autoreply/api/v2/serializers.py:50
-#, fuzzy
-#| msgid "Cannot be greater than domain quota"
 msgid "Must be greater than start date"
 msgstr "Musi być większa niż data początkowa"
 
@@ -1185,19 +1050,13 @@ msgid "General"
 msgstr "Ogólne"
 
 #: autoreply/app_settings.py:18
-#, fuzzy
-#| msgid "Timeout in seconds between two auto-replies to the same recipient"
 msgid "Period between two auto-replies"
-msgstr ""
-"Limit w sek. pomiędzie dwiema auto-odpowiedziami dla tego samego odbiorcy"
+msgstr "Okres pomiędzy dwiema automatycznymi odpowiedziami"
 
 #: autoreply/app_settings.py:20
-#, fuzzy
-#| msgid "Timeout in seconds between two auto-replies to the same recipient"
 msgid ""
 "Number of days to wait before sending a new auto-reply to the same recipient"
-msgstr ""
-"Limit w sek. pomiędzie dwiema auto-odpowiedziami dla tego samego odbiorcy"
+msgstr "Okres między dwoma automatycznymi odpowiedziami"
 
 #: autoreply/app_settings.py:27 autoreply/app_settings.py:36
 msgid "Default subject"
@@ -1213,19 +1072,13 @@ msgstr "Domyślny temat używany dla automatycznych autoodpowiedzi"
 msgid ""
 "Default content used when an auto-reply message is created automatically. "
 "The '%(name)s' macro will be replaced by the user's full name."
-msgstr ""
-"Domyślna zawartość dla automatycznych auto-odpowiedzi. Macro '%(name)s' "
-"zostanie zastąpione przez pełną nazwę użytkownika."
+msgstr "Domyślna zawartość dla automatycznych auto-odpowiedzi. Macro '%(name)s' zostanie zastąpione przez pełną nazwę użytkownika."
 
 #: autoreply/apps.py:15
-#, fuzzy
-#| msgid "Automatic account removal"
 msgid "Automatic replies"
 msgstr "Autoamtyczne odpowiedzi"
 
 #: autoreply/models.py:17
-#, fuzzy
-#| msgid "Subject"
 msgid "subject"
 msgstr "temat"
 
@@ -1243,48 +1096,40 @@ msgstr "Zawartość, która pojawi się w wysłanych wiadomościach"
 
 #: autoreply/models.py:25
 msgid "Activate/Deactivate your auto reply"
-msgstr "Włącz/Wyłącz auto-odpowiedzi"
+msgstr "Aktywuj/Dezaktywuj auto-odpowiedzi"
 
 #: calendars/app_settings.py:11
-#, fuzzy
-#| msgid "LDAP settings"
 msgid "Server settings"
-msgstr "Ustawienia ManageSieve"
+msgstr "Ustawienia serwera"
 
 #: calendars/app_settings.py:17
-#, fuzzy
-#| msgid "Server port"
 msgid "Server URL"
-msgstr "Port serwera"
+msgstr "Adres URL serwera"
 
 #: calendars/app_settings.py:19
 msgid ""
 "The URL of your Radicale server. It will be used to construct calendar URLs."
-msgstr ""
+msgstr "URL serwera radicale. Zostanie użyte podczas tworzenia ścieżki URL kalendarza"
 
 #: calendars/app_settings.py:31
 msgid "Rights management"
-msgstr ""
+msgstr "Zarządzanie uprawnieniami"
 
 #: calendars/app_settings.py:37
 msgid "Rights file's path"
-msgstr ""
+msgstr "Ścieżka pliku uprawnień"
 
 #: calendars/app_settings.py:39
 msgid "Path to the file that contains rights definition"
-msgstr ""
+msgstr "Ścieżka do pliku zawierającego definicje uprawnień"
 
 #: calendars/app_settings.py:46
-#, fuzzy
-#| msgid "Domain administrator"
 msgid "Allow calendars administration"
-msgstr "Administrator domeny"
+msgstr "Zezwól na zarządzanie kalendarzami"
 
 #: calendars/app_settings.py:48
-#, fuzzy
-#| msgid "Allow this administrator to access user mailboxes"
 msgid "Allow domain administrators to manage user calendars (read and write)"
-msgstr "Zezwól temu administratorowi na dostęp do skrzynek użytkowników"
+msgstr "Zezwól administratorom domeny na zarządzanie użytkownikami kalendarzy (zapis i odczyt)"
 
 #: calendars/app_settings.py:60 core/app_settings.py:664
 #: rspamd/app_settings.py:45
@@ -1293,70 +1138,62 @@ msgstr "Różne"
 
 #: calendars/app_settings.py:66
 msgid "Maximum size of ICS files"
-msgstr ""
+msgstr "Maksymalny rozmiar pliku ICS"
 
 #: calendars/app_settings.py:68
 msgid ""
 "Maximum size in bytes of imported ICS files (or KB, MB, GB if specified)"
-msgstr ""
+msgstr "Maksymalny rozmiar plików ICS w bajtach (lub KB, MB, GB jeżeli określono)"
 
 #: calendars/app_settings.py:89 core/api/v2/viewsets.py:205
 msgid "Calendars"
-msgstr ""
+msgstr "Kalendarze"
 
 #: calendars/models.py:48 calendars/models.py:65 contacts/models.py:39
 msgid "Server location is not set, please fix it."
-msgstr "Lokalizacja serwera nie jest ustawiona, należy to poprawić."
+msgstr "Lokalizacja serwera jest niezdefiniowana, proszę poprawić."
 
 #: calendars/viewsets.py:199
 msgid "Uploaded file is too big (max: {} bytes)"
-msgstr ""
+msgstr "Przesłany plik przekracza maksymalny rozmiar (max: {} bajtów)"
 
 #: contacts/app_settings.py:11
-#, fuzzy
-#| msgid "LDAP synchronization settings"
 msgid "Synchronization"
 msgstr "Synchronizacja"
 
 #: contacts/app_settings.py:18
 msgid "Synchonize address book using CardDAV"
-msgstr "Synchronizuj książkę adresową używając CardDAV"
+msgstr "Synchronizuj książkę adresów przy użyciu CardDAV"
 
 #: contacts/app_settings.py:21
 msgid ""
 "Choose to synchronize or not your address book using CardDAV. You will be "
 "able to access your contacts from the outside."
-msgstr ""
-"Wybierz czy synchronizować lub nie Twoją książkę adresową używając CardDAV. "
-"Zyskasz możliwość dostępu do Twoich kontaktów z zewnątrz."
+msgstr "Wybierz, czy chcesz synchronizować książkę adresów przy użyciu CardDAV. Będziesz móc dostęp do swoich kontaktów z zewnątrz."
 
 #: contacts/app_settings.py:29
-#, fuzzy
-#| msgid "LDAP synchronization settings"
 msgid "Synchronization frequency"
 msgstr "Częstotliwość synchronizacji"
 
 #: contacts/app_settings.py:31
 msgid "Interval in seconds between 2 synchronization requests"
-msgstr "Odstęp pomiędzy synchronizacjami, w sekundach"
+msgstr "Interwał w sekundach pomiędzy 2 żądaniami synchronizacji"
 
 #: contacts/app_settings.py:51 core/api/v2/viewsets.py:195
-#, fuzzy
-#| msgid "Domains"
 msgid "Contacts"
 msgstr "Kontakty"
 
 #: contacts/constants.py:6 contacts/constants.py:12
 msgid "Home"
-msgstr "Dom"
+msgstr "Strona główna"
 
 #: contacts/constants.py:7 contacts/constants.py:13
 msgid "Work"
-msgstr "Praca"
+msgstr "DomPraca"
 
 #: contacts/constants.py:8 contacts/constants.py:14
 msgid "Other"
-msgstr "Inny"
+msgstr "Inne"
 
 #: contacts/constants.py:15
 msgid "Main"
@@ -1368,21 +1205,19 @@ msgstr "Komórkowy"
 
 #: contacts/constants.py:17
 msgid "Fax"
-msgstr "Fax"
+msgstr "Faks"
 
 #: contacts/constants.py:18
 msgid "Pager"
-msgstr "Pager"
+msgstr "Beeper"
 
 #: contacts/serializers.py:101
-#, fuzzy
-#| msgid "Number of displayed items per page"
 msgid "Name or display name required"
-msgstr "Nazwa albo wyświetlana nazwa jest wymagana"
+msgstr "Nazwa lub nazwa wyświetlana jest wymagana"
 
 #: contacts/serializers.py:233
 msgid "Minimum allowed value is 60s"
-msgstr "Dopuszczalna minimalna wartość to 60"
+msgstr "Minimalna dopuszczalna wartość to 60 sekund"
 
 #: core/api/v1/serializers.py:68
 msgid "Invalid PIN code"
@@ -1395,17 +1230,15 @@ msgstr "2FA jest już włączone"
 #: core/api/v1/serializers.py:87
 #, python-format
 msgid "Failed TFA settings editing attempt from '%(addr)s' as user '%(user)s'"
-msgstr ""
+msgstr "Nie powodzieła się próba edycji ustawień autoryzacji dwuetapowej z '%(addr)s' jako użytkownik '%(user)s'"
 
 #: core/api/v1/serializers.py:93 core/api/v2/serializers.py:438
-#, fuzzy
-#| msgid "Old password"
 msgid "Invalid password"
-msgstr "Stare hasło"
+msgstr "Nieprawidłowe hasło"
 
 #: core/api/v1/viewsets.py:45 core/api/v1/viewsets.py:64
 msgid "2FA is not enabled"
-msgstr "2FA nie jest włączone"
+msgstr "Uwierzytelnianie dwuskładnikowe (2FA) nie jest włączone"
 
 #: core/api/v2/serializers.py:69
 msgid "Local"
@@ -1424,44 +1257,35 @@ msgstr "Nieprawidłowa liczba rund"
 msgid "This code is invalid"
 msgstr "Ten kod jest nieprawidłowy"
 
-#: core/api/v2/serializers.py:496 core/views/auth.py:213 core/views/auth.py:266
+#: core/api/v2/serializers.py:496 core/views/auth.py:213
+#: core/views/auth.py:266
 msgid "Please use the following code to recover your Modoboa password: {}"
-msgstr "Proszę użyć następującego kodu, aby odzyskać hasło Modoboa: {}"
+msgstr "Proszę użyć następującego kodu, aby odzyskać swoje hasło Modoboa: {}"
 
 #: core/api/v2/viewsets.py:176
-#, fuzzy
-#| msgid "Administration"
 msgid "Administration console"
-msgstr "Administracja"
+msgstr "Konsola administracyjna"
 
 #: core/api/v2/viewsets.py:184 dmarc/models.py:11
-#, fuzzy
-#| msgid "Quantity"
 msgid "Quarantine"
 msgstr "Kwarantanna"
 
 #: core/api/v2/viewsets.py:186
-#, fuzzy
-#| msgid "Quantity"
 msgid "Amavis quarantine"
-msgstr "Kwarantanna"
+msgstr "Kwarantanna Amavis"
 
 #: core/api/v2/viewsets.py:197
-#, fuzzy
-#| msgid "Address"
 msgid "Address book"
 msgstr "Książka adresowa"
 
 #: core/api/v2/viewsets.py:207
 msgid "Calendar"
-msgstr ""
+msgstr "Kalendarz"
 
 #: core/api/v2/viewsets.py:215 core/api/v2/viewsets.py:217
 #: webmail/app_settings.py:295 webmail/app_settings.py:302
-#, fuzzy
-#| msgid "E-mail"
 msgid "Webmail"
-msgstr "E-mail"
+msgstr "Webmail"
 
 #: core/app_settings.py:25
 msgid "Authentication"
@@ -1485,15 +1309,13 @@ msgstr "Schemat używany do szyfrowania haseł do skrzynek"
 
 #: core/app_settings.py:49
 msgid "Rounds"
-msgstr "Rund"
+msgstr "Rundy"
 
 #: core/app_settings.py:51
 msgid ""
 "Number of rounds to use (only used by sha256crypt and sha512crypt). Must be "
 "between 1000 and 999999999, inclusive."
-msgstr ""
-"Liczba rund (tylko dla sha256crypt i sha512crypt). Musi się zawierać "
-"pomiędzy 1000 a 999999999 włącznie."
+msgstr "Liczba rund (tylko dla sha256crypt i sha512crypt). Musi się zawierać pomiędzy 1000 a 999999999 włącznie."
 
 #: core/app_settings.py:61
 msgid "Update password scheme at login"
@@ -1501,9 +1323,7 @@ msgstr "Aktualizuj schemat haseł przy logowaniu"
 
 #: core/app_settings.py:64
 msgid "Update user password at login to use the default password scheme"
-msgstr ""
-"Zaktualizuj hasło użytkownika przy logowaniu, tak aby używało domyślnego "
-"schematu haseł"
+msgstr "Zaktualizuj hasło użytkownika przy logowaniu, tak aby używało domyślnego schematu haseł"
 
 #: core/app_settings.py:72
 msgid "Default password"
@@ -1523,13 +1343,11 @@ msgstr "Długość losowo wygenerowanego hasła"
 
 #: core/app_settings.py:91
 msgid "Allow special characters for random password"
-msgstr ""
+msgstr "Zezwól na znaki specjalne w hasle losowo wygenerowanym"
 
 #: core/app_settings.py:94
-#, fuzzy
-#| msgid "Length of randomly generated passwords."
 msgid "Enable special characters in randomly generated passwords."
-msgstr "Długość losowo wygenerowanego hasła"
+msgstr "Włącz znaki specjalne w losowo generowanych hasłach."
 
 #: core/app_settings.py:102
 msgid "Update password service URL"
@@ -1540,11 +1358,7 @@ msgid ""
 "The URL of an external page where users will be able to update their "
 "password. It applies only to non local users, ie. those automatically "
 "created after a successful external authentication (LDAP, SMTP)."
-msgstr ""
-"Adres URL zewnętrznej strony, gdzie użytkownicy będą mogli zmieniać swoje "
-"hasła. Ustawienie dotyczy tylko użytkowników innych niż lokalni, np. "
-"utworzonych automatycznie po prawidłowym zalogowaniu do zewnętrznych usług "
-"(LDAP, SMTP)."
+msgstr "Adres URL zewnętrznej strony, gdzie użytkownicy będą mogli zmieniać swoje hasła. Ustawienie dotyczy tylko użytkowników innych niż lokalni, np. utworzonych automatycznie po prawidłowym zalogowaniu do zewnętrznych usług (LDAP, SMTP)."
 
 #: core/app_settings.py:114
 msgid "Password recovery announcement"
@@ -1552,18 +1366,15 @@ msgstr "Komunikat o odzyskiwaniu hasła"
 
 #: core/app_settings.py:116
 msgid "A temporary message that will be displayed on the reset password page."
-msgstr ""
-"Tymczasowa wiadomość, która będzie wyświetlana na stronie resetowania hasła."
+msgstr "Tymczasowa wiadomość, która będzie wyświetlana na stronie resetowania hasła."
 
 #: core/app_settings.py:125
 msgid "Enable password recovery by SMS"
-msgstr "Włącz odzyskiwania hasła przez SMS"
+msgstr "Włącz odzyskiwanie hasła przez SMS"
 
 #: core/app_settings.py:128
 msgid "Enable password recovery by SMS for users who filled a phone number."
-msgstr ""
-"Włącz odzyskiwanie hasła przez SMS dla użytkowników, którzy podali numer "
-"telefonu."
+msgstr "Włącz odzyskiwanie hasła przez SMS dla użytkowników, którzy podali numer telefonu."
 
 #: core/app_settings.py:136
 msgid "SMS provider"
@@ -1571,11 +1382,11 @@ msgstr "Dostawca SMS"
 
 #: core/app_settings.py:139
 msgid "Choose a provider to send password recovery SMS"
-msgstr "Wybierz dostawcę, aby wysłać SMS odzyskiwania hasła Dostawca SMS"
+msgstr "Wybierz dostawcę, aby wysłać SMS odzyskiwania hasła"
 
 #: core/app_settings.py:151
 msgid "LDAP"
-msgstr ""
+msgstr "LDAP"
 
 #: core/app_settings.py:157 sievefilters/app_settings.py:18
 #: sievefilters/app_settings.py:51 webmail/app_settings.py:36
@@ -1591,7 +1402,7 @@ msgstr "IP lub nazwa DNS serwera LDAP"
 #: sievefilters/app_settings.py:67 webmail/app_settings.py:54
 #: webmail/app_settings.py:91 webmail/app_settings.py:137
 msgid "Server port"
-msgstr "Port serwera"
+msgstr "Port Serwera"
 
 #: core/app_settings.py:168
 msgid "The TCP port number used by the LDAP server"
@@ -1604,9 +1415,7 @@ msgstr "Włącz dodatkowy serwer (awaryjny)"
 #: core/app_settings.py:179
 msgid ""
 "Enable a secondary LDAP server which will be used if the primary one fails"
-msgstr ""
-"Włącz dodatkowy serwer LDAP, który będzie użyty, gdy pierwszorzędny nie "
-"będzie dostępny"
+msgstr "Włącz dodatkowy serwer LDAP, który będzie użyty, gdy pierwszorzędny nie będzie dostępny"
 
 #: core/app_settings.py:187
 msgid "Secondary server address"
@@ -1627,7 +1436,7 @@ msgstr "Numer portu TCP używanego przez dodatkowy serwer LDAP"
 #: core/app_settings.py:207 sievefilters/app_settings.py:58
 #: webmail/app_settings.py:45
 msgid "Use a secured connection"
-msgstr "Użyj bezpiecznego polączenia"
+msgstr "Użyj połączenia bezpiecznego"
 
 #: core/app_settings.py:209
 msgid "Use an SSL/STARTTLS connection to access the LDAP server"
@@ -1647,11 +1456,9 @@ msgstr "Administrator grup"
 
 #: core/app_settings.py:227
 msgid ""
-"Members of those LDAP Posix groups will be created as domain administrators. "
-"Use ';' characters to separate groups."
-msgstr ""
-"Członkowie tych grup LDAP Posix  będą utworzeni jako administratorzy domeny. "
-"Użyj znaku ';' jako separatora grup."
+"Members of those LDAP Posix groups will be created as domain administrators."
+" Use ';' characters to separate groups."
+msgstr "Członkowie tych grup LDAP Posix  będą utworzeni jako administratorzy domeny. Użyj znaku ';' jako separatora grup."
 
 #: core/app_settings.py:236
 msgid "Group type"
@@ -1683,11 +1490,11 @@ msgstr "Ustawienia uwierzytelniania LDAP"
 
 #: core/app_settings.py:272
 msgid "Authentication method"
-msgstr "Metoda autentykacji"
+msgstr "Metoda uwierzytelniania"
 
 #: core/app_settings.py:275
 msgid "Choose the authentication method to use"
-msgstr "Wybierz metode autentykacji"
+msgstr "Wybierz metodę uwierzytelniania"
 
 #: core/app_settings.py:282 core/app_settings.py:345
 msgid "Bind DN"
@@ -1697,13 +1504,11 @@ msgstr "Przypnij do DN"
 msgid ""
 "The distinguished name to use when binding to the LDAP server. Leave empty "
 "for an anonymous bind"
-msgstr ""
-"DN do użycia przy połączeniu do LDAP'a. Zostaw puste dla anonimowego "
-"podłączenia"
+msgstr "DN do użycia przy połączeniu do LDAP'a. Zostaw puste dla anonimowego podłączenia"
 
 #: core/app_settings.py:293 core/app_settings.py:355
 msgid "Bind password"
-msgstr "Hasło"
+msgstr "Wiąż hasło"
 
 #: core/app_settings.py:295 core/app_settings.py:357
 msgid "The password to use when binding to the LDAP server (with 'Bind DN')"
@@ -1725,7 +1530,7 @@ msgstr "Filtr wyszukiwania"
 msgid ""
 "An optional filter string (e.g. '(objectClass=person)'). In order to be "
 "valid, it must be enclosed in parentheses."
-msgstr "Użyj szablonu DN"
+msgstr "Opcjonalny łańcuch filtru (np. \"(objectClass=person)\"). Aby był ważny, musi być ujęty w nawiasy."
 
 #: core/app_settings.py:327
 msgid "User DN template"
@@ -1736,9 +1541,7 @@ msgstr "Użyj szablonu DN"
 msgid ""
 "The template used to construct a user's DN. It should contain one "
 "placeholder (ie. %(user)s)"
-msgstr ""
-"Szablon użyty do skonstruowania DN użytkownika. Powinna ona zawierać jeden "
-"symbol zastępczy (np. %(user)s)"
+msgstr "Szablon użyty do skonstruowania DN użytkownika. Powinna ona zawierać jeden symbol zastępczy (np. %(user)s)"
 
 #: core/app_settings.py:338
 msgid "LDAP synchronization settings"
@@ -1761,9 +1564,7 @@ msgstr "Skasuj konto na zdalnym LDAP kiedy zostanie skasowane konto lokalne"
 msgid ""
 "Delete remote LDAP account when local account is deleted, otherwise it will "
 "be disabled."
-msgstr ""
-"Skasuj konto na zdalnym LDAP kiedy zostanie skasowane konto lokalne, w innym "
-"przypadku zostanie ono wyłączone."
+msgstr "Skasuj konto na zdalnym LDAP kiedy zostanie skasowane konto lokalne, w innym przypadku zostanie ono wyłączone."
 
 #: core/app_settings.py:389
 msgid "Account DN template"
@@ -1774,9 +1575,7 @@ msgstr "Szablon konta DN"
 msgid ""
 "The template used to construct an account's DN. It should contain one "
 "placeholder (ie. %(user)s)"
-msgstr ""
-"Szablon używany do budowy DN konta. Powinien zawierać jeden placeholder (ie. "
-"%(user)s)"
+msgstr "Szablon używany do budowy DN konta. Powinien zawierać jeden placeholder (ie. %(user)s)"
 
 #: core/app_settings.py:400
 msgid "Enable import from LDAP"
@@ -1800,8 +1599,7 @@ msgstr "Włącz synchronizację Dovecot LDAP"
 
 #: core/app_settings.py:445
 msgid "LDAP authentication settings will be applied to Dovecot configuration."
-msgstr ""
-"Ustawienia uwierzytelniania LDAP zostaną zastosowane do konfiguracji Dovecot."
+msgstr "Ustawienia uwierzytelniania LDAP zostaną zastosowane do konfiguracji Dovecot."
 
 #: core/app_settings.py:453
 msgid "Dovecot LDAP config file"
@@ -1810,26 +1608,19 @@ msgstr "Plik konfiguracyjny Dovecot LDAP"
 #: core/app_settings.py:455
 msgid ""
 "Location of the configuration file which contains Dovecot LDAP settings."
-msgstr ""
-"Lokalizacja pliku konfiguracyjnego, który zawiera ustawienia Dovecot LDAP."
+msgstr "Lokalizacja pliku konfiguracyjnego, który zawiera ustawienia Dovecot LDAP."
 
 #: core/app_settings.py:468
 msgid "Dashboard"
 msgstr "Panel główny"
 
 #: core/app_settings.py:474
-#, fuzzy
-#| msgid "Custom message"
 msgid "Custom welcome message"
-msgstr "Własna wiadomość"
+msgstr "Niestandardowa wiadomość powitalnia"
 
 #: core/app_settings.py:476
-#, fuzzy
-#| msgid ""
-#| "A temporary message that will be displayed on the reset password page."
 msgid "A welcome message that will be displayed instead the default one"
-msgstr ""
-"Tymczasowa wiadomość, która będzie wyświetlana na stronie resetowania hasła."
+msgstr "Wiadomość powitalnia, która będzie wyświetlana zamiast domyślnej"
 
 #: core/app_settings.py:483
 msgid "Custom RSS feed"
@@ -1837,22 +1628,15 @@ msgstr "Spersonalizowany kanał RSS"
 
 #: core/app_settings.py:485
 msgid "Display custom RSS feed to resellers and domain administrators"
-msgstr ""
-"Wyświetl spersonalizowany kanał RSS odsprzedawcy i administratorom domen"
+msgstr "Wyświetl spersonalizowany kanał RSS odsprzedawcy i administratorom domen"
 
 #: core/app_settings.py:494
-#, fuzzy
-#| msgid "Display custom RSS feed to resellers and domain administrators"
 msgid "Display custom RSS feed to super admins"
-msgstr ""
-"Wyświetl spersonalizowany kanał RSS odsprzedawcy i administratorom domen"
+msgstr "Wyświetl niestandardowy kanał RSS dla administratorów"
 
 #: core/app_settings.py:497
-#, fuzzy
-#| msgid "Display custom RSS feed to resellers and domain administrators"
 msgid "Display custom RSS feed also to super administrators"
-msgstr ""
-"Wyświetl spersonalizowany kanał RSS odsprzedawcy i administratorom domen"
+msgstr "Wyświetl niestandardowy kanał RSS także dla administratorów"
 
 #: core/app_settings.py:505
 msgid "Hide features widget"
@@ -1864,49 +1648,47 @@ msgstr "Ukryj kontrolki opcji dla administratorów domeny i resellerów"
 
 #: core/app_settings.py:519
 msgid "Theme"
-msgstr ""
+msgstr "Motyw"
 
 #: core/app_settings.py:525
 msgid "Primary theme color"
-msgstr ""
+msgstr "Podstawowy kolor motywu"
 
 #: core/app_settings.py:527
 msgid ""
 "Primary color of the theme (hexadecimal code), used as the background color "
 "of the left menu for example"
-msgstr ""
+msgstr "Podstawowy kolor motywu (kod szesnastkowy), używany jako kolor tła lewego menu na przykład"
 
 #: core/app_settings.py:536
 msgid "Primary theme color (lighter version)"
-msgstr ""
+msgstr "Podstawowy kolor motywu (wersja jaśniejsza)"
 
 #: core/app_settings.py:539 core/app_settings.py:551
 msgid "Primary color of the theme (hexadecimal code)"
-msgstr ""
+msgstr "Podstawowy kolor motywu (kod szesnastkowy)"
 
 #: core/app_settings.py:548
 msgid "Primary theme color (darker version)"
-msgstr ""
+msgstr "Podstawowy kolor motywu (wersja ciemniejsza)"
 
 #: core/app_settings.py:559
-#, fuzzy
-#| msgid "Secondary email"
 msgid "Secondary theme color"
-msgstr "Zapasowy email"
+msgstr "Wtórny kolor motywu"
 
 #: core/app_settings.py:561
 msgid ""
 "Secondary color of the theme (hexadecimal code), used as the background "
 "color of some buttons for example"
-msgstr ""
+msgstr "Wtórny kolor motywu (kod szesnastkowy), używany jako kolor tła niektórych przycisków na przykład"
 
 #: core/app_settings.py:569
 msgid "Labels theme color"
-msgstr ""
+msgstr "Kolor motywu etykiet"
 
 #: core/app_settings.py:571
 msgid "Theme color for labels (hexadecimal code)"
-msgstr ""
+msgstr "Kolor motywu etykiet (kod szesnastkowy)"
 
 #: core/app_settings.py:583
 msgid "Notifications"
@@ -1946,7 +1728,7 @@ msgstr "Wyślij email, by powiadomić aministratorów o nowej wersji"
 
 #: core/app_settings.py:639 sievefilters/constants.py:25
 msgid "Recipient"
-msgstr "Odbioraca"
+msgstr "Odbiorca"
 
 #: core/app_settings.py:642
 msgid "Recipient of new versions notification emails."
@@ -1958,20 +1740,17 @@ msgstr "Wyślij statystyki"
 
 #: core/app_settings.py:652
 msgid "Send statistics to Modoboa public API (counters and used extensions)"
-msgstr ""
-"Prześlij statystyki do publicznego API Modoboa (licznik i użyte rozszerzenia)"
+msgstr "Prześlij statystyki do publicznego API Modoboa (licznik i użyte rozszerzenia)"
 
 #: core/app_settings.py:671
-#, fuzzy
-#| msgid "Inactive account threshold"
 msgid "Enable inactive account tracking"
-msgstr "Próg nieaktywności konta"
+msgstr "Włącz śledzenie nieaktywnych kont"
 
 #: core/app_settings.py:674
 msgid ""
-"Allow the administrator to set a threshold (in days) beyond which an account "
-"is considered inactive if the user hasn't logged in"
-msgstr ""
+"Allow the administrator to set a threshold (in days) beyond which an account"
+" is considered inactive if the user hasn't logged in"
+msgstr "Zezwól administratorowi na ustawienie progu (w dniach) powyżej którego konto jest uważane za nieaktywne, jeśli użytkownik się nie zalogował"
 
 #: core/app_settings.py:683
 msgid "Inactive account threshold"
@@ -1979,11 +1758,9 @@ msgstr "Próg nieaktywności konta"
 
 #: core/app_settings.py:686
 msgid ""
-"An account with a last login date greater than this threshold (in days) will "
-"be considered as inactive"
-msgstr ""
-"Konto z datą ostatniego logowania większą niż podany próg (w dniach) "
-"zostanie uznane za nieaktywne. "
+"An account with a last login date greater than this threshold (in days) will"
+" be considered as inactive"
+msgstr "Konto z datą ostatniego logowania większą niż podany próg (w dniach) zostanie uznane za nieaktywne. "
 
 #: core/app_settings.py:695
 msgid "Top notifications check interval"
@@ -1995,23 +1772,23 @@ msgstr "Odstęp pomiędzy dwoma powiadomieniami (w sek.)"
 
 #: core/app_settings.py:705
 msgid "Maximum log record age"
-msgstr "Max wiek wpisu w logu"
+msgstr "Maksymalny wiek wpisu w logu"
 
 #: core/app_settings.py:707
 msgid "The maximum age in days of a log record"
-msgstr "Max wiek w dniach dla wpisu w logu"
+msgstr "Maksymalny wiek w dniach dla wpisu w logu"
 
 #: core/app_settings.py:715
 msgid "Retention time in message history"
-msgstr ""
+msgstr "Czas przechowywania w historii wiadomości"
 
 #: core/app_settings.py:718
 msgid "Retention time (in days) of a message in the message history section"
-msgstr ""
+msgstr "Czas przechowywania (w dniach) wiadomości w sekcji historii wiadomości"
 
 #: core/app_settings.py:725
 msgid "Items per page"
-msgstr "Elementów na stronie"
+msgstr "Liczba elementów na stronie"
 
 #: core/app_settings.py:727
 msgid "Number of displayed items per page"
@@ -2022,10 +1799,7 @@ msgid ""
 "You have USE_TZ set to False, this may result in issues during transitions "
 "between summer/winter time (ie the same local time occuring twice due to "
 "clock change)."
-msgstr ""
-"Masz ustawione USE_TZ na False, co może powodować problemy przy zmianach "
-"czasu pomiędzy letnim a zimowym (ten sam czas będzie występował dwa razy z "
-"powodu zmiany godziny)."
+msgstr "Masz ustawione USE_TZ na False, co może powodować problemy przy zmianach czasu pomiędzy letnim a zimowym (ten sam czas będzie występował dwa razy z powodu zmiany godziny)."
 
 #: core/checks.py:19
 msgid "Set `USE_TZ = True` in settings.py"
@@ -2033,37 +1807,37 @@ msgstr "Ustaw `USE_TZ = True` w settings.py"
 
 #: core/checks.py:23
 msgid "The password scheme you are using is deprecated."
-msgstr ""
+msgstr "Schemat hasła, który używasz, jest przestarzały."
 
 #: core/checks.py:24
-#, fuzzy
-#| msgid "Update password scheme at login"
 msgid "Upgrade your password scheme to a stronger one"
-msgstr "Aktualizuj schemat haseł przy logowaniu"
+msgstr "Uaktualnij schemat hasła na bezpieczniejszy"
 
 #: core/checks.py:30
 msgid ""
 "Oauth2 application for dovecot has not been found. Webmail and some other "
 "features won't be available."
-msgstr ""
+msgstr "Aplikacja OAuth2 dla dovecota nie została znaleziona. Webmail i niektóre inne funkcje nie będą dostępne."
 
 #: core/checks.py:34
 msgid ""
-"Visit : https://modoboa.readthedocs.io/en/latest/manual_installation/"
-"dovecot.html#dovecot-oauth2"
-msgstr ""
+"Visit : "
+"https://modoboa.readthedocs.io/en/latest/manual_installation/dovecot.html#dovecot-"
+"oauth2"
+msgstr "Odwiedz :"
 
 #: core/checks.py:41
 msgid ""
 "Oauth2 application for radicale has not been found. Calendar and some other "
 "features won't be available."
-msgstr ""
+msgstr "Aplikacja OAuth2 dla radicale nie została znaleziona. Kalendarz i niektóre inne funkcje nie będą dostępne."
 
 #: core/checks.py:45
 msgid ""
-"Visit :  https://modoboa.readthedocs.io/en/latest/manual_installation/"
-"radicale.html#radicale-oauth2"
-msgstr ""
+"Visit :  "
+"https://modoboa.readthedocs.io/en/latest/manual_installation/radicale.html#radicale-"
+"oauth2"
+msgstr "Odwiedz :"
 
 #: core/constants.py:6
 msgid "Simple user"
@@ -2150,11 +1924,11 @@ msgstr "Jedna lub więcej aktualizacji jest dostępnych"
 #: core/handlers.py:140
 #, python-format
 msgid "You are still using a deprecated password scheme (%s)"
-msgstr ""
+msgstr "Ciąż dalej używasz przestarzaego schematu hasła (1%s)"
 
 #: core/management/commands/communicate_with_public_api.py:42
 msgid "[modoboa] Update(s) available"
-msgstr "[modoboa] Aktualizacja(y) dostępna(e)"
+msgstr "[modoboa] Aktualizacja dostępna"
 
 #: core/models.py:71
 msgid "Allow mailboxes access"
@@ -2170,7 +1944,7 @@ msgstr "hasło"
 
 #: core/models.py:78
 msgid "language"
-msgstr "Język"
+msgstr "język"
 
 #: core/models.py:82
 msgid "Prefered language to display pages."
@@ -2205,16 +1979,12 @@ msgid "You can't import an account with a role greater than yours"
 msgstr "Nie możesz zaimportować konta z rolą wyższą od własnej"
 
 #: core/models.py:375
-#, fuzzy
-#| msgid "The simple user '%s' must have a valid email address"
 msgid "The simple user '{}' must have a valid email address"
-msgstr "Prosty uzytkownik '%s' musi posiadać prawidłowy adres email"
+msgstr "Zwykły użytkownik '[]' musi posiadać prawidłowy adres email"
 
 #: core/models.py:383
-#, fuzzy
-#| msgid "username and email fields must not differ for '%s'"
 msgid "username and email fields must not differ for '{}'"
-msgstr "pola nazwa użytkownika i email nie mogą się różnić  dla '%s'"
+msgstr "pola nazwa użytkownika i email muszą się różnić dla '[]'"
 
 #: core/password_validation.py:25
 msgid "Password must contain at least {} digit."
@@ -2270,11 +2040,11 @@ msgstr "OVH North-America"
 
 #: core/sms_backends/ovh.py:27 core/sms_backends/ovh.py:65
 msgid "So you Start Europe"
-msgstr "Zaczynasz Europe"
+msgstr "A więc zaczynasz Europe"
 
 #: core/sms_backends/ovh.py:28 core/sms_backends/ovh.py:66
 msgid "So you Start North America"
-msgstr "Zaczynasz Amerykę Północną"
+msgstr "A więc zaczynasz Amerykę Północną"
 
 #: core/sms_backends/ovh.py:29 core/sms_backends/ovh.py:67
 msgid "Kimsufi Europe"
@@ -2297,8 +2067,6 @@ msgid "Consumer key"
 msgstr "Klucz konsumenta"
 
 #: core/sms_backends/ovh.py:116
-#, fuzzy
-#| msgid "Application secret"
 msgid "Appication secret"
 msgstr "Hasło aplikacji"
 
@@ -2309,18 +2077,10 @@ msgid ""
 msgid_plural ""
 "\n"
 "  The following updates are available:\n"
-msgstr[0] ""
-"\n"
-"Dostępna jest następująca aktualizacja:\n"
-msgstr[1] ""
-"\n"
-"Dostępne są następujące aktualizacje:\n"
-msgstr[2] ""
-"\n"
-"Dostępne są następujące aktualizacje:\n"
-msgstr[3] ""
-"\n"
-"Dostępne są następujące aktualizacje:\n"
+msgstr[0] "\nDostępna jest następująca aktualizacja:\n"
+msgstr[1] "\nDostępne są następujące aktualizacje:\n"
+msgstr[2] "\nDostępne są następujące aktualizacje:\n"
+msgstr[3] "\nDostępne są następujące aktualizacje:\n"
 
 #: core/utils.py:43
 msgid "The core part of Modoboa"
@@ -2346,28 +2106,24 @@ msgid "User '{}' successfully logged out"
 msgstr "Użytkownik '{}' wylogowany pomyślnie"
 
 #: dmarc/forms.py:15
-#, fuzzy
-#| msgid "LDAP settings"
 msgid "DNS settings"
-msgstr "Ustawienia LDAP"
+msgstr "Ustawienia DNS"
 
 #: dmarc/forms.py:21
 msgid "Enable reverse lookups"
-msgstr ""
+msgstr "Włącz zapytania odwrotne"
 
 #: dmarc/forms.py:23
 msgid "Enable reverse DNS lookups (reports will be longer to display)"
-msgstr ""
+msgstr "Włącz zapytania odwrotne DNS (raporty będą się generować dłużej)"
 
 #: dmarc/forms.py:42
 msgid "DMARC"
-msgstr ""
+msgstr "DMARC"
 
 #: dmarc/lib.py:294
-#, fuzzy
-#| msgid "Not defined"
 msgid "Not resolved"
-msgstr "Nie zdefiniowano"
+msgstr "Nie rozstrzygnięty"
 
 #: dmarc/models.py:10 dmarc/models.py:16 pdfcredentials/constants.py:7
 #: webmail/constants.py:38
@@ -2375,252 +2131,234 @@ msgid "None"
 msgstr "Brak"
 
 #: dmarc/models.py:12
-#, fuzzy
-#| msgid "Subject"
 msgid "Reject"
-msgstr "Temat"
+msgstr "Odrzuć"
 
 #: dmarc/models.py:17
 msgid "Neutral"
-msgstr ""
+msgstr "Neutralny"
 
 #: dmarc/models.py:18
-#, fuzzy
-#| msgid "Password"
 msgid "Pass"
-msgstr "Hasło"
+msgstr "Poprawny"
 
 #: dmarc/models.py:19
 msgid "Fail"
-msgstr ""
+msgstr "Niepowodzenie"
 
 #: dmarc/models.py:20
-#, fuzzy
-#| msgid "Secondary server port"
 msgid "Temporary error"
-msgstr "Port na serwerze dodatkowym"
+msgstr "Błąd tymczasowy"
 
 #: dmarc/models.py:21
 msgid "Permanent error"
-msgstr ""
+msgstr "Błąd stały"
 
 #: dmarc/models.py:24
 msgid "Policy"
-msgstr ""
+msgstr "Zasady"
 
 #: dmarc/models.py:26
 msgid "Soft failure"
-msgstr ""
+msgstr "Miękki błąd"
 
 #: dnstools/lib.py:82
 msgid "Wrong ip4 mechanism syntax"
-msgstr ""
+msgstr "Błędna składnia mechanizmu ip4"
 
 #: dnstools/lib.py:86
 msgid "Wrong IPv4 address format"
-msgstr ""
+msgstr "Błędny format adresu IPv4"
 
 #: dnstools/lib.py:92
 msgid "Wrong ip6 mechanism syntax"
-msgstr ""
+msgstr "Błędna składnia mechanizmu ip6"
 
 #: dnstools/lib.py:97
 msgid "Wrong IPv6 address format"
-msgstr ""
+msgstr "Błędny format adresu IPv6"
 
 #: dnstools/lib.py:111 dnstools/lib.py:136
 msgid "Invalid syntax for {} mechanism"
-msgstr ""
+msgstr "Błędna składnia mechanizmu []"
 
 #: dnstools/lib.py:113
 msgid "Invalid mask found {}"
-msgstr ""
+msgstr "Znaleziono nieprawidłową maskę []"
 
 #: dnstools/lib.py:157
 msgid "Not an SPF record"
-msgstr ""
+msgstr "Nie jest rekordem SPF"
 
 #: dnstools/lib.py:177
 msgid "Unknown mechanism {}"
-msgstr ""
+msgstr "Nieznany mechanizm ()"
 
 #: dnstools/lib.py:179
 msgid "Unknown modifier {}"
-msgstr ""
+msgstr "Nieznany modyfikator ()"
 
 #: dnstools/lib.py:182
 msgid "Duplicate modifier {} found"
-msgstr ""
+msgstr "Znaleziono zduplikowany modyfikator {}"
 
 #: dnstools/lib.py:186
 msgid "No mechanism found"
-msgstr ""
+msgstr "Nie znaleziono mechanizmu"
 
 #: dnstools/lib.py:193
 msgid "Not a valid DKIM record"
-msgstr ""
+msgstr "Nie jest ważnym rekordem DKIMNie jest ważnym rekordem DKIM"
 
 #: dnstools/lib.py:201 dnstools/lib.py:254
 msgid "Invalid tag {}"
-msgstr ""
+msgstr "Nieprawidłowy tag {}"
 
 #: dnstools/lib.py:206
 msgid "No key found in record"
-msgstr ""
+msgstr "Nie znaleziono klucza w rekordzie"
 
 #: dnstools/lib.py:213
 msgid "Wrong value {} for tag {}"
-msgstr ""
+msgstr "Nieprawidłowa wartość [] dla etykiety []Nieprawidłowa wartość [] dla etykiety []"
 
 #: dnstools/lib.py:228
 msgid "Wrong value {} for tag {}:"
-msgstr ""
+msgstr "Nieprawidłowa wartość {} dla tagu {}:"
 
 #: dnstools/lib.py:232
 msgid " not an integer"
-msgstr ""
+msgstr "nie jest liczbą całkowitą"
 
 #: dnstools/lib.py:234
 msgid " less than {}"
-msgstr ""
+msgstr "mniej niż []"
 
 #: dnstools/lib.py:237
 msgid " greater than {}"
-msgstr ""
+msgstr "większe niż {}"
 
 #: dnstools/lib.py:246
 msgid "Not a valid DMARC record"
-msgstr ""
+msgstr "Nie jest ważnym rekordem DMARC"
 
 #: dnstools/lib.py:257
 msgid "Unknown tag {}"
-msgstr ""
+msgstr "Nieznany tag []"
 
 #: dnstools/lib.py:262
 msgid "Missing required p tag"
-msgstr ""
+msgstr "Brakuje wymaganego tagu p"
 
 #: dnstools/models.py:78
 msgid "Public key mismatchs"
-msgstr ""
+msgstr "Niezgodność kluczy publicznych"
 
 #: imap_migration/api/v2/serializers.py:66
-#, fuzzy
 msgid "Migrated domain with name {} already exists"
-msgstr "Alias z taką nazwą już istnieje"
+msgstr "Zmigrowana domena z nazwą {} już istnieje"
 
 #: imap_migration/api/v2/serializers.py:130
-#, fuzzy
-#| msgid "Access updated"
 msgid "Access denied"
-msgstr "Dostęp zaktualizowany"
+msgstr "Dostęp zabroniony"
 
 #: imap_migration/app_settings.py:19
-#, fuzzy
-#| msgid "Enable DKIM signing"
 msgid "Enable IMAP Migration"
-msgstr "Włącz podpisywanie DKIM"
+msgstr "Włącz migracje IMAP"
 
 #: imap_migration/app_settings.py:20
-#, fuzzy
-#| msgid "Enable DKIM signing"
 msgid "Enable IMAP Migration."
-msgstr "Włącz podpisywanie DKIM"
+msgstr "Włącz migracje IMAP."
 
 #: imap_migration/app_settings.py:30
 msgid "OfflineIMAP"
-msgstr ""
+msgstr "OfflineIMAP"
 
 #: imap_migration/app_settings.py:36
 msgid "Concurrent sync jobs"
-msgstr ""
+msgstr "Równoległe zadania synchronizacji"
 
 #: imap_migration/app_settings.py:38
 msgid "The maximum number of concurrent synchronization jobs"
-msgstr ""
+msgstr "Maksymalna ilość równoczesnych zadań synchronizacji"
 
 #: imap_migration/app_settings.py:49
 msgid "OfflineIMAP Filter"
-msgstr ""
+msgstr "Filtr OfflineIMAP"
 
 #: imap_migration/app_settings.py:55
-#, fuzzy
-#| msgid "Create aliases"
 msgid "Create Folders"
-msgstr "Utwórz aliasy"
+msgstr "Utwórz foldery"
 
 #: imap_migration/app_settings.py:57
 msgid "Allow Creation of missing folders during sync"
-msgstr ""
+msgstr "Zezwól na tworzenie brakujących folderów podczas synchronizacji"
 
 #: imap_migration/app_settings.py:64
 msgid "Folder Filter Exclusions"
-msgstr ""
+msgstr "Wykonanie filtrów folderu"
 
 #: imap_migration/app_settings.py:66
 msgid ""
 "Use a regular expression to explicitly include folders in sync. Example: "
 "^Trash$|Del"
-msgstr ""
+msgstr "Użyj wyrażeń regularnych aby dokładnie zawrzeć foldery podczas synchronizacji. Przykład ^Trash$|Del"
 
 #: imap_migration/app_settings.py:74
 msgid "Folder Filter Inclusions"
-msgstr ""
+msgstr "Dodatki Filtra Folderu "
 
 #: imap_migration/app_settings.py:76
 msgid ""
 "A comma seperated list of folders to explicitly include in sync even if "
 "filtered by the Folder Filter Exclusions. Example: debian.user, "
 "debian.personal "
-msgstr ""
+msgstr "Lista folderów, rozdzielona przecinkami, które zostaną dołączone podczas synchronizacji, nawet jeżeli są filtrowane przez Wyjątki Filtra Folderu. Przykład: debian.user, debian.personal "
 
 #: imap_migration/apps.py:20
 msgid "IMAP Migration"
-msgstr ""
+msgstr "Migracja IMAP"
 
 #: imap_migration/checks.py:12
 msgid ""
 "Automatic domain/mailbox creation is disabled which means IMAP "
 "authentication won't work."
-msgstr ""
+msgstr "Automatyczne tworzenie domen/skrzynek jest zablokowane co oznacza że uwierzytelnianie IMAP nie będzie działać."
 
 #: imap_migration/checks.py:16
 msgid ""
 "Go to the online parameters panel (admin tab) and activate this feature."
-msgstr ""
+msgstr "Przejdź do ustawień panelu online (zakładka admin) i aktywuj tą funkcjonalność."
 
 #: ldapsync/lib.py:82
 msgid "Failed to create LDAP account: {}"
-msgstr "Niepowodzenie w trakcie dodawania konta LDAP"
+msgstr "Nie powiodło się utworzenie konta LDAP: []"
 
 #: ldapsync/lib.py:121
 msgid "Failed to update LDAP account: {}"
-msgstr "Niepowodzenie w trakcie aktualizacji konta LDAP"
+msgstr "Nie powiodło się uaktualnienie konta LDAP: []"
 
 #: ldapsync/lib.py:135
 msgid "Failed to delete LDAP account: {}"
-msgstr "Niepowodzenie w trakcie usuwania konta LDAP"
+msgstr "Nie powiodło się usunięcie konta LDAP: []"
 
 #: ldapsync/lib.py:144
 msgid "Failed to disable LDAP account: {}"
-msgstr "Niepowodzenie w trakcie wyłaczania konta LDAP"
+msgstr "Nie powiodło się wyłączenie konta LDAP: []"
 
 #: lib/api_client.py:35 lib/api_client.py:67 lib/api_client.py:81
 #: lib/api_client.py:85
-#, fuzzy, python-format
-#| msgid "Enable communication with Modoboa public API"
+#, python-format
 msgid "Failed to communicate with public API: %s"
-msgstr "Włącz komunikację z publicznym API Modoboa"
+msgstr "Nie udało się komunikować z publicznym API: %s"
 
 #: lib/email_utils.py:140 lib/email_utils.py:351
 msgid "unable to determine encoding of string"
 msgstr "nie potrafi rozpoznać kodowania tekstu"
 
 #: lib/exceptions.py:83
-#, fuzzy
-#| msgid "Permission denied: %s"
 msgid "Permission denied: {}"
-msgstr "Odmowa dostepu: %s"
+msgstr "Odmowa dostępu: []"
 
 #: lib/exceptions.py:84
 msgid "Permission denied"
@@ -2659,17 +2397,13 @@ msgstr "Administratorzy domeny"
 msgid ""
 "Maximum number of allowed domain administrators for a new administrator. (0 "
 "to deny any creation, -1 to allow unlimited creations)"
-msgstr ""
-"Maksymalna dozwolona liczba administratorów domen dla nowego administratora. "
-"(0 - tworzenie niedozwolone, -1 nielimitowana ilość)"
+msgstr "Maksymalna dozwolona liczba administratorów domen dla nowego administratora. (0 - tworzenie niedozwolone, -1 nielimitowana ilość)"
 
 #: limits/app_settings.py:41
 msgid ""
 "Maximum number of allowed domains for a new administrator. (0 to deny any "
 "creation, -1 to allow unlimited creations)"
-msgstr ""
-"Maksymalna dozwolona ilość domen dla nowego administratora. (0 dla tworzenie "
-"niedozwolone, -1 nielimitowana ilość)"
+msgstr "Maksymalna dozwolona ilość domen dla nowego administratora. (0 dla tworzenia niedozwolone, -1 nielimitowana ilość)"
 
 #: limits/app_settings.py:49 limits/app_settings.py:123 limits/constants.py:22
 #: limits/constants.py:76
@@ -2678,32 +2412,26 @@ msgstr "Aliasy domen"
 
 #: limits/app_settings.py:52
 msgid ""
-"Maximum number of allowed domain aliases for a new administrator. (0 to deny "
-"any creation, -1 to allow unlimited creations)"
-msgstr ""
-"Maksymalna dozwolona ilość aliasów domen dla nowego administratora. (0 dla "
-"tworzenie niedozwolone, -1 nielimitowana ilość)"
+"Maximum number of allowed domain aliases for a new administrator. (0 to deny"
+" any creation, -1 to allow unlimited creations)"
+msgstr "Maksymalna dozwolona ilość aliasów domen dla nowego administratora. (0 dla tworzenie niedozwolone, -1 nielimitowana ilość)"
 
 #: limits/app_settings.py:64
 msgid ""
 "Maximum number of allowed mailboxes for a new administrator. (0 to deny any "
 "creation, -1 to allow unlimited creations)"
-msgstr ""
-"Maksymalna dozwolona liczba skrzynek dla nowego administratora. (0 - "
-"tworzenie niedozwolone, -1 nielimitowana ilość)"
+msgstr "Maksymalna dozwolona liczba skrzynek dla nowego administratora. (0 dla tworzenia niedozwolone, -1 nielimitowana ilość)"
 
 #: limits/app_settings.py:73 limits/app_settings.py:146 limits/constants.py:39
 #: limits/constants.py:92
 msgid "Mailbox aliases"
-msgstr "Aliasy skrzynki"
+msgstr "Aliasy skrzynek pocztowych"
 
 #: limits/app_settings.py:76
 msgid ""
 "Maximum number of allowed aliases for a new administrator. (0 to deny any "
 "creation, -1 to allow unlimited creations)"
-msgstr ""
-"Maksymalna dozwolona liczba aliasów dla nowego administratora. (0 - "
-"tworzenie niedozwolone, -1 nielimitowana ilość)"
+msgstr "Maksymalna dozwolona liczba aliasów dla nowego administratora. (0 - tworzenie niedozwolone, -1 nielimitowana ilość)"
 
 #: limits/app_settings.py:84 limits/constants.py:59
 msgid "Quota"
@@ -2713,9 +2441,7 @@ msgstr "Limit"
 msgid ""
 "The quota a reseller will be allowed to share between the domains he "
 "creates. (0 means no quota)"
-msgstr ""
-"Pojemność jaką reseller może dzielić między domenami które utworzy. (0 "
-"oznacza brak limitu)"
+msgstr "Pojemność jaką reseller może dzielić między domenami które utworzy. (0 oznacza brak limitu)"
 
 #: limits/app_settings.py:98
 msgid "Default per-domain limits"
@@ -2731,35 +2457,27 @@ msgstr "Włącz lub wyłącz limity na domenę"
 
 #: limits/app_settings.py:114
 msgid ""
-"Maximum number of allowed domain administrators for a new domain. (0 to deny "
-"any creation, -1 to allow unlimited creations)"
-msgstr ""
-"Max liczba administratrów nowej domeny. (0 tworzenie niedozwolone, -1 dla "
-"braku limitu)"
+"Maximum number of allowed domain administrators for a new domain. (0 to deny"
+" any creation, -1 to allow unlimited creations)"
+msgstr "Max liczba administratrów nowej domeny. (0 tworzenie niedozwolone, -1 dla braku limitu)"
 
 #: limits/app_settings.py:126
 msgid ""
 "Maximum number of allowed domain aliases for a new domain. (0 to deny any "
 "creation, -1 to allow unlimited creations)"
-msgstr ""
-"Max liczba aliasów domen nowej domeny. (0 tworzenie niedozwolone, -1 "
-"nielimitowana ilość)"
+msgstr "Max liczba aliasów domen nowej domeny. (0 tworzenie niedozwolone, -1 nielimitowana ilość)"
 
 #: limits/app_settings.py:138
 msgid ""
 "Maximum number of allowed mailboxes for a new domain. (0 to deny any "
 "creation, -1 to allow unlimited creations)"
-msgstr ""
-"Max liczba skrzynek dla nowej domeny. (0 tworzenie niedozwolone, -1 "
-"nielimitowana ilość)"
+msgstr "Max liczba skrzynek dla nowej domeny. (0 tworzenie niedozwolone, -1 nielimitowana ilość)"
 
 #: limits/app_settings.py:149
 msgid ""
-"Maximum number of allowed aliases for a new domain. (0 to deny any creation, "
-"-1 to allow unlimited creations)"
-msgstr ""
-"Max liczba aliasów dla nowej domeny. (0 tworzenie niedozwolone, -1 "
-"nielimitowana ilość)"
+"Maximum number of allowed aliases for a new domain. (0 to deny any creation,"
+" -1 to allow unlimited creations)"
+msgstr "Max liczba aliasów dla nowej domeny. (0 tworzenie niedozwolone, -1 nielimitowana ilość)"
 
 #: limits/apps.py:16
 msgid "Limits"
@@ -2783,8 +2501,7 @@ msgstr "Maksymalna liczba aliasów skrzynek, które może stworzyć użytkownik"
 
 #: limits/constants.py:49
 msgid "Maximum number of domain administrators this user can create"
-msgstr ""
-"Maksymalna liczba kont aministratorów domen, które może stworzyć użytkownik"
+msgstr "Maksymalna liczba kont aministratorów domen, które może stworzyć użytkownik"
 
 #: limits/constants.py:60
 msgid "Quota shared between domains of this reseller"
@@ -2800,7 +2517,7 @@ msgstr "Max liczba skrzynek dla tej domeny."
 
 #: limits/constants.py:93
 msgid "Maximum number of mailbox aliases allowed for this domain."
-msgstr "Max liczba aliasów dla tej domeny."
+msgstr "Maksymalna liczba aliasów skrzynek dla tej domeny."
 
 #: limits/constants.py:102
 msgid "Maximum number of domain admins allowed for this domain."
@@ -2825,7 +2542,7 @@ msgstr "nielimitowane"
 
 #: maillog/api/v2/serializers.py:35
 msgid "You must provide start and end dates when period is custom"
-msgstr ""
+msgstr "Musisz poddać datę początkową i końcową, jeśli okres jest niestandardowy"
 
 #: maillog/apps.py:20
 msgid "Path to the log file"
@@ -2865,19 +2582,19 @@ msgstr "Średni ruch (wiadomości/minutę)"
 
 #: maillog/graphics.py:169
 msgid "sent messages"
-msgstr "Wysłane wiadomości"
+msgstr "wysłane wiadomości"
 
 #: maillog/graphics.py:170
 msgid "received messages"
-msgstr "Odebrane wiadomości"
+msgstr "odebrane wiadomości"
 
 #: maillog/graphics.py:171
 msgid "bounced messages"
-msgstr "Odbite wiadomości"
+msgstr "odesłane wiadomości"
 
 #: maillog/graphics.py:172
 msgid "rejected messages"
-msgstr "Odrzucone wiadomości"
+msgstr "odrzucone wiadomości"
 
 #: maillog/graphics.py:173
 msgid "virus messages"
@@ -2897,11 +2614,11 @@ msgstr "Średnia normalna wielkość ruchu (bajtów/min)"
 
 #: maillog/graphics.py:201
 msgid "received size"
-msgstr "Ilość odebranych danych"
+msgstr "ilość odebranych danych"
 
 #: maillog/graphics.py:202
 msgid "sent size"
-msgstr "Ilość wysłanych danych"
+msgstr "ilość wysłanych danych"
 
 #: maillog/graphics.py:209
 msgid "Mail traffic"
@@ -2924,26 +2641,20 @@ msgid "Personal account information"
 msgstr "Informacje o koncie osobistym"
 
 #: pdfcredentials/api/v2/serializers.py:86
-#, fuzzy
-#| msgid "Directory not found."
 msgid "Directory is not writable"
-msgstr "Katalog nie znaleziony."
+msgstr "Katalog nie jest zapisywalny"
 
 #: pdfcredentials/api/v2/serializers.py:114
 msgid "No document available for this user"
 msgstr "Brak dokumentu dla tego użytkownika"
 
 #: pdfcredentials/app_settings.py:19
-#, fuzzy
-#| msgid "PDF credentials"
 msgid "Enable PDF credentials"
-msgstr "Poświadczenia PDF"
+msgstr "Włącz dane logowania PDF"
 
 #: pdfcredentials/app_settings.py:21
-#, fuzzy
-#| msgid "Generate documents only at account creation"
 msgid "Enabled PDF credentials document generation on account creation."
-msgstr "Generuj dokumenty tylko podczas zakładania konta"
+msgstr "Włączono generowanie dokumentu PDF danych logowania przy tworzeniu konta."
 
 #: pdfcredentials/app_settings.py:32
 msgid "Documents storage"
@@ -2951,7 +2662,7 @@ msgstr "Magazyn dokumentów"
 
 #: pdfcredentials/app_settings.py:38
 msgid "Directory to save documents into"
-msgstr "Lokalizacja gdzie zapisywać dokumenty"
+msgstr "Katalog, w którym zapisywane są dokumenty"
 
 #: pdfcredentials/app_settings.py:40
 msgid "Path to a directory where PDF documents will be saved"
@@ -2969,8 +2680,7 @@ msgstr "Usuwaj dokumenty po ich pierwszym pobraniu"
 msgid ""
 "Automatically delete a document just after its first download from this "
 "interface"
-msgstr ""
-"Automatycznie usuwaj dokumenty jak tylko zostaną pobranie przez ten interfejs"
+msgstr "Automatycznie usuwaj dokumenty jak tylko zostaną pobranie przez ten interfejs"
 
 #: pdfcredentials/app_settings.py:68
 msgid "Generate documents only at account creation"
@@ -2980,9 +2690,7 @@ msgstr "Generuj dokumenty tylko podczas zakładania konta"
 msgid ""
 "Generate a new document only when a new account is created. If set to no, a "
 "new document will be created each time a password is updated."
-msgstr ""
-"Generuj nowy dokument tylko wtedy, kiedy nowe konto jest zakładane. Jeśli "
-"ustawione na nie, to nowy dokument będzie tworzony przy każdej zmianie hasła."
+msgstr "Generuj nowy dokument tylko wtedy, kiedy nowe konto jest zakładane. Jeśli ustawione na nie, to nowy dokument będzie tworzony przy każdej zmianie hasła."
 
 #: pdfcredentials/app_settings.py:84
 msgid "Customization options"
@@ -3067,10 +2775,8 @@ msgid "IMAP connection security"
 msgstr "Zabezpieczenie połączenia IMAP"
 
 #: pdfcredentials/apps.py:21
-#, fuzzy
-#| msgid "PDF credentials"
 msgid "PDF Credentials"
-msgstr "Poświadczenia PDF"
+msgstr "Dane logowania PDF"
 
 #: pdfcredentials/documents.py:65
 msgid "Powered by Modoboa - Mail hosting made simple"
@@ -3083,11 +2789,7 @@ msgid ""
 "Dear %s, this document contains the credentials you will need\n"
 "to connect to Modoboa. Learn the content and destroy\n"
 "the document as soon as possible.\n"
-msgstr ""
-"\n"
-"Drogi użytkowniku %s, ten dokument zawiera dane uwierzytelniające które "
-"będzeisz potrzebował to połączenia się. Zapoznaj się z nim i usuń go "
-"najszybciej jak to możliwe.\n"
+msgstr "\nDrogi użytkowniku %s, ten dokument zawiera dane uwierzytelniające które będzeisz potrzebował do połączenia się. Zapoznaj się z nim i usuń go najszybciej jak to możliwe.\n"
 
 #: pdfcredentials/documents.py:95
 msgid "Web panel:"
@@ -3106,11 +2808,7 @@ msgid ""
 "\n"
 "Here you can view your emails anytime online, create filters or manage\n"
 "your contacts.\n"
-msgstr ""
-"\n"
-"Pod tym adresem możesz online przeczytać swoje wiadomości, stworzyć filtry "
-"lub zarządzać\n"
-" listą kontaktów.\n"
+msgstr "\nPod tym adresem możesz online przeczytać swoje wiadomości, stworzyć filtry lub zarządzać\n listą kontaktów.\n"
 
 #: pdfcredentials/documents.py:126
 msgid "Please change your password!"
@@ -3128,19 +2826,15 @@ msgstr "Użyj tych ustawień w swoim komputerze, tablecie lub telefonie."
 msgid ""
 "Failed to create PDF_credentials directory. Please check the permissions or "
 "the path."
-msgstr ""
+msgstr "Nie powiodło się utworzenie katalogu PDF_credentials. Sprawdź uprawnienia lub Ŝieżkę."
 
 #: pdfcredentials/handlers.py:64
-#, fuzzy
-#| msgid "PDF credentials"
 msgid "Download PDF credentials"
-msgstr "Poświadczenia PDF"
+msgstr "Pobierz dane logowania PDF"
 
 #: pdfcredentials/lib.py:29
-#, fuzzy
-#| msgid "Failed to create the directory that will contain PDF documents (%s)"
 msgid "Can't write to selected directory to store PDF documents"
-msgstr "Nie można utworzyć katalogu do przechowywania PDF'ów  (%s)"
+msgstr "Nie można zapisać do wybranego katalogu dokumentów PDF"
 
 #: pdfcredentials/lib.py:35
 #, python-format
@@ -3151,32 +2845,28 @@ msgstr "Nie można utworzyć katalogu do przechowywania PDF'ów  (%s)"
 msgid ""
 "Failed to create PDF_credentials file. Please check the permissions or the "
 "path."
-msgstr ""
+msgstr "Nie powiodło się utworzenie pliku PDF_credentials. Sprawdź uprawnienia lub Ŝieżkę."
 
 #: policyd/core.py:99
-#, fuzzy
-#| msgid "%s: limit reached"
 msgid "Daily sending limit reached"
-msgstr "Osiągnięto limit: %s"
+msgstr "Osiągnięto dzienny limit wysyłania"
 
 #: policyd/core.py:118
 msgid "domain"
 msgstr "domena"
 
 #: policyd/core.py:136
-#, fuzzy
-#| msgid "%s: limit reached"
 msgid "[modoboa] Sending limit reached"
-msgstr "Osiągnięto limit: %s"
+msgstr "[modoboa] Osiągnięto limit wysyłania"
 
 #: policyd/templates/policyd/notifications/limit_reached.html:3
 #, python-format
 msgid "Daily limit of the following %(ltype)s has been reached: %(name)s."
-msgstr ""
+msgstr "Osiągnięto dzienny limit %(ltype)s: %(name)s ."
 
 #: relaydomains/api/v1/serializers.py:24
 msgid "Unsupported service"
-msgstr ""
+msgstr "Nieobsługiwana usługa"
 
 #: relaydomains/transport.py:16
 msgid "target host address"
@@ -3191,69 +2881,62 @@ msgid "verify recipients"
 msgstr "sprawdź odbiorców"
 
 #: rspamd/api/v2/serializers.py:15
-#, fuzzy
-#| msgid "Directory not found."
 msgid "Provided path is not writable."
-msgstr "Katalog nie znaleziony."
+msgstr "Podana Ŝieżka nie jest zapisywalna."
 
 #: rspamd/api/v2/serializers.py:18
 msgid "Please create the parent directory for the files"
-msgstr ""
+msgstr "Proszę utwórz katalog główny dla plików"
 
 #: rspamd/api/v2/serializers.py:22
 msgid "Unable to write to the directory."
-msgstr ""
+msgstr "Nie można zapisać do katalogu."
 
 #: rspamd/app_settings.py:13
-#, fuzzy
-#| msgid "LDAP settings"
 msgid "DKIM signing settings"
-msgstr "Ustawienia IMAP"
+msgstr "Ustawienia podpisywania DKIM"
 
 #: rspamd/app_settings.py:19
 msgid "Key map path"
-msgstr ""
+msgstr "Długość klucza"
 
 #: rspamd/app_settings.py:21
 msgid ""
-"Absolute path of the file which contains paths to DKIM private keys. Must be "
-"readable by _rspamd group or user."
-msgstr ""
+"Absolute path of the file which contains paths to DKIM private keys. Must be"
+" readable by _rspamd group or user."
+msgstr "Bezwzględna Ŝieżka do pliku zawierającego Ŝieżki do kluczy prywatnych DKIM. Musi być czytelna przez grupę _rspamd lub użytkownika."
 
 #: rspamd/app_settings.py:30
 msgid "Selector map path"
-msgstr ""
+msgstr "Ŝieżka do mapy selektorów"
 
 #: rspamd/app_settings.py:32
 msgid ""
 "Absolute path of the file which contains names of DKIM selectors. Must be "
 "readable by _rspamd group or user."
-msgstr ""
+msgstr "Bezwzględna Ŝieżka do pliku zawierającego nazwy selektorów DKIM. Musi być czytelna przez grupę _rspamd lub użytkownika."
 
 #: rspamd/app_settings.py:51
 msgid "Rspamd dashboard location"
-msgstr ""
+msgstr "Lokalizacja panelu Rspamd"
 
 #: rspamd/app_settings.py:53
 msgid ""
-"Location of the rspamd dashboard. Can either be a relative URL (eg. '/"
-"rspamd') or a full URL (eg. 'https://rspamd.domain.tld/').Only use for "
+"Location of the rspamd dashboard. Can either be a relative URL (eg. "
+"'/rspamd') or a full URL (eg. 'https://rspamd.domain.tld/').Only use for "
 "guidance on the Super-Admin dashboard."
-msgstr ""
+msgstr "Lokalizacja panelu Rspamd. Może być względnym URL (np. '/rspamd') lub pełnym URL (np. 'https://rspamd.domain.tld/'). Użytkownik tylko w celu poradnika na pulpicie Super-Admin."
 
 #: rspamd/apps.py:18
 msgid "Rspamd"
-msgstr ""
+msgstr "Rspamd"
 
 #: sievefilters/api/v2/viewsets.py:203
-#, fuzzy, python-format
-#| msgid "User '%s' already exists"
+#, python-format
 msgid "Filter %s already exists"
-msgstr "Użytkownik '%s' już istnieje"
+msgstr "Filtr [%s] już istnieje"
 
 #: sievefilters/app_settings.py:12
-#, fuzzy
-#| msgid "LDAP settings"
 msgid "ManageSieve settings"
 msgstr "Ustawienia ManageSieve"
 
@@ -3262,8 +2945,6 @@ msgid "Address of your MANAGESIEVE server"
 msgstr "Addres twojego serwera MANAGESIEVE"
 
 #: sievefilters/app_settings.py:27
-#, fuzzy
-#| msgid "Listening port of the IMAP server"
 msgid "Listening port of your MANAGESIEVE server"
 msgstr "Port twojego serwera MANAGESIEVE"
 
@@ -3276,32 +2957,22 @@ msgid "Use the STARTTLS extension"
 msgstr "Użyj rozszerzenia STARTTLS"
 
 #: sievefilters/app_settings.py:45 webmail/app_settings.py:30
-#, fuzzy
-#| msgid "LDAP settings"
 msgid "IMAP settings"
 msgstr "Ustawienia IMAP"
 
 #: sievefilters/app_settings.py:52 webmail/app_settings.py:38
-#, fuzzy
-#| msgid "Address of the IMAP server (hostname or IP)"
 msgid "Address of your IMAP server"
 msgstr "Adres serwera IMAP"
 
 #: sievefilters/app_settings.py:60 webmail/app_settings.py:47
-#, fuzzy
-#| msgid "Use an SSL/STARTTLS connection to access the LDAP server"
 msgid "Use a secured connection to access IMAP server"
 msgstr "Użyj bezpiecznego połączenia do serwera IMAP"
 
 #: sievefilters/app_settings.py:68 webmail/app_settings.py:56
-#, fuzzy
-#| msgid "Listening port of the IMAP server"
 msgid "Listening port of your IMAP server"
 msgstr "Port, na którym nasłuchuje twój serwer IMAP"
 
 #: sievefilters/apps.py:15
-#, fuzzy
-#| msgid "Search filter"
 msgid "Sieve filters"
 msgstr "Filtry Sieve"
 
@@ -3314,14 +2985,10 @@ msgid "Any of the following"
 msgstr "Żadne z poniższych"
 
 #: sievefilters/constants.py:12
-#, fuzzy
-#| msgid "sent messages"
 msgid "All messages"
 msgstr "Wszystkie wiadomości"
 
 #: sievefilters/constants.py:16
-#, fuzzy
-#| msgid "Domains"
 msgid "contains"
 msgstr "zawiera"
 
@@ -3342,8 +3009,6 @@ msgid "Subject"
 msgstr "Temat"
 
 #: sievefilters/constants.py:24
-#, fuzzy
-#| msgid "Sender address"
 msgid "Sender"
 msgstr "Nadawca"
 
@@ -3356,8 +3021,6 @@ msgid "Size"
 msgstr "Rozmiar"
 
 #: sievefilters/constants.py:31
-#, fuzzy
-#| msgid "Cannot be greater than domain quota"
 msgid "is greater than"
 msgstr "jest większe niż"
 
@@ -3366,26 +3029,18 @@ msgid "is less than"
 msgstr "jest mniejsze niż"
 
 #: sievefilters/constants.py:40
-#, fuzzy
-#| msgid "Message logs"
 msgid "Move message to"
 msgstr "Przenieś wiadomość do"
 
 #: sievefilters/constants.py:46 sievefilters/constants.py:60
-#, fuzzy
-#| msgid "Keep local copies"
 msgid "Keep local copy"
 msgstr "Zachowaj kopię"
 
 #: sievefilters/constants.py:54
-#, fuzzy
-#| msgid "rejected messages"
 msgid "Redirect message to"
 msgstr "Przekieruj wiadomość do"
 
 #: sievefilters/constants.py:68
-#, fuzzy
-#| msgid "rejected messages"
 msgid "Reject message"
 msgstr "Odrzuć wiadomość"
 
@@ -3398,8 +3053,6 @@ msgid "Connection to MANAGESIEVE server failed, check your configuration"
 msgstr "Błąd połączenia do serwera MANAGESIEVE: %s, sprawdź konfigurację"
 
 #: sievefilters/lib.py:76
-#, fuzzy
-#| msgid "Not enough resources"
 msgid "Not enough space on server"
 msgstr "Brak miejsca na serwerze"
 
@@ -3429,10 +3082,8 @@ msgid "Welcome to Modoboa"
 msgstr "Witamy w Modoboa"
 
 #: templates/registration/login.html:11
-#, fuzzy
-#| msgid "Notifications"
 msgid "Identification"
-msgstr "Powiadomienia"
+msgstr "Identyfikacja"
 
 #: templates/registration/login.html:24
 msgid "Remember me"
@@ -3454,9 +3105,7 @@ msgstr "Zapomniane hasło?"
 msgid ""
 "Your password has been set. You may go ahead and <a href=\"%(url)s\">sign "
 "in</a> now."
-msgstr ""
-"Twoje hasło zostało zapisane. Teraz możesz się <a "
-"href=\"%(url)s\">zalogować</a>."
+msgstr "Twoje hasło zostało zapisane. Teraz możesz się <a href=\"%(url)s\">zalogować</a>."
 
 #: templates/registration/password_reset_confirm.html:8
 msgid "Change password"
@@ -3472,9 +3121,7 @@ msgstr "Temat"
 msgid ""
 "The password reset link was invalid, possibly because it has already been "
 "used. Please request a new password reset."
-msgstr ""
-"Link resetowania hasła jest niepoprawny, być może został już użyty. Wykonaj "
-"nowy reset hasła. "
+msgstr "Link resetowania hasła jest niepoprawny, być może został już użyty. Wykonaj nowy reset hasła. "
 
 #: templates/registration/password_reset_confirm_code.html:22
 msgid "Enter the code you've just received by SMS"
@@ -3486,7 +3133,7 @@ msgstr "Ponowne wysłanie kodu"
 
 #: templates/registration/password_reset_confirm_code.html:45
 msgid "The code has been sent again"
-msgstr ""
+msgstr "Kod został wysłany ponownie"
 
 #: templates/registration/password_reset_done.html:8
 msgid ""
@@ -3494,11 +3141,7 @@ msgid ""
 "exists with the email you entered. You should receive them shortly.</p> "
 "<p>If you don't receive an email, please make sure you've entered your "
 "primary address, and check your spam folder.</p>"
-msgstr ""
-"<p>Wysłaliśmy do Ciebie instrukcje n/t ustawienia hasła, na adres który "
-"podałeś. Wkrótce powinieneś je odebrać.</p><p> Jeżeli nie otrzymałeś "
-"wiadomości, upewnij się że wprowadziłeś właściwy adres email, oraz sprawdź "
-"folder spamu.</p>"
+msgstr "<p>Wysłaliśmy do Ciebie instrukcje n/t ustawienia hasła, na adres który podałeś. Wkrótce powinieneś je odebrać.</p><p> Jeżeli nie otrzymałeś wiadomości, upewnij się że wprowadziłeś właściwy adres email, oraz sprawdź folder spamu.</p>"
 
 #: templates/registration/password_reset_email.html:4
 #: templates/registration/password_reset_email_v2.html:4
@@ -3506,18 +3149,14 @@ msgstr ""
 msgid ""
 "To initiate the password reset process for your %(username)s Modoboa "
 "account, click the link below:"
-msgstr ""
-"Aby rozpocząć proces nadania nowego hasła dla konta %(username)s kliknij "
-"link poniżej:"
+msgstr "Aby rozpocząć proces nadania nowego hasła dla konta %(username)s kliknij link poniżej:"
 
 #: templates/registration/password_reset_email.html:10
 #: templates/registration/password_reset_email_v2.html:10
 msgid ""
 "If clicking the link above doesn't work, please copy and paste the URL in a "
 "new browser window instead."
-msgstr ""
-"Jeżeli kliknięcie w powyższy link nie działa, proszę skopiować i wkleić "
-"adres w nowym oknie przeglądarki."
+msgstr "Jeżeli kliknięcie w powyższy link nie działa, proszę skopiować i wkleić adres w nowym oknie przeglądarki."
 
 #: templates/registration/password_reset_email.html:14
 #: templates/registration/password_reset_email_v2.html:14
@@ -3529,36 +3168,30 @@ msgid "Modoboa password reset"
 msgstr "Resetowanie hasła Modoboa"
 
 #: templates/registration/twofactor_code_verify.html:11
-#, fuzzy
-#| msgid "Verification code"
 msgid "Verification"
-msgstr "Kod weryfikacyjny"
+msgstr "Weryfikacja"
 
 #: templates/registration/twofactor_code_verify.html:15
 msgid "Use TOTP/backup code"
-msgstr ""
+msgstr "Użyj TOTP/kodu kopii zapasowej"
 
 #: templates/registration/twofactor_code_verify.html:18
 msgid "Use Webauthn device"
-msgstr ""
+msgstr "Użyj urządzenia Webauthn"
 
 #: templates/registration/twofactor_code_verify.html:27
-#, fuzzy
-#| msgid "Old password"
 msgid "One-time password"
-msgstr "Stare hasło"
+msgstr "Jednorazowe hasło"
 
 #: templates/registration/twofactor_code_verify.html:35
 msgid ""
-"Enter the code from the two-factor app on your mobile device. If you've lost "
-"your device, you may enter one of your recovery codes."
-msgstr ""
+"Enter the code from the two-factor app on your mobile device. If you've lost"
+" your device, you may enter one of your recovery codes."
+msgstr "Wpisz kod z aplikacji uwierzytelniającej na urządzeniu mobilnym. Jeśli straciłeś urządzenie, możesz wpuścić jeden z kodów odzyskiwania."
 
 #: templates/registration/twofactor_code_verify.html:42
-#, fuzzy
-#| msgid "Verification code"
 msgid "Verify code"
-msgstr "Kod weryfikacyjny"
+msgstr "Sprawdż kod"
 
 #: templates/registration/twofactor_code_verify.html:45
 #: templates/registration/twofactor_code_verify.html:51
@@ -3567,11 +3200,11 @@ msgstr "Wstecz"
 
 #: templates/registration/twofactor_code_verify.html:49
 msgid "Log using Webauthn"
-msgstr ""
+msgstr "Zaloguj się za pomocą Webauthn"
 
 #: transport/backends.py:55
 msgid "Invalid value"
-msgstr "Zła wartość"
+msgstr "Nieprawidłowa wartość"
 
 #: transport/models.py:15
 msgid "pattern"
@@ -3583,122 +3216,97 @@ msgstr "usługa"
 
 #: transport/models.py:17
 msgid "next hop"
-msgstr "następny krok"
+msgstr "następny skok"
 
 #: webmail/app_settings.py:17
 msgid "Maximum attachment size"
-msgstr ""
+msgstr "Maksymalny rozmiar załącznika"
 
 #: webmail/app_settings.py:19
 msgid "Maximum attachment size in bytes (or KB, MB, GB if specified)"
-msgstr ""
+msgstr "Maksymalny rozmiar załącznika w bajtach (lub KB,MB, GB jeśli określone)"
 
 #: webmail/app_settings.py:67
-#, fuzzy
-#| msgid "LDAP settings"
 msgid "SMTP settings"
-msgstr "Ustawienia IMAP"
+msgstr "Ustawienia SMTP"
 
 #: webmail/app_settings.py:75 webmail/app_settings.py:121
-#, fuzzy
-#| msgid "Address of the IMAP server (hostname or IP)"
 msgid "Address of your SMTP server"
-msgstr "Adres serwera IMAP"
+msgstr "Adres Twojego serwera SMTP"
 
 #: webmail/app_settings.py:82 webmail/app_settings.py:128
-#, fuzzy
-#| msgid "Use a secured connection"
 msgid "Secured connection mode"
-msgstr "Użyj bezpiecznego polączenia"
+msgstr "Typ połączenia bezpiecznego"
 
 #: webmail/app_settings.py:84 webmail/app_settings.py:130
-#, fuzzy
-#| msgid "Use an SSL/STARTTLS connection to access the LDAP server"
 msgid "Use a secured connection to access SMTP server"
-msgstr "Użyj bezpiecznego połączenia do serwera IMAP"
+msgstr "Użyj bezpiecznego połączenia do SMTP"
 
 #: webmail/app_settings.py:93 webmail/app_settings.py:139
-#, fuzzy
-#| msgid "Listening port of the IMAP server"
 msgid "Listening port of your SMTP server"
-msgstr "Port, na którym nasłuchuje twój serwer IMAP"
+msgstr "Port, na którym nasłuchuje SMTP"
 
 #: webmail/app_settings.py:100
-#, fuzzy
-#| msgid "Authentication method"
 msgid "Authentication required"
-msgstr "Metoda autentykacji"
+msgstr "Wymagana weryfikacja"
 
 #: webmail/app_settings.py:102
-#, fuzzy
 msgid "Server needs authentication"
-msgstr "Preferowany mechanizm uwierzytelnienia"
+msgstr "Serwer wymaga weryfikacji"
 
 #: webmail/app_settings.py:113
-#, fuzzy
-#| msgid "LDAP settings"
 msgid "Scheduling settings"
-msgstr "Ustawienia ManageSieve"
+msgstr "Ustawienia planowania"
 
 #: webmail/app_settings.py:161
 msgid "Default message display mode"
-msgstr ""
+msgstr "Domyślny tryb wyświetlania wiadomości"
 
 #: webmail/app_settings.py:163
-#, fuzzy
-#| msgid "The default redirection used when no application is specified"
 msgid "The default mode used when displaying a message"
-msgstr "Domyślne górne przekierowanie kiedy nie wskazano aplikacji"
+msgstr "Domyślny tryb używany podczas wyświetlania wiadomości"
 
 #: webmail/app_settings.py:170
 msgid "Enable HTML links display"
-msgstr ""
+msgstr "Włącz wyświetlanie linków HTML"
 
 #: webmail/app_settings.py:173
 msgid "Enable/Disable HTML links display"
-msgstr ""
+msgstr "Włącz/Wyłącz wyświetlanie linków HTML"
 
 #: webmail/app_settings.py:184
 msgid "Sets the maximum number of messages displayed in a page"
-msgstr ""
+msgstr "Określa maksymalną liczbę wiadomości wyświetlanych na stronie"
 
 #: webmail/app_settings.py:191
 msgid "Listing refresh rate"
-msgstr ""
+msgstr "Czas odświeżania"
 
 #: webmail/app_settings.py:193
 msgid "Automatic listing refresh rate (in secconds)"
-msgstr ""
+msgstr "Czas automatycznego odświeżania listy (w sekundach)"
 
 #: webmail/app_settings.py:200
 msgid "Folder container's width"
-msgstr ""
+msgstr "Szerokość kontenera 'folder'"
 
 #: webmail/app_settings.py:202
 msgid "The width of the folder list container"
-msgstr ""
+msgstr "Szerokość kontenera listy folderów"
 
 #: webmail/app_settings.py:213
-#, fuzzy
-#| msgid "Create aliases"
 msgid "Folders"
-msgstr "Utwórz aliasy"
+msgstr "Foldery"
 
 #: webmail/app_settings.py:219
-#, fuzzy
-#| msgid "Create aliases"
 msgid "Trash folder"
-msgstr "Folder kosza"
+msgstr "Kosz"
 
 #: webmail/app_settings.py:221
-#, fuzzy
-#| msgid "rejected messages"
 msgid "Folder where deleted messages go"
-msgstr "Folder, do którego trafiają usunięte wiadomości"
+msgstr "Kosz, do którego trafiają usunięte wiadomości"
 
 #: webmail/app_settings.py:228
-#, fuzzy
-#| msgid "Create aliases"
 msgid "Sent folder"
 msgstr "Folder wysłane"
 
@@ -3707,8 +3315,6 @@ msgid "Folder where copies of sent messages go"
 msgstr "Folder, do którego trafiają kopie wysłanych wiadomości"
 
 #: webmail/app_settings.py:237
-#, fuzzy
-#| msgid "Create aliases"
 msgid "Drafts folder"
 msgstr "Folder kopie robocze"
 
@@ -3717,68 +3323,52 @@ msgid "Folder where drafts go"
 msgstr "Folder, do którego trafiają kopie robocze"
 
 #: webmail/app_settings.py:244
-#, fuzzy
-#| msgid "Create aliases"
 msgid "Junk folder"
-msgstr "Folder wysłane"
+msgstr "Folder wiadomości-śmieci"
 
 #: webmail/app_settings.py:246
-#, fuzzy
-#| msgid "rejected messages"
 msgid "Folder where junk messages should go"
-msgstr "Folder, do którego trafiają usunięte wiadomości"
+msgstr "Folder dla wiadomości-śmieci"
 
 #: webmail/app_settings.py:257
-#, fuzzy
-#| msgid "sent messages"
 msgid "Composing messages"
-msgstr "Wysłane wiadomości"
+msgstr "Składowane wiadomości"
 
 #: webmail/app_settings.py:263
-#, fuzzy
-#| msgid "Default top redirection"
 msgid "Default editor"
-msgstr "Domyślne górne przekierowanie"
+msgstr "Domyślny edytor"
 
 #: webmail/app_settings.py:265
-#, fuzzy
-#| msgid "The default redirection used when no application is specified"
 msgid "The default editor to use when composing a message"
-msgstr "Domyślne górne przekierowanie kiedy nie wskazano aplikacji"
+msgstr "Domyślny edytor do tworzenia wiadmości"
 
 #: webmail/app_settings.py:272
 msgid "Signature text"
-msgstr ""
+msgstr "Podpis"
 
 #: webmail/app_settings.py:274
 msgid "User defined email signature"
-msgstr ""
+msgstr "Domyślny podpis użytkownika"
 
 #: webmail/exceptions.py:18
-#, fuzzy
-#| msgid "Server address"
 msgid "Server response"
-msgstr "Adres serwera"
+msgstr "Odpowiedź serwera"
 
 #: webmail/lib/attachments.py:112
-#, fuzzy
-#| msgid "Failed to remove filter"
 msgid "Failed to remove attachment: "
-msgstr "Nie udało się usunąć filtru"
+msgstr "Niepowodzenie przy usuwaniu załącznika"
 
 #: webmail/lib/imapemail.py:270
 msgid "wrote:"
-msgstr ""
+msgstr "napisał"
 
 #: webmail/lib/imapemail.py:304
 msgid "Date"
 msgstr "Data"
 
 #: webmail/lib/imapemail.py:320 webmail/lib/imapemail.py:323
-#, fuzzy
-#| msgid "sent messages"
 msgid "Original message"
-msgstr "Wszystkie wiadomości"
+msgstr "Oryginalna wiadomość"
 
 #: webmail/lib/imaputils.py:222
 msgid "Failed to retrieve hierarchy delimiter"
@@ -3786,52 +3376,41 @@ msgstr "Nie udało się rozpoznać hierarchii separatora"
 
 #: webmail/lib/imaputils.py:478
 msgid "Inbox"
-msgstr ""
+msgstr "Skrzynka Odbiorcza"
 
 #: webmail/lib/imaputils.py:482
-#, fuzzy
-#| msgid "Create aliases"
 msgid "Drafts"
-msgstr "Folder kopie robocze"
+msgstr "Robocze"
 
 #: webmail/lib/imaputils.py:487
 msgid "Junk"
-msgstr ""
+msgstr "Śmieci"
 
 #: webmail/lib/imaputils.py:492
 msgid "Sent"
-msgstr ""
+msgstr "Wysłane"
 
 #: webmail/lib/imaputils.py:500
 msgid "Scheduled"
-msgstr ""
+msgstr "Zaplanowany"
 
 #: webmail/lib/imaputils.py:507
 msgid "Trash"
-msgstr ""
+msgstr "Kosz"
 
 #: webmail/serializers.py:220
 msgid "Moving scheduled messages is forbidden"
-msgstr ""
+msgstr "Przesuwanie zaplanowanych wiadomości jest zabronione"
 
 #: webmail/serializers.py:253
 msgid "Only datetime in the future is allowed"
-msgstr ""
+msgstr "Dozwolona jest tylko data i czas w przyszłości"
 
 #: webmail/serializers.py:258
 msgid "Provived datetime must be one minute in the future at least"
-msgstr ""
+msgstr "Podany czas musi być co najmniej o minutę w przyszłości"
 
 #: webmail/viewsets.py:359
 #, python-format
 msgid "Attachment is too big (limit: %s)"
-msgstr ""
-
-#~ msgid "User profile"
-#~ msgstr "Profil użytkownika"
-
-#~ msgid "Default top redirection"
-#~ msgstr "Domyślne górne przekierowanie"
-
-#~ msgid "The default redirection used when no application is specified"
-#~ msgstr "Domyślne górne przekierowanie kiedy nie wskazano aplikacji"
+msgstr "Załącznik jest zbyt duży (limit: %s)"
