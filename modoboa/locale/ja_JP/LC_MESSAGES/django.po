@@ -3377,7 +3377,7 @@ msgstr "ごみ箱"
 
 #: webmail/serializers.py:220
 msgid "Moving scheduled messages is forbidden"
-msgstr "予定されたメールの移動は禁止"
+msgstr "送信予定メールの移動は禁止"
 
 #: webmail/serializers.py:253
 msgid "Only datetime in the future is allowed"
