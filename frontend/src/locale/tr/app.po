@@ -63,8 +63,8 @@ msgstr "Profil güncellendi"
 #: src/components/admin/identities/IdentityList.vue:482
 #: src/components/admin/identities/IdentityList.vue:522
 #: src/components/tools/CreationForm.vue:135
-#: src/layouts/webmail/WebmailLayout.vue:190
-#: src/views/calendars/CalendarView.vue:247
+#: src/layouts/webmail/WebmailLayout.vue:201
+#: src/views/calendars/CalendarView.vue:535
 msgid "Warning"
 msgstr ""
 
@@ -113,7 +113,7 @@ msgstr ""
 #: src/components/account/AutoReplyForm.vue:12
 #: src/components/quarantine/QuarantineList.vue:49
 #: src/components/quarantine/QuarantineList.vue:235
-#: src/components/webmail/ComposeEmailForm.vue:145
+#: src/components/webmail/ComposeEmailForm.vue:158
 msgid "Subject"
 msgstr ""
 
@@ -133,7 +133,7 @@ msgstr ""
 #: src/components/calendars/EventForm.vue:24
 #: src/components/quarantine/QuarantineList.vue:234
 #: src/components/tools/TimeSerieChart.vue:19
-#: src/components/webmail/ComposeEmailForm.vue:35
+#: src/components/webmail/ComposeEmailForm.vue:48
 msgid "From"
 msgstr "Kimden"
 
@@ -236,7 +236,7 @@ msgstr "Kullanıcı adı"
 #: src/components/admin/domains/form_steps/DomainOptionsForm.vue:11
 #: src/components/admin/identities/IdentityList.vue:265
 #: src/components/admin/imap_migration/ProviderCreationForm.vue:53
-#: src/components/admin/imap_migration/ProvidersList.vue:110
+#: src/components/admin/imap_migration/ProvidersList.vue:114
 #: src/components/calendars/CalendarForm.vue:15
 #: src/components/contacts/CategoryForm.vue:10
 #: src/components/webmail/MailboxForm.vue:7
@@ -266,10 +266,10 @@ msgstr ""
 #: src/components/admin/identities/IdentityList.vue:47
 #: src/components/admin/identities/IdentityList.vue:345
 #: src/components/admin/imap_migration/MigrationsList.vue:34
-#: src/components/admin/imap_migration/MigrationsList.vue:85
+#: src/components/admin/imap_migration/MigrationsList.vue:90
 #: src/components/admin/imap_migration/ProvidersList.vue:36
-#: src/components/admin/imap_migration/ProvidersList.vue:116
-#: src/components/contacts/ContactList.vue:128
+#: src/components/admin/imap_migration/ProvidersList.vue:120
+#: src/components/contacts/ContactList.vue:222
 msgid "Actions"
 msgstr ""
 
@@ -288,7 +288,7 @@ msgstr ""
 #: src/components/admin/identities/IdentityList.vue:487
 #: src/components/admin/identities/IdentityList.vue:527
 #: src/components/tools/CreationForm.vue:142
-#: src/layouts/webmail/WebmailLayout.vue:195
+#: src/layouts/webmail/WebmailLayout.vue:206
 msgid "No"
 msgstr "Hayır"
 
@@ -299,7 +299,7 @@ msgstr "Hayır"
 #: src/components/admin/identities/IdentityList.vue:486
 #: src/components/admin/identities/IdentityList.vue:526
 #: src/components/tools/CreationForm.vue:141
-#: src/layouts/webmail/WebmailLayout.vue:194
+#: src/layouts/webmail/WebmailLayout.vue:205
 msgid "Yes"
 msgstr "Evet"
 
@@ -455,6 +455,7 @@ msgstr "Genel"
 #: src/components/admin/identities/form_steps/AccountGeneralForm.vue:18
 #: src/components/admin/identities/IdentityList.vue:267
 #: src/components/contacts/ContactForm.vue:12
+#: src/components/contacts/ContactList.vue:219
 msgid "First name"
 msgstr ""
 
@@ -462,6 +463,7 @@ msgstr ""
 #: src/components/admin/identities/AccountCreationForm.vue:104
 #: src/components/admin/identities/form_steps/AccountGeneralForm.vue:25
 #: src/components/contacts/ContactForm.vue:22
+#: src/components/contacts/ContactList.vue:220
 msgid "Last name"
 msgstr ""
 
@@ -553,9 +555,11 @@ msgstr ""
 #: src/components/contacts/ContactForm.vue:148
 #: src/components/tools/ImportForm.vue:51
 #: src/components/webmail/AttachmentsDialog.vue:41
+#: src/components/webmail/EmailList.vue:226
+#: src/components/webmail/EmailSchedulingForm.vue:28
 #: src/components/webmail/MailboxForm.vue:29
 #: src/layouts/connected/ConnectedLayout.vue:19
-#: src/views/webmail/EmailView.vue:153
+#: src/views/webmail/EmailView.vue:158
 msgid "Close"
 msgstr "Kapat"
 
@@ -624,7 +628,7 @@ msgstr "Kimlik Doğrulama"
 #: src/components/admin/imap_migration/ProvidersList.vue:20
 #: src/components/admin/logs/AuditTrailList.vue:17
 #: src/components/admin/logs/MessageList.vue:17
-#: src/components/contacts/ContactList.vue:9
+#: src/components/contacts/ContactList.vue:22
 msgid "Search"
 msgstr ""
 
@@ -673,13 +677,14 @@ msgstr "İleti"
 #: src/components/admin/identities/IdentityList.vue:442
 #: src/components/admin/identities/IdentityList.vue:454
 #: src/components/admin/identities/IdentityList.vue:467
-#: src/components/admin/imap_migration/MigrationsList.vue:125
-#: src/components/admin/imap_migration/ProvidersList.vue:142
+#: src/components/admin/imap_migration/MigrationsList.vue:130
+#: src/components/admin/imap_migration/ProvidersList.vue:146
 #: src/components/calendars/EventForm.vue:90
 #: src/components/contacts/CategoryForm.vue:18
-#: src/components/contacts/ContactList.vue:143
+#: src/components/contacts/ContactList.vue:237
+#: src/components/webmail/EmailList.vue:286
 #: src/views/account/FiltersView.vue:351
-#: src/views/calendars/CalendarView.vue:109
+#: src/views/calendars/CalendarView.vue:209
 msgid "Delete"
 msgstr ""
 
@@ -900,7 +905,7 @@ msgstr ""
 #: src/components/admin/identities/AliasEditForm.vue:16
 #: src/components/admin/identities/IdentityList.vue:234
 #: src/components/admin/imap_migration/ProviderCreationForm.vue:54
-#: src/components/admin/imap_migration/ProvidersList.vue:111
+#: src/components/admin/imap_migration/ProvidersList.vue:115
 #: src/components/contacts/ContactForm.vue:85
 #: src/components/contacts/EmailField.vue:5
 msgid "Address"
@@ -992,7 +997,7 @@ msgstr ""
 #: src/components/admin/domains/DomainAliasForm.vue:75
 #: src/components/contacts/CategoryForm.vue:60
 #: src/components/contacts/ContactForm.vue:185
-#: src/components/contacts/ContactList.vue:18
+#: src/components/contacts/ContactList.vue:31
 msgid "Add"
 msgstr ""
 
@@ -1273,10 +1278,10 @@ msgstr ""
 #: src/components/admin/domains/DomainList.vue:357
 #: src/components/admin/identities/IdentityList.vue:437
 #: src/components/admin/identities/IdentityList.vue:449
-#: src/components/admin/imap_migration/ProvidersList.vue:148
-#: src/components/contacts/ContactList.vue:138
+#: src/components/admin/imap_migration/ProvidersList.vue:152
+#: src/components/contacts/ContactList.vue:232
 #: src/views/account/FiltersView.vue:346
-#: src/views/calendars/CalendarView.vue:99
+#: src/views/calendars/CalendarView.vue:199
 msgid "Edit"
 msgstr ""
 
@@ -1463,7 +1468,7 @@ msgid "Create standard aliases for the domain."
 msgstr ""
 
 #: src/components/admin/identities/AccountCreationForm.vue:4
-#: src/components/admin/imap_migration/MigrationsList.vue:83
+#: src/components/admin/imap_migration/MigrationsList.vue:88
 msgid "New account"
 msgstr ""
 
@@ -1501,7 +1506,7 @@ msgstr "Profil güncellendi"
 
 #: src/components/admin/identities/AccountEditForm.vue:31
 #: src/components/calendars/CalendarAccessRulesForm.vue:42
-#: src/components/shared/TopMenu.vue:132
+#: src/components/shared/TopMenu.vue:130
 #: src/views/admin/identities/AccountView.vue:4
 #: src/views/admin/identities/IdentitiesView.vue:23
 msgid "Account"
@@ -1887,7 +1892,7 @@ msgstr ""
 
 #: src/components/admin/imap_migration/form_steps/ProviderGeneralForm.vue:27
 #: src/components/admin/imap_migration/ProviderCreationForm.vue:57
-#: src/components/admin/imap_migration/ProvidersList.vue:113
+#: src/components/admin/imap_migration/ProvidersList.vue:117
 #, fuzzy
 msgid "Secured"
 msgstr "Güvenlik"
@@ -1900,16 +1905,16 @@ msgstr ""
 msgid "Check connection:"
 msgstr ""
 
-#: src/components/admin/imap_migration/MigrationsList.vue:81
+#: src/components/admin/imap_migration/MigrationsList.vue:86
 #, fuzzy
 msgid "Provider"
 msgstr "Yeni kurtarma kodları"
 
-#: src/components/admin/imap_migration/MigrationsList.vue:82
+#: src/components/admin/imap_migration/MigrationsList.vue:87
 msgid "Old account"
 msgstr ""
 
-#: src/components/admin/imap_migration/MigrationsList.vue:100
+#: src/components/admin/imap_migration/MigrationsList.vue:105
 #, fuzzy
 msgid "Migration deleted"
 msgstr "Onayla"
@@ -1928,14 +1933,14 @@ msgid "Associated domain"
 msgstr ""
 
 #: src/components/admin/imap_migration/ProviderCreationForm.vue:55
-#: src/components/admin/imap_migration/ProvidersList.vue:112
+#: src/components/admin/imap_migration/ProvidersList.vue:116
 msgid "Port"
 msgstr ""
 
 #: src/components/admin/imap_migration/ProviderCreationForm.vue:64
 #: src/components/admin/imap_migration/ProviderCreationForm.vue:72
 #: src/components/admin/imap_migration/ProviderForm.vue:30
-#: src/components/admin/imap_migration/ProvidersList.vue:114
+#: src/components/admin/imap_migration/ProvidersList.vue:118
 msgid "Associated domains"
 msgstr ""
 
@@ -1957,7 +1962,7 @@ msgstr ""
 msgid "No associated domains"
 msgstr ""
 
-#: src/components/admin/imap_migration/ProviderForm.vue:140
+#: src/components/admin/imap_migration/ProviderForm.vue:143
 #, fuzzy
 msgid "Provider updated"
 msgstr "Profil güncellendi"
@@ -1995,8 +2000,8 @@ msgstr ""
 #: src/components/quarantine/QuarantineList.vue:52
 #: src/components/quarantine/QuarantineList.vue:233
 #: src/components/tools/TimeSerieChart.vue:20
-#: src/components/webmail/ComposeEmailForm.vue:52
-#: src/views/webmail/EmailView.vue:109
+#: src/components/webmail/ComposeEmailForm.vue:65
+#: src/views/webmail/EmailView.vue:103
 msgid "To"
 msgstr "Kime"
 
@@ -2046,7 +2051,7 @@ msgid "Edit calendar"
 msgstr "Yeni kurtarma kodları"
 
 #: src/components/calendars/CalendarForm.vue:8
-#: src/views/calendars/CalendarView.vue:81
+#: src/views/calendars/CalendarView.vue:181
 #, fuzzy
 msgid "New calendar"
 msgstr "Yeni kurtarma kodları"
@@ -2070,7 +2075,7 @@ msgid "Title"
 msgstr ""
 
 #: src/components/calendars/EventForm.vue:49
-#: src/views/calendars/CalendarView.vue:3
+#: src/views/calendars/CalendarView.vue:4
 msgid "Calendar"
 msgstr ""
 
@@ -2084,20 +2089,21 @@ msgid "Edit event"
 msgstr "Yeni kurtarma kodları"
 
 #: src/components/calendars/EventForm.vue:133
+#: src/views/calendars/CalendarView.vue:399
 msgid "New event"
 msgstr ""
 
-#: src/components/calendars/EventForm.vue:186
+#: src/components/calendars/EventForm.vue:208
 msgid "Event added"
 msgstr ""
 
-#: src/components/calendars/EventForm.vue:189
-#: src/views/calendars/CalendarView.vue:225
+#: src/components/calendars/EventForm.vue:211
+#: src/views/calendars/CalendarView.vue:340
 #, fuzzy
 msgid "Event updated"
 msgstr "Profil güncellendi"
 
-#: src/components/calendars/EventForm.vue:202
+#: src/components/calendars/EventForm.vue:224
 #, fuzzy
 msgid "Event deleted"
 msgstr "Profil güncellendi"
@@ -2116,7 +2122,7 @@ msgid "Select an ICS file"
 msgstr ""
 
 #: src/components/calendars/ImportEventsForm.vue:30
-#: src/components/webmail/ComposeEmailForm.vue:19
+#: src/components/webmail/ComposeEmailForm.vue:18
 msgid "Send"
 msgstr ""
 
@@ -2151,13 +2157,12 @@ msgid "Category deleted"
 msgstr "Onayla"
 
 #: src/components/contacts/ContactCategoriesForm.vue:5
-#: src/components/contacts/ContactList.vue:133
-#: src/views/contacts/AddressBook.vue:41
+#: src/components/contacts/ContactList.vue:227
+#: src/views/contacts/AddressBook.vue:45
 msgid "Categories"
 msgstr ""
 
 #: src/components/contacts/ContactForm.vue:31
-#: src/components/contacts/ContactList.vue:125
 msgid "Display name"
 msgstr ""
 
@@ -2211,23 +2216,33 @@ msgstr ""
 msgid "New contact"
 msgstr ""
 
-#: src/components/contacts/ContactList.vue:23
-msgid "Display address book information"
-msgstr ""
-
-#: src/components/contacts/ContactList.vue:31
+#: src/components/contacts/ContactList.vue:42
 msgid "Synchronize contacts with address book"
 msgstr ""
 
-#: src/components/contacts/ContactList.vue:126
-msgid "E-mail"
+#: src/components/contacts/ContactList.vue:48
+msgid "Synchronize"
 msgstr ""
 
-#: src/components/contacts/ContactList.vue:127
-msgid "Phone"
+#: src/components/contacts/ContactList.vue:58
+msgid "Display address book information"
 msgstr ""
 
-#: src/components/contacts/ContactList.vue:202
+#: src/components/contacts/ContactList.vue:120
+msgid "Email addresses"
+msgstr ""
+
+#: src/components/contacts/ContactList.vue:138
+#, fuzzy
+msgid "Phone numbers"
+msgstr "Telefon numarası"
+
+#: src/components/contacts/ContactList.vue:280
+msgid "Contact removed"
+msgstr ""
+
+#: src/components/contacts/ContactList.vue:325
+#: src/components/contacts/ContactList.vue:346
 msgid "Synchronization started"
 msgstr ""
 
@@ -2319,7 +2334,7 @@ msgstr ""
 msgid "Notifications"
 msgstr "Onayla"
 
-#: src/components/shared/TopMenu.vue:139
+#: src/components/shared/TopMenu.vue:137
 msgid "Logout"
 msgstr "Çıkış Yapın"
 
@@ -2393,7 +2408,7 @@ msgid "Don't treat duplicated objects as errors"
 msgstr ""
 
 #: src/components/tools/ImportForm.vue:54
-#: src/views/calendars/CalendarView.vue:114
+#: src/views/calendars/CalendarView.vue:214
 msgid "Import"
 msgstr ""
 
@@ -2432,14 +2447,20 @@ msgid "Relative time ranges"
 msgstr ""
 
 #: src/components/tools/TimeSerieChart.vue:110
+#: src/views/calendars/CalendarView.vue:46
+#: src/views/calendars/CalendarView.vue:172
 msgid "Day"
 msgstr ""
 
 #: src/components/tools/TimeSerieChart.vue:111
+#: src/views/calendars/CalendarView.vue:49
+#: src/views/calendars/CalendarView.vue:173
 msgid "Week"
 msgstr ""
 
 #: src/components/tools/TimeSerieChart.vue:112
+#: src/views/calendars/CalendarView.vue:52
+#: src/views/calendars/CalendarView.vue:174
 msgid "Month"
 msgstr ""
 
@@ -2456,7 +2477,7 @@ msgid "no"
 msgstr ""
 
 #: src/components/webmail/AttachmentsDialog.vue:3
-#: src/components/webmail/ComposeEmailForm.vue:27
+#: src/components/webmail/ComposeEmailForm.vue:40
 msgid "Attachments"
 msgstr ""
 
@@ -2464,24 +2485,36 @@ msgstr ""
 msgid "Attach"
 msgstr ""
 
-#: src/components/webmail/ComposeEmailForm.vue:60
-#: src/components/webmail/ComposeEmailForm.vue:105
-#: src/components/webmail/ComposeEmailForm.vue:132
-msgid "Provide one or more addresses"
+#: src/components/webmail/ComposeEmailForm.vue:28
+msgid "Schedule sending"
 msgstr ""
 
 #: src/components/webmail/ComposeEmailForm.vue:73
-#: src/components/webmail/ComposeEmailForm.vue:91
+#: src/components/webmail/ComposeEmailForm.vue:118
+#: src/components/webmail/ComposeEmailForm.vue:145
+msgid "Provide one or more addresses"
+msgstr ""
+
+#: src/components/webmail/ComposeEmailForm.vue:86
+#: src/components/webmail/ComposeEmailForm.vue:104
 msgid "Cc"
 msgstr ""
 
-#: src/components/webmail/ComposeEmailForm.vue:81
-#: src/components/webmail/ComposeEmailForm.vue:118
+#: src/components/webmail/ComposeEmailForm.vue:94
+#: src/components/webmail/ComposeEmailForm.vue:131
 msgid "Bcc"
 msgstr ""
 
-#: src/components/webmail/ComposeEmailForm.vue:278
+#: src/components/webmail/ComposeEmailForm.vue:300
+msgid "Email scheduled"
+msgstr ""
+
+#: src/components/webmail/ComposeEmailForm.vue:301
 msgid "Email sent"
+msgstr ""
+
+#: src/components/webmail/ComposeEmailForm.vue:354
+msgid "You must provide one recipient at least"
 msgstr ""
 
 #: src/components/webmail/ContactCard.vue:15
@@ -2497,58 +2530,98 @@ msgstr "Ayarlar"
 msgid "Contact added to address book"
 msgstr ""
 
-#: src/components/webmail/EmailList.vue:63
+#: src/components/webmail/EmailList.vue:66
 msgid "Mark as read"
 msgstr ""
 
-#: src/components/webmail/EmailList.vue:68
+#: src/components/webmail/EmailList.vue:71
 msgid "Mark as unread"
 msgstr ""
 
-#: src/components/webmail/EmailList.vue:73
+#: src/components/webmail/EmailList.vue:76
 msgid "Mark as followed"
 msgstr ""
 
-#: src/components/webmail/EmailList.vue:78
+#: src/components/webmail/EmailList.vue:81
 msgid "Mark as unfollowed"
 msgstr ""
 
-#: src/components/webmail/EmailList.vue:84
+#: src/components/webmail/EmailList.vue:87
 msgid "Empty mailbox"
 msgstr ""
 
-#: src/components/webmail/EmailList.vue:94
+#: src/components/webmail/EmailList.vue:97
 msgid "on"
 msgstr ""
 
-#: src/components/webmail/EmailList.vue:169
+#: src/components/webmail/EmailList.vue:127
+msgid ""
+"Scheduled messages will be sent at the specified date and time. (visible on "
+"the right)"
+msgstr ""
+
+#: src/components/webmail/EmailList.vue:206
 msgid "No message yet in this mailbox"
 msgstr ""
 
-#: src/components/webmail/EmailList.vue:253
+#: src/components/webmail/EmailList.vue:221
+msgid "Sending failure"
+msgstr ""
+
+#: src/components/webmail/EmailList.vue:281
+msgid "Reschedule"
+msgstr ""
+
+#: src/components/webmail/EmailList.vue:328
+#, fuzzy
+msgid "Scheduling updated"
+msgstr "Profil güncellendi"
+
+#: src/components/webmail/EmailList.vue:339
+msgid "Scheduled canceled and message moved to trash folder"
+msgstr ""
+
+#: src/components/webmail/EmailList.vue:393
 #, fuzzy
 msgid "Message(s) deleted"
 msgstr "İleti"
 
-#: src/components/webmail/EmailList.vue:268
+#: src/components/webmail/EmailList.vue:408
 msgid "Message(s) marked as junk"
 msgstr ""
 
-#: src/components/webmail/EmailList.vue:282
+#: src/components/webmail/EmailList.vue:422
 msgid "Message(s) marked as not junk"
 msgstr ""
 
-#: src/components/webmail/EmailList.vue:297
+#: src/components/webmail/EmailList.vue:437
 #, fuzzy
 msgid "Message(s) flagged"
 msgstr "İleti"
 
-#: src/components/webmail/EmailList.vue:324
+#: src/components/webmail/EmailList.vue:464
 #, fuzzy
 msgid "%{count} message"
 msgid_plural "%{count} messages"
 msgstr[0] "İleti"
 msgstr[1] "İleti"
+
+#: src/components/webmail/EmailSchedulingForm.vue:2
+msgid "Schedule your sending"
+msgstr ""
+
+#: src/components/webmail/EmailSchedulingForm.vue:15
+#, fuzzy
+msgid "Select time"
+msgstr "Onayla"
+
+#: src/components/webmail/EmailSchedulingForm.vue:30
+msgid "Schedule"
+msgstr ""
+
+#: src/components/webmail/EmailSchedulingForm.vue:68
+msgid "Provided time must be one minute from now at least"
+msgstr ""
 
 #: src/components/webmail/MailboxForm.vue:13
 msgid "Parent mailbox"
@@ -2572,7 +2645,7 @@ msgstr ""
 msgid "Mailbox created"
 msgstr "Profil güncellendi"
 
-#: src/components/webmail/MailboxList.vue:165
+#: src/components/webmail/MailboxList.vue:172
 msgid "Moving selection..."
 msgstr ""
 
@@ -2588,12 +2661,12 @@ msgstr ""
 msgid "User's database"
 msgstr ""
 
-#: src/layouts/account/AccountLayout.vue:27
+#: src/layouts/account/AccountLayout.vue:28
 #: src/layouts/admin/AdminLayout.vue:123
 msgid "Settings"
 msgstr "Ayarlar"
 
-#: src/layouts/account/AccountLayout.vue:33
+#: src/layouts/account/AccountLayout.vue:34
 msgid "Filters"
 msgstr ""
 
@@ -2639,7 +2712,7 @@ msgid "Migrations"
 msgstr "Onayla"
 
 #: src/layouts/admin/AdminLayout.vue:136 src/views/admin/InformationView.vue:4
-#: src/views/calendars/CalendarView.vue:94
+#: src/views/calendars/CalendarView.vue:194
 msgid "Information"
 msgstr "Bilgi"
 
@@ -2647,31 +2720,31 @@ msgstr "Bilgi"
 msgid "Compose"
 msgstr ""
 
-#: src/layouts/webmail/WebmailLayout.vue:45
+#: src/layouts/webmail/WebmailLayout.vue:54
 msgid "Create a new mailbox"
 msgstr ""
 
-#: src/layouts/webmail/WebmailLayout.vue:50
+#: src/layouts/webmail/WebmailLayout.vue:59
 msgid "Edit this mailbox"
 msgstr ""
 
-#: src/layouts/webmail/WebmailLayout.vue:56
+#: src/layouts/webmail/WebmailLayout.vue:65
 msgid "Delete this mailbox"
 msgstr ""
 
-#: src/layouts/webmail/WebmailLayout.vue:62
+#: src/layouts/webmail/WebmailLayout.vue:71
 msgid "Compress this mailbox"
 msgstr ""
 
-#: src/layouts/webmail/WebmailLayout.vue:185
+#: src/layouts/webmail/WebmailLayout.vue:196
 msgid "Mailbox compressed"
 msgstr ""
 
-#: src/layouts/webmail/WebmailLayout.vue:191
+#: src/layouts/webmail/WebmailLayout.vue:202
 msgid "Delete this mailbox?"
 msgstr ""
 
-#: src/layouts/webmail/WebmailLayout.vue:202
+#: src/layouts/webmail/WebmailLayout.vue:213
 #, fuzzy
 msgid "Mailbox deleted"
 msgstr "Onayla"
@@ -2688,24 +2761,28 @@ msgstr ""
 msgid "Not a valid email"
 msgstr ""
 
-#: src/plugins/rules.js:31
+#: src/plugins/rules.js:27
+msgid "Not a valid time"
+msgstr ""
+
+#: src/plugins/rules.js:38
 #, fuzzy
 msgid "Field is required"
 msgstr "Bu alan gerekli"
 
-#: src/plugins/rules.js:36
+#: src/plugins/rules.js:43
 msgid "Minimum length is %{ length }"
 msgstr ""
 
-#: src/plugins/rules.js:41
+#: src/plugins/rules.js:48
 msgid "Must be a numeric value or empty"
 msgstr ""
 
-#: src/plugins/rules.js:43
+#: src/plugins/rules.js:50
 msgid "Passwords mismatch"
 msgstr "Parolalar uyuşmuyor"
 
-#: src/plugins/rules.js:45
+#: src/plugins/rules.js:52
 msgid "Invalid port number"
 msgstr ""
 
@@ -2825,7 +2902,7 @@ msgstr "Ayarlar"
 msgid "Two-factor auth"
 msgstr "Kimlik Doğrulama"
 
-#: src/views/account/SettingsView.vue:15 src/views/webmail/EmailView.vue:23
+#: src/views/account/SettingsView.vue:15 src/views/webmail/EmailView.vue:18
 msgid "Forward"
 msgstr ""
 
@@ -2986,28 +3063,32 @@ msgstr "Kurulu sürüm"
 msgid "Message history"
 msgstr "İleti"
 
-#: src/views/calendars/CalendarView.vue:85
+#: src/views/calendars/CalendarView.vue:14
+msgid "Today"
+msgstr ""
+
+#: src/views/calendars/CalendarView.vue:185
 msgid "My calendars"
 msgstr ""
 
-#: src/views/calendars/CalendarView.vue:104
+#: src/views/calendars/CalendarView.vue:204
 msgid "Access rules"
 msgstr ""
 
-#: src/views/calendars/CalendarView.vue:248
+#: src/views/calendars/CalendarView.vue:536
 msgid "Do you really want to delete this calendar?"
 msgstr ""
 
-#: src/views/calendars/CalendarView.vue:259
+#: src/views/calendars/CalendarView.vue:546
 #, fuzzy
 msgid "Calendar deleted"
 msgstr "Profil güncellendi"
 
-#: src/views/contacts/AddressBook.vue:3 src/views/contacts/AddressBook.vue:37
+#: src/views/contacts/AddressBook.vue:4 src/views/contacts/AddressBook.vue:41
 msgid "Contacts"
 msgstr ""
 
-#: src/views/contacts/AddressBook.vue:54
+#: src/views/contacts/AddressBook.vue:58
 msgid "Add a category"
 msgstr ""
 
@@ -3046,7 +3127,7 @@ msgstr ""
 msgid "Hide full headers"
 msgstr ""
 
-#: src/views/quarantine/MessageView.vue:201 src/views/webmail/EmailView.vue:254
+#: src/views/quarantine/MessageView.vue:201 src/views/webmail/EmailView.vue:267
 #, fuzzy
 msgid "Message deleted"
 msgstr "İleti"
@@ -3059,38 +3140,43 @@ msgstr ""
 msgid "release requests"
 msgstr ""
 
-#: src/views/webmail/EmailView.vue:12
+#: src/views/webmail/EmailView.vue:8
 msgid "Reply"
 msgstr ""
 
-#: src/views/webmail/EmailView.vue:19
+#: src/views/webmail/EmailView.vue:15
 msgid "Reply all"
 msgstr ""
 
-#: src/views/webmail/EmailView.vue:69
+#: src/views/webmail/EmailView.vue:63
 #, fuzzy
 msgid "Enable links"
 msgstr "2FA'yı etkinleştir"
 
-#: src/views/webmail/EmailView.vue:74
+#: src/views/webmail/EmailView.vue:68
 #, fuzzy
 msgid "Disable links"
 msgstr "2FA'yı devre dışı bırak"
 
-#: src/views/webmail/EmailView.vue:78
+#: src/views/webmail/EmailView.vue:72
 msgid "Display source"
 msgstr ""
 
-#: src/views/webmail/EmailView.vue:146
+#: src/views/webmail/EmailView.vue:145
+#, fuzzy
+msgid "Message scheduled at:"
+msgstr "İleti"
+
+#: src/views/webmail/EmailView.vue:151
 #, fuzzy
 msgid "Message source"
 msgstr "İleti"
 
-#: src/views/webmail/EmailView.vue:268
+#: src/views/webmail/EmailView.vue:281
 msgid "Message marked as junk"
 msgstr ""
 
-#: src/views/webmail/EmailView.vue:282
+#: src/views/webmail/EmailView.vue:295
 msgid "Message marked as not junk"
 msgstr ""
 

@@ -91,31 +91,31 @@ def make_body_images_inline(body: str) -> tuple[str, list]:
     return lxml.html.tostring(html, encoding="unicode"), parts
 
 
-def html_msg(content: str) -> EmailMultiAlternatives:
+def html_msg(body: str) -> EmailMultiAlternatives:
     """Create a multipart message.
 
     We attach two alternatives:
     * text/html
     * text/plain
     """
-    if content:
-        body = html2plaintext(content)
+    if body:
+        tbody = html2plaintext(body)
         body, images = make_body_images_inline(body)
     else:
-        body = ""
+        tbody = ""
         images = []
     msg = EmailMultiAlternatives()
-    msg.body = body
+    msg.body = tbody
     msg.attach_alternative(body, "text/html")
     for img in images:
         msg.attach(img)
     return msg
 
 
-def plain_msg(content: str) -> EmailMessage:
+def plain_msg(body: str) -> EmailMessage:
     """Create a simple text message."""
     msg = EmailMessage()
-    msg.body = content
+    msg.body = body
     return msg
 
 
