@@ -1,0 +1,3125 @@
+# 
+# Translators:
+# Yongjun OH, 2026
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"PO-Revision-Date: 2024-08-01 12:26+0000\n"
+"Last-Translator: Yongjun OH, 2026\n"
+"Language-Team: Korean (Korea) (https://app.transifex.com/tonio/teams/13749/ko_KR/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: ko_KR\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: src/components/account/APISetupForm.vue:4
+msgid "Your API token has not been generated yet."
+msgstr "Your API token has not been generated yet."
+
+#: src/components/account/APISetupForm.vue:13
+msgid "Generate"
+msgstr "Generate"
+
+#: src/components/account/APISetupForm.vue:20
+msgid "Your API token is:"
+msgstr "Your API token is:"
+
+#: src/components/account/APISetupForm.vue:28
+msgid "Copy token to clipboard"
+msgstr "Copy token to clipboard"
+
+#: src/components/account/APISetupForm.vue:38
+msgid "Delete token"
+msgstr "Delete token"
+
+#: src/components/account/APISetupForm.vue:45
+msgid "A documentation of the API is available"
+msgstr "A documentation of the API is available"
+
+#: src/components/account/APISetupForm.vue:46
+#: src/components/account/ProfileForm.vue:28
+msgid "here"
+msgstr "here"
+
+#: src/components/account/APISetupForm.vue:73
+msgid "API token copied to your clipboard"
+msgstr "API token copied to your clipboard"
+
+#: src/components/account/APISetupForm.vue:85
+msgid "API token created"
+msgstr "API token created"
+
+#: src/components/account/APISetupForm.vue:94
+#: src/components/account/FidoAuthForm.vue:184
+#: src/components/admin/domains/DNSDetail.vue:258
+#: src/components/admin/domains/DomainList.vue:300
+#: src/components/admin/identities/IdentityList.vue:482
+#: src/components/admin/identities/IdentityList.vue:522
+#: src/components/tools/CreationForm.vue:135
+#: src/layouts/webmail/WebmailLayout.vue:201
+#: src/views/calendars/CalendarView.vue:535
+msgid "Warning"
+msgstr "Warning"
+
+#: src/components/account/APISetupForm.vue:95
+msgid "You are about to delete your API access token"
+msgstr "You are about to delete your API access token"
+
+#: src/components/account/APISetupForm.vue:98
+#: src/components/account/FidoAuthForm.vue:210
+#: src/components/account/FilterForm.vue:147
+#: src/components/account/FilterSetForm.vue:24
+#: src/components/admin/domains/DomainEditForm.vue:161
+#: src/components/admin/domains/DomainPolicyForm.vue:93
+#: src/components/admin/identities/AccountEditForm.vue:212
+#: src/components/admin/identities/AliasEditForm.vue:69
+#: src/components/admin/imap_migration/ProviderForm.vue:58
+#: src/components/tools/ConfirmDialog.vue:55
+msgid "Cancel"
+msgstr "Cancel"
+
+#: src/components/account/APISetupForm.vue:99
+msgid "Proceed"
+msgstr "Proceed"
+
+#: src/components/account/APISetupForm.vue:107
+msgid "API token deleted"
+msgstr "API token deleted"
+
+#: src/components/account/AutoReplyForm.vue:7
+#: src/components/admin/domains/DomainCreationForm.vue:167
+#: src/components/admin/domains/DomainList.vue:212
+#: src/components/admin/domains/DomainSummary.vue:68
+#: src/components/admin/domains/form_steps/DomainGeneralForm.vue:20
+#: src/components/admin/identities/AccountCreationForm.vue:112
+#: src/components/admin/identities/AccountEditForm.vue:45
+#: src/components/admin/identities/AccountSummary.vue:41
+#: src/components/admin/identities/AliasEditForm.vue:21
+#: src/components/admin/identities/AliasSummary.vue:16
+#: src/components/admin/identities/form_steps/AccountGeneralForm.vue:46
+#: src/components/admin/identities/form_steps/AliasGeneralForm.vue:53
+#: src/components/admin/identities/IdentityList.vue:235
+#: src/components/admin/identities/IdentityList.vue:274
+msgid "Enabled"
+msgstr "Enabled"
+
+#: src/components/account/AutoReplyForm.vue:12
+#: src/components/quarantine/QuarantineList.vue:49
+#: src/components/quarantine/QuarantineList.vue:235
+#: src/components/webmail/ComposeEmailForm.vue:158
+msgid "Subject"
+msgstr "Subject"
+
+#: src/components/account/AutoReplyForm.vue:20
+msgid "Content"
+msgstr "Content"
+
+#: src/components/account/AutoReplyForm.vue:24
+msgid ""
+"The content of your answer. You can use the following variables, which will "
+"be automatically replaced by the appropriate value: %(name)s, %(fromdate)s, "
+"%(untildate)s"
+msgstr ""
+"The content of your answer. You can use the following variables, which will "
+"be automatically replaced by the appropriate value: %(name)s, %(fromdate)s, "
+"%(untildate)s"
+
+#: src/components/account/AutoReplyForm.vue:36
+#: src/components/admin/logs/MessageList.vue:50
+#: src/components/calendars/EventForm.vue:24
+#: src/components/quarantine/QuarantineList.vue:234
+#: src/components/tools/TimeSerieChart.vue:19
+#: src/components/webmail/ComposeEmailForm.vue:48
+msgid "From"
+msgstr "From"
+
+#: src/components/account/AutoReplyForm.vue:39
+msgid "Activate your auto reply from this date"
+msgstr "Activate your auto reply from this date"
+
+#: src/components/account/AutoReplyForm.vue:47
+msgid "Until"
+msgstr "Until"
+
+#: src/components/account/AutoReplyForm.vue:50
+msgid "Activate your auto reply until this date"
+msgstr "Activate your auto reply until this date"
+
+#: src/components/account/AutoReplyForm.vue:58
+msgid "Update auto-reply"
+msgstr "Update auto-reply"
+
+#: src/components/account/AutoReplyForm.vue:95
+msgid "Auto-reply message updated"
+msgstr "Auto-reply message updated"
+
+#: src/components/account/BackupCodeAuthForm.vue:6
+msgid "Backup codes"
+msgstr "Backup codes"
+
+#: src/components/account/BackupCodeAuthForm.vue:13
+msgid ""
+"You already have generated backup codes for this account. If you don't "
+"remember them or have used them all, you can generate new ones."
+msgstr ""
+"You already have generated backup codes for this account. If you don't "
+"remember them or have used them all, you can generate new ones."
+
+#: src/components/account/BackupCodeAuthForm.vue:19
+#: src/components/account/ProfileForm.vue:69
+#: src/components/account/TotpAuthForm.vue:84
+#: src/components/admin/identities/form_steps/AccountPasswordSubForm.vue:54
+msgid "Password"
+msgstr "Password"
+
+#: src/components/account/BackupCodeAuthForm.vue:35
+msgid "Reset recovery codes"
+msgstr "Reset recovery codes"
+
+#: src/components/account/BackupCodeAuthForm.vue:43
+msgid "No two-factor authentificator is yet set for your account."
+msgstr "No two-factor authentificator is yet set for your account."
+
+#: src/components/account/FidoAuthForm.vue:6
+msgid "WebAuthn"
+msgstr "WebAuthn"
+
+#: src/components/account/FidoAuthForm.vue:14
+msgid ""
+"You don't have any WebAuthN device registered as a second authentication "
+"method."
+msgstr ""
+"You don't have any WebAuthN device registered as a second authentication "
+"method."
+
+#: src/components/account/FidoAuthForm.vue:21
+msgid "Registered Webauthn devices"
+msgstr "Registered Webauthn devices"
+
+#: src/components/account/FidoAuthForm.vue:32
+msgid "Never"
+msgstr "Never"
+
+#: src/components/account/FidoAuthForm.vue:55
+msgid "Enter a name to register a new webauthn device."
+msgstr "Enter a name to register a new webauthn device."
+
+#: src/components/account/FidoAuthForm.vue:61
+msgid "New device name"
+msgstr "New device name"
+
+#: src/components/account/FidoAuthForm.vue:69
+msgid "Setup device"
+msgstr "Setup device"
+
+#: src/components/account/FidoAuthForm.vue:76
+msgid "Your browser does not seem compatible with WebAuthN"
+msgstr "Your browser does not seem compatible with WebAuthN"
+
+#: src/components/account/FidoAuthForm.vue:92
+msgid "name"
+msgstr "name"
+
+#: src/components/account/FidoAuthForm.vue:130
+#: src/components/account/FilterForm.vue:7
+#: src/components/account/FilterSetForm.vue:9
+#: src/components/admin/domains/DNSDetail.vue:188
+#: src/components/admin/domains/DomainAdminList.vue:112
+#: src/components/admin/domains/DomainAliasForm.vue:8
+#: src/components/admin/domains/DomainCreationForm.vue:164
+#: src/components/admin/domains/DomainList.vue:211
+#: src/components/admin/domains/form_steps/DomainOptionsForm.vue:11
+#: src/components/admin/identities/IdentityList.vue:265
+#: src/components/admin/imap_migration/ProviderCreationForm.vue:53
+#: src/components/admin/imap_migration/ProvidersList.vue:114
+#: src/components/calendars/CalendarForm.vue:15
+#: src/components/contacts/CategoryForm.vue:10
+#: src/components/webmail/MailboxForm.vue:7
+#: src/views/account/FiltersView.vue:149
+#: src/views/admin/InformationView.vue:145
+msgid "Name"
+msgstr "Name"
+
+#: src/components/account/FidoAuthForm.vue:131
+msgid "Added On"
+msgstr "Added On"
+
+#: src/components/account/FidoAuthForm.vue:132
+msgid "Last Used"
+msgstr "Last Used"
+
+#: src/components/account/FidoAuthForm.vue:133
+msgid "Use count"
+msgstr "Use count"
+
+#: src/components/account/FidoAuthForm.vue:134
+#: src/components/account/FilterForm.vue:76
+#: src/components/admin/alarms/AlarmList.vue:33
+#: src/components/admin/alarms/AlarmList.vue:108
+#: src/components/admin/domains/DomainList.vue:40
+#: src/components/admin/domains/DomainList.vue:235
+#: src/components/admin/identities/IdentityList.vue:47
+#: src/components/admin/identities/IdentityList.vue:345
+#: src/components/admin/imap_migration/MigrationsList.vue:34
+#: src/components/admin/imap_migration/MigrationsList.vue:90
+#: src/components/admin/imap_migration/ProvidersList.vue:36
+#: src/components/admin/imap_migration/ProvidersList.vue:120
+#: src/components/contacts/ContactList.vue:222
+msgid "Actions"
+msgstr "Actions"
+
+#: src/components/account/FidoAuthForm.vue:171
+msgid "Failed to register the webAuthN device"
+msgstr "Failed to register the webAuthN device"
+
+#: src/components/account/FidoAuthForm.vue:185
+msgid "Do you really want to delete this WebAuthn device?"
+msgstr "Do you really want to delete this WebAuthn device?"
+
+#: src/components/account/FidoAuthForm.vue:188
+#: src/components/admin/domains/DNSDetail.vue:244
+#: src/components/admin/domains/DNSDetail.vue:264
+#: src/components/admin/domains/DomainList.vue:306
+#: src/components/admin/identities/IdentityList.vue:487
+#: src/components/admin/identities/IdentityList.vue:527
+#: src/components/tools/CreationForm.vue:142
+#: src/layouts/webmail/WebmailLayout.vue:206
+msgid "No"
+msgstr "No"
+
+#: src/components/account/FidoAuthForm.vue:189
+#: src/components/admin/domains/DNSDetail.vue:245
+#: src/components/admin/domains/DNSDetail.vue:265
+#: src/components/admin/domains/DomainList.vue:307
+#: src/components/admin/identities/IdentityList.vue:486
+#: src/components/admin/identities/IdentityList.vue:526
+#: src/components/tools/CreationForm.vue:141
+#: src/layouts/webmail/WebmailLayout.vue:205
+msgid "Yes"
+msgstr "Yes"
+
+#: src/components/account/FidoAuthForm.vue:206
+msgid "Edition"
+msgstr "Edition"
+
+#: src/components/account/FidoAuthForm.vue:207
+msgid "Edit your device"
+msgstr "Edit your device"
+
+#: src/components/account/FidoAuthForm.vue:211
+#: src/components/admin/domains/DomainEditForm.vue:170
+#: src/components/admin/identities/AccountEditForm.vue:221
+#: src/components/admin/identities/AliasEditForm.vue:78
+#: src/components/admin/imap_migration/ProviderForm.vue:66
+#: src/components/calendars/EventForm.vue:95
+#: src/views/account/FiltersView.vue:100
+msgid "Save"
+msgstr "Save"
+
+#: src/components/account/FilterForm.vue:14
+msgid "Conditions"
+msgstr "Conditions"
+
+#: src/components/account/FilterForm.vue:16
+msgid "All of the following"
+msgstr "All of the following"
+
+#: src/components/account/FilterForm.vue:17
+msgid "Any of the following"
+msgstr "Any of the following"
+
+#: src/components/account/FilterForm.vue:18
+msgid "All messages"
+msgstr "All messages"
+
+#: src/components/account/FilterForm.vue:28
+msgid "Choose a header"
+msgstr "Choose a header"
+
+#: src/components/account/FilterForm.vue:38
+msgid "Choose an operator"
+msgstr "Choose an operator"
+
+#: src/components/account/FilterForm.vue:49
+msgid "Value"
+msgstr "Value"
+
+#: src/components/account/FilterForm.vue:60
+msgid "Add condition"
+msgstr "Add condition"
+
+#: src/components/account/FilterForm.vue:68
+msgid "Remove condition"
+msgstr "Remove condition"
+
+#: src/components/account/FilterForm.vue:84
+msgid "Choose an action"
+msgstr "Choose an action"
+
+#: src/components/account/FilterForm.vue:127
+msgid "Add action"
+msgstr "Add action"
+
+#: src/components/account/FilterForm.vue:135
+msgid "Remove action"
+msgstr "Remove action"
+
+#: src/components/account/FilterForm.vue:192
+msgid "Edit filter"
+msgstr "Edit filter"
+
+#: src/components/account/FilterForm.vue:192
+msgid "New filter"
+msgstr "New filter"
+
+#: src/components/account/FilterForm.vue:195
+#: src/components/account/ForwardForm.vue:25
+#: src/components/admin/domains/DomainAliasForm.vue:75
+#: src/components/calendars/CalendarForm.vue:81
+#: src/components/contacts/CategoryForm.vue:60
+#: src/components/contacts/ContactCategoriesForm.vue:24
+#: src/components/contacts/ContactForm.vue:185
+#: src/components/webmail/MailboxForm.vue:79
+msgid "Update"
+msgstr "Update"
+
+#: src/components/account/FilterForm.vue:195
+#: src/components/account/FilterSetForm.vue:30
+#: src/components/calendars/CalendarForm.vue:83
+#: src/components/webmail/MailboxForm.vue:79
+msgid "Create"
+msgstr "Create"
+
+#: src/components/account/FilterForm.vue:300
+msgid "Filter added"
+msgstr "Filter added"
+
+#: src/components/account/FilterForm.vue:303
+msgid "Filter updated"
+msgstr "Filter updated"
+
+#: src/components/account/FilterSetForm.vue:3
+msgid "Create a new filter set"
+msgstr "Create a new filter set"
+
+#: src/components/account/FilterSetForm.vue:14
+#: src/views/account/FiltersView.vue:150
+msgid "Active"
+msgstr "Active"
+
+#: src/components/account/FilterSetForm.vue:66
+msgid "Filter set created"
+msgstr "Filter set created"
+
+#: src/components/account/ForwardForm.vue:4
+msgid "Recipient(s)"
+msgstr "Recipient(s)"
+
+#: src/components/account/ForwardForm.vue:8
+msgid "Indicate one or more recipients separated by a comma (,)"
+msgstr "Indicate one or more recipients separated by a comma (,)"
+
+#: src/components/account/ForwardForm.vue:16
+msgid "Keep local copies"
+msgstr "Keep local copies"
+
+#: src/components/account/ForwardForm.vue:18
+msgid "Forward messages and store copies into your local mailbox"
+msgstr "Forward messages and store copies into your local mailbox"
+
+#: src/components/account/ForwardForm.vue:49
+msgid "Forward updated"
+msgstr "Forward updated"
+
+#: src/components/account/ProfileForm.vue:5
+msgid "General settings"
+msgstr "General settings"
+
+#: src/components/account/ProfileForm.vue:9
+#: src/components/admin/identities/AccountCreationForm.vue:101
+#: src/components/admin/identities/form_steps/AccountGeneralForm.vue:18
+#: src/components/admin/identities/IdentityList.vue:267
+#: src/components/contacts/ContactForm.vue:12
+#: src/components/contacts/ContactList.vue:219
+msgid "First name"
+msgstr "First name"
+
+#: src/components/account/ProfileForm.vue:15
+#: src/components/admin/identities/AccountCreationForm.vue:104
+#: src/components/admin/identities/form_steps/AccountGeneralForm.vue:25
+#: src/components/contacts/ContactForm.vue:22
+#: src/components/contacts/ContactList.vue:220
+msgid "Last name"
+msgstr "Last name"
+
+#: src/components/account/ProfileForm.vue:22
+#: src/components/admin/identities/AccountSummary.vue:27
+#: src/components/admin/identities/form_steps/AccountProfileForm.vue:3
+#: src/components/admin/identities/IdentityList.vue:281
+msgid "Language"
+msgstr "Language"
+
+#: src/components/account/ProfileForm.vue:24
+msgid "Feel free to improve the translations"
+msgstr "Feel free to improve the translations"
+
+#: src/components/account/ProfileForm.vue:30
+msgid "or suggest a new language"
+msgstr "or suggest a new language"
+
+#: src/components/account/ProfileForm.vue:34
+msgid "there"
+msgstr "there"
+
+#: src/components/account/ProfileForm.vue:47
+#: src/components/account/ProfileForm.vue:50
+#: src/components/admin/identities/AccountSummary.vue:37
+#: src/components/admin/identities/form_steps/AccountProfileForm.vue:13
+#: src/components/admin/identities/IdentityList.vue:283
+#: src/components/contacts/PhoneNumberField.vue:5
+msgid "Phone number"
+msgstr "Phone number"
+
+#: src/components/account/ProfileForm.vue:54
+#: src/components/admin/identities/AccountSummary.vue:33
+#: src/components/admin/identities/form_steps/AccountProfileForm.vue:19
+#: src/components/admin/identities/IdentityList.vue:287
+msgid "Secondary email"
+msgstr "Secondary email"
+
+#: src/components/account/ProfileForm.vue:62
+msgid "Update settings"
+msgstr "Update settings"
+
+#: src/components/account/ProfileForm.vue:79
+msgid "Update Password"
+msgstr "Update Password"
+
+#: src/components/account/ProfileForm.vue:130
+msgid "Profile updated"
+msgstr "Profile updated"
+
+#: src/components/account/ProfileForm.vue:132
+msgid "Language does no exist"
+msgstr "Language does no exist"
+
+#: src/components/account/ProfileForm.vue:149
+msgid "Password updated"
+msgstr "Password updated"
+
+#: src/components/account/RecoveryCodesResetDialog.vue:4
+msgid "New recovery codes"
+msgstr "New recovery codes"
+
+#: src/components/account/RecoveryCodesResetDialog.vue:9
+#: src/components/account/TotpAuthForm.vue:61
+msgid ""
+"The following recovery codes can be used one time each to let you regain "
+"access to your account, in case you lose your phone for example. Make sure "
+"to save them in a safe place, otherwise you won't be able to access your "
+"account anymore."
+msgstr ""
+"The following recovery codes can be used one time each to let you regain "
+"access to your account, in case you lose your phone for example. Make sure "
+"to save them in a safe place, otherwise you won't be able to access your "
+"account anymore."
+
+#: src/components/account/RecoveryCodesResetDialog.vue:25
+#: src/components/admin/domains/DNSBLSummary.vue:27
+#: src/components/admin/domains/DomainAdminList.vue:74
+#: src/components/admin/domains/DomainAliasForm.vue:33
+#: src/components/admin/domains/DomainDKIMKey.vue:37
+#: src/components/admin/domains/DomainDNSConfig.vue:80
+#: src/components/calendars/CalendarAccessRulesForm.vue:77
+#: src/components/calendars/CalendarDetail.vue:37
+#: src/components/calendars/CalendarForm.vue:37
+#: src/components/calendars/EventForm.vue:93
+#: src/components/calendars/ImportEventsForm.vue:27
+#: src/components/contacts/AddressBookInfo.vue:27
+#: src/components/contacts/CategoryForm.vue:22
+#: src/components/contacts/ContactCategoriesForm.vue:21
+#: src/components/contacts/ContactForm.vue:148
+#: src/components/tools/ImportForm.vue:51
+#: src/components/webmail/AttachmentsDialog.vue:41
+#: src/components/webmail/EmailList.vue:226
+#: src/components/webmail/EmailSchedulingForm.vue:28
+#: src/components/webmail/MailboxForm.vue:29
+#: src/layouts/connected/ConnectedLayout.vue:19
+#: src/views/webmail/EmailView.vue:158
+msgid "Close"
+msgstr "Close"
+
+#: src/components/account/TotpAuthForm.vue:6
+msgid "One-time passwords"
+msgstr "One-time passwords"
+
+#: src/components/account/TotpAuthForm.vue:24
+msgid "Click here to copy the key"
+msgstr "Click here to copy the key"
+
+#: src/components/account/TotpAuthForm.vue:34
+msgid ""
+"Install a soft token authenticator like FreeOTP or Google Authenticator from"
+" your application repository and use that app to scan this QR code."
+msgstr ""
+"Install a soft token authenticator like FreeOTP or Google Authenticator from"
+" your application repository and use that app to scan this QR code."
+
+#: src/components/account/TotpAuthForm.vue:39
+msgid "Pin code"
+msgstr "Pin code"
+
+#: src/components/account/TotpAuthForm.vue:45
+msgid "Register"
+msgstr "Register"
+
+#: src/components/account/TotpAuthForm.vue:53
+msgid ""
+"Congratulations! Two-factor authentication using one-time passwords is now "
+"enabled for your account."
+msgstr ""
+"Congratulations! Two-factor authentication using one-time passwords is now "
+"enabled for your account."
+
+#: src/components/account/TotpAuthForm.vue:78
+msgid ""
+"Two-factor authentication using one-time passwords is enabled for your "
+"account."
+msgstr ""
+"Two-factor authentication using one-time passwords is enabled for your "
+"account."
+
+#: src/components/account/TotpAuthForm.vue:101
+msgid "Disable 2FA"
+msgstr "Disable 2FA"
+
+#: src/components/account/TotpAuthForm.vue:109
+msgid ""
+"Two-factor authentication (2FA) using one-time passwords is not yet "
+"activated for your account."
+msgstr ""
+"Two-factor authentication (2FA) using one-time passwords is not yet "
+"activated for your account."
+
+#: src/components/account/TotpAuthForm.vue:115
+msgid "Register authenticator"
+msgstr "Register authenticator"
+
+#: src/components/admin/alarms/AlarmList.vue:22
+#: src/components/admin/domains/DomainList.vue:24
+#: src/components/admin/identities/IdentityList.vue:24
+#: src/components/admin/imap_migration/ProvidersList.vue:20
+#: src/components/admin/logs/AuditTrailList.vue:17
+#: src/components/admin/logs/MessageList.vue:17
+#: src/components/contacts/ContactList.vue:22
+msgid "Search"
+msgstr "Search"
+
+#: src/components/admin/alarms/AlarmList.vue:45
+msgid "Opened"
+msgstr "Opened"
+
+#: src/components/admin/alarms/AlarmList.vue:48
+msgid "Closed"
+msgstr "Closed"
+
+#: src/components/admin/alarms/AlarmList.vue:102
+msgid "Triggered"
+msgstr "Triggered"
+
+#: src/components/admin/alarms/AlarmList.vue:103
+#: src/components/admin/logs/MessageList.vue:48
+msgid "Status"
+msgstr "Status"
+
+#: src/components/admin/alarms/AlarmList.vue:104
+#: src/components/admin/domains/form_steps/DomainGeneralForm.vue:61
+#: src/components/admin/identities/form_steps/AliasGeneralForm.vue:21
+#: src/views/admin/domains/DomainsView.vue:23
+#: src/views/admin/domains/DomainView.vue:6
+msgid "Domain"
+msgstr "Domain"
+
+#: src/components/admin/alarms/AlarmList.vue:105
+#: src/components/admin/identities/AccountCreationForm.vue:122
+#: src/components/admin/identities/AccountCreationForm.vue:176
+#: src/components/admin/identities/AccountEditForm.vue:98
+msgid "Mailbox"
+msgstr "Mailbox"
+
+#: src/components/admin/alarms/AlarmList.vue:106
+#: src/components/admin/logs/AuditTrailList.vue:54
+msgid "Message"
+msgstr "Message"
+
+#: src/components/admin/alarms/AlarmList.vue:125
+#: src/components/admin/alarms/AlarmList.vue:142
+#: src/components/admin/domains/DomainAliasForm.vue:41
+#: src/components/admin/domains/DomainList.vue:362
+#: src/components/admin/identities/IdentityList.vue:442
+#: src/components/admin/identities/IdentityList.vue:454
+#: src/components/admin/identities/IdentityList.vue:467
+#: src/components/admin/imap_migration/MigrationsList.vue:130
+#: src/components/admin/imap_migration/ProvidersList.vue:146
+#: src/components/calendars/EventForm.vue:90
+#: src/components/contacts/CategoryForm.vue:18
+#: src/components/contacts/ContactList.vue:237
+#: src/components/webmail/EmailList.vue:286
+#: src/views/account/FiltersView.vue:351
+#: src/views/calendars/CalendarView.vue:209
+msgid "Delete"
+msgstr "Delete"
+
+#: src/components/admin/alarms/AlarmList.vue:132
+msgid "Reload"
+msgstr "Reload"
+
+#: src/components/admin/alarms/AlarmList.vue:149
+msgid "Close alarm"
+msgstr "Close alarm"
+
+#: src/components/admin/alarms/AlarmList.vue:156
+msgid "Reopen alarm"
+msgstr "Reopen alarm"
+
+#: src/components/admin/alarms/AlarmList.vue:189
+msgid "Alarm deleted"
+msgstr "Alarm deleted"
+
+#: src/components/admin/alarms/AlarmList.vue:196
+msgid "Alarms deleted"
+msgstr "Alarms deleted"
+
+#: src/components/admin/alarms/AlarmList.vue:204
+msgid "Alarm closed"
+msgstr "Alarm closed"
+
+#: src/components/admin/alarms/AlarmList.vue:212
+msgid "Alarm re-opened"
+msgstr "Alarm re-opened"
+
+#: src/components/admin/dashboard/GlobalStatisticsWidget.vue:2
+#: src/layouts/admin/AdminLayout.vue:74
+#: src/views/admin/domains/DomainView.vue:25
+#: src/views/admin/monitoring/StatisticsView.vue:3
+msgid "Statistics"
+msgstr "Statistics"
+
+#: src/components/admin/dashboard/GlobalStatisticsWidget.vue:7
+msgid "Domain count"
+msgstr "Domain count"
+
+#: src/components/admin/dashboard/GlobalStatisticsWidget.vue:11
+msgid "Domain alias count"
+msgstr "Domain alias count"
+
+#: src/components/admin/dashboard/GlobalStatisticsWidget.vue:15
+msgid "Account count"
+msgstr "Account count"
+
+#: src/components/admin/dashboard/GlobalStatisticsWidget.vue:19
+msgid "Alias count"
+msgstr "Alias count"
+
+#: src/components/admin/dashboard/NewsFeedWidget.vue:2
+msgid "Latest news"
+msgstr "Latest news"
+
+#: src/components/admin/dashboard/NewsFeedWidget.vue:21
+msgid "Visit the official weblog for more information"
+msgstr "Visit the official weblog for more information"
+
+#: src/components/admin/dmarc/DmarcAligmentChart.vue:5
+msgid "Alignment"
+msgstr "Alignment"
+
+#: src/components/admin/dmarc/DmarcAligmentChart.vue:45
+msgid "Detail"
+msgstr "Detail"
+
+#: src/components/admin/dmarc/DmarcAligmentChart.vue:48
+msgid "Trusted sources"
+msgstr "Trusted sources"
+
+#: src/components/admin/dmarc/DmarcAligmentChart.vue:54
+msgid "Partially trusted sources / Forwarders"
+msgstr "Partially trusted sources / Forwarders"
+
+#: src/components/admin/dmarc/DmarcAligmentChart.vue:61
+msgid "Forwarders with ARC"
+msgstr "Forwarders with ARC"
+
+#: src/components/admin/dmarc/DmarcAligmentChart.vue:68
+msgid "Unknown sources / Threats"
+msgstr "Unknown sources / Threats"
+
+#: src/components/admin/dmarc/DmarcAligmentChart.vue:89
+msgid "DMARC support does not seem to be enabled for this domain."
+msgstr "DMARC support does not seem to be enabled for this domain."
+
+#: src/components/admin/dmarc/DmarcAligmentChart.vue:94
+msgid ""
+"If you configured it recently, please wait for the first report to be "
+"received and processed."
+msgstr ""
+"If you configured it recently, please wait for the first report to be "
+"received and processed."
+
+#: src/components/admin/dmarc/DmarcAligmentChart.vue:127
+#: src/components/admin/dmarc/DmarcAligmentChart.vue:143
+msgid "Fully aligned"
+msgstr "Fully aligned"
+
+#: src/components/admin/dmarc/DmarcAligmentChart.vue:128
+#: src/components/admin/dmarc/DmarcAligmentChart.vue:148
+msgid "Partially aligned"
+msgstr "Partially aligned"
+
+#: src/components/admin/dmarc/DmarcAligmentChart.vue:129
+#: src/components/admin/dmarc/DmarcAligmentChart.vue:151
+msgid "Forwarded"
+msgstr "Forwarded"
+
+#: src/components/admin/dmarc/DmarcAligmentChart.vue:130
+#: src/components/admin/dmarc/DmarcAligmentChart.vue:152
+msgid "Failed"
+msgstr "Failed"
+
+#: src/components/admin/dmarc/DmarcAligmentChart.vue:140
+#: src/components/admin/dmarc/DmarcSourceTable.vue:12
+msgid "Total"
+msgstr "Total"
+
+#: src/components/admin/domains/DNSBLSummary.vue:5
+msgid "DNSBL summary for "
+msgstr "DNSBL summary for "
+
+#: src/components/admin/domains/DNSBLSummary.vue:10
+msgid ""
+"IP address %{ address } is currently listed by the following DNSBL "
+"providers:"
+msgstr ""
+"IP address %{ address } is currently listed by the following DNSBL "
+"providers:"
+
+#: src/components/admin/domains/DNSDetail.vue:8
+msgid "DNS configuration help"
+msgstr "DNS configuration help"
+
+#: src/components/admin/domains/DNSDetail.vue:20
+#: src/components/admin/domains/DNSDetail.vue:51
+#: src/components/admin/domains/DNSStatusChip.vue:21
+msgid "Pending"
+msgstr "Pending"
+
+#: src/components/admin/domains/DNSDetail.vue:46
+#: src/components/admin/domains/DomainDNSConfig.vue:71
+msgid "Auto configuration"
+msgstr "Auto configuration"
+
+#: src/components/admin/domains/DNSDetail.vue:61
+msgid "autoconfig record (Mozilla): %{ value }"
+msgstr "autoconfig record (Mozilla): %{ value }"
+
+#: src/components/admin/domains/DNSDetail.vue:67
+msgid "autoconfig record (Mozilla) not found"
+msgstr "autoconfig record (Mozilla) not found"
+
+#: src/components/admin/domains/DNSDetail.vue:73
+msgid "autodiscover record (Microsoft): %{ value }"
+msgstr "autodiscover record (Microsoft): %{ value }"
+
+#: src/components/admin/domains/DNSDetail.vue:79
+msgid "autodiscover record (Microsoft) not found"
+msgstr "autodiscover record (Microsoft) not found"
+
+#: src/components/admin/domains/DNSDetail.vue:83
+msgid "Authentication"
+msgstr "Authentication"
+
+#: src/components/admin/domains/DNSDetail.vue:87
+msgid "SPF record found"
+msgstr "SPF record found"
+
+#: src/components/admin/domains/DNSDetail.vue:90
+msgid "SPF record not found"
+msgstr "SPF record not found"
+
+#: src/components/admin/domains/DNSDetail.vue:95
+msgid "DKIM record found"
+msgstr "DKIM record found"
+
+#: src/components/admin/domains/DNSDetail.vue:98
+msgid "DKIM record not found"
+msgstr "DKIM record not found"
+
+#: src/components/admin/domains/DNSDetail.vue:103
+msgid "DMARC record found"
+msgstr "DMARC record found"
+
+#: src/components/admin/domains/DNSDetail.vue:106
+msgid "DMARC record not found"
+msgstr "DMARC record not found"
+
+#: src/components/admin/domains/DNSDetail.vue:114
+msgid "DKIM key"
+msgstr "DKIM key"
+
+#: src/components/admin/domains/DNSDetail.vue:119
+msgid "Show key"
+msgstr "Show key"
+
+#: src/components/admin/domains/DNSDetail.vue:125
+msgid "Copy key to clipboard"
+msgstr "Copy key to clipboard"
+
+#: src/components/admin/domains/DNSDetail.vue:130
+msgid "Generate a new DKIM key"
+msgstr "Generate a new DKIM key"
+
+#: src/components/admin/domains/DNSDetail.vue:137
+msgid "Not generated"
+msgstr "Not generated"
+
+#: src/components/admin/domains/DNSDetail.vue:189
+#: src/components/admin/identities/AccountSenderAddresses.vue:73
+#: src/components/admin/identities/AliasCreationForm.vue:60
+#: src/components/admin/identities/AliasEditForm.vue:16
+#: src/components/admin/identities/IdentityList.vue:234
+#: src/components/admin/imap_migration/ProviderCreationForm.vue:54
+#: src/components/admin/imap_migration/ProvidersList.vue:115
+#: src/components/contacts/ContactForm.vue:85
+#: src/components/contacts/EmailField.vue:5
+msgid "Address"
+msgstr "Address"
+
+#: src/components/admin/domains/DNSDetail.vue:190
+msgid "Updated"
+msgstr "Updated"
+
+#: src/components/admin/domains/DNSDetail.vue:203
+msgid "DKIM key copied to clipboard"
+msgstr "DKIM key copied to clipboard"
+
+#: src/components/admin/domains/DNSDetail.vue:216
+msgid ""
+"A new key will be generated soon. Refresh the page in a moment to see it."
+msgstr ""
+"A new key will be generated soon. Refresh the page in a moment to see it."
+
+#: src/components/admin/domains/DNSDetail.vue:238
+msgid "warning"
+msgstr "warning"
+
+#: src/components/admin/domains/DNSDetail.vue:239
+msgid ""
+"DKIM key does not seem to be generated yet or has failed. Do you want to "
+"requeue the job?"
+msgstr ""
+"DKIM key does not seem to be generated yet or has failed. Do you want to "
+"requeue the job?"
+
+#: src/components/admin/domains/DNSDetail.vue:259
+msgid ""
+"DKIM keys already exist for this domain. Do you want to overwrite them?"
+msgstr ""
+"DKIM keys already exist for this domain. Do you want to overwrite them?"
+
+#: src/components/admin/domains/DNSStatusChip.vue:18
+msgid "Disabled"
+msgstr "Disabled"
+
+#: src/components/admin/domains/DNSStatusChip.vue:24
+msgid "Problem"
+msgstr "Problem"
+
+#: src/components/admin/domains/DNSStatusChip.vue:27
+msgid "Valid"
+msgstr "Valid"
+
+#: src/components/admin/domains/DNSStatusChip.vue:29
+msgid "Unknown"
+msgstr "Unknown"
+
+#: src/components/admin/domains/DomainAdminList.vue:6
+msgid "Administrators of"
+msgstr "Administrators of"
+
+#: src/components/admin/domains/DomainAdminList.vue:9
+#: src/components/admin/domains/DomainList.vue:352
+msgid "Administrators"
+msgstr "Administrators"
+
+#: src/components/admin/domains/DomainAdminList.vue:21
+msgid "Select an account"
+msgstr "Select an account"
+
+#: src/components/admin/domains/DomainAdminList.vue:50
+msgid "Remove this administrator"
+msgstr "Remove this administrator"
+
+#: src/components/admin/domains/DomainAdminList.vue:69
+msgid "Add administrator"
+msgstr "Add administrator"
+
+#: src/components/admin/domains/DomainAdminList.vue:111
+#: src/components/admin/identities/AccountCreationForm.vue:99
+#: src/components/admin/identities/form_steps/AccountGeneralForm.vue:3
+msgid "Username"
+msgstr "Username"
+
+#: src/components/admin/domains/DomainAdminList.vue:161
+msgid "Administrator added"
+msgstr "Administrator added"
+
+#: src/components/admin/domains/DomainAdminList.vue:170
+msgid "Administrator removed"
+msgstr "Administrator removed"
+
+#: src/components/admin/domains/DomainAliasForm.vue:15
+msgid "Choose a domain"
+msgstr "Choose a domain"
+
+#: src/components/admin/domains/DomainAliasForm.vue:75
+#: src/components/contacts/CategoryForm.vue:60
+#: src/components/contacts/ContactForm.vue:185
+#: src/components/contacts/ContactList.vue:31
+msgid "Add"
+msgstr "Add"
+
+#: src/components/admin/domains/DomainAliasForm.vue:80
+msgid "Edit domain alias"
+msgstr "Edit domain alias"
+
+#: src/components/admin/domains/DomainAliasForm.vue:81
+msgid "Add a new domain alias"
+msgstr "Add a new domain alias"
+
+#: src/components/admin/domains/DomainAliasForm.vue:88
+msgid "Domain alias deleted"
+msgstr "Domain alias deleted"
+
+#: src/components/admin/domains/DomainAliasForm.vue:118
+msgid "Domain alias created"
+msgstr "Domain alias created"
+
+#: src/components/admin/domains/DomainAliasForm.vue:122
+msgid "Domain alias updated"
+msgstr "Domain alias updated"
+
+#: src/components/admin/domains/DomainCreationForm.vue:4
+msgid "New domain"
+msgstr "New domain"
+
+#: src/components/admin/domains/DomainCreationForm.vue:54
+#: src/components/admin/identities/AccountCreationForm.vue:43
+#: src/components/admin/identities/form_steps/AccountPasswordSubForm.vue:44
+msgid "Copy to clipboard"
+msgstr "Copy to clipboard"
+
+#: src/components/admin/domains/DomainCreationForm.vue:143
+#: src/components/admin/domains/DomainCreationForm.vue:149
+#: src/components/admin/domains/DomainCreationForm.vue:162
+#: src/components/admin/domains/DomainEditForm.vue:9
+#: src/components/admin/identities/AliasCreationForm.vue:53
+#: src/components/admin/identities/AliasCreationForm.vue:93
+#: src/components/admin/identities/AliasEditForm.vue:9
+#: src/components/admin/imap_migration/ProviderCreationForm.vue:51
+#: src/components/admin/imap_migration/ProviderCreationForm.vue:71
+#: src/components/admin/imap_migration/ProviderForm.vue:7
+#: src/views/admin/domains/DomainView.vue:22
+msgid "General"
+msgstr "General"
+
+#: src/components/admin/domains/DomainCreationForm.vue:144
+#: src/components/admin/domains/DomainCreationForm.vue:150
+#: src/components/admin/domains/DomainCreationForm.vue:174
+#: src/components/admin/domains/DomainEditForm.vue:36
+msgid "DNS"
+msgstr "DNS"
+
+#: src/components/admin/domains/DomainCreationForm.vue:145
+#: src/components/admin/domains/DomainCreationForm.vue:151
+#: src/components/admin/domains/DomainCreationForm.vue:189
+#: src/components/admin/domains/DomainEditForm.vue:73
+msgid "Limitations"
+msgstr "Limitations"
+
+#: src/components/admin/domains/DomainCreationForm.vue:146
+#: src/components/admin/domains/DomainCreationForm.vue:239
+msgid "Options"
+msgstr "Options"
+
+#: src/components/admin/domains/DomainCreationForm.vue:152
+#: src/components/admin/domains/DomainCreationForm.vue:215
+#: src/components/admin/domains/DomainEditForm.vue:113
+#: src/components/admin/domains/RelayDomainSummary.vue:4
+msgid "Transport"
+msgstr "Transport"
+
+#: src/components/admin/domains/DomainCreationForm.vue:165
+#: src/components/admin/domains/form_steps/DomainGeneralForm.vue:13
+msgid "Type"
+msgstr "Type"
+
+#: src/components/admin/domains/DomainCreationForm.vue:177
+#: src/components/admin/domains/form_steps/DomainDNSForm.vue:6
+msgid "Enable DNS checks"
+msgstr "Enable DNS checks"
+
+#: src/components/admin/domains/DomainCreationForm.vue:182
+#: src/components/admin/domains/form_steps/DomainDNSForm.vue:11
+msgid "Enable DKIM signing"
+msgstr "Enable DKIM signing"
+
+#: src/components/admin/domains/DomainCreationForm.vue:191
+#: src/components/admin/domains/DomainList.vue:221
+#: src/components/admin/domains/DomainSummary.vue:16
+#: src/components/admin/domains/form_steps/DomainLimitationsForm.vue:5
+#: src/components/admin/identities/AccountCreationForm.vue:129
+#: src/components/admin/identities/AccountSummary.vue:52
+#: src/components/admin/identities/form_steps/AccountMailboxForm.vue:3
+#: src/components/admin/identities/IdentityList.vue:276
+msgid "Quota"
+msgstr "Quota"
+
+#: src/components/admin/domains/DomainCreationForm.vue:193
+#: src/components/admin/domains/DomainSummary.vue:23
+#: src/components/admin/domains/form_steps/DomainLimitationsForm.vue:19
+msgid "Default mailbox quota"
+msgstr "Default mailbox quota"
+
+#: src/components/admin/domains/DomainCreationForm.vue:197
+#: src/components/admin/domains/form_steps/DomainLimitationsForm.vue:32
+#: src/components/admin/identities/AccountCreationForm.vue:135
+msgid "Message sending limit"
+msgstr "Message sending limit"
+
+#: src/components/admin/domains/DomainCreationForm.vue:205
+#: src/components/admin/domains/form_steps/DomainDNSForm.vue:16
+msgid "DKIM key selector"
+msgstr "DKIM key selector"
+
+#: src/components/admin/domains/DomainCreationForm.vue:209
+#: src/components/admin/domains/form_steps/DomainDNSForm.vue:22
+msgid "DKIM key length"
+msgstr "DKIM key length"
+
+#: src/components/admin/domains/DomainCreationForm.vue:218
+#: src/components/admin/domains/form_steps/DomainTransportForm.vue:3
+#: src/components/admin/domains/RelayDomainSummary.vue:8
+msgid "Service"
+msgstr "Service"
+
+#: src/components/admin/domains/DomainCreationForm.vue:242
+#: src/components/admin/domains/form_steps/DomainOptionsForm.vue:5
+msgid "Create a domain administrator"
+msgstr "Create a domain administrator"
+
+#: src/components/admin/domains/DomainCreationForm.vue:251
+msgid "Administrator name"
+msgstr "Administrator name"
+
+#: src/components/admin/domains/DomainCreationForm.vue:256
+#: src/components/admin/identities/AccountCreationForm.vue:107
+#: src/components/admin/identities/form_steps/AccountPasswordSubForm.vue:21
+msgid "Random password"
+msgstr "Random password"
+
+#: src/components/admin/domains/DomainCreationForm.vue:261
+msgid "With mailbox"
+msgstr "With mailbox"
+
+#: src/components/admin/domains/DomainCreationForm.vue:266
+#: src/components/admin/domains/form_steps/DomainOptionsForm.vue:33
+msgid "Create aliases"
+msgstr "Create aliases"
+
+#: src/components/admin/domains/DomainCreationForm.vue:284
+#: src/components/admin/identities/AccountCreationForm.vue:214
+#: src/components/admin/identities/form_steps/AccountPasswordSubForm.vue:104
+msgid "Password copied to clipboard"
+msgstr "Password copied to clipboard"
+
+#: src/components/admin/domains/DomainCreationForm.vue:318
+msgid "Domain created"
+msgstr "Domain created"
+
+#: src/components/admin/domains/DomainDKIMKey.vue:5
+msgid "DKIM public key for"
+msgstr "DKIM public key for"
+
+#: src/components/admin/domains/DomainDKIMKey.vue:9
+msgid "Raw format. Click to copy"
+msgstr "Raw format. Click to copy"
+
+#: src/components/admin/domains/DomainDKIMKey.vue:23
+msgid "Bind/named format. Click to copy"
+msgstr "Bind/named format. Click to copy"
+
+#: src/components/admin/domains/DomainDNSConfig.vue:4
+msgid "DNS configuration for "
+msgstr "DNS configuration for "
+
+#: src/components/admin/domains/DomainDNSConfig.vue:9
+msgid ""
+"Here is an example of DNS configuration (bind format). Replace values "
+"between [ ] by the appropriate ones."
+msgstr ""
+"Here is an example of DNS configuration (bind format). Replace values "
+"between [ ] by the appropriate ones."
+
+#: src/components/admin/domains/DomainDNSConfig.vue:23
+msgid "IP address of your Modoboa server"
+msgstr "IP address of your Modoboa server"
+
+#: src/components/admin/domains/DomainDNSConfig.vue:73
+#: src/components/admin/domains/DomainDNSConfig.vue:74
+msgid "hostname of your automx server"
+msgstr "hostname of your automx server"
+
+#: src/components/admin/domains/DomainEditForm.vue:16
+msgid "Name: "
+msgstr "Name: "
+
+#: src/components/admin/domains/DomainEditForm.vue:20
+msgid "Type: "
+msgstr "Type: "
+
+#: src/components/admin/domains/DomainEditForm.vue:43
+msgid "DNS checks"
+msgstr "DNS checks"
+
+#: src/components/admin/domains/DomainEditForm.vue:52
+msgid "DKIM signing"
+msgstr "DKIM signing"
+
+#: src/components/admin/domains/DomainEditForm.vue:81
+#: src/components/admin/identities/AccountEditForm.vue:110
+#: src/components/admin/identities/AccountEditForm.vue:116
+msgid "Quota: "
+msgstr "Quota: "
+
+#: src/components/admin/domains/DomainEditForm.vue:87
+msgid "Sending limit: "
+msgstr "Sending limit: "
+
+#: src/components/admin/domains/DomainEditForm.vue:93
+msgid "No sending limit"
+msgstr "No sending limit"
+
+#: src/components/admin/domains/DomainEditForm.vue:121
+msgid "Service: "
+msgstr "Service: "
+
+#: src/components/admin/domains/DomainEditForm.vue:150
+#: src/components/admin/identities/AccountEditForm.vue:172
+msgid "Resources"
+msgstr "Resources"
+
+#: src/components/admin/domains/DomainList.vue:67
+msgid "Relay"
+msgstr "Relay"
+
+#: src/components/admin/domains/DomainList.vue:107
+#: src/components/admin/domains/DomainList.vue:118
+#: src/components/admin/domains/DomainSummary.vue:18
+#: src/components/admin/domains/DomainSummary.vue:25
+#: src/components/admin/domains/DomainSummary.vue:56
+#: src/components/admin/identities/AccountSummary.vue:54
+#: src/components/admin/identities/IdentityList.vue:139
+#: src/components/admin/identities/IdentityList.vue:168
+#: src/components/tools/ResourcesView.vue:9
+msgid "Unlimited"
+msgstr "Unlimited"
+
+#: src/components/admin/domains/DomainList.vue:168
+msgid "Do not delete domain folder"
+msgstr "Do not delete domain folder"
+
+#: src/components/admin/domains/DomainList.vue:213
+#: src/components/admin/domains/DomainSummary.vue:64
+#: src/components/admin/identities/AccountAliases.vue:4
+#: src/components/admin/identities/AccountCreationForm.vue:146
+#: src/components/admin/identities/AccountCreationForm.vue:149
+#: src/components/admin/identities/AccountCreationForm.vue:180
+msgid "Aliases"
+msgstr "Aliases"
+
+#: src/components/admin/domains/DomainList.vue:215
+msgid "DNS status"
+msgstr "DNS status"
+
+#: src/components/admin/domains/DomainList.vue:219
+msgid "Sending limit"
+msgstr "Sending limit"
+
+#: src/components/admin/domains/DomainList.vue:301
+msgid "Do you really want to delete the domain %{ domain }?"
+msgstr "Do you really want to delete the domain %{ domain }?"
+
+#: src/components/admin/domains/DomainList.vue:318
+msgid "Domain deleted"
+msgstr "Domain deleted"
+
+#: src/components/admin/domains/DomainList.vue:357
+#: src/components/admin/identities/IdentityList.vue:437
+#: src/components/admin/identities/IdentityList.vue:449
+#: src/components/admin/imap_migration/ProvidersList.vue:152
+#: src/components/contacts/ContactList.vue:232
+#: src/views/account/FiltersView.vue:346
+#: src/views/calendars/CalendarView.vue:199
+msgid "Edit"
+msgstr "Edit"
+
+#: src/components/admin/domains/DomainList.vue:370
+#: src/layouts/admin/AdminLayout.vue:60
+msgid "Alarms"
+msgstr "Alarms"
+
+#: src/components/admin/domains/DomainPolicy.vue:5
+msgid "Content filter"
+msgstr "Content filter"
+
+#: src/components/admin/domains/DomainPolicy.vue:9
+msgid "Edit content filter settings"
+msgstr "Edit content filter settings"
+
+#: src/components/admin/domains/DomainPolicy.vue:17
+msgid "Spam filters"
+msgstr "Spam filters"
+
+#: src/components/admin/domains/DomainPolicy.vue:27
+#: src/components/admin/domains/DomainPolicy.vue:41
+#: src/components/admin/domains/DomainPolicy.vue:55
+#: src/components/admin/domains/DomainPolicy.vue:66
+#: src/components/admin/domains/DomainPolicy.vue:75
+#: src/components/admin/domains/DomainPolicy.vue:84
+msgid "Default value"
+msgstr "Default value"
+
+#: src/components/admin/domains/DomainPolicy.vue:31
+msgid "Virus filters"
+msgstr "Virus filters"
+
+#: src/components/admin/domains/DomainPolicy.vue:45
+msgid "Banned filters"
+msgstr "Banned filters"
+
+#: src/components/admin/domains/DomainPolicy.vue:60
+msgid "Spam classification threshold"
+msgstr "Spam classification threshold"
+
+#: src/components/admin/domains/DomainPolicy.vue:70
+msgid "Rejection threshold"
+msgstr "Rejection threshold"
+
+#: src/components/admin/domains/DomainPolicy.vue:79
+#: src/components/admin/domains/DomainPolicyForm.vue:34
+msgid "Spam marker"
+msgstr "Spam marker"
+
+#: src/components/admin/domains/DomainPolicyForm.vue:4
+msgid "Content filter settings"
+msgstr "Content filter settings"
+
+#: src/components/admin/domains/DomainPolicyForm.vue:11
+msgid "Disable virus checks"
+msgstr "Disable virus checks"
+
+#: src/components/admin/domains/DomainPolicyForm.vue:18
+msgid "Disable spam checks"
+msgstr "Disable spam checks"
+
+#: src/components/admin/domains/DomainPolicyForm.vue:26
+msgid "Disable banned checks"
+msgstr "Disable banned checks"
+
+#: src/components/admin/domains/DomainPolicyForm.vue:47
+#: src/components/tools/YesNoDefaultField.vue:5
+msgid "default"
+msgstr "default"
+
+#: src/components/admin/domains/DomainPolicyForm.vue:56
+msgid "Thresholds"
+msgstr "Thresholds"
+
+#: src/components/admin/domains/DomainPolicyForm.vue:69
+msgid "or more is spam"
+msgstr "or more is spam"
+
+#: src/components/admin/domains/DomainPolicyForm.vue:84
+msgid "or more throw spam message away"
+msgstr "or more throw spam message away"
+
+#: src/components/admin/domains/DomainPolicyForm.vue:96
+#: src/components/tools/ChooseColumnsForm.vue:19
+#: src/components/tools/TimeSerieChart.vue:22
+msgid "Apply"
+msgstr "Apply"
+
+#: src/components/admin/domains/DomainSummary.vue:4
+#: src/components/admin/identities/AccountSummary.vue:4
+#: src/components/admin/identities/AliasSummary.vue:4
+msgid "General information"
+msgstr "General information"
+
+#: src/components/admin/domains/DomainSummary.vue:8
+#: src/components/admin/identities/AccountSummary.vue:8
+#: src/components/admin/identities/AliasSummary.vue:8
+#: src/components/admin/identities/IdentityList.vue:249
+#: src/components/admin/identities/IdentityList.vue:303
+msgid "Creation date"
+msgstr "Creation date"
+
+#: src/components/admin/domains/DomainSummary.vue:12
+msgid "Last modification date"
+msgstr "Last modification date"
+
+#: src/components/admin/domains/DomainSummary.vue:20
+#: src/components/admin/identities/AccountSummary.vue:65
+msgid "MB"
+msgstr "MB"
+
+#: src/components/admin/domains/DomainSummary.vue:30
+#: src/components/admin/identities/AccountSummary.vue:76
+msgid "Daily sending limit"
+msgstr "Daily sending limit"
+
+#: src/components/admin/domains/DomainSummary.vue:38
+#: src/components/admin/identities/AccountSummary.vue:79
+#: src/components/admin/identities/IdentityList.vue:164
+msgid "Sending forbidden"
+msgstr "Sending forbidden"
+
+#: src/components/admin/domains/DomainSummary.vue:51
+#: src/components/admin/identities/AccountSummary.vue:94
+msgid "messages"
+msgstr "messages"
+
+#: src/components/admin/domains/DomainSummary.vue:60
+msgid "Mailboxes"
+msgstr "Mailboxes"
+
+#: src/components/admin/domains/form_steps/DomainGeneralForm.vue:5
+msgid "Domain name (ex: domain.tld)"
+msgstr "Domain name (ex: domain.tld)"
+
+#: src/components/admin/domains/form_steps/DomainGeneralForm.vue:22
+msgid "Control if this domain will be allowed to send and receive messages"
+msgstr "Control if this domain will be allowed to send and receive messages"
+
+#: src/components/admin/domains/form_steps/DomainGeneralForm.vue:66
+msgid "Relay domain"
+msgstr "Relay domain"
+
+#: src/components/admin/domains/form_steps/DomainLimitationsForm.vue:7
+msgid ""
+"Quota shared between mailboxes. Can be expressed in KB, MB (default) or GB. "
+"A value of 0 means no quota."
+msgstr ""
+"Quota shared between mailboxes. Can be expressed in KB, MB (default) or GB. "
+"A value of 0 means no quota."
+
+#: src/components/admin/domains/form_steps/DomainLimitationsForm.vue:21
+msgid ""
+"Default quota applied to mailboxes. Can be expressed in KB, MB (default) or "
+"GB. A value of 0 means no quota."
+msgstr ""
+"Default quota applied to mailboxes. Can be expressed in KB, MB (default) or "
+"GB. A value of 0 means no quota."
+
+#: src/components/admin/domains/form_steps/DomainLimitationsForm.vue:34
+msgid ""
+"Number of messages this domain can send per day. Leave empty for no limit."
+msgstr ""
+"Number of messages this domain can send per day. Leave empty for no limit."
+
+#: src/components/admin/domains/form_steps/DomainOptionsForm.vue:12
+msgid "Name of the administrator"
+msgstr "Name of the administrator"
+
+#: src/components/admin/domains/form_steps/DomainOptionsForm.vue:25
+msgid "With a mailbox"
+msgstr "With a mailbox"
+
+#: src/components/admin/domains/form_steps/DomainOptionsForm.vue:27
+msgid "Create a mailbox for the administrator."
+msgstr "Create a mailbox for the administrator."
+
+#: src/components/admin/domains/form_steps/DomainOptionsForm.vue:35
+msgid "Create standard aliases for the domain."
+msgstr "Create standard aliases for the domain."
+
+#: src/components/admin/identities/AccountCreationForm.vue:4
+#: src/components/admin/imap_migration/MigrationsList.vue:88
+msgid "New account"
+msgstr "New account"
+
+#: src/components/admin/identities/AccountCreationForm.vue:93
+#: src/components/admin/identities/AccountCreationForm.vue:94
+#: src/components/admin/identities/AccountCreationForm.vue:165
+#: src/components/admin/identities/AccountEditForm.vue:9
+#: src/components/admin/identities/AccountSummary.vue:23
+#: src/components/admin/identities/IdentityList.vue:275
+msgid "Role"
+msgstr "Role"
+
+#: src/components/admin/identities/AccountCreationForm.vue:97
+#: src/components/admin/identities/AccountCreationForm.vue:170
+msgid "Identification"
+msgstr "Identification"
+
+#: src/components/admin/identities/AccountCreationForm.vue:125
+msgid "Email"
+msgstr "Email"
+
+#: src/components/admin/identities/AccountCreationForm.vue:131
+msgid "Domain default value"
+msgstr "Domain default value"
+
+#: src/components/admin/identities/AccountCreationForm.vue:139
+#: src/components/admin/identities/form_steps/AccountMailboxForm.vue:40
+msgid "Send only account"
+msgstr "Send only account"
+
+#: src/components/admin/identities/AccountCreationForm.vue:281
+msgid "Account created"
+msgstr "Account created"
+
+#: src/components/admin/identities/AccountEditForm.vue:31
+#: src/components/calendars/CalendarAccessRulesForm.vue:42
+#: src/components/shared/TopMenu.vue:130
+#: src/views/admin/identities/AccountView.vue:4
+#: src/views/admin/identities/IdentitiesView.vue:23
+msgid "Account"
+msgstr "Account"
+
+#: src/components/admin/identities/AccountEditForm.vue:39
+msgid "Username:"
+msgstr "Username:"
+
+#: src/components/admin/identities/AccountEditForm.vue:70
+#: src/views/account/SettingsView.vue:9
+msgid "Profile"
+msgstr "Profile"
+
+#: src/components/admin/identities/AccountEditForm.vue:78
+msgid "Language:"
+msgstr "Language:"
+
+#: src/components/admin/identities/AccountEditForm.vue:111
+msgid "domain's default value"
+msgstr "domain's default value"
+
+#: src/components/admin/identities/AccountEditForm.vue:122
+msgid "Send only"
+msgstr "Send only"
+
+#: src/components/admin/identities/AccountEditForm.vue:145
+#: src/components/admin/identities/IdentityList.vue:75
+#: src/views/admin/domains/DomainsView.vue:26
+#: src/views/admin/identities/AliasView.vue:5
+#: src/views/admin/identities/IdentitiesView.vue:26
+msgid "Alias"
+msgstr "Alias"
+
+#: src/components/admin/identities/AccountEditForm.vue:154
+msgid "Number of associated alias:"
+msgstr "Number of associated alias:"
+
+#: src/components/admin/identities/AccountEditForm.vue:186
+msgid "Number of allowed mailboxes:"
+msgstr "Number of allowed mailboxes:"
+
+#: src/components/admin/identities/AccountEditForm.vue:192
+msgid "Number of allowed mailbox aliases:"
+msgstr "Number of allowed mailbox aliases:"
+
+#: src/components/admin/identities/AccountEditForm.vue:345
+msgid "Account updated"
+msgstr "Account updated"
+
+#: src/components/admin/identities/AccountSenderAddresses.vue:4
+msgid "Sender addresses"
+msgstr "Sender addresses"
+
+#: src/components/admin/identities/AccountSenderAddresses.vue:10
+msgid "No sender address defined for this account"
+msgstr "No sender address defined for this account"
+
+#: src/components/admin/identities/AccountSenderAddresses.vue:17
+msgid "Specify an email address"
+msgstr "Specify an email address"
+
+#: src/components/admin/identities/AccountSenderAddresses.vue:36
+msgid "Remove this address"
+msgstr "Remove this address"
+
+#: src/components/admin/identities/AccountSenderAddresses.vue:52
+msgid "Add sender address"
+msgstr "Add sender address"
+
+#: src/components/admin/identities/AccountSenderAddresses.vue:97
+msgid "Sender address added"
+msgstr "Sender address added"
+
+#: src/components/admin/identities/AccountSenderAddresses.vue:104
+msgid "Sender address deleted"
+msgstr "Sender address deleted"
+
+#: src/components/admin/identities/AccountSummary.vue:12
+msgid "Last login date"
+msgstr "Last login date"
+
+#: src/components/admin/identities/AccountSummary.vue:16
+#: src/components/admin/identities/IdentityList.vue:123
+msgid "Never logged-in"
+msgstr "Never logged-in"
+
+#: src/components/admin/identities/AccountSummary.vue:19
+msgid "Full name"
+msgstr "Full name"
+
+#: src/components/admin/identities/AliasCreationForm.vue:4
+msgid "New alias"
+msgstr "New alias"
+
+#: src/components/admin/identities/AliasCreationForm.vue:56
+#: src/components/admin/identities/form_steps/AliasGeneralForm.vue:6
+msgid "Random address"
+msgstr "Random address"
+
+#: src/components/admin/identities/AliasCreationForm.vue:66
+#: src/components/admin/identities/AliasSummary.vue:26
+#: src/components/admin/identities/form_steps/AliasGeneralForm.vue:56
+#: src/components/admin/identities/IdentityList.vue:241
+msgid "Expire at"
+msgstr "Expire at"
+
+#: src/components/admin/identities/AliasCreationForm.vue:72
+#: src/components/admin/identities/AliasSummary.vue:30
+#: src/components/admin/identities/form_steps/AliasGeneralForm.vue:58
+#: src/components/admin/identities/IdentityList.vue:245
+#: src/components/calendars/EventForm.vue:74
+#: src/views/admin/InformationView.vue:148
+msgid "Description"
+msgstr "Description"
+
+#: src/components/admin/identities/AliasCreationForm.vue:77
+#: src/components/admin/identities/AliasCreationForm.vue:80
+#: src/components/admin/identities/AliasCreationForm.vue:97
+#: src/components/admin/identities/AliasEditForm.vue:41
+#: src/components/admin/identities/AliasRecipientsSummary.vue:4
+#: src/components/admin/identities/IdentityList.vue:237
+msgid "Recipients"
+msgstr "Recipients"
+
+#: src/components/admin/identities/AliasCreationForm.vue:130
+msgid "Alias already exists, redirecting to edit page"
+msgstr "Alias already exists, redirecting to edit page"
+
+#: src/components/admin/identities/AliasCreationForm.vue:155
+msgid "Alias created"
+msgstr "Alias created"
+
+#: src/components/admin/identities/AliasEditForm.vue:132
+msgid "Alias updated"
+msgstr "Alias updated"
+
+#: src/components/admin/identities/AliasSummary.vue:12
+msgid "Modified"
+msgstr "Modified"
+
+#: src/components/admin/identities/DomainAdminDomains.vue:4
+msgid "Administered domains"
+msgstr "Administered domains"
+
+#: src/components/admin/identities/DomainAdminDomains.vue:13
+msgid "No domain managed"
+msgstr "No domain managed"
+
+#: src/components/admin/identities/DomainAdminDomains.vue:16
+msgid "Add/Remove from the domain page"
+msgstr "Add/Remove from the domain page"
+
+#: src/components/admin/identities/form_steps/AccountAliasForm.vue:6
+#: src/components/admin/identities/form_steps/AliasRecipientForm.vue:6
+msgid "Start typing a name here..."
+msgstr "Start typing a name here..."
+
+#: src/components/admin/identities/form_steps/AccountAliasForm.vue:8
+#: src/components/admin/identities/form_steps/AliasRecipientForm.vue:8
+msgid ""
+"Alias(es) of this mailbox. To create a catchall alias, just enter the domain"
+" name (@domain.tld)."
+msgstr ""
+"Alias(es) of this mailbox. To create a catchall alias, just enter the domain"
+" name (@domain.tld)."
+
+#: src/components/admin/identities/form_steps/AccountAliasForm.vue:50
+msgid "Alias already added"
+msgstr "Alias already added"
+
+#: src/components/admin/identities/form_steps/AccountGeneralForm.vue:41
+msgid "You can update your password from the Account section"
+msgstr "You can update your password from the Account section"
+
+#: src/components/admin/identities/form_steps/AccountGeneralForm.vue:77
+msgid "Enter an email address"
+msgstr "Enter an email address"
+
+#: src/components/admin/identities/form_steps/AccountGeneralForm.vue:79
+msgid "Enter a simple username or an email address"
+msgstr "Enter a simple username or an email address"
+
+#: src/components/admin/identities/form_steps/AccountMailboxForm.vue:13
+msgid "Ex: 10MB. Leave empty for no limit"
+msgstr "Ex: 10MB. Leave empty for no limit"
+
+#: src/components/admin/identities/form_steps/AccountMailboxForm.vue:15
+msgid ""
+"Quota for this mailbox, can be expressed in KB, MB (default) or GB. Define a"
+" custom value or use domain's default one. Leave empty to define an "
+"unlimited value (not allowed for domain administrators)."
+msgstr ""
+"Quota for this mailbox, can be expressed in KB, MB (default) or GB. Define a"
+" custom value or use domain's default one. Leave empty to define an "
+"unlimited value (not allowed for domain administrators)."
+
+#: src/components/admin/identities/form_steps/AccountMailboxForm.vue:23
+msgid "Daily message sending limit"
+msgstr "Daily message sending limit"
+
+#: src/components/admin/identities/form_steps/AccountMailboxForm.vue:26
+msgid "Leave empty for no limit"
+msgstr "Leave empty for no limit"
+
+#: src/components/admin/identities/form_steps/AccountMailboxForm.vue:28
+msgid ""
+"Number of messages this mailbox can send per day. Leave empty for no limit."
+msgstr ""
+"Number of messages this mailbox can send per day. Leave empty for no limit."
+
+#: src/components/admin/identities/form_steps/AccountMailboxForm.vue:112
+msgid "Use domain default value"
+msgstr "Use domain default value"
+
+#: src/components/admin/identities/form_steps/AccountMailboxForm.vue:115
+msgid "unlimited"
+msgstr "unlimited"
+
+#: src/components/admin/identities/form_steps/AccountPasswordSubForm.vue:4
+msgid "Current password"
+msgstr "Current password"
+
+#: src/components/admin/identities/form_steps/AccountPasswordSubForm.vue:65
+msgid "Confirmation"
+msgstr "Confirmation"
+
+#: src/components/admin/identities/form_steps/AccountPasswordSubForm.vue:99
+msgid "Password mismatch"
+msgstr "Password mismatch"
+
+#: src/components/admin/identities/form_steps/AccountRoleForm.vue:7
+msgid "Choose a role"
+msgstr "Choose a role"
+
+#: src/components/admin/identities/form_steps/AccountRoleForm.vue:81
+msgid "Simple user"
+msgstr "Simple user"
+
+#: src/components/admin/identities/form_steps/AccountRoleForm.vue:83
+msgid ""
+"A user with no privileges but with a mailbox. He will be allowed to use all "
+"end-user features: webmail, calendar, contacts, filters."
+msgstr ""
+"A user with no privileges but with a mailbox. He will be allowed to use all "
+"end-user features: webmail, calendar, contacts, filters."
+
+#: src/components/admin/identities/form_steps/AccountRoleForm.vue:91
+msgid "Domain administrator"
+msgstr "Domain administrator"
+
+#: src/components/admin/identities/form_steps/AccountRoleForm.vue:93
+msgid ""
+"A user with privileges on one or more domain. He will be allowed to "
+"administer mailboxes and he can also have a mailbox."
+msgstr ""
+"A user with privileges on one or more domain. He will be allowed to "
+"administer mailboxes and he can also have a mailbox."
+
+#: src/components/admin/identities/form_steps/AccountRoleForm.vue:100
+msgid "Reseller"
+msgstr "Reseller"
+
+#: src/components/admin/identities/form_steps/AccountRoleForm.vue:102
+msgid ""
+"An intermediate user who has the same privileges than a Domain "
+"administrator, plus the possibility to create domains and to assign "
+"resources."
+msgstr ""
+"An intermediate user who has the same privileges than a Domain "
+"administrator, plus the possibility to create domains and to assign "
+"resources."
+
+#: src/components/admin/identities/form_steps/AccountRoleForm.vue:109
+msgid "Super administrator"
+msgstr "Super administrator"
+
+#: src/components/admin/identities/form_steps/AccountRoleForm.vue:111
+msgid ""
+"A user with all privileges, can do anything. By default, such a user does "
+"not have a mailbox so he can't access end-user features."
+msgstr ""
+"A user with all privileges, can do anything. By default, such a user does "
+"not have a mailbox so he can't access end-user features."
+
+#: src/components/admin/identities/form_steps/AliasGeneralForm.vue:10
+msgid "Email address"
+msgstr "Email address"
+
+#: src/components/admin/identities/form_steps/AliasGeneralForm.vue:38
+msgid "Generated address"
+msgstr "Generated address"
+
+#: src/components/admin/identities/form_steps/AliasRecipientForm.vue:58
+msgid "Please add at least one recipient."
+msgstr "Please add at least one recipient."
+
+#: src/components/admin/identities/IdentityList.vue:36
+msgid "Customize displayed columns"
+msgstr "Customize displayed columns"
+
+#: src/components/admin/identities/IdentityList.vue:70
+msgid "Accounts"
+msgstr "Accounts"
+
+#: src/components/admin/identities/IdentityList.vue:143
+#: src/components/admin/identities/IdentityList.vue:172
+msgid "No mailbox"
+msgstr "No mailbox"
+
+#: src/components/admin/identities/IdentityList.vue:202
+msgid "Do not delete account folder"
+msgstr "Do not delete account folder"
+
+#: src/components/admin/identities/IdentityList.vue:253
+msgid "Last modification"
+msgstr "Last modification"
+
+#: src/components/admin/identities/IdentityList.vue:271
+msgid "Last Name"
+msgstr "Last Name"
+
+#: src/components/admin/identities/IdentityList.vue:278
+msgid "Message limit"
+msgstr "Message limit"
+
+#: src/components/admin/identities/IdentityList.vue:291
+msgid "TFA enabled"
+msgstr "TFA enabled"
+
+#: src/components/admin/identities/IdentityList.vue:295
+msgid "TOTP enabled"
+msgstr "TOTP enabled"
+
+#: src/components/admin/identities/IdentityList.vue:299
+msgid "WebAutn enabled"
+msgstr "WebAutn enabled"
+
+#: src/components/admin/identities/IdentityList.vue:307
+msgid "Last login"
+msgstr "Last login"
+
+#: src/components/admin/identities/IdentityList.vue:483
+msgid "Are you sure you want to delete this identity ?"
+msgstr "Are you sure you want to delete this identity ?"
+
+#: src/components/admin/identities/IdentityList.vue:498
+msgid "Account deleted"
+msgstr "Account deleted"
+
+#: src/components/admin/identities/IdentityList.vue:523
+msgid "Are you sure you want to delete this alias?"
+msgstr "Are you sure you want to delete this alias?"
+
+#: src/components/admin/identities/IdentityList.vue:537
+msgid "Alias deleted"
+msgstr "Alias deleted"
+
+#: src/components/admin/imap_migration/form_steps/ProviderAssociatedForm.vue:6
+msgid "Name of the domain to migrate"
+msgstr "Name of the domain to migrate"
+
+#: src/components/admin/imap_migration/form_steps/ProviderAssociatedForm.vue:13
+msgid "Local domain (optional)"
+msgstr "Local domain (optional)"
+
+#: src/components/admin/imap_migration/form_steps/ProviderAssociatedForm.vue:111
+msgid "You need to bind at least one domain to the provider."
+msgstr "You need to bind at least one domain to the provider."
+
+#: src/components/admin/imap_migration/form_steps/ProviderGeneralForm.vue:5
+msgid "Provider name"
+msgstr "Provider name"
+
+#: src/components/admin/imap_migration/form_steps/ProviderGeneralForm.vue:12
+msgid "Address (hostname or IP)"
+msgstr "Address (hostname or IP)"
+
+#: src/components/admin/imap_migration/form_steps/ProviderGeneralForm.vue:19
+msgid "IMAP Port"
+msgstr "IMAP Port"
+
+#: src/components/admin/imap_migration/form_steps/ProviderGeneralForm.vue:27
+#: src/components/admin/imap_migration/ProviderCreationForm.vue:57
+#: src/components/admin/imap_migration/ProvidersList.vue:117
+msgid "Secured"
+msgstr "Secured"
+
+#: src/components/admin/imap_migration/form_steps/ProviderGeneralForm.vue:30
+msgid "Is the IMAP connection secured using SSL/TLS or StartTLS"
+msgstr "Is the IMAP connection secured using SSL/TLS or StartTLS"
+
+#: src/components/admin/imap_migration/form_steps/ProviderGeneralForm.vue:36
+msgid "Check connection:"
+msgstr "Check connection:"
+
+#: src/components/admin/imap_migration/MigrationsList.vue:86
+msgid "Provider"
+msgstr "Provider"
+
+#: src/components/admin/imap_migration/MigrationsList.vue:87
+msgid "Old account"
+msgstr "Old account"
+
+#: src/components/admin/imap_migration/MigrationsList.vue:105
+msgid "Migration deleted"
+msgstr "Migration deleted"
+
+#: src/components/admin/imap_migration/ProviderCreationForm.vue:4
+msgid "New provider"
+msgstr "New provider"
+
+#: src/components/admin/imap_migration/ProviderCreationForm.vue:41
+msgid "(the domain will be created locally)"
+msgstr "(the domain will be created locally)"
+
+#: src/components/admin/imap_migration/ProviderCreationForm.vue:42
+msgid "Associated domain"
+msgstr "Associated domain"
+
+#: src/components/admin/imap_migration/ProviderCreationForm.vue:55
+#: src/components/admin/imap_migration/ProvidersList.vue:116
+msgid "Port"
+msgstr "Port"
+
+#: src/components/admin/imap_migration/ProviderCreationForm.vue:64
+#: src/components/admin/imap_migration/ProviderCreationForm.vue:72
+#: src/components/admin/imap_migration/ProviderForm.vue:30
+#: src/components/admin/imap_migration/ProvidersList.vue:118
+msgid "Associated domains"
+msgstr "Associated domains"
+
+#: src/components/admin/imap_migration/ProviderCreationForm.vue:128
+msgid "Provider created"
+msgstr "Provider created"
+
+#: src/components/admin/imap_migration/ProviderForm.vue:14
+msgid "Name:"
+msgstr "Name:"
+
+#: src/components/admin/imap_migration/ProviderForm.vue:37
+msgid "Number of associated domains:"
+msgstr "Number of associated domains:"
+
+#: src/components/admin/imap_migration/ProviderForm.vue:41
+msgid "No associated domains"
+msgstr "No associated domains"
+
+#: src/components/admin/imap_migration/ProviderForm.vue:143
+msgid "Provider updated"
+msgstr "Provider updated"
+
+#: src/components/admin/imap_migration/ProvidersList.vue:57
+msgid "%{count} associated domain"
+msgid_plural "%{count} associated domains"
+msgstr[0] "%{count} associated domains"
+
+#: src/components/admin/imap_migration/ProvidersList.vue:65
+msgid "No associated domain"
+msgstr "No associated domain"
+
+#: src/components/admin/logs/AuditTrailList.vue:51
+#: src/components/admin/logs/MessageList.vue:47
+#: src/components/quarantine/QuarantineList.vue:236
+msgid "Date"
+msgstr "Date"
+
+#: src/components/admin/logs/AuditTrailList.vue:52
+msgid "Level"
+msgstr "Level"
+
+#: src/components/admin/logs/AuditTrailList.vue:53
+msgid "Logger"
+msgstr "Logger"
+
+#: src/components/admin/logs/MessageList.vue:46
+msgid "Queue ID"
+msgstr "Queue ID"
+
+#: src/components/admin/logs/MessageList.vue:49
+#: src/components/calendars/EventForm.vue:34
+#: src/components/quarantine/QuarantineList.vue:52
+#: src/components/quarantine/QuarantineList.vue:233
+#: src/components/tools/TimeSerieChart.vue:20
+#: src/components/webmail/ComposeEmailForm.vue:65
+#: src/views/webmail/EmailView.vue:103
+msgid "To"
+msgstr "To"
+
+#: src/components/calendars/CalendarAccessRulesForm.vue:4
+msgid "Calendar sharing"
+msgstr "Calendar sharing"
+
+#: src/components/calendars/CalendarAccessRulesForm.vue:11
+msgid "Full address"
+msgstr "Full address"
+
+#: src/components/calendars/CalendarAccessRulesForm.vue:21
+#: src/components/calendars/CalendarAccessRulesForm.vue:43
+msgid "Read"
+msgstr "Read"
+
+#: src/components/calendars/CalendarAccessRulesForm.vue:26
+#: src/components/calendars/CalendarAccessRulesForm.vue:44
+msgid "Write"
+msgstr "Write"
+
+#: src/components/calendars/CalendarDetail.vue:4
+msgid "Calendar information"
+msgstr "Calendar information"
+
+#: src/components/calendars/CalendarDetail.vue:9
+msgid ""
+"To access this calendar from the outside (such as Mozilla Thunderbird or "
+"your smartphone), use the following URL:"
+msgstr ""
+"To access this calendar from the outside (such as Mozilla Thunderbird or "
+"your smartphone), use the following URL:"
+
+#: src/components/calendars/CalendarDetail.vue:19
+#: src/components/contacts/AddressBookInfo.vue:19
+msgid "The credentials are the same than the ones you use to access Modoboa."
+msgstr "The credentials are the same than the ones you use to access Modoboa."
+
+#: src/components/calendars/CalendarDetail.vue:26
+msgid ""
+"You can also share a read-only version of this calendar using the following "
+"URL: "
+msgstr ""
+"You can also share a read-only version of this calendar using the following "
+"URL: "
+
+#: src/components/calendars/CalendarForm.vue:6
+msgid "Edit calendar"
+msgstr "Edit calendar"
+
+#: src/components/calendars/CalendarForm.vue:8
+#: src/views/calendars/CalendarView.vue:181
+msgid "New calendar"
+msgstr "New calendar"
+
+#: src/components/calendars/CalendarForm.vue:25
+msgid "Color"
+msgstr "Color"
+
+#: src/components/calendars/CalendarForm.vue:103
+msgid "Calendar updated"
+msgstr "Calendar updated"
+
+#: src/components/calendars/CalendarForm.vue:106
+msgid "Calendar created"
+msgstr "Calendar created"
+
+#: src/components/calendars/EventForm.vue:12
+msgid "Title"
+msgstr "Title"
+
+#: src/components/calendars/EventForm.vue:49
+#: src/views/calendars/CalendarView.vue:4
+msgid "Calendar"
+msgstr "Calendar"
+
+#: src/components/calendars/EventForm.vue:61
+msgid "Attendees"
+msgstr "Attendees"
+
+#: src/components/calendars/EventForm.vue:133
+msgid "Edit event"
+msgstr "Edit event"
+
+#: src/components/calendars/EventForm.vue:133
+#: src/views/calendars/CalendarView.vue:399
+msgid "New event"
+msgstr "New event"
+
+#: src/components/calendars/EventForm.vue:208
+msgid "Event added"
+msgstr "Event added"
+
+#: src/components/calendars/EventForm.vue:211
+#: src/views/calendars/CalendarView.vue:340
+msgid "Event updated"
+msgstr "Event updated"
+
+#: src/components/calendars/EventForm.vue:224
+msgid "Event deleted"
+msgstr "Event deleted"
+
+#: src/components/calendars/ImportEventsForm.vue:5
+msgid "Import events"
+msgstr "Import events"
+
+#: src/components/calendars/ImportEventsForm.vue:10
+msgid "Select an ICS file to import and click on the Send button"
+msgstr "Select an ICS file to import and click on the Send button"
+
+#: src/components/calendars/ImportEventsForm.vue:17
+msgid "Select an ICS file"
+msgstr "Select an ICS file"
+
+#: src/components/calendars/ImportEventsForm.vue:30
+#: src/components/webmail/ComposeEmailForm.vue:18
+msgid "Send"
+msgstr "Send"
+
+#: src/components/calendars/ImportEventsForm.vue:81
+msgid "%{ n } event imported"
+msgid_plural "%{ n } events imported"
+msgstr[0] "%{ n } events imported"
+
+#: src/components/contacts/AddressBookInfo.vue:4
+msgid "Address book information"
+msgstr "Address book information"
+
+#: src/components/contacts/AddressBookInfo.vue:9
+msgid ""
+"To access this address book from the outside (such as Mozilla Thunderbird or"
+" your smartphone), use the following URL:"
+msgstr ""
+"To access this address book from the outside (such as Mozilla Thunderbird or"
+" your smartphone), use the following URL:"
+
+#: src/components/contacts/CategoryForm.vue:57
+msgid "Edit category"
+msgstr "Edit category"
+
+#: src/components/contacts/CategoryForm.vue:57
+msgid "Add category"
+msgstr "Add category"
+
+#: src/components/contacts/CategoryForm.vue:92
+msgid "Category deleted"
+msgstr "Category deleted"
+
+#: src/components/contacts/ContactCategoriesForm.vue:5
+#: src/components/contacts/ContactList.vue:227
+#: src/views/contacts/AddressBook.vue:45
+msgid "Categories"
+msgstr "Categories"
+
+#: src/components/contacts/ContactForm.vue:31
+msgid "Display name"
+msgstr "Display name"
+
+#: src/components/contacts/ContactForm.vue:41
+msgid "Company"
+msgstr "Company"
+
+#: src/components/contacts/ContactForm.vue:50
+msgid "Position"
+msgstr "Position"
+
+#: src/components/contacts/ContactForm.vue:75
+msgid "Birth date"
+msgstr "Birth date"
+
+#: src/components/contacts/ContactForm.vue:95
+msgid "Zip code"
+msgstr "Zip code"
+
+#: src/components/contacts/ContactForm.vue:104
+msgid "City"
+msgstr "City"
+
+#: src/components/contacts/ContactForm.vue:112
+msgid "Country"
+msgstr "Country"
+
+#: src/components/contacts/ContactForm.vue:121
+msgid "State/Province"
+msgstr "State/Province"
+
+#: src/components/contacts/ContactForm.vue:129
+msgid "Note"
+msgstr "Note"
+
+#: src/components/contacts/ContactForm.vue:141
+msgid "More"
+msgstr "More"
+
+#: src/components/contacts/ContactForm.vue:144
+msgid "Less"
+msgstr "Less"
+
+#: src/components/contacts/ContactForm.vue:182
+msgid "Edit contact"
+msgstr "Edit contact"
+
+#: src/components/contacts/ContactForm.vue:182
+msgid "New contact"
+msgstr "New contact"
+
+#: src/components/contacts/ContactList.vue:42
+msgid "Synchronize contacts with address book"
+msgstr "Synchronize contacts with address book"
+
+#: src/components/contacts/ContactList.vue:48
+msgid "Synchronize"
+msgstr "Synchronize"
+
+#: src/components/contacts/ContactList.vue:58
+msgid "Display address book information"
+msgstr "Display address book information"
+
+#: src/components/contacts/ContactList.vue:120
+msgid "Email addresses"
+msgstr "Email addresses"
+
+#: src/components/contacts/ContactList.vue:138
+msgid "Phone numbers"
+msgstr "Phone numbers"
+
+#: src/components/contacts/ContactList.vue:280
+msgid "Contact removed"
+msgstr "Contact removed"
+
+#: src/components/contacts/ContactList.vue:325
+#: src/components/contacts/ContactList.vue:346
+msgid "Synchronization started"
+msgstr "Synchronization started"
+
+#: src/components/quarantine/QuarantineList.vue:27
+#: src/components/webmail/EmailList.vue:15
+msgid "Search in messages"
+msgstr "Search in messages"
+
+#: src/components/quarantine/QuarantineList.vue:45
+msgid "From address"
+msgstr "From address"
+
+#: src/components/quarantine/QuarantineList.vue:54
+msgid "both"
+msgstr "both"
+
+#: src/components/quarantine/QuarantineList.vue:72
+msgid "Release selection"
+msgstr "Release selection"
+
+#: src/components/quarantine/QuarantineList.vue:84
+msgid "Delete selection"
+msgstr "Delete selection"
+
+#: src/components/quarantine/QuarantineList.vue:101
+#: src/views/quarantine/MessageView.vue:49
+msgid "Mark as spam"
+msgstr "Mark as spam"
+
+#: src/components/quarantine/QuarantineList.vue:105
+msgid "Mark as not spam"
+msgstr "Mark as not spam"
+
+#: src/components/quarantine/QuarantineList.vue:125
+msgid "Display"
+msgstr "Display"
+
+#: src/components/quarantine/QuarantineList.vue:232
+msgid "Score"
+msgstr "Score"
+
+#: src/components/quarantine/QuarantineList.vue:284
+#: src/views/quarantine/MessageView.vue:183
+msgid "Message released"
+msgstr "Message released"
+
+#: src/components/quarantine/QuarantineList.vue:287
+#: src/views/quarantine/MessageView.vue:241
+msgid "Message marked as spam"
+msgstr "Message marked as spam"
+
+#: src/components/quarantine/QuarantineList.vue:290
+#: src/views/quarantine/MessageView.vue:245
+msgid "Message marked as non-spam"
+msgstr "Message marked as non-spam"
+
+#: src/components/quarantine/QuarantineList.vue:358
+msgid "Selection deleted"
+msgstr "Selection deleted"
+
+#: src/components/quarantine/QuarantineList.vue:371
+#: src/views/quarantine/MessageView.vue:181
+msgid "Release request sent"
+msgstr "Release request sent"
+
+#: src/components/quarantine/QuarantineList.vue:373
+msgid "Selection released"
+msgstr "Selection released"
+
+#: src/components/quarantine/QuarantineList.vue:388
+#: src/views/quarantine/MessageView.vue:218
+msgid "Learning database"
+msgstr "Learning database"
+
+#: src/components/quarantine/QuarantineList.vue:389
+#: src/views/quarantine/MessageView.vue:219
+msgid "Which database should be used for this learning:"
+msgstr "Which database should be used for this learning:"
+
+#: src/components/quarantine/QuarantineList.vue:401
+msgid "Selection is being processed..."
+msgstr "Selection is being processed..."
+
+#: src/components/shared/TopMenu.vue:15
+msgid "Notifications"
+msgstr "Notifications"
+
+#: src/components/shared/TopMenu.vue:137
+msgid "Logout"
+msgstr "Logout"
+
+#: src/components/tools/ChooseColumnsForm.vue:2
+msgid "Choose columns to display"
+msgstr "Choose columns to display"
+
+#: src/components/tools/ConfirmDialog.vue:56
+msgid "OK"
+msgstr "OK"
+
+#: src/components/tools/CreationForm.vue:25
+#: src/components/tools/CreationForm.vue:79
+msgid "Summary"
+msgstr "Summary"
+
+#: src/components/tools/CreationForm.vue:66
+msgid "Back"
+msgstr "Back"
+
+#: src/components/tools/CreationForm.vue:73
+msgid "Next"
+msgstr "Next"
+
+#: src/components/tools/CreationForm.vue:96
+msgid "Confirm and create"
+msgstr "Confirm and create"
+
+#: src/components/tools/CreationForm.vue:136
+msgid ""
+"If you close this form now, your modifications won't be saved. Do you "
+"confirm?"
+msgstr ""
+"If you close this form now, your modifications won't be saved. Do you "
+"confirm?"
+
+#: src/components/tools/CreationSummary.vue:10
+msgid "Modify"
+msgstr "Modify"
+
+#: src/components/tools/CreationSummary.vue:45
+msgid "Empty"
+msgstr "Empty"
+
+#: src/components/tools/ImportForm.vue:10
+msgid "Provide a CSV file where lines respect one of the following formats:"
+msgstr "Provide a CSV file where lines respect one of the following formats:"
+
+#: src/components/tools/ImportForm.vue:16
+msgid ""
+"The first element of each line is mandatory and must be equal to one of the "
+"previous values."
+msgstr ""
+"The first element of each line is mandatory and must be equal to one of the "
+"previous values."
+
+#: src/components/tools/ImportForm.vue:20
+msgid "You can use a different character as separator."
+msgstr "You can use a different character as separator."
+
+#: src/components/tools/ImportForm.vue:22
+msgid "Select file"
+msgstr "Select file"
+
+#: src/components/tools/ImportForm.vue:31
+msgid "Separator"
+msgstr "Separator"
+
+#: src/components/tools/ImportForm.vue:40
+msgid "Continue on error"
+msgstr "Continue on error"
+
+#: src/components/tools/ImportForm.vue:43
+msgid "Don't treat duplicated objects as errors"
+msgstr "Don't treat duplicated objects as errors"
+
+#: src/components/tools/ImportForm.vue:54
+#: src/views/calendars/CalendarView.vue:214
+msgid "Import"
+msgstr "Import"
+
+#: src/components/tools/ParametersForm.vue:189
+msgid "Parameters updated"
+msgstr "Parameters updated"
+
+#: src/components/tools/ParametersForm.vue:194
+msgid "Could not save parameters"
+msgstr "Could not save parameters"
+
+#: src/components/tools/ResourcesView.vue:4
+msgid "Resources usage"
+msgstr "Resources usage"
+
+#: src/components/tools/ResourcesView.vue:37
+msgid "No quota"
+msgstr "No quota"
+
+#: src/components/tools/ResourcesView.vue:39
+msgid "Creation denied"
+msgstr "Creation denied"
+
+#: src/components/tools/TimeSerieChart.vue:9
+msgid "Period"
+msgstr "Period"
+
+#: src/components/tools/TimeSerieChart.vue:17
+msgid "Absolute time range"
+msgstr "Absolute time range"
+
+#: src/components/tools/TimeSerieChart.vue:27
+msgid "Relative time ranges"
+msgstr "Relative time ranges"
+
+#: src/components/tools/TimeSerieChart.vue:110
+#: src/views/calendars/CalendarView.vue:46
+#: src/views/calendars/CalendarView.vue:172
+msgid "Day"
+msgstr "Day"
+
+#: src/components/tools/TimeSerieChart.vue:111
+#: src/views/calendars/CalendarView.vue:49
+#: src/views/calendars/CalendarView.vue:173
+msgid "Week"
+msgstr "Week"
+
+#: src/components/tools/TimeSerieChart.vue:112
+#: src/views/calendars/CalendarView.vue:52
+#: src/views/calendars/CalendarView.vue:174
+msgid "Month"
+msgstr "Month"
+
+#: src/components/tools/TimeSerieChart.vue:113
+msgid "Year"
+msgstr "Year"
+
+#: src/components/tools/YesNoDefaultField.vue:3 src/plugins/filters.js:10
+msgid "yes"
+msgstr "yes"
+
+#: src/components/tools/YesNoDefaultField.vue:4 src/plugins/filters.js:10
+msgid "no"
+msgstr "no"
+
+#: src/components/webmail/AttachmentsDialog.vue:3
+#: src/components/webmail/ComposeEmailForm.vue:40
+msgid "Attachments"
+msgstr "Attachments"
+
+#: src/components/webmail/AttachmentsDialog.vue:16
+msgid "Attach"
+msgstr "Attach"
+
+#: src/components/webmail/ComposeEmailForm.vue:28
+msgid "Schedule sending"
+msgstr "Schedule sending"
+
+#: src/components/webmail/ComposeEmailForm.vue:73
+#: src/components/webmail/ComposeEmailForm.vue:118
+#: src/components/webmail/ComposeEmailForm.vue:145
+msgid "Provide one or more addresses"
+msgstr "Provide one or more addresses"
+
+#: src/components/webmail/ComposeEmailForm.vue:86
+#: src/components/webmail/ComposeEmailForm.vue:104
+msgid "Cc"
+msgstr "Cc"
+
+#: src/components/webmail/ComposeEmailForm.vue:94
+#: src/components/webmail/ComposeEmailForm.vue:131
+msgid "Bcc"
+msgstr "Bcc"
+
+#: src/components/webmail/ComposeEmailForm.vue:300
+msgid "Email scheduled"
+msgstr "Email scheduled"
+
+#: src/components/webmail/ComposeEmailForm.vue:301
+msgid "Email sent"
+msgstr "Email sent"
+
+#: src/components/webmail/ComposeEmailForm.vue:354
+msgid "You must provide one recipient at least"
+msgstr "You must provide one recipient at least"
+
+#: src/components/webmail/ContactCard.vue:15
+msgid "Add to contacts"
+msgstr "Add to contacts"
+
+#: src/components/webmail/ContactCard.vue:23
+msgid "Update contact"
+msgstr "Update contact"
+
+#: src/components/webmail/ContactCard.vue:64
+msgid "Contact added to address book"
+msgstr "Contact added to address book"
+
+#: src/components/webmail/EmailList.vue:66
+msgid "Mark as read"
+msgstr "Mark as read"
+
+#: src/components/webmail/EmailList.vue:71
+msgid "Mark as unread"
+msgstr "Mark as unread"
+
+#: src/components/webmail/EmailList.vue:76
+msgid "Mark as followed"
+msgstr "Mark as followed"
+
+#: src/components/webmail/EmailList.vue:81
+msgid "Mark as unfollowed"
+msgstr "Mark as unfollowed"
+
+#: src/components/webmail/EmailList.vue:87
+msgid "Empty mailbox"
+msgstr "Empty mailbox"
+
+#: src/components/webmail/EmailList.vue:97
+msgid "on"
+msgstr "on"
+
+#: src/components/webmail/EmailList.vue:127
+msgid ""
+"Scheduled messages will be sent at the specified date and time. (visible on "
+"the right)"
+msgstr ""
+"Scheduled messages will be sent at the specified date and time. (visible on "
+"the right)"
+
+#: src/components/webmail/EmailList.vue:206
+msgid "No message yet in this mailbox"
+msgstr "No message yet in this mailbox"
+
+#: src/components/webmail/EmailList.vue:221
+msgid "Sending failure"
+msgstr "Sending failure"
+
+#: src/components/webmail/EmailList.vue:281
+msgid "Reschedule"
+msgstr "Reschedule"
+
+#: src/components/webmail/EmailList.vue:328
+msgid "Scheduling updated"
+msgstr "Scheduling updated"
+
+#: src/components/webmail/EmailList.vue:339
+msgid "Scheduled canceled and message moved to trash folder"
+msgstr "Scheduled canceled and message moved to trash folder"
+
+#: src/components/webmail/EmailList.vue:393
+msgid "Message(s) deleted"
+msgstr "Message(s) deleted"
+
+#: src/components/webmail/EmailList.vue:408
+msgid "Message(s) marked as junk"
+msgstr "Message(s) marked as junk"
+
+#: src/components/webmail/EmailList.vue:422
+msgid "Message(s) marked as not junk"
+msgstr "Message(s) marked as not junk"
+
+#: src/components/webmail/EmailList.vue:437
+msgid "Message(s) flagged"
+msgstr "Message(s) flagged"
+
+#: src/components/webmail/EmailList.vue:464
+msgid "%{count} message"
+msgid_plural "%{count} messages"
+msgstr[0] "%{count} messages"
+
+#: src/components/webmail/EmailSchedulingForm.vue:2
+msgid "Schedule your sending"
+msgstr "Schedule your sending"
+
+#: src/components/webmail/EmailSchedulingForm.vue:15
+msgid "Select time"
+msgstr "Select time"
+
+#: src/components/webmail/EmailSchedulingForm.vue:30
+msgid "Schedule"
+msgstr "Schedule"
+
+#: src/components/webmail/EmailSchedulingForm.vue:68
+msgid "Provided time must be one minute from now at least"
+msgstr "Provided time must be one minute from now at least"
+
+#: src/components/webmail/MailboxForm.vue:13
+msgid "Parent mailbox"
+msgstr "Parent mailbox"
+
+#: src/components/webmail/MailboxForm.vue:75
+msgid "Create new mailbox"
+msgstr "Create new mailbox"
+
+#: src/components/webmail/MailboxForm.vue:76
+msgid "Edit mailbox"
+msgstr "Edit mailbox"
+
+#: src/components/webmail/MailboxForm.vue:98
+msgid "Mailbox renamed"
+msgstr "Mailbox renamed"
+
+#: src/components/webmail/MailboxForm.vue:105
+msgid "Mailbox created"
+msgstr "Mailbox created"
+
+#: src/components/webmail/MailboxList.vue:172
+msgid "Moving selection..."
+msgstr "Moving selection..."
+
+#: src/composables/amavis.js:33
+msgid "Global database"
+msgstr "Global database"
+
+#: src/composables/amavis.js:36
+msgid "Domain's database"
+msgstr "Domain's database"
+
+#: src/composables/amavis.js:39
+msgid "User's database"
+msgstr "User's database"
+
+#: src/layouts/account/AccountLayout.vue:28
+#: src/layouts/admin/AdminLayout.vue:123
+msgid "Settings"
+msgstr "Settings"
+
+#: src/layouts/account/AccountLayout.vue:34
+msgid "Filters"
+msgstr "Filters"
+
+#: src/layouts/admin/AdminLayout.vue:34
+msgid "Dashboard"
+msgstr "Dashboard"
+
+#: src/layouts/admin/AdminLayout.vue:40
+#: src/views/admin/domains/DomainsView.vue:4
+msgid "Domains"
+msgstr "Domains"
+
+#: src/layouts/admin/AdminLayout.vue:50
+#: src/views/admin/identities/IdentitiesView.vue:4
+msgid "Identities"
+msgstr "Identities"
+
+#: src/layouts/admin/AdminLayout.vue:66
+msgid "Monitoring"
+msgstr "Monitoring"
+
+#: src/layouts/admin/AdminLayout.vue:79
+#: src/views/admin/monitoring/AuditTrailView.vue:3
+msgid "Audit trail"
+msgstr "Audit trail"
+
+#: src/layouts/admin/AdminLayout.vue:84
+msgid "Messages"
+msgstr "Messages"
+
+#: src/layouts/admin/AdminLayout.vue:96
+msgid "IMAP Migration"
+msgstr "IMAP Migration"
+
+#: src/layouts/admin/AdminLayout.vue:101
+msgid "Email providers"
+msgstr "Email providers"
+
+#: src/layouts/admin/AdminLayout.vue:106
+#: src/views/admin/imap_migration/MigrationsView.vue:4
+msgid "Migrations"
+msgstr "Migrations"
+
+#: src/layouts/admin/AdminLayout.vue:136 src/views/admin/InformationView.vue:4
+#: src/views/calendars/CalendarView.vue:194
+msgid "Information"
+msgstr "Information"
+
+#: src/layouts/webmail/WebmailLayout.vue:24
+msgid "Compose"
+msgstr "Compose"
+
+#: src/layouts/webmail/WebmailLayout.vue:54
+msgid "Create a new mailbox"
+msgstr "Create a new mailbox"
+
+#: src/layouts/webmail/WebmailLayout.vue:59
+msgid "Edit this mailbox"
+msgstr "Edit this mailbox"
+
+#: src/layouts/webmail/WebmailLayout.vue:65
+msgid "Delete this mailbox"
+msgstr "Delete this mailbox"
+
+#: src/layouts/webmail/WebmailLayout.vue:71
+msgid "Compress this mailbox"
+msgstr "Compress this mailbox"
+
+#: src/layouts/webmail/WebmailLayout.vue:196
+msgid "Mailbox compressed"
+msgstr "Mailbox compressed"
+
+#: src/layouts/webmail/WebmailLayout.vue:202
+msgid "Delete this mailbox?"
+msgstr "Delete this mailbox?"
+
+#: src/layouts/webmail/WebmailLayout.vue:213
+msgid "Mailbox deleted"
+msgstr "Mailbox deleted"
+
+#: src/mixins/importExport.js:8
+msgid "No data to export"
+msgstr "No data to export"
+
+#: src/mixins/importExport.js:39
+msgid "CSV seems to be badly formatted"
+msgstr "CSV seems to be badly formatted"
+
+#: src/plugins/rules.js:7
+msgid "Not a valid email"
+msgstr "Not a valid email"
+
+#: src/plugins/rules.js:27
+msgid "Not a valid time"
+msgstr "Not a valid time"
+
+#: src/plugins/rules.js:38
+msgid "Field is required"
+msgstr "Field is required"
+
+#: src/plugins/rules.js:43
+msgid "Minimum length is %{ length }"
+msgstr "Minimum length is %{ length }"
+
+#: src/plugins/rules.js:48
+msgid "Must be a numeric value or empty"
+msgstr "Must be a numeric value or empty"
+
+#: src/plugins/rules.js:50
+msgid "Passwords mismatch"
+msgstr "Passwords mismatch"
+
+#: src/plugins/rules.js:52
+msgid "Invalid port number"
+msgstr "Invalid port number"
+
+#: src/stores/providers.store.js:51
+msgid "Provider deleted"
+msgstr "Provider deleted"
+
+#: src/views/account/FiltersView.vue:4
+msgid "Message filters"
+msgstr "Message filters"
+
+#: src/views/account/FiltersView.vue:10
+msgid "Select a filter set"
+msgstr "Select a filter set"
+
+#: src/views/account/FiltersView.vue:25
+msgid "Add filter set"
+msgstr "Add filter set"
+
+#: src/views/account/FiltersView.vue:44
+msgid "Raw mode"
+msgstr "Raw mode"
+
+#: src/views/account/FiltersView.vue:56
+msgid "Add new filter"
+msgstr "Add new filter"
+
+#: src/views/account/FiltersView.vue:62
+msgid "New"
+msgstr "New"
+
+#: src/views/account/FiltersView.vue:249
+msgid "Failed to display template. Using raw mode"
+msgstr "Failed to display template. Using raw mode"
+
+#: src/views/account/FiltersView.vue:264
+msgid "Filter enabled"
+msgstr "Filter enabled"
+
+#: src/views/account/FiltersView.vue:273
+msgid "Filter disabled"
+msgstr "Filter disabled"
+
+#: src/views/account/FiltersView.vue:279
+msgid "Filter removed"
+msgstr "Filter removed"
+
+#: src/views/account/FiltersView.vue:297
+msgid "Filter set activated"
+msgstr "Filter set activated"
+
+#: src/views/account/FiltersView.vue:304
+msgid "Active filter set deactivated"
+msgstr "Active filter set deactivated"
+
+#: src/views/account/FiltersView.vue:310
+msgid "Filter set removed"
+msgstr "Filter set removed"
+
+#: src/views/account/FiltersView.vue:324
+msgid "Filter set updated"
+msgstr "Filter set updated"
+
+#: src/views/account/FiltersView.vue:362
+msgid "Disable"
+msgstr "Disable"
+
+#: src/views/account/FiltersView.vue:369
+msgid "Enable"
+msgstr "Enable"
+
+#: src/views/account/FiltersView.vue:377
+msgid "Move down"
+msgstr "Move down"
+
+#: src/views/account/FiltersView.vue:384
+msgid "Move up"
+msgstr "Move up"
+
+#: src/views/account/FiltersView.vue:394
+msgid "Download filter set"
+msgstr "Download filter set"
+
+#: src/views/account/FiltersView.vue:399
+msgid "Delete filter set"
+msgstr "Delete filter set"
+
+#: src/views/account/FiltersView.vue:410
+msgid "Activate filter set"
+msgstr "Activate filter set"
+
+#: src/views/account/FiltersView.vue:417
+msgid "Deactivate filter set"
+msgstr "Deactivate filter set"
+
+#: src/views/account/ParametersView.vue:30
+#: src/views/admin/ParametersView.vue:36
+msgid "Settings: "
+msgstr "Settings: "
+
+#: src/views/account/SettingsView.vue:4
+msgid "Account settings"
+msgstr "Account settings"
+
+#: src/views/account/SettingsView.vue:12
+msgid "Two-factor auth"
+msgstr "Two-factor auth"
+
+#: src/views/account/SettingsView.vue:15 src/views/webmail/EmailView.vue:18
+msgid "Forward"
+msgstr "Forward"
+
+#: src/views/account/SettingsView.vue:18
+msgid "Auto-reply message"
+msgstr "Auto-reply message"
+
+#: src/views/account/SettingsView.vue:24
+msgid "API access"
+msgstr "API access"
+
+#: src/views/admin/alarms/AlarmsView.vue:4
+msgid "Opened alarms"
+msgstr "Opened alarms"
+
+#: src/views/admin/domains/DomainEditView.vue:3
+msgid "Edit domain"
+msgstr "Edit domain"
+
+#: src/views/admin/domains/DomainsView.vue:18
+#: src/views/admin/identities/IdentitiesView.vue:18
+#: src/views/admin/imap_migration/ProvidersView.vue:15
+msgctxt "male"
+msgid "New"
+msgstr "New"
+
+#: src/views/admin/domains/DomainsView.vue:33
+msgid "Import domains and aliases from CSV file"
+msgstr "Import domains and aliases from CSV file"
+
+#: src/views/admin/domains/DomainsView.vue:40
+msgid "Export domains and aliases to CSV"
+msgstr "Export domains and aliases to CSV"
+
+#: src/views/admin/domains/DomainsView.vue:57
+msgid "Import domains"
+msgstr "Import domains"
+
+#: src/views/admin/domains/DomainView.vue:28
+msgid "DMARC"
+msgstr "DMARC"
+
+#: src/views/admin/identities/AccountEditView.vue:3
+msgid "Edit account"
+msgstr "Edit account"
+
+#: src/views/admin/identities/AliasEditView.vue:3
+msgid "Edit alias"
+msgstr "Edit alias"
+
+#: src/views/admin/identities/IdentitiesView.vue:33
+msgid "Import accounts and aliases from CSV file"
+msgstr "Import accounts and aliases from CSV file"
+
+#: src/views/admin/identities/IdentitiesView.vue:40
+msgid "Export accounts and aliases to CSV"
+msgstr "Export accounts and aliases to CSV"
+
+#: src/views/admin/identities/IdentitiesView.vue:69
+msgid "Import identities"
+msgstr "Import identities"
+
+#: src/views/admin/identities/IdentitiesView.vue:91
+msgid "Crypt passwords"
+msgstr "Crypt passwords"
+
+#: src/views/admin/identities/IdentitiesView.vue:95
+msgid "Check this option if passwords contained in your file are not crypted"
+msgstr "Check this option if passwords contained in your file are not crypted"
+
+#: src/views/admin/imap_migration/ProviderEditView.vue:3
+msgid "Edit provider"
+msgstr "Edit provider"
+
+#: src/views/admin/imap_migration/ProvidersView.vue:4
+msgid "Providers"
+msgstr "Providers"
+
+#: src/views/admin/InformationView.vue:8
+msgid "Important messages"
+msgstr "Important messages"
+
+#: src/views/admin/InformationView.vue:22
+msgid ""
+"The password scheme you are using has been deprecated and will be removed in"
+" the next minor version. The procedure to upgrade to a stronger scheme is as"
+" follows:"
+msgstr ""
+"The password scheme you are using has been deprecated and will be removed in"
+" the next minor version. The procedure to upgrade to a stronger scheme is as"
+" follows:"
+
+#: src/views/admin/InformationView.vue:29
+msgid "Go to <strong>Settings > General</strong> section"
+msgstr "Go to <strong>Settings > General</strong> section"
+
+#: src/views/admin/InformationView.vue:37
+msgid "Change the value of <strong>Default password scheme</strong>"
+msgstr "Change the value of <strong>Default password scheme</strong>"
+
+#: src/views/admin/InformationView.vue:45
+msgid ""
+"Make sure <strong>Update password scheme at login</strong> option is enabled"
+msgstr ""
+"Make sure <strong>Update password scheme at login</strong> option is enabled"
+
+#: src/views/admin/InformationView.vue:51
+msgid "Save your changes"
+msgstr "Save your changes"
+
+#: src/views/admin/InformationView.vue:54
+msgid "Logout / Login with your current account so its password gets updated"
+msgstr "Logout / Login with your current account so its password gets updated"
+
+#: src/views/admin/InformationView.vue:61
+msgid ""
+"Inform <strong>ALL</strong> your users that they must login to Modoboa to "
+"complete the operation"
+msgstr ""
+"Inform <strong>ALL</strong> your users that they must login to Modoboa to "
+"complete the operation"
+
+#: src/views/admin/InformationView.vue:71
+msgid ""
+"You must apply this procedure <strong>BEFORE</strong> you install a newest "
+"version of Modoboa, otherwise <strong>you will be unable to connect to the "
+"web interface anymore</strong>."
+msgstr ""
+"You must apply this procedure <strong>BEFORE</strong> you install a newest "
+"version of Modoboa, otherwise <strong>you will be unable to connect to the "
+"web interface anymore</strong>."
+
+#: src/views/admin/InformationView.vue:80
+msgid ""
+"Please note that you will see this message until <strong>ALL</strong> user "
+"passwords have been converted using the new scheme."
+msgstr ""
+"Please note that you will see this message until <strong>ALL</strong> user "
+"passwords have been converted using the new scheme."
+
+#: src/views/admin/InformationView.vue:92
+msgid "Installed components"
+msgstr "Installed components"
+
+#: src/views/admin/InformationView.vue:103
+msgid "One or more updates are available"
+msgstr "One or more updates are available"
+
+#: src/views/admin/InformationView.vue:107
+msgid "Check out the following list to find related components"
+msgstr "Check out the following list to find related components"
+
+#: src/views/admin/InformationView.vue:146
+msgid "Installed version"
+msgstr "Installed version"
+
+#: src/views/admin/InformationView.vue:147
+msgid "Latest version"
+msgstr "Latest version"
+
+#: src/views/admin/monitoring/MessagesView.vue:3
+msgid "Message history"
+msgstr "Message history"
+
+#: src/views/calendars/CalendarView.vue:14
+msgid "Today"
+msgstr "Today"
+
+#: src/views/calendars/CalendarView.vue:185
+msgid "My calendars"
+msgstr "My calendars"
+
+#: src/views/calendars/CalendarView.vue:204
+msgid "Access rules"
+msgstr "Access rules"
+
+#: src/views/calendars/CalendarView.vue:536
+msgid "Do you really want to delete this calendar?"
+msgstr "Do you really want to delete this calendar?"
+
+#: src/views/calendars/CalendarView.vue:546
+msgid "Calendar deleted"
+msgstr "Calendar deleted"
+
+#: src/views/contacts/AddressBook.vue:4 src/views/contacts/AddressBook.vue:41
+msgid "Contacts"
+msgstr "Contacts"
+
+#: src/views/contacts/AddressBook.vue:58
+msgid "Add a category"
+msgstr "Add a category"
+
+#: src/views/DashboardView.vue:40
+msgid "Welcome to Modoboa"
+msgstr "Welcome to Modoboa"
+
+#: src/views/login/LoginCallbackView.vue:20 src/views/login/LoginView.vue:17
+msgid "Attempting to log you in."
+msgstr "Attempting to log you in."
+
+#: src/views/quarantine/MessageView.vue:4
+msgid "Quarantined message"
+msgstr "Quarantined message"
+
+#: src/views/quarantine/MessageView.vue:21
+msgid "Release message"
+msgstr "Release message"
+
+#: src/views/quarantine/MessageView.vue:32
+msgid "Delete message"
+msgstr "Delete message"
+
+#: src/views/quarantine/MessageView.vue:53
+msgid "Mark as non-spam"
+msgstr "Mark as non-spam"
+
+#: src/views/quarantine/MessageView.vue:68
+msgid "View full headers"
+msgstr "View full headers"
+
+#: src/views/quarantine/MessageView.vue:71
+msgid "Hide full headers"
+msgstr "Hide full headers"
+
+#: src/views/quarantine/MessageView.vue:201
+#: src/views/webmail/EmailView.vue:267
+msgid "Message deleted"
+msgstr "Message deleted"
+
+#: src/views/quarantine/QuarantineView.vue:4
+msgid "Quarantine"
+msgstr "Quarantine"
+
+#: src/views/quarantine/QuarantineView.vue:12
+msgid "release requests"
+msgstr "release requests"
+
+#: src/views/webmail/EmailView.vue:8
+msgid "Reply"
+msgstr "Reply"
+
+#: src/views/webmail/EmailView.vue:15
+msgid "Reply all"
+msgstr "Reply all"
+
+#: src/views/webmail/EmailView.vue:63
+msgid "Enable links"
+msgstr "Enable links"
+
+#: src/views/webmail/EmailView.vue:68
+msgid "Disable links"
+msgstr "Disable links"
+
+#: src/views/webmail/EmailView.vue:72
+msgid "Display source"
+msgstr "Display source"
+
+#: src/views/webmail/EmailView.vue:145
+msgid "Message scheduled at:"
+msgstr "Message scheduled at:"
+
+#: src/views/webmail/EmailView.vue:151
+msgid "Message source"
+msgstr "Message source"
+
+#: src/views/webmail/EmailView.vue:281
+msgid "Message marked as junk"
+msgstr "Message marked as junk"
+
+#: src/views/webmail/EmailView.vue:295
+msgid "Message marked as not junk"
+msgstr "Message marked as not junk"
+
+#: src/views/webmail/MailboxView.vue:4
+msgid "Webmail"
+msgstr "Webmail"
