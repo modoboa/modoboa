@@ -1,0 +1,3063 @@
+# 
+# Translators:
+# Yongjun OH, 2026
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"PO-Revision-Date: 2024-08-01 12:26+0000\n"
+"Last-Translator: Yongjun OH, 2026\n"
+"Language-Team: Korean (Korea) (https://app.transifex.com/tonio/teams/13749/ko_KR/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: ko_KR\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: src/components/account/APISetupForm.vue:4
+msgid "Your API token has not been generated yet."
+msgstr "API 토큰이 아직 생성되지 않았습니다."
+
+#: src/components/account/APISetupForm.vue:13
+msgid "Generate"
+msgstr "생성"
+
+#: src/components/account/APISetupForm.vue:20
+msgid "Your API token is:"
+msgstr "사용자의 API 토큰:"
+
+#: src/components/account/APISetupForm.vue:28
+msgid "Copy token to clipboard"
+msgstr "토큰을 클립보드에 복사"
+
+#: src/components/account/APISetupForm.vue:38
+msgid "Delete token"
+msgstr "토큰 삭제"
+
+#: src/components/account/APISetupForm.vue:45
+msgid "A documentation of the API is available"
+msgstr "API 문서를 사용할 수 있습니다"
+
+#: src/components/account/APISetupForm.vue:46
+#: src/components/account/ProfileForm.vue:28
+msgid "here"
+msgstr "여기"
+
+#: src/components/account/APISetupForm.vue:73
+msgid "API token copied to your clipboard"
+msgstr "API 토큰이 클립보드에 복사되었습니다"
+
+#: src/components/account/APISetupForm.vue:85
+msgid "API token created"
+msgstr "API 토큰이 생성되었습니다"
+
+#: src/components/account/APISetupForm.vue:94
+#: src/components/account/FidoAuthForm.vue:184
+#: src/components/admin/domains/DNSDetail.vue:258
+#: src/components/admin/domains/DomainList.vue:300
+#: src/components/admin/identities/IdentityList.vue:482
+#: src/components/admin/identities/IdentityList.vue:522
+#: src/components/tools/CreationForm.vue:135
+#: src/layouts/webmail/WebmailLayout.vue:201
+#: src/views/calendars/CalendarView.vue:535
+msgid "Warning"
+msgstr "경고"
+
+#: src/components/account/APISetupForm.vue:95
+msgid "You are about to delete your API access token"
+msgstr "API 액세스 토큰을 삭제하려고 합니다"
+
+#: src/components/account/APISetupForm.vue:98
+#: src/components/account/FidoAuthForm.vue:210
+#: src/components/account/FilterForm.vue:147
+#: src/components/account/FilterSetForm.vue:24
+#: src/components/admin/domains/DomainEditForm.vue:161
+#: src/components/admin/domains/DomainPolicyForm.vue:93
+#: src/components/admin/identities/AccountEditForm.vue:212
+#: src/components/admin/identities/AliasEditForm.vue:69
+#: src/components/admin/imap_migration/ProviderForm.vue:58
+#: src/components/tools/ConfirmDialog.vue:55
+msgid "Cancel"
+msgstr "취소"
+
+#: src/components/account/APISetupForm.vue:99
+msgid "Proceed"
+msgstr "진행"
+
+#: src/components/account/APISetupForm.vue:107
+msgid "API token deleted"
+msgstr "API 토큰이 삭제되었습니다"
+
+#: src/components/account/AutoReplyForm.vue:7
+#: src/components/admin/domains/DomainCreationForm.vue:167
+#: src/components/admin/domains/DomainList.vue:212
+#: src/components/admin/domains/DomainSummary.vue:68
+#: src/components/admin/domains/form_steps/DomainGeneralForm.vue:20
+#: src/components/admin/identities/AccountCreationForm.vue:112
+#: src/components/admin/identities/AccountEditForm.vue:45
+#: src/components/admin/identities/AccountSummary.vue:41
+#: src/components/admin/identities/AliasEditForm.vue:21
+#: src/components/admin/identities/AliasSummary.vue:16
+#: src/components/admin/identities/form_steps/AccountGeneralForm.vue:46
+#: src/components/admin/identities/form_steps/AliasGeneralForm.vue:53
+#: src/components/admin/identities/IdentityList.vue:235
+#: src/components/admin/identities/IdentityList.vue:274
+msgid "Enabled"
+msgstr "활성화됨"
+
+#: src/components/account/AutoReplyForm.vue:12
+#: src/components/quarantine/QuarantineList.vue:49
+#: src/components/quarantine/QuarantineList.vue:235
+#: src/components/webmail/ComposeEmailForm.vue:158
+msgid "Subject"
+msgstr "제목"
+
+#: src/components/account/AutoReplyForm.vue:20
+msgid "Content"
+msgstr "내용"
+
+#: src/components/account/AutoReplyForm.vue:24
+msgid ""
+"The content of your answer. You can use the following variables, which will "
+"be automatically replaced by the appropriate value: %(name)s, %(fromdate)s, "
+"%(untildate)s"
+msgstr ""
+"답변 내용입니다. 다음 변수들을 사용할 수 있으며, 시스템에서 적절한 값으로 자동 치환됩니다: %(name)s, %(fromdate)s,"
+" %(untildate)s"
+
+#: src/components/account/AutoReplyForm.vue:36
+#: src/components/admin/logs/MessageList.vue:50
+#: src/components/calendars/EventForm.vue:24
+#: src/components/quarantine/QuarantineList.vue:234
+#: src/components/tools/TimeSerieChart.vue:19
+#: src/components/webmail/ComposeEmailForm.vue:48
+msgid "From"
+msgstr "보낸 사람"
+
+#: src/components/account/AutoReplyForm.vue:39
+msgid "Activate your auto reply from this date"
+msgstr "이 날짜부터 자동 응답 활성화"
+
+#: src/components/account/AutoReplyForm.vue:47
+msgid "Until"
+msgstr "종료"
+
+#: src/components/account/AutoReplyForm.vue:50
+msgid "Activate your auto reply until this date"
+msgstr "이 날짜까지 자동 응답 활성화"
+
+#: src/components/account/AutoReplyForm.vue:58
+msgid "Update auto-reply"
+msgstr "자동 응답 업데이트"
+
+#: src/components/account/AutoReplyForm.vue:95
+msgid "Auto-reply message updated"
+msgstr "자동 응답 메시지가 업데이트되었습니다"
+
+#: src/components/account/BackupCodeAuthForm.vue:6
+msgid "Backup codes"
+msgstr "백업 코드"
+
+#: src/components/account/BackupCodeAuthForm.vue:13
+msgid ""
+"You already have generated backup codes for this account. If you don't "
+"remember them or have used them all, you can generate new ones."
+msgstr "이 계정에 대해 이미 백업 코드가 생성되었습니다. 기억나지 않거나 모두 사용한 경우 새로 생성할 수 있습니다."
+
+#: src/components/account/BackupCodeAuthForm.vue:19
+#: src/components/account/ProfileForm.vue:69
+#: src/components/account/TotpAuthForm.vue:84
+#: src/components/admin/identities/form_steps/AccountPasswordSubForm.vue:54
+msgid "Password"
+msgstr "비밀번호"
+
+#: src/components/account/BackupCodeAuthForm.vue:35
+msgid "Reset recovery codes"
+msgstr "복구 코드 재설정"
+
+#: src/components/account/BackupCodeAuthForm.vue:43
+msgid "No two-factor authentificator is yet set for your account."
+msgstr "계정에 아직 2단계 인증이 설정되지 않았습니다."
+
+#: src/components/account/FidoAuthForm.vue:6
+msgid "WebAuthn"
+msgstr "WebAuthn"
+
+#: src/components/account/FidoAuthForm.vue:14
+msgid ""
+"You don't have any WebAuthN device registered as a second authentication "
+"method."
+msgstr "두 번째 인증 수단으로 등록된 WebAuthN 장치가 없습니다."
+
+#: src/components/account/FidoAuthForm.vue:21
+msgid "Registered Webauthn devices"
+msgstr "등록된 Webauthn 장치"
+
+#: src/components/account/FidoAuthForm.vue:32
+msgid "Never"
+msgstr "사용 안 함"
+
+#: src/components/account/FidoAuthForm.vue:55
+msgid "Enter a name to register a new webauthn device."
+msgstr "새 Webauthn 장치를 등록하기 위한 이름을 입력하세요."
+
+#: src/components/account/FidoAuthForm.vue:61
+msgid "New device name"
+msgstr "새 장치 이름"
+
+#: src/components/account/FidoAuthForm.vue:69
+msgid "Setup device"
+msgstr "장치 설정"
+
+#: src/components/account/FidoAuthForm.vue:76
+msgid "Your browser does not seem compatible with WebAuthN"
+msgstr "브라우저가 WebAuthN과 호환되지 않는 것 같습니다."
+
+#: src/components/account/FidoAuthForm.vue:92
+msgid "name"
+msgstr "이름"
+
+#: src/components/account/FidoAuthForm.vue:130
+#: src/components/account/FilterForm.vue:7
+#: src/components/account/FilterSetForm.vue:9
+#: src/components/admin/domains/DNSDetail.vue:188
+#: src/components/admin/domains/DomainAdminList.vue:112
+#: src/components/admin/domains/DomainAliasForm.vue:8
+#: src/components/admin/domains/DomainCreationForm.vue:164
+#: src/components/admin/domains/DomainList.vue:211
+#: src/components/admin/domains/form_steps/DomainOptionsForm.vue:11
+#: src/components/admin/identities/IdentityList.vue:265
+#: src/components/admin/imap_migration/ProviderCreationForm.vue:53
+#: src/components/admin/imap_migration/ProvidersList.vue:114
+#: src/components/calendars/CalendarForm.vue:15
+#: src/components/contacts/CategoryForm.vue:10
+#: src/components/webmail/MailboxForm.vue:7
+#: src/views/account/FiltersView.vue:149
+#: src/views/admin/InformationView.vue:145
+msgid "Name"
+msgstr "이름"
+
+#: src/components/account/FidoAuthForm.vue:131
+msgid "Added On"
+msgstr "추가일"
+
+#: src/components/account/FidoAuthForm.vue:132
+msgid "Last Used"
+msgstr "마지막 사용"
+
+#: src/components/account/FidoAuthForm.vue:133
+msgid "Use count"
+msgstr "사용 횟수"
+
+#: src/components/account/FidoAuthForm.vue:134
+#: src/components/account/FilterForm.vue:76
+#: src/components/admin/alarms/AlarmList.vue:33
+#: src/components/admin/alarms/AlarmList.vue:108
+#: src/components/admin/domains/DomainList.vue:40
+#: src/components/admin/domains/DomainList.vue:235
+#: src/components/admin/identities/IdentityList.vue:47
+#: src/components/admin/identities/IdentityList.vue:345
+#: src/components/admin/imap_migration/MigrationsList.vue:34
+#: src/components/admin/imap_migration/MigrationsList.vue:90
+#: src/components/admin/imap_migration/ProvidersList.vue:36
+#: src/components/admin/imap_migration/ProvidersList.vue:120
+#: src/components/contacts/ContactList.vue:222
+msgid "Actions"
+msgstr "작업"
+
+#: src/components/account/FidoAuthForm.vue:171
+msgid "Failed to register the webAuthN device"
+msgstr "WebAuthN 장치 등록 실패"
+
+#: src/components/account/FidoAuthForm.vue:185
+msgid "Do you really want to delete this WebAuthn device?"
+msgstr "정말로 이 WebAuthn 장치를 삭제하시겠습니까?"
+
+#: src/components/account/FidoAuthForm.vue:188
+#: src/components/admin/domains/DNSDetail.vue:244
+#: src/components/admin/domains/DNSDetail.vue:264
+#: src/components/admin/domains/DomainList.vue:306
+#: src/components/admin/identities/IdentityList.vue:487
+#: src/components/admin/identities/IdentityList.vue:527
+#: src/components/tools/CreationForm.vue:142
+#: src/layouts/webmail/WebmailLayout.vue:206
+msgid "No"
+msgstr "아니요"
+
+#: src/components/account/FidoAuthForm.vue:189
+#: src/components/admin/domains/DNSDetail.vue:245
+#: src/components/admin/domains/DNSDetail.vue:265
+#: src/components/admin/domains/DomainList.vue:307
+#: src/components/admin/identities/IdentityList.vue:486
+#: src/components/admin/identities/IdentityList.vue:526
+#: src/components/tools/CreationForm.vue:141
+#: src/layouts/webmail/WebmailLayout.vue:205
+msgid "Yes"
+msgstr "예"
+
+#: src/components/account/FidoAuthForm.vue:206
+msgid "Edition"
+msgstr "편집"
+
+#: src/components/account/FidoAuthForm.vue:207
+msgid "Edit your device"
+msgstr "장치 편집"
+
+#: src/components/account/FidoAuthForm.vue:211
+#: src/components/admin/domains/DomainEditForm.vue:170
+#: src/components/admin/identities/AccountEditForm.vue:221
+#: src/components/admin/identities/AliasEditForm.vue:78
+#: src/components/admin/imap_migration/ProviderForm.vue:66
+#: src/components/calendars/EventForm.vue:95
+#: src/views/account/FiltersView.vue:100
+msgid "Save"
+msgstr "저장"
+
+#: src/components/account/FilterForm.vue:14
+msgid "Conditions"
+msgstr "조건"
+
+#: src/components/account/FilterForm.vue:16
+msgid "All of the following"
+msgstr "다음 조건 모두 일치"
+
+#: src/components/account/FilterForm.vue:17
+msgid "Any of the following"
+msgstr "다음 조건 중 하나라도 일치"
+
+#: src/components/account/FilterForm.vue:18
+msgid "All messages"
+msgstr "모든 메시지"
+
+#: src/components/account/FilterForm.vue:28
+msgid "Choose a header"
+msgstr "헤더 선택"
+
+#: src/components/account/FilterForm.vue:38
+msgid "Choose an operator"
+msgstr "연산자 선택"
+
+#: src/components/account/FilterForm.vue:49
+msgid "Value"
+msgstr "값"
+
+#: src/components/account/FilterForm.vue:60
+msgid "Add condition"
+msgstr "조건 추가"
+
+#: src/components/account/FilterForm.vue:68
+msgid "Remove condition"
+msgstr "조건 제거"
+
+#: src/components/account/FilterForm.vue:84
+msgid "Choose an action"
+msgstr "작업 선택"
+
+#: src/components/account/FilterForm.vue:127
+msgid "Add action"
+msgstr "작업 추가"
+
+#: src/components/account/FilterForm.vue:135
+msgid "Remove action"
+msgstr "작업 제거"
+
+#: src/components/account/FilterForm.vue:192
+msgid "Edit filter"
+msgstr "필터 편집"
+
+#: src/components/account/FilterForm.vue:192
+msgid "New filter"
+msgstr "새 필터"
+
+#: src/components/account/FilterForm.vue:195
+#: src/components/account/ForwardForm.vue:25
+#: src/components/admin/domains/DomainAliasForm.vue:75
+#: src/components/calendars/CalendarForm.vue:81
+#: src/components/contacts/CategoryForm.vue:60
+#: src/components/contacts/ContactCategoriesForm.vue:24
+#: src/components/contacts/ContactForm.vue:185
+#: src/components/webmail/MailboxForm.vue:79
+msgid "Update"
+msgstr "업데이트"
+
+#: src/components/account/FilterForm.vue:195
+#: src/components/account/FilterSetForm.vue:30
+#: src/components/calendars/CalendarForm.vue:83
+#: src/components/webmail/MailboxForm.vue:79
+msgid "Create"
+msgstr "생성"
+
+#: src/components/account/FilterForm.vue:300
+msgid "Filter added"
+msgstr "필터가 추가되었습니다"
+
+#: src/components/account/FilterForm.vue:303
+msgid "Filter updated"
+msgstr "필터가 업데이트되었습니다"
+
+#: src/components/account/FilterSetForm.vue:3
+msgid "Create a new filter set"
+msgstr "새 필터 세트 생성"
+
+#: src/components/account/FilterSetForm.vue:14
+#: src/views/account/FiltersView.vue:150
+msgid "Active"
+msgstr "활성"
+
+#: src/components/account/FilterSetForm.vue:66
+msgid "Filter set created"
+msgstr "필터 세트가 생성되었습니다"
+
+#: src/components/account/ForwardForm.vue:4
+msgid "Recipient(s)"
+msgstr "수신자"
+
+#: src/components/account/ForwardForm.vue:8
+msgid "Indicate one or more recipients separated by a comma (,)"
+msgstr "쉼표(,)로 구분된 하나 이상의 수신자를 입력하세요."
+
+#: src/components/account/ForwardForm.vue:16
+msgid "Keep local copies"
+msgstr "로컬 사본 유지"
+
+#: src/components/account/ForwardForm.vue:18
+msgid "Forward messages and store copies into your local mailbox"
+msgstr "메시지를 전달하고 로컬 사서함에 사본을 저장합니다."
+
+#: src/components/account/ForwardForm.vue:49
+msgid "Forward updated"
+msgstr "전달 설정이 업데이트되었습니다"
+
+#: src/components/account/ProfileForm.vue:5
+msgid "General settings"
+msgstr "일반 설정"
+
+#: src/components/account/ProfileForm.vue:9
+#: src/components/admin/identities/AccountCreationForm.vue:101
+#: src/components/admin/identities/form_steps/AccountGeneralForm.vue:18
+#: src/components/admin/identities/IdentityList.vue:267
+#: src/components/contacts/ContactForm.vue:12
+#: src/components/contacts/ContactList.vue:219
+msgid "First name"
+msgstr "이름"
+
+#: src/components/account/ProfileForm.vue:15
+#: src/components/admin/identities/AccountCreationForm.vue:104
+#: src/components/admin/identities/form_steps/AccountGeneralForm.vue:25
+#: src/components/contacts/ContactForm.vue:22
+#: src/components/contacts/ContactList.vue:220
+msgid "Last name"
+msgstr "성"
+
+#: src/components/account/ProfileForm.vue:22
+#: src/components/admin/identities/AccountSummary.vue:27
+#: src/components/admin/identities/form_steps/AccountProfileForm.vue:3
+#: src/components/admin/identities/IdentityList.vue:281
+msgid "Language"
+msgstr "언어"
+
+#: src/components/account/ProfileForm.vue:24
+msgid "Feel free to improve the translations"
+msgstr "번역 개선에 자유롭게 참여해 주세요"
+
+#: src/components/account/ProfileForm.vue:30
+msgid "or suggest a new language"
+msgstr "또는 새로운 언어를 제안해 주세요"
+
+#: src/components/account/ProfileForm.vue:34
+msgid "there"
+msgstr "여기"
+
+#: src/components/account/ProfileForm.vue:47
+#: src/components/account/ProfileForm.vue:50
+#: src/components/admin/identities/AccountSummary.vue:37
+#: src/components/admin/identities/form_steps/AccountProfileForm.vue:13
+#: src/components/admin/identities/IdentityList.vue:283
+#: src/components/contacts/PhoneNumberField.vue:5
+msgid "Phone number"
+msgstr "전화번호"
+
+#: src/components/account/ProfileForm.vue:54
+#: src/components/admin/identities/AccountSummary.vue:33
+#: src/components/admin/identities/form_steps/AccountProfileForm.vue:19
+#: src/components/admin/identities/IdentityList.vue:287
+msgid "Secondary email"
+msgstr "보조 이메일"
+
+#: src/components/account/ProfileForm.vue:62
+msgid "Update settings"
+msgstr "설정 업데이트"
+
+#: src/components/account/ProfileForm.vue:79
+msgid "Update Password"
+msgstr "비밀번호 변경"
+
+#: src/components/account/ProfileForm.vue:130
+msgid "Profile updated"
+msgstr "프로필이 업데이트되었습니다"
+
+#: src/components/account/ProfileForm.vue:132
+msgid "Language does no exist"
+msgstr "언어가 존재하지 않습니다"
+
+#: src/components/account/ProfileForm.vue:149
+msgid "Password updated"
+msgstr "비밀번호가 업데이트되었습니다"
+
+#: src/components/account/RecoveryCodesResetDialog.vue:4
+msgid "New recovery codes"
+msgstr "새 복구 코드"
+
+#: src/components/account/RecoveryCodesResetDialog.vue:9
+#: src/components/account/TotpAuthForm.vue:61
+msgid ""
+"The following recovery codes can be used one time each to let you regain "
+"access to your account, in case you lose your phone for example. Make sure "
+"to save them in a safe place, otherwise you won't be able to access your "
+"account anymore."
+msgstr ""
+"다음 복구 코드는 휴대폰을 분실한 경우 등을 위해 계정 액세스 권한을 되찾는 용도로 각각 한 번씩 사용할 수 있습니다. 안전한 곳에 "
+"저장해 두지 않으면 더 이상 계정에 액세스할 수 없게 되니 주의하십시오."
+
+#: src/components/account/RecoveryCodesResetDialog.vue:25
+#: src/components/admin/domains/DNSBLSummary.vue:27
+#: src/components/admin/domains/DomainAdminList.vue:74
+#: src/components/admin/domains/DomainAliasForm.vue:33
+#: src/components/admin/domains/DomainDKIMKey.vue:37
+#: src/components/admin/domains/DomainDNSConfig.vue:80
+#: src/components/calendars/CalendarAccessRulesForm.vue:77
+#: src/components/calendars/CalendarDetail.vue:37
+#: src/components/calendars/CalendarForm.vue:37
+#: src/components/calendars/EventForm.vue:93
+#: src/components/calendars/ImportEventsForm.vue:27
+#: src/components/contacts/AddressBookInfo.vue:27
+#: src/components/contacts/CategoryForm.vue:22
+#: src/components/contacts/ContactCategoriesForm.vue:21
+#: src/components/contacts/ContactForm.vue:148
+#: src/components/tools/ImportForm.vue:51
+#: src/components/webmail/AttachmentsDialog.vue:41
+#: src/components/webmail/EmailList.vue:226
+#: src/components/webmail/EmailSchedulingForm.vue:28
+#: src/components/webmail/MailboxForm.vue:29
+#: src/layouts/connected/ConnectedLayout.vue:19
+#: src/views/webmail/EmailView.vue:158
+msgid "Close"
+msgstr "닫기"
+
+#: src/components/account/TotpAuthForm.vue:6
+msgid "One-time passwords"
+msgstr "일회용 비밀번호"
+
+#: src/components/account/TotpAuthForm.vue:24
+msgid "Click here to copy the key"
+msgstr "키를 복사하려면 여기를 클릭하세요"
+
+#: src/components/account/TotpAuthForm.vue:34
+msgid ""
+"Install a soft token authenticator like FreeOTP or Google Authenticator from"
+" your application repository and use that app to scan this QR code."
+msgstr "앱 스토어에서 FreeOTP나 Google OTP와 같은 인증 앱을 설치한 후 이 QR 코드를 스캔하세요."
+
+#: src/components/account/TotpAuthForm.vue:39
+msgid "Pin code"
+msgstr "핀 코드"
+
+#: src/components/account/TotpAuthForm.vue:45
+msgid "Register"
+msgstr "등록"
+
+#: src/components/account/TotpAuthForm.vue:53
+msgid ""
+"Congratulations! Two-factor authentication using one-time passwords is now "
+"enabled for your account."
+msgstr "축하합니다! 이제 사용자 계정에 일회용 비밀번호를 사용한 2단계 인증이 활성화되었습니다."
+
+#: src/components/account/TotpAuthForm.vue:78
+msgid ""
+"Two-factor authentication using one-time passwords is enabled for your "
+"account."
+msgstr "계정에 일회용 비밀번호를 사용한 2단계 인증이 활성화되어 있습니다."
+
+#: src/components/account/TotpAuthForm.vue:101
+msgid "Disable 2FA"
+msgstr "2단계 인증 비활성화"
+
+#: src/components/account/TotpAuthForm.vue:109
+msgid ""
+"Two-factor authentication (2FA) using one-time passwords is not yet "
+"activated for your account."
+msgstr "계정에 일회용 비밀번호를 사용한 2단계 인증(2FA)이 아직 활성화되지 않았습니다."
+
+#: src/components/account/TotpAuthForm.vue:115
+msgid "Register authenticator"
+msgstr "인증기 등록"
+
+#: src/components/admin/alarms/AlarmList.vue:22
+#: src/components/admin/domains/DomainList.vue:24
+#: src/components/admin/identities/IdentityList.vue:24
+#: src/components/admin/imap_migration/ProvidersList.vue:20
+#: src/components/admin/logs/AuditTrailList.vue:17
+#: src/components/admin/logs/MessageList.vue:17
+#: src/components/contacts/ContactList.vue:22
+msgid "Search"
+msgstr "검색"
+
+#: src/components/admin/alarms/AlarmList.vue:45
+msgid "Opened"
+msgstr "열림"
+
+#: src/components/admin/alarms/AlarmList.vue:48
+msgid "Closed"
+msgstr "닫힘"
+
+#: src/components/admin/alarms/AlarmList.vue:102
+msgid "Triggered"
+msgstr "트리거됨"
+
+#: src/components/admin/alarms/AlarmList.vue:103
+#: src/components/admin/logs/MessageList.vue:48
+msgid "Status"
+msgstr "상태"
+
+#: src/components/admin/alarms/AlarmList.vue:104
+#: src/components/admin/domains/form_steps/DomainGeneralForm.vue:61
+#: src/components/admin/identities/form_steps/AliasGeneralForm.vue:21
+#: src/views/admin/domains/DomainsView.vue:23
+#: src/views/admin/domains/DomainView.vue:6
+msgid "Domain"
+msgstr "도메인"
+
+#: src/components/admin/alarms/AlarmList.vue:105
+#: src/components/admin/identities/AccountCreationForm.vue:122
+#: src/components/admin/identities/AccountCreationForm.vue:176
+#: src/components/admin/identities/AccountEditForm.vue:98
+msgid "Mailbox"
+msgstr "사서함"
+
+#: src/components/admin/alarms/AlarmList.vue:106
+#: src/components/admin/logs/AuditTrailList.vue:54
+msgid "Message"
+msgstr "메시지"
+
+#: src/components/admin/alarms/AlarmList.vue:125
+#: src/components/admin/alarms/AlarmList.vue:142
+#: src/components/admin/domains/DomainAliasForm.vue:41
+#: src/components/admin/domains/DomainList.vue:362
+#: src/components/admin/identities/IdentityList.vue:442
+#: src/components/admin/identities/IdentityList.vue:454
+#: src/components/admin/identities/IdentityList.vue:467
+#: src/components/admin/imap_migration/MigrationsList.vue:130
+#: src/components/admin/imap_migration/ProvidersList.vue:146
+#: src/components/calendars/EventForm.vue:90
+#: src/components/contacts/CategoryForm.vue:18
+#: src/components/contacts/ContactList.vue:237
+#: src/components/webmail/EmailList.vue:286
+#: src/views/account/FiltersView.vue:351
+#: src/views/calendars/CalendarView.vue:209
+msgid "Delete"
+msgstr "삭제"
+
+#: src/components/admin/alarms/AlarmList.vue:132
+msgid "Reload"
+msgstr "새로고침"
+
+#: src/components/admin/alarms/AlarmList.vue:149
+msgid "Close alarm"
+msgstr "알람 닫기"
+
+#: src/components/admin/alarms/AlarmList.vue:156
+msgid "Reopen alarm"
+msgstr "알람 다시 열기"
+
+#: src/components/admin/alarms/AlarmList.vue:189
+msgid "Alarm deleted"
+msgstr "알람이 삭제되었습니다."
+
+#: src/components/admin/alarms/AlarmList.vue:196
+msgid "Alarms deleted"
+msgstr "알람들이 삭제되었습니다."
+
+#: src/components/admin/alarms/AlarmList.vue:204
+msgid "Alarm closed"
+msgstr "알람이 닫혔습니다."
+
+#: src/components/admin/alarms/AlarmList.vue:212
+msgid "Alarm re-opened"
+msgstr "알람이 다시 열렸습니다."
+
+#: src/components/admin/dashboard/GlobalStatisticsWidget.vue:2
+#: src/layouts/admin/AdminLayout.vue:74
+#: src/views/admin/domains/DomainView.vue:25
+#: src/views/admin/monitoring/StatisticsView.vue:3
+msgid "Statistics"
+msgstr "통계"
+
+#: src/components/admin/dashboard/GlobalStatisticsWidget.vue:7
+msgid "Domain count"
+msgstr "도메인 수"
+
+#: src/components/admin/dashboard/GlobalStatisticsWidget.vue:11
+msgid "Domain alias count"
+msgstr "도메인 별칭 수"
+
+#: src/components/admin/dashboard/GlobalStatisticsWidget.vue:15
+msgid "Account count"
+msgstr "계정 수"
+
+#: src/components/admin/dashboard/GlobalStatisticsWidget.vue:19
+msgid "Alias count"
+msgstr "별칭 수"
+
+#: src/components/admin/dashboard/NewsFeedWidget.vue:2
+msgid "Latest news"
+msgstr "최신 뉴스"
+
+#: src/components/admin/dashboard/NewsFeedWidget.vue:21
+msgid "Visit the official weblog for more information"
+msgstr "더 많은 정보를 보려면 공식 블로그를 방문하세요."
+
+#: src/components/admin/dmarc/DmarcAligmentChart.vue:5
+msgid "Alignment"
+msgstr "정렬(Alignment)"
+
+#: src/components/admin/dmarc/DmarcAligmentChart.vue:45
+msgid "Detail"
+msgstr "상세 정보"
+
+#: src/components/admin/dmarc/DmarcAligmentChart.vue:48
+msgid "Trusted sources"
+msgstr "신뢰할 수 있는 소스"
+
+#: src/components/admin/dmarc/DmarcAligmentChart.vue:54
+msgid "Partially trusted sources / Forwarders"
+msgstr "부분 신뢰 소스 / 전달자(Forwarder)"
+
+#: src/components/admin/dmarc/DmarcAligmentChart.vue:61
+msgid "Forwarders with ARC"
+msgstr "ARC를 포함한 전달자"
+
+#: src/components/admin/dmarc/DmarcAligmentChart.vue:68
+msgid "Unknown sources / Threats"
+msgstr "알 수 없는 소스 / 위협"
+
+#: src/components/admin/dmarc/DmarcAligmentChart.vue:89
+msgid "DMARC support does not seem to be enabled for this domain."
+msgstr "이 도메인에 DMARC 지원이 활성화되지 않은 것 같습니다."
+
+#: src/components/admin/dmarc/DmarcAligmentChart.vue:94
+msgid ""
+"If you configured it recently, please wait for the first report to be "
+"received and processed."
+msgstr "최근에 설정하셨다면, 첫 번째 보고서가 수신되고 처리될 때까지 기다려 주십시오."
+
+#: src/components/admin/dmarc/DmarcAligmentChart.vue:127
+#: src/components/admin/dmarc/DmarcAligmentChart.vue:143
+msgid "Fully aligned"
+msgstr "완전 일치"
+
+#: src/components/admin/dmarc/DmarcAligmentChart.vue:128
+#: src/components/admin/dmarc/DmarcAligmentChart.vue:148
+msgid "Partially aligned"
+msgstr "부분 일치"
+
+#: src/components/admin/dmarc/DmarcAligmentChart.vue:129
+#: src/components/admin/dmarc/DmarcAligmentChart.vue:151
+msgid "Forwarded"
+msgstr "전달됨"
+
+#: src/components/admin/dmarc/DmarcAligmentChart.vue:130
+#: src/components/admin/dmarc/DmarcAligmentChart.vue:152
+msgid "Failed"
+msgstr "실패"
+
+#: src/components/admin/dmarc/DmarcAligmentChart.vue:140
+#: src/components/admin/dmarc/DmarcSourceTable.vue:12
+msgid "Total"
+msgstr "합계"
+
+#: src/components/admin/domains/DNSBLSummary.vue:5
+msgid "DNSBL summary for "
+msgstr "DNSBL 요약: "
+
+#: src/components/admin/domains/DNSBLSummary.vue:10
+msgid ""
+"IP address %{ address } is currently listed by the following DNSBL "
+"providers:"
+msgstr "IP 주소 %{ address }가 현재 다음 DNSBL 제공업체 목록에 등록되어 있습니다:"
+
+#: src/components/admin/domains/DNSDetail.vue:8
+msgid "DNS configuration help"
+msgstr "DNS 설정 도움말"
+
+#: src/components/admin/domains/DNSDetail.vue:20
+#: src/components/admin/domains/DNSDetail.vue:51
+#: src/components/admin/domains/DNSStatusChip.vue:21
+msgid "Pending"
+msgstr "대기 중"
+
+#: src/components/admin/domains/DNSDetail.vue:46
+#: src/components/admin/domains/DomainDNSConfig.vue:71
+msgid "Auto configuration"
+msgstr "자동 설정"
+
+#: src/components/admin/domains/DNSDetail.vue:61
+msgid "autoconfig record (Mozilla): %{ value }"
+msgstr "자동 설정 레코드 (Mozilla): %{ value }"
+
+#: src/components/admin/domains/DNSDetail.vue:67
+msgid "autoconfig record (Mozilla) not found"
+msgstr "자동 설정 레코드 (Mozilla)를 찾을 수 없음"
+
+#: src/components/admin/domains/DNSDetail.vue:73
+msgid "autodiscover record (Microsoft): %{ value }"
+msgstr "자동 검색(Autodiscover) 레코드 (Microsoft): %{ value }"
+
+#: src/components/admin/domains/DNSDetail.vue:79
+msgid "autodiscover record (Microsoft) not found"
+msgstr "자동 검색(Autodiscover) 레코드 (Microsoft)를 찾을 수 없음"
+
+#: src/components/admin/domains/DNSDetail.vue:83
+msgid "Authentication"
+msgstr "인증"
+
+#: src/components/admin/domains/DNSDetail.vue:87
+msgid "SPF record found"
+msgstr "SPF 레코드 발견됨"
+
+#: src/components/admin/domains/DNSDetail.vue:90
+msgid "SPF record not found"
+msgstr "SPF 레코드를 찾을 수 없음"
+
+#: src/components/admin/domains/DNSDetail.vue:95
+msgid "DKIM record found"
+msgstr "DKIM 레코드 발견됨"
+
+#: src/components/admin/domains/DNSDetail.vue:98
+msgid "DKIM record not found"
+msgstr "DKIM 레코드를 찾을 수 없음"
+
+#: src/components/admin/domains/DNSDetail.vue:103
+msgid "DMARC record found"
+msgstr "DMARC 레코드 발견됨"
+
+#: src/components/admin/domains/DNSDetail.vue:106
+msgid "DMARC record not found"
+msgstr "DMARC 레코드를 찾을 수 없음"
+
+#: src/components/admin/domains/DNSDetail.vue:114
+msgid "DKIM key"
+msgstr "DKIM 키"
+
+#: src/components/admin/domains/DNSDetail.vue:119
+msgid "Show key"
+msgstr "키 표시"
+
+#: src/components/admin/domains/DNSDetail.vue:125
+msgid "Copy key to clipboard"
+msgstr "키를 클립보드에 복사"
+
+#: src/components/admin/domains/DNSDetail.vue:130
+msgid "Generate a new DKIM key"
+msgstr "새 DKIM 키 생성"
+
+#: src/components/admin/domains/DNSDetail.vue:137
+msgid "Not generated"
+msgstr "생성되지 않음"
+
+#: src/components/admin/domains/DNSDetail.vue:189
+#: src/components/admin/identities/AccountSenderAddresses.vue:73
+#: src/components/admin/identities/AliasCreationForm.vue:60
+#: src/components/admin/identities/AliasEditForm.vue:16
+#: src/components/admin/identities/IdentityList.vue:234
+#: src/components/admin/imap_migration/ProviderCreationForm.vue:54
+#: src/components/admin/imap_migration/ProvidersList.vue:115
+#: src/components/contacts/ContactForm.vue:85
+#: src/components/contacts/EmailField.vue:5
+msgid "Address"
+msgstr "주소"
+
+#: src/components/admin/domains/DNSDetail.vue:190
+msgid "Updated"
+msgstr "업데이트됨"
+
+#: src/components/admin/domains/DNSDetail.vue:203
+msgid "DKIM key copied to clipboard"
+msgstr "DKIM 키가 클립보드에 복사되었습니다."
+
+#: src/components/admin/domains/DNSDetail.vue:216
+msgid ""
+"A new key will be generated soon. Refresh the page in a moment to see it."
+msgstr "새 키가 곧 생성됩니다. 잠시 후 페이지를 새로고침하여 확인하십시오."
+
+#: src/components/admin/domains/DNSDetail.vue:238
+msgid "warning"
+msgstr "경고"
+
+#: src/components/admin/domains/DNSDetail.vue:239
+msgid ""
+"DKIM key does not seem to be generated yet or has failed. Do you want to "
+"requeue the job?"
+msgstr "DKIM 키가 아직 생성되지 않았거나 실패한 것 같습니다. 작업을 다시 대기열에 추가하시겠습니까?"
+
+#: src/components/admin/domains/DNSDetail.vue:259
+msgid ""
+"DKIM keys already exist for this domain. Do you want to overwrite them?"
+msgstr "이 도메인에 대한 DKIM 키가 이미 존재합니다. 덮어쓰시겠습니까?"
+
+#: src/components/admin/domains/DNSStatusChip.vue:18
+msgid "Disabled"
+msgstr "비활성화됨"
+
+#: src/components/admin/domains/DNSStatusChip.vue:24
+msgid "Problem"
+msgstr "문제"
+
+#: src/components/admin/domains/DNSStatusChip.vue:27
+msgid "Valid"
+msgstr "유효함"
+
+#: src/components/admin/domains/DNSStatusChip.vue:29
+msgid "Unknown"
+msgstr "알 수 없음"
+
+#: src/components/admin/domains/DomainAdminList.vue:6
+msgid "Administrators of"
+msgstr "다음의 관리자: "
+
+#: src/components/admin/domains/DomainAdminList.vue:9
+#: src/components/admin/domains/DomainList.vue:352
+msgid "Administrators"
+msgstr "관리자"
+
+#: src/components/admin/domains/DomainAdminList.vue:21
+msgid "Select an account"
+msgstr "계정 선택"
+
+#: src/components/admin/domains/DomainAdminList.vue:50
+msgid "Remove this administrator"
+msgstr "이 관리자 제거"
+
+#: src/components/admin/domains/DomainAdminList.vue:69
+msgid "Add administrator"
+msgstr "관리자 추가"
+
+#: src/components/admin/domains/DomainAdminList.vue:111
+#: src/components/admin/identities/AccountCreationForm.vue:99
+#: src/components/admin/identities/form_steps/AccountGeneralForm.vue:3
+msgid "Username"
+msgstr "사용자 이름"
+
+#: src/components/admin/domains/DomainAdminList.vue:161
+msgid "Administrator added"
+msgstr "관리자가 추가되었습니다."
+
+#: src/components/admin/domains/DomainAdminList.vue:170
+msgid "Administrator removed"
+msgstr "관리자가 제거되었습니다."
+
+#: src/components/admin/domains/DomainAliasForm.vue:15
+msgid "Choose a domain"
+msgstr "도메인 선택"
+
+#: src/components/admin/domains/DomainAliasForm.vue:75
+#: src/components/contacts/CategoryForm.vue:60
+#: src/components/contacts/ContactForm.vue:185
+#: src/components/contacts/ContactList.vue:31
+msgid "Add"
+msgstr "추가"
+
+#: src/components/admin/domains/DomainAliasForm.vue:80
+msgid "Edit domain alias"
+msgstr "도메인 별칭 편집"
+
+#: src/components/admin/domains/DomainAliasForm.vue:81
+msgid "Add a new domain alias"
+msgstr "새 도메인 별칭 추가"
+
+#: src/components/admin/domains/DomainAliasForm.vue:88
+msgid "Domain alias deleted"
+msgstr "도메인 별칭이 삭제되었습니다."
+
+#: src/components/admin/domains/DomainAliasForm.vue:118
+msgid "Domain alias created"
+msgstr "도메인 별칭이 생성되었습니다."
+
+#: src/components/admin/domains/DomainAliasForm.vue:122
+msgid "Domain alias updated"
+msgstr "도메인 별칭이 업데이트되었습니다."
+
+#: src/components/admin/domains/DomainCreationForm.vue:4
+msgid "New domain"
+msgstr "새 도메인"
+
+#: src/components/admin/domains/DomainCreationForm.vue:54
+#: src/components/admin/identities/AccountCreationForm.vue:43
+#: src/components/admin/identities/form_steps/AccountPasswordSubForm.vue:44
+msgid "Copy to clipboard"
+msgstr "클립보드에 복사"
+
+#: src/components/admin/domains/DomainCreationForm.vue:143
+#: src/components/admin/domains/DomainCreationForm.vue:149
+#: src/components/admin/domains/DomainCreationForm.vue:162
+#: src/components/admin/domains/DomainEditForm.vue:9
+#: src/components/admin/identities/AliasCreationForm.vue:53
+#: src/components/admin/identities/AliasCreationForm.vue:93
+#: src/components/admin/identities/AliasEditForm.vue:9
+#: src/components/admin/imap_migration/ProviderCreationForm.vue:51
+#: src/components/admin/imap_migration/ProviderCreationForm.vue:71
+#: src/components/admin/imap_migration/ProviderForm.vue:7
+#: src/views/admin/domains/DomainView.vue:22
+msgid "General"
+msgstr "일반"
+
+#: src/components/admin/domains/DomainCreationForm.vue:144
+#: src/components/admin/domains/DomainCreationForm.vue:150
+#: src/components/admin/domains/DomainCreationForm.vue:174
+#: src/components/admin/domains/DomainEditForm.vue:36
+msgid "DNS"
+msgstr "DNS"
+
+#: src/components/admin/domains/DomainCreationForm.vue:145
+#: src/components/admin/domains/DomainCreationForm.vue:151
+#: src/components/admin/domains/DomainCreationForm.vue:189
+#: src/components/admin/domains/DomainEditForm.vue:73
+msgid "Limitations"
+msgstr "제한 사항"
+
+#: src/components/admin/domains/DomainCreationForm.vue:146
+#: src/components/admin/domains/DomainCreationForm.vue:239
+msgid "Options"
+msgstr "옵션"
+
+#: src/components/admin/domains/DomainCreationForm.vue:152
+#: src/components/admin/domains/DomainCreationForm.vue:215
+#: src/components/admin/domains/DomainEditForm.vue:113
+#: src/components/admin/domains/RelayDomainSummary.vue:4
+msgid "Transport"
+msgstr "운송(Transport)"
+
+#: src/components/admin/domains/DomainCreationForm.vue:165
+#: src/components/admin/domains/form_steps/DomainGeneralForm.vue:13
+msgid "Type"
+msgstr "유형"
+
+#: src/components/admin/domains/DomainCreationForm.vue:177
+#: src/components/admin/domains/form_steps/DomainDNSForm.vue:6
+msgid "Enable DNS checks"
+msgstr "DNS 확인 활성화"
+
+#: src/components/admin/domains/DomainCreationForm.vue:182
+#: src/components/admin/domains/form_steps/DomainDNSForm.vue:11
+msgid "Enable DKIM signing"
+msgstr "DKIM 서명 활성화"
+
+#: src/components/admin/domains/DomainCreationForm.vue:191
+#: src/components/admin/domains/DomainList.vue:221
+#: src/components/admin/domains/DomainSummary.vue:16
+#: src/components/admin/domains/form_steps/DomainLimitationsForm.vue:5
+#: src/components/admin/identities/AccountCreationForm.vue:129
+#: src/components/admin/identities/AccountSummary.vue:52
+#: src/components/admin/identities/form_steps/AccountMailboxForm.vue:3
+#: src/components/admin/identities/IdentityList.vue:276
+msgid "Quota"
+msgstr "할당량"
+
+#: src/components/admin/domains/DomainCreationForm.vue:193
+#: src/components/admin/domains/DomainSummary.vue:23
+#: src/components/admin/domains/form_steps/DomainLimitationsForm.vue:19
+msgid "Default mailbox quota"
+msgstr "기본 사서함 할당량"
+
+#: src/components/admin/domains/DomainCreationForm.vue:197
+#: src/components/admin/domains/form_steps/DomainLimitationsForm.vue:32
+#: src/components/admin/identities/AccountCreationForm.vue:135
+msgid "Message sending limit"
+msgstr "메시지 발송 제한"
+
+#: src/components/admin/domains/DomainCreationForm.vue:205
+#: src/components/admin/domains/form_steps/DomainDNSForm.vue:16
+msgid "DKIM key selector"
+msgstr "DKIM 키 선택기(Selector)"
+
+#: src/components/admin/domains/DomainCreationForm.vue:209
+#: src/components/admin/domains/form_steps/DomainDNSForm.vue:22
+msgid "DKIM key length"
+msgstr "DKIM 키 길이"
+
+#: src/components/admin/domains/DomainCreationForm.vue:218
+#: src/components/admin/domains/form_steps/DomainTransportForm.vue:3
+#: src/components/admin/domains/RelayDomainSummary.vue:8
+msgid "Service"
+msgstr "서비스"
+
+#: src/components/admin/domains/DomainCreationForm.vue:242
+#: src/components/admin/domains/form_steps/DomainOptionsForm.vue:5
+msgid "Create a domain administrator"
+msgstr "도메인 관리자 생성"
+
+#: src/components/admin/domains/DomainCreationForm.vue:251
+msgid "Administrator name"
+msgstr "관리자 이름"
+
+#: src/components/admin/domains/DomainCreationForm.vue:256
+#: src/components/admin/identities/AccountCreationForm.vue:107
+#: src/components/admin/identities/form_steps/AccountPasswordSubForm.vue:21
+msgid "Random password"
+msgstr "무작위 비밀번호"
+
+#: src/components/admin/domains/DomainCreationForm.vue:261
+msgid "With mailbox"
+msgstr "사서함 포함"
+
+#: src/components/admin/domains/DomainCreationForm.vue:266
+#: src/components/admin/domains/form_steps/DomainOptionsForm.vue:33
+msgid "Create aliases"
+msgstr "별칭 생성"
+
+#: src/components/admin/domains/DomainCreationForm.vue:284
+#: src/components/admin/identities/AccountCreationForm.vue:214
+#: src/components/admin/identities/form_steps/AccountPasswordSubForm.vue:104
+msgid "Password copied to clipboard"
+msgstr "비밀번호가 클립보드에 복사되었습니다."
+
+#: src/components/admin/domains/DomainCreationForm.vue:318
+msgid "Domain created"
+msgstr "도메인이 생성되었습니다."
+
+#: src/components/admin/domains/DomainDKIMKey.vue:5
+msgid "DKIM public key for"
+msgstr "다음의 DKIM 공개 키: "
+
+#: src/components/admin/domains/DomainDKIMKey.vue:9
+msgid "Raw format. Click to copy"
+msgstr "Raw 형식. 클릭하여 복사"
+
+#: src/components/admin/domains/DomainDKIMKey.vue:23
+msgid "Bind/named format. Click to copy"
+msgstr "Bind/named 형식. 클릭하여 복사"
+
+#: src/components/admin/domains/DomainDNSConfig.vue:4
+msgid "DNS configuration for "
+msgstr "DNS 설정: "
+
+#: src/components/admin/domains/DomainDNSConfig.vue:9
+msgid ""
+"Here is an example of DNS configuration (bind format). Replace values "
+"between [ ] by the appropriate ones."
+msgstr "DNS 설정 예시(bind 형식)입니다. [ ] 사이의 값을 적절한 값으로 바꾸십시오."
+
+#: src/components/admin/domains/DomainDNSConfig.vue:23
+msgid "IP address of your Modoboa server"
+msgstr "Modoboa 서버의 IP 주소"
+
+#: src/components/admin/domains/DomainDNSConfig.vue:73
+#: src/components/admin/domains/DomainDNSConfig.vue:74
+msgid "hostname of your automx server"
+msgstr "automx 서버의 호스트 이름"
+
+#: src/components/admin/domains/DomainEditForm.vue:16
+msgid "Name: "
+msgstr "이름: "
+
+#: src/components/admin/domains/DomainEditForm.vue:20
+msgid "Type: "
+msgstr "유형: "
+
+#: src/components/admin/domains/DomainEditForm.vue:43
+msgid "DNS checks"
+msgstr "DNS 확인"
+
+#: src/components/admin/domains/DomainEditForm.vue:52
+msgid "DKIM signing"
+msgstr "DKIM 서명"
+
+#: src/components/admin/domains/DomainEditForm.vue:81
+#: src/components/admin/identities/AccountEditForm.vue:110
+#: src/components/admin/identities/AccountEditForm.vue:116
+msgid "Quota: "
+msgstr "할당량: "
+
+#: src/components/admin/domains/DomainEditForm.vue:87
+msgid "Sending limit: "
+msgstr "발송 제한: "
+
+#: src/components/admin/domains/DomainEditForm.vue:93
+msgid "No sending limit"
+msgstr "발송 제한 없음"
+
+#: src/components/admin/domains/DomainEditForm.vue:121
+msgid "Service: "
+msgstr "서비스: "
+
+#: src/components/admin/domains/DomainEditForm.vue:150
+#: src/components/admin/identities/AccountEditForm.vue:172
+msgid "Resources"
+msgstr "리소스"
+
+#: src/components/admin/domains/DomainList.vue:67
+msgid "Relay"
+msgstr "릴레이(Relay)"
+
+#: src/components/admin/domains/DomainList.vue:107
+#: src/components/admin/domains/DomainList.vue:118
+#: src/components/admin/domains/DomainSummary.vue:18
+#: src/components/admin/domains/DomainSummary.vue:25
+#: src/components/admin/domains/DomainSummary.vue:56
+#: src/components/admin/identities/AccountSummary.vue:54
+#: src/components/admin/identities/IdentityList.vue:139
+#: src/components/admin/identities/IdentityList.vue:168
+#: src/components/tools/ResourcesView.vue:9
+msgid "Unlimited"
+msgstr "무제한"
+
+#: src/components/admin/domains/DomainList.vue:168
+msgid "Do not delete domain folder"
+msgstr "도메인 폴더를 삭제하지 마십시오"
+
+#: src/components/admin/domains/DomainList.vue:213
+#: src/components/admin/domains/DomainSummary.vue:64
+#: src/components/admin/identities/AccountAliases.vue:4
+#: src/components/admin/identities/AccountCreationForm.vue:146
+#: src/components/admin/identities/AccountCreationForm.vue:149
+#: src/components/admin/identities/AccountCreationForm.vue:180
+msgid "Aliases"
+msgstr "별칭"
+
+#: src/components/admin/domains/DomainList.vue:215
+msgid "DNS status"
+msgstr "DNS 상태"
+
+#: src/components/admin/domains/DomainList.vue:219
+msgid "Sending limit"
+msgstr "발송 제한"
+
+#: src/components/admin/domains/DomainList.vue:301
+msgid "Do you really want to delete the domain %{ domain }?"
+msgstr "정말로 %{ domain } 도메인을 삭제하시겠습니까?"
+
+#: src/components/admin/domains/DomainList.vue:318
+msgid "Domain deleted"
+msgstr "도메인이 삭제되었습니다"
+
+#: src/components/admin/domains/DomainList.vue:357
+#: src/components/admin/identities/IdentityList.vue:437
+#: src/components/admin/identities/IdentityList.vue:449
+#: src/components/admin/imap_migration/ProvidersList.vue:152
+#: src/components/contacts/ContactList.vue:232
+#: src/views/account/FiltersView.vue:346
+#: src/views/calendars/CalendarView.vue:199
+msgid "Edit"
+msgstr "편집"
+
+#: src/components/admin/domains/DomainList.vue:370
+#: src/layouts/admin/AdminLayout.vue:60
+msgid "Alarms"
+msgstr "알람"
+
+#: src/components/admin/domains/DomainPolicy.vue:5
+msgid "Content filter"
+msgstr "콘텐츠 필터"
+
+#: src/components/admin/domains/DomainPolicy.vue:9
+msgid "Edit content filter settings"
+msgstr "콘텐츠 필터 설정 편집"
+
+#: src/components/admin/domains/DomainPolicy.vue:17
+msgid "Spam filters"
+msgstr "스팸 필터"
+
+#: src/components/admin/domains/DomainPolicy.vue:27
+#: src/components/admin/domains/DomainPolicy.vue:41
+#: src/components/admin/domains/DomainPolicy.vue:55
+#: src/components/admin/domains/DomainPolicy.vue:66
+#: src/components/admin/domains/DomainPolicy.vue:75
+#: src/components/admin/domains/DomainPolicy.vue:84
+msgid "Default value"
+msgstr "기본값"
+
+#: src/components/admin/domains/DomainPolicy.vue:31
+msgid "Virus filters"
+msgstr "바이러스 필터"
+
+#: src/components/admin/domains/DomainPolicy.vue:45
+msgid "Banned filters"
+msgstr "차단 필터"
+
+#: src/components/admin/domains/DomainPolicy.vue:60
+msgid "Spam classification threshold"
+msgstr "스팸 분류 임계값"
+
+#: src/components/admin/domains/DomainPolicy.vue:70
+msgid "Rejection threshold"
+msgstr "거부 임계값"
+
+#: src/components/admin/domains/DomainPolicy.vue:79
+#: src/components/admin/domains/DomainPolicyForm.vue:34
+msgid "Spam marker"
+msgstr "스팸 표시(Marker)"
+
+#: src/components/admin/domains/DomainPolicyForm.vue:4
+msgid "Content filter settings"
+msgstr "콘텐츠 필터 설정"
+
+#: src/components/admin/domains/DomainPolicyForm.vue:11
+msgid "Disable virus checks"
+msgstr "바이러스 검사 비활성화"
+
+#: src/components/admin/domains/DomainPolicyForm.vue:18
+msgid "Disable spam checks"
+msgstr "스팸 검사 비활성화"
+
+#: src/components/admin/domains/DomainPolicyForm.vue:26
+msgid "Disable banned checks"
+msgstr "차단 검사 비활성화"
+
+#: src/components/admin/domains/DomainPolicyForm.vue:47
+#: src/components/tools/YesNoDefaultField.vue:5
+msgid "default"
+msgstr "기본값"
+
+#: src/components/admin/domains/DomainPolicyForm.vue:56
+msgid "Thresholds"
+msgstr "임계값"
+
+#: src/components/admin/domains/DomainPolicyForm.vue:69
+msgid "or more is spam"
+msgstr "점 이상이면 스팸"
+
+#: src/components/admin/domains/DomainPolicyForm.vue:84
+msgid "or more throw spam message away"
+msgstr "점 이상이면 스팸 메시지 폐기"
+
+#: src/components/admin/domains/DomainPolicyForm.vue:96
+#: src/components/tools/ChooseColumnsForm.vue:19
+#: src/components/tools/TimeSerieChart.vue:22
+msgid "Apply"
+msgstr "적용"
+
+#: src/components/admin/domains/DomainSummary.vue:4
+#: src/components/admin/identities/AccountSummary.vue:4
+#: src/components/admin/identities/AliasSummary.vue:4
+msgid "General information"
+msgstr "일반 정보"
+
+#: src/components/admin/domains/DomainSummary.vue:8
+#: src/components/admin/identities/AccountSummary.vue:8
+#: src/components/admin/identities/AliasSummary.vue:8
+#: src/components/admin/identities/IdentityList.vue:249
+#: src/components/admin/identities/IdentityList.vue:303
+msgid "Creation date"
+msgstr "생성일"
+
+#: src/components/admin/domains/DomainSummary.vue:12
+msgid "Last modification date"
+msgstr "최종 수정일"
+
+#: src/components/admin/domains/DomainSummary.vue:20
+#: src/components/admin/identities/AccountSummary.vue:65
+msgid "MB"
+msgstr "MB"
+
+#: src/components/admin/domains/DomainSummary.vue:30
+#: src/components/admin/identities/AccountSummary.vue:76
+msgid "Daily sending limit"
+msgstr "일일 발송 제한"
+
+#: src/components/admin/domains/DomainSummary.vue:38
+#: src/components/admin/identities/AccountSummary.vue:79
+#: src/components/admin/identities/IdentityList.vue:164
+msgid "Sending forbidden"
+msgstr "발송 금지됨"
+
+#: src/components/admin/domains/DomainSummary.vue:51
+#: src/components/admin/identities/AccountSummary.vue:94
+msgid "messages"
+msgstr "메시지"
+
+#: src/components/admin/domains/DomainSummary.vue:60
+msgid "Mailboxes"
+msgstr "사서함"
+
+#: src/components/admin/domains/form_steps/DomainGeneralForm.vue:5
+msgid "Domain name (ex: domain.tld)"
+msgstr "도메인 이름 (예: domain.tld)"
+
+#: src/components/admin/domains/form_steps/DomainGeneralForm.vue:22
+msgid "Control if this domain will be allowed to send and receive messages"
+msgstr "이 도메인의 메시지 송수신 허용 여부를 제어합니다"
+
+#: src/components/admin/domains/form_steps/DomainGeneralForm.vue:66
+msgid "Relay domain"
+msgstr "릴레이 도메인"
+
+#: src/components/admin/domains/form_steps/DomainLimitationsForm.vue:7
+msgid ""
+"Quota shared between mailboxes. Can be expressed in KB, MB (default) or GB. "
+"A value of 0 means no quota."
+msgstr "사서함 간에 공유되는 할당량입니다. KB, MB(기본값) 또는 GB로 표시할 수 있습니다. 0은 제한 없음을 의미합니다."
+
+#: src/components/admin/domains/form_steps/DomainLimitationsForm.vue:21
+msgid ""
+"Default quota applied to mailboxes. Can be expressed in KB, MB (default) or "
+"GB. A value of 0 means no quota."
+msgstr "사서함에 적용되는 기본 할당량입니다. KB, MB(기본값) 또는 GB로 표시할 수 있습니다. 0은 제한 없음을 의미합니다."
+
+#: src/components/admin/domains/form_steps/DomainLimitationsForm.vue:34
+msgid ""
+"Number of messages this domain can send per day. Leave empty for no limit."
+msgstr "이 도메인이 하루에 보낼 수 있는 메시지 수입니다. 제한을 두지 않으려면 비워 두십시오."
+
+#: src/components/admin/domains/form_steps/DomainOptionsForm.vue:12
+msgid "Name of the administrator"
+msgstr "관리자 이름"
+
+#: src/components/admin/domains/form_steps/DomainOptionsForm.vue:25
+msgid "With a mailbox"
+msgstr "사서함 포함"
+
+#: src/components/admin/domains/form_steps/DomainOptionsForm.vue:27
+msgid "Create a mailbox for the administrator."
+msgstr "관리자용 사서함을 생성합니다."
+
+#: src/components/admin/domains/form_steps/DomainOptionsForm.vue:35
+msgid "Create standard aliases for the domain."
+msgstr "도메인에 대한 표준 별칭을 생성합니다."
+
+#: src/components/admin/identities/AccountCreationForm.vue:4
+#: src/components/admin/imap_migration/MigrationsList.vue:88
+msgid "New account"
+msgstr "새 계정"
+
+#: src/components/admin/identities/AccountCreationForm.vue:93
+#: src/components/admin/identities/AccountCreationForm.vue:94
+#: src/components/admin/identities/AccountCreationForm.vue:165
+#: src/components/admin/identities/AccountEditForm.vue:9
+#: src/components/admin/identities/AccountSummary.vue:23
+#: src/components/admin/identities/IdentityList.vue:275
+msgid "Role"
+msgstr "역할"
+
+#: src/components/admin/identities/AccountCreationForm.vue:97
+#: src/components/admin/identities/AccountCreationForm.vue:170
+msgid "Identification"
+msgstr "인증 정보"
+
+#: src/components/admin/identities/AccountCreationForm.vue:125
+msgid "Email"
+msgstr "이메일"
+
+#: src/components/admin/identities/AccountCreationForm.vue:131
+msgid "Domain default value"
+msgstr "도메인 기본값"
+
+#: src/components/admin/identities/AccountCreationForm.vue:139
+#: src/components/admin/identities/form_steps/AccountMailboxForm.vue:40
+msgid "Send only account"
+msgstr "발신 전용 계정"
+
+#: src/components/admin/identities/AccountCreationForm.vue:281
+msgid "Account created"
+msgstr "계정이 생성되었습니다"
+
+#: src/components/admin/identities/AccountEditForm.vue:31
+#: src/components/calendars/CalendarAccessRulesForm.vue:42
+#: src/components/shared/TopMenu.vue:130
+#: src/views/admin/identities/AccountView.vue:4
+#: src/views/admin/identities/IdentitiesView.vue:23
+msgid "Account"
+msgstr "계정"
+
+#: src/components/admin/identities/AccountEditForm.vue:39
+msgid "Username:"
+msgstr "사용자 이름:"
+
+#: src/components/admin/identities/AccountEditForm.vue:70
+#: src/views/account/SettingsView.vue:9
+msgid "Profile"
+msgstr "프로필"
+
+#: src/components/admin/identities/AccountEditForm.vue:78
+msgid "Language:"
+msgstr "언어:"
+
+#: src/components/admin/identities/AccountEditForm.vue:111
+msgid "domain's default value"
+msgstr "도메인의 기본값"
+
+#: src/components/admin/identities/AccountEditForm.vue:122
+msgid "Send only"
+msgstr "발신 전용"
+
+#: src/components/admin/identities/AccountEditForm.vue:145
+#: src/components/admin/identities/IdentityList.vue:75
+#: src/views/admin/domains/DomainsView.vue:26
+#: src/views/admin/identities/AliasView.vue:5
+#: src/views/admin/identities/IdentitiesView.vue:26
+msgid "Alias"
+msgstr "별칭"
+
+#: src/components/admin/identities/AccountEditForm.vue:154
+msgid "Number of associated alias:"
+msgstr "연결된 별칭 수:"
+
+#: src/components/admin/identities/AccountEditForm.vue:186
+msgid "Number of allowed mailboxes:"
+msgstr "허용된 사서함 수:"
+
+#: src/components/admin/identities/AccountEditForm.vue:192
+msgid "Number of allowed mailbox aliases:"
+msgstr "허용된 사서함 별칭 수:"
+
+#: src/components/admin/identities/AccountEditForm.vue:345
+msgid "Account updated"
+msgstr "계정이 업데이트되었습니다"
+
+#: src/components/admin/identities/AccountSenderAddresses.vue:4
+msgid "Sender addresses"
+msgstr "발신 주소"
+
+#: src/components/admin/identities/AccountSenderAddresses.vue:10
+msgid "No sender address defined for this account"
+msgstr "이 계정에 정의된 발신 주소가 없습니다"
+
+#: src/components/admin/identities/AccountSenderAddresses.vue:17
+msgid "Specify an email address"
+msgstr "이메일 주소를 지정하십시오"
+
+#: src/components/admin/identities/AccountSenderAddresses.vue:36
+msgid "Remove this address"
+msgstr "이 주소 제거"
+
+#: src/components/admin/identities/AccountSenderAddresses.vue:52
+msgid "Add sender address"
+msgstr "발신 주소 추가"
+
+#: src/components/admin/identities/AccountSenderAddresses.vue:97
+msgid "Sender address added"
+msgstr "발신 주소가 추가되었습니다"
+
+#: src/components/admin/identities/AccountSenderAddresses.vue:104
+msgid "Sender address deleted"
+msgstr "발신 주소가 삭제되었습니다"
+
+#: src/components/admin/identities/AccountSummary.vue:12
+msgid "Last login date"
+msgstr "최종 로그인 날짜"
+
+#: src/components/admin/identities/AccountSummary.vue:16
+#: src/components/admin/identities/IdentityList.vue:123
+msgid "Never logged-in"
+msgstr "로그인 기록 없음"
+
+#: src/components/admin/identities/AccountSummary.vue:19
+msgid "Full name"
+msgstr "전체 이름"
+
+#: src/components/admin/identities/AliasCreationForm.vue:4
+msgid "New alias"
+msgstr "새 별칭"
+
+#: src/components/admin/identities/AliasCreationForm.vue:56
+#: src/components/admin/identities/form_steps/AliasGeneralForm.vue:6
+msgid "Random address"
+msgstr "무작위 주소"
+
+#: src/components/admin/identities/AliasCreationForm.vue:66
+#: src/components/admin/identities/AliasSummary.vue:26
+#: src/components/admin/identities/form_steps/AliasGeneralForm.vue:56
+#: src/components/admin/identities/IdentityList.vue:241
+msgid "Expire at"
+msgstr "만료 시각"
+
+#: src/components/admin/identities/AliasCreationForm.vue:72
+#: src/components/admin/identities/AliasSummary.vue:30
+#: src/components/admin/identities/form_steps/AliasGeneralForm.vue:58
+#: src/components/admin/identities/IdentityList.vue:245
+#: src/components/calendars/EventForm.vue:74
+#: src/views/admin/InformationView.vue:148
+msgid "Description"
+msgstr "설명"
+
+#: src/components/admin/identities/AliasCreationForm.vue:77
+#: src/components/admin/identities/AliasCreationForm.vue:80
+#: src/components/admin/identities/AliasCreationForm.vue:97
+#: src/components/admin/identities/AliasEditForm.vue:41
+#: src/components/admin/identities/AliasRecipientsSummary.vue:4
+#: src/components/admin/identities/IdentityList.vue:237
+msgid "Recipients"
+msgstr "수신자"
+
+#: src/components/admin/identities/AliasCreationForm.vue:130
+msgid "Alias already exists, redirecting to edit page"
+msgstr "별칭이 이미 존재합니다. 편집 페이지로 이동합니다"
+
+#: src/components/admin/identities/AliasCreationForm.vue:155
+msgid "Alias created"
+msgstr "별칭이 생성되었습니다"
+
+#: src/components/admin/identities/AliasEditForm.vue:132
+msgid "Alias updated"
+msgstr "별칭이 업데이트되었습니다"
+
+#: src/components/admin/identities/AliasSummary.vue:12
+msgid "Modified"
+msgstr "수정됨"
+
+#: src/components/admin/identities/DomainAdminDomains.vue:4
+msgid "Administered domains"
+msgstr "관리 중인 도메인"
+
+#: src/components/admin/identities/DomainAdminDomains.vue:13
+msgid "No domain managed"
+msgstr "관리 중인 도메인 없음"
+
+#: src/components/admin/identities/DomainAdminDomains.vue:16
+msgid "Add/Remove from the domain page"
+msgstr "도메인 페이지에서 추가/제거"
+
+#: src/components/admin/identities/form_steps/AccountAliasForm.vue:6
+#: src/components/admin/identities/form_steps/AliasRecipientForm.vue:6
+msgid "Start typing a name here..."
+msgstr "여기에 이름을 입력하기 시작하십시오..."
+
+#: src/components/admin/identities/form_steps/AccountAliasForm.vue:8
+#: src/components/admin/identities/form_steps/AliasRecipientForm.vue:8
+msgid ""
+"Alias(es) of this mailbox. To create a catchall alias, just enter the domain"
+" name (@domain.tld)."
+msgstr "이 사서함의 별칭입니다. 캐치올(Catchall) 별칭을 만들려면 도메인 이름(@domain.tld)만 입력하십시오."
+
+#: src/components/admin/identities/form_steps/AccountAliasForm.vue:50
+msgid "Alias already added"
+msgstr "별칭이 이미 추가되었습니다"
+
+#: src/components/admin/identities/form_steps/AccountGeneralForm.vue:41
+msgid "You can update your password from the Account section"
+msgstr "계정 섹션에서 비밀번호를 업데이트할 수 있습니다"
+
+#: src/components/admin/identities/form_steps/AccountGeneralForm.vue:77
+msgid "Enter an email address"
+msgstr "이메일 주소를 입력하십시오"
+
+#: src/components/admin/identities/form_steps/AccountGeneralForm.vue:79
+msgid "Enter a simple username or an email address"
+msgstr "일반 사용자 이름 또는 이메일 주소를 입력하십시오"
+
+#: src/components/admin/identities/form_steps/AccountMailboxForm.vue:13
+msgid "Ex: 10MB. Leave empty for no limit"
+msgstr "예: 10MB. 제한을 두지 않으려면 비워 두십시오"
+
+#: src/components/admin/identities/form_steps/AccountMailboxForm.vue:15
+msgid ""
+"Quota for this mailbox, can be expressed in KB, MB (default) or GB. Define a"
+" custom value or use domain's default one. Leave empty to define an "
+"unlimited value (not allowed for domain administrators)."
+msgstr ""
+"이 사서함의 할당량입니다. KB, MB(기본값) 또는 GB로 표시할 수 있습니다. 사용자 정의 값을 정의하거나 도메인 기본값을 "
+"사용하십시오. 무제한으로 설정하려면 비워 두십시오 (도메인 관리자에게는 허용되지 않음)."
+
+#: src/components/admin/identities/form_steps/AccountMailboxForm.vue:23
+msgid "Daily message sending limit"
+msgstr "일일 메시지 발송 제한"
+
+#: src/components/admin/identities/form_steps/AccountMailboxForm.vue:26
+msgid "Leave empty for no limit"
+msgstr "제한을 두지 않으려면 비워 두십시오"
+
+#: src/components/admin/identities/form_steps/AccountMailboxForm.vue:28
+msgid ""
+"Number of messages this mailbox can send per day. Leave empty for no limit."
+msgstr "이 사서함이 하루에 보낼 수 있는 메시지 수입니다. 제한을 두지 않으려면 비워 두십시오."
+
+#: src/components/admin/identities/form_steps/AccountMailboxForm.vue:112
+msgid "Use domain default value"
+msgstr "도메인 기본값 사용"
+
+#: src/components/admin/identities/form_steps/AccountMailboxForm.vue:115
+msgid "unlimited"
+msgstr "무제한"
+
+#: src/components/admin/identities/form_steps/AccountPasswordSubForm.vue:4
+msgid "Current password"
+msgstr "현재 비밀번호"
+
+#: src/components/admin/identities/form_steps/AccountPasswordSubForm.vue:65
+msgid "Confirmation"
+msgstr "비밀번호 확인"
+
+#: src/components/admin/identities/form_steps/AccountPasswordSubForm.vue:99
+msgid "Password mismatch"
+msgstr "비밀번호 불일치"
+
+#: src/components/admin/identities/form_steps/AccountRoleForm.vue:7
+msgid "Choose a role"
+msgstr "역할 선택"
+
+#: src/components/admin/identities/form_steps/AccountRoleForm.vue:81
+msgid "Simple user"
+msgstr "일반 사용자"
+
+#: src/components/admin/identities/form_steps/AccountRoleForm.vue:83
+msgid ""
+"A user with no privileges but with a mailbox. He will be allowed to use all "
+"end-user features: webmail, calendar, contacts, filters."
+msgstr "권한은 없으나 사서함을 가진 사용자입니다. 웹메일, 캘린더, 연락처, 필터 등 모든 일반 사용자 기능을 사용할 수 있습니다."
+
+#: src/components/admin/identities/form_steps/AccountRoleForm.vue:91
+msgid "Domain administrator"
+msgstr "도메인 관리자"
+
+#: src/components/admin/identities/form_steps/AccountRoleForm.vue:93
+msgid ""
+"A user with privileges on one or more domain. He will be allowed to "
+"administer mailboxes and he can also have a mailbox."
+msgstr "하나 이상의 도메인에 대한 권한을 가진 사용자입니다. 사서함을 관리할 수 있으며 본인도 사서함을 가질 수 있습니다."
+
+#: src/components/admin/identities/form_steps/AccountRoleForm.vue:100
+msgid "Reseller"
+msgstr "리셀러"
+
+#: src/components/admin/identities/form_steps/AccountRoleForm.vue:102
+msgid ""
+"An intermediate user who has the same privileges than a Domain "
+"administrator, plus the possibility to create domains and to assign "
+"resources."
+msgstr "도메인 관리자와 동일한 권한을 가지며, 추가로 도메인 생성 및 리소스 할당이 가능한 중간 단계의 사용자입니다."
+
+#: src/components/admin/identities/form_steps/AccountRoleForm.vue:109
+msgid "Super administrator"
+msgstr "최고 관리자"
+
+#: src/components/admin/identities/form_steps/AccountRoleForm.vue:111
+msgid ""
+"A user with all privileges, can do anything. By default, such a user does "
+"not have a mailbox so he can't access end-user features."
+msgstr "모든 권한을 가진 사용자입니다. 기본적으로 사서함을 가지지 않으므로 일반 사용자 기능에는 액세스할 수 없습니다."
+
+#: src/components/admin/identities/form_steps/AliasGeneralForm.vue:10
+msgid "Email address"
+msgstr "이메일 주소"
+
+#: src/components/admin/identities/form_steps/AliasGeneralForm.vue:38
+msgid "Generated address"
+msgstr "생성된 주소"
+
+#: src/components/admin/identities/form_steps/AliasRecipientForm.vue:58
+msgid "Please add at least one recipient."
+msgstr "최소 한 명의 수신자를 추가하십시오."
+
+#: src/components/admin/identities/IdentityList.vue:36
+msgid "Customize displayed columns"
+msgstr "표시된 열 사용자 정의"
+
+#: src/components/admin/identities/IdentityList.vue:70
+msgid "Accounts"
+msgstr "계정"
+
+#: src/components/admin/identities/IdentityList.vue:143
+#: src/components/admin/identities/IdentityList.vue:172
+msgid "No mailbox"
+msgstr "사서함 없음"
+
+#: src/components/admin/identities/IdentityList.vue:202
+msgid "Do not delete account folder"
+msgstr "계정 폴더를 삭제하지 마십시오"
+
+#: src/components/admin/identities/IdentityList.vue:253
+msgid "Last modification"
+msgstr "최종 수정"
+
+#: src/components/admin/identities/IdentityList.vue:271
+msgid "Last Name"
+msgstr "성"
+
+#: src/components/admin/identities/IdentityList.vue:278
+msgid "Message limit"
+msgstr "메시지 제한"
+
+#: src/components/admin/identities/IdentityList.vue:291
+msgid "TFA enabled"
+msgstr "2단계 인증 활성화됨"
+
+#: src/components/admin/identities/IdentityList.vue:295
+msgid "TOTP enabled"
+msgstr "TOTP 활성화됨"
+
+#: src/components/admin/identities/IdentityList.vue:299
+msgid "WebAutn enabled"
+msgstr "WebAuthn 활성화됨"
+
+#: src/components/admin/identities/IdentityList.vue:307
+msgid "Last login"
+msgstr "최종 로그인"
+
+#: src/components/admin/identities/IdentityList.vue:483
+msgid "Are you sure you want to delete this identity ?"
+msgstr "정말로 이 ID를 삭제하시겠습니까?"
+
+#: src/components/admin/identities/IdentityList.vue:498
+msgid "Account deleted"
+msgstr "계정이 삭제되었습니다"
+
+#: src/components/admin/identities/IdentityList.vue:523
+msgid "Are you sure you want to delete this alias?"
+msgstr "정말로 이 별칭을 삭제하시겠습니까?"
+
+#: src/components/admin/identities/IdentityList.vue:537
+msgid "Alias deleted"
+msgstr "별칭이 삭제되었습니다"
+
+#: src/components/admin/imap_migration/form_steps/ProviderAssociatedForm.vue:6
+msgid "Name of the domain to migrate"
+msgstr "마이그레이션할 도메인 이름"
+
+#: src/components/admin/imap_migration/form_steps/ProviderAssociatedForm.vue:13
+msgid "Local domain (optional)"
+msgstr "로컬 도메인 (선택 사항)"
+
+#: src/components/admin/imap_migration/form_steps/ProviderAssociatedForm.vue:111
+msgid "You need to bind at least one domain to the provider."
+msgstr "제공업체에 최소 하나 이상의 도메인을 연결해야 합니다."
+
+#: src/components/admin/imap_migration/form_steps/ProviderGeneralForm.vue:5
+msgid "Provider name"
+msgstr "제공업체 이름"
+
+#: src/components/admin/imap_migration/form_steps/ProviderGeneralForm.vue:12
+msgid "Address (hostname or IP)"
+msgstr "주소 (호스트명 또는 IP)"
+
+#: src/components/admin/imap_migration/form_steps/ProviderGeneralForm.vue:19
+msgid "IMAP Port"
+msgstr "IMAP 포트"
+
+#: src/components/admin/imap_migration/form_steps/ProviderGeneralForm.vue:27
+#: src/components/admin/imap_migration/ProviderCreationForm.vue:57
+#: src/components/admin/imap_migration/ProvidersList.vue:117
+msgid "Secured"
+msgstr "보안 연결"
+
+#: src/components/admin/imap_migration/form_steps/ProviderGeneralForm.vue:30
+msgid "Is the IMAP connection secured using SSL/TLS or StartTLS"
+msgstr "SSL/TLS 또는 StartTLS를 사용한 보안 IMAP 연결 여부"
+
+#: src/components/admin/imap_migration/form_steps/ProviderGeneralForm.vue:36
+msgid "Check connection:"
+msgstr "연결 확인:"
+
+#: src/components/admin/imap_migration/MigrationsList.vue:86
+msgid "Provider"
+msgstr "제공업체"
+
+#: src/components/admin/imap_migration/MigrationsList.vue:87
+msgid "Old account"
+msgstr "이전 계정"
+
+#: src/components/admin/imap_migration/MigrationsList.vue:105
+msgid "Migration deleted"
+msgstr "마이그레이션이 삭제되었습니다"
+
+#: src/components/admin/imap_migration/ProviderCreationForm.vue:4
+msgid "New provider"
+msgstr "새 제공업체"
+
+#: src/components/admin/imap_migration/ProviderCreationForm.vue:41
+msgid "(the domain will be created locally)"
+msgstr "(도메인이 로컬에 생성됩니다)"
+
+#: src/components/admin/imap_migration/ProviderCreationForm.vue:42
+msgid "Associated domain"
+msgstr "연결된 도메인"
+
+#: src/components/admin/imap_migration/ProviderCreationForm.vue:55
+#: src/components/admin/imap_migration/ProvidersList.vue:116
+msgid "Port"
+msgstr "포트"
+
+#: src/components/admin/imap_migration/ProviderCreationForm.vue:64
+#: src/components/admin/imap_migration/ProviderCreationForm.vue:72
+#: src/components/admin/imap_migration/ProviderForm.vue:30
+#: src/components/admin/imap_migration/ProvidersList.vue:118
+msgid "Associated domains"
+msgstr "연결된 도메인들"
+
+#: src/components/admin/imap_migration/ProviderCreationForm.vue:128
+msgid "Provider created"
+msgstr "제공업체가 생성되었습니다"
+
+#: src/components/admin/imap_migration/ProviderForm.vue:14
+msgid "Name:"
+msgstr "이름:"
+
+#: src/components/admin/imap_migration/ProviderForm.vue:37
+msgid "Number of associated domains:"
+msgstr "연결된 도메인 수:"
+
+#: src/components/admin/imap_migration/ProviderForm.vue:41
+msgid "No associated domains"
+msgstr "연결된 도메인 없음"
+
+#: src/components/admin/imap_migration/ProviderForm.vue:143
+msgid "Provider updated"
+msgstr "제공업체가 업데이트되었습니다"
+
+#: src/components/admin/imap_migration/ProvidersList.vue:57
+msgid "%{count} associated domain"
+msgid_plural "%{count} associated domains"
+msgstr[0] "%{count}개의 연결된 도메인"
+
+#: src/components/admin/imap_migration/ProvidersList.vue:65
+msgid "No associated domain"
+msgstr "연결된 도메인 없음"
+
+#: src/components/admin/logs/AuditTrailList.vue:51
+#: src/components/admin/logs/MessageList.vue:47
+#: src/components/quarantine/QuarantineList.vue:236
+msgid "Date"
+msgstr "날짜"
+
+#: src/components/admin/logs/AuditTrailList.vue:52
+msgid "Level"
+msgstr "레벨"
+
+#: src/components/admin/logs/AuditTrailList.vue:53
+msgid "Logger"
+msgstr "로거"
+
+#: src/components/admin/logs/MessageList.vue:46
+msgid "Queue ID"
+msgstr "큐 ID"
+
+#: src/components/admin/logs/MessageList.vue:49
+#: src/components/calendars/EventForm.vue:34
+#: src/components/quarantine/QuarantineList.vue:52
+#: src/components/quarantine/QuarantineList.vue:233
+#: src/components/tools/TimeSerieChart.vue:20
+#: src/components/webmail/ComposeEmailForm.vue:65
+#: src/views/webmail/EmailView.vue:103
+msgid "To"
+msgstr "받는 사람"
+
+#: src/components/calendars/CalendarAccessRulesForm.vue:4
+msgid "Calendar sharing"
+msgstr "캘린더 공유"
+
+#: src/components/calendars/CalendarAccessRulesForm.vue:11
+msgid "Full address"
+msgstr "전체 주소"
+
+#: src/components/calendars/CalendarAccessRulesForm.vue:21
+#: src/components/calendars/CalendarAccessRulesForm.vue:43
+msgid "Read"
+msgstr "읽기"
+
+#: src/components/calendars/CalendarAccessRulesForm.vue:26
+#: src/components/calendars/CalendarAccessRulesForm.vue:44
+msgid "Write"
+msgstr "쓰기"
+
+#: src/components/calendars/CalendarDetail.vue:4
+msgid "Calendar information"
+msgstr "캘린더 정보"
+
+#: src/components/calendars/CalendarDetail.vue:9
+msgid ""
+"To access this calendar from the outside (such as Mozilla Thunderbird or "
+"your smartphone), use the following URL:"
+msgstr "외부(Mozilla Thunderbird 또는 스마트폰 등)에서 이 캘린더에 액세스하려면 다음 URL을 사용하십시오:"
+
+#: src/components/calendars/CalendarDetail.vue:19
+#: src/components/contacts/AddressBookInfo.vue:19
+msgid "The credentials are the same than the ones you use to access Modoboa."
+msgstr "인증 정보는 Modoboa에 액세스할 때 사용하는 것과 동일합니다."
+
+#: src/components/calendars/CalendarDetail.vue:26
+msgid ""
+"You can also share a read-only version of this calendar using the following "
+"URL: "
+msgstr "다음 URL을 사용하여 이 캘린더의 읽기 전용 버전을 공유할 수도 있습니다: "
+
+#: src/components/calendars/CalendarForm.vue:6
+msgid "Edit calendar"
+msgstr "캘린더 편집"
+
+#: src/components/calendars/CalendarForm.vue:8
+#: src/views/calendars/CalendarView.vue:181
+msgid "New calendar"
+msgstr "새 캘린더"
+
+#: src/components/calendars/CalendarForm.vue:25
+msgid "Color"
+msgstr "색상"
+
+#: src/components/calendars/CalendarForm.vue:103
+msgid "Calendar updated"
+msgstr "캘린더가 업데이트되었습니다"
+
+#: src/components/calendars/CalendarForm.vue:106
+msgid "Calendar created"
+msgstr "캘린더가 생성되었습니다"
+
+#: src/components/calendars/EventForm.vue:12
+msgid "Title"
+msgstr "제목"
+
+#: src/components/calendars/EventForm.vue:49
+#: src/views/calendars/CalendarView.vue:4
+msgid "Calendar"
+msgstr "캘린더"
+
+#: src/components/calendars/EventForm.vue:61
+msgid "Attendees"
+msgstr "참석자"
+
+#: src/components/calendars/EventForm.vue:133
+msgid "Edit event"
+msgstr "일정 편집"
+
+#: src/components/calendars/EventForm.vue:133
+#: src/views/calendars/CalendarView.vue:399
+msgid "New event"
+msgstr "새 일정"
+
+#: src/components/calendars/EventForm.vue:208
+msgid "Event added"
+msgstr "일정이 추가되었습니다"
+
+#: src/components/calendars/EventForm.vue:211
+#: src/views/calendars/CalendarView.vue:340
+msgid "Event updated"
+msgstr "일정이 업데이트되었습니다"
+
+#: src/components/calendars/EventForm.vue:224
+msgid "Event deleted"
+msgstr "일정이 삭제되었습니다"
+
+#: src/components/calendars/ImportEventsForm.vue:5
+msgid "Import events"
+msgstr "일정 가져오기"
+
+#: src/components/calendars/ImportEventsForm.vue:10
+msgid "Select an ICS file to import and click on the Send button"
+msgstr "가져올 ICS 파일을 선택하고 전송 버튼을 클릭하십시오."
+
+#: src/components/calendars/ImportEventsForm.vue:17
+msgid "Select an ICS file"
+msgstr "ICS 파일 선택"
+
+#: src/components/calendars/ImportEventsForm.vue:30
+#: src/components/webmail/ComposeEmailForm.vue:18
+msgid "Send"
+msgstr "보내기"
+
+#: src/components/calendars/ImportEventsForm.vue:81
+msgid "%{ n } event imported"
+msgid_plural "%{ n } events imported"
+msgstr[0] "%{ n }개의 일정이 가져오기 되었습니다."
+
+#: src/components/contacts/AddressBookInfo.vue:4
+msgid "Address book information"
+msgstr "주소록 정보"
+
+#: src/components/contacts/AddressBookInfo.vue:9
+msgid ""
+"To access this address book from the outside (such as Mozilla Thunderbird or"
+" your smartphone), use the following URL:"
+msgstr "외부(Mozilla Thunderbird 또는 스마트폰 등)에서 이 주소록에 액세스하려면 다음 URL을 사용하십시오:"
+
+#: src/components/contacts/CategoryForm.vue:57
+msgid "Edit category"
+msgstr "카테고리 편집"
+
+#: src/components/contacts/CategoryForm.vue:57
+msgid "Add category"
+msgstr "카테고리 추가"
+
+#: src/components/contacts/CategoryForm.vue:92
+msgid "Category deleted"
+msgstr "카테고리가 삭제되었습니다"
+
+#: src/components/contacts/ContactCategoriesForm.vue:5
+#: src/components/contacts/ContactList.vue:227
+#: src/views/contacts/AddressBook.vue:45
+msgid "Categories"
+msgstr "카테고리"
+
+#: src/components/contacts/ContactForm.vue:31
+msgid "Display name"
+msgstr "표시 이름"
+
+#: src/components/contacts/ContactForm.vue:41
+msgid "Company"
+msgstr "회사"
+
+#: src/components/contacts/ContactForm.vue:50
+msgid "Position"
+msgstr "직위"
+
+#: src/components/contacts/ContactForm.vue:75
+msgid "Birth date"
+msgstr "생년월일"
+
+#: src/components/contacts/ContactForm.vue:95
+msgid "Zip code"
+msgstr "우편번호"
+
+#: src/components/contacts/ContactForm.vue:104
+msgid "City"
+msgstr "도시"
+
+#: src/components/contacts/ContactForm.vue:112
+msgid "Country"
+msgstr "국가"
+
+#: src/components/contacts/ContactForm.vue:121
+msgid "State/Province"
+msgstr "주/도"
+
+#: src/components/contacts/ContactForm.vue:129
+msgid "Note"
+msgstr "메모"
+
+#: src/components/contacts/ContactForm.vue:141
+msgid "More"
+msgstr "더 보기"
+
+#: src/components/contacts/ContactForm.vue:144
+msgid "Less"
+msgstr "줄이기"
+
+#: src/components/contacts/ContactForm.vue:182
+msgid "Edit contact"
+msgstr "연락처 편집"
+
+#: src/components/contacts/ContactForm.vue:182
+msgid "New contact"
+msgstr "새 연락처"
+
+#: src/components/contacts/ContactList.vue:42
+msgid "Synchronize contacts with address book"
+msgstr "연락처를 주소록과 동기화"
+
+#: src/components/contacts/ContactList.vue:48
+msgid "Synchronize"
+msgstr "동기화"
+
+#: src/components/contacts/ContactList.vue:58
+msgid "Display address book information"
+msgstr "주소록 정보 표시"
+
+#: src/components/contacts/ContactList.vue:120
+msgid "Email addresses"
+msgstr "이메일 주소"
+
+#: src/components/contacts/ContactList.vue:138
+msgid "Phone numbers"
+msgstr "전화번호"
+
+#: src/components/contacts/ContactList.vue:280
+msgid "Contact removed"
+msgstr "연락처가 제거되었습니다"
+
+#: src/components/contacts/ContactList.vue:325
+#: src/components/contacts/ContactList.vue:346
+msgid "Synchronization started"
+msgstr "동기화가 시작되었습니다"
+
+#: src/components/quarantine/QuarantineList.vue:27
+#: src/components/webmail/EmailList.vue:15
+msgid "Search in messages"
+msgstr "메시지 검색"
+
+#: src/components/quarantine/QuarantineList.vue:45
+msgid "From address"
+msgstr "보낸 사람 주소"
+
+#: src/components/quarantine/QuarantineList.vue:54
+msgid "both"
+msgstr "둘 다"
+
+#: src/components/quarantine/QuarantineList.vue:72
+msgid "Release selection"
+msgstr "선택 항목 격리 해제"
+
+#: src/components/quarantine/QuarantineList.vue:84
+msgid "Delete selection"
+msgstr "선택 항목 삭제"
+
+#: src/components/quarantine/QuarantineList.vue:101
+#: src/views/quarantine/MessageView.vue:49
+msgid "Mark as spam"
+msgstr "스팸으로 표시"
+
+#: src/components/quarantine/QuarantineList.vue:105
+msgid "Mark as not spam"
+msgstr "스팸 아님으로 표시"
+
+#: src/components/quarantine/QuarantineList.vue:125
+msgid "Display"
+msgstr "표시"
+
+#: src/components/quarantine/QuarantineList.vue:232
+msgid "Score"
+msgstr "점수"
+
+#: src/components/quarantine/QuarantineList.vue:284
+#: src/views/quarantine/MessageView.vue:183
+msgid "Message released"
+msgstr "메시지가 격리 해제되었습니다"
+
+#: src/components/quarantine/QuarantineList.vue:287
+#: src/views/quarantine/MessageView.vue:241
+msgid "Message marked as spam"
+msgstr "메시지가 스팸으로 표시되었습니다"
+
+#: src/components/quarantine/QuarantineList.vue:290
+#: src/views/quarantine/MessageView.vue:245
+msgid "Message marked as non-spam"
+msgstr "메시지가 정상 메일로 표시되었습니다"
+
+#: src/components/quarantine/QuarantineList.vue:358
+msgid "Selection deleted"
+msgstr "선택 항목이 삭제되었습니다"
+
+#: src/components/quarantine/QuarantineList.vue:371
+#: src/views/quarantine/MessageView.vue:181
+msgid "Release request sent"
+msgstr "격리 해제 요청이 전송되었습니다"
+
+#: src/components/quarantine/QuarantineList.vue:373
+msgid "Selection released"
+msgstr "선택 항목이 격리 해제되었습니다"
+
+#: src/components/quarantine/QuarantineList.vue:388
+#: src/views/quarantine/MessageView.vue:218
+msgid "Learning database"
+msgstr "학습 데이터베이스"
+
+#: src/components/quarantine/QuarantineList.vue:389
+#: src/views/quarantine/MessageView.vue:219
+msgid "Which database should be used for this learning:"
+msgstr "학습에 사용할 데이터베이스:"
+
+#: src/components/quarantine/QuarantineList.vue:401
+msgid "Selection is being processed..."
+msgstr "선택 항목을 처리 중입니다..."
+
+#: src/components/shared/TopMenu.vue:15
+msgid "Notifications"
+msgstr "알림"
+
+#: src/components/shared/TopMenu.vue:137
+msgid "Logout"
+msgstr "로그아웃"
+
+#: src/components/tools/ChooseColumnsForm.vue:2
+msgid "Choose columns to display"
+msgstr "표시할 열 선택"
+
+#: src/components/tools/ConfirmDialog.vue:56
+msgid "OK"
+msgstr "확인"
+
+#: src/components/tools/CreationForm.vue:25
+#: src/components/tools/CreationForm.vue:79
+msgid "Summary"
+msgstr "요약"
+
+#: src/components/tools/CreationForm.vue:66
+msgid "Back"
+msgstr "이전"
+
+#: src/components/tools/CreationForm.vue:73
+msgid "Next"
+msgstr "다음"
+
+#: src/components/tools/CreationForm.vue:96
+msgid "Confirm and create"
+msgstr "확인 및 생성"
+
+#: src/components/tools/CreationForm.vue:136
+msgid ""
+"If you close this form now, your modifications won't be saved. Do you "
+"confirm?"
+msgstr "지금 이 양식을 닫으면 수정 사항이 저장되지 않습니다. 계속하시겠습니까?"
+
+#: src/components/tools/CreationSummary.vue:10
+msgid "Modify"
+msgstr "수정"
+
+#: src/components/tools/CreationSummary.vue:45
+msgid "Empty"
+msgstr "비어 있음"
+
+#: src/components/tools/ImportForm.vue:10
+msgid "Provide a CSV file where lines respect one of the following formats:"
+msgstr "다음 형식 중 하나를 준수하는 CSV 파일을 제공하십시오:"
+
+#: src/components/tools/ImportForm.vue:16
+msgid ""
+"The first element of each line is mandatory and must be equal to one of the "
+"previous values."
+msgstr "각 행의 첫 번째 요소는 필수이며 이전 값 중 하나와 같아야 합니다."
+
+#: src/components/tools/ImportForm.vue:20
+msgid "You can use a different character as separator."
+msgstr "다른 문자를 구분 기호로 사용할 수 있습니다."
+
+#: src/components/tools/ImportForm.vue:22
+msgid "Select file"
+msgstr "파일 선택"
+
+#: src/components/tools/ImportForm.vue:31
+msgid "Separator"
+msgstr "구분 기호"
+
+#: src/components/tools/ImportForm.vue:40
+msgid "Continue on error"
+msgstr "오류 발생 시 계속"
+
+#: src/components/tools/ImportForm.vue:43
+msgid "Don't treat duplicated objects as errors"
+msgstr "중복된 객체를 오류로 처리하지 않음"
+
+#: src/components/tools/ImportForm.vue:54
+#: src/views/calendars/CalendarView.vue:214
+msgid "Import"
+msgstr "가져오기"
+
+#: src/components/tools/ParametersForm.vue:189
+msgid "Parameters updated"
+msgstr "파라미터가 업데이트되었습니다"
+
+#: src/components/tools/ParametersForm.vue:194
+msgid "Could not save parameters"
+msgstr "파라미터를 저장할 수 없습니다"
+
+#: src/components/tools/ResourcesView.vue:4
+msgid "Resources usage"
+msgstr "리소스 사용량"
+
+#: src/components/tools/ResourcesView.vue:37
+msgid "No quota"
+msgstr "할당량 없음"
+
+#: src/components/tools/ResourcesView.vue:39
+msgid "Creation denied"
+msgstr "생성 거부됨"
+
+#: src/components/tools/TimeSerieChart.vue:9
+msgid "Period"
+msgstr "기간"
+
+#: src/components/tools/TimeSerieChart.vue:17
+msgid "Absolute time range"
+msgstr "절대 시간 범위"
+
+#: src/components/tools/TimeSerieChart.vue:27
+msgid "Relative time ranges"
+msgstr "상대 시간 범위"
+
+#: src/components/tools/TimeSerieChart.vue:110
+#: src/views/calendars/CalendarView.vue:46
+#: src/views/calendars/CalendarView.vue:172
+msgid "Day"
+msgstr "일"
+
+#: src/components/tools/TimeSerieChart.vue:111
+#: src/views/calendars/CalendarView.vue:49
+#: src/views/calendars/CalendarView.vue:173
+msgid "Week"
+msgstr "주"
+
+#: src/components/tools/TimeSerieChart.vue:112
+#: src/views/calendars/CalendarView.vue:52
+#: src/views/calendars/CalendarView.vue:174
+msgid "Month"
+msgstr "월"
+
+#: src/components/tools/TimeSerieChart.vue:113
+msgid "Year"
+msgstr "년"
+
+#: src/components/tools/YesNoDefaultField.vue:3 src/plugins/filters.js:10
+msgid "yes"
+msgstr "예"
+
+#: src/components/tools/YesNoDefaultField.vue:4 src/plugins/filters.js:10
+msgid "no"
+msgstr "아니요"
+
+#: src/components/webmail/AttachmentsDialog.vue:3
+#: src/components/webmail/ComposeEmailForm.vue:40
+msgid "Attachments"
+msgstr "첨부 파일"
+
+#: src/components/webmail/AttachmentsDialog.vue:16
+msgid "Attach"
+msgstr "첨부"
+
+#: src/components/webmail/ComposeEmailForm.vue:28
+msgid "Schedule sending"
+msgstr "예약 발송"
+
+#: src/components/webmail/ComposeEmailForm.vue:73
+#: src/components/webmail/ComposeEmailForm.vue:118
+#: src/components/webmail/ComposeEmailForm.vue:145
+msgid "Provide one or more addresses"
+msgstr "하나 이상의 주소를 제공하십시오"
+
+#: src/components/webmail/ComposeEmailForm.vue:86
+#: src/components/webmail/ComposeEmailForm.vue:104
+msgid "Cc"
+msgstr "참조"
+
+#: src/components/webmail/ComposeEmailForm.vue:94
+#: src/components/webmail/ComposeEmailForm.vue:131
+msgid "Bcc"
+msgstr "숨은 참조"
+
+#: src/components/webmail/ComposeEmailForm.vue:300
+msgid "Email scheduled"
+msgstr "이메일 예약됨"
+
+#: src/components/webmail/ComposeEmailForm.vue:301
+msgid "Email sent"
+msgstr "이메일 발송됨"
+
+#: src/components/webmail/ComposeEmailForm.vue:354
+msgid "You must provide one recipient at least"
+msgstr "최소 한 명의 수신자를 지정해야 합니다"
+
+#: src/components/webmail/ContactCard.vue:15
+msgid "Add to contacts"
+msgstr "연락처에 추가"
+
+#: src/components/webmail/ContactCard.vue:23
+msgid "Update contact"
+msgstr "연락처 업데이트"
+
+#: src/components/webmail/ContactCard.vue:64
+msgid "Contact added to address book"
+msgstr "주소록에 연락처가 추가되었습니다"
+
+#: src/components/webmail/EmailList.vue:66
+msgid "Mark as read"
+msgstr "읽음으로 표시"
+
+#: src/components/webmail/EmailList.vue:71
+msgid "Mark as unread"
+msgstr "읽지 않음으로 표시"
+
+#: src/components/webmail/EmailList.vue:76
+msgid "Mark as followed"
+msgstr "후속 조치 대상으로 표시"
+
+#: src/components/webmail/EmailList.vue:81
+msgid "Mark as unfollowed"
+msgstr "후속 조치 대상에서 해제"
+
+#: src/components/webmail/EmailList.vue:87
+msgid "Empty mailbox"
+msgstr "사서함 비우기"
+
+#: src/components/webmail/EmailList.vue:97
+msgid "on"
+msgstr " "
+
+#: src/components/webmail/EmailList.vue:127
+msgid ""
+"Scheduled messages will be sent at the specified date and time. (visible on "
+"the right)"
+msgstr "예약된 메시지는 지정된 날짜와 시간에 발송됩니다. (오른쪽에서 확인 가능)"
+
+#: src/components/webmail/EmailList.vue:206
+msgid "No message yet in this mailbox"
+msgstr "이 사서함에 아직 메시지가 없습니다"
+
+#: src/components/webmail/EmailList.vue:221
+msgid "Sending failure"
+msgstr "발송 실패"
+
+#: src/components/webmail/EmailList.vue:281
+msgid "Reschedule"
+msgstr "예약 변경"
+
+#: src/components/webmail/EmailList.vue:328
+msgid "Scheduling updated"
+msgstr "예약이 업데이트되었습니다"
+
+#: src/components/webmail/EmailList.vue:339
+msgid "Scheduled canceled and message moved to trash folder"
+msgstr "예약이 취소되었으며 메시지가 휴지통으로 이동되었습니다"
+
+#: src/components/webmail/EmailList.vue:393
+msgid "Message(s) deleted"
+msgstr "메시지가 삭제되었습니다"
+
+#: src/components/webmail/EmailList.vue:408
+msgid "Message(s) marked as junk"
+msgstr "메시지가 스팸으로 표시되었습니다"
+
+#: src/components/webmail/EmailList.vue:422
+msgid "Message(s) marked as not junk"
+msgstr "메시지가 정상 메일로 표시되었습니다"
+
+#: src/components/webmail/EmailList.vue:437
+msgid "Message(s) flagged"
+msgstr "메시지에 플래그가 설정되었습니다"
+
+#: src/components/webmail/EmailList.vue:464
+msgid "%{count} message"
+msgid_plural "%{count} messages"
+msgstr[0] "%{count}개의 메시지"
+
+#: src/components/webmail/EmailSchedulingForm.vue:2
+msgid "Schedule your sending"
+msgstr "발송 예약"
+
+#: src/components/webmail/EmailSchedulingForm.vue:15
+msgid "Select time"
+msgstr "시간 선택"
+
+#: src/components/webmail/EmailSchedulingForm.vue:30
+msgid "Schedule"
+msgstr "예약"
+
+#: src/components/webmail/EmailSchedulingForm.vue:68
+msgid "Provided time must be one minute from now at least"
+msgstr "제공된 시간은 현재로부터 최소 1분 뒤여야 합니다"
+
+#: src/components/webmail/MailboxForm.vue:13
+msgid "Parent mailbox"
+msgstr "상위 사서함"
+
+#: src/components/webmail/MailboxForm.vue:75
+msgid "Create new mailbox"
+msgstr "새 사서함 만들기"
+
+#: src/components/webmail/MailboxForm.vue:76
+msgid "Edit mailbox"
+msgstr "사서함 편집"
+
+#: src/components/webmail/MailboxForm.vue:98
+msgid "Mailbox renamed"
+msgstr "사서함 이름이 변경되었습니다"
+
+#: src/components/webmail/MailboxForm.vue:105
+msgid "Mailbox created"
+msgstr "사서함이 생성되었습니다"
+
+#: src/components/webmail/MailboxList.vue:172
+msgid "Moving selection..."
+msgstr "선택 항목 이동 중..."
+
+#: src/composables/amavis.js:33
+msgid "Global database"
+msgstr "전역 데이터베이스"
+
+#: src/composables/amavis.js:36
+msgid "Domain's database"
+msgstr "도메인 데이터베이스"
+
+#: src/composables/amavis.js:39
+msgid "User's database"
+msgstr "사용자 데이터베이스"
+
+#: src/layouts/account/AccountLayout.vue:28
+#: src/layouts/admin/AdminLayout.vue:123
+msgid "Settings"
+msgstr "설정"
+
+#: src/layouts/account/AccountLayout.vue:34
+msgid "Filters"
+msgstr "필터"
+
+#: src/layouts/admin/AdminLayout.vue:34
+msgid "Dashboard"
+msgstr "대시보드"
+
+#: src/layouts/admin/AdminLayout.vue:40
+#: src/views/admin/domains/DomainsView.vue:4
+msgid "Domains"
+msgstr "도메인"
+
+#: src/layouts/admin/AdminLayout.vue:50
+#: src/views/admin/identities/IdentitiesView.vue:4
+msgid "Identities"
+msgstr "ID/계정"
+
+#: src/layouts/admin/AdminLayout.vue:66
+msgid "Monitoring"
+msgstr "모니터링"
+
+#: src/layouts/admin/AdminLayout.vue:79
+#: src/views/admin/monitoring/AuditTrailView.vue:3
+msgid "Audit trail"
+msgstr "감사 추적"
+
+#: src/layouts/admin/AdminLayout.vue:84
+msgid "Messages"
+msgstr "메시지"
+
+#: src/layouts/admin/AdminLayout.vue:96
+msgid "IMAP Migration"
+msgstr "IMAP 마이그레이션"
+
+#: src/layouts/admin/AdminLayout.vue:101
+msgid "Email providers"
+msgstr "이메일 제공업체"
+
+#: src/layouts/admin/AdminLayout.vue:106
+#: src/views/admin/imap_migration/MigrationsView.vue:4
+msgid "Migrations"
+msgstr "마이그레이션"
+
+#: src/layouts/admin/AdminLayout.vue:136 src/views/admin/InformationView.vue:4
+#: src/views/calendars/CalendarView.vue:194
+msgid "Information"
+msgstr "정보"
+
+#: src/layouts/webmail/WebmailLayout.vue:24
+msgid "Compose"
+msgstr "편지 쓰기"
+
+#: src/layouts/webmail/WebmailLayout.vue:54
+msgid "Create a new mailbox"
+msgstr "새 사서함 만들기"
+
+#: src/layouts/webmail/WebmailLayout.vue:59
+msgid "Edit this mailbox"
+msgstr "이 사서함 편집"
+
+#: src/layouts/webmail/WebmailLayout.vue:65
+msgid "Delete this mailbox"
+msgstr "이 사서함 삭제"
+
+#: src/layouts/webmail/WebmailLayout.vue:71
+msgid "Compress this mailbox"
+msgstr "이 사서함 압축"
+
+#: src/layouts/webmail/WebmailLayout.vue:196
+msgid "Mailbox compressed"
+msgstr "사서함이 압축되었습니다"
+
+#: src/layouts/webmail/WebmailLayout.vue:202
+msgid "Delete this mailbox?"
+msgstr "이 사서함을 삭제하시겠습니까?"
+
+#: src/layouts/webmail/WebmailLayout.vue:213
+msgid "Mailbox deleted"
+msgstr "사서함이 삭제되었습니다"
+
+#: src/mixins/importExport.js:8
+msgid "No data to export"
+msgstr "내보낼 데이터 없음"
+
+#: src/mixins/importExport.js:39
+msgid "CSV seems to be badly formatted"
+msgstr "CSV 형식이 잘못된 것 같습니다"
+
+#: src/plugins/rules.js:7
+msgid "Not a valid email"
+msgstr "유효한 이메일이 아닙니다"
+
+#: src/plugins/rules.js:27
+msgid "Not a valid time"
+msgstr "유효한 시간이 아닙니다"
+
+#: src/plugins/rules.js:38
+msgid "Field is required"
+msgstr "이 필드는 필수입니다"
+
+#: src/plugins/rules.js:43
+msgid "Minimum length is %{ length }"
+msgstr "최소 길이는 %{ length }자입니다"
+
+#: src/plugins/rules.js:48
+msgid "Must be a numeric value or empty"
+msgstr "숫자 값이거나 비어 있어야 합니다"
+
+#: src/plugins/rules.js:50
+msgid "Passwords mismatch"
+msgstr "비밀번호가 일치하지 않습니다"
+
+#: src/plugins/rules.js:52
+msgid "Invalid port number"
+msgstr "유효하지 않은 포트 번호"
+
+#: src/stores/providers.store.js:51
+msgid "Provider deleted"
+msgstr "제공업체가 삭제되었습니다"
+
+#: src/views/account/FiltersView.vue:4
+msgid "Message filters"
+msgstr "메시지 필터"
+
+#: src/views/account/FiltersView.vue:10
+msgid "Select a filter set"
+msgstr "필터 세트 선택"
+
+#: src/views/account/FiltersView.vue:25
+msgid "Add filter set"
+msgstr "필터 세트 추가"
+
+#: src/views/account/FiltersView.vue:44
+msgid "Raw mode"
+msgstr "Raw 모드"
+
+#: src/views/account/FiltersView.vue:56
+msgid "Add new filter"
+msgstr "새 필터 추가"
+
+#: src/views/account/FiltersView.vue:62
+msgid "New"
+msgstr "새로 만들기"
+
+#: src/views/account/FiltersView.vue:249
+msgid "Failed to display template. Using raw mode"
+msgstr "템플릿을 표시하지 못했습니다. Raw 모드를 사용합니다."
+
+#: src/views/account/FiltersView.vue:264
+msgid "Filter enabled"
+msgstr "필터 활성화됨"
+
+#: src/views/account/FiltersView.vue:273
+msgid "Filter disabled"
+msgstr "필터 비활성화됨"
+
+#: src/views/account/FiltersView.vue:279
+msgid "Filter removed"
+msgstr "필터 제거됨"
+
+#: src/views/account/FiltersView.vue:297
+msgid "Filter set activated"
+msgstr "필터 세트 활성화됨"
+
+#: src/views/account/FiltersView.vue:304
+msgid "Active filter set deactivated"
+msgstr "활성 필터 세트 비활성화됨"
+
+#: src/views/account/FiltersView.vue:310
+msgid "Filter set removed"
+msgstr "필터 세트 제거됨"
+
+#: src/views/account/FiltersView.vue:324
+msgid "Filter set updated"
+msgstr "필터 세트 업데이트됨"
+
+#: src/views/account/FiltersView.vue:362
+msgid "Disable"
+msgstr "비활성화"
+
+#: src/views/account/FiltersView.vue:369
+msgid "Enable"
+msgstr "활성화"
+
+#: src/views/account/FiltersView.vue:377
+msgid "Move down"
+msgstr "아래로 이동"
+
+#: src/views/account/FiltersView.vue:384
+msgid "Move up"
+msgstr "위로 이동"
+
+#: src/views/account/FiltersView.vue:394
+msgid "Download filter set"
+msgstr "필터 세트 다운로드"
+
+#: src/views/account/FiltersView.vue:399
+msgid "Delete filter set"
+msgstr "필터 세트 삭제"
+
+#: src/views/account/FiltersView.vue:410
+msgid "Activate filter set"
+msgstr "필터 세트 활성화"
+
+#: src/views/account/FiltersView.vue:417
+msgid "Deactivate filter set"
+msgstr "필터 세트 비활성화"
+
+#: src/views/account/ParametersView.vue:30
+#: src/views/admin/ParametersView.vue:36
+msgid "Settings: "
+msgstr "설정: "
+
+#: src/views/account/SettingsView.vue:4
+msgid "Account settings"
+msgstr "계정 설정"
+
+#: src/views/account/SettingsView.vue:12
+msgid "Two-factor auth"
+msgstr "2단계 인증"
+
+#: src/views/account/SettingsView.vue:15 src/views/webmail/EmailView.vue:18
+msgid "Forward"
+msgstr "전달"
+
+#: src/views/account/SettingsView.vue:18
+msgid "Auto-reply message"
+msgstr "자동 응답 메시지"
+
+#: src/views/account/SettingsView.vue:24
+msgid "API access"
+msgstr "API 액세스"
+
+#: src/views/admin/alarms/AlarmsView.vue:4
+msgid "Opened alarms"
+msgstr "발생한 알람"
+
+#: src/views/admin/domains/DomainEditView.vue:3
+msgid "Edit domain"
+msgstr "도메인 편집"
+
+#: src/views/admin/domains/DomainsView.vue:18
+#: src/views/admin/identities/IdentitiesView.vue:18
+#: src/views/admin/imap_migration/ProvidersView.vue:15
+msgctxt "male"
+msgid "New"
+msgstr "새로 만들기"
+
+#: src/views/admin/domains/DomainsView.vue:33
+msgid "Import domains and aliases from CSV file"
+msgstr "CSV 파일에서 도메인 및 별칭 가져오기"
+
+#: src/views/admin/domains/DomainsView.vue:40
+msgid "Export domains and aliases to CSV"
+msgstr "도메인 및 별칭을 CSV로 내보내기"
+
+#: src/views/admin/domains/DomainsView.vue:57
+msgid "Import domains"
+msgstr "도메인 가져오기"
+
+#: src/views/admin/domains/DomainView.vue:28
+msgid "DMARC"
+msgstr "DMARC"
+
+#: src/views/admin/identities/AccountEditView.vue:3
+msgid "Edit account"
+msgstr "계정 편집"
+
+#: src/views/admin/identities/AliasEditView.vue:3
+msgid "Edit alias"
+msgstr "별칭 편집"
+
+#: src/views/admin/identities/IdentitiesView.vue:33
+msgid "Import accounts and aliases from CSV file"
+msgstr "CSV 파일에서 계정 및 별칭 가져오기"
+
+#: src/views/admin/identities/IdentitiesView.vue:40
+msgid "Export accounts and aliases to CSV"
+msgstr "계정 및 별칭을 CSV로 내보내기"
+
+#: src/views/admin/identities/IdentitiesView.vue:69
+msgid "Import identities"
+msgstr "ID/계정 가져오기"
+
+#: src/views/admin/identities/IdentitiesView.vue:91
+msgid "Crypt passwords"
+msgstr "비밀번호 암호화"
+
+#: src/views/admin/identities/IdentitiesView.vue:95
+msgid "Check this option if passwords contained in your file are not crypted"
+msgstr "파일에 포함된 비밀번호가 암호화되지 않은 경우 이 옵션을 체크하십시오"
+
+#: src/views/admin/imap_migration/ProviderEditView.vue:3
+msgid "Edit provider"
+msgstr "제공업체 편집"
+
+#: src/views/admin/imap_migration/ProvidersView.vue:4
+msgid "Providers"
+msgstr "제공업체"
+
+#: src/views/admin/InformationView.vue:8
+msgid "Important messages"
+msgstr "중요 메시지"
+
+#: src/views/admin/InformationView.vue:22
+msgid ""
+"The password scheme you are using has been deprecated and will be removed in"
+" the next minor version. The procedure to upgrade to a stronger scheme is as"
+" follows:"
+msgstr ""
+"사용 중인 비밀번호 구성표는 더 이상 사용되지 않으며 다음 마이너 버전에서 제거됩니다. 더 강력한 구성표로 업그레이드하는 절차는 다음과 "
+"같습니다:"
+
+#: src/views/admin/InformationView.vue:29
+msgid "Go to <strong>Settings > General</strong> section"
+msgstr "<strong>설정 > 일반</strong> 섹션으로 이동"
+
+#: src/views/admin/InformationView.vue:37
+msgid "Change the value of <strong>Default password scheme</strong>"
+msgstr "<strong>기본 비밀번호 구성표</strong> 값을 변경"
+
+#: src/views/admin/InformationView.vue:45
+msgid ""
+"Make sure <strong>Update password scheme at login</strong> option is enabled"
+msgstr "<strong>로그인 시 비밀번호 구성표 업데이트</strong> 옵션이 활성화되어 있는지 확인"
+
+#: src/views/admin/InformationView.vue:51
+msgid "Save your changes"
+msgstr "변경 사항 저장"
+
+#: src/views/admin/InformationView.vue:54
+msgid "Logout / Login with your current account so its password gets updated"
+msgstr "현재 계정에서 로그아웃 후 다시 로그인하여 비밀번호를 업데이트"
+
+#: src/views/admin/InformationView.vue:61
+msgid ""
+"Inform <strong>ALL</strong> your users that they must login to Modoboa to "
+"complete the operation"
+msgstr "<strong>모든</strong> 사용자에게 작업을 완료하기 위해 Modoboa에 로그인해야 함을 알림"
+
+#: src/views/admin/InformationView.vue:71
+msgid ""
+"You must apply this procedure <strong>BEFORE</strong> you install a newest "
+"version of Modoboa, otherwise <strong>you will be unable to connect to the "
+"web interface anymore</strong>."
+msgstr ""
+"최신 버전의 Modoboa를 설치하기 <strong>전에</strong> 이 절차를 적용해야 합니다. 그렇지 않으면 <strong>더 "
+"이상 웹 인터페이스에 접속할 수 없게 됩니다</strong>."
+
+#: src/views/admin/InformationView.vue:80
+msgid ""
+"Please note that you will see this message until <strong>ALL</strong> user "
+"passwords have been converted using the new scheme."
+msgstr "<strong>모든</strong> 사용자의 비밀번호가 새 구성표로 변환될 때까지 이 메시지가 계속 표시됩니다."
+
+#: src/views/admin/InformationView.vue:92
+msgid "Installed components"
+msgstr "설치된 구성 요소"
+
+#: src/views/admin/InformationView.vue:103
+msgid "One or more updates are available"
+msgstr "하나 이상의 업데이트를 사용할 수 있습니다"
+
+#: src/views/admin/InformationView.vue:107
+msgid "Check out the following list to find related components"
+msgstr "관련 구성 요소를 찾으려면 다음 목록을 확인하십시오"
+
+#: src/views/admin/InformationView.vue:146
+msgid "Installed version"
+msgstr "설치된 버전"
+
+#: src/views/admin/InformationView.vue:147
+msgid "Latest version"
+msgstr "최신 버전"
+
+#: src/views/admin/monitoring/MessagesView.vue:3
+msgid "Message history"
+msgstr "메시지 기록"
+
+#: src/views/calendars/CalendarView.vue:14
+msgid "Today"
+msgstr "오늘"
+
+#: src/views/calendars/CalendarView.vue:185
+msgid "My calendars"
+msgstr "내 캘린더"
+
+#: src/views/calendars/CalendarView.vue:204
+msgid "Access rules"
+msgstr "접근 규칙"
+
+#: src/views/calendars/CalendarView.vue:536
+msgid "Do you really want to delete this calendar?"
+msgstr "정말로 이 캘린더를 삭제하시겠습니까?"
+
+#: src/views/calendars/CalendarView.vue:546
+msgid "Calendar deleted"
+msgstr "캘린더가 삭제되었습니다"
+
+#: src/views/contacts/AddressBook.vue:4 src/views/contacts/AddressBook.vue:41
+msgid "Contacts"
+msgstr "연락처"
+
+#: src/views/contacts/AddressBook.vue:58
+msgid "Add a category"
+msgstr "카테고리 추가"
+
+#: src/views/DashboardView.vue:40
+msgid "Welcome to Modoboa"
+msgstr "Modoboa에 오신 것을 환영합니다"
+
+#: src/views/login/LoginCallbackView.vue:20 src/views/login/LoginView.vue:17
+msgid "Attempting to log you in."
+msgstr "로그인을 시도 중입니다."
+
+#: src/views/quarantine/MessageView.vue:4
+msgid "Quarantined message"
+msgstr "격리된 메시지"
+
+#: src/views/quarantine/MessageView.vue:21
+msgid "Release message"
+msgstr "메시지 격리 해제"
+
+#: src/views/quarantine/MessageView.vue:32
+msgid "Delete message"
+msgstr "메시지 삭제"
+
+#: src/views/quarantine/MessageView.vue:53
+msgid "Mark as non-spam"
+msgstr "정상 메일로 표시"
+
+#: src/views/quarantine/MessageView.vue:68
+msgid "View full headers"
+msgstr "전체 헤더 보기"
+
+#: src/views/quarantine/MessageView.vue:71
+msgid "Hide full headers"
+msgstr "전체 헤더 숨기기"
+
+#: src/views/quarantine/MessageView.vue:201
+#: src/views/webmail/EmailView.vue:267
+msgid "Message deleted"
+msgstr "메시지가 삭제되었습니다"
+
+#: src/views/quarantine/QuarantineView.vue:4
+msgid "Quarantine"
+msgstr "격리소"
+
+#: src/views/quarantine/QuarantineView.vue:12
+msgid "release requests"
+msgstr "격리 해제 요청"
+
+#: src/views/webmail/EmailView.vue:8
+msgid "Reply"
+msgstr "답장"
+
+#: src/views/webmail/EmailView.vue:15
+msgid "Reply all"
+msgstr "전체 답장"
+
+#: src/views/webmail/EmailView.vue:63
+msgid "Enable links"
+msgstr "링크 활성화"
+
+#: src/views/webmail/EmailView.vue:68
+msgid "Disable links"
+msgstr "링크 비활성화"
+
+#: src/views/webmail/EmailView.vue:72
+msgid "Display source"
+msgstr "소스 표시"
+
+#: src/views/webmail/EmailView.vue:145
+msgid "Message scheduled at:"
+msgstr "메시지 예약 시각:"
+
+#: src/views/webmail/EmailView.vue:151
+msgid "Message source"
+msgstr "메시지 원본"
+
+#: src/views/webmail/EmailView.vue:281
+msgid "Message marked as junk"
+msgstr "메시지가 스팸으로 표시되었습니다"
+
+#: src/views/webmail/EmailView.vue:295
+msgid "Message marked as not junk"
+msgstr "메시지가 정상 메일로 표시되었습니다"
+
+#: src/views/webmail/MailboxView.vue:4
+msgid "Webmail"
+msgstr "웹메일"
