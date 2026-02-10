@@ -1,0 +1,3392 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# 
+# Translators:
+# 미나리나물, 2026
+# 미나리나물, 2026
+# Yongjun OH, 2026
+# Yongjun OH, 2026
+msgid ""
+msgstr ""
+"Project-Id-Version: Modoboa\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-02-04 09:30+0100\n"
+"PO-Revision-Date: 2011-07-01 08:15+0000\n"
+"Last-Translator: Yongjun OH, 2026\n"
+"Language-Team: Korean (Korea) (http://app.transifex.com/tonio/modoboa/language/ko_KR/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: ko_KR\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: admin/api/v1/serializers.py:39
+msgid ""
+"Quota shared between mailboxes. Can be expressed in KB, MB (default) or GB. "
+"A value of 0 means no quota."
+msgstr "사서함 사이에 공유되는 할당량입니다. KB, MB(기본값) 또는 GB 단위로 표시할 수 있습니다. 값이 0이면 할당량이 무제한 입니다."
+
+#: admin/api/v1/serializers.py:46
+msgid "Default quota in MB applied to mailboxes. A value of 0 means no quota."
+msgstr "사서함에 적용될 기본 용량(MB)입니다. 0으로 설정하면 용량 제한이 없습니다."
+
+#: admin/api/v1/serializers.py:94
+msgid "domain alias with this name already exists"
+msgstr "같은 이름의 도메인 별칭이 이미 존재합니다."
+
+#: admin/api/v1/serializers.py:104
+msgid "No authorized MX record found for this domain"
+msgstr "이 도메인에서 인증된 MX 레코드를 찾을 수 없습니다."
+
+#: admin/api/v1/serializers.py:122
+msgid "Cannot be greater than domain quota"
+msgstr "도메인 할당량보다 큰 값을 설정할 수 없습니다."
+
+#: admin/api/v1/serializers.py:168 admin/api/v1/serializers.py:364
+#: admin/api/v2/serializers.py:571 admin/models/alias.py:45
+msgid "Permission denied."
+msgstr "권한이 거부되었습니다."
+
+#: admin/api/v1/serializers.py:231 admin/api/v2/serializers.py:90
+#: admin/api/v2/serializers.py:492 amavis/serializers.py:39
+#: core/api/v2/serializers.py:248 core/api/v2/serializers.py:250
+#: core/api/v2/serializers.py:259 transport/backends.py:40
+msgid "This field is required"
+msgstr "이 필드는 필수 항목입니다."
+
+#: admin/api/v1/serializers.py:243
+msgid ""
+"List of administered domains (resellers and domain administrators only)."
+msgstr "관리 중인 도메인 목록 (리셀러 및 도메인 관리자 전용)."
+
+#: admin/api/v1/serializers.py:337 admin/api/v2/serializers.py:553
+msgid "Not allowed for this role."
+msgstr "이 역할에는 허용되지 않는 작업입니다."
+
+#: admin/api/v1/serializers.py:355
+msgid "Must be equal to mailbox full_address"
+msgstr "사서함의 전체 주소(full_address)와 일치해야 합니다."
+
+#: admin/api/v1/serializers.py:397 admin/api/v2/serializers.py:605
+#: calendars/serializers.py:182 pdfcredentials/api/v2/serializers.py:91
+msgid "This field is required."
+msgstr "이 필드는 필수 입력 항목입니다."
+
+#: admin/api/v1/serializers.py:409 admin/api/v2/serializers.py:622
+msgid "Local domain {} does not exist"
+msgstr "로컬 도메인 {}이(가) 존재하지 않습니다."
+
+#: admin/api/v1/serializers.py:499
+msgid "A list of recipient"
+msgstr "수신자 목록"
+
+#: admin/api/v1/serializers.py:515 admin/api/v2/viewsets.py:313
+msgid "This alias already exists"
+msgstr "이 별칭은 이미 존재합니다."
+
+#: admin/api/v1/serializers.py:551
+msgid "You don't have access to this domain."
+msgstr "이 도메인에 대한 접근 권한이 없습니다."
+
+#: admin/api/v1/serializers.py:560
+msgid "You don't have access to this mailbox."
+msgstr "이 사서함에 대한 접근 권한이 없습니다."
+
+#: admin/api/v1/viewsets.py:184
+msgid "Here is your new Modoboa password: {}"
+msgstr "요청하신 새로운 Modoboa 비밀번호입니다: {}"
+
+#: admin/api/v2/serializers.py:82
+msgid "DKIM keys storage directory not configured"
+msgstr "DKIM 키 저장 디렉토리가 설정되지 않았습니다."
+
+#: admin/api/v2/serializers.py:94
+msgid "This field is valid when type is relaydomain"
+msgstr "이 필드는 유형이 릴레이 도메인(relaydomain)일 때만 유효합니다."
+
+#: admin/api/v2/serializers.py:101
+msgid "You can't define an unlimited quota."
+msgstr "무제한 할당량을 설정할 수 없습니다."
+
+#: admin/api/v2/serializers.py:135
+#, python-format
+msgid "User '%s' already exists"
+msgstr "사용자 '%s'이(가) 이미 존재합니다."
+
+#: admin/api/v2/serializers.py:256 admin/api/v2/serializers.py:262
+msgid "Must be a positive integer"
+msgstr "양의 정수여야 합니다."
+
+#: admin/api/v2/serializers.py:271
+msgid "openssl not found, please make sure it is installed."
+msgstr "openssl을 찾을 수 없습니다. 설치 여부를 확인해 주세요."
+
+#: admin/api/v2/serializers.py:274 pdfcredentials/api/v2/serializers.py:84
+msgid "Directory not found."
+msgstr "디렉토리를 찾을 수 없습니다."
+
+#: admin/api/v2/serializers.py:285
+msgid "This field only allows valid IP addresses (or networks)"
+msgstr "이 필드에는 유효한 IP 주소(또는 네트워크)만 입력할 수 있습니다."
+
+#: admin/api/v2/serializers.py:298
+msgid "Please disable imap migration before disabling this option."
+msgstr "이 옵션을 끄기 전에 IMAP 마이그레이션을 먼저 비활성화하세요."
+
+#: admin/api/v2/serializers.py:311
+msgid "Define at least one authorized network / address"
+msgstr "최소 하나 이상의 허용된 네트워크 또는 주소를 정의해야 합니다."
+
+#: admin/api/v2/serializers.py:588
+msgid "The left part of an email address can't be more than 64 characters."
+msgstr "이메일 주소의 앞부분(ID)은 64자를 초과할 수 없습니다."
+
+#: admin/api/v2/serializers.py:610
+msgid "A mailbox is required to create aliases."
+msgstr "별칭을 생성하려면 사서함이 지정되어야 합니다."
+
+#: admin/api/v2/serializers.py:783
+msgid "Unknown status"
+msgstr "알 수 없는 상태"
+
+#: admin/api/v2/viewsets.py:95
+msgid "You don't have access to this domain"
+msgstr "이 도메인에 대한 접근 권한이 없습니다."
+
+#: admin/api/v2/viewsets.py:98
+msgid "You can't delete your own domain"
+msgstr "자신의 도메인은 삭제할 수 없습니다."
+
+#: admin/app_settings.py:19 limits/app_settings.py:38 limits/constants.py:13
+msgid "Domains"
+msgstr "도메인"
+
+#: admin/app_settings.py:25
+msgid "Enable MX checks"
+msgstr "MX 레코드 확인 활성화"
+
+#: admin/app_settings.py:27
+msgid "Check that every domain has a valid MX record"
+msgstr "모든 도메인이 유효한 MX 레코드를 가지고 있는지 확인합니다."
+
+#: admin/app_settings.py:34
+msgid "Valid MXs"
+msgstr "유효한 MX 목록"
+
+#: admin/app_settings.py:37
+msgid ""
+"A list of IP or network address every MX record should match. A warning will"
+" be sent if a record does not respect it."
+msgstr "모든 MX 레코드가 일치해야 하는 IP 또는 네트워크 주소 목록입니다. 레코드가 이 주소들과 일치하지 않으면 경고가 발송됩니다."
+
+#: admin/app_settings.py:47
+msgid "New domains must use authorized MX(s)"
+msgstr "새 도메인은 인증된 MX를 사용해야 함"
+
+#: admin/app_settings.py:51
+msgid ""
+"Prevent the creation of a new domain if its MX record does not use one of "
+"the defined addresses."
+msgstr "MX 레코드가 정의된 주소 중 하나를 사용하지 않을 경우 새 도메인 생성을 방지합니다."
+
+#: admin/app_settings.py:59
+msgid "Enable IPV6 checks"
+msgstr "IPv6 확인 활성화"
+
+#: admin/app_settings.py:62
+msgid "Check if MX setup for ipv6 is valid"
+msgstr "IPv6용 MX 설정이 유효한지 확인합니다."
+
+#: admin/app_settings.py:69
+msgid "Enable SPF checks"
+msgstr "SPF 확인 활성화"
+
+#: admin/app_settings.py:71
+msgid "Check if every domain has a valid SPF record"
+msgstr "모든 도메인에 유효한 SPF 레코드가 있는지 확인합니다."
+
+#: admin/app_settings.py:78
+msgid "Enable DKIM checks"
+msgstr "DKIM 확인 활성화"
+
+#: admin/app_settings.py:80
+msgid "Check if every domain with DKIM signin enabled has a valid DNS record"
+msgstr "DKIM 서명이 활성화된 모든 도메인에 유효한 DNS 레코드가 있는지 확인합니다."
+
+#: admin/app_settings.py:88
+msgid "Enable DMARC checks"
+msgstr "DMARC 확인 활성화"
+
+#: admin/app_settings.py:90
+msgid "Check if every domain has a valid DMARC record"
+msgstr "모든 도메인에 유효한 DMARC 레코드가 있는지 확인합니다."
+
+#: admin/app_settings.py:97
+msgid "Enable autoconfig checks"
+msgstr "자동 설정(autoconfig) 확인 활성화"
+
+#: admin/app_settings.py:99
+msgid "Check if every domain has a valid records for autoconfiguration"
+msgstr "모든 도메인에 자동 설정을 위한 유효한 레코드가 있는지 확인합니다."
+
+#: admin/app_settings.py:107
+msgid "Enable DNSBL checks"
+msgstr "DNSBL 확인 활성화"
+
+#: admin/app_settings.py:109
+msgid "Check every domain against major DNSBL providers"
+msgstr "주요 DNSBL 제공업체 리스트에서 도메인을 대조하여 확인합니다."
+
+#: admin/app_settings.py:117
+msgid "Notify domain admins about DNS issues"
+msgstr "DNS 문제 발생 시 도메인 관리자에게 알림"
+
+#: admin/app_settings.py:120
+msgid ""
+"Send a notification by email to domain administrators when DNS issues are "
+"encountered"
+msgstr "DNS 문제가 발견되면 도메인 관리자에게 이메일로 알림을 보냅니다."
+
+#: admin/app_settings.py:128
+msgid "Custom DNS server"
+msgstr "사용자 정의 DNS 서버"
+
+#: admin/app_settings.py:130
+msgid "Use a custom DNS server instead of local server configuration"
+msgstr "로컬 서버 설정 대신 사용자 정의 DNS 서버를 사용합니다."
+
+#: admin/app_settings.py:138
+msgid "DKIM keys storage directory"
+msgstr "DKIM 키 저장 디렉토리"
+
+#: admin/app_settings.py:140
+msgid ""
+"Absolute path of the directory where DKIM private keys will be stored. Make "
+"sure this directory belongs to root user and is not readable by the outside "
+"world."
+msgstr "DKIM 개인 키가 저장될 디렉토리의 절대 경로입니다. 이 디렉토리는 root 사용자 소유여야 하며 외부에서 읽을 수 없도록 설정해야 합니다."
+
+#: admin/app_settings.py:149
+msgid "Default DKIM key length"
+msgstr "기본 DKIM 키 길이"
+
+#: admin/app_settings.py:151
+msgid "Default length in bits for newly generated DKIM keys."
+msgstr "새로 생성되는 DKIM 키의 기본 비트 길이입니다."
+
+#: admin/app_settings.py:158
+msgid "Default domain quota"
+msgstr "기본 도메인 할당량"
+
+#: admin/app_settings.py:160
+msgid ""
+"Default quota (in MB) applied to freshly created domains with no value "
+"specified. A value of 0 means no quota."
+msgstr "값을 지정하지 않고 새로 생성된 도메인에 적용되는 기본 할당량(MB)입니다. 0으로 설정하면 할당량 제한이 없습니다."
+
+#: admin/app_settings.py:168
+msgid "Default domain sending limit"
+msgstr "기본 도메인 발송 제한"
+
+#: admin/app_settings.py:170
+msgid ""
+"Number of messages freshly created domains will be allowed to send per day. "
+"Leave empty for no limit."
+msgstr "새로 생성된 도메인이 하루에 보낼 수 있는 메시지 수입니다. 제한을 두지 않으려면 비워 두세요."
+
+#: admin/app_settings.py:182 limits/app_settings.py:61
+#: limits/app_settings.py:135 limits/constants.py:31 limits/constants.py:84
+msgid "Mailboxes"
+msgstr "사서함"
+
+#: admin/app_settings.py:188
+msgid "Handle mailboxes on filesystem"
+msgstr "파일 시스템에서 사서함 관리"
+
+#: admin/app_settings.py:190
+msgid ""
+"Rename or remove mailboxes on the filesystem when they get renamed or "
+"removed within Modoboa"
+msgstr "Modoboa 내에서 사서함 이름이 바뀌거나 삭제될 때 파일 시스템에서도 동일하게 이름을 바꾸거나 삭제합니다."
+
+#: admin/app_settings.py:198 admin/models/domain.py:36
+msgid "Default mailbox quota"
+msgstr "기본 사서함 할당량"
+
+#: admin/app_settings.py:200
+msgid ""
+"Default mailbox quota (in MB) applied to freshly created domains with no "
+"value specified. A value of 0 means no quota."
+msgstr "값을 지정하지 않고 새로 생성된 도메인에 적용되는 기본 사서함 할당량(MB)입니다. 0으로 설정하면 할당량 제한이 없습니다."
+
+#: admin/app_settings.py:209
+msgid "Default mailbox sending limit"
+msgstr "기본 사서함 발송 제한"
+
+#: admin/app_settings.py:211
+msgid ""
+"Number of messages freshly created mailboxes will be allowed to send per "
+"day. Leave empty for no limit."
+msgstr "새로 생성된 사서함이 하루에 보낼 수 있는 메시지 수입니다. 제한을 두지 않으려면 비워 두세요."
+
+#: admin/app_settings.py:219
+msgid "Automatic account removal"
+msgstr "계정 자동 삭제"
+
+#: admin/app_settings.py:221
+msgid "When a mailbox is removed, also remove the associated account"
+msgstr "사서함이 삭제될 때 연결된 계정도 함께 삭제합니다."
+
+#: admin/app_settings.py:230
+msgid "Automatic domain/mailbox creation"
+msgstr "도메인/사서함 자동 생성"
+
+#: admin/app_settings.py:233
+msgid ""
+"Create a domain and a mailbox when an account is automatically created."
+msgstr "계정이 자동으로 생성될 때 도메인과 사서함도 함께 생성합니다."
+
+#: admin/app_settings.py:242
+msgid "Create an alias when a mailbox is renamed"
+msgstr "사서함 이름 변경 시 별칭 생성"
+
+#: admin/app_settings.py:245
+msgid "Create an alias using the old address when a mailbox is renamed."
+msgstr "사서함 이름이 변경될 때 이전 주소를 별칭으로 자동 생성합니다."
+
+#: admin/app_settings.py:257
+msgid "Aliases"
+msgstr "별칭"
+
+#: admin/app_settings.py:263
+msgid "Alias can target any domain"
+msgstr "별칭의 대상 도메인 제한 없음"
+
+#: admin/app_settings.py:265
+msgid "Allow aliases to target any domain, not just the local domains."
+msgstr "별칭이 로컬 도메인뿐만 아니라 모든 도메인을 대상으로 할 수 있도록 허용합니다."
+
+#: admin/app_settings.py:272
+msgid "Alias target block list"
+msgstr "별칭 대상 차단 목록"
+
+#: admin/app_settings.py:274
+msgid "A list of domains that aliases cannot target (comma separated)."
+msgstr "별칭이 대상으로 지정할 수 없는 도메인 목록입니다 (쉼표로 구분)."
+
+#: admin/app_settings.py:282
+msgid "Alias target allow list"
+msgstr "별칭 대상 허용 목록"
+
+#: admin/app_settings.py:284
+msgid "A list of domains that aliases can target (comma separated)."
+msgstr "별칭이 대상으로 지정할 수 있는 도메인 목록입니다 (쉼표로 구분)."
+
+#: admin/app_settings.py:338 core/api/v2/viewsets.py:174
+msgid "Administration"
+msgstr "관리"
+
+#: admin/constants.py:21
+msgid "Domain"
+msgstr "도메인"
+
+#: admin/constants.py:22
+msgid "Relay domain"
+msgstr "릴레이 도메인"
+
+#: admin/constants.py:38
+msgid "Opened"
+msgstr "열림"
+
+#: admin/constants.py:39
+msgid "Closed"
+msgstr "닫힘"
+
+#: admin/dns_checker.py:96
+msgid "MX {} listed by DNSBL provider {}"
+msgstr "MX {}이(가) DNSBL 제공업체 {}의 목록에 등록되어 있습니다."
+
+#: admin/dns_checker.py:138
+msgid "Domain has no MX record"
+msgstr "도메인에 MX 레코드가 없습니다."
+
+#: admin/dns_checker.py:141
+msgid "Domain {} has no MX record"
+msgstr "도메인 {}에 MX 레코드가 없습니다."
+
+#: admin/dns_checker.py:159
+msgid "Invalid MX record: {}"
+msgstr "유효하지 않은 MX 레코드: {}"
+
+#: admin/dns_checker.py:166
+#, python-brace-format
+msgid "MX record for domain {0} is invalid: {1}"
+msgstr "도메인 {0}의 MX 레코드가 유효하지 않습니다: {1}"
+
+#: admin/dns_checker.py:177
+msgid "[modoboa] MX issue(s) for domain {}"
+msgstr "[modoboa] 도메인 {}에 대한 MX 관련 문제 발생"
+
+#: admin/dns_checker.py:224
+msgid "[modoboa] DNSBL issue(s) for domain {}"
+msgstr "[modoboa] 도메인 {}에 대한 DNSBL 관련 문제 발생"
+
+#: admin/handlers.py:179
+msgid "domain alias"
+msgstr "도메인 별칭"
+
+#: admin/handlers.py:227
+#, python-format
+msgid "Account import failed (%s): domain does not exist"
+msgstr "계정 가져오기 실패 (%s): 도메인이 존재하지 않습니다."
+
+#: admin/handlers.py:246
+#, python-format
+msgid "Account import failed (%s): wrong quota value"
+msgstr "계정 가져오기 실패 (%s): 잘못된 할당량 값입니다."
+
+#: admin/lib.py:126
+msgid "You are not allowed to import domains"
+msgstr "도메인을 가져올 권한이 없습니다."
+
+#: admin/lib.py:135
+msgid "You are not allowed to import domain aliases."
+msgstr "도메인 별칭을 가져올 권한이 없습니다."
+
+#: admin/lib.py:227 admin/tests/test_mx.py:139 admin/tests/test_mx.py:152
+#: admin/tests/test_mx.py:157
+#, python-format
+msgid "No DNS record found for %s"
+msgstr "%s에 대한 DNS 레코드를 찾을 수 없습니다."
+
+#: admin/lib.py:230
+#, python-format
+msgid "No %(type)s record for %(name)s"
+msgstr "%(name)s에 대한 %(type)s 레코드가 없습니다."
+
+#: admin/lib.py:234 admin/tests/test_mx.py:142
+msgid "No working name servers found"
+msgstr "작동 중인 네임 서버를 찾을 수 없습니다."
+
+#: admin/lib.py:237 admin/tests/test_mx.py:146
+#, python-format
+msgid "DNS resolution timeout, unable to query %s at the moment"
+msgstr "DNS 조회 시간 초과로 현재 %s에 쿼리할 수 없습니다."
+
+#: admin/lib.py:241
+msgid "DNS name is too long: {}"
+msgstr "DNS 이름이 너무 깁니다: {}"
+
+#: admin/lib.py:272
+#, python-brace-format
+msgid "Invalid IP address format for {domain}; {addr}"
+msgstr "{domain}의 IP 주소 형식이 잘못되었습니다; {addr}"
+
+#: admin/lib.py:365
+#, python-format
+msgid "Object already exists: %s"
+msgstr "객체가 이미 존재합니다: %s"
+
+#: admin/lib.py:369
+#, python-format
+msgid "%d objects imported successfully"
+msgstr "%d개의 객체를 성공적으로 가져왔습니다."
+
+#: admin/management/commands/subcommands/_import.py:97
+msgid "CSV file is not encoded in UTF-8, attempting to guess encoding"
+msgstr "CSV 파일이 UTF-8로 인코딩되지 않았습니다. 인코딩 형식을 추정합니다."
+
+#: admin/management/commands/subcommands/_import.py:112
+#, python-format
+msgid "Reading CSV file using %(encoding)s encoding"
+msgstr "%(encoding)s 인코딩을 사용하여 CSV 파일을 읽는 중"
+
+#: admin/management/commands/subcommands/_import.py:123
+#, python-format
+msgid "Unable to decode CSV file using %(encoding)s encoding"
+msgstr "%(encoding)s 인코딩으로 CSV 파일을 디코딩할 수 없습니다."
+
+#: admin/management/commands/subcommands/_manage_dkim_keys.py:29
+msgid ""
+"DKIM path non-writable (either a permission issue or the directory does not "
+"exist)"
+msgstr "DKIM 경로에 쓸 수 없습니다 (권한 문제이거나 디렉토리가 존재하지 않음)"
+
+#: admin/management/commands/subcommands/_manage_dkim_keys.py:52
+msgid "Failed to generate DKIM private key"
+msgstr "DKIM 개인 키 생성에 실패했습니다."
+
+#: admin/management/commands/subcommands/_manage_dkim_keys.py:62
+msgid "Failed to generate DKIM public key"
+msgstr "DKIM 공개 키 생성에 실패했습니다."
+
+#: admin/models/alias.py:43
+msgid "Domain not found."
+msgstr "도메인을 찾을 수 없습니다."
+
+#: admin/models/alias.py:117 admin/models/mailbox.py:85
+msgid "address"
+msgstr "주소"
+
+#: admin/models/alias.py:119
+msgid "The alias address."
+msgstr "별칭 주소입니다."
+
+#: admin/models/alias.py:123 admin/models/domain.py:45
+#: admin/models/domain_alias.py:45 autoreply/models.py:25
+msgid "enabled"
+msgstr "활성화됨"
+
+#: admin/models/alias.py:124 admin/models/domain_alias.py:46
+msgid "Check to activate this alias"
+msgstr "이 별칭을 활성화하려면 체크하세요."
+
+#: admin/models/alias.py:128
+msgid "Description"
+msgstr "설명"
+
+#: admin/models/alias.py:129
+msgid "Expire at"
+msgstr "만료일"
+
+#: admin/models/alias.py:170
+msgid "alias"
+msgstr "별칭"
+
+#: admin/models/alias.py:203
+msgid "Invalid address"
+msgstr "유효하지 않은 주소"
+
+#: admin/models/alias.py:206
+msgid "Target domain not allowed"
+msgstr "대상 도메인이 허용되지 않습니다."
+
+#: admin/models/alias.py:224
+msgid "Local recipient {}@{} not found"
+msgstr "로컬 수신자 {}@{}을(를) 찾을 수 없습니다."
+
+#: admin/models/alias.py:273
+msgid "Invalid line: {}"
+msgstr "유효하지 않은 행: {}"
+
+#: admin/models/domain.py:27 admin/models/domain_alias.py:33
+msgid "name"
+msgstr "이름"
+
+#: admin/models/domain.py:30
+msgid "The domain name"
+msgstr "도메인 이름"
+
+#: admin/models/domain.py:39 admin/models/mailbox.py:92
+msgid "Message sending limit"
+msgstr "메시지 발송 제한"
+
+#: admin/models/domain.py:42
+msgid "Number of messages this domain can send per day"
+msgstr "이 도메인이 하루에 보낼 수 있는 메시지 수"
+
+#: admin/models/domain.py:46
+msgid "Check to activate this domain"
+msgstr "이 도메인을 활성화하려면 체크하세요."
+
+#: admin/models/domain.py:51
+msgid "Enable DNS checks"
+msgstr "DNS 확인 활성화"
+
+#: admin/models/domain.py:53
+msgid "Check to enable DNS checks for this domain"
+msgstr "이 도메인에 대해 DNS 확인을 활성화하려면 체크하세요."
+
+#: admin/models/domain.py:61
+msgid "Enable DKIM signing"
+msgstr "DKIM 서명 활성화"
+
+#: admin/models/domain.py:63
+msgid ""
+"If you activate this feature, a DKIM key will be generated for this domain."
+msgstr "이 기능을 활성화하면 이 도메인에 대한 DKIM 키가 생성됩니다."
+
+#: admin/models/domain.py:70
+msgid "Key length"
+msgstr "키 길이"
+
+#: admin/models/domain.py:321 admin/models/domain_alias.py:70
+#: core/models.py:352 relaydomains/lib.py:13
+msgid "Invalid line"
+msgstr "유효하지 않은 행"
+
+#: admin/models/domain.py:331
+msgid "{}: no authorized MX record found for domain"
+msgstr "{}: 도메인에 대한 인증된 MX 레코드를 찾을 수 없습니다."
+
+#: admin/models/domain.py:337
+msgid "{}: invalid quota value for domain"
+msgstr "{}: 도메인의 할당량 값이 잘못되었습니다."
+
+#: admin/models/domain.py:343
+msgid "{}: invalid default mailbox quota value for domain"
+msgstr "{}: 도메인의 기본 사서함 할당량 값이 잘못되었습니다."
+
+#: admin/models/domain.py:350
+msgid "{}: default mailbox quota cannot be greater than domain quota"
+msgstr "{}: 기본 사서함 할당량은 도메인 할당량보다 클 수 없습니다."
+
+#: admin/models/domain_alias.py:36
+msgid "The alias name"
+msgstr "별칭 이름"
+
+#: admin/models/domain_alias.py:40
+msgid "target"
+msgstr "대상"
+
+#: admin/models/domain_alias.py:41
+msgid "The domain this alias points to"
+msgstr "이 별칭이 가리키는 도메인"
+
+#: admin/models/domain_alias.py:79
+#, python-format
+msgid "Unknown domain %s"
+msgstr "알 수 없는 도메인 %s"
+
+#: admin/models/mailbox.py:87
+msgid "Mailbox address (without the @domain.tld part)"
+msgstr "사서함 주소 (@domain.tld 부분을 제외한 ID)"
+
+#: admin/models/mailbox.py:95
+msgid "Number of messages this mailbox can send per day"
+msgstr "이 사서함이 하루에 보낼 수 있는 메시지 수"
+
+#: admin/models/mailbox.py:153
+#, python-format
+msgid "Failed to retrieve mailbox location (%s)"
+msgstr "사서함 위치를 가져오지 못했습니다 (%s)"
+
+#: admin/models/mailbox.py:249
+msgid "A quota is required"
+msgstr "할당량 설정이 필요합니다."
+
+#: admin/models/mailbox.py:256
+msgid "{}: domain quota exceeded"
+msgstr "{}: 도메인 할당량을 초과했습니다."
+
+#: admin/models/mailbox.py:310
+msgid "Domain does not exist"
+msgstr "도메인이 존재하지 않습니다."
+
+#: admin/models/mailbox.py:342
+msgid "Mailbox {} already exists"
+msgstr "사서함 {}이(가) 이미 존재합니다."
+
+#: admin/templates/admin/notifications/domain_in_dnsbl.html:3
+#, python-format
+msgid ""
+"Modoboa detected that domain %(domain)s is listed by the following DNSBL "
+"providers:"
+msgstr "Modoboa가 도메인 %(domain)s이(가) 다음 DNSBL 제공업체 목록에 등록된 것을 감지했습니다:"
+
+#: admin/templates/admin/notifications/domain_in_dnsbl.html:11
+msgid ""
+"The domain's reputation will be affected and there is a chance that emails "
+"coming from it are considered as spam. You should contact those providers "
+"and ask them to unlist detected IP address(es)."
+msgstr "도메인의 평판에 영향을 미치며, 해당 도메인에서 발송된 이메일이 스팸으로 처리될 가능성이 있습니다. 해당 제공업체에 연락하여 감지된 IP 주소를 목록에서 제외해 달라고 요청해야 합니다."
+
+#: admin/templates/admin/notifications/domain_invalid_mx.html:3
+#, python-format
+msgid "Modoboa detected that domain %(domain)s has no valid MX record:"
+msgstr "Modoboa가 도메인 %(domain)s에 유효한 MX 레코드가 없음을 감지했습니다:"
+
+#: admin/tests/test_mx.py:141
+#, python-format
+msgid "No MX record for %s"
+msgstr "%s에 대한 MX 레코드가 없습니다."
+
+#: admin/tests/test_mx.py:162 admin/tests/test_mx.py:168
+#, python-format
+msgid "Invalid IP address format for %(domain)s; %(addr)s"
+msgstr "%(domain)s의 IP 주소 형식이 잘못되었습니다; %(addr)s"
+
+#: admin/tests/test_mx.py:185
+#, python-format
+msgid "No AAAA record for %s"
+msgstr "%s에 대한 AAAA(IPv6) 레코드가 없습니다."
+
+#: amavis/app_settings.py:11
+msgid "Amavis settings"
+msgstr "Amavis 설정"
+
+#: amavis/app_settings.py:17
+msgid "Localpart is case sensitive"
+msgstr "로컬 파트(ID) 대소문자 구분"
+
+#: amavis/app_settings.py:19
+msgid "Value should match amavisd.conf variable $localpart_is_case_sensitive"
+msgstr "이 값은 amavisd.conf의 $localpart_is_case_sensitive 변수와 일치해야 합니다."
+
+#: amavis/app_settings.py:27
+msgid "Recipient delimiter"
+msgstr "수신자 구분자"
+
+#: amavis/app_settings.py:29
+msgid "Value should match amavisd.conf variable $recipient_delimiter"
+msgstr "이 값은 amavisd.conf의 $recipient_delimiter 변수와 일치해야 합니다."
+
+#: amavis/app_settings.py:41
+msgid "Quarantine settings"
+msgstr "격리 설정"
+
+#: amavis/app_settings.py:47
+msgid "Maximum message age"
+msgstr "메시지 최대 보관 기간"
+
+#: amavis/app_settings.py:49
+msgid "Quarantine messages maximum age (in days) before deletion"
+msgstr "격리된 메시지가 삭제되기 전까지의 최대 보관 기간(일 단위)입니다."
+
+#: amavis/app_settings.py:60
+msgid "Message releasing"
+msgstr "메시지 해제"
+
+#: amavis/app_settings.py:66
+msgid "Remove released messages"
+msgstr "해제된 메시지 삭제"
+
+#: amavis/app_settings.py:68
+msgid "Remove messages marked as released while cleaning up the database"
+msgstr "데이터베이스 정리 시 '해제됨'으로 표시된 메시지를 삭제합니다."
+
+#: amavis/app_settings.py:76
+msgid "Amavis connection mode"
+msgstr "Amavis 연결 모드"
+
+#: amavis/app_settings.py:78
+msgid "Mode used to access the PDP server"
+msgstr "PDP 서버에 액세스하는 데 사용되는 모드입니다."
+
+#: amavis/app_settings.py:85
+msgid "PDP server address"
+msgstr "PDP 서버 주소"
+
+#: amavis/app_settings.py:87
+msgid "PDP server address (if inet mode)"
+msgstr "PDP 서버 주소 (inet 모드인 경우)"
+
+#: amavis/app_settings.py:95
+msgid "PDP server port"
+msgstr "PDP 서버 포트"
+
+#: amavis/app_settings.py:97
+msgid "PDP server port (if inet mode)"
+msgstr "PDP 서버 포트 (inet 모드인 경우)"
+
+#: amavis/app_settings.py:105
+msgid "PDP server socket"
+msgstr "PDP 서버 소켓"
+
+#: amavis/app_settings.py:107
+msgid "Path to the PDP server socket (if unix mode)"
+msgstr "PDP 서버 소켓 경로 (unix 모드인 경우)"
+
+#: amavis/app_settings.py:115
+msgid "Allow direct release"
+msgstr "직접 해제 허용"
+
+#: amavis/app_settings.py:117
+msgid "Allow users to directly release their messages"
+msgstr "사용자가 격리된 자신의 메시지를 직접 해제할 수 있도록 허용합니다."
+
+#: amavis/app_settings.py:124
+msgid "Enable self-service mode"
+msgstr "셀프 서비스 모드 활성화"
+
+#: amavis/app_settings.py:126
+msgid "Activate the 'self-service' mode"
+msgstr "'셀프 서비스' 모드를 활성화합니다."
+
+#: amavis/app_settings.py:133
+msgid "Notifications sender"
+msgstr "알림 발신자"
+
+#: amavis/app_settings.py:135
+msgid "The e-mail address used to send notitications"
+msgstr "알림을 보낼 때 사용하는 이메일 주소입니다."
+
+#: amavis/app_settings.py:146
+msgid "Manual learning"
+msgstr "수동 학습"
+
+#: amavis/app_settings.py:152
+msgid "Enable manual learning"
+msgstr "수동 학습 활성화"
+
+#: amavis/app_settings.py:154
+msgid "Allow super administrators to manually train Spamassassin"
+msgstr "최고 관리자가 Spamassassin을 수동으로 학습시킬 수 있도록 허용합니다."
+
+#: amavis/app_settings.py:161
+msgid "Is Spamassassin local?"
+msgstr "Spamassassin이 로컬에 있습니까?"
+
+#: amavis/app_settings.py:163
+msgid "Tell if Spamassassin is running on the same server than modoboa"
+msgstr "Spamassassin이 Modoboa와 동일한 서버에서 실행 중인지 여부를 지정합니다."
+
+#: amavis/app_settings.py:171
+msgid "Default user"
+msgstr "기본 사용자"
+
+#: amavis/app_settings.py:173
+msgid "Name of the user owning the default bayesian database"
+msgstr "기본 베이지안 데이터베이스를 소유한 사용자의 이름입니다."
+
+#: amavis/app_settings.py:181
+msgid "Spamd address"
+msgstr "Spamd 주소"
+
+#: amavis/app_settings.py:183
+msgid "The IP address where spamd can be reached"
+msgstr "spamd에 연결할 수 있는 IP 주소입니다."
+
+#: amavis/app_settings.py:191
+msgid "Spamd port"
+msgstr "Spamd 포트"
+
+#: amavis/app_settings.py:193
+msgid "The TCP port spamd is listening on"
+msgstr "spamd가 대기 중인 TCP 포트입니다."
+
+#: amavis/app_settings.py:202
+msgid "Enable per-domain manual learning"
+msgstr "도메인별 수동 학습 활성화"
+
+#: amavis/app_settings.py:205
+msgid ""
+"Allow domain administrators to train Spamassassin (within dedicated per-"
+"domain databases)"
+msgstr "도메인 관리자가 전용 도메인별 데이터베이스 내에서 Spamassassin을 학습시킬 수 있도록 허용합니다."
+
+#: amavis/app_settings.py:215
+msgid "Enable per-user manual learning"
+msgstr "사용자별 수동 학습 활성화"
+
+#: amavis/app_settings.py:218
+msgid ""
+"Allow simple users to personally train Spamassassin (within a dedicated "
+"database)"
+msgstr "일반 사용자가 전용 데이터베이스 내에서 개인적으로 Spamassassin을 학습시킬 수 있도록 허용합니다."
+
+#: amavis/app_settings.py:236 webmail/app_settings.py:155
+msgid "Display"
+msgstr "표시 설정"
+
+#: amavis/app_settings.py:243 webmail/app_settings.py:181
+msgid "Number of displayed emails per page"
+msgstr "페이지당 표시될 이메일 수"
+
+#: amavis/app_settings.py:246
+msgid "Set the maximum number of messages displayed in a page"
+msgstr "한 페이지에 표시될 최대 메시지 수를 설정합니다."
+
+#: amavis/app_settings.py:266 amavis/app_settings.py:273
+msgid "Amavis"
+msgstr "Amavis"
+
+#: amavis/checks/settings_checks.py:8
+msgid ""
+"AMAVIS_DEFAULT_DATABASE_ENCODING does not match the character encoding used "
+"by the Amavis database."
+msgstr "AMAVIS_DEFAULT_DATABASE_ENCODING이 Amavis 데이터베이스에서 사용하는 문자 인코딩과 일치하지 않습니다."
+
+#: amavis/checks/settings_checks.py:12
+msgid ""
+"Check your database character encoding and set/update "
+"AMAVIS_DEFAULT_DATABASE_ENCODING."
+msgstr "데이터베이스 문자 인코딩을 확인하고 AMAVIS_DEFAULT_DATABASE_ENCODING을 설정하거나 업데이트하세요."
+
+#: amavis/checks/settings_checks.py:19
+msgid "Modoboa Amavis has not been tested using the selected database engine."
+msgstr "선택한 데이터베이스 엔진은 Modoboa Amavis에서 테스트되지 않았습니다."
+
+#: amavis/checks/settings_checks.py:20
+msgid "Try using PostgreSQL, MySQL or MariaDB."
+msgstr "PostgreSQL, MySQL 또는 MariaDB를 사용해 보세요."
+
+#: amavis/handlers.py:141
+msgid "Pending requests"
+msgstr "대기 중인 요청"
+
+#: amavis/lib.py:59
+#, python-format
+msgid "Connection to amavis failed: %s"
+msgstr "Amavis 연결 실패: %s"
+
+#: amavis/lib.py:133
+msgid "Failed to find {} binary"
+msgstr "{} 바이너리를 찾지 못했습니다."
+
+#: amavis/lib.py:148
+msgid "No recipient found"
+msgstr "수신자를 찾을 수 없습니다."
+
+#: amavis/lib.py:159
+msgid "Local domain not found"
+msgstr "로컬 도메인을 찾을 수 없습니다."
+
+#: amavis/management/commands/amnotify.py:59
+msgid "[modoboa] Pending release requests"
+msgstr "[modoboa] 대기 중인 해제 요청"
+
+#: amavis/models.py:101
+msgid "Virus filter"
+msgstr "바이러스 필터"
+
+#: amavis/models.py:105 amavis/models.py:119 amavis/models.py:133
+msgid "yes"
+msgstr "예"
+
+#: amavis/models.py:106 amavis/models.py:120 amavis/models.py:134
+msgid "no"
+msgstr "아니요"
+
+#: amavis/models.py:107 amavis/models.py:121 amavis/models.py:135
+msgid "default"
+msgstr "기본값"
+
+#: amavis/models.py:111
+msgid "Bypass virus checks or not. Choose 'default' to use global settings."
+msgstr "바이러스 검사를 건너뛸지 여부입니다. 전역 설정을 사용하려면 '기본값'을 선택하세요."
+
+#: amavis/models.py:115
+msgid "Spam filter"
+msgstr "스팸 필터"
+
+#: amavis/models.py:125
+msgid "Bypass spam checks or not. Choose 'default' to use global settings."
+msgstr "스팸 검사를 건너뛸지 여부입니다. 전역 설정을 사용하려면 '기본값'을 선택하세요."
+
+#: amavis/models.py:129
+msgid "Banned filter"
+msgstr "차단 필터"
+
+#: amavis/models.py:139
+msgid "Bypass banned checks or not. Choose 'default' to use global settings."
+msgstr "차단 검사를 건너뛸지 여부입니다. 전역 설정을 사용하려면 '기본값'을 선택하세요."
+
+#: amavis/models.py:170
+msgid "Spam marker"
+msgstr "스팸 표시"
+
+#: amavis/models.py:176
+msgid ""
+"Modify spam subject using the specified text. Choose 'default' to use global"
+" settings."
+msgstr "지정된 텍스트를 사용하여 스팸 메일의 제목을 수정합니다. 전역 설정을 사용하려면 '기본값'을 선택하세요."
+
+#: amavis/templates/amavis/notifications/pending_requests.html:3
+#, python-format
+msgid "%(counter)s release request is pending for action."
+msgid_plural "%(counter)s release requests are pending for action."
+msgstr[0] "%(counter)s개의 해제 요청이 처리를 대기 중입니다."
+
+#: amavis/templates/amavis/notifications/pending_requests.html:8
+msgid "Sketch:"
+msgstr "개요:"
+
+#: amavis/templates/amavis/notifications/pending_requests.html:10
+msgid "From:"
+msgstr "보낸 사람:"
+
+#: amavis/templates/amavis/notifications/pending_requests.html:11
+msgid "To:"
+msgstr "받는 사람:"
+
+#: amavis/templates/amavis/notifications/pending_requests.html:12
+msgid "Date:"
+msgstr "날짜:"
+
+#: amavis/templates/amavis/notifications/pending_requests.html:13
+msgid "Subject:"
+msgstr "제목:"
+
+#: amavis/templates/amavis/notifications/pending_requests.html:14
+msgid "Act on this message:"
+msgstr "이 메시지에 대한 조치:"
+
+#: amavis/templates/amavis/notifications/pending_requests.html:16
+#, python-format
+msgid "Please visit %(listingurl)s for a full listing."
+msgstr "전체 목록을 보려면 %(listingurl)s을(를) 방문하세요."
+
+#: amavis/viewsets.py:122
+msgid "Invalid request"
+msgstr "유효하지 않은 요청"
+
+#: autoreply/api/v2/serializers.py:27
+msgid "Value can't be less than 1 day"
+msgstr "값은 1일보다 작을 수 없습니다."
+
+#: autoreply/api/v2/serializers.py:47
+msgid "This date is over"
+msgstr "이미 지난 날짜입니다."
+
+#: autoreply/api/v2/serializers.py:50
+msgid "Must be greater than start date"
+msgstr "시작 날짜보다 커야 합니다."
+
+#: autoreply/app_settings.py:12 core/apps.py:21
+#: imap_migration/app_settings.py:13 maillog/apps.py:14
+#: pdfcredentials/app_settings.py:13 webmail/app_settings.py:11
+msgid "General"
+msgstr "일반"
+
+#: autoreply/app_settings.py:18
+msgid "Period between two auto-replies"
+msgstr "자동 응답 간격"
+
+#: autoreply/app_settings.py:20
+msgid ""
+"Number of days to wait before sending a new auto-reply to the same recipient"
+msgstr "동일한 수신자에게 새 자동 응답을 보내기까지 기다리는 기간(일)입니다."
+
+#: autoreply/app_settings.py:27 autoreply/app_settings.py:36
+msgid "Default subject"
+msgstr "기본 제목"
+
+#: autoreply/app_settings.py:29
+msgid ""
+"Default subject used when an auto-reply message is created automatically"
+msgstr "자동 응답 메시지가 자동으로 생성될 때 사용되는 기본 제목입니다."
+
+#: autoreply/app_settings.py:38
+#, python-format
+msgid ""
+"Default content used when an auto-reply message is created automatically. "
+"The '%(name)s' macro will be replaced by the user's full name."
+msgstr "자동 응답 메시지가 자동으로 생성될 때 사용되는 기본 내용입니다. '%(name)s' 매크로는 사용자의 전체 이름으로 바뀝니다."
+
+#: autoreply/apps.py:15
+msgid "Automatic replies"
+msgstr "자동 응답"
+
+#: autoreply/models.py:17
+msgid "subject"
+msgstr "제목"
+
+#: autoreply/models.py:19
+msgid "The subject that will appear in sent emails"
+msgstr "보낸 이메일에 표시될 제목입니다."
+
+#: autoreply/models.py:22
+msgid "content"
+msgstr "내용"
+
+#: autoreply/models.py:22
+msgid "The content that will appear in sent emails"
+msgstr "보낸 이메일에 표시될 내용입니다."
+
+#: autoreply/models.py:25
+msgid "Activate/Deactivate your auto reply"
+msgstr "자동 응답 활성화/비활성화"
+
+#: calendars/app_settings.py:11
+msgid "Server settings"
+msgstr "서버 설정"
+
+#: calendars/app_settings.py:17
+msgid "Server URL"
+msgstr "서버 URL"
+
+#: calendars/app_settings.py:19
+msgid ""
+"The URL of your Radicale server. It will be used to construct calendar URLs."
+msgstr "Radicale 서버의 URL입니다. 캘린더 URL을 생성하는 데 사용됩니다."
+
+#: calendars/app_settings.py:31
+msgid "Rights management"
+msgstr "권한 관리"
+
+#: calendars/app_settings.py:37
+msgid "Rights file's path"
+msgstr "권한 파일 경로"
+
+#: calendars/app_settings.py:39
+msgid "Path to the file that contains rights definition"
+msgstr "권한 정의가 포함된 파일의 경로입니다."
+
+#: calendars/app_settings.py:46
+msgid "Allow calendars administration"
+msgstr "캘린더 관리 허용"
+
+#: calendars/app_settings.py:48
+msgid "Allow domain administrators to manage user calendars (read and write)"
+msgstr "도메인 관리자가 사용자의 캘린더를 관리(읽기 및 쓰기)할 수 있도록 허용합니다."
+
+#: calendars/app_settings.py:60 core/app_settings.py:664
+#: rspamd/app_settings.py:45
+msgid "Miscellaneous"
+msgstr "기타 설정"
+
+#: calendars/app_settings.py:66
+msgid "Maximum size of ICS files"
+msgstr "ICS 파일 최대 크기"
+
+#: calendars/app_settings.py:68
+msgid ""
+"Maximum size in bytes of imported ICS files (or KB, MB, GB if specified)"
+msgstr "가져올 ICS 파일의 최대 크기(바이트 단위, 또는 KB, MB, GB 지정 가능)입니다."
+
+#: calendars/app_settings.py:89 core/api/v2/viewsets.py:205
+msgid "Calendars"
+msgstr "캘린더"
+
+#: calendars/models.py:48 calendars/models.py:65 contacts/models.py:39
+msgid "Server location is not set, please fix it."
+msgstr "서버 위치가 설정되지 않았습니다. 설정을 수정해 주세요."
+
+#: calendars/viewsets.py:199
+msgid "Uploaded file is too big (max: {} bytes)"
+msgstr "업로드된 파일이 너무 큽니다 (최대: {} 바이트)."
+
+#: contacts/app_settings.py:11
+msgid "Synchronization"
+msgstr "동기화"
+
+#: contacts/app_settings.py:18
+msgid "Synchonize address book using CardDAV"
+msgstr "CardDAV를 사용하여 주소록 동기화"
+
+#: contacts/app_settings.py:21
+msgid ""
+"Choose to synchronize or not your address book using CardDAV. You will be "
+"able to access your contacts from the outside."
+msgstr "CardDAV를 통한 주소록 동기화 여부를 선택합니다. 외부에서도 연락처에 액세스할 수 있게 됩니다."
+
+#: contacts/app_settings.py:29
+msgid "Synchronization frequency"
+msgstr "동기화 빈도"
+
+#: contacts/app_settings.py:31
+msgid "Interval in seconds between 2 synchronization requests"
+msgstr "동기화 요청 사이의 간격(초 단위)입니다."
+
+#: contacts/app_settings.py:51 core/api/v2/viewsets.py:195
+msgid "Contacts"
+msgstr "연락처"
+
+#: contacts/constants.py:6 contacts/constants.py:12
+msgid "Home"
+msgstr "집"
+
+#: contacts/constants.py:7 contacts/constants.py:13
+msgid "Work"
+msgstr "직장"
+
+#: contacts/constants.py:8 contacts/constants.py:14
+msgid "Other"
+msgstr "기타"
+
+#: contacts/constants.py:15
+msgid "Main"
+msgstr "기본"
+
+#: contacts/constants.py:16
+msgid "Cellular"
+msgstr "휴대전화"
+
+#: contacts/constants.py:17
+msgid "Fax"
+msgstr "팩스"
+
+#: contacts/constants.py:18
+msgid "Pager"
+msgstr "호출기"
+
+#: contacts/serializers.py:101
+msgid "Name or display name required"
+msgstr "이름 또는 표시 이름이 필요합니다."
+
+#: contacts/serializers.py:233
+msgid "Minimum allowed value is 60s"
+msgstr "최소 허용 값은 60초입니다."
+
+#: core/api/v1/serializers.py:68
+msgid "Invalid PIN code"
+msgstr "유효하지 않은 PIN 코드"
+
+#: core/api/v1/serializers.py:74
+msgid "2FA is already enabled"
+msgstr "2단계 인증(2FA)이 이미 활성화되어 있습니다."
+
+#: core/api/v1/serializers.py:87
+#, python-format
+msgid "Failed TFA settings editing attempt from '%(addr)s' as user '%(user)s'"
+msgstr "사용자 '%(user)s'이(가) '%(addr)s'에서 시도한 2단계 인증 설정 변경에 실패했습니다."
+
+#: core/api/v1/serializers.py:93 core/api/v2/serializers.py:438
+msgid "Invalid password"
+msgstr "유효하지 않은 비밀번호입니다."
+
+#: core/api/v1/viewsets.py:45 core/api/v1/viewsets.py:64
+msgid "2FA is not enabled"
+msgstr "2단계 인증(2FA)이 활성화되어 있지 않습니다."
+
+#: core/api/v2/serializers.py:69
+msgid "Local"
+msgstr "로컬"
+
+#: core/api/v2/serializers.py:206 core/api/v2/serializers.py:214
+#: core/api/v2/serializers.py:221
+msgid "Invalid syntax"
+msgstr "유효하지 않은 구문"
+
+#: core/api/v2/serializers.py:226
+msgid "Invalid rounds number"
+msgstr "유효하지 않은 라운드(Rounds) 횟수입니다."
+
+#: core/api/v2/serializers.py:426 core/forms.py:81
+msgid "This code is invalid"
+msgstr "이 코드는 유효하지 않습니다."
+
+#: core/api/v2/serializers.py:496 core/views/auth.py:213
+#: core/views/auth.py:266
+msgid "Please use the following code to recover your Modoboa password: {}"
+msgstr "Modoboa 비밀번호를 복구하려면 다음 코드를 사용하세요: {}"
+
+#: core/api/v2/viewsets.py:176
+msgid "Administration console"
+msgstr "관리 콘솔"
+
+#: core/api/v2/viewsets.py:184 dmarc/models.py:11
+msgid "Quarantine"
+msgstr "격리소"
+
+#: core/api/v2/viewsets.py:186
+msgid "Amavis quarantine"
+msgstr "Amavis 격리소"
+
+#: core/api/v2/viewsets.py:197
+msgid "Address book"
+msgstr "주소록"
+
+#: core/api/v2/viewsets.py:207
+msgid "Calendar"
+msgstr "캘린더"
+
+#: core/api/v2/viewsets.py:215 core/api/v2/viewsets.py:217
+#: webmail/app_settings.py:295 webmail/app_settings.py:302
+msgid "Webmail"
+msgstr "웹메일"
+
+#: core/app_settings.py:25
+msgid "Authentication"
+msgstr "인증"
+
+#: core/app_settings.py:31
+msgid "Authentication type"
+msgstr "인증 유형"
+
+#: core/app_settings.py:33
+msgid "The backend used for authentication"
+msgstr "인증에 사용되는 백엔드입니다."
+
+#: core/app_settings.py:40
+msgid "Default password scheme"
+msgstr "기본 비밀번호 암호화 방식"
+
+#: core/app_settings.py:42
+msgid "Scheme used to crypt mailbox passwords"
+msgstr "사서함 비밀번호 암호화에 사용되는 방식(Scheme)입니다."
+
+#: core/app_settings.py:49
+msgid "Rounds"
+msgstr "라운드(Rounds) 횟수"
+
+#: core/app_settings.py:51
+msgid ""
+"Number of rounds to use (only used by sha256crypt and sha512crypt). Must be "
+"between 1000 and 999999999, inclusive."
+msgstr "사용할 라운드 횟수입니다(sha256crypt 및 sha512crypt에서만 사용됨). 1,000에서 999,999,999 사이의 값이어야 합니다."
+
+#: core/app_settings.py:61
+msgid "Update password scheme at login"
+msgstr "로그인 시 비밀번호 암호화 방식 업데이트"
+
+#: core/app_settings.py:64
+msgid "Update user password at login to use the default password scheme"
+msgstr "로그인 시 사용자의 비밀번호를 기본 암호화 방식으로 업데이트합니다."
+
+#: core/app_settings.py:72
+msgid "Default password"
+msgstr "기본 비밀번호"
+
+#: core/app_settings.py:74
+msgid "Default password for automatically created accounts."
+msgstr "자동으로 생성되는 계정의 기본 비밀번호입니다."
+
+#: core/app_settings.py:81
+msgid "Random password length"
+msgstr "임의 비밀번호 길이"
+
+#: core/app_settings.py:83
+msgid "Length of randomly generated passwords."
+msgstr "무작위로 생성되는 비밀번호의 길이입니다."
+
+#: core/app_settings.py:91
+msgid "Allow special characters for random password"
+msgstr "임의 비밀번호에 특수 문자 허용"
+
+#: core/app_settings.py:94
+msgid "Enable special characters in randomly generated passwords."
+msgstr "무작위로 생성되는 비밀번호에 특수 문자를 포함합니다."
+
+#: core/app_settings.py:102
+msgid "Update password service URL"
+msgstr "비밀번호 변경 서비스 URL"
+
+#: core/app_settings.py:104
+msgid ""
+"The URL of an external page where users will be able to update their "
+"password. It applies only to non local users, ie. those automatically "
+"created after a successful external authentication (LDAP, SMTP)."
+msgstr "사용자가 비밀번호를 업데이트할 수 있는 외부 페이지의 URL입니다. LDAP이나 SMTP 등 외부 인증을 통해 자동 생성된 비로컬 사용자에게만 적용됩니다."
+
+#: core/app_settings.py:114
+msgid "Password recovery announcement"
+msgstr "비밀번호 복구 안내 메시지"
+
+#: core/app_settings.py:116
+msgid "A temporary message that will be displayed on the reset password page."
+msgstr "비밀번호 재설정 페이지에 표시될 임시 메시지입니다."
+
+#: core/app_settings.py:125
+msgid "Enable password recovery by SMS"
+msgstr "SMS를 통한 비밀번호 복구 활성화"
+
+#: core/app_settings.py:128
+msgid "Enable password recovery by SMS for users who filled a phone number."
+msgstr "전화번호를 입력한 사용자에 대해 SMS 비밀번호 복구 기능을 활성화합니다."
+
+#: core/app_settings.py:136
+msgid "SMS provider"
+msgstr "SMS 제공업체"
+
+#: core/app_settings.py:139
+msgid "Choose a provider to send password recovery SMS"
+msgstr "비밀번호 복구용 SMS를 보낼 제공업체를 선택하세요."
+
+#: core/app_settings.py:151
+msgid "LDAP"
+msgstr "LDAP"
+
+#: core/app_settings.py:157 sievefilters/app_settings.py:18
+#: sievefilters/app_settings.py:51 webmail/app_settings.py:36
+#: webmail/app_settings.py:73 webmail/app_settings.py:119
+msgid "Server address"
+msgstr "서버 주소"
+
+#: core/app_settings.py:159
+msgid "The IP address or the DNS name of the LDAP server"
+msgstr "LDAP 서버의 IP 주소 또는 DNS 이름입니다."
+
+#: core/app_settings.py:166 sievefilters/app_settings.py:25
+#: sievefilters/app_settings.py:67 webmail/app_settings.py:54
+#: webmail/app_settings.py:91 webmail/app_settings.py:137
+msgid "Server port"
+msgstr "서버 포트"
+
+#: core/app_settings.py:168
+msgid "The TCP port number used by the LDAP server"
+msgstr "LDAP 서버에서 사용하는 TCP 포트 번호입니다."
+
+#: core/app_settings.py:176
+msgid "Enable secondary server (fallback)"
+msgstr "보조 서버(Fallback) 활성화"
+
+#: core/app_settings.py:179
+msgid ""
+"Enable a secondary LDAP server which will be used if the primary one fails"
+msgstr "주 LDAP 서버 연결 실패 시 사용할 보조 LDAP 서버를 활성화합니다."
+
+#: core/app_settings.py:187
+msgid "Secondary server address"
+msgstr "보조 서버 주소"
+
+#: core/app_settings.py:190
+msgid "The IP address or the DNS name of the seondary LDAP server"
+msgstr "보조 LDAP 서버의 IP 주소 또는 DNS 이름입니다."
+
+#: core/app_settings.py:197
+msgid "Secondary server port"
+msgstr "보조 서버 포트"
+
+#: core/app_settings.py:200
+msgid "The TCP port number used by the LDAP secondary server"
+msgstr "보조 LDAP 서버에서 사용하는 TCP 포트 번호입니다."
+
+#: core/app_settings.py:207 sievefilters/app_settings.py:58
+#: webmail/app_settings.py:45
+msgid "Use a secured connection"
+msgstr "보안 연결 사용"
+
+#: core/app_settings.py:209
+msgid "Use an SSL/STARTTLS connection to access the LDAP server"
+msgstr "LDAP 서버에 액세스할 때 SSL/STARTTLS 보안 연결을 사용합니다."
+
+#: core/app_settings.py:216
+msgid "Active Directory"
+msgstr "Active Directory"
+
+#: core/app_settings.py:218
+msgid "Tell if the LDAP server is an Active Directory one"
+msgstr "LDAP 서버가 Active Directory 서버인지 여부를 지정합니다."
+
+#: core/app_settings.py:225
+msgid "Administrator groups"
+msgstr "관리자 그룹"
+
+#: core/app_settings.py:227
+msgid ""
+"Members of those LDAP Posix groups will be created as domain administrators."
+" Use ';' characters to separate groups."
+msgstr "해당 LDAP Posix 그룹의 구성원은 도메인 관리자로 생성됩니다. 그룹 구분은 ';' 문자를 사용하세요."
+
+#: core/app_settings.py:236
+msgid "Group type"
+msgstr "그룹 유형"
+
+#: core/app_settings.py:238
+msgid "The LDAP group type to use with your directory."
+msgstr "디렉토리와 함께 사용할 LDAP 그룹 유형입니다."
+
+#: core/app_settings.py:245
+msgid "Groups search base"
+msgstr "그룹 검색 기준(Search Base)"
+
+#: core/app_settings.py:247
+msgid "The distinguished name of the search base used to find groups"
+msgstr "그룹을 찾는 데 사용되는 검색 기준의 고유 이름(DN)입니다."
+
+#: core/app_settings.py:255
+msgid "Password attribute"
+msgstr "비밀번호 속성"
+
+#: core/app_settings.py:257
+msgid "The attribute used to store user passwords"
+msgstr "사용자 비밀번호를 저장하는 데 사용되는 속성(Attribute)입니다."
+
+#: core/app_settings.py:264
+msgid "LDAP authentication settings"
+msgstr "LDAP 인증 설정"
+
+#: core/app_settings.py:272
+msgid "Authentication method"
+msgstr "인증 방식"
+
+#: core/app_settings.py:275
+msgid "Choose the authentication method to use"
+msgstr "사용할 인증 방식을 선택하세요."
+
+#: core/app_settings.py:282 core/app_settings.py:345
+msgid "Bind DN"
+msgstr "Bind DN"
+
+#: core/app_settings.py:284 core/app_settings.py:347
+msgid ""
+"The distinguished name to use when binding to the LDAP server. Leave empty "
+"for an anonymous bind"
+msgstr "LDAP 서버에 바인딩할 때 사용할 고유 이름(DN)입니다. 익명 바인딩을 원하시면 비워 두세요."
+
+#: core/app_settings.py:293 core/app_settings.py:355
+msgid "Bind password"
+msgstr "바인드 비밀번호"
+
+#: core/app_settings.py:295 core/app_settings.py:357
+msgid "The password to use when binding to the LDAP server (with 'Bind DN')"
+msgstr "LDAP 서버에 바인딩할 때 사용할 비밀번호입니다 ('Bind DN'과 함께 사용)."
+
+#: core/app_settings.py:305 core/app_settings.py:410
+msgid "Users search base"
+msgstr "사용자 검색 기준(Search Base)"
+
+#: core/app_settings.py:307 core/app_settings.py:412
+msgid "The distinguished name of the search base used to find users"
+msgstr "사용자를 찾는 데 사용되는 검색 기준의 고유 이름(DN)입니다."
+
+#: core/app_settings.py:316 core/app_settings.py:421
+msgid "Search filter"
+msgstr "검색 필터"
+
+#: core/app_settings.py:318 core/app_settings.py:423
+msgid ""
+"An optional filter string (e.g. '(objectClass=person)'). In order to be "
+"valid, it must be enclosed in parentheses."
+msgstr "선택적 필터 문자열(예: '(objectClass=person)')입니다. 유효하려면 반드시 괄호로 묶어야 합니다."
+
+#: core/app_settings.py:327
+msgid "User DN template"
+msgstr "사용자 DN 템플릿"
+
+#: core/app_settings.py:329
+#, python-format
+msgid ""
+"The template used to construct a user's DN. It should contain one "
+"placeholder (ie. %(user)s)"
+msgstr "사용자의 DN을 구성하는 데 사용되는 템플릿입니다. 하나의 플레이스홀더(예: %(user)s)를 포함해야 합니다."
+
+#: core/app_settings.py:338
+msgid "LDAP synchronization settings"
+msgstr "LDAP 동기화 설정"
+
+#: core/app_settings.py:366
+msgid "Enable export to LDAP"
+msgstr "LDAP으로 내보내기 활성화"
+
+#: core/app_settings.py:368
+msgid ""
+"Enable automatic synchronization between local database and LDAP directory"
+msgstr "로컬 데이터베이스와 LDAP 디렉토리 간의 자동 동기화를 활성화합니다."
+
+#: core/app_settings.py:377
+msgid "Delete remote LDAP account when local account is deleted"
+msgstr "로컬 계정 삭제 시 원격 LDAP 계정도 삭제합니다."
+
+#: core/app_settings.py:380
+msgid ""
+"Delete remote LDAP account when local account is deleted, otherwise it will "
+"be disabled."
+msgstr "로컬 계정 삭제 시 원격 LDAP 계정을 삭제합니다. 체크하지 않으면 비활성화만 됩니다."
+
+#: core/app_settings.py:389
+msgid "Account DN template"
+msgstr "계정 DN 템플릿"
+
+#: core/app_settings.py:391
+#, python-format
+msgid ""
+"The template used to construct an account's DN. It should contain one "
+"placeholder (ie. %(user)s)"
+msgstr "계정의 DN을 구성하는 데 사용되는 템플릿입니다. 하나의 플레이스홀더(예: %(user)s)를 포함해야 합니다."
+
+#: core/app_settings.py:400
+msgid "Enable import from LDAP"
+msgstr "LDAP에서 가져오기 활성화"
+
+#: core/app_settings.py:402
+msgid "Enable account synchronization from LDAP directory to local database"
+msgstr "LDAP 디렉토리에서 로컬 데이터베이스로의 계정 동기화를 활성화합니다."
+
+#: core/app_settings.py:432
+msgid "Username attribute"
+msgstr "사용자 이름 속성"
+
+#: core/app_settings.py:434
+msgid "The name of the LDAP attribute where the username can be found."
+msgstr "사용자 이름을 찾을 수 있는 LDAP 속성 이름입니다."
+
+#: core/app_settings.py:443
+msgid "Enable Dovecot LDAP sync"
+msgstr "Dovecot LDAP 동기화 활성화"
+
+#: core/app_settings.py:445
+msgid "LDAP authentication settings will be applied to Dovecot configuration."
+msgstr "LDAP 인증 설정이 Dovecot 설정에도 적용됩니다."
+
+#: core/app_settings.py:453
+msgid "Dovecot LDAP config file"
+msgstr "Dovecot LDAP 구성 파일"
+
+#: core/app_settings.py:455
+msgid ""
+"Location of the configuration file which contains Dovecot LDAP settings."
+msgstr "Dovecot LDAP 설정이 포함된 구성 파일의 위치입니다."
+
+#: core/app_settings.py:468
+msgid "Dashboard"
+msgstr "대시보드"
+
+#: core/app_settings.py:474
+msgid "Custom welcome message"
+msgstr "사용자 정의 환영 메시지"
+
+#: core/app_settings.py:476
+msgid "A welcome message that will be displayed instead the default one"
+msgstr "기본 메시지 대신 표시될 환영 메시지입니다."
+
+#: core/app_settings.py:483
+msgid "Custom RSS feed"
+msgstr "사용자 정의 RSS 피드"
+
+#: core/app_settings.py:485
+msgid "Display custom RSS feed to resellers and domain administrators"
+msgstr "리셀러 및 도메인 관리자에게 사용자 정의 RSS 피드를 표시합니다."
+
+#: core/app_settings.py:494
+msgid "Display custom RSS feed to super admins"
+msgstr "최고 관리자에게 사용자 정의 RSS 피드 표시"
+
+#: core/app_settings.py:497
+msgid "Display custom RSS feed also to super administrators"
+msgstr "최고 관리자에게도 사용자 정의 RSS 피드를 표시합니다."
+
+#: core/app_settings.py:505
+msgid "Hide features widget"
+msgstr "기능 위젯 숨기기"
+
+#: core/app_settings.py:507
+msgid "Hide features widget for resellers and domain administrators"
+msgstr "리셀러 및 도메인 관리자에게 기능 위젯을 숨깁니다."
+
+#: core/app_settings.py:519
+msgid "Theme"
+msgstr "테마"
+
+#: core/app_settings.py:525
+msgid "Primary theme color"
+msgstr "기본 테마 색상"
+
+#: core/app_settings.py:527
+msgid ""
+"Primary color of the theme (hexadecimal code), used as the background color "
+"of the left menu for example"
+msgstr "테마의 기본 색상(16진수 코드)입니다. 예를 들어 왼쪽 메뉴의 배경색으로 사용됩니다."
+
+#: core/app_settings.py:536
+msgid "Primary theme color (lighter version)"
+msgstr "기본 테마 색상 (밝은 버전)"
+
+#: core/app_settings.py:539 core/app_settings.py:551
+msgid "Primary color of the theme (hexadecimal code)"
+msgstr "테마의 기본 색상 (16진수 코드)"
+
+#: core/app_settings.py:548
+msgid "Primary theme color (darker version)"
+msgstr "기본 테마 색상 (어두운 버전)"
+
+#: core/app_settings.py:559
+msgid "Secondary theme color"
+msgstr "보조 테마 색상"
+
+#: core/app_settings.py:561
+msgid ""
+"Secondary color of the theme (hexadecimal code), used as the background "
+"color of some buttons for example"
+msgstr "테마의 보조 색상(16진수 코드)입니다. 예를 들어 일부 버튼의 배경색으로 사용됩니다."
+
+#: core/app_settings.py:569
+msgid "Labels theme color"
+msgstr "라벨 테마 색상"
+
+#: core/app_settings.py:571
+msgid "Theme color for labels (hexadecimal code)"
+msgstr "라벨용 테마 색상 (16진수 코드)"
+
+#: core/app_settings.py:583
+msgid "Notifications"
+msgstr "알림"
+
+#: core/app_settings.py:589
+msgid "Sender address"
+msgstr "발신자 주소"
+
+#: core/app_settings.py:591
+msgid "Email address used to send notifications."
+msgstr "알림 전송에 사용되는 이메일 주소입니다."
+
+#: core/app_settings.py:602
+msgid "Public API"
+msgstr "공개 API"
+
+#: core/app_settings.py:608
+msgid "Enable communication"
+msgstr "통신 활성화"
+
+#: core/app_settings.py:610 core/app_settings.py:620
+msgid "Automatically checks if a newer version is available"
+msgstr "최신 버전의 사용 가능 여부를 자동으로 확인합니다."
+
+#: core/app_settings.py:617
+msgid "Check new versions"
+msgstr "새 버전 확인"
+
+#: core/app_settings.py:628
+msgid "Send an email when new versions are found"
+msgstr "새 버전을 찾으면 이메일을 보냅니다."
+
+#: core/app_settings.py:632
+msgid "Send an email to notify admins about new versions"
+msgstr "관리자에게 새 버전을 알리는 이메일을 보냅니다."
+
+#: core/app_settings.py:639 sievefilters/constants.py:25
+msgid "Recipient"
+msgstr "수신자"
+
+#: core/app_settings.py:642
+msgid "Recipient of new versions notification emails."
+msgstr "새 버전 알림 이메일을 받을 수신자입니다."
+
+#: core/app_settings.py:649
+msgid "Send statistics"
+msgstr "통계 전송"
+
+#: core/app_settings.py:652
+msgid "Send statistics to Modoboa public API (counters and used extensions)"
+msgstr "Modoboa 공개 API로 통계(카운터 및 사용된 확장 기능)를 보냅니다."
+
+#: core/app_settings.py:671
+msgid "Enable inactive account tracking"
+msgstr "비활성 계정 추적 활성화"
+
+#: core/app_settings.py:674
+msgid ""
+"Allow the administrator to set a threshold (in days) beyond which an account"
+" is considered inactive if the user hasn't logged in"
+msgstr "사용자가 로그인하지 않을 경우 계정을 비활성 상태로 간주할 임계값(일 단위)을 설정합니다."
+
+#: core/app_settings.py:683
+msgid "Inactive account threshold"
+msgstr "비활성 계정 임계값(기준)"
+
+#: core/app_settings.py:686
+msgid ""
+"An account with a last login date greater than this threshold (in days) will"
+" be considered as inactive"
+msgstr "마지막 로그인 날짜가 이 임계값(일 단위)을 초과한 계정은 비활성 상태로 간주됩니다."
+
+#: core/app_settings.py:695
+msgid "Top notifications check interval"
+msgstr "상단 알림 확인 간격"
+
+#: core/app_settings.py:698
+msgid "Interval between two top notification checks (in seconds)"
+msgstr "두 상단 알림 확인 사이의 간격 (초 단위)"
+
+#: core/app_settings.py:705
+msgid "Maximum log record age"
+msgstr "로그 기록 최대 보관 기간"
+
+#: core/app_settings.py:707
+msgid "The maximum age in days of a log record"
+msgstr "로그 기록의 최대 보관 기간 (일 단위)"
+
+#: core/app_settings.py:715
+msgid "Retention time in message history"
+msgstr "메시지 기록 보관 기간"
+
+#: core/app_settings.py:718
+msgid "Retention time (in days) of a message in the message history section"
+msgstr "메시지 기록 섹션에서 메시지의 보관 기간 (일 단위)"
+
+#: core/app_settings.py:725
+msgid "Items per page"
+msgstr "페이지당 항목 수"
+
+#: core/app_settings.py:727
+msgid "Number of displayed items per page"
+msgstr "페이지당 표시될 항목 수"
+
+#: core/checks.py:15
+msgid ""
+"You have USE_TZ set to False, this may result in issues during transitions "
+"between summer/winter time (ie the same local time occuring twice due to "
+"clock change)."
+msgstr "USE_TZ가 False로 설정되어 있습니다. 이는 서머타임 전환 시(예: 시계 변경으로 인해 동일한 현지 시간이 두 번 발생하는 경우) 문제를 일으킬 수 있습니다."
+
+#: core/checks.py:19
+msgid "Set `USE_TZ = True` in settings.py"
+msgstr "settings.py에서 `USE_TZ = True`로 설정하세요."
+
+#: core/checks.py:23
+msgid "The password scheme you are using is deprecated."
+msgstr "사용 중인 비밀번호 암호화 방식은 더 이상 권장되지 않습니다(Deprecated)."
+
+#: core/checks.py:24
+msgid "Upgrade your password scheme to a stronger one"
+msgstr "비밀번호 암호화 방식을 더 강력한 것으로 업그레이드하세요."
+
+#: core/checks.py:30
+msgid ""
+"Oauth2 application for dovecot has not been found. Webmail and some other "
+"features won't be available."
+msgstr "Dovecot용 Oauth2 애플리케이션을 찾을 수 없습니다. 웹메일 및 일부 기능을 사용할 수 없습니다."
+
+#: core/checks.py:34
+msgid ""
+"Visit : "
+"https://modoboa.readthedocs.io/en/latest/manual_installation/dovecot.html#dovecot-"
+"oauth2"
+msgstr "방문 : https://modoboa.readthedocs.io/en/latest/manual_installation/dovecot.html#dovecot-oauth2"
+
+#: core/checks.py:41
+msgid ""
+"Oauth2 application for radicale has not been found. Calendar and some other "
+"features won't be available."
+msgstr "Radicale용 Oauth2 애플리케이션을 찾을 수 없습니다. 캘린더 및 일부 기능을 사용할 수 없습니다."
+
+#: core/checks.py:45
+msgid ""
+"Visit :  "
+"https://modoboa.readthedocs.io/en/latest/manual_installation/radicale.html#radicale-"
+"oauth2"
+msgstr "참조:\nhttps://modoboa.readthedocs.io/en/latest/manual_installation/radicale.html#radicale-oauth2"
+
+#: core/constants.py:6
+msgid "Simple user"
+msgstr "일반 사용자"
+
+#: core/constants.py:7
+msgid "Domain administrator"
+msgstr "도메인 관리자"
+
+#: core/constants.py:8
+msgid "Reseller"
+msgstr "리셀러"
+
+#: core/constants.py:9
+msgid "Super administrator"
+msgstr "최고 관리자"
+
+#: core/constants.py:53
+msgid "No"
+msgstr "아니요"
+
+#: core/constants.py:59
+msgid "Search and bind"
+msgstr "Search and bind (검색 후 바인딩)"
+
+#: core/constants.py:60
+msgid "Direct bind"
+msgstr "Direct bind (직접 바인딩)"
+
+#: core/constants.py:109
+msgid "Choose a provider"
+msgstr "제공업체 선택"
+
+#: core/constants.py:114
+msgid "Dummy"
+msgstr "더미(Dummy)"
+
+#: core/forms.py:56
+msgid "Verification code"
+msgstr "인증 코드"
+
+#: core/forms.py:67
+msgid "Invalid code"
+msgstr "유효하지 않은 코드"
+
+#: core/handlers.py:36
+msgid "added"
+msgstr "추가됨"
+
+#: core/handlers.py:39
+msgid "modified"
+msgstr "수정됨"
+
+#: core/handlers.py:41
+#, python-format
+msgid "%(object)s '%(name)s' %(action)s by user %(user)s"
+msgstr "사용자 %(user)s에 의해 %(object)s '%(name)s' 항목이 %(action)s되었습니다."
+
+#: core/handlers.py:64
+#, python-format
+msgid "%(object)s '%(name)s' %(action)s by "
+msgstr "%(object)s '%(name)s' 항목이 다음에 의해 %(action)s됨: "
+
+#: core/handlers.py:67
+msgid "deleted"
+msgstr "삭제됨"
+
+#: core/handlers.py:71
+msgid "user {}"
+msgstr "사용자 {}"
+
+#: core/handlers.py:73
+msgid "management command"
+msgstr "관리 명령"
+
+#: core/handlers.py:95
+msgid "You can't delete your own account"
+msgstr "자신의 계정은 삭제할 수 없습니다."
+
+#: core/handlers.py:127
+msgid "One or more updates are available"
+msgstr "하나 이상의 업데이트를 사용할 수 있습니다."
+
+#: core/handlers.py:140
+#, python-format
+msgid "You are still using a deprecated password scheme (%s)"
+msgstr "여전히 권장되지 않는 비밀번호 암호화 방식(%s)을 사용 중입니다."
+
+#: core/management/commands/communicate_with_public_api.py:42
+msgid "[modoboa] Update(s) available"
+msgstr "[modoboa] 업데이트 가능"
+
+#: core/models.py:71
+msgid "Allow mailboxes access"
+msgstr "사서함 접근 허용"
+
+#: core/models.py:73
+msgid "Allow this administrator to access user mailboxes"
+msgstr "이 관리자가 사용자의 사서함에 액세스할 수 있도록 허용합니다."
+
+#: core/models.py:75
+msgid "password"
+msgstr "비밀번호"
+
+#: core/models.py:78
+msgid "language"
+msgstr "언어"
+
+#: core/models.py:82
+msgid "Prefered language to display pages."
+msgstr "페이지를 표시하는 데 선호되는 언어입니다."
+
+#: core/models.py:84
+msgid "Phone number"
+msgstr "전화번호"
+
+#: core/models.py:86
+msgid "Secondary email"
+msgstr "보조 이메일"
+
+#: core/models.py:91
+msgid "An alternative e-mail address, can be used for recovery needs."
+msgstr "계정 복구용으로 사용할 수 있는 보조 이메일 주소입니다."
+
+#: core/models.py:150
+msgid "Failed to update password: LDAP module not installed"
+msgstr "비밀번호 업데이트 실패: LDAP 모듈이 설치되지 않았습니다."
+
+#: core/models.py:185 policyd/core.py:117
+msgid "account"
+msgstr "계정"
+
+#: core/models.py:317
+msgid "Unknown"
+msgstr "알 수 없음"
+
+#: core/models.py:360
+msgid "You can't import an account with a role greater than yours"
+msgstr "자신의 권한보다 높은 역할의 계정은 가져올 수 없습니다."
+
+#: core/models.py:375
+msgid "The simple user '{}' must have a valid email address"
+msgstr "일반 사용자 '{}'는 유효한 이메일 주소를 가져야 합니다."
+
+#: core/models.py:383
+msgid "username and email fields must not differ for '{}'"
+msgstr "'{}'의 사용자 이름과 이메일 필드는 서로 달라서는 안 됩니다."
+
+#: core/password_validation.py:25
+msgid "Password must contain at least {} digit."
+msgid_plural "Password must contain at least {} digits."
+msgstr[0] "비밀번호에는 최소 {}개의 숫자가 포함되어야 합니다."
+
+#: core/password_validation.py:37
+msgid "Password must contain at least {} lowercase letter."
+msgid_plural "Password must contain at least {} lowercase letters."
+msgstr[0] "비밀번호에는 최소 {}개의 소문자가 포함되어야 합니다."
+
+#: core/password_validation.py:49
+msgid "Password must contain at least {} uppercase letter."
+msgid_plural "Password must contain at least {} uppercase letters."
+msgstr[0] "비밀번호에는 최소 {}개의 대문자가 포함되어야 합니다."
+
+#: core/password_validation.py:62
+msgid "Password must contain at least {} special character."
+msgid_plural "Password must contain at least {} special characters."
+msgstr[0] "비밀번호에는 최소 {}개의 특수 문자가 포함되어야 합니다."
+
+#: core/password_validation.py:70
+msgid "Your password must contain a combination of different character types."
+msgstr "비밀번호는 여러 가지 문자 유형의 조합을 포함해야 합니다."
+
+#: core/sms_backends/ovh.py:21 core/sms_backends/ovh.py:102
+msgid "API endpoint"
+msgstr "API 엔드포인트"
+
+#: core/sms_backends/ovh.py:24 core/sms_backends/ovh.py:62
+msgid "OVH Europe"
+msgstr "OVH 유럽"
+
+#: core/sms_backends/ovh.py:25 core/sms_backends/ovh.py:63
+msgid "OVH US"
+msgstr "OVH 미국"
+
+#: core/sms_backends/ovh.py:26 core/sms_backends/ovh.py:64
+msgid "OVH North-America"
+msgstr "OVH 북미"
+
+#: core/sms_backends/ovh.py:27 core/sms_backends/ovh.py:65
+msgid "So you Start Europe"
+msgstr "So you Start 유럽"
+
+#: core/sms_backends/ovh.py:28 core/sms_backends/ovh.py:66
+msgid "So you Start North America"
+msgstr "So you Start 북미"
+
+#: core/sms_backends/ovh.py:29 core/sms_backends/ovh.py:67
+msgid "Kimsufi Europe"
+msgstr "Kimsufi 유럽"
+
+#: core/sms_backends/ovh.py:30 core/sms_backends/ovh.py:68
+msgid "Kimsufi North America"
+msgstr "Kimsufi 북미"
+
+#: core/sms_backends/ovh.py:36 core/sms_backends/ovh.py:109
+msgid "Application key"
+msgstr "애플리케이션 키"
+
+#: core/sms_backends/ovh.py:41
+msgid "Application secret"
+msgstr "애플리케이션 시크릿"
+
+#: core/sms_backends/ovh.py:49 core/sms_backends/ovh.py:124
+msgid "Consumer key"
+msgstr "컨슈머 키"
+
+#: core/sms_backends/ovh.py:116
+msgid "Appication secret"
+msgstr "애플리케이션 시크릿"
+
+#: core/templates/core/notifications/update_available.html:3
+msgid ""
+"\n"
+"  The following update is available:\n"
+msgid_plural ""
+"\n"
+"  The following updates are available:\n"
+msgstr[0] "\n  다음 업데이트를 사용할 수 있습니다:\n"
+
+#: core/utils.py:43
+msgid "The core part of Modoboa"
+msgstr "Modoboa의 핵심부"
+
+#: core/views/auth.py:82
+#, python-format
+msgid "User '%s' successfully logged in"
+msgstr "사용자 '%s'님이 성공적으로 로그인했습니다."
+
+#: core/views/auth.py:128
+#, python-format
+msgid "Password scheme mismatch. Updating %s password"
+msgstr "비밀번호 암호화 방식 불일치. %s의 비밀번호를 업데이트하는 중"
+
+#: core/views/auth.py:135
+#, python-format
+msgid "Password hash parameter missmatch. Updating %s password"
+msgstr "비밀번호 해시 파라미터 불일치. %s의 비밀번호를 업데이트하는 중"
+
+#: core/views/auth.py:173
+msgid "User '{}' successfully logged out"
+msgstr "사용자 '{}'님이 성공적으로 로그아웃되었습니다."
+
+#: dmarc/forms.py:15
+msgid "DNS settings"
+msgstr "DNS 설정"
+
+#: dmarc/forms.py:21
+msgid "Enable reverse lookups"
+msgstr "역방향 조회(Reverse Lookup) 활성화"
+
+#: dmarc/forms.py:23
+msgid "Enable reverse DNS lookups (reports will be longer to display)"
+msgstr "역방향 DNS 조회 활성화 (보고서 표시 시간이 길어질 수 있음)"
+
+#: dmarc/forms.py:42
+msgid "DMARC"
+msgstr "DMARC"
+
+#: dmarc/lib.py:294
+msgid "Not resolved"
+msgstr "해결되지 않음"
+
+#: dmarc/models.py:10 dmarc/models.py:16 pdfcredentials/constants.py:7
+#: webmail/constants.py:38
+msgid "None"
+msgstr "없음"
+
+#: dmarc/models.py:12
+msgid "Reject"
+msgstr "거부(Reject)"
+
+#: dmarc/models.py:17
+msgid "Neutral"
+msgstr "중립(Neutral)"
+
+#: dmarc/models.py:18
+msgid "Pass"
+msgstr "통과(Pass)"
+
+#: dmarc/models.py:19
+msgid "Fail"
+msgstr "실패(Fail)"
+
+#: dmarc/models.py:20
+msgid "Temporary error"
+msgstr "일시적인 오류"
+
+#: dmarc/models.py:21
+msgid "Permanent error"
+msgstr "영구적인 오류"
+
+#: dmarc/models.py:24
+msgid "Policy"
+msgstr "정책"
+
+#: dmarc/models.py:26
+msgid "Soft failure"
+msgstr "소프트 실패(Soft failure)"
+
+#: dnstools/lib.py:82
+msgid "Wrong ip4 mechanism syntax"
+msgstr "잘못된 ip4 메커니즘 구문"
+
+#: dnstools/lib.py:86
+msgid "Wrong IPv4 address format"
+msgstr "잘못된 IPv4 주소 형식"
+
+#: dnstools/lib.py:92
+msgid "Wrong ip6 mechanism syntax"
+msgstr "잘못된 ip6 메커니즘 구문"
+
+#: dnstools/lib.py:97
+msgid "Wrong IPv6 address format"
+msgstr "잘못된 IPv6 주소 형식"
+
+#: dnstools/lib.py:111 dnstools/lib.py:136
+msgid "Invalid syntax for {} mechanism"
+msgstr "{} 메커니즘의 구문이 유효하지 않습니다."
+
+#: dnstools/lib.py:113
+msgid "Invalid mask found {}"
+msgstr "유효하지 않은 마스크 발견: {}"
+
+#: dnstools/lib.py:157
+msgid "Not an SPF record"
+msgstr "SPF 레코드가 아닙니다."
+
+#: dnstools/lib.py:177
+msgid "Unknown mechanism {}"
+msgstr "알 수 없는 메커니즘: {}"
+
+#: dnstools/lib.py:179
+msgid "Unknown modifier {}"
+msgstr "알 수 없는 한정자(Modifier): {}"
+
+#: dnstools/lib.py:182
+msgid "Duplicate modifier {} found"
+msgstr "중복된 한정자 {} 발견"
+
+#: dnstools/lib.py:186
+msgid "No mechanism found"
+msgstr "메커니즘을 찾을 수 없습니다."
+
+#: dnstools/lib.py:193
+msgid "Not a valid DKIM record"
+msgstr "유효한 DKIM 레코드가 아닙니다."
+
+#: dnstools/lib.py:201 dnstools/lib.py:254
+msgid "Invalid tag {}"
+msgstr "유효하지 않은 태그: {}"
+
+#: dnstools/lib.py:206
+msgid "No key found in record"
+msgstr "레코드에서 키를 찾을 수 없습니다."
+
+#: dnstools/lib.py:213
+msgid "Wrong value {} for tag {}"
+msgstr "태그 {1}에 대한 잘못된 값 {0}"
+
+#: dnstools/lib.py:228
+msgid "Wrong value {} for tag {}:"
+msgstr "태그 {1}에 대한 잘못된 값 {0}:"
+
+#: dnstools/lib.py:232
+msgid " not an integer"
+msgstr " (정수가 아님)"
+
+#: dnstools/lib.py:234
+msgid " less than {}"
+msgstr " ({}보다 작음)"
+
+#: dnstools/lib.py:237
+msgid " greater than {}"
+msgstr " ({}보다 큼)"
+
+#: dnstools/lib.py:246
+msgid "Not a valid DMARC record"
+msgstr "유효한 DMARC 레코드가 아닙니다."
+
+#: dnstools/lib.py:257
+msgid "Unknown tag {}"
+msgstr "알 수 없는 태그 {}"
+
+#: dnstools/lib.py:262
+msgid "Missing required p tag"
+msgstr "필수 p 태그가 누락되었습니다."
+
+#: dnstools/models.py:78
+msgid "Public key mismatchs"
+msgstr "공개 키 불일치"
+
+#: imap_migration/api/v2/serializers.py:66
+msgid "Migrated domain with name {} already exists"
+msgstr "이름이 {}인 마이그레이션된 도메인이 이미 존재합니다."
+
+#: imap_migration/api/v2/serializers.py:130
+msgid "Access denied"
+msgstr "접근이 거부되었습니다."
+
+#: imap_migration/app_settings.py:19
+msgid "Enable IMAP Migration"
+msgstr "IMAP 마이그레이션 활성화"
+
+#: imap_migration/app_settings.py:20
+msgid "Enable IMAP Migration."
+msgstr "IMAP 마이그레이션을 활성화합니다."
+
+#: imap_migration/app_settings.py:30
+msgid "OfflineIMAP"
+msgstr "OfflineIMAP"
+
+#: imap_migration/app_settings.py:36
+msgid "Concurrent sync jobs"
+msgstr "동시 동기화 작업 수"
+
+#: imap_migration/app_settings.py:38
+msgid "The maximum number of concurrent synchronization jobs"
+msgstr "동시에 실행할 최대 동기화 작업 수입니다."
+
+#: imap_migration/app_settings.py:49
+msgid "OfflineIMAP Filter"
+msgstr "OfflineIMAP 필터"
+
+#: imap_migration/app_settings.py:55
+msgid "Create Folders"
+msgstr "폴더 생성"
+
+#: imap_migration/app_settings.py:57
+msgid "Allow Creation of missing folders during sync"
+msgstr "동기화 중 누락된 폴더 생성을 허용합니다."
+
+#: imap_migration/app_settings.py:64
+msgid "Folder Filter Exclusions"
+msgstr "폴더 필터 제외 항목"
+
+#: imap_migration/app_settings.py:66
+msgid ""
+"Use a regular expression to explicitly include folders in sync. Example: "
+"^Trash$|Del"
+msgstr "동기화에 포함할 폴더를 정규 표현식으로 지정합니다. 예: ^Trash$|Del"
+
+#: imap_migration/app_settings.py:74
+msgid "Folder Filter Inclusions"
+msgstr "폴더 필터 포함 항목"
+
+#: imap_migration/app_settings.py:76
+msgid ""
+"A comma seperated list of folders to explicitly include in sync even if "
+"filtered by the Folder Filter Exclusions. Example: debian.user, "
+"debian.personal "
+msgstr "폴더 필터 제외 항목에 해당하더라도 동기화에 포함할 폴더 리스트(쉼표 구분)입니다. 예: debian.user, debian.personal"
+
+#: imap_migration/apps.py:20
+msgid "IMAP Migration"
+msgstr "IMAP 마이그레이션"
+
+#: imap_migration/checks.py:12
+msgid ""
+"Automatic domain/mailbox creation is disabled which means IMAP "
+"authentication won't work."
+msgstr "도메인/사서함 자동 생성이 비활성화되어 있습니다. 이는 IMAP 인증이 작동하지 않음을 의미합니다."
+
+#: imap_migration/checks.py:16
+msgid ""
+"Go to the online parameters panel (admin tab) and activate this feature."
+msgstr "온라인 파라미터 패널(관리 탭)로 이동하여 이 기능을 활성화하세요."
+
+#: ldapsync/lib.py:82
+msgid "Failed to create LDAP account: {}"
+msgstr "LDAP 계정 생성 실패: {}"
+
+#: ldapsync/lib.py:121
+msgid "Failed to update LDAP account: {}"
+msgstr "LDAP 계정 업데이트 실패: {}"
+
+#: ldapsync/lib.py:135
+msgid "Failed to delete LDAP account: {}"
+msgstr "LDAP 계정 삭제 실패: {}"
+
+#: ldapsync/lib.py:144
+msgid "Failed to disable LDAP account: {}"
+msgstr "LDAP 계정 비활성화 실패: {}"
+
+#: lib/api_client.py:35 lib/api_client.py:67 lib/api_client.py:81
+#: lib/api_client.py:85
+#, python-format
+msgid "Failed to communicate with public API: %s"
+msgstr "공개 API와의 통신 실패: %s"
+
+#: lib/email_utils.py:140 lib/email_utils.py:351
+msgid "unable to determine encoding of string"
+msgstr "문자열의 인코딩을 확인할 수 없습니다."
+
+#: lib/exceptions.py:83
+msgid "Permission denied: {}"
+msgstr "권한이 거부되었습니다: {}"
+
+#: lib/exceptions.py:84
+msgid "Permission denied"
+msgstr "권한이 거부되었습니다."
+
+#: lib/fields.py:13 lib/fields.py:26
+msgid "Enter a valid email address."
+msgstr "유효한 이메일 주소를 입력하세요."
+
+#: lib/ldap_utils.py:126
+msgid "Failed to update password: {}"
+msgstr "비밀번호 업데이트 실패: {}"
+
+#: lib/validators.py:13
+msgid "Enter a valid domain name"
+msgstr "유효한 도메인 이름을 입력하세요."
+
+#: limits/app_settings.py:13
+msgid "Default per-admin limits"
+msgstr "관리자별 기본 제한 설정"
+
+#: limits/app_settings.py:19
+msgid "Enable per-admin limits"
+msgstr "관리자별 제한 활성화"
+
+#: limits/app_settings.py:20
+msgid "Enable or disable per-admin limits"
+msgstr "관리자별 제한 기능을 활성화하거나 비활성화합니다."
+
+#: limits/app_settings.py:26 limits/app_settings.py:111 limits/constants.py:47
+#: limits/constants.py:101
+msgid "Domain admins"
+msgstr "도메인 관리자"
+
+#: limits/app_settings.py:29
+msgid ""
+"Maximum number of allowed domain administrators for a new administrator. (0 "
+"to deny any creation, -1 to allow unlimited creations)"
+msgstr "새 관리자가 생성할 수 있는 도메인 관리자의 최대 수입니다. (0은 생성 금지, -1은 무제한)"
+
+#: limits/app_settings.py:41
+msgid ""
+"Maximum number of allowed domains for a new administrator. (0 to deny any "
+"creation, -1 to allow unlimited creations)"
+msgstr "새 관리자가 생성할 수 있는 도메인의 최대 수입니다. (0은 생성 금지, -1은 무제한)"
+
+#: limits/app_settings.py:49 limits/app_settings.py:123 limits/constants.py:22
+#: limits/constants.py:76
+msgid "Domain aliases"
+msgstr "도메인 별칭"
+
+#: limits/app_settings.py:52
+msgid ""
+"Maximum number of allowed domain aliases for a new administrator. (0 to deny"
+" any creation, -1 to allow unlimited creations)"
+msgstr "새 관리자가 생성할 수 있는 도메인 별칭의 최대 수입니다. (0은 생성 금지, -1은 무제한)"
+
+#: limits/app_settings.py:64
+msgid ""
+"Maximum number of allowed mailboxes for a new administrator. (0 to deny any "
+"creation, -1 to allow unlimited creations)"
+msgstr "새 관리자가 생성할 수 있는 사서함의 최대 수입니다. (0은 생성 금지, -1은 무제한)"
+
+#: limits/app_settings.py:73 limits/app_settings.py:146 limits/constants.py:39
+#: limits/constants.py:92
+msgid "Mailbox aliases"
+msgstr "사서함 별칭"
+
+#: limits/app_settings.py:76
+msgid ""
+"Maximum number of allowed aliases for a new administrator. (0 to deny any "
+"creation, -1 to allow unlimited creations)"
+msgstr "새 관리자가 생성할 수 있는 별칭의 최대 수입니다. (0은 생성 금지, -1은 무제한)"
+
+#: limits/app_settings.py:84 limits/constants.py:59
+msgid "Quota"
+msgstr "할당량"
+
+#: limits/app_settings.py:86
+msgid ""
+"The quota a reseller will be allowed to share between the domains he "
+"creates. (0 means no quota)"
+msgstr "리셀러가 생성한 도메인들 간에 공유할 수 있는 할당량입니다. (0은 제한 없음을 의미)"
+
+#: limits/app_settings.py:98
+msgid "Default per-domain limits"
+msgstr "도메인별 기본 제한 설정"
+
+#: limits/app_settings.py:104
+msgid "Enable per-domain limits"
+msgstr "도메인별 제한 활성화"
+
+#: limits/app_settings.py:105
+msgid "Enable or disable per-domain limits"
+msgstr "도메인별 제한 기능을 활성화하거나 비활성화합니다."
+
+#: limits/app_settings.py:114
+msgid ""
+"Maximum number of allowed domain administrators for a new domain. (0 to deny"
+" any creation, -1 to allow unlimited creations)"
+msgstr "새 도메인에 허용되는 도메인 관리자의 최대 수입니다. (0은 생성 금지, -1은 무제한)"
+
+#: limits/app_settings.py:126
+msgid ""
+"Maximum number of allowed domain aliases for a new domain. (0 to deny any "
+"creation, -1 to allow unlimited creations)"
+msgstr "새 도메인에 허용되는 도메인 별칭의 최대 수입니다. (0은 생성 금지, -1은 무제한)"
+
+#: limits/app_settings.py:138
+msgid ""
+"Maximum number of allowed mailboxes for a new domain. (0 to deny any "
+"creation, -1 to allow unlimited creations)"
+msgstr "새 도메인에 허용되는 사서함의 최대 수입니다. (0은 생성 금지, -1은 무제한)"
+
+#: limits/app_settings.py:149
+msgid ""
+"Maximum number of allowed aliases for a new domain. (0 to deny any creation,"
+" -1 to allow unlimited creations)"
+msgstr "새 도메인에 허용되는 별칭의 최대 수입니다. (0은 생성 금지, -1은 무제한)"
+
+#: limits/apps.py:16
+msgid "Limits"
+msgstr "제한량(Limits)"
+
+#: limits/constants.py:14
+msgid "Maximum number of domains this user can create"
+msgstr "이 사용자가 생성할 수 있는 최대 도메인 수"
+
+#: limits/constants.py:23
+msgid "Maximum number of domain aliases this user can create"
+msgstr "이 사용자가 생성할 수 있는 최대 도메인 별칭 수"
+
+#: limits/constants.py:32
+msgid "Maximum number of mailboxes this user can create"
+msgstr "이 사용자가 생성할 수 있는 최대 사서함 수"
+
+#: limits/constants.py:40
+msgid "Maximum number of mailbox aliases this user can create"
+msgstr "이 사용자가 생성할 수 있는 최대 사서함 별칭 수"
+
+#: limits/constants.py:49
+msgid "Maximum number of domain administrators this user can create"
+msgstr "이 사용자가 생성할 수 있는 최대 도메인 관리자 수"
+
+#: limits/constants.py:60
+msgid "Quota shared between domains of this reseller"
+msgstr "이 리셀러의 도메인들 간에 공유되는 할당량"
+
+#: limits/constants.py:77
+msgid "Maximum number of domain aliases allowed for this domain."
+msgstr "이 도메인에 허용되는 도메인 별칭의 최대 수입니다."
+
+#: limits/constants.py:85
+msgid "Maximum number of mailboxes allowed for this domain."
+msgstr "이 도메인에 허용되는 사서함의 최대 수입니다."
+
+#: limits/constants.py:93
+msgid "Maximum number of mailbox aliases allowed for this domain."
+msgstr "이 도메인에 허용되는 사서함 별칭의 최대 수입니다."
+
+#: limits/constants.py:102
+msgid "Maximum number of domain admins allowed for this domain."
+msgstr "이 도메인에 허용되는 도메인 관리자의 최대 수입니다."
+
+#: limits/lib.py:19
+#, python-format
+msgid "%s: limit reached"
+msgstr "%s: 제한량 도달"
+
+#: limits/lib.py:29
+msgid "Not enough resources"
+msgstr "리소스 부족"
+
+#: limits/lib.py:46 limits/models.py:46
+msgid "You're not allowed to define unlimited values"
+msgstr "무제한 값을 정의할 권한이 없습니다."
+
+#: limits/models.py:56 limits/models.py:119
+msgid "unlimited"
+msgstr "무제한"
+
+#: maillog/api/v2/serializers.py:35
+msgid "You must provide start and end dates when period is custom"
+msgstr "기간이 '사용자 지정'인 경우 시작일과 종료일을 제공해야 합니다."
+
+#: maillog/apps.py:20
+msgid "Path to the log file"
+msgstr "로그 파일 경로"
+
+#: maillog/apps.py:22
+msgid "Path to log file used to collect statistics"
+msgstr "통계 수집에 사용되는 로그 파일 경로"
+
+#: maillog/apps.py:29
+msgid "Directory to store RRD files"
+msgstr "RRD 파일 저장 디렉토리"
+
+#: maillog/apps.py:31
+msgid "Path to directory where RRD files are stored"
+msgstr "RRD 파일이 저장되는 디렉토리 경로"
+
+#: maillog/apps.py:38
+msgid "Show greylisted messages"
+msgstr "그레이리스트(Greylisted) 메시지 표시"
+
+#: maillog/apps.py:40
+msgid "Differentiate between hard and soft rejects (greylisting)"
+msgstr "강력 거부(Hard Reject)와 일시 거부(Soft Reject, 그레이리스팅)를 구분합니다."
+
+#: maillog/apps.py:60
+msgid "Statistics"
+msgstr "통계"
+
+#: maillog/graphics.py:91
+msgid "Failed to locate rrdtool binary."
+msgstr "rrdtool 바이너리를 찾지 못했습니다."
+
+#: maillog/graphics.py:166
+msgid "Average traffic (msgs/min)"
+msgstr "평균 트래픽 (메시지/분)"
+
+#: maillog/graphics.py:169
+msgid "sent messages"
+msgstr "보낸 메시지"
+
+#: maillog/graphics.py:170
+msgid "received messages"
+msgstr "받은 메시지"
+
+#: maillog/graphics.py:171
+msgid "bounced messages"
+msgstr "반송된 메시지(Bounced)"
+
+#: maillog/graphics.py:172
+msgid "rejected messages"
+msgstr "거부된 메시지(Rejected)"
+
+#: maillog/graphics.py:173
+msgid "virus messages"
+msgstr "바이러스 메시지"
+
+#: maillog/graphics.py:174
+msgid "spam messages"
+msgstr "스팸 메시지"
+
+#: maillog/graphics.py:181
+msgid "greylisted messages"
+msgstr "그레이리스트 메시지"
+
+#: maillog/graphics.py:198
+msgid "Average normal traffic size (bytes/min)"
+msgstr "평균 정상 트래픽 크기 (바이트/분)"
+
+#: maillog/graphics.py:201
+msgid "received size"
+msgstr "받은 크기"
+
+#: maillog/graphics.py:202
+msgid "sent size"
+msgstr "보낸 크기"
+
+#: maillog/graphics.py:209
+msgid "Mail traffic"
+msgstr "메일 트래픽"
+
+#: maillog/graphics.py:252
+msgid "Average account creation (account/hour)"
+msgstr "평균 계정 생성 수 (계정/시간)"
+
+#: maillog/graphics.py:254
+msgid "New accounts"
+msgstr "새 계정"
+
+#: maillog/graphics.py:261
+msgid "Accounts"
+msgstr "계정 현황"
+
+#: pdfcredentials/api/v2/serializers.py:35 pdfcredentials/documents.py:60
+msgid "Personal account information"
+msgstr "개인 계정 정보"
+
+#: pdfcredentials/api/v2/serializers.py:86
+msgid "Directory is not writable"
+msgstr "디렉토리에 쓰기 권한이 없습니다."
+
+#: pdfcredentials/api/v2/serializers.py:114
+msgid "No document available for this user"
+msgstr "이 사용자가 사용할 수 있는 문서가 없습니다."
+
+#: pdfcredentials/app_settings.py:19
+msgid "Enable PDF credentials"
+msgstr "PDF 자격 증명서 활성화"
+
+#: pdfcredentials/app_settings.py:21
+msgid "Enabled PDF credentials document generation on account creation."
+msgstr "계정 생성 시 PDF 자격 증명서 문서 생성을 활성화합니다."
+
+#: pdfcredentials/app_settings.py:32
+msgid "Documents storage"
+msgstr "문서 저장소"
+
+#: pdfcredentials/app_settings.py:38
+msgid "Directory to save documents into"
+msgstr "문서를 저장할 디렉토리"
+
+#: pdfcredentials/app_settings.py:40
+msgid "Path to a directory where PDF documents will be saved"
+msgstr "PDF 문서가 저장될 디렉토리 경로"
+
+#: pdfcredentials/app_settings.py:51
+msgid "Security options"
+msgstr "보안 옵션"
+
+#: pdfcredentials/app_settings.py:57
+msgid "Delete documents after the first download"
+msgstr "최초 다운로드 후 문서 삭제"
+
+#: pdfcredentials/app_settings.py:59
+msgid ""
+"Automatically delete a document just after its first download from this "
+"interface"
+msgstr "이 인터페이스에서 처음 다운로드한 직후에 문서를 자동으로 삭제합니다."
+
+#: pdfcredentials/app_settings.py:68
+msgid "Generate documents only at account creation"
+msgstr "계정 생성 시에만 문서 생성"
+
+#: pdfcredentials/app_settings.py:71
+msgid ""
+"Generate a new document only when a new account is created. If set to no, a "
+"new document will be created each time a password is updated."
+msgstr "새 계정이 생성될 때만 새 문서를 생성합니다. '아니요'로 설정하면 비밀번호가 업데이트될 때마다 새 문서가 생성됩니다."
+
+#: pdfcredentials/app_settings.py:84
+msgid "Customization options"
+msgstr "사용자 정의 옵션"
+
+#: pdfcredentials/app_settings.py:90
+msgid "Title"
+msgstr "제목"
+
+#: pdfcredentials/app_settings.py:91
+msgid "The document's title"
+msgstr "문서 제목"
+
+#: pdfcredentials/app_settings.py:97
+msgid "Web panel url"
+msgstr "웹 패널 URL"
+
+#: pdfcredentials/app_settings.py:98
+msgid "URL of the Modoboa web panel"
+msgstr "Modoboa 웹 패널 URL"
+
+#: pdfcredentials/app_settings.py:104
+msgid "Custom message"
+msgstr "사용자 정의 메시지"
+
+#: pdfcredentials/app_settings.py:106
+msgid "A custom message that will appear at the end of documents"
+msgstr "문서 끝에 표시될 사용자 정의 메시지"
+
+#: pdfcredentials/app_settings.py:113
+msgid "Include mail client connection settings"
+msgstr "메일 클라이언트 연결 설정 포함"
+
+#: pdfcredentials/app_settings.py:115
+msgid ""
+"Include required SMTP and IMAP connection information to configure a mail "
+"client, a tablet or a phone"
+msgstr "메일 클라이언트, 태블릿 또는 스마트폰 설정을 위해 필요한 SMTP 및 IMAP 연결 정보를 포함합니다."
+
+#: pdfcredentials/app_settings.py:123 pdfcredentials/documents.py:133
+msgid "SMTP server address"
+msgstr "SMTP 서버 주소"
+
+#: pdfcredentials/app_settings.py:126
+msgid "Address of the SMTP server (hostname or IP)"
+msgstr "SMTP 서버 주소 (호스트명 또는 IP)"
+
+#: pdfcredentials/app_settings.py:133 pdfcredentials/documents.py:134
+msgid "SMTP server port"
+msgstr "SMTP 서버 포트"
+
+#: pdfcredentials/app_settings.py:135
+msgid "Listening port of the SMTP server"
+msgstr "SMTP 서버의 대기 포트"
+
+#: pdfcredentials/app_settings.py:141 pdfcredentials/documents.py:135
+msgid "SMTP connection security"
+msgstr "SMTP 연결 보안"
+
+#: pdfcredentials/app_settings.py:143 pdfcredentials/app_settings.py:169
+msgid "Connection security mechanism"
+msgstr "연결 보안 메커니즘"
+
+#: pdfcredentials/app_settings.py:149 pdfcredentials/documents.py:136
+msgid "IMAP server address"
+msgstr "IMAP 서버 주소"
+
+#: pdfcredentials/app_settings.py:152
+msgid "Address of the IMAP server (hostname or IP)"
+msgstr "IMAP 서버 주소 (호스트명 또는 IP)"
+
+#: pdfcredentials/app_settings.py:159 pdfcredentials/documents.py:137
+msgid "IMAP server port"
+msgstr "IMAP 서버 포트"
+
+#: pdfcredentials/app_settings.py:161
+msgid "Listening port of the IMAP server"
+msgstr "IMAP 서버의 대기 포트"
+
+#: pdfcredentials/app_settings.py:167 pdfcredentials/documents.py:138
+msgid "IMAP connection security"
+msgstr "IMAP 연결 보안"
+
+#: pdfcredentials/apps.py:21
+msgid "PDF Credentials"
+msgstr "PDF 자격 증명"
+
+#: pdfcredentials/documents.py:65
+msgid "Powered by Modoboa - Mail hosting made simple"
+msgstr "Powered by Modoboa - 메일 호스팅을 간편하게"
+
+#: pdfcredentials/documents.py:84
+#, python-format
+msgid ""
+"\n"
+"Dear %s, this document contains the credentials you will need\n"
+"to connect to Modoboa. Learn the content and destroy\n"
+"the document as soon as possible.\n"
+msgstr "\n안녕하세요 %s님, 이 문서는 Modoboa 연결에 필요한 접속 정보를\n포함하고 있습니다. 내용을 확인하신 후 이 문서를 가급적 빨리\n파기해 주시기 바랍니다.\n"
+
+#: pdfcredentials/documents.py:95
+msgid "Web panel:"
+msgstr "웹 패널:"
+
+#: pdfcredentials/documents.py:98
+msgid "Username"
+msgstr "사용자 아이디"
+
+#: pdfcredentials/documents.py:99
+msgid "Password"
+msgstr "비밀번호"
+
+#: pdfcredentials/documents.py:116
+msgid ""
+"\n"
+"Here you can view your emails anytime online, create filters or manage\n"
+"your contacts.\n"
+msgstr "\n여기에서 언제든지 온라인으로 이메일을 확인하고, 필터를 생성하거나\n연락처를 관리할 수 있습니다.\n"
+
+#: pdfcredentials/documents.py:126
+msgid "Please change your password!"
+msgstr "비밀번호를 꼭 변경해 주세요!"
+
+#: pdfcredentials/documents.py:130
+msgid "PC/Tablet/Smartphone configuration:"
+msgstr "PC/태블릿/스마트폰 설정 정보:"
+
+#: pdfcredentials/documents.py:153
+msgid "Use those settings for your computer, tablet or phone."
+msgstr "이 설정들을 컴퓨터, 태블릿 또는 스마트폰에 사용하세요."
+
+#: pdfcredentials/handlers.py:35
+msgid ""
+"Failed to create PDF_credentials directory. Please check the permissions or "
+"the path."
+msgstr "PDF_credentials 디렉토리 생성 실패. 권한 또는 경로를 확인하세요."
+
+#: pdfcredentials/handlers.py:64
+msgid "Download PDF credentials"
+msgstr "PDF 자격 증명서 다운로드"
+
+#: pdfcredentials/lib.py:29
+msgid "Can't write to selected directory to store PDF documents"
+msgstr "PDF 문서를 저장하기 위해 선택한 디렉토리에 쓸 수 없습니다."
+
+#: pdfcredentials/lib.py:35
+#, python-format
+msgid "Failed to create the directory that will contain PDF documents (%s)"
+msgstr "PDF 문서를 포함할 디렉토리 생성 실패 (%s)"
+
+#: pdfcredentials/lib.py:82
+msgid ""
+"Failed to create PDF_credentials file. Please check the permissions or the "
+"path."
+msgstr "PDF_credentials 파일 생성 실패. 권한 또는 경로를 확인하세요."
+
+#: policyd/core.py:99
+msgid "Daily sending limit reached"
+msgstr "일일 발송 제한량에 도달했습니다."
+
+#: policyd/core.py:118
+msgid "domain"
+msgstr "도메인"
+
+#: policyd/core.py:136
+msgid "[modoboa] Sending limit reached"
+msgstr "[modoboa] 발송 제한량 도달"
+
+#: policyd/templates/policyd/notifications/limit_reached.html:3
+#, python-format
+msgid "Daily limit of the following %(ltype)s has been reached: %(name)s."
+msgstr "다음 %(ltype)s의 일일 제한량에 도달했습니다: %(name)s."
+
+#: relaydomains/api/v1/serializers.py:24
+msgid "Unsupported service"
+msgstr "지원되지 않는 서비스"
+
+#: relaydomains/transport.py:16
+msgid "target host address"
+msgstr "대상 호스트 주소"
+
+#: relaydomains/transport.py:21
+msgid "target host port"
+msgstr "대상 호스트 포트"
+
+#: relaydomains/transport.py:27
+msgid "verify recipients"
+msgstr "수신자 확인"
+
+#: rspamd/api/v2/serializers.py:15
+msgid "Provided path is not writable."
+msgstr "지정된 경로에 쓰기 권한이 없습니다."
+
+#: rspamd/api/v2/serializers.py:18
+msgid "Please create the parent directory for the files"
+msgstr "파일을 위한 상위 디렉토리를 생성하세요."
+
+#: rspamd/api/v2/serializers.py:22
+msgid "Unable to write to the directory."
+msgstr "디렉토리에 쓸 수 없습니다."
+
+#: rspamd/app_settings.py:13
+msgid "DKIM signing settings"
+msgstr "DKIM 서명 설정"
+
+#: rspamd/app_settings.py:19
+msgid "Key map path"
+msgstr "키 맵(Key map) 경로"
+
+#: rspamd/app_settings.py:21
+msgid ""
+"Absolute path of the file which contains paths to DKIM private keys. Must be"
+" readable by _rspamd group or user."
+msgstr "DKIM 개인 키들의 경로가 포함된 파일의 절대 경로입니다. _rspamd 그룹 또는 사용자가 읽을 수 있어야 합니다."
+
+#: rspamd/app_settings.py:30
+msgid "Selector map path"
+msgstr "선택기 맵(Selector map) 경로"
+
+#: rspamd/app_settings.py:32
+msgid ""
+"Absolute path of the file which contains names of DKIM selectors. Must be "
+"readable by _rspamd group or user."
+msgstr "DKIM 선택기들의 이름이 포함된 파일의 절대 경로입니다. _rspamd 그룹 또는 사용자가 읽을 수 있어야 합니다."
+
+#: rspamd/app_settings.py:51
+msgid "Rspamd dashboard location"
+msgstr "Rspamd 대시보드 위치"
+
+#: rspamd/app_settings.py:53
+msgid ""
+"Location of the rspamd dashboard. Can either be a relative URL (eg. "
+"'/rspamd') or a full URL (eg. 'https://rspamd.domain.tld/').Only use for "
+"guidance on the Super-Admin dashboard."
+msgstr "Rspamd 대시보드의 위치입니다. 상대 URL(예: '/rspamd') 또는 전체 URL(예: 'https://rspamd.domain.tld/') 모두 가능합니다. 최고 관리자 대시보드 안내용으로만 사용됩니다."
+
+#: rspamd/apps.py:18
+msgid "Rspamd"
+msgstr "Rspamd"
+
+#: sievefilters/api/v2/viewsets.py:203
+#, python-format
+msgid "Filter %s already exists"
+msgstr "필터 %s이(가) 이미 존재합니다."
+
+#: sievefilters/app_settings.py:12
+msgid "ManageSieve settings"
+msgstr "ManageSieve 설정"
+
+#: sievefilters/app_settings.py:19
+msgid "Address of your MANAGESIEVE server"
+msgstr "MANAGESIEVE 서버 주소"
+
+#: sievefilters/app_settings.py:27
+msgid "Listening port of your MANAGESIEVE server"
+msgstr "MANAGESIEVE 서버의 대기 포트"
+
+#: sievefilters/app_settings.py:34
+msgid "Connect using STARTTLS"
+msgstr "STARTTLS를 사용하여 연결"
+
+#: sievefilters/app_settings.py:35
+msgid "Use the STARTTLS extension"
+msgstr "STARTTLS 확장을 사용합니다."
+
+#: sievefilters/app_settings.py:45 webmail/app_settings.py:30
+msgid "IMAP settings"
+msgstr "IMAP 설정"
+
+#: sievefilters/app_settings.py:52 webmail/app_settings.py:38
+msgid "Address of your IMAP server"
+msgstr "IMAP 서버 주소"
+
+#: sievefilters/app_settings.py:60 webmail/app_settings.py:47
+msgid "Use a secured connection to access IMAP server"
+msgstr "IMAP 서버에 액세스할 때 보안 연결을 사용합니다."
+
+#: sievefilters/app_settings.py:68 webmail/app_settings.py:56
+msgid "Listening port of your IMAP server"
+msgstr "IMAP 서버의 대기 포트"
+
+#: sievefilters/apps.py:15
+msgid "Sieve filters"
+msgstr "메일 필터(Sieve)"
+
+#: sievefilters/constants.py:10
+msgid "All of the following"
+msgstr "다음 조건 모두 일치"
+
+#: sievefilters/constants.py:11
+msgid "Any of the following"
+msgstr "다음 조건 중 하나라도 일치"
+
+#: sievefilters/constants.py:12
+msgid "All messages"
+msgstr "모든 메시지"
+
+#: sievefilters/constants.py:16
+msgid "contains"
+msgstr "포함함"
+
+#: sievefilters/constants.py:17
+msgid "does not contain"
+msgstr "포함하지 않음"
+
+#: sievefilters/constants.py:18
+msgid "is"
+msgstr "일치함"
+
+#: sievefilters/constants.py:19
+msgid "is not"
+msgstr "일치하지 않음"
+
+#: sievefilters/constants.py:23 webmail/lib/imapemail.py:302
+msgid "Subject"
+msgstr "제목"
+
+#: sievefilters/constants.py:24
+msgid "Sender"
+msgstr "보낸 사람"
+
+#: sievefilters/constants.py:26
+msgid "Cc"
+msgstr "참조(Cc)"
+
+#: sievefilters/constants.py:29
+msgid "Size"
+msgstr "크기"
+
+#: sievefilters/constants.py:31
+msgid "is greater than"
+msgstr "다음보다 큼:"
+
+#: sievefilters/constants.py:32
+msgid "is less than"
+msgstr "다음보다 작음:"
+
+#: sievefilters/constants.py:40
+msgid "Move message to"
+msgstr "메시지를 다음으로 이동:"
+
+#: sievefilters/constants.py:46 sievefilters/constants.py:60
+msgid "Keep local copy"
+msgstr "로컬 복사본 유지"
+
+#: sievefilters/constants.py:54
+msgid "Redirect message to"
+msgstr "메시지 리다이렉트:"
+
+#: sievefilters/constants.py:68
+msgid "Reject message"
+msgstr "메시지 거부"
+
+#: sievefilters/constants.py:71
+msgid "Stop processing"
+msgstr "처리 중단"
+
+#: sievefilters/lib.py:49
+msgid "Connection to MANAGESIEVE server failed, check your configuration"
+msgstr "MANAGESIEVE 서버 연결 실패. 설정을 확인하세요."
+
+#: sievefilters/lib.py:76
+msgid "Not enough space on server"
+msgstr "서버 용량 부족"
+
+#: templates/404.html:4 templates/500.html:4
+msgid "Sorry"
+msgstr "죄송합니다"
+
+#: templates/404.html:5
+msgid "The requested page does not exist."
+msgstr "요청하신 페이지가 존재하지 않습니다."
+
+#: templates/500.html:5
+msgid "An internal error occured."
+msgstr "내부 오류가 발생했습니다."
+
+#: templates/common/error.html:4
+msgid "Error:"
+msgstr "오류:"
+
+#: templates/common/generic_field.html:11
+#: templates/common/generic_fields_group.html:8
+msgid "Help:"
+msgstr "도움말:"
+
+#: templates/registration/base.html:8
+msgid "Welcome to Modoboa"
+msgstr "Modoboa에 오신 것을 환영합니다"
+
+#: templates/registration/login.html:11
+msgid "Identification"
+msgstr "사용자 인증"
+
+#: templates/registration/login.html:24
+msgid "Remember me"
+msgstr "로그인 상태 유지"
+
+#: templates/registration/login.html:26
+msgid "Log in"
+msgstr "로그인"
+
+#: templates/registration/login.html:29
+#: templates/registration/password_reset_confirm_code.html:7
+#: templates/registration/password_reset_done.html:7
+#: templates/registration/password_reset_form.html:17
+msgid "Forgot password?"
+msgstr "비밀번호를 잊으셨나요?"
+
+#: templates/registration/password_reset_complete.html:8
+#, python-format
+msgid ""
+"Your password has been set. You may go ahead and <a href=\"%(url)s\">sign "
+"in</a> now."
+msgstr "비밀번호 설정이 완료되었습니다. 이제 <a href=\"%(url)s\">로그인</a>하실 수 있습니다."
+
+#: templates/registration/password_reset_confirm.html:8
+msgid "Change password"
+msgstr "비밀번호 변경"
+
+#: templates/registration/password_reset_confirm.html:25
+#: templates/registration/password_reset_confirm_code.html:27
+#: templates/registration/password_reset_form.html:23
+msgid "Submit"
+msgstr "확인"
+
+#: templates/registration/password_reset_confirm.html:29
+msgid ""
+"The password reset link was invalid, possibly because it has already been "
+"used. Please request a new password reset."
+msgstr "비밀번호 재설정 링크가 유효하지 않습니다. 이미 사용되었을 수 있으니 새로 요청해 주세요."
+
+#: templates/registration/password_reset_confirm_code.html:22
+msgid "Enter the code you've just received by SMS"
+msgstr "방금 SMS로 받은 코드를 입력하세요."
+
+#: templates/registration/password_reset_confirm_code.html:30
+msgid "Resend code"
+msgstr "코드 재전송"
+
+#: templates/registration/password_reset_confirm_code.html:45
+msgid "The code has been sent again"
+msgstr "코드가 다시 전송되었습니다."
+
+#: templates/registration/password_reset_done.html:8
+msgid ""
+"<p>We've emailed you instructions for setting your password, if an account "
+"exists with the email you entered. You should receive them shortly.</p> "
+"<p>If you don't receive an email, please make sure you've entered your "
+"primary address, and check your spam folder.</p>"
+msgstr "<p>입력하신 이메일과 일치하는 계정이 존재할 경우, 비밀번호 설정 안내를 이메일로 발송해 드렸습니다. 곧 메일을 받으실 수 있습니다.</p> <p>만약 메일을 받지 못하셨다면, 입력한 주소가 정확한지 확인하시고 스팸 메일함도 점검해 주세요.</p>"
+
+#: templates/registration/password_reset_email.html:4
+#: templates/registration/password_reset_email_v2.html:4
+#, python-format
+msgid ""
+"To initiate the password reset process for your %(username)s Modoboa "
+"account, click the link below:"
+msgstr "%(username)s Modoboa 계정의 비밀번호 재설정 절차를 시작하려면 아래 링크를 클릭하세요:"
+
+#: templates/registration/password_reset_email.html:10
+#: templates/registration/password_reset_email_v2.html:10
+msgid ""
+"If clicking the link above doesn't work, please copy and paste the URL in a "
+"new browser window instead."
+msgstr "위 링크가 작동하지 않으면 URL을 복사하여 새 브라우저 창에 붙여넣어 주세요."
+
+#: templates/registration/password_reset_email.html:14
+#: templates/registration/password_reset_email_v2.html:14
+msgid "Sincerely, The Modoboa Team."
+msgstr "Modoboa 팀 드림."
+
+#: templates/registration/password_reset_subject.txt:3
+msgid "Modoboa password reset"
+msgstr "Modoboa 비밀번호 재설정"
+
+#: templates/registration/twofactor_code_verify.html:11
+msgid "Verification"
+msgstr "인증"
+
+#: templates/registration/twofactor_code_verify.html:15
+msgid "Use TOTP/backup code"
+msgstr "TOTP/백업 코드 사용"
+
+#: templates/registration/twofactor_code_verify.html:18
+msgid "Use Webauthn device"
+msgstr "Webauthn 장치 사용"
+
+#: templates/registration/twofactor_code_verify.html:27
+msgid "One-time password"
+msgstr "일회용 비밀번호(OTP)"
+
+#: templates/registration/twofactor_code_verify.html:35
+msgid ""
+"Enter the code from the two-factor app on your mobile device. If you've lost"
+" your device, you may enter one of your recovery codes."
+msgstr "모바일 기기의 2단계 인증 앱에 표시된 코드를 입력하세요. 기기를 분실했다면 복구 코드 중 하나를 입력할 수 있습니다."
+
+#: templates/registration/twofactor_code_verify.html:42
+msgid "Verify code"
+msgstr "코드 확인"
+
+#: templates/registration/twofactor_code_verify.html:45
+#: templates/registration/twofactor_code_verify.html:51
+msgid "Back"
+msgstr "뒤로"
+
+#: templates/registration/twofactor_code_verify.html:49
+msgid "Log using Webauthn"
+msgstr "Webauthn으로 로그인"
+
+#: transport/backends.py:55
+msgid "Invalid value"
+msgstr "유효하지 않은 값"
+
+#: transport/models.py:15
+msgid "pattern"
+msgstr "패턴"
+
+#: transport/models.py:16
+msgid "service"
+msgstr "서비스"
+
+#: transport/models.py:17
+msgid "next hop"
+msgstr "넥스트 홉(Next hop)"
+
+#: webmail/app_settings.py:17
+msgid "Maximum attachment size"
+msgstr "최대 첨부 파일 크기"
+
+#: webmail/app_settings.py:19
+msgid "Maximum attachment size in bytes (or KB, MB, GB if specified)"
+msgstr "최대 첨부 파일 크기 (바이트 단위, 또는 KB, MB, GB 지정 가능)"
+
+#: webmail/app_settings.py:67
+msgid "SMTP settings"
+msgstr "SMTP 설정"
+
+#: webmail/app_settings.py:75 webmail/app_settings.py:121
+msgid "Address of your SMTP server"
+msgstr "SMTP 서버 주소"
+
+#: webmail/app_settings.py:82 webmail/app_settings.py:128
+msgid "Secured connection mode"
+msgstr "보안 연결 모드"
+
+#: webmail/app_settings.py:84 webmail/app_settings.py:130
+msgid "Use a secured connection to access SMTP server"
+msgstr "SMTP 서버에 액세스할 때 보안 연결을 사용합니다."
+
+#: webmail/app_settings.py:93 webmail/app_settings.py:139
+msgid "Listening port of your SMTP server"
+msgstr "SMTP 서버의 대기 포트"
+
+#: webmail/app_settings.py:100
+msgid "Authentication required"
+msgstr "인증 필요"
+
+#: webmail/app_settings.py:102
+msgid "Server needs authentication"
+msgstr "서버 인증이 필요합니다."
+
+#: webmail/app_settings.py:113
+msgid "Scheduling settings"
+msgstr "예약 설정"
+
+#: webmail/app_settings.py:161
+msgid "Default message display mode"
+msgstr "기본 메시지 표시 모드"
+
+#: webmail/app_settings.py:163
+msgid "The default mode used when displaying a message"
+msgstr "메시지를 표시할 때 사용되는 기본 모드"
+
+#: webmail/app_settings.py:170
+msgid "Enable HTML links display"
+msgstr "HTML 링크 표시 활성화"
+
+#: webmail/app_settings.py:173
+msgid "Enable/Disable HTML links display"
+msgstr "HTML 링크 표시 활성화/비활성화"
+
+#: webmail/app_settings.py:184
+msgid "Sets the maximum number of messages displayed in a page"
+msgstr "한 페이지에 표시되는 최대 메시지 수 설정"
+
+#: webmail/app_settings.py:191
+msgid "Listing refresh rate"
+msgstr "목록 새로고침 빈도"
+
+#: webmail/app_settings.py:193
+msgid "Automatic listing refresh rate (in secconds)"
+msgstr "자동 목록 새로고침 빈도 (초 단위)"
+
+#: webmail/app_settings.py:200
+msgid "Folder container's width"
+msgstr "폴더 컨테이너 너비"
+
+#: webmail/app_settings.py:202
+msgid "The width of the folder list container"
+msgstr "폴더 목록 컨테이너의 너비"
+
+#: webmail/app_settings.py:213
+msgid "Folders"
+msgstr "폴더"
+
+#: webmail/app_settings.py:219
+msgid "Trash folder"
+msgstr "휴지통 폴더"
+
+#: webmail/app_settings.py:221
+msgid "Folder where deleted messages go"
+msgstr "삭제된 메시지가 이동하는 폴더"
+
+#: webmail/app_settings.py:228
+msgid "Sent folder"
+msgstr "보낸 편지함 폴더"
+
+#: webmail/app_settings.py:230
+msgid "Folder where copies of sent messages go"
+msgstr "보낸 메시지의 복사본이 이동하는 폴더"
+
+#: webmail/app_settings.py:237
+msgid "Drafts folder"
+msgstr "임시 보관함 폴더"
+
+#: webmail/app_settings.py:238
+msgid "Folder where drafts go"
+msgstr "임시 저장이 보관되는 폴더"
+
+#: webmail/app_settings.py:244
+msgid "Junk folder"
+msgstr "스팸 메일함"
+
+#: webmail/app_settings.py:246
+msgid "Folder where junk messages should go"
+msgstr "스팸 메시지가 이동해야 하는 폴더"
+
+#: webmail/app_settings.py:257
+msgid "Composing messages"
+msgstr "메시지 작성"
+
+#: webmail/app_settings.py:263
+msgid "Default editor"
+msgstr "기본 편집기"
+
+#: webmail/app_settings.py:265
+msgid "The default editor to use when composing a message"
+msgstr "메시지를 작성할 때 사용할 기본 편집기"
+
+#: webmail/app_settings.py:272
+msgid "Signature text"
+msgstr "서명 텍스트"
+
+#: webmail/app_settings.py:274
+msgid "User defined email signature"
+msgstr "사용자 정의 이메일 서명"
+
+#: webmail/exceptions.py:18
+msgid "Server response"
+msgstr "서버 응답"
+
+#: webmail/lib/attachments.py:112
+msgid "Failed to remove attachment: "
+msgstr "첨부 파일 삭제 실패: "
+
+#: webmail/lib/imapemail.py:270
+msgid "wrote:"
+msgstr "씀:"
+
+#: webmail/lib/imapemail.py:304
+msgid "Date"
+msgstr "날짜"
+
+#: webmail/lib/imapemail.py:320 webmail/lib/imapemail.py:323
+msgid "Original message"
+msgstr "원본 메시지"
+
+#: webmail/lib/imaputils.py:222
+msgid "Failed to retrieve hierarchy delimiter"
+msgstr "계층 구조 구분 기호를 가져오지 못했습니다."
+
+#: webmail/lib/imaputils.py:478
+msgid "Inbox"
+msgstr "받은 편지함"
+
+#: webmail/lib/imaputils.py:482
+msgid "Drafts"
+msgstr "임시 보관함"
+
+#: webmail/lib/imaputils.py:487
+msgid "Junk"
+msgstr "스팸 메일함"
+
+#: webmail/lib/imaputils.py:492
+msgid "Sent"
+msgstr "보낸 편지함"
+
+#: webmail/lib/imaputils.py:500
+msgid "Scheduled"
+msgstr "예약됨"
+
+#: webmail/lib/imaputils.py:507
+msgid "Trash"
+msgstr "휴지통"
+
+#: webmail/serializers.py:220
+msgid "Moving scheduled messages is forbidden"
+msgstr "예약된 메시지를 이동하는 것은 금지되어 있습니다."
+
+#: webmail/serializers.py:253
+msgid "Only datetime in the future is allowed"
+msgstr "미래의 날짜와 시간만 허용됩니다."
+
+#: webmail/serializers.py:258
+msgid "Provived datetime must be one minute in the future at least"
+msgstr "제공된 시간은 최소 1분 뒤의 미래여야 합니다."
+
+#: webmail/viewsets.py:359
+#, python-format
+msgid "Attachment is too big (limit: %s)"
+msgstr "첨부 파일이 너무 큽니다 (제한: %s)"
