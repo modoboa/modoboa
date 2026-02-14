@@ -24,31 +24,31 @@ msgid ""
 "Quota shared between mailboxes. Can be expressed in KB, MB (default) or GB. "
 "A value of 0 means no quota."
 msgstr ""
+"Posta kutuları arasında paylaşılan kota. KB, MB (varsayılan) veya GB "
+"cinsinden ifade edilebilir. 0 değeri kota olmadığı anlamına gelir."
 
 #: admin/api/v1/serializers.py:46
 msgid "Default quota in MB applied to mailboxes. A value of 0 means no quota."
 msgstr ""
+"Posta kutularına uygulanan MB cinsinden varsayılan kota. 0 değeri kota "
+"olmadığı anlamına gelir."
 
 #: admin/api/v1/serializers.py:94
-#, fuzzy
-#| msgid "Enter a valid email address."
 msgid "domain alias with this name already exists"
-msgstr "Geçerli bir e-posta adresi girin."
+msgstr "Bu isme sahip alan adı takma adı zaten mevcut"
 
 #: admin/api/v1/serializers.py:104
 msgid "No authorized MX record found for this domain"
-msgstr ""
+msgstr "Bu alan adı için yetkili MX kaydı bulunamadı"
 
 #: admin/api/v1/serializers.py:122
 msgid "Cannot be greater than domain quota"
-msgstr ""
+msgstr "Alan adı kotasından büyük olamaz"
 
 #: admin/api/v1/serializers.py:168 admin/api/v1/serializers.py:364
 #: admin/api/v2/serializers.py:571 admin/models/alias.py:45
-#, fuzzy
-#| msgid "Permission denied"
 msgid "Permission denied."
-msgstr "İzin reddedildi"
+msgstr "İzin reddedildi."
 
 #: admin/api/v1/serializers.py:231 admin/api/v2/serializers.py:90
 #: admin/api/v2/serializers.py:492 amavis/serializers.py:39
@@ -58,233 +58,222 @@ msgid "This field is required"
 msgstr "Bu alan gerekli"
 
 #: admin/api/v1/serializers.py:243
-#, fuzzy
-#| msgid "Hide features widget for resellers and domain administrators"
 msgid ""
 "List of administered domains (resellers and domain administrators only)."
-msgstr "Bayiler ve alan adı yöneticileri için Özellikler Aracı'nı gizle."
+msgstr ""
+"Yönetilen alan adları listesi (yalnızca bayiler ve alan adı yöneticileri)."
 
 #: admin/api/v1/serializers.py:337 admin/api/v2/serializers.py:553
 msgid "Not allowed for this role."
-msgstr ""
+msgstr "Bu rol için izin verilmiyor."
 
 #: admin/api/v1/serializers.py:355
 msgid "Must be equal to mailbox full_address"
-msgstr ""
+msgstr "Posta kutusu full_address değerine eşit olmalıdır"
 
 #: admin/api/v1/serializers.py:397 admin/api/v2/serializers.py:605
 #: calendars/serializers.py:182 pdfcredentials/api/v2/serializers.py:91
-#, fuzzy
-#| msgid "This field is required"
 msgid "This field is required."
-msgstr "Bu alan gerekli"
+msgstr "Bu alan gerekli."
 
 #: admin/api/v1/serializers.py:409 admin/api/v2/serializers.py:622
 msgid "Local domain {} does not exist"
-msgstr ""
+msgstr "Yerel alan adı {} mevcut değil"
 
 #: admin/api/v1/serializers.py:499
 msgid "A list of recipient"
-msgstr ""
+msgstr "Bir alıcı listesi"
 
 #: admin/api/v1/serializers.py:515 admin/api/v2/viewsets.py:313
-#, fuzzy
-#| msgid "Enter a valid email address."
 msgid "This alias already exists"
-msgstr "Geçerli bir e-posta adresi girin."
+msgstr "Bu takma ad zaten mevcut"
 
 #: admin/api/v1/serializers.py:551
 msgid "You don't have access to this domain."
-msgstr ""
+msgstr "Bu alan adına erişiminiz yok."
 
 #: admin/api/v1/serializers.py:560
 msgid "You don't have access to this mailbox."
-msgstr ""
+msgstr "Bu posta kutusuna erişiminiz yok."
 
 #: admin/api/v1/viewsets.py:184
 msgid "Here is your new Modoboa password: {}"
-msgstr ""
+msgstr "İşte yeni Modoboa parolanız: {}"
 
 #: admin/api/v2/serializers.py:82
 msgid "DKIM keys storage directory not configured"
-msgstr ""
+msgstr "DKIM anahtarları depolama dizini yapılandırılmamış"
 
 #: admin/api/v2/serializers.py:94
 msgid "This field is valid when type is relaydomain"
-msgstr ""
+msgstr "Bu alan, tür relaydomain (aktarım alan adı) olduğunda geçerlidir"
 
 #: admin/api/v2/serializers.py:101
 msgid "You can't define an unlimited quota."
-msgstr ""
+msgstr "Sınırsız bir kota tanımlayamazsınız."
 
 #: admin/api/v2/serializers.py:135
 #, python-format
 msgid "User '%s' already exists"
-msgstr ""
+msgstr "'%s' kullanıcısı zaten mevcut"
 
 #: admin/api/v2/serializers.py:256 admin/api/v2/serializers.py:262
 msgid "Must be a positive integer"
-msgstr ""
+msgstr "Pozitif bir tam sayı olmalıdır"
 
 #: admin/api/v2/serializers.py:271
 msgid "openssl not found, please make sure it is installed."
-msgstr ""
+msgstr "openssl bulunamadı, lütfen kurulu olduğundan emin olun."
 
 #: admin/api/v2/serializers.py:274 pdfcredentials/api/v2/serializers.py:84
 msgid "Directory not found."
-msgstr ""
+msgstr "Dizin bulunamadı."
 
 #: admin/api/v2/serializers.py:285
 msgid "This field only allows valid IP addresses (or networks)"
-msgstr ""
+msgstr "Bu alan yalnızca geçerli IP adreslerine (veya ağlara) izin verir"
 
 #: admin/api/v2/serializers.py:298
 msgid "Please disable imap migration before disabling this option."
 msgstr ""
+"Bu seçeneği devre dışı bırakmadan önce lütfen imap geçişini devre dışı "
+"bırakın."
 
 #: admin/api/v2/serializers.py:311
 msgid "Define at least one authorized network / address"
-msgstr ""
+msgstr "En az bir yetkili ağ / adres tanımlayın"
 
 #: admin/api/v2/serializers.py:588
 msgid "The left part of an email address can't be more than 64 characters."
-msgstr ""
+msgstr "E-posta adresinin sol kısmı 64 karakterden fazla olamaz."
 
 #: admin/api/v2/serializers.py:610
 msgid "A mailbox is required to create aliases."
-msgstr ""
+msgstr "Takma adlar oluşturmak için bir posta kutusu gereklidir."
 
 #: admin/api/v2/serializers.py:783
-#, fuzzy
-#| msgid "Unknown"
 msgid "Unknown status"
-msgstr "Bilinmeyen"
+msgstr "Bilinmeyen durum"
 
 #: admin/api/v2/viewsets.py:95
 msgid "You don't have access to this domain"
-msgstr ""
+msgstr "Bu alan adına erişiminiz yok"
 
 #: admin/api/v2/viewsets.py:98
-#, fuzzy
-#| msgid "You can't delete your own account"
 msgid "You can't delete your own domain"
-msgstr "Kendi hesabınızı silemezsiniz"
+msgstr "Kendi alan adınızı silemezsiniz"
 
 #: admin/app_settings.py:19 limits/app_settings.py:38 limits/constants.py:13
 msgid "Domains"
-msgstr ""
+msgstr "Alan Adları"
 
 #: admin/app_settings.py:25
-#, fuzzy
-#| msgid "Enable API access"
 msgid "Enable MX checks"
-msgstr "API erişimini etkinleştir"
+msgstr "MX kontrollerini etkinleştir"
 
 #: admin/app_settings.py:27
 msgid "Check that every domain has a valid MX record"
-msgstr ""
+msgstr "Her alan adının geçerli bir MX kaydı olup olmadığını kontrol et"
 
 #: admin/app_settings.py:34
 msgid "Valid MXs"
-msgstr ""
+msgstr "Geçerli MX'ler"
 
 #: admin/app_settings.py:37
 msgid ""
 "A list of IP or network address every MX record should match. A warning will "
 "be sent if a record does not respect it."
 msgstr ""
+"Her MX kaydının eşleşmesi gereken IP veya ağ adreslerinin listesi. Bir kayıt "
+"buna uymazsa bir uyarı gönderilir."
 
 #: admin/app_settings.py:47
 msgid "New domains must use authorized MX(s)"
-msgstr ""
+msgstr "Yeni alan adları yetkili MX(ler)i kullanmalıdır"
 
 #: admin/app_settings.py:51
 msgid ""
 "Prevent the creation of a new domain if its MX record does not use one of "
 "the defined addresses."
 msgstr ""
+"MX kaydı tanımlı adreslerden birini kullanmıyorsa yeni bir alan adı "
+"oluşturulmasını engelle."
 
 #: admin/app_settings.py:59
-#, fuzzy
-#| msgid "Enable API access"
 msgid "Enable IPV6 checks"
-msgstr "API erişimini etkinleştir"
+msgstr "IPV6 kontrollerini etkinleştir"
 
 #: admin/app_settings.py:62
 msgid "Check if MX setup for ipv6 is valid"
-msgstr ""
+msgstr "ipv6 için MX kurulumunun geçerli olup olmadığını kontrol et"
 
 #: admin/app_settings.py:69
-#, fuzzy
-#| msgid "Enable API access"
 msgid "Enable SPF checks"
-msgstr "API erişimini etkinleştir"
+msgstr "SPF kontrollerini etkinleştir"
 
 #: admin/app_settings.py:71
 msgid "Check if every domain has a valid SPF record"
-msgstr ""
+msgstr "Her alan adının geçerli bir SPF kaydı olup olmadığını kontrol et"
 
 #: admin/app_settings.py:78
-#, fuzzy
-#| msgid "Enable API access"
 msgid "Enable DKIM checks"
-msgstr "API erişimini etkinleştir"
+msgstr "DKIM kontrollerini etkinleştir"
 
 #: admin/app_settings.py:80
 msgid "Check if every domain with DKIM signin enabled has a valid DNS record"
 msgstr ""
+"DKIM imzalaması etkinleştirilmiş her alan adının geçerli bir DNS kaydı olup "
+"olmadığını kontrol et"
 
 #: admin/app_settings.py:88
-#, fuzzy
-#| msgid "Enable API access"
 msgid "Enable DMARC checks"
-msgstr "API erişimini etkinleştir"
+msgstr "DMARC kontrollerini etkinleştir"
 
 #: admin/app_settings.py:90
 msgid "Check if every domain has a valid DMARC record"
-msgstr ""
+msgstr "Her alan adının geçerli bir DMARC kaydı olup olmadığını kontrol et"
 
 #: admin/app_settings.py:97
 msgid "Enable autoconfig checks"
-msgstr ""
+msgstr "Otomatik yapılandırma kontrollerini etkinleştir"
 
 #: admin/app_settings.py:99
 msgid "Check if every domain has a valid records for autoconfiguration"
 msgstr ""
+"Her alan adının otomatik yapılandırma için geçerli kayıtlara sahip olup "
+"olmadığını kontrol et"
 
 #: admin/app_settings.py:107
-#, fuzzy
-#| msgid "Enable API access"
 msgid "Enable DNSBL checks"
-msgstr "API erişimini etkinleştir"
+msgstr "DNSBL kontrollerini etkinleştir"
 
 #: admin/app_settings.py:109
 msgid "Check every domain against major DNSBL providers"
-msgstr ""
+msgstr "Her alan adını büyük DNSBL sağlayıcılarına karşı kontrol et"
 
 #: admin/app_settings.py:117
 msgid "Notify domain admins about DNS issues"
-msgstr ""
+msgstr "Alan adı yöneticilerini DNS sorunları hakkında bilgilendir"
 
 #: admin/app_settings.py:120
 msgid ""
 "Send a notification by email to domain administrators when DNS issues are "
 "encountered"
 msgstr ""
+"DNS sorunlarıyla karşılaşıldığında alan adı yöneticilerine e-posta ile "
+"bildirim gönder"
 
 #: admin/app_settings.py:128
-#, fuzzy
-#| msgid "Custom RSS feed"
 msgid "Custom DNS server"
-msgstr "Özel RSS beslemesi"
+msgstr "Özel DNS sunucusu"
 
 #: admin/app_settings.py:130
 msgid "Use a custom DNS server instead of local server configuration"
-msgstr ""
+msgstr "Yerel sunucu yapılandırması yerine özel bir DNS sunucusu kullan"
 
 #: admin/app_settings.py:138
 msgid "DKIM keys storage directory"
-msgstr ""
+msgstr "DKIM anahtarları depolama dizini"
 
 #: admin/app_settings.py:140
 msgid ""
@@ -292,295 +281,304 @@ msgid ""
 "sure this directory belongs to root user and is not readable by the outside "
 "world."
 msgstr ""
+"DKIM özel anahtarlarının saklanacağı dizinin tam yolu. Bu dizinin root "
+"kullanıcısına ait olduğundan ve dış dünya tarafından okunamadığından emin "
+"olun."
 
 #: admin/app_settings.py:149
 msgid "Default DKIM key length"
-msgstr ""
+msgstr "Varsayılan DKIM anahtar uzunluğu"
 
 #: admin/app_settings.py:151
 msgid "Default length in bits for newly generated DKIM keys."
-msgstr ""
+msgstr "Yeni oluşturulan DKIM anahtarları için bit cinsinden varsayılan uzunluk."
 
 #: admin/app_settings.py:158
 msgid "Default domain quota"
-msgstr ""
+msgstr "Varsayılan alan adı kotası"
 
 #: admin/app_settings.py:160
 msgid ""
 "Default quota (in MB) applied to freshly created domains with no value "
 "specified. A value of 0 means no quota."
 msgstr ""
+"Değer belirtilmemiş yeni oluşturulan alan adlarına uygulanan varsayılan kota "
+"(MB cinsinden). 0 değeri kota olmadığı anlamına gelir."
 
 #: admin/app_settings.py:168
 msgid "Default domain sending limit"
-msgstr ""
+msgstr "Varsayılan alan adı gönderim limiti"
 
 #: admin/app_settings.py:170
 msgid ""
 "Number of messages freshly created domains will be allowed to send per day. "
 "Leave empty for no limit."
 msgstr ""
+"Yeni oluşturulan alan adlarının günde göndermesine izin verilecek ileti "
+"sayısı. Sınırsız olması için boş bırakın."
 
 #: admin/app_settings.py:182 limits/app_settings.py:61
 #: limits/app_settings.py:135 limits/constants.py:31 limits/constants.py:84
 msgid "Mailboxes"
-msgstr ""
+msgstr "Posta kutuları"
 
 #: admin/app_settings.py:188
 msgid "Handle mailboxes on filesystem"
-msgstr ""
+msgstr "Dosya sistemindeki posta kutularını yönet"
 
 #: admin/app_settings.py:190
 msgid ""
 "Rename or remove mailboxes on the filesystem when they get renamed or "
 "removed within Modoboa"
 msgstr ""
+"Modoboa içinde yeniden adlandırıldığında veya kaldırıldığında dosya "
+"sistemindeki posta kutularını da yeniden adlandır veya kaldır"
 
 #: admin/app_settings.py:198 admin/models/domain.py:36
 msgid "Default mailbox quota"
-msgstr ""
+msgstr "Varsayılan posta kutusu kotası"
 
 #: admin/app_settings.py:200
 msgid ""
 "Default mailbox quota (in MB) applied to freshly created domains with no "
 "value specified. A value of 0 means no quota."
 msgstr ""
+"Değer belirtilmemiş yeni oluşturulan alan adlarındaki posta kutularına "
+"uygulanan varsayılan kota (MB cinsinden). 0 değeri kota olmadığı anlamına "
+"gelir."
 
 #: admin/app_settings.py:209
 msgid "Default mailbox sending limit"
-msgstr ""
+msgstr "Varsayılan posta kutusu gönderim limiti"
 
 #: admin/app_settings.py:211
 msgid ""
 "Number of messages freshly created mailboxes will be allowed to send per "
 "day. Leave empty for no limit."
 msgstr ""
+"Yeni oluşturulan posta kutularının günde göndermesine izin verilecek ileti "
+"sayısı. Sınırsız olması için boş bırakın."
 
 #: admin/app_settings.py:219
-#, fuzzy
-#| msgid "Inactive account threshold"
 msgid "Automatic account removal"
-msgstr "Etkin olmayan hesap eşiği"
+msgstr "Otomatik hesap kaldırma"
 
 #: admin/app_settings.py:221
 msgid "When a mailbox is removed, also remove the associated account"
-msgstr ""
+msgstr "Bir posta kutusu kaldırıldığında, ilişkili hesabı da kaldır"
 
 #: admin/app_settings.py:230
 msgid "Automatic domain/mailbox creation"
-msgstr ""
+msgstr "Otomatik alan adı/posta kutusu oluşturma"
 
 #: admin/app_settings.py:233
 msgid "Create a domain and a mailbox when an account is automatically created."
 msgstr ""
+"Bir hesap otomatik olarak oluşturulduğunda bir alan adı ve posta kutusu "
+"oluştur."
 
 #: admin/app_settings.py:242
 msgid "Create an alias when a mailbox is renamed"
-msgstr ""
+msgstr "Posta kutusu yeniden adlandırıldığında takma ad oluştur"
 
 #: admin/app_settings.py:245
 msgid "Create an alias using the old address when a mailbox is renamed."
 msgstr ""
+"Bir posta kutusu yeniden adlandırıldığında eski adresi kullanarak bir takma "
+"ad oluştur."
 
 #: admin/app_settings.py:257
 msgid "Aliases"
-msgstr ""
+msgstr "Takma Adlar"
 
 #: admin/app_settings.py:263
 msgid "Alias can target any domain"
-msgstr ""
+msgstr "Takma ad herhangi bir alan adını hedefleyebilir"
 
 #: admin/app_settings.py:265
 msgid "Allow aliases to target any domain, not just the local domains."
 msgstr ""
+"Takma adların yalnızca yerel alan adlarını değil, herhangi bir alan adını "
+"hedeflemesine izin ver."
 
 #: admin/app_settings.py:272
 msgid "Alias target block list"
-msgstr ""
+msgstr "Takma ad hedefi engelleme listesi"
 
 #: admin/app_settings.py:274
 msgid "A list of domains that aliases cannot target (comma separated)."
 msgstr ""
+"Takma adların hedefleyemeyeceği alan adlarının listesi (virgülle ayrılmış)."
 
 #: admin/app_settings.py:282
 msgid "Alias target allow list"
-msgstr ""
+msgstr "Takma ad hedefi izin listesi"
 
 #: admin/app_settings.py:284
 msgid "A list of domains that aliases can target (comma separated)."
 msgstr ""
+"Takma adların hedefleyebileceği alan adlarının listesi (virgülle ayrılmış)."
 
 #: admin/app_settings.py:338 core/api/v2/viewsets.py:174
-#, fuzzy
-#| msgid "Administrator groups"
 msgid "Administration"
-msgstr "Yönetici grupları"
+msgstr "Yönetim"
 
 #: admin/constants.py:21
 msgid "Domain"
-msgstr ""
+msgstr "Alan Adı"
 
 #: admin/constants.py:22
 msgid "Relay domain"
-msgstr ""
+msgstr "Aktarım (Relay) alan adı"
 
 #: admin/constants.py:38
 msgid "Opened"
-msgstr ""
+msgstr "Açık"
 
 #: admin/constants.py:39
-#, fuzzy
-#| msgid "Close"
 msgid "Closed"
-msgstr "Kapat"
+msgstr "Kapalı"
 
 #: admin/dns_checker.py:96
 msgid "MX {} listed by DNSBL provider {}"
-msgstr ""
+msgstr "MX {} DNSBL sağlayıcısı {} tarafından listelenmiş"
 
 #: admin/dns_checker.py:138
 msgid "Domain has no MX record"
-msgstr ""
+msgstr "Alan adının MX kaydı yok"
 
 #: admin/dns_checker.py:141
 msgid "Domain {} has no MX record"
-msgstr ""
+msgstr "{} alan adının MX kaydı yok"
 
 #: admin/dns_checker.py:159
-#, fuzzy
-#| msgid "Invalid code"
 msgid "Invalid MX record: {}"
-msgstr "Geçersiz kod"
+msgstr "Geçersiz MX kaydı: {}"
 
 #: admin/dns_checker.py:166
 #, python-brace-format
 msgid "MX record for domain {0} is invalid: {1}"
-msgstr ""
+msgstr "{0} alan adı için MX kaydı geçersiz: {1}"
 
 #: admin/dns_checker.py:177
 msgid "[modoboa] MX issue(s) for domain {}"
-msgstr ""
+msgstr "[modoboa] {} alan adı için MX sorun(lar)ı"
 
 #: admin/dns_checker.py:224
 msgid "[modoboa] DNSBL issue(s) for domain {}"
-msgstr ""
+msgstr "[modoboa] {} alan adı için DNSBL sorun(lar)ı"
 
 #: admin/handlers.py:179
 msgid "domain alias"
-msgstr ""
+msgstr "alan adı takma adı"
 
 #: admin/handlers.py:227
 #, python-format
 msgid "Account import failed (%s): domain does not exist"
-msgstr ""
+msgstr "Hesap içe aktarma başarısız (%s): alan adı mevcut değil"
 
 #: admin/handlers.py:246
 #, python-format
 msgid "Account import failed (%s): wrong quota value"
-msgstr ""
+msgstr "Hesap içe aktarma başarısız (%s): yanlış kota değeri"
 
 #: admin/lib.py:126
 msgid "You are not allowed to import domains"
-msgstr ""
+msgstr "Alan adlarını içe aktarma izniniz yok"
 
 #: admin/lib.py:135
 msgid "You are not allowed to import domain aliases."
-msgstr ""
+msgstr "Alan adı takma adlarını içe aktarma izniniz yok."
 
 #: admin/lib.py:227 admin/tests/test_mx.py:139 admin/tests/test_mx.py:152
 #: admin/tests/test_mx.py:157
 #, python-format
 msgid "No DNS record found for %s"
-msgstr ""
+msgstr "%s için DNS kaydı bulunamadı"
 
 #: admin/lib.py:230
 #, python-format
 msgid "No %(type)s record for %(name)s"
-msgstr ""
+msgstr "%(name)s için %(type)s kaydı yok"
 
 #: admin/lib.py:234 admin/tests/test_mx.py:142
 msgid "No working name servers found"
-msgstr ""
+msgstr "Çalışan ad sunucusu bulunamadı"
 
 #: admin/lib.py:237 admin/tests/test_mx.py:146
 #, python-format
 msgid "DNS resolution timeout, unable to query %s at the moment"
-msgstr ""
+msgstr "DNS çözümleme zaman aşımı, şu anda %s sorgulanamıyor"
 
 #: admin/lib.py:241
 msgid "DNS name is too long: {}"
-msgstr ""
+msgstr "DNS adı çok uzun: {}"
 
 #: admin/lib.py:272
 #, python-brace-format
 msgid "Invalid IP address format for {domain}; {addr}"
-msgstr ""
+msgstr "{domain} için geçersiz IP adresi formatı; {addr}"
 
 #: admin/lib.py:365
 #, python-format
 msgid "Object already exists: %s"
-msgstr ""
+msgstr "Nesne zaten mevcut: %s"
 
 #: admin/lib.py:369
 #, python-format
 msgid "%d objects imported successfully"
-msgstr ""
+msgstr "%d nesne başarıyla içe aktarıldı"
 
 #: admin/management/commands/subcommands/_import.py:97
 msgid "CSV file is not encoded in UTF-8, attempting to guess encoding"
 msgstr ""
+"CSV dosyası UTF-8 ile kodlanmamış, kodlama tahmin edilmeye çalışılıyor"
 
 #: admin/management/commands/subcommands/_import.py:112
 #, python-format
 msgid "Reading CSV file using %(encoding)s encoding"
-msgstr ""
+msgstr "CSV dosyası %(encoding)s kodlaması kullanılarak okunuyor"
 
 #: admin/management/commands/subcommands/_import.py:123
-#, fuzzy, python-format
-#| msgid "unable to determine encoding of string"
+#, python-format
 msgid "Unable to decode CSV file using %(encoding)s encoding"
-msgstr "dize kodlaması belirlenemiyor"
+msgstr "CSV dosyası %(encoding)s kodlaması kullanılarak çözülemedi"
 
 #: admin/management/commands/subcommands/_manage_dkim_keys.py:29
 msgid ""
 "DKIM path non-writable (either a permission issue or the directory does not "
 "exist)"
 msgstr ""
+"DKIM yoluna yazılamıyor (bir izin sorunu olabilir veya dizin mevcut değil)"
 
 #: admin/management/commands/subcommands/_manage_dkim_keys.py:52
 msgid "Failed to generate DKIM private key"
-msgstr ""
+msgstr "DKIM özel anahtarı oluşturulamadı"
 
 #: admin/management/commands/subcommands/_manage_dkim_keys.py:62
-#, fuzzy
-#| msgid "Enable communication with Modoboa public API"
 msgid "Failed to generate DKIM public key"
-msgstr "Modoboa genel API'si ile iletişimi etkinleştir"
+msgstr "DKIM genel anahtarı oluşturulamadı"
 
 #: admin/models/alias.py:43
 msgid "Domain not found."
-msgstr ""
+msgstr "Alan adı bulunamadı."
 
 #: admin/models/alias.py:117 admin/models/mailbox.py:85
-#, fuzzy
-#| msgid "From address"
 msgid "address"
-msgstr "Adresinden"
+msgstr "adres"
 
 #: admin/models/alias.py:119
-#, fuzzy
-#| msgid "Enter a valid email address."
 msgid "The alias address."
-msgstr "Geçerli bir e-posta adresi girin."
+msgstr "Takma ad adresi."
 
 #: admin/models/alias.py:123 admin/models/domain.py:45
 #: admin/models/domain_alias.py:45 autoreply/models.py:25
 msgid "enabled"
-msgstr ""
+msgstr "etkin"
 
 #: admin/models/alias.py:124 admin/models/domain_alias.py:46
 msgid "Check to activate this alias"
-msgstr ""
+msgstr "Bu takma adı etkinleştirmek için işaretleyin"
 
 #: admin/models/alias.py:128
 msgid "Description"
@@ -588,80 +586,70 @@ msgstr "Tanım"
 
 #: admin/models/alias.py:129
 msgid "Expire at"
-msgstr ""
+msgstr "Sona erme tarihi"
 
 #: admin/models/alias.py:170
 msgid "alias"
-msgstr ""
+msgstr "takma ad"
 
 #: admin/models/alias.py:203
-#, fuzzy
-#| msgid "Invalid code"
 msgid "Invalid address"
-msgstr "Geçersiz kod"
+msgstr "Geçersiz adres"
 
 #: admin/models/alias.py:206
-#, fuzzy
-#| msgid "Enter a valid domain name"
 msgid "Target domain not allowed"
-msgstr "Geçerli bir alan adı girin"
+msgstr "Hedef alan adına izin verilmiyor"
 
 #: admin/models/alias.py:224
 msgid "Local recipient {}@{} not found"
-msgstr ""
+msgstr "Yerel alıcı {}@{} bulunamadı"
 
 #: admin/models/alias.py:273
-#, fuzzy
-#| msgid "Invalid line"
 msgid "Invalid line: {}"
-msgstr "Geçersiz satır"
+msgstr "Geçersiz satır: {}"
 
 #: admin/models/domain.py:27 admin/models/domain_alias.py:33
-#, fuzzy
-#| msgid "Username"
 msgid "name"
-msgstr "Kullanıcı adı"
+msgstr "ad"
 
 #: admin/models/domain.py:30
-#, fuzzy
-#| msgid "Enter a valid domain name"
 msgid "The domain name"
-msgstr "Geçerli bir alan adı girin"
+msgstr "Alan adı"
 
 #: admin/models/domain.py:39 admin/models/mailbox.py:92
 msgid "Message sending limit"
-msgstr ""
+msgstr "İleti gönderme limiti"
 
 #: admin/models/domain.py:42
 msgid "Number of messages this domain can send per day"
-msgstr ""
+msgstr "Bu alan adının günde gönderebileceği ileti sayısı"
 
 #: admin/models/domain.py:46
 msgid "Check to activate this domain"
-msgstr ""
+msgstr "Bu alan adını etkinleştirmek için işaretleyin"
 
 #: admin/models/domain.py:51
-#, fuzzy
-#| msgid "Enable API access"
 msgid "Enable DNS checks"
-msgstr "API erişimini etkinleştir"
+msgstr "DNS kontrollerini etkinleştir"
 
 #: admin/models/domain.py:53
 msgid "Check to enable DNS checks for this domain"
-msgstr ""
+msgstr "Bu alan adı için DNS kontrollerini etkinleştirmek üzere işaretleyin"
 
 #: admin/models/domain.py:61
 msgid "Enable DKIM signing"
-msgstr ""
+msgstr "DKIM imzalamayı etkinleştir"
 
 #: admin/models/domain.py:63
 msgid ""
 "If you activate this feature, a DKIM key will be generated for this domain."
 msgstr ""
+"Bu özelliği etkinleştirirseniz, bu alan adı için bir DKIM anahtarı "
+"oluşturulacaktır."
 
 #: admin/models/domain.py:70
 msgid "Key length"
-msgstr ""
+msgstr "Anahtar uzunluğu"
 
 #: admin/models/domain.py:321 admin/models/domain_alias.py:70
 #: core/models.py:352 relaydomains/lib.py:13
@@ -670,67 +658,65 @@ msgstr "Geçersiz satır"
 
 #: admin/models/domain.py:331
 msgid "{}: no authorized MX record found for domain"
-msgstr ""
+msgstr "{}: alan adı için yetkili MX kaydı bulunamadı"
 
 #: admin/models/domain.py:337
 msgid "{}: invalid quota value for domain"
-msgstr ""
+msgstr "{}: alan adı için geçersiz kota değeri"
 
 #: admin/models/domain.py:343
 msgid "{}: invalid default mailbox quota value for domain"
-msgstr ""
+msgstr "{}: alan adı için geçersiz varsayılan posta kutusu kota değeri"
 
 #: admin/models/domain.py:350
 msgid "{}: default mailbox quota cannot be greater than domain quota"
-msgstr ""
+msgstr "{}: varsayılan posta kutusu kotası alan adı kotasından büyük olamaz"
 
 #: admin/models/domain_alias.py:36
 msgid "The alias name"
-msgstr ""
+msgstr "Takma ad ismi"
 
 #: admin/models/domain_alias.py:40
 msgid "target"
-msgstr ""
+msgstr "hedef"
 
 #: admin/models/domain_alias.py:41
 msgid "The domain this alias points to"
-msgstr ""
+msgstr "Bu takma adın işaret ettiği alan adı"
 
 #: admin/models/domain_alias.py:79
 #, python-format
 msgid "Unknown domain %s"
-msgstr ""
+msgstr "Bilinmeyen alan adı %s"
 
 #: admin/models/mailbox.py:87
 msgid "Mailbox address (without the @domain.tld part)"
-msgstr ""
+msgstr "Posta kutusu adresi (@domain.tld kısmı olmadan)"
 
 #: admin/models/mailbox.py:95
 msgid "Number of messages this mailbox can send per day"
-msgstr ""
+msgstr "Bu posta kutusunun günde gönderebileceği ileti sayısı"
 
 #: admin/models/mailbox.py:153
 #, python-format
 msgid "Failed to retrieve mailbox location (%s)"
-msgstr ""
+msgstr "Posta kutusu konumu alınamadı (%s)"
 
 #: admin/models/mailbox.py:249
-#, fuzzy
-#| msgid "This field is required"
 msgid "A quota is required"
-msgstr "Bu alan gerekli"
+msgstr "Bir kota gereklidir"
 
 #: admin/models/mailbox.py:256
 msgid "{}: domain quota exceeded"
-msgstr ""
+msgstr "{}: alan adı kotası aşıldı"
 
 #: admin/models/mailbox.py:310
 msgid "Domain does not exist"
-msgstr ""
+msgstr "Alan adı mevcut değil"
 
 #: admin/models/mailbox.py:342
 msgid "Mailbox {} already exists"
-msgstr ""
+msgstr "{} posta kutusu zaten mevcut"
 
 #: admin/templates/admin/notifications/domain_in_dnsbl.html:3
 #, python-format
@@ -738,6 +724,8 @@ msgid ""
 "Modoboa detected that domain %(domain)s is listed by the following DNSBL "
 "providers:"
 msgstr ""
+"Modoboa, %(domain)s alan adının aşağıdaki DNSBL sağlayıcıları tarafından "
+"listelendiğini tespit etti:"
 
 #: admin/templates/admin/notifications/domain_in_dnsbl.html:11
 msgid ""
@@ -745,400 +733,373 @@ msgid ""
 "coming from it are considered as spam. You should contact those providers "
 "and ask them to unlist detected IP address(es)."
 msgstr ""
+"Alan adının itibarı etkilenecek ve ondan gelen e-postaların spam olarak "
+"kabul edilme ihtimali vardır. Bu sağlayıcılarla iletişime geçmeli ve tespit "
+"edilen IP adres(ler)ini listeden çıkarmalarını istemelisiniz."
 
 #: admin/templates/admin/notifications/domain_invalid_mx.html:3
 #, python-format
 msgid "Modoboa detected that domain %(domain)s has no valid MX record:"
 msgstr ""
+"Modoboa, %(domain)s alan adının geçerli bir MX kaydı olmadığını tespit etti:"
 
 #: admin/tests/test_mx.py:141
 #, python-format
 msgid "No MX record for %s"
-msgstr ""
+msgstr "%s için MX kaydı yok"
 
 #: admin/tests/test_mx.py:162 admin/tests/test_mx.py:168
 #, python-format
 msgid "Invalid IP address format for %(domain)s; %(addr)s"
-msgstr ""
+msgstr "%(domain)s için geçersiz IP adresi formatı; %(addr)s"
 
 #: admin/tests/test_mx.py:185
-#, fuzzy, python-format
-#| msgid "New recovery codes"
+#, python-format
 msgid "No AAAA record for %s"
-msgstr "Yeni kurtarma kodları"
+msgstr "%s için AAAA kaydı yok"
 
 #: amavis/app_settings.py:11
-#, fuzzy
-#| msgid "LDAP settings"
 msgid "Amavis settings"
-msgstr "LDAP ayarları"
+msgstr "Amavis ayarları"
 
 #: amavis/app_settings.py:17
 msgid "Localpart is case sensitive"
-msgstr ""
+msgstr "Yerel kısım büyük/küçük harf duyarlıdır"
 
 #: amavis/app_settings.py:19
 msgid "Value should match amavisd.conf variable $localpart_is_case_sensitive"
-msgstr ""
+msgstr "Değer amavisd.conf değişkeni $localpart_is_case_sensitive ile eşleşmelidir"
 
 #: amavis/app_settings.py:27
-#, fuzzy
-#| msgid "Recipient"
 msgid "Recipient delimiter"
-msgstr "Alıcı"
+msgstr "Alıcı sınırlayıcı"
 
 #: amavis/app_settings.py:29
 msgid "Value should match amavisd.conf variable $recipient_delimiter"
-msgstr ""
+msgstr "Değer amavisd.conf değişkeni $recipient_delimiter ile eşleşmelidir"
 
 #: amavis/app_settings.py:41
-#, fuzzy
-#| msgid "LDAP settings"
 msgid "Quarantine settings"
-msgstr "LDAP ayarları"
+msgstr "Karantina ayarları"
 
 #: amavis/app_settings.py:47
-#, fuzzy
-#| msgid "Maximum log record age"
 msgid "Maximum message age"
-msgstr "Maksimum günlük kaydı yaşı"
+msgstr "Maksimum ileti yaşı"
 
 #: amavis/app_settings.py:49
 msgid "Quarantine messages maximum age (in days) before deletion"
-msgstr ""
+msgstr "Silinmeden önce karantina iletilerinin maksimum yaşı (gün olarak)"
 
 #: amavis/app_settings.py:60
 msgid "Message releasing"
-msgstr ""
+msgstr "İleti serbest bırakma"
 
 #: amavis/app_settings.py:66
 msgid "Remove released messages"
-msgstr ""
+msgstr "Serbest bırakılan iletileri kaldır"
 
 #: amavis/app_settings.py:68
 msgid "Remove messages marked as released while cleaning up the database"
 msgstr ""
+"Veritabanını temizlerken serbest bırakıldı olarak işaretlenen iletileri "
+"kaldır"
 
 #: amavis/app_settings.py:76
-#, fuzzy
-#| msgid "Use a secured connection"
 msgid "Amavis connection mode"
-msgstr "Güvenli bir bağlantı kullanın"
+msgstr "Amavis bağlantı modu"
 
 #: amavis/app_settings.py:78
-#, fuzzy
-#| msgid "Use an SSL/STARTTLS connection to access the LDAP server"
 msgid "Mode used to access the PDP server"
-msgstr "LDAP sunucusuna erişmek için bir SSL/STARTTLS bağlantısı kullanın"
+msgstr "PDP sunucusuna erişmek için kullanılan mod"
 
 #: amavis/app_settings.py:85
-#, fuzzy
-#| msgid "Server address"
 msgid "PDP server address"
-msgstr "Sunucu adresi"
+msgstr "PDP sunucu adresi"
 
 #: amavis/app_settings.py:87
-#, fuzzy
-#| msgid "Server address"
 msgid "PDP server address (if inet mode)"
-msgstr "Sunucu adresi"
+msgstr "PDP sunucu adresi (inet modu ise)"
 
 #: amavis/app_settings.py:95
-#, fuzzy
-#| msgid "Server port"
 msgid "PDP server port"
-msgstr "Sunucu portu"
+msgstr "PDP sunucu portu"
 
 #: amavis/app_settings.py:97
 msgid "PDP server port (if inet mode)"
-msgstr ""
+msgstr "PDP sunucu portu (inet modu ise)"
 
 #: amavis/app_settings.py:105
-#, fuzzy
-#| msgid "Server port"
 msgid "PDP server socket"
-msgstr "Sunucu portu"
+msgstr "PDP sunucu soketi"
 
 #: amavis/app_settings.py:107
 msgid "Path to the PDP server socket (if unix mode)"
-msgstr ""
+msgstr "PDP sunucu soketinin yolu (unix modu ise)"
 
 #: amavis/app_settings.py:115
 msgid "Allow direct release"
-msgstr ""
+msgstr "Doğrudan serbest bırakmaya izin ver"
 
 #: amavis/app_settings.py:117
 msgid "Allow users to directly release their messages"
-msgstr ""
+msgstr "Kullanıcıların iletilerini doğrudan serbest bırakmasına izin ver"
 
 #: amavis/app_settings.py:124
 msgid "Enable self-service mode"
-msgstr ""
+msgstr "Self servis modunu etkinleştir"
 
 #: amavis/app_settings.py:126
 msgid "Activate the 'self-service' mode"
-msgstr ""
+msgstr "'Self servis' modunu etkinleştir"
 
 #: amavis/app_settings.py:133
-#, fuzzy
-#| msgid "Notifications"
 msgid "Notifications sender"
-msgstr "Bildirimler"
+msgstr "Bildirim göndericisi"
 
 #: amavis/app_settings.py:135
-#, fuzzy
-#| msgid "Email address used to send notifications."
 msgid "The e-mail address used to send notitications"
-msgstr "Bildirimlerin gönderileceği e-posta adresi."
+msgstr "Bildirimleri göndermek için kullanılan e-posta adresi"
 
 #: amavis/app_settings.py:146
 msgid "Manual learning"
-msgstr ""
+msgstr "Manuel öğrenme"
 
 #: amavis/app_settings.py:152
 msgid "Enable manual learning"
-msgstr ""
+msgstr "Manuel öğrenmeyi etkinleştir"
 
 #: amavis/app_settings.py:154
-#, fuzzy
-#| msgid "Allow this administrator to access user mailboxes"
 msgid "Allow super administrators to manually train Spamassassin"
-msgstr "Bu yöneticinin kullanıcı posta kutularına erişimine izin ver"
+msgstr "Süper yöneticilerin Spamassassin'i manuel olarak eğitmesine izin ver"
 
 #: amavis/app_settings.py:161
 msgid "Is Spamassassin local?"
-msgstr ""
+msgstr "Spamassassin yerel mi?"
 
 #: amavis/app_settings.py:163
 msgid "Tell if Spamassassin is running on the same server than modoboa"
 msgstr ""
+"Spamassassin'in modoboa ile aynı sunucuda çalışıp çalışmadığını belirtin"
 
 #: amavis/app_settings.py:171
-#, fuzzy
-#| msgid "Default top redirection"
 msgid "Default user"
-msgstr "Varsayılan üst yönlendirme"
+msgstr "Varsayılan kullanıcı"
 
 #: amavis/app_settings.py:173
 msgid "Name of the user owning the default bayesian database"
-msgstr ""
+msgstr "Varsayılan bayesian veritabanına sahip kullanıcının adı"
 
 #: amavis/app_settings.py:181
-#, fuzzy
-#| msgid "Sender address"
 msgid "Spamd address"
-msgstr "Gönderici adresi"
+msgstr "Spamd adresi"
 
 #: amavis/app_settings.py:183
 msgid "The IP address where spamd can be reached"
-msgstr ""
+msgstr "Spamd'ye ulaşılabilecek IP adresi"
 
 #: amavis/app_settings.py:191
 msgid "Spamd port"
-msgstr ""
+msgstr "Spamd portu"
 
 #: amavis/app_settings.py:193
 msgid "The TCP port spamd is listening on"
-msgstr ""
+msgstr "Spamd'nin dinlediği TCP portu"
 
 #: amavis/app_settings.py:202
 msgid "Enable per-domain manual learning"
-msgstr ""
+msgstr "Alan adı başına manuel öğrenmeyi etkinleştir"
 
 #: amavis/app_settings.py:205
-#, fuzzy
-#| msgid "Allow this administrator to access user mailboxes"
 msgid ""
 "Allow domain administrators to train Spamassassin (within dedicated per-"
 "domain databases)"
-msgstr "Bu yöneticinin kullanıcı posta kutularına erişimine izin ver"
+msgstr ""
+"Alan adı yöneticilerinin Spamassassin'i eğitmesine izin ver (özel alan adı "
+"veritabanları içinde)"
 
 #: amavis/app_settings.py:215
 msgid "Enable per-user manual learning"
-msgstr ""
+msgstr "Kullanıcı başına manuel öğrenmeyi etkinleştir"
 
 #: amavis/app_settings.py:218
 msgid ""
 "Allow simple users to personally train Spamassassin (within a dedicated "
 "database)"
 msgstr ""
+"Basit kullanıcıların Spamassassin'i kişisel olarak eğitmesine izin ver (özel "
+"bir veritabanı içinde)"
 
 #: amavis/app_settings.py:236 webmail/app_settings.py:155
 msgid "Display"
-msgstr ""
+msgstr "Görünüm"
 
 #: amavis/app_settings.py:243 webmail/app_settings.py:181
-#, fuzzy
-#| msgid "Number of displayed items per page"
 msgid "Number of displayed emails per page"
-msgstr "Sayfa başına görüntülenen öğe sayısı"
+msgstr "Sayfa başına görüntülenen e-posta sayısı"
 
 #: amavis/app_settings.py:246
 msgid "Set the maximum number of messages displayed in a page"
-msgstr ""
+msgstr "Bir sayfada görüntülenen maksimum ileti sayısını ayarla"
 
 #: amavis/app_settings.py:266 amavis/app_settings.py:273
 msgid "Amavis"
-msgstr ""
+msgstr "Amavis"
 
 #: amavis/checks/settings_checks.py:8
 msgid ""
 "AMAVIS_DEFAULT_DATABASE_ENCODING does not match the character encoding used "
 "by the Amavis database."
 msgstr ""
+"AMAVIS_DEFAULT_DATABASE_ENCODING, Amavis veritabanı tarafından kullanılan "
+"karakter kodlamasıyla eşleşmiyor."
 
 #: amavis/checks/settings_checks.py:12
 msgid ""
 "Check your database character encoding and set/update "
 "AMAVIS_DEFAULT_DATABASE_ENCODING."
 msgstr ""
+"Veritabanı karakter kodlamanızı kontrol edin ve "
+"AMAVIS_DEFAULT_DATABASE_ENCODING'i ayarlayın/güncelleyin."
 
 #: amavis/checks/settings_checks.py:19
 msgid "Modoboa Amavis has not been tested using the selected database engine."
 msgstr ""
+"Modoboa Amavis, seçilen veritabanı motoru kullanılarak test edilmemiştir."
 
 #: amavis/checks/settings_checks.py:20
 msgid "Try using PostgreSQL, MySQL or MariaDB."
-msgstr ""
+msgstr "PostgreSQL, MySQL veya MariaDB kullanmayı deneyin."
 
 #: amavis/handlers.py:141
 msgid "Pending requests"
-msgstr ""
+msgstr "Bekleyen istekler"
 
 #: amavis/lib.py:59
 #, python-format
 msgid "Connection to amavis failed: %s"
-msgstr ""
+msgstr "Amavis bağlantısı başarısız oldu: %s"
 
 #: amavis/lib.py:133
 msgid "Failed to find {} binary"
-msgstr ""
+msgstr "{} ikili dosyası bulunamadı"
 
 #: amavis/lib.py:148
 msgid "No recipient found"
-msgstr ""
+msgstr "Alıcı bulunamadı"
 
 #: amavis/lib.py:159
 msgid "Local domain not found"
-msgstr ""
+msgstr "Yerel alan adı bulunamadı"
 
 #: amavis/management/commands/amnotify.py:59
 msgid "[modoboa] Pending release requests"
-msgstr ""
+msgstr "[modoboa] Bekleyen serbest bırakma istekleri"
 
 #: amavis/models.py:101
-#, fuzzy
-#| msgid "Search filter"
 msgid "Virus filter"
-msgstr "Arama filtresi"
+msgstr "Virüs filtresi"
 
 #: amavis/models.py:105 amavis/models.py:119 amavis/models.py:133
 msgid "yes"
-msgstr ""
+msgstr "evet"
 
 #: amavis/models.py:106 amavis/models.py:120 amavis/models.py:134
 msgid "no"
-msgstr ""
+msgstr "hayır"
 
 #: amavis/models.py:107 amavis/models.py:121 amavis/models.py:135
 msgid "default"
-msgstr ""
+msgstr "varsayılan"
 
 #: amavis/models.py:111
 msgid "Bypass virus checks or not. Choose 'default' to use global settings."
 msgstr ""
+"Virüs kontrollerini atla veya atlama. Genel ayarları kullanmak için "
+"'varsayılan'ı seçin."
 
 #: amavis/models.py:115
-#, fuzzy
-#| msgid "Search filter"
 msgid "Spam filter"
-msgstr "Arama filtresi"
+msgstr "İstenmeyen e-posta filtresi"
 
 #: amavis/models.py:125
 msgid "Bypass spam checks or not. Choose 'default' to use global settings."
 msgstr ""
+"Spam kontrollerini atla veya atlama. Genel ayarları kullanmak için "
+"'varsayılan'ı seçin."
 
 #: amavis/models.py:129
-#, fuzzy
-#| msgid "Search filter"
 msgid "Banned filter"
-msgstr "Arama filtresi"
+msgstr "Yasaklı filtresi"
 
 #: amavis/models.py:139
 msgid "Bypass banned checks or not. Choose 'default' to use global settings."
 msgstr ""
+"Yasaklı kontrollerini atla veya atlama. Genel ayarları kullanmak için "
+"'varsayılan'ı seçin."
 
 #: amavis/models.py:170
 msgid "Spam marker"
-msgstr ""
+msgstr "İstenmeyen e-posta işaretleyici"
 
 #: amavis/models.py:176
 msgid ""
 "Modify spam subject using the specified text. Choose 'default' to use global "
 "settings."
 msgstr ""
+"Belirtilen metni kullanarak spam konusunu değiştirin. Genel ayarları "
+"kullanmak için 'varsayılan'ı seçin."
 
 #: amavis/templates/amavis/notifications/pending_requests.html:3
 #, python-format
 msgid "%(counter)s release request is pending for action."
 msgid_plural "%(counter)s release requests are pending for action."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%(counter)s serbest bırakma isteği işlem bekliyor."
+msgstr[1] "%(counter)s serbest bırakma isteği işlem bekliyor."
 
 #: amavis/templates/amavis/notifications/pending_requests.html:8
 msgid "Sketch:"
-msgstr ""
+msgstr "Taslak:"
 
 #: amavis/templates/amavis/notifications/pending_requests.html:10
 msgid "From:"
-msgstr ""
+msgstr "Gönderen:"
 
 #: amavis/templates/amavis/notifications/pending_requests.html:11
 msgid "To:"
-msgstr ""
+msgstr "Alıcı:"
 
 #: amavis/templates/amavis/notifications/pending_requests.html:12
-#, fuzzy
-#| msgid "Date"
 msgid "Date:"
-msgstr "Tarih"
+msgstr "Tarih:"
 
 #: amavis/templates/amavis/notifications/pending_requests.html:13
-#, fuzzy
-#| msgid "Subject"
 msgid "Subject:"
-msgstr "Konu"
+msgstr "Konu:"
 
 #: amavis/templates/amavis/notifications/pending_requests.html:14
-#, fuzzy
-#| msgid "Message"
 msgid "Act on this message:"
-msgstr "İleti"
+msgstr "Bu ileti üzerinde işlem yap:"
 
 #: amavis/templates/amavis/notifications/pending_requests.html:16
 #, python-format
 msgid "Please visit %(listingurl)s for a full listing."
-msgstr ""
+msgstr "Tam liste için lütfen %(listingurl)s adresini ziyaret edin."
 
 #: amavis/viewsets.py:122
-#, fuzzy
-#| msgid "Invalid code"
 msgid "Invalid request"
-msgstr "Geçersiz kod"
+msgstr "Geçersiz istek"
 
 #: autoreply/api/v2/serializers.py:27
 msgid "Value can't be less than 1 day"
-msgstr ""
+msgstr "Değer 1 günden az olamaz"
 
 #: autoreply/api/v2/serializers.py:47
-#, fuzzy
-#| msgid "This code is invalid"
 msgid "This date is over"
-msgstr "Bu kod geçersiz"
+msgstr "Bu tarih geçti"
 
 #: autoreply/api/v2/serializers.py:50
 msgid "Must be greater than start date"
-msgstr ""
+msgstr "Başlangıç tarihinden büyük olmalıdır"
 
 #: autoreply/app_settings.py:12 core/apps.py:21
 #: imap_migration/app_settings.py:13 maillog/apps.py:14
@@ -1148,21 +1109,24 @@ msgstr "Genel"
 
 #: autoreply/app_settings.py:18
 msgid "Period between two auto-replies"
-msgstr ""
+msgstr "İki otomatik yanıt arasındaki süre"
 
 #: autoreply/app_settings.py:20
 msgid ""
 "Number of days to wait before sending a new auto-reply to the same recipient"
 msgstr ""
+"Aynı alıcıya yeni bir otomatik yanıt göndermeden önce beklenecek gün sayısı"
 
 #: autoreply/app_settings.py:27 autoreply/app_settings.py:36
 msgid "Default subject"
-msgstr ""
+msgstr "Varsayılan konu"
 
 #: autoreply/app_settings.py:29
 msgid ""
 "Default subject used when an auto-reply message is created automatically"
 msgstr ""
+"Otomatik yanıt iletisi otomatik olarak oluşturulduğunda kullanılan "
+"varsayılan konu"
 
 #: autoreply/app_settings.py:38
 #, python-format
@@ -1170,75 +1134,70 @@ msgid ""
 "Default content used when an auto-reply message is created automatically. "
 "The '%(name)s' macro will be replaced by the user's full name."
 msgstr ""
+"Otomatik yanıt iletisi otomatik olarak oluşturulduğunda kullanılan "
+"varsayılan içerik. '%(name)s' makrosu kullanıcının tam adıyla "
+"değiştirilecektir."
 
 #: autoreply/apps.py:15
-#, fuzzy
-#| msgid "Inactive account threshold"
 msgid "Automatic replies"
-msgstr "Etkin olmayan hesap eşiği"
+msgstr "Otomatik yanıtlar"
 
 #: autoreply/models.py:17
-#, fuzzy
-#| msgid "Subject"
 msgid "subject"
-msgstr "Konu"
+msgstr "konu"
 
 #: autoreply/models.py:19
 msgid "The subject that will appear in sent emails"
-msgstr ""
+msgstr "Gönderilen e-postalarda görünecek konu"
 
 #: autoreply/models.py:22
 msgid "content"
-msgstr ""
+msgstr "içerik"
 
 #: autoreply/models.py:22
 msgid "The content that will appear in sent emails"
-msgstr ""
+msgstr "Gönderilen e-postalarda görünecek içerik"
 
 #: autoreply/models.py:25
 msgid "Activate/Deactivate your auto reply"
-msgstr ""
+msgstr "Otomatik yanıtınızı Etkinleştirin/Devre Dışı Bırakın"
 
 #: calendars/app_settings.py:11
-#, fuzzy
-#| msgid "LDAP settings"
 msgid "Server settings"
-msgstr "LDAP ayarları"
+msgstr "Sunucu ayarları"
 
 #: calendars/app_settings.py:17
-#, fuzzy
-#| msgid "Server port"
 msgid "Server URL"
-msgstr "Sunucu portu"
+msgstr "Sunucu URL'si"
 
 #: calendars/app_settings.py:19
 msgid ""
 "The URL of your Radicale server. It will be used to construct calendar URLs."
 msgstr ""
+"Radicale sunucunuzun URL'si. Takvim URL'lerini oluşturmak için "
+"kullanılacaktır."
 
 #: calendars/app_settings.py:31
 msgid "Rights management"
-msgstr ""
+msgstr "Hak yönetimi"
 
 #: calendars/app_settings.py:37
 msgid "Rights file's path"
-msgstr ""
+msgstr "Haklar dosyasının yolu"
 
 #: calendars/app_settings.py:39
 msgid "Path to the file that contains rights definition"
-msgstr ""
+msgstr "Hak tanımlarını içeren dosyanın yolu"
 
 #: calendars/app_settings.py:46
-#, fuzzy
-#| msgid "Domain administrator"
 msgid "Allow calendars administration"
-msgstr "Alan adı Yöneticisi"
+msgstr "Takvim yönetimine izin ver"
 
 #: calendars/app_settings.py:48
-#, fuzzy
-#| msgid "Allow this administrator to access user mailboxes"
 msgid "Allow domain administrators to manage user calendars (read and write)"
-msgstr "Bu yöneticinin kullanıcı posta kutularına erişimine izin ver"
+msgstr ""
+"Alan adı yöneticilerinin kullanıcı takvimlerini yönetmesine (okuma ve yazma) "
+"izin ver"
 
 #: calendars/app_settings.py:60 core/app_settings.py:664
 #: rspamd/app_settings.py:45
@@ -1247,92 +1206,90 @@ msgstr "Çeşitli"
 
 #: calendars/app_settings.py:66
 msgid "Maximum size of ICS files"
-msgstr ""
+msgstr "ICS dosyalarının maksimum boyutu"
 
 #: calendars/app_settings.py:68
 msgid ""
 "Maximum size in bytes of imported ICS files (or KB, MB, GB if specified)"
 msgstr ""
+"İçe aktarılan ICS dosyalarının bayt cinsinden maksimum boyutu (veya "
+"belirtilirse KB, MB, GB)"
 
 #: calendars/app_settings.py:89 core/api/v2/viewsets.py:205
 msgid "Calendars"
-msgstr ""
+msgstr "Takvimler"
 
 #: calendars/models.py:48 calendars/models.py:65 contacts/models.py:39
 msgid "Server location is not set, please fix it."
-msgstr ""
+msgstr "Sunucu konumu ayarlanmadı, lütfen düzeltin."
 
 #: calendars/viewsets.py:199
 msgid "Uploaded file is too big (max: {} bytes)"
-msgstr ""
+msgstr "Yüklenen dosya çok büyük (maks: {} bayt)"
 
 #: contacts/app_settings.py:11
-#, fuzzy
-#| msgid "LDAP synchronization settings"
 msgid "Synchronization"
-msgstr "LDAP eşitleme ayarları"
+msgstr "Eşitleme"
 
 #: contacts/app_settings.py:18
 msgid "Synchonize address book using CardDAV"
-msgstr ""
+msgstr "Adres defterini CardDAV kullanarak eşitle"
 
 #: contacts/app_settings.py:21
 msgid ""
 "Choose to synchronize or not your address book using CardDAV. You will be "
 "able to access your contacts from the outside."
 msgstr ""
+"Adres defterinizi CardDAV kullanarak eşitlemeyi veya eşitlememeyi seçin. "
+"Kişilerinize dışarıdan erişebileceksiniz."
 
 #: contacts/app_settings.py:29
-#, fuzzy
-#| msgid "LDAP synchronization settings"
 msgid "Synchronization frequency"
-msgstr "LDAP eşitleme ayarları"
+msgstr "Eşitleme sıklığı"
 
 #: contacts/app_settings.py:31
 msgid "Interval in seconds between 2 synchronization requests"
-msgstr ""
+msgstr "2 eşitleme isteği arasındaki saniye cinsinden aralık"
 
 #: contacts/app_settings.py:51 core/api/v2/viewsets.py:195
 msgid "Contacts"
-msgstr ""
+msgstr "Kişiler"
 
 #: contacts/constants.py:6 contacts/constants.py:12
 msgid "Home"
-msgstr ""
+msgstr "Ev"
 
 #: contacts/constants.py:7 contacts/constants.py:13
 msgid "Work"
-msgstr ""
+msgstr "İş"
 
 #: contacts/constants.py:8 contacts/constants.py:14
 msgid "Other"
-msgstr ""
+msgstr "Diğer"
 
 #: contacts/constants.py:15
 msgid "Main"
-msgstr ""
+msgstr "Ana"
 
 #: contacts/constants.py:16
 msgid "Cellular"
-msgstr ""
+msgstr "Cep"
 
 #: contacts/constants.py:17
 msgid "Fax"
-msgstr ""
+msgstr "Faks"
 
 #: contacts/constants.py:18
 msgid "Pager"
-msgstr ""
+msgstr "Çağrı Cihazı"
 
 #: contacts/serializers.py:101
-#, fuzzy
-#| msgid "Number of displayed items per page"
 msgid "Name or display name required"
-msgstr "Sayfa başına görüntülenen öğe sayısı"
+msgstr "Ad veya görünen ad gerekli"
 
 #: contacts/serializers.py:233
 msgid "Minimum allowed value is 60s"
-msgstr ""
+msgstr "İzin verilen minimum değer 60 saniyedir"
 
 #: core/api/v1/serializers.py:68
 msgid "Invalid PIN code"
@@ -1346,12 +1303,12 @@ msgstr "2FA zaten etkin"
 #, python-format
 msgid "Failed TFA settings editing attempt from '%(addr)s' as user '%(user)s'"
 msgstr ""
+"'%(user)s' kullanıcısı olarak '%(addr)s' adresinden başarısız 2FA ayarları "
+"düzenleme girişimi"
 
 #: core/api/v1/serializers.py:93 core/api/v2/serializers.py:438
-#, fuzzy
-#| msgid "Old password"
 msgid "Invalid password"
-msgstr "Eski parola"
+msgstr "Geçersiz parola"
 
 #: core/api/v1/viewsets.py:45 core/api/v1/viewsets.py:64
 msgid "2FA is not enabled"
@@ -1379,33 +1336,29 @@ msgid "Please use the following code to recover your Modoboa password: {}"
 msgstr "Modoboa şifrenizi kurtarmak için lütfen aşağıdaki kodu kullanın: {}"
 
 #: core/api/v2/viewsets.py:176
-#, fuzzy
-#| msgid "Administrator groups"
 msgid "Administration console"
-msgstr "Yönetici grupları"
+msgstr "Yönetim konsolu"
 
 #: core/api/v2/viewsets.py:184 dmarc/models.py:11
 msgid "Quarantine"
-msgstr ""
+msgstr "Karantina"
 
 #: core/api/v2/viewsets.py:186
 msgid "Amavis quarantine"
-msgstr ""
+msgstr "Amavis karantinası"
 
 #: core/api/v2/viewsets.py:197
-#, fuzzy
-#| msgid "From address"
 msgid "Address book"
-msgstr "Adresinden"
+msgstr "Adres defteri"
 
 #: core/api/v2/viewsets.py:207
 msgid "Calendar"
-msgstr ""
+msgstr "Takvim"
 
 #: core/api/v2/viewsets.py:215 core/api/v2/viewsets.py:217
 #: webmail/app_settings.py:295 webmail/app_settings.py:302
 msgid "Webmail"
-msgstr ""
+msgstr "Webmail"
 
 #: core/app_settings.py:25
 msgid "Authentication"
@@ -1465,13 +1418,11 @@ msgstr "Rastgele oluşturulmuş parolaların uzunluğu."
 
 #: core/app_settings.py:91
 msgid "Allow special characters for random password"
-msgstr ""
+msgstr "Rastgele parola için özel karakterlere izin ver"
 
 #: core/app_settings.py:94
-#, fuzzy
-#| msgid "Length of randomly generated passwords."
 msgid "Enable special characters in randomly generated passwords."
-msgstr "Rastgele oluşturulmuş parolaların uzunluğu."
+msgstr "Rastgele oluşturulan parolalarda özel karakterleri etkinleştir."
 
 #: core/app_settings.py:102
 msgid "Update password service URL"
@@ -1516,7 +1467,7 @@ msgstr "Kurtarma parolası göndermek için bir SMS sağlayıcı seçin. "
 
 #: core/app_settings.py:151
 msgid "LDAP"
-msgstr ""
+msgstr "LDAP"
 
 #: core/app_settings.py:157 sievefilters/app_settings.py:18
 #: sievefilters/app_settings.py:51 webmail/app_settings.py:36
@@ -1760,17 +1711,12 @@ msgid "Dashboard"
 msgstr "Gösterge Paneli"
 
 #: core/app_settings.py:474
-#, fuzzy
-#| msgid "Custom RSS feed"
 msgid "Custom welcome message"
-msgstr "Özel RSS beslemesi"
+msgstr "Özel karşılama iletisi"
 
 #: core/app_settings.py:476
-#, fuzzy
-#| msgid ""
-#| "A temporary message that will be displayed on the reset password page."
 msgid "A welcome message that will be displayed instead the default one"
-msgstr "Parola sıfırlandığında gösterilecek geçici bir mesaj."
+msgstr "Varsayılanın yerine gösterilecek bir karşılama iletisi"
 
 #: core/app_settings.py:483
 msgid "Custom RSS feed"
@@ -1781,16 +1727,12 @@ msgid "Display custom RSS feed to resellers and domain administrators"
 msgstr "Bayilere ve alan adı yöneticilerine özel RSS beslemesi görüntüleyin"
 
 #: core/app_settings.py:494
-#, fuzzy
-#| msgid "Display custom RSS feed to resellers and domain administrators"
 msgid "Display custom RSS feed to super admins"
-msgstr "Bayilere ve alan adı yöneticilerine özel RSS beslemesi görüntüleyin"
+msgstr "Süper yöneticilere özel RSS beslemesi görüntüleyin"
 
 #: core/app_settings.py:497
-#, fuzzy
-#| msgid "Display custom RSS feed to resellers and domain administrators"
 msgid "Display custom RSS feed also to super administrators"
-msgstr "Bayilere ve alan adı yöneticilerine özel RSS beslemesi görüntüleyin"
+msgstr "Süper yöneticilere de özel RSS beslemesi görüntüleyin"
 
 #: core/app_settings.py:505
 msgid "Hide features widget"
@@ -1802,49 +1744,51 @@ msgstr "Bayiler ve alan adı yöneticileri için Özellikler Aracı'nı gizle."
 
 #: core/app_settings.py:519
 msgid "Theme"
-msgstr ""
+msgstr "Tema"
 
 #: core/app_settings.py:525
 msgid "Primary theme color"
-msgstr ""
+msgstr "Birincil tema rengi"
 
 #: core/app_settings.py:527
 msgid ""
 "Primary color of the theme (hexadecimal code), used as the background color "
 "of the left menu for example"
 msgstr ""
+"Temanın birincil rengi (onaltılık kod), örneğin sol menünün arka plan rengi "
+"olarak kullanılır"
 
 #: core/app_settings.py:536
 msgid "Primary theme color (lighter version)"
-msgstr ""
+msgstr "Birincil tema rengi (daha açık sürüm)"
 
 #: core/app_settings.py:539 core/app_settings.py:551
 msgid "Primary color of the theme (hexadecimal code)"
-msgstr ""
+msgstr "Temanın birincil rengi (onaltılık kod)"
 
 #: core/app_settings.py:548
 msgid "Primary theme color (darker version)"
-msgstr ""
+msgstr "Birincil tema rengi (daha koyu sürüm)"
 
 #: core/app_settings.py:559
-#, fuzzy
-#| msgid "Secondary email"
 msgid "Secondary theme color"
-msgstr "İkincil e-posta"
+msgstr "İkincil tema rengi"
 
 #: core/app_settings.py:561
 msgid ""
 "Secondary color of the theme (hexadecimal code), used as the background "
 "color of some buttons for example"
 msgstr ""
+"Temanın ikincil rengi (onaltılık kod), örneğin bazı düğmelerin arka plan "
+"rengi olarak kullanılır"
 
 #: core/app_settings.py:569
 msgid "Labels theme color"
-msgstr ""
+msgstr "Etiketler tema rengi"
 
 #: core/app_settings.py:571
 msgid "Theme color for labels (hexadecimal code)"
-msgstr ""
+msgstr "Etiketler için tema rengi (onaltılık kod)"
 
 #: core/app_settings.py:583
 msgid "Notifications"
@@ -1902,16 +1846,16 @@ msgstr ""
 "uzantılar)"
 
 #: core/app_settings.py:671
-#, fuzzy
-#| msgid "Inactive account threshold"
 msgid "Enable inactive account tracking"
-msgstr "Etkin olmayan hesap eşiği"
+msgstr "Etkin olmayan hesap takibini etkinleştir"
 
 #: core/app_settings.py:674
 msgid ""
 "Allow the administrator to set a threshold (in days) beyond which an account "
 "is considered inactive if the user hasn't logged in"
 msgstr ""
+"Yöneticinin, kullanıcının giriş yapmadığı takdirde hesabın etkin değil "
+"olarak kabul edileceği bir eşik (gün cinsinden) belirlemesine izin ver"
 
 #: core/app_settings.py:683
 msgid "Inactive account threshold"
@@ -1943,11 +1887,11 @@ msgstr "Günlük kaydının gün cinsinden maksimum yaşı"
 
 #: core/app_settings.py:715
 msgid "Retention time in message history"
-msgstr ""
+msgstr "İleti geçmişinde saklama süresi"
 
 #: core/app_settings.py:718
 msgid "Retention time (in days) of a message in the message history section"
-msgstr ""
+msgstr "İleti geçmişi bölümündeki bir iletinin saklama süresi (gün cinsinden)"
 
 #: core/app_settings.py:725
 msgid "Items per page"
@@ -1973,37 +1917,43 @@ msgstr "settings.py dosyasında 'USE_TZ = True' yapın"
 
 #: core/checks.py:23
 msgid "The password scheme you are using is deprecated."
-msgstr ""
+msgstr "Kullandığınız parola şeması kullanımdan kaldırıldı."
 
 #: core/checks.py:24
-#, fuzzy
-#| msgid "Update password scheme at login"
 msgid "Upgrade your password scheme to a stronger one"
-msgstr "Parola şemasını girişte güncelle"
+msgstr "Parola şemanızı daha güçlü bir şemaya yükseltin"
 
 #: core/checks.py:30
 msgid ""
 "Oauth2 application for dovecot has not been found. Webmail and some other "
 "features won't be available."
 msgstr ""
+"Dovecot için Oauth2 uygulaması bulunamadı. Webmail ve diğer bazı özellikler "
+"kullanılamayacak."
 
 #: core/checks.py:34
 msgid ""
 "Visit : https://modoboa.readthedocs.io/en/latest/manual_installation/"
 "dovecot.html#dovecot-oauth2"
 msgstr ""
+"Ziyaret edin: https://modoboa.readthedocs.io/en/latest/manual_installation/"
+"dovecot.html#dovecot-oauth2"
 
 #: core/checks.py:41
 msgid ""
 "Oauth2 application for radicale has not been found. Calendar and some other "
 "features won't be available."
 msgstr ""
+"Radicale için Oauth2 uygulaması bulunamadı. Takvim ve diğer bazı özellikler "
+"kullanılamayacak."
 
 #: core/checks.py:45
 msgid ""
 "Visit :  https://modoboa.readthedocs.io/en/latest/manual_installation/"
 "radicale.html#radicale-oauth2"
 msgstr ""
+"Ziyaret edin: https://modoboa.readthedocs.io/en/latest/manual_installation/"
+"radicale.html#radicale-oauth2"
 
 #: core/constants.py:6
 msgid "Simple user"
@@ -2060,7 +2010,7 @@ msgstr "Değiştirildi"
 #: core/handlers.py:41
 #, python-format
 msgid "%(object)s '%(name)s' %(action)s by user %(user)s"
-msgstr "%(object)s '%(name)s '%(action)s %(user)skullanıcısı tarafından"
+msgstr "%(object)s '%(name)s' %(action)s %(user)s kullanıcısı tarafından"
 
 #: core/handlers.py:64
 #, python-format
@@ -2090,7 +2040,7 @@ msgstr "Bir veya daha fazla güncelleme mevcut"
 #: core/handlers.py:140
 #, python-format
 msgid "You are still using a deprecated password scheme (%s)"
-msgstr ""
+msgstr "Hala kullanımdan kaldırılmış bir parola şeması (%s) kullanıyorsunuz"
 
 #: core/management/commands/communicate_with_public_api.py:42
 msgid "[modoboa] Update(s) available"
@@ -2146,28 +2096,24 @@ msgid "You can't import an account with a role greater than yours"
 msgstr "Sizinkinden daha büyük bir role sahip bir hesabı içe aktaramazsınız"
 
 #: core/models.py:375
-#, fuzzy
-#| msgid "The simple user '%s' must have a valid email address"
 msgid "The simple user '{}' must have a valid email address"
-msgstr "'%s' basit kullanıcısının geçerli bir e-posta adresi olmalıdır"
+msgstr "'{}' basit kullanıcısının geçerli bir e-posta adresi olmalıdır"
 
 #: core/models.py:383
-#, fuzzy
-#| msgid "username and email fields must not differ for '%s'"
 msgid "username and email fields must not differ for '{}'"
-msgstr "'%s' için kullanıcı adı ve e-posta alanları farklı olmamalıdır"
+msgstr "'{}' için kullanıcı adı ve e-posta alanları farklı olmamalıdır"
 
 #: core/password_validation.py:25
 msgid "Password must contain at least {} digit."
 msgid_plural "Password must contain at least {} digits."
-msgstr[0] "Paro"
+msgstr[0] "Parola en az {} sayı içermelidir."
 msgstr[1] "Parola en az {} sayı içermelidir."
 
 #: core/password_validation.py:37
 msgid "Password must contain at least {} lowercase letter."
 msgid_plural "Password must contain at least {} lowercase letters."
 msgstr[0] "Parola en az {} küçük harf içermelidir."
-msgstr[1] "Parola en az {} küçük harf içermelidir"
+msgstr[1] "Parola en az {} küçük harf içermelidir."
 
 #: core/password_validation.py:49
 msgid "Password must contain at least {} uppercase letter."
@@ -2230,8 +2176,6 @@ msgid "Consumer key"
 msgstr "Tüketici anahtarı"
 
 #: core/sms_backends/ovh.py:116
-#, fuzzy
-#| msgid "Application secret"
 msgid "Appication secret"
 msgstr "Uygulama şifresi"
 
@@ -2273,231 +2217,211 @@ msgid "User '{}' successfully logged out"
 msgstr "'{}' kullanıcısı başarıyla çıkış yaptı"
 
 #: dmarc/forms.py:15
-#, fuzzy
-#| msgid "LDAP settings"
 msgid "DNS settings"
-msgstr "LDAP ayarları"
+msgstr "DNS ayarları"
 
 #: dmarc/forms.py:21
 msgid "Enable reverse lookups"
-msgstr ""
+msgstr "Ters aramaları etkinleştir"
 
 #: dmarc/forms.py:23
 msgid "Enable reverse DNS lookups (reports will be longer to display)"
 msgstr ""
+"Ters DNS aramalarını etkinleştir (raporların görüntülenmesi daha uzun "
+"sürecektir)"
 
 #: dmarc/forms.py:42
 msgid "DMARC"
-msgstr ""
+msgstr "DMARC"
 
 #: dmarc/lib.py:294
 msgid "Not resolved"
-msgstr ""
+msgstr "Çözümlenmedi"
 
 #: dmarc/models.py:10 dmarc/models.py:16 pdfcredentials/constants.py:7
 #: webmail/constants.py:38
 msgid "None"
-msgstr ""
+msgstr "Yok"
 
 #: dmarc/models.py:12
-#, fuzzy
-#| msgid "Subject"
 msgid "Reject"
-msgstr "Konu"
+msgstr "Reddet"
 
 #: dmarc/models.py:17
 msgid "Neutral"
-msgstr ""
+msgstr "Tarafsız"
 
 #: dmarc/models.py:18
-#, fuzzy
-#| msgid "Password"
 msgid "Pass"
-msgstr "Parola"
+msgstr "Geçti"
 
 #: dmarc/models.py:19
 msgid "Fail"
-msgstr ""
+msgstr "Başarısız"
 
 #: dmarc/models.py:20
-#, fuzzy
-#| msgid "Secondary server port"
 msgid "Temporary error"
-msgstr "İkincil sunucu portu"
+msgstr "Geçici hata"
 
 #: dmarc/models.py:21
 msgid "Permanent error"
-msgstr ""
+msgstr "Kalıcı hata"
 
 #: dmarc/models.py:24
 msgid "Policy"
-msgstr ""
+msgstr "Politika"
 
 #: dmarc/models.py:26
 msgid "Soft failure"
-msgstr ""
+msgstr "Yumuşak hata (Soft failure)"
 
 #: dnstools/lib.py:82
 msgid "Wrong ip4 mechanism syntax"
-msgstr ""
+msgstr "Yanlış ip4 mekanizması sözdizimi"
 
 #: dnstools/lib.py:86
 msgid "Wrong IPv4 address format"
-msgstr ""
+msgstr "Yanlış IPv4 adresi formatı"
 
 #: dnstools/lib.py:92
 msgid "Wrong ip6 mechanism syntax"
-msgstr ""
+msgstr "Yanlış ip6 mekanizması sözdizimi"
 
 #: dnstools/lib.py:97
 msgid "Wrong IPv6 address format"
-msgstr ""
+msgstr "Yanlış IPv6 adresi formatı"
 
 #: dnstools/lib.py:111 dnstools/lib.py:136
-#, fuzzy
-#| msgid "Invalid syntax"
 msgid "Invalid syntax for {} mechanism"
-msgstr "Geçersiz sözdizimi"
+msgstr "{} mekanizması için geçersiz sözdizimi"
 
 #: dnstools/lib.py:113
-#, fuzzy
-#| msgid "Invalid rounds number"
 msgid "Invalid mask found {}"
-msgstr "Geçersiz tur sayısı"
+msgstr "Geçersiz maske bulundu {}"
 
 #: dnstools/lib.py:157
 msgid "Not an SPF record"
-msgstr ""
+msgstr "Bir SPF kaydı değil"
 
 #: dnstools/lib.py:177
 msgid "Unknown mechanism {}"
-msgstr ""
+msgstr "Bilinmeyen mekanizma {}"
 
 #: dnstools/lib.py:179
 msgid "Unknown modifier {}"
-msgstr ""
+msgstr "Bilinmeyen değiştirici {}"
 
 #: dnstools/lib.py:182
 msgid "Duplicate modifier {} found"
-msgstr ""
+msgstr "Yinelenen değiştirici {} bulundu"
 
 #: dnstools/lib.py:186
 msgid "No mechanism found"
-msgstr ""
+msgstr "Mekanizma bulunamadı"
 
 #: dnstools/lib.py:193
 msgid "Not a valid DKIM record"
-msgstr ""
+msgstr "Geçerli bir DKIM kaydı değil"
 
 #: dnstools/lib.py:201 dnstools/lib.py:254
-#, fuzzy
-#| msgid "Invalid syntax"
 msgid "Invalid tag {}"
-msgstr "Geçersiz sözdizimi"
+msgstr "Geçersiz etiket {}"
 
 #: dnstools/lib.py:206
 msgid "No key found in record"
-msgstr ""
+msgstr "Kayıtta anahtar bulunamadı"
 
 #: dnstools/lib.py:213
 msgid "Wrong value {} for tag {}"
-msgstr ""
+msgstr "{} etiketi için yanlış değer {}"
 
 #: dnstools/lib.py:228
 msgid "Wrong value {} for tag {}:"
-msgstr ""
+msgstr "{} etiketi için yanlış değer {}:"
 
 #: dnstools/lib.py:232
 msgid " not an integer"
-msgstr ""
+msgstr " bir tam sayı değil"
 
 #: dnstools/lib.py:234
 msgid " less than {}"
-msgstr ""
+msgstr " {} değerinden küçük"
 
 #: dnstools/lib.py:237
 msgid " greater than {}"
-msgstr ""
+msgstr " {} değerinden büyük"
 
 #: dnstools/lib.py:246
 msgid "Not a valid DMARC record"
-msgstr ""
+msgstr "Geçerli bir DMARC kaydı değil"
 
 #: dnstools/lib.py:257
-#, fuzzy
-#| msgid "Unknown"
 msgid "Unknown tag {}"
-msgstr "Bilinmeyen"
+msgstr "Bilinmeyen etiket {}"
 
 #: dnstools/lib.py:262
 msgid "Missing required p tag"
-msgstr ""
+msgstr "Gerekli p etiketi eksik"
 
 #: dnstools/models.py:78
 msgid "Public key mismatchs"
-msgstr ""
+msgstr "Genel anahtar uyuşmazlıkları"
 
 #: imap_migration/api/v2/serializers.py:66
-#, fuzzy
-#| msgid "Enter a valid email address."
 msgid "Migrated domain with name {} already exists"
-msgstr "Geçerli bir e-posta adresi girin."
+msgstr "{} isimli taşınan alan adı zaten mevcut"
 
 #: imap_migration/api/v2/serializers.py:130
-#, fuzzy
-#| msgid "Access updated"
 msgid "Access denied"
-msgstr "Erişim güncellendi"
+msgstr "Erişim reddedildi"
 
 #: imap_migration/app_settings.py:19
-#, fuzzy
-#| msgid "Enable communication"
 msgid "Enable IMAP Migration"
-msgstr "İletişimi etkinleştir"
+msgstr "IMAP Geçişini Etkinleştir"
 
 #: imap_migration/app_settings.py:20
-#, fuzzy
-#| msgid "Enable communication"
 msgid "Enable IMAP Migration."
-msgstr "İletişimi etkinleştir"
+msgstr "IMAP Geçişini Etkinleştir."
 
 #: imap_migration/app_settings.py:30
 msgid "OfflineIMAP"
-msgstr ""
+msgstr "OfflineIMAP"
 
 #: imap_migration/app_settings.py:36
 msgid "Concurrent sync jobs"
-msgstr ""
+msgstr "Eşzamanlı eşitleme işleri"
 
 #: imap_migration/app_settings.py:38
 msgid "The maximum number of concurrent synchronization jobs"
-msgstr ""
+msgstr "Eşzamanlı eşitleme işlerinin maksimum sayısı"
 
 #: imap_migration/app_settings.py:49
 msgid "OfflineIMAP Filter"
-msgstr ""
+msgstr "OfflineIMAP Filtresi"
 
 #: imap_migration/app_settings.py:55
 msgid "Create Folders"
-msgstr ""
+msgstr "Klasörleri Oluştur"
 
 #: imap_migration/app_settings.py:57
 msgid "Allow Creation of missing folders during sync"
-msgstr ""
+msgstr "Eşitleme sırasında eksik klasörlerin oluşturulmasına izin ver"
 
 #: imap_migration/app_settings.py:64
 msgid "Folder Filter Exclusions"
-msgstr ""
+msgstr "Klasör Filtresi Hariç Tutulanlar"
 
 #: imap_migration/app_settings.py:66
 msgid ""
 "Use a regular expression to explicitly include folders in sync. Example: "
 "^Trash$|Del"
 msgstr ""
+"Eşitlemeye klasörleri açıkça dahil etmek için düzenli bir ifade kullanın. "
+"Örnek: ^Trash$|Del"
 
 #: imap_migration/app_settings.py:74
 msgid "Folder Filter Inclusions"
-msgstr ""
+msgstr "Klasör Filtresi Dahil Edilenler"
 
 #: imap_migration/app_settings.py:76
 msgid ""
@@ -2505,62 +2429,58 @@ msgid ""
 "filtered by the Folder Filter Exclusions. Example: debian.user, "
 "debian.personal "
 msgstr ""
+"Klasör Filtresi Hariç Tutulanlar tarafından filtrelenmiş olsa bile "
+"eşitlemeye açıkça dahil edilecek klasörlerin virgülle ayrılmış listesi. "
+"Örnek: debian.user, debian.personal"
 
 #: imap_migration/apps.py:20
 msgid "IMAP Migration"
-msgstr ""
+msgstr "IMAP Geçişi"
 
 #: imap_migration/checks.py:12
 msgid ""
 "Automatic domain/mailbox creation is disabled which means IMAP "
 "authentication won't work."
 msgstr ""
+"Otomatik alan adı/posta kutusu oluşturma devre dışı, bu da IMAP kimlik "
+"doğrulamasının çalışmayacağı anlamına gelir."
 
 #: imap_migration/checks.py:16
 msgid ""
 "Go to the online parameters panel (admin tab) and activate this feature."
 msgstr ""
+"Çevrimiçi parametreler paneline (yönetici sekmesi) gidin ve bu özelliği "
+"etkinleştirin."
 
 #: ldapsync/lib.py:82
-#, fuzzy
-#| msgid "Failed to update password: {}"
 msgid "Failed to create LDAP account: {}"
-msgstr "{} Parola güncelleme başarısız"
+msgstr "LDAP hesabı oluşturulamadı: {}"
 
 #: ldapsync/lib.py:121
-#, fuzzy
-#| msgid "Failed to update password: {}"
 msgid "Failed to update LDAP account: {}"
-msgstr "{} Parola güncelleme başarısız"
+msgstr "LDAP hesabı güncellenemedi: {}"
 
 #: ldapsync/lib.py:135
-#, fuzzy
-#| msgid "Failed to update password: {}"
 msgid "Failed to delete LDAP account: {}"
-msgstr "{} Parola güncelleme başarısız"
+msgstr "LDAP hesabı silinemedi: {}"
 
 #: ldapsync/lib.py:144
-#, fuzzy
-#| msgid "Failed to update password: {}"
 msgid "Failed to disable LDAP account: {}"
-msgstr "{} Parola güncelleme başarısız"
+msgstr "LDAP hesabı devre dışı bırakılamadı: {}"
 
 #: lib/api_client.py:35 lib/api_client.py:67 lib/api_client.py:81
 #: lib/api_client.py:85
-#, fuzzy, python-format
-#| msgid "Enable communication with Modoboa public API"
+#, python-format
 msgid "Failed to communicate with public API: %s"
-msgstr "Modoboa genel API'si ile iletişimi etkinleştir"
+msgstr "Genel API ile iletişim kurulamadı: %s"
 
 #: lib/email_utils.py:140 lib/email_utils.py:351
 msgid "unable to determine encoding of string"
 msgstr "dize kodlaması belirlenemiyor"
 
 #: lib/exceptions.py:83
-#, fuzzy
-#| msgid "Permission denied: %s"
 msgid "Permission denied: {}"
-msgstr "%sizin reddedildi"
+msgstr "İzin reddedildi: {}"
 
 #: lib/exceptions.py:84
 msgid "Permission denied"
@@ -2580,437 +2500,435 @@ msgstr "Geçerli bir alan adı girin"
 
 #: limits/app_settings.py:13
 msgid "Default per-admin limits"
-msgstr ""
+msgstr "Yönetici başına varsayılan limitler"
 
 #: limits/app_settings.py:19
 msgid "Enable per-admin limits"
-msgstr ""
+msgstr "Yönetici başına limitleri etkinleştir"
 
 #: limits/app_settings.py:20
 msgid "Enable or disable per-admin limits"
-msgstr ""
+msgstr "Yönetici başına limitleri etkinleştir veya devre dışı bırak"
 
 #: limits/app_settings.py:26 limits/app_settings.py:111 limits/constants.py:47
 #: limits/constants.py:101
-#, fuzzy
-#| msgid "Domain administrator"
 msgid "Domain admins"
-msgstr "Alan adı Yöneticisi"
+msgstr "Alan adı yöneticileri"
 
 #: limits/app_settings.py:29
 msgid ""
 "Maximum number of allowed domain administrators for a new administrator. (0 "
 "to deny any creation, -1 to allow unlimited creations)"
 msgstr ""
+"Yeni bir yönetici için izin verilen maksimum alan adı yöneticisi sayısı. (0 "
+"oluşturmayı reddeder, -1 sınırsız oluşturmaya izin verir)"
 
 #: limits/app_settings.py:41
 msgid ""
 "Maximum number of allowed domains for a new administrator. (0 to deny any "
 "creation, -1 to allow unlimited creations)"
 msgstr ""
+"Yeni bir yönetici için izin verilen maksimum alan adı sayısı. (0 oluşturmayı "
+"reddeder, -1 sınırsız oluşturmaya izin verir)"
 
 #: limits/app_settings.py:49 limits/app_settings.py:123 limits/constants.py:22
 #: limits/constants.py:76
 msgid "Domain aliases"
-msgstr ""
+msgstr "Alan adı takma adları"
 
 #: limits/app_settings.py:52
 msgid ""
 "Maximum number of allowed domain aliases for a new administrator. (0 to deny "
 "any creation, -1 to allow unlimited creations)"
 msgstr ""
+"Yeni bir yönetici için izin verilen maksimum alan adı takma adı sayısı. (0 "
+"oluşturmayı reddeder, -1 sınırsız oluşturmaya izin verir)"
 
 #: limits/app_settings.py:64
 msgid ""
 "Maximum number of allowed mailboxes for a new administrator. (0 to deny any "
 "creation, -1 to allow unlimited creations)"
 msgstr ""
+"Yeni bir yönetici için izin verilen maksimum posta kutusu sayısı. (0 "
+"oluşturmayı reddeder, -1 sınırsız oluşturmaya izin verir)"
 
 #: limits/app_settings.py:73 limits/app_settings.py:146 limits/constants.py:39
 #: limits/constants.py:92
 msgid "Mailbox aliases"
-msgstr ""
+msgstr "Posta kutusu takma adları"
 
 #: limits/app_settings.py:76
 msgid ""
 "Maximum number of allowed aliases for a new administrator. (0 to deny any "
 "creation, -1 to allow unlimited creations)"
 msgstr ""
+"Yeni bir yönetici için izin verilen maksimum takma ad sayısı. (0 oluşturmayı "
+"reddeder, -1 sınırsız oluşturmaya izin verir)"
 
 #: limits/app_settings.py:84 limits/constants.py:59
 msgid "Quota"
-msgstr ""
+msgstr "Kota"
 
 #: limits/app_settings.py:86
 msgid ""
 "The quota a reseller will be allowed to share between the domains he "
 "creates. (0 means no quota)"
 msgstr ""
+"Bir bayinin oluşturduğu alan adları arasında paylaşmasına izin verilecek "
+"kota. (0 kota olmadığı anlamına gelir)"
 
 #: limits/app_settings.py:98
 msgid "Default per-domain limits"
-msgstr ""
+msgstr "Alan adı başına varsayılan limitler"
 
 #: limits/app_settings.py:104
 msgid "Enable per-domain limits"
-msgstr ""
+msgstr "Alan adı başına limitleri etkinleştir"
 
 #: limits/app_settings.py:105
 msgid "Enable or disable per-domain limits"
-msgstr ""
+msgstr "Alan adı başına limitleri etkinleştir veya devre dışı bırak"
 
 #: limits/app_settings.py:114
 msgid ""
 "Maximum number of allowed domain administrators for a new domain. (0 to deny "
 "any creation, -1 to allow unlimited creations)"
 msgstr ""
+"Yeni bir alan adı için izin verilen maksimum alan adı yöneticisi sayısı. (0 "
+"oluşturmayı reddeder, -1 sınırsız oluşturmaya izin verir)"
 
 #: limits/app_settings.py:126
 msgid ""
 "Maximum number of allowed domain aliases for a new domain. (0 to deny any "
 "creation, -1 to allow unlimited creations)"
 msgstr ""
+"Yeni bir alan adı için izin verilen maksimum alan adı takma adı sayısı. (0 "
+"oluşturmayı reddeder, -1 sınırsız oluşturmaya izin verir)"
 
 #: limits/app_settings.py:138
 msgid ""
 "Maximum number of allowed mailboxes for a new domain. (0 to deny any "
 "creation, -1 to allow unlimited creations)"
 msgstr ""
+"Yeni bir alan adı için izin verilen maksimum posta kutusu sayısı. (0 "
+"oluşturmayı reddeder, -1 sınırsız oluşturmaya izin verir)"
 
 #: limits/app_settings.py:149
 msgid ""
 "Maximum number of allowed aliases for a new domain. (0 to deny any creation, "
 "-1 to allow unlimited creations)"
 msgstr ""
+"Yeni bir alan adı için izin verilen maksimum takma ad sayısı. (0 oluşturmayı "
+"reddeder, -1 sınırsız oluşturmaya izin verir)"
 
 #: limits/apps.py:16
 msgid "Limits"
-msgstr ""
+msgstr "Limitler"
 
 #: limits/constants.py:14
 msgid "Maximum number of domains this user can create"
-msgstr ""
+msgstr "Bu kullanıcının oluşturabileceği maksimum alan adı sayısı"
 
 #: limits/constants.py:23
 msgid "Maximum number of domain aliases this user can create"
-msgstr ""
+msgstr "Bu kullanıcının oluşturabileceği maksimum alan adı takma adı sayısı"
 
 #: limits/constants.py:32
 msgid "Maximum number of mailboxes this user can create"
-msgstr ""
+msgstr "Bu kullanıcının oluşturabileceği maksimum posta kutusu sayısı"
 
 #: limits/constants.py:40
 msgid "Maximum number of mailbox aliases this user can create"
-msgstr ""
+msgstr "Bu kullanıcının oluşturabileceği maksimum posta kutusu takma adı sayısı"
 
 #: limits/constants.py:49
 msgid "Maximum number of domain administrators this user can create"
-msgstr ""
+msgstr "Bu kullanıcının oluşturabileceği maksimum alan adı yöneticisi sayısı"
 
 #: limits/constants.py:60
 msgid "Quota shared between domains of this reseller"
-msgstr ""
+msgstr "Bu bayinin alan adları arasında paylaşılan kota"
 
 #: limits/constants.py:77
 msgid "Maximum number of domain aliases allowed for this domain."
-msgstr ""
+msgstr "Bu alan adı için izin verilen maksimum alan adı takma adı sayısı."
 
 #: limits/constants.py:85
 msgid "Maximum number of mailboxes allowed for this domain."
-msgstr ""
+msgstr "Bu alan adı için izin verilen maksimum posta kutusu sayısı."
 
 #: limits/constants.py:93
 msgid "Maximum number of mailbox aliases allowed for this domain."
-msgstr ""
+msgstr "Bu alan adı için izin verilen maksimum posta kutusu takma adı sayısı."
 
 #: limits/constants.py:102
 msgid "Maximum number of domain admins allowed for this domain."
-msgstr ""
+msgstr "Bu alan adı için izin verilen maksimum alan adı yöneticisi sayısı."
 
 #: limits/lib.py:19
 #, python-format
 msgid "%s: limit reached"
-msgstr ""
+msgstr "%s: limite ulaşıldı"
 
 #: limits/lib.py:29
 msgid "Not enough resources"
-msgstr ""
+msgstr "Yeterli kaynak yok"
 
 #: limits/lib.py:46 limits/models.py:46
 msgid "You're not allowed to define unlimited values"
-msgstr ""
+msgstr "Sınırsız değerler tanımlamanıza izin verilmiyor"
 
 #: limits/models.py:56 limits/models.py:119
 msgid "unlimited"
-msgstr ""
+msgstr "sınırsız"
 
 #: maillog/api/v2/serializers.py:35
 msgid "You must provide start and end dates when period is custom"
-msgstr ""
+msgstr "Periyot özel olduğunda başlangıç ve bitiş tarihlerini sağlamalısınız"
 
 #: maillog/apps.py:20
 msgid "Path to the log file"
-msgstr ""
+msgstr "Günlük dosyasının yolu"
 
 #: maillog/apps.py:22
 msgid "Path to log file used to collect statistics"
-msgstr ""
+msgstr "İstatistikleri toplamak için kullanılan günlük dosyasının yolu"
 
 #: maillog/apps.py:29
 msgid "Directory to store RRD files"
-msgstr ""
+msgstr "RRD dosyalarının saklanacağı dizin"
 
 #: maillog/apps.py:31
 msgid "Path to directory where RRD files are stored"
-msgstr ""
+msgstr "RRD dosyalarının saklandığı dizinin yolu"
 
 #: maillog/apps.py:38
 msgid "Show greylisted messages"
-msgstr ""
+msgstr "Gri listeye alınmış iletileri göster"
 
 #: maillog/apps.py:40
 msgid "Differentiate between hard and soft rejects (greylisting)"
-msgstr ""
+msgstr "Sert ve yumuşak reddetmeler (gri liste) arasında ayrım yap"
 
 #: maillog/apps.py:60
-#, fuzzy
-#| msgid "Send statistics"
 msgid "Statistics"
-msgstr "İstatistikleri gönder"
+msgstr "İstatistikler"
 
 #: maillog/graphics.py:91
 msgid "Failed to locate rrdtool binary."
-msgstr ""
+msgstr "rrdtool ikili dosyası bulunamadı."
 
 #: maillog/graphics.py:166
 msgid "Average traffic (msgs/min)"
-msgstr ""
+msgstr "Ortalama trafik (msj/dk)"
 
 #: maillog/graphics.py:169
-#, fuzzy
-#| msgid "Message"
 msgid "sent messages"
-msgstr "İleti"
+msgstr "gönderilen iletiler"
 
 #: maillog/graphics.py:170
 msgid "received messages"
-msgstr ""
+msgstr "alınan iletiler"
 
 #: maillog/graphics.py:171
 msgid "bounced messages"
-msgstr ""
+msgstr "geri dönen iletiler"
 
 #: maillog/graphics.py:172
 msgid "rejected messages"
-msgstr ""
+msgstr "reddedilen iletiler"
 
 #: maillog/graphics.py:173
 msgid "virus messages"
-msgstr ""
+msgstr "virüs iletileri"
 
 #: maillog/graphics.py:174
-#, fuzzy
-#| msgid "Message"
 msgid "spam messages"
-msgstr "İleti"
+msgstr "spam iletileri"
 
 #: maillog/graphics.py:181
 msgid "greylisted messages"
-msgstr ""
+msgstr "gri listeye alınan iletiler"
 
 #: maillog/graphics.py:198
 msgid "Average normal traffic size (bytes/min)"
-msgstr ""
+msgstr "Ortalama normal trafik boyutu (bayt/dk)"
 
 #: maillog/graphics.py:201
 msgid "received size"
-msgstr ""
+msgstr "alınan boyut"
 
 #: maillog/graphics.py:202
 msgid "sent size"
-msgstr ""
+msgstr "gönderilen boyut"
 
 #: maillog/graphics.py:209
 msgid "Mail traffic"
-msgstr ""
+msgstr "Posta trafiği"
 
 #: maillog/graphics.py:252
 msgid "Average account creation (account/hour)"
-msgstr ""
+msgstr "Ortalama hesap oluşturma (hesap/saat)"
 
 #: maillog/graphics.py:254
-#, fuzzy
-#| msgid "account"
 msgid "New accounts"
-msgstr "Hesap"
+msgstr "Yeni hesaplar"
 
 #: maillog/graphics.py:261
-#, fuzzy
-#| msgid "account"
 msgid "Accounts"
-msgstr "Hesap"
+msgstr "Hesaplar"
 
 #: pdfcredentials/api/v2/serializers.py:35 pdfcredentials/documents.py:60
-#, fuzzy
-#| msgid "Update your personal information"
 msgid "Personal account information"
-msgstr "Kişisel bilgilerinizi güncelleyin"
+msgstr "Kişisel hesap bilgileri"
 
 #: pdfcredentials/api/v2/serializers.py:86
 msgid "Directory is not writable"
-msgstr ""
+msgstr "Dizin yazılabilir değil"
 
 #: pdfcredentials/api/v2/serializers.py:114
 msgid "No document available for this user"
-msgstr ""
+msgstr "Bu kullanıcı için belge mevcut değil"
 
 #: pdfcredentials/app_settings.py:19
-#, fuzzy
-#| msgid "Enable API access"
 msgid "Enable PDF credentials"
-msgstr "API erişimini etkinleştir"
+msgstr "PDF kimlik bilgilerini etkinleştir"
 
 #: pdfcredentials/app_settings.py:21
 msgid "Enabled PDF credentials document generation on account creation."
 msgstr ""
+"Hesap oluşturma sırasında PDF kimlik bilgileri belgesi oluşturmayı "
+"etkinleştir."
 
 #: pdfcredentials/app_settings.py:32
 msgid "Documents storage"
-msgstr ""
+msgstr "Belge depolama"
 
 #: pdfcredentials/app_settings.py:38
 msgid "Directory to save documents into"
-msgstr ""
+msgstr "Belgelerin kaydedileceği dizin"
 
 #: pdfcredentials/app_settings.py:40
 msgid "Path to a directory where PDF documents will be saved"
-msgstr ""
+msgstr "PDF belgelerinin kaydedileceği dizinin yolu"
 
 #: pdfcredentials/app_settings.py:51
-#, fuzzy
-#| msgid "Security"
 msgid "Security options"
-msgstr "Güvenlik"
+msgstr "Güvenlik seçenekleri"
 
 #: pdfcredentials/app_settings.py:57
 msgid "Delete documents after the first download"
-msgstr ""
+msgstr "Belgeleri ilk indirmeden sonra sil"
 
 #: pdfcredentials/app_settings.py:59
 msgid ""
 "Automatically delete a document just after its first download from this "
 "interface"
-msgstr ""
+msgstr "Bir belgeyi bu arayüzden ilk indirildikten hemen sonra otomatik olarak sil"
 
 #: pdfcredentials/app_settings.py:68
 msgid "Generate documents only at account creation"
-msgstr ""
+msgstr "Belgeleri yalnızca hesap oluşturma sırasında oluştur"
 
 #: pdfcredentials/app_settings.py:71
 msgid ""
 "Generate a new document only when a new account is created. If set to no, a "
 "new document will be created each time a password is updated."
 msgstr ""
+"Yalnızca yeni bir hesap oluşturulduğunda yeni bir belge oluştur. Hayır "
+"olarak ayarlanırsa, parola her güncellendiğinde yeni bir belge oluşturulur."
 
 #: pdfcredentials/app_settings.py:84
 msgid "Customization options"
-msgstr ""
+msgstr "Özelleştirme seçenekleri"
 
 #: pdfcredentials/app_settings.py:90
 msgid "Title"
-msgstr ""
+msgstr "Başlık"
 
 #: pdfcredentials/app_settings.py:91
 msgid "The document's title"
-msgstr ""
+msgstr "Belgenin başlığı"
 
 #: pdfcredentials/app_settings.py:97
 msgid "Web panel url"
-msgstr ""
+msgstr "Web paneli url'si"
 
 #: pdfcredentials/app_settings.py:98
 msgid "URL of the Modoboa web panel"
-msgstr ""
+msgstr "Modoboa web panelinin URL'si"
 
 #: pdfcredentials/app_settings.py:104
-#, fuzzy
-#| msgid "Custom RSS feed"
 msgid "Custom message"
-msgstr "Özel RSS beslemesi"
+msgstr "Özel ileti"
 
 #: pdfcredentials/app_settings.py:106
 msgid "A custom message that will appear at the end of documents"
-msgstr ""
+msgstr "Belgelerin sonunda görünecek özel bir ileti"
 
 #: pdfcredentials/app_settings.py:113
 msgid "Include mail client connection settings"
-msgstr ""
+msgstr "Posta istemcisi bağlantı ayarlarını dahil et"
 
 #: pdfcredentials/app_settings.py:115
 msgid ""
 "Include required SMTP and IMAP connection information to configure a mail "
 "client, a tablet or a phone"
 msgstr ""
+"Bir posta istemcisi, tablet veya telefon yapılandırmak için gerekli SMTP ve "
+"IMAP bağlantı bilgilerini dahil et"
 
 #: pdfcredentials/app_settings.py:123 pdfcredentials/documents.py:133
-#, fuzzy
-#| msgid "Server address"
 msgid "SMTP server address"
-msgstr "Sunucu adresi"
+msgstr "SMTP sunucu adresi"
 
 #: pdfcredentials/app_settings.py:126
 msgid "Address of the SMTP server (hostname or IP)"
-msgstr ""
+msgstr "SMTP sunucusunun adresi (ana bilgisayar adı veya IP)"
 
 #: pdfcredentials/app_settings.py:133 pdfcredentials/documents.py:134
-#, fuzzy
-#| msgid "Server port"
 msgid "SMTP server port"
-msgstr "Sunucu portu"
+msgstr "SMTP sunucu portu"
 
 #: pdfcredentials/app_settings.py:135
 msgid "Listening port of the SMTP server"
-msgstr ""
+msgstr "SMTP sunucusunun dinleme portu"
 
 #: pdfcredentials/app_settings.py:141 pdfcredentials/documents.py:135
 msgid "SMTP connection security"
-msgstr ""
+msgstr "SMTP bağlantı güvenliği"
 
 #: pdfcredentials/app_settings.py:143 pdfcredentials/app_settings.py:169
 msgid "Connection security mechanism"
-msgstr ""
+msgstr "Bağlantı güvenlik mekanizması"
 
 #: pdfcredentials/app_settings.py:149 pdfcredentials/documents.py:136
-#, fuzzy
-#| msgid "Server address"
 msgid "IMAP server address"
-msgstr "Sunucu adresi"
+msgstr "IMAP sunucu adresi"
 
 #: pdfcredentials/app_settings.py:152
 msgid "Address of the IMAP server (hostname or IP)"
-msgstr ""
+msgstr "IMAP sunucusunun adresi (ana bilgisayar adı veya IP)"
 
 #: pdfcredentials/app_settings.py:159 pdfcredentials/documents.py:137
-#, fuzzy
-#| msgid "Server port"
 msgid "IMAP server port"
-msgstr "Sunucu portu"
+msgstr "IMAP sunucu portu"
 
 #: pdfcredentials/app_settings.py:161
 msgid "Listening port of the IMAP server"
-msgstr ""
+msgstr "IMAP sunucusunun dinleme portu"
 
 #: pdfcredentials/app_settings.py:167 pdfcredentials/documents.py:138
 msgid "IMAP connection security"
-msgstr ""
+msgstr "IMAP bağlantı güvenliği"
 
 #: pdfcredentials/apps.py:21
 msgid "PDF Credentials"
-msgstr ""
+msgstr "PDF Kimlik Bilgileri"
 
 #: pdfcredentials/documents.py:65
 msgid "Powered by Modoboa - Mail hosting made simple"
-msgstr ""
+msgstr "Modoboa tarafından desteklenmektedir - Posta barındırma basitleştirildi"
 
 #: pdfcredentials/documents.py:84
 #, python-format
@@ -3020,10 +2938,14 @@ msgid ""
 "to connect to Modoboa. Learn the content and destroy\n"
 "the document as soon as possible.\n"
 msgstr ""
+"\n"
+"Sayın %s, bu belge Modoboa'ya bağlanmak için ihtiyaç duyacağınız kimlik "
+"bilgilerini içerir. İçeriği öğrenin ve belgeyi mümkün olan en kısa sürede "
+"imha edin.\n"
 
 #: pdfcredentials/documents.py:95
 msgid "Web panel:"
-msgstr ""
+msgstr "Web paneli:"
 
 #: pdfcredentials/documents.py:98
 msgid "Username"
@@ -3039,126 +2961,127 @@ msgid ""
 "Here you can view your emails anytime online, create filters or manage\n"
 "your contacts.\n"
 msgstr ""
+"\n"
+"E-postalarınızı istediğiniz zaman çevrimiçi olarak görüntüleyebilir, "
+"filtreler oluşturabilir veya kişilerinizi yönetebilirsiniz.\n"
 
 #: pdfcredentials/documents.py:126
-#, fuzzy
-#| msgid "Change password"
 msgid "Please change your password!"
-msgstr "Parolayı değiştirin"
+msgstr "Lütfen parolanızı değiştirin!"
 
 #: pdfcredentials/documents.py:130
 msgid "PC/Tablet/Smartphone configuration:"
-msgstr ""
+msgstr "PC/Tablet/Akıllı Telefon yapılandırması:"
 
 #: pdfcredentials/documents.py:153
 msgid "Use those settings for your computer, tablet or phone."
-msgstr ""
+msgstr "Bilgisayarınız, tabletiniz veya telefonunuz için bu ayarları kullanın."
 
 #: pdfcredentials/handlers.py:35
 msgid ""
 "Failed to create PDF_credentials directory. Please check the permissions or "
 "the path."
 msgstr ""
+"PDF_credentials dizini oluşturulamadı. Lütfen izinleri veya yolu kontrol "
+"edin."
 
 #: pdfcredentials/handlers.py:64
 msgid "Download PDF credentials"
-msgstr ""
+msgstr "PDF kimlik bilgilerini indir"
 
 #: pdfcredentials/lib.py:29
 msgid "Can't write to selected directory to store PDF documents"
-msgstr ""
+msgstr "PDF belgelerini saklamak için seçilen dizine yazılamıyor"
 
 #: pdfcredentials/lib.py:35
 #, python-format
 msgid "Failed to create the directory that will contain PDF documents (%s)"
-msgstr ""
+msgstr "PDF belgelerini içerecek dizin oluşturulamadı (%s)"
 
 #: pdfcredentials/lib.py:82
 msgid ""
 "Failed to create PDF_credentials file. Please check the permissions or the "
 "path."
 msgstr ""
+"PDF_credentials dosyası oluşturulamadı. Lütfen izinleri veya yolu kontrol "
+"edin."
 
 #: policyd/core.py:99
 msgid "Daily sending limit reached"
-msgstr ""
+msgstr "Günlük gönderim limitine ulaşıldı"
 
 #: policyd/core.py:118
 msgid "domain"
-msgstr ""
+msgstr "alan adı"
 
 #: policyd/core.py:136
 msgid "[modoboa] Sending limit reached"
-msgstr ""
+msgstr "[modoboa] Gönderim limitine ulaşıldı"
 
 #: policyd/templates/policyd/notifications/limit_reached.html:3
 #, python-format
 msgid "Daily limit of the following %(ltype)s has been reached: %(name)s."
-msgstr ""
+msgstr "Aşağıdaki %(ltype)s türünün günlük limitine ulaşıldı: %(name)s."
 
 #: relaydomains/api/v1/serializers.py:24
-#, fuzzy
-#| msgid "Update password service URL"
 msgid "Unsupported service"
-msgstr "Parola servisi URL sayfasını güncelle"
+msgstr "Desteklenmeyen hizmet"
 
 #: relaydomains/transport.py:16
-#, fuzzy
-#| msgid "From address"
 msgid "target host address"
-msgstr "Adresinden"
+msgstr "hedef ana bilgisayar adresi"
 
 #: relaydomains/transport.py:21
 msgid "target host port"
-msgstr ""
+msgstr "hedef ana bilgisayar portu"
 
 #: relaydomains/transport.py:27
-#, fuzzy
-#| msgid "Recipient"
 msgid "verify recipients"
-msgstr "Alıcı"
+msgstr "alıcıları doğrula"
 
 #: rspamd/api/v2/serializers.py:15
 msgid "Provided path is not writable."
-msgstr ""
+msgstr "Sağlanan yol yazılabilir değil."
 
 #: rspamd/api/v2/serializers.py:18
 msgid "Please create the parent directory for the files"
-msgstr ""
+msgstr "Lütfen dosyalar için ana dizini oluşturun"
 
 #: rspamd/api/v2/serializers.py:22
 msgid "Unable to write to the directory."
-msgstr ""
+msgstr "Dizine yazılamıyor."
 
 #: rspamd/app_settings.py:13
-#, fuzzy
-#| msgid "LDAP settings"
 msgid "DKIM signing settings"
-msgstr "LDAP ayarları"
+msgstr "DKIM imzalama ayarları"
 
 #: rspamd/app_settings.py:19
 msgid "Key map path"
-msgstr ""
+msgstr "Anahtar haritası yolu"
 
 #: rspamd/app_settings.py:21
 msgid ""
 "Absolute path of the file which contains paths to DKIM private keys. Must be "
 "readable by _rspamd group or user."
 msgstr ""
+"DKIM özel anahtarlarının yollarını içeren dosyanın tam yolu. _rspamd grubu "
+"veya kullanıcısı tarafından okunabilir olmalıdır."
 
 #: rspamd/app_settings.py:30
 msgid "Selector map path"
-msgstr ""
+msgstr "Seçici haritası yolu"
 
 #: rspamd/app_settings.py:32
 msgid ""
 "Absolute path of the file which contains names of DKIM selectors. Must be "
 "readable by _rspamd group or user."
 msgstr ""
+"DKIM seçicilerinin adlarını içeren dosyanın tam yolu. _rspamd grubu veya "
+"kullanıcısı tarafından okunabilir olmalıdır."
 
 #: rspamd/app_settings.py:51
 msgid "Rspamd dashboard location"
-msgstr ""
+msgstr "Rspamd kontrol paneli konumu"
 
 #: rspamd/app_settings.py:53
 msgid ""
@@ -3166,154 +3089,138 @@ msgid ""
 "rspamd') or a full URL (eg. 'https://rspamd.domain.tld/').Only use for "
 "guidance on the Super-Admin dashboard."
 msgstr ""
+"Rspamd kontrol panelinin konumu. Göreli bir URL (ör. '/rspamd') veya tam bir "
+"URL (ör. 'https://rspamd.domain.tld/') olabilir. Sadece Süper Yönetici "
+"kontrol panelinde rehberlik için kullanın."
 
 #: rspamd/apps.py:18
 msgid "Rspamd"
-msgstr ""
+msgstr "Rspamd"
 
 #: sievefilters/api/v2/viewsets.py:203
-#, fuzzy, python-format
-#| msgid "Enter a valid email address."
+#, python-format
 msgid "Filter %s already exists"
-msgstr "Geçerli bir e-posta adresi girin."
+msgstr "Filtre %s zaten mevcut"
 
 #: sievefilters/app_settings.py:12
-#, fuzzy
-#| msgid "LDAP settings"
 msgid "ManageSieve settings"
-msgstr "LDAP ayarları"
+msgstr "ManageSieve ayarları"
 
 #: sievefilters/app_settings.py:19
 msgid "Address of your MANAGESIEVE server"
-msgstr ""
+msgstr "MANAGESIEVE sunucunuzun adresi"
 
 #: sievefilters/app_settings.py:27
 msgid "Listening port of your MANAGESIEVE server"
-msgstr ""
+msgstr "MANAGESIEVE sunucunuzun dinleme portu"
 
 #: sievefilters/app_settings.py:34
 msgid "Connect using STARTTLS"
-msgstr ""
+msgstr "STARTTLS kullanarak bağlan"
 
 #: sievefilters/app_settings.py:35
 msgid "Use the STARTTLS extension"
-msgstr ""
+msgstr "STARTTLS eklentisini kullan"
 
 #: sievefilters/app_settings.py:45 webmail/app_settings.py:30
-#, fuzzy
-#| msgid "LDAP settings"
 msgid "IMAP settings"
-msgstr "LDAP ayarları"
+msgstr "IMAP ayarları"
 
 #: sievefilters/app_settings.py:52 webmail/app_settings.py:38
 msgid "Address of your IMAP server"
-msgstr ""
+msgstr "IMAP sunucunuzun adresi"
 
 #: sievefilters/app_settings.py:60 webmail/app_settings.py:47
-#, fuzzy
-#| msgid "Use an SSL/STARTTLS connection to access the LDAP server"
 msgid "Use a secured connection to access IMAP server"
-msgstr "LDAP sunucusuna erişmek için bir SSL/STARTTLS bağlantısı kullanın"
+msgstr "IMAP sunucusuna erişmek için güvenli bir bağlantı kullanın"
 
 #: sievefilters/app_settings.py:68 webmail/app_settings.py:56
 msgid "Listening port of your IMAP server"
-msgstr ""
+msgstr "IMAP sunucunuzun dinleme portu"
 
 #: sievefilters/apps.py:15
-#, fuzzy
-#| msgid "Search filter"
 msgid "Sieve filters"
-msgstr "Arama filtresi"
+msgstr "Sieve filtreleri"
 
 #: sievefilters/constants.py:10
 msgid "All of the following"
-msgstr ""
+msgstr "Aşağıdakilerin tümü"
 
 #: sievefilters/constants.py:11
 msgid "Any of the following"
-msgstr ""
+msgstr "Aşağıdakilerin herhangi biri"
 
 #: sievefilters/constants.py:12
-#, fuzzy
-#| msgid "Message"
 msgid "All messages"
-msgstr "İleti"
+msgstr "Tüm iletiler"
 
 #: sievefilters/constants.py:16
 msgid "contains"
-msgstr ""
+msgstr "içerir"
 
 #: sievefilters/constants.py:17
 msgid "does not contain"
-msgstr ""
+msgstr "içermez"
 
 #: sievefilters/constants.py:18
 msgid "is"
-msgstr ""
+msgstr "şudur"
 
 #: sievefilters/constants.py:19
 msgid "is not"
-msgstr ""
+msgstr "şu değildir"
 
 #: sievefilters/constants.py:23 webmail/lib/imapemail.py:302
 msgid "Subject"
 msgstr "Konu"
 
 #: sievefilters/constants.py:24
-#, fuzzy
-#| msgid "Sender address"
 msgid "Sender"
-msgstr "Gönderici adresi"
+msgstr "Gönderici"
 
 #: sievefilters/constants.py:26
 msgid "Cc"
-msgstr ""
+msgstr "Cc"
 
 #: sievefilters/constants.py:29
 msgid "Size"
-msgstr ""
+msgstr "Boyut"
 
 #: sievefilters/constants.py:31
 msgid "is greater than"
-msgstr ""
+msgstr "büyüktür"
 
 #: sievefilters/constants.py:32
 msgid "is less than"
-msgstr ""
+msgstr "küçüktür"
 
 #: sievefilters/constants.py:40
-#, fuzzy
-#| msgid "Message"
 msgid "Move message to"
-msgstr "İleti"
+msgstr "İletiyi şuraya taşı"
 
 #: sievefilters/constants.py:46 sievefilters/constants.py:60
 msgid "Keep local copy"
-msgstr ""
+msgstr "Yerel kopyayı sakla"
 
 #: sievefilters/constants.py:54
-#, fuzzy
-#| msgid "Message"
 msgid "Redirect message to"
-msgstr "İleti"
+msgstr "İletiyi şuraya yönlendir"
 
 #: sievefilters/constants.py:68
-#, fuzzy
-#| msgid "Message"
 msgid "Reject message"
-msgstr "İleti"
+msgstr "İletiyi reddet"
 
 #: sievefilters/constants.py:71
 msgid "Stop processing"
-msgstr ""
+msgstr "İşlemeyi durdur"
 
 #: sievefilters/lib.py:49
 msgid "Connection to MANAGESIEVE server failed, check your configuration"
-msgstr ""
+msgstr "MANAGESIEVE sunucusuna bağlantı başarısız oldu, yapılandırmanızı kontrol edin"
 
 #: sievefilters/lib.py:76
 msgid "Not enough space on server"
-msgstr ""
+msgstr "Sunucuda yeterli alan yok"
 
 #: templates/404.html:4 templates/500.html:4
 msgid "Sorry"
@@ -3341,10 +3248,8 @@ msgid "Welcome to Modoboa"
 msgstr "Modoboa'ya hoş geldiniz"
 
 #: templates/registration/login.html:11
-#, fuzzy
-#| msgid "Notifications"
 msgid "Identification"
-msgstr "Bildirimler"
+msgstr "Kimlik Tanımlama"
 
 #: templates/registration/login.html:24
 msgid "Remember me"
@@ -3387,7 +3292,7 @@ msgid ""
 msgstr ""
 "Parola sıfırlama bağlantısı, muhtemelen daha önce kullanılmış olduğu için "
 "geçersizdi. Lütfen yeni bir parola sıfırlama talebinde bulunun.\n"
-" "
+" "
 
 #: templates/registration/password_reset_confirm_code.html:22
 msgid "Enter the code you've just received by SMS"
@@ -3399,7 +3304,7 @@ msgstr "Kodu yeniden gönder"
 
 #: templates/registration/password_reset_confirm_code.html:45
 msgid "The code has been sent again"
-msgstr ""
+msgstr "Kod tekrar gönderildi"
 
 #: templates/registration/password_reset_done.html:8
 msgid ""
@@ -3442,295 +3347,260 @@ msgid "Modoboa password reset"
 msgstr "Modoboa parola sıfırlama"
 
 #: templates/registration/twofactor_code_verify.html:11
-#, fuzzy
-#| msgid "Verification code"
 msgid "Verification"
-msgstr "Doğrulama kodu"
+msgstr "Doğrulama"
 
 #: templates/registration/twofactor_code_verify.html:15
 msgid "Use TOTP/backup code"
-msgstr ""
+msgstr "TOTP/yedek kodu kullan"
 
 #: templates/registration/twofactor_code_verify.html:18
 msgid "Use Webauthn device"
-msgstr ""
+msgstr "Webauthn cihazını kullan"
 
 #: templates/registration/twofactor_code_verify.html:27
-#, fuzzy
-#| msgid "Old password"
 msgid "One-time password"
-msgstr "Eski parola"
+msgstr "Tek kullanımlık parola"
 
 #: templates/registration/twofactor_code_verify.html:35
 msgid ""
 "Enter the code from the two-factor app on your mobile device. If you've lost "
 "your device, you may enter one of your recovery codes."
 msgstr ""
+"Mobil cihazınızdaki iki faktörlü uygulamadan kodu girin. Cihazınızı "
+"kaybettiyseniz, kurtarma kodlarınızdan birini girebilirsiniz."
 
 #: templates/registration/twofactor_code_verify.html:42
-#, fuzzy
-#| msgid "Verification code"
 msgid "Verify code"
-msgstr "Doğrulama kodu"
+msgstr "Kodu doğrula"
 
 #: templates/registration/twofactor_code_verify.html:45
 #: templates/registration/twofactor_code_verify.html:51
 msgid "Back"
-msgstr ""
+msgstr "Geri"
 
 #: templates/registration/twofactor_code_verify.html:49
 msgid "Log using Webauthn"
-msgstr ""
+msgstr "Webauthn kullanarak giriş yap"
 
 #: transport/backends.py:55
-#, fuzzy
-#| msgid "Invalid line"
 msgid "Invalid value"
-msgstr "Geçersiz satır"
+msgstr "Geçersiz değer"
 
 #: transport/models.py:15
 msgid "pattern"
-msgstr ""
+msgstr "desen"
 
 #: transport/models.py:16
 msgid "service"
-msgstr ""
+msgstr "hizmet"
 
 #: transport/models.py:17
 msgid "next hop"
-msgstr ""
+msgstr "sonraki durak (hop)"
 
 #: webmail/app_settings.py:17
 msgid "Maximum attachment size"
-msgstr ""
+msgstr "Maksimum ek boyutu"
 
 #: webmail/app_settings.py:19
 msgid "Maximum attachment size in bytes (or KB, MB, GB if specified)"
-msgstr ""
+msgstr "Bayt cinsinden maksimum ek boyutu (veya belirtilirse KB, MB, GB)"
 
 #: webmail/app_settings.py:67
-#, fuzzy
-#| msgid "LDAP settings"
 msgid "SMTP settings"
-msgstr "LDAP ayarları"
+msgstr "SMTP ayarları"
 
 #: webmail/app_settings.py:75 webmail/app_settings.py:121
 msgid "Address of your SMTP server"
-msgstr ""
+msgstr "SMTP sunucunuzun adresi"
 
 #: webmail/app_settings.py:82 webmail/app_settings.py:128
-#, fuzzy
-#| msgid "Use a secured connection"
 msgid "Secured connection mode"
-msgstr "Güvenli bir bağlantı kullanın"
+msgstr "Güvenli bağlantı modu"
 
 #: webmail/app_settings.py:84 webmail/app_settings.py:130
-#, fuzzy
-#| msgid "Use an SSL/STARTTLS connection to access the LDAP server"
 msgid "Use a secured connection to access SMTP server"
-msgstr "LDAP sunucusuna erişmek için bir SSL/STARTTLS bağlantısı kullanın"
+msgstr "SMTP sunucusuna erişmek için güvenli bir bağlantı kullanın"
 
 #: webmail/app_settings.py:93 webmail/app_settings.py:139
 msgid "Listening port of your SMTP server"
-msgstr ""
+msgstr "SMTP sunucunuzun dinleme portu"
 
 #: webmail/app_settings.py:100
-#, fuzzy
-#| msgid "Authentication method"
 msgid "Authentication required"
-msgstr "Kimlik doğrulama metodu"
+msgstr "Kimlik doğrulama gerekli"
 
 #: webmail/app_settings.py:102
-#, fuzzy
 msgid "Server needs authentication"
-msgstr "LDAP kimilk doğrulama ayarları"
+msgstr "Sunucu kimlik doğrulaması gerektiriyor"
 
 #: webmail/app_settings.py:113
-#, fuzzy
-#| msgid "LDAP settings"
 msgid "Scheduling settings"
-msgstr "LDAP ayarları"
+msgstr "Zamanlama ayarları"
 
 #: webmail/app_settings.py:161
 msgid "Default message display mode"
-msgstr ""
+msgstr "Varsayılan ileti görüntüleme modu"
 
 #: webmail/app_settings.py:163
-#, fuzzy
-#| msgid "The default redirection used when no application is specified"
 msgid "The default mode used when displaying a message"
-msgstr ""
-"Hiçbir uygulama belirtilmediğinde kullanılan varsayılan yeniden yönlendirme"
+msgstr "Bir iletiyi görüntülerken kullanılan varsayılan mod"
 
 #: webmail/app_settings.py:170
 msgid "Enable HTML links display"
-msgstr ""
+msgstr "HTML bağlantı görüntülemeyi etkinleştir"
 
 #: webmail/app_settings.py:173
 msgid "Enable/Disable HTML links display"
-msgstr ""
+msgstr "HTML bağlantı görüntülemeyi Etkinleştir/Devre Dışı Bırak"
 
 #: webmail/app_settings.py:184
 msgid "Sets the maximum number of messages displayed in a page"
-msgstr ""
+msgstr "Bir sayfada görüntülenen maksimum ileti sayısını ayarlar"
 
 #: webmail/app_settings.py:191
 msgid "Listing refresh rate"
-msgstr ""
+msgstr "Liste yenileme hızı"
 
 #: webmail/app_settings.py:193
 msgid "Automatic listing refresh rate (in secconds)"
-msgstr ""
+msgstr "Otomatik liste yenileme hızı (saniye cinsinden)"
 
 #: webmail/app_settings.py:200
 msgid "Folder container's width"
-msgstr ""
+msgstr "Klasör kapsayıcısının genişliği"
 
 #: webmail/app_settings.py:202
 msgid "The width of the folder list container"
-msgstr ""
+msgstr "Klasör listesi kapsayıcısının genişliği"
 
 #: webmail/app_settings.py:213
 msgid "Folders"
-msgstr ""
+msgstr "Klasörler"
 
 #: webmail/app_settings.py:219
 msgid "Trash folder"
-msgstr ""
+msgstr "Çöp Kutusu"
 
 #: webmail/app_settings.py:221
 msgid "Folder where deleted messages go"
-msgstr ""
+msgstr "Silinen iletilerin gittiği klasör"
 
 #: webmail/app_settings.py:228
 msgid "Sent folder"
-msgstr ""
+msgstr "Gönderilenler klasörü"
 
 #: webmail/app_settings.py:230
 msgid "Folder where copies of sent messages go"
-msgstr ""
+msgstr "Gönderilen iletilerin kopyalarının gittiği klasör"
 
 #: webmail/app_settings.py:237
 msgid "Drafts folder"
-msgstr ""
+msgstr "Taslaklar klasörü"
 
 #: webmail/app_settings.py:238
 msgid "Folder where drafts go"
-msgstr ""
+msgstr "Taslakların gittiği klasör"
 
 #: webmail/app_settings.py:244
 msgid "Junk folder"
-msgstr ""
+msgstr "İstenmeyen posta klasörü"
 
 #: webmail/app_settings.py:246
 msgid "Folder where junk messages should go"
-msgstr ""
+msgstr "İstenmeyen iletilerin gitmesi gereken klasör"
 
 #: webmail/app_settings.py:257
-#, fuzzy
-#| msgid "Message"
 msgid "Composing messages"
-msgstr "İleti"
+msgstr "İleti yazma"
 
 #: webmail/app_settings.py:263
-#, fuzzy
-#| msgid "Default top redirection"
 msgid "Default editor"
-msgstr "Varsayılan üst yönlendirme"
+msgstr "Varsayılan düzenleyici"
 
 #: webmail/app_settings.py:265
-#, fuzzy
-#| msgid "The default redirection used when no application is specified"
 msgid "The default editor to use when composing a message"
-msgstr ""
-"Hiçbir uygulama belirtilmediğinde kullanılan varsayılan yeniden yönlendirme"
+msgstr "İleti yazarken kullanılacak varsayılan düzenleyici"
 
 #: webmail/app_settings.py:272
 msgid "Signature text"
-msgstr ""
+msgstr "İmza metni"
 
 #: webmail/app_settings.py:274
 msgid "User defined email signature"
-msgstr ""
+msgstr "Kullanıcı tanımlı e-posta imzası"
 
 #: webmail/exceptions.py:18
-#, fuzzy
-#| msgid "Server address"
 msgid "Server response"
-msgstr "Sunucu adresi"
+msgstr "Sunucu yanıtı"
 
 #: webmail/lib/attachments.py:112
-#, fuzzy
-#| msgid "Failed to update password: {}"
 msgid "Failed to remove attachment: "
-msgstr "{} Parola güncelleme başarısız"
+msgstr "Ek kaldırılamadı: "
 
 #: webmail/lib/imapemail.py:270
 msgid "wrote:"
-msgstr ""
+msgstr "yazdı:"
 
 #: webmail/lib/imapemail.py:304
 msgid "Date"
 msgstr "Tarih"
 
 #: webmail/lib/imapemail.py:320 webmail/lib/imapemail.py:323
-#, fuzzy
-#| msgid "Message"
 msgid "Original message"
-msgstr "İleti"
+msgstr "Orijinal ileti"
 
 #: webmail/lib/imaputils.py:222
 msgid "Failed to retrieve hierarchy delimiter"
-msgstr ""
+msgstr "Hiyerarşi sınırlayıcısı alınamadı"
 
 #: webmail/lib/imaputils.py:478
 msgid "Inbox"
-msgstr ""
+msgstr "Gelen Kutusu"
 
 #: webmail/lib/imaputils.py:482
 msgid "Drafts"
-msgstr ""
+msgstr "Taslaklar"
 
 #: webmail/lib/imaputils.py:487
 msgid "Junk"
-msgstr ""
+msgstr "Gereksiz"
 
 #: webmail/lib/imaputils.py:492
 msgid "Sent"
-msgstr ""
+msgstr "Gönderilenler"
 
 #: webmail/lib/imaputils.py:500
 msgid "Scheduled"
-msgstr ""
+msgstr "Zamanlanmış"
 
 #: webmail/lib/imaputils.py:507
 msgid "Trash"
-msgstr ""
+msgstr "Çöp Kutusu"
 
 #: webmail/serializers.py:220
 msgid "Moving scheduled messages is forbidden"
-msgstr ""
+msgstr "Zamanlanmış iletileri taşımak yasaktır"
 
 #: webmail/serializers.py:253
 msgid "Only datetime in the future is allowed"
-msgstr ""
+msgstr "Yalnızca gelecekteki bir tarih/saate izin verilir"
 
 #: webmail/serializers.py:258
 msgid "Provived datetime must be one minute in the future at least"
-msgstr ""
+msgstr "Sağlanan tarih/saat en az bir dakika ileri olmalıdır"
 
 #: webmail/viewsets.py:359
 #, python-format
 msgid "Attachment is too big (limit: %s)"
-msgstr ""
+msgstr "Ek çok büyük (limit: %s)"
 
-#~ msgid "User profile"
-#~ msgstr "Kullanıcı profili"
+msgid "User profile"
+msgstr "Kullanıcı profili"
 
-#~ msgid "Default top redirection"
-#~ msgstr "Varsayılan üst yönlendirme"
+msgid "Default top redirection"
+msgstr "Varsayılan üst yönlendirme"
 
-#~ msgid "The default redirection used when no application is specified"
-#~ msgstr ""
-#~ "Hiçbir uygulama belirtilmediğinde kullanılan varsayılan yeniden "
-#~ "yönlendirme"
+msgid "The default redirection used when no application is specified"
+msgstr "Hiçbir uygulama belirtilmediğinde kullanılan varsayılan yeniden yönlendirme"
