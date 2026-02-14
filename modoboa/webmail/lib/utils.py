@@ -142,7 +142,7 @@ def create_message(
     else:
         msg = plain_msg(attributes.get("body", ""))
     msg.from_email = sender
-    msg.to = attributes["to"]
+    msg.to = attributes.get("to", [])
     msg.headers = headers
     msg.extra_headers = extra_headers
     for hdr in ["subject", "cc", "bcc"]:

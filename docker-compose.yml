@@ -87,8 +87,6 @@ services:
       - redis
     volumes:
       - .:/code
-    networks:
-      - default
 
   api-unsecured:
     container_name: modoboa_api_unsecured

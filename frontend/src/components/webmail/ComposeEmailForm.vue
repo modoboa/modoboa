@@ -40,6 +40,14 @@
           :text="$gettext('Attachments') + ` (${attachmentCount})`"
           @click="openAttachmentsDialog"
         />
+        <v-btn
+          class="ml-2"
+          icon="mdi-content-save-outline"
+          size="small"
+          :title="$gettext('Save as draft')"
+          :loading="working"
+          @click="saveDraft"
+        />
       </v-toolbar>
       <v-form ref="formRef" class="flex-grow-1 d-flex flex-column">
         <div>
@@ -266,33 +274,43 @@ const initForm = () => {
   }
 }
 
+const prepareMessage = () => {
+  const result = { ...form.value }
+
+  if (result.to?.length) {
+    const to = []
+    for (const rcpt of result.to) {
+      to.push(typeof rcpt === 'string' ? rcpt : rcpt.emails[0].address)
+    }
+    result.to = to
+  }
+  if (result.cc?.length) {
+    const cc = []
+    for (const rcpt of result.cc) {
+      cc.push(typeof rcpt === 'string' ? rcpt : rcpt.emails[0].address)
+    }
+    result.cc = cc
+  }
+  if (result.bcc?.length) {
+    const bcc = []
+    for (const rcpt of result.bcc) {
+      bcc.push(typeof rcpt === 'string' ? rcpt : rcpt.emails[0].address)
+    }
+    result.bcc = bcc
+  }
+  if (route.query.mailid) {
+    result.mailid = route.query.mailid
+  }
+  return result
+}
+
 const submit = async (reload) => {
   const { valid } = await formRef.value.validate()
   if (!valid) {
     return
   }
   working.value = true
-  const body = { ...form.value }
-
-  const to = []
-  for (const rcpt of body.to) {
-    to.push(typeof rcpt === 'string' ? rcpt : rcpt.emails[0].address)
-  }
-  body.to = to
-  if (body.cc?.length) {
-    const cc = []
-    for (const rcpt of body.cc) {
-      cc.push(typeof rcpt === 'string' ? rcpt : rcpt.emails[0].address)
-    }
-    body.cc = cc
-  }
-  if (body.bcc?.length) {
-    const bcc = []
-    for (const rcpt of body.bcc) {
-      bcc.push(typeof rcpt === 'string' ? rcpt : rcpt.emails[0].address)
-    }
-    body.bcc = bcc
-  }
+  const body = prepareMessage()
   try {
     await api.sendEmailFromComposeSession(route.query.uid, body)
     router.push({ name: 'MailboxView' })
@@ -337,8 +355,29 @@ const lookForContacts = debounce(async (search) => {
   }
 }, 500)
 
-const initialize = (body) => {
-  if (body.signature) {
+const initialize = async (body) => {
+  if (route.query.mailid) {
+    // Load draft
+    const draft = await api.getEmailContent('Drafts', route.query.mailid)
+    form.value.sender = draft.data.from_address.address
+    if (draft.data.to?.length) {
+      form.value.to = draft.data.to.map((rcpt) => rcpt.address)
+    }
+    if (draft.data.cc?.length) {
+      form.value.cc = draft.data.cc.map((rcpt) => rcpt.address)
+      showCcField.value = true
+    }
+    if (draft.data.bcc?.length) {
+      form.value.bcc = draft.data.bcc.map((rcpt) => rcpt.address)
+      showBccField.value = true
+    }
+    if (draft.data.subject) {
+      form.value.subject = draft.data.subject
+    }
+    if (draft.data.body) {
+      form.value.body = draft.data.body
+    }
+  } else if (body.signature) {
     if (form.value.body) {
       form.value.body += body.signature
     } else {
@@ -363,6 +402,18 @@ const closeSchedulingForm = () => {
   showSchedulingForm.value = false
 }
 
+const saveDraft = async () => {
+  working.value = true
+  const body = prepareMessage()
+  try {
+    await api.saveComposeSession(route.query.uid, body)
+  } catch (error) {
+    console.log(error)
+  } finally {
+    working.value = false
+  }
+}
+
 const getItemTitle = (item) => {
   if (typeof item === 'string') {
     return item
@@ -379,8 +430,9 @@ watch(
 )
 
 if (!route.query.uid) {
-  api.createComposeSession().then((resp) => {
+  api.createComposeSession(route.query.mailid).then((resp) => {
     const query = { ...route.query, uid: resp.data.uid }
+    attachmentCount.value = resp.data.attachments?.length || 0
     router.push({ name: route.name, query })
     initialize(resp.data)
   })
