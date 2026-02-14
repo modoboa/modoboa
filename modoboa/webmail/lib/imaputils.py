@@ -37,11 +37,11 @@ class BodyStructure:
 
     current_mailbox: str
 
-    def __init__(self, definition=None):
+    def __init__(self, definition: list | None = None) -> None:
         self.is_multipart = False
-        self.contents = {}
-        self.attachments = []
-        self.inlines = {}
+        self.contents: dict[str, list] = {}
+        self.attachments: list[dict] = []
+        self.inlines: dict[str, dict] = {}
 
         if definition is not None:
             self.load_from_definition(definition)
@@ -125,7 +125,7 @@ class BodyStructure:
     def has_attachments(self) -> int:
         return len(self.attachments)
 
-    def find_attachment(self, pnum):
+    def find_attachment(self, pnum: str) -> dict | None:
         for att in self.attachments:
             if pnum == att["pnum"]:
                 return att

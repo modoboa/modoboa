@@ -116,6 +116,19 @@ class ImapEmail(Email):
             self.dformat if self.dformat in self.bs.contents else fallback_fmt
         )
 
+    def fetch_attachments(self):
+        result = []
+        for partnum, filename in self.attachments.items():
+            attdef, content = self.imapc.fetchpart(self.mailid, self.mbox, partnum)
+            result.append(
+                {
+                    "filename": filename,
+                    "content_type": attdef["Content-Type"],
+                    "content": content,
+                }
+            )
+        return result
+
     @property
     def subject(self):
         """Just a shortcut to return a subject in any case."""
@@ -190,7 +203,7 @@ class ImapEmail(Email):
                         "\r\t\n"
                     )
                     break
-            elif "disposition" in att and len(att["disposition"]) > 1:
+            if "disposition" in att and len(att["disposition"]) > 1:
                 for pos, value in enumerate(att["disposition"][1]):
                     if not value.startswith("filename"):
                         continue

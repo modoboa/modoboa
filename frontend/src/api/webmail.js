@@ -108,8 +108,12 @@ export default {
   getComposeSession(uid) {
     return repository.get(`/webmail/compose-sessions/${uid}/`)
   },
-  createComposeSession() {
-    return repository.post('/webmail/compose-sessions/')
+  createComposeSession(fromDraftMessageUid) {
+    const data = {}
+    if (fromDraftMessageUid) {
+      data.from_draft_message = fromDraftMessageUid
+    }
+    return repository.post('/webmail/compose-sessions/', data)
   },
   getAllowedSenders() {
     return repository.get('/webmail/compose-sessions/allowed_senders/')
@@ -121,6 +125,12 @@ export default {
       {
         headers: { 'Content-Type': 'multipart/form-data' },
       }
+    )
+  },
+  saveComposeSession(sessionUid, data) {
+    return repository.post(
+      `/webmail/compose-sessions/${sessionUid}/save/`,
+      data
     )
   },
   removeAttachment(sessionUid, name) {
