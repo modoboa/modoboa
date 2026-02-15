@@ -53,6 +53,15 @@
           @click="markEmailAsNotJunk"
         >
         </v-btn>
+        <v-btn
+          v-if="route.query.mailbox === 'Drafts'"
+          class="ml-2"
+          variant="tonal"
+          icon="mdi-pencil"
+          size="small"
+          @click="editDraft"
+        >
+        </v-btn>
       </template>
       <v-btn class="ml-2" variant="tonal" icon size="small">
         <v-icon icon="mdi-cog" />
@@ -317,6 +326,13 @@ const replyToEmail = (all) => {
 
 const forwardEmail = () => {
   router.push({ name: 'ForwardEmailView', query: route.query })
+}
+
+const editDraft = () => {
+  router.push({
+    name: 'ComposeEmailView',
+    query: { mailid: route.query.mailid },
+  })
 }
 </script>
 

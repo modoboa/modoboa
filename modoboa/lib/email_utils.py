@@ -353,8 +353,10 @@ def decode(value_bytes: bytes, encoding: str, append_to_error: str = "") -> str:
     return value
 
 
-def prepare_addresses(addresses, usage="header"):
-    """Prepare addresses before using them
+def prepare_addresses(
+    addresses: list[str] | str, usage: str = "header"
+) -> list[str] | str:
+    """Prepare addresses before using them.
 
     :param list addresses: a list of addresses
     :param string usage: how those addresses are going to be used

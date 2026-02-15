@@ -9,6 +9,7 @@ from modoboa.lib import email_utils
 from modoboa.webmail import constants, models
 from modoboa.webmail.lib import imapheader, signature
 from modoboa.webmail.lib.imaputils import get_imapconnector
+from modoboa.webmail.lib.utils import create_message
 
 
 class GlobalParametersSerializer(serializers.Serializer):
@@ -260,18 +261,14 @@ class ScheduledDatetimeMixin:
         return value
 
 
-class SendEmailSerializer(ScheduledDatetimeMixin, serializers.Serializer):
+class BaseEmailSerializer(serializers.Serializer):
 
     sender = serializers.EmailField()
-    to = serializers.ListField(child=serializers.EmailField())
-    cc = serializers.ListField(child=serializers.EmailField(), required=False)
-    bcc = serializers.ListField(child=serializers.EmailField(), required=False)
     subject = serializers.CharField(required=False)
     body = serializers.CharField(required=False)
-
-    in_reply_to = serializers.CharField(required=False)
-
-    scheduled_datetime = serializers.DateTimeField(required=False)
+    to = serializers.ListField(child=serializers.EmailField(), required=False)
+    cc = serializers.ListField(child=serializers.EmailField(), required=False)
+    bcc = serializers.ListField(child=serializers.EmailField(), required=False)
 
     def validate_to(self, value):
         return email_utils.prepare_addresses(value, "envelope")
@@ -281,6 +278,35 @@ class SendEmailSerializer(ScheduledDatetimeMixin, serializers.Serializer):
 
     def validate_bcc(self, value):
         return email_utils.prepare_addresses(value, "envelope")
+
+
+class SendEmailSerializer(ScheduledDatetimeMixin, BaseEmailSerializer):
+
+    in_reply_to = serializers.CharField(required=False)
+    scheduled_datetime = serializers.DateTimeField(required=False)
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["to"].required = True
+
+
+class SaveEmailSerializer(BaseEmailSerializer):
+
+    mailid = serializers.IntegerField(required=False)
+
+    def create(self, validated_data):
+        message = create_message(
+            self.context["request"].user, validated_data, self.context["attachments"]
+        )
+        drafts_folder = self.context["request"].user.parameters.get_value(
+            "drafts_folder"
+        )
+        with get_imapconnector(self.context["request"]) as imapc:
+            if "mailid" in validated_data:
+                imapc.delete_mail(drafts_folder, validated_data["mailid"])
+            mailid = imapc.push_mail(drafts_folder, message.message())
+            imapc.mark_messages_unread(drafts_folder, [str(mailid)])
+            return mailid
 
 
 class ComposeSessionSerializer(serializers.Serializer):
@@ -295,6 +321,11 @@ class ComposeSessionSerializer(serializers.Serializer):
 
     def get_signature(self, obj):
         return str(signature.EmailSignature(self.context["request"].user))
+
+
+class CreateSessionSerializer(serializers.Serializer):
+
+    from_draft_message = serializers.IntegerField(required=False)
 
 
 class AllowedSenderSerializer(serializers.Serializer):

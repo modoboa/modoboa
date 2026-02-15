@@ -3,6 +3,7 @@ from email.mime.base import MIMEBase
 import json
 import os
 from tempfile import NamedTemporaryFile
+from typing import TypedDict
 import uuid
 
 import six
@@ -10,7 +11,6 @@ import six
 from django.conf import settings
 from django.core.files.uploadhandler import FileUploadHandler, SkipFile
 from django.http import Http404
-from django.utils.encoding import smart_bytes
 from django.utils.translation import gettext as _
 
 from modoboa.lib.exceptions import InternalError
@@ -19,6 +19,11 @@ from modoboa.lib.web_utils import size2integer
 from modoboa.parameters import tools as param_tools
 
 from .rfc6266 import build_header
+
+
+Attachment = TypedDict(
+    "Attachment", {"fname": str, "content-type": str, "size": int, "tmpname": str}
+)
 
 
 class ComposeSessionManager:
@@ -63,15 +68,15 @@ def get_storage_path(filename):
     return os.path.join(storage_dir, filename)
 
 
-def save_attachment(request, session_uid: str, f) -> dict:
-    """Save a new attachment to the filesystem.
+def save_attachment_from_upload(request, session_uid: str, f) -> Attachment:
+    """
+    Save a new attachment to the filesystem, directly from a Django upload.
 
     The attachment is not saved using its own name to the
     filesystem. To avoid conflicts, a random name is generated and
     used instead.
 
-    :param f: an uploaded file object (see Django's documentation) or bytes
-    :return: the new random name
+    :param f: an uploaded file object (see Django's documentation)
     """
     manager = ComposeSessionManager(request.user.username)
     if not manager.exists(session_uid):
@@ -80,18 +85,47 @@ def save_attachment(request, session_uid: str, f) -> dict:
         fp = NamedTemporaryFile(dir=get_storage_path(""), delete=False)
     except Exception as e:
         raise InternalError(str(e)) from None
-    if isinstance(f, six.binary_type | six.text_type):
-        fp.write(smart_bytes(f))
-    else:
-        for chunk in f.chunks():
-            fp.write(chunk)
+    for chunk in f.chunks():
+        fp.write(chunk)
     fp.close()
 
     session = manager.get_content(session_uid)
-    attachment = {
+    attachment: Attachment = {
         "fname": str(f),
         "content-type": f.content_type,
         "size": f.size,
+        "tmpname": os.path.basename(fp.name),
+    }
+    session["attachments"].append(attachment)
+    manager.set_content(session_uid, session)
+    return attachment
+
+
+def save_attachment(
+    request, session_uid: str, filename: str, content_type: str, content: str
+) -> Attachment:
+    """
+    Save a new attachment to the filesystem
+
+    The attachment is not saved using its own name to the
+    filesystem. To avoid conflicts, a random name is generated and
+    used instead.
+    """
+    manager = ComposeSessionManager(request.user.username)
+    if not manager.exists(session_uid):
+        raise Http404
+    try:
+        fp = NamedTemporaryFile(dir=get_storage_path(""), delete=False)
+    except Exception as e:
+        raise InternalError(str(e)) from None
+    fp.write(content.encode("utf-8"))
+    fp.close()
+
+    session = manager.get_content(session_uid)
+    attachment: Attachment = {
+        "fname": filename,
+        "content-type": content_type,
+        "size": len(content),
         "tmpname": os.path.basename(fp.name),
     }
     session["attachments"].append(attachment)

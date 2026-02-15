@@ -312,8 +312,12 @@ class ComposeSessionViewSet(viewsets.GenericViewSet):
         return response
 
     def get_serializer_class(self):
+        if self.action == "create":
+            return serializers.CreateSessionSerializer
         if self.action == "send":
             return serializers.SendEmailSerializer
+        if self.action == "save":
+            return serializers.SaveEmailSerializer
         if self.action == "allowed_senders":
             return serializers.AllowedSenderSerializer
         return serializers.ComposeSessionSerializer
@@ -327,9 +331,38 @@ class ComposeSessionViewSet(viewsets.GenericViewSet):
         return response.Response(serializer.data)
 
     def create(self, request):
-        uid = attachments.ComposeSessionManager(request.user.username).create()
-        serializer = self.get_serializer({"uid": uid})
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        manager = attachments.ComposeSessionManager(request.user.username)
+        uid = manager.create()
+        from_draft_message = serializer.validated_data.get("from_draft_message")
+        response_attrs = {"uid": uid}
+        if from_draft_message:
+            mailbox = request.user.parameters.get_value("drafts_folder")
+            email = lib.ImapEmail(
+                request,
+                f"{mailbox}:{from_draft_message}",
+            )
+            email.fetch_body_structure()
+            for attachment in email.fetch_attachments():
+                attachments.save_attachment(request, uid, **attachment)
+            response_attrs["attachments"] = manager.get_content(uid)["attachments"]
+
+        serializer = serializers.ComposeSessionSerializer(
+            response_attrs, context=self.get_serializer_context()
+        )
         return response.Response(serializer.data, status=201)
+
+    @action(methods=["post"], detail=True)
+    def save(self, request, pk):
+        manager = attachments.ComposeSessionManager(request.user.username)
+        context = self.get_serializer_context()
+        context["attachments"] = manager.get_content(pk)["attachments"]
+        serializer = self.get_serializer(data=request.data, context=context)
+        serializer.is_valid(raise_exception=True)
+        mailid = serializer.save()
+        serializer.validated_data["mailid"] = mailid
+        return response.Response(serializer.validated_data)
 
     @action(methods=["get"], detail=False)
     def allowed_senders(self, request):
@@ -360,7 +393,7 @@ class ComposeSessionViewSet(viewsets.GenericViewSet):
                     % request.upload_handlers[0].maxsize
                 ]
                 return response.Response(errors, status=400)
-        result = attachments.save_attachment(
+        result = attachments.save_attachment_from_upload(
             request, pk, serializer.validated_data["attachment"]
         )
         return response.Response(result)
@@ -385,15 +418,15 @@ class ComposeSessionViewSet(viewsets.GenericViewSet):
                 manager.get_content(pk)["attachments"],
             )
             return response.Response(status=204)
-        else:
-            status, error = send_mail(
-                request,
-                serializer.validated_data,
-                manager.get_content(pk)["attachments"],
-            )
-            if status:
-                attachments.remove_attachments_and_session(manager, pk)
-                return response.Response(status=204)
+
+        status, error = send_mail(
+            request,
+            serializer.validated_data,
+            manager.get_content(pk)["attachments"],
+        )
+        if status:
+            attachments.remove_attachments_and_session(manager, pk)
+            return response.Response(status=204)
         return response.Response({"error": error}, status=400)
 
 
