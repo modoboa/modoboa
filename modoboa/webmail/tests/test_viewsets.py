@@ -289,8 +289,8 @@ class ComposeSessionViewSetTestCase(WebmailTestCase):
         self.authenticate()
         data = {"from_draft_message": 3444}
         url = reverse("v2:webmail-compose-session-list")
-        response = self.client.post(url, data, format="json")
-        print(response.content)
+        with self.settings(MEDIA_ROOT=self.workdir):
+            response = self.client.post(url, data, format="json")
         self.assertEqual(response.status_code, 201)
         uid = response.json()["uid"]
         manager = ComposeSessionManager(self.user.username)
