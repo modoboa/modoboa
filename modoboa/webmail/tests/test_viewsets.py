@@ -372,6 +372,23 @@ class ComposeSessionViewSetTestCase(WebmailTestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json()["mailid"], 11)
 
+    def test_save_existing_draft(self):
+        self.authenticate()
+        uid = self._create_compose_session()
+        url = reverse("v2:webmail-compose-session-save", args=[uid])
+        response = self.client.post(
+            url,
+            {
+                "sender": self.user.email,
+                "to": ["test@example.test"],
+                "subject": "test",
+                "body": "Test",
+                "mailid": 11,
+            },
+            format="json",
+        )
+        self.assertEqual(response.status_code, 200)
+
     def test_send(self):
         self.authenticate()
         uid = self._create_compose_session()
