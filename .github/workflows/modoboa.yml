@@ -67,7 +67,7 @@ jobs:
           --health-timeout 5s
           --health-retries 5
       openldap:
-        image: docker.pkg.github.com/modoboa/docker-openldap/docker-openldap
+        image: ghcr.io/modoboa/docker-openldap/docker-openldap:latest
         ports:
           - 389/tcp
         env:
