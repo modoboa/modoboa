@@ -285,6 +285,18 @@ class ComposeSessionViewSetTestCase(WebmailTestCase):
         self.authenticate()
         self._create_compose_session()
 
+    def test_create_from_draft(self):
+        self.authenticate()
+        data = {"from_draft_message": 3444}
+        url = reverse("v2:webmail-compose-session-list")
+        with self.settings(MEDIA_ROOT=self.workdir):
+            response = self.client.post(url, data, format="json")
+        self.assertEqual(response.status_code, 201)
+        uid = response.json()["uid"]
+        manager = ComposeSessionManager(self.user.username)
+        content = manager.get_content(uid)
+        self.assertEqual(len(content["attachments"]), 1)
+
     def test_get(self):
         self.authenticate()
         uid = self._create_compose_session()
@@ -337,6 +349,45 @@ class ComposeSessionViewSetTestCase(WebmailTestCase):
         with self.settings(MEDIA_ROOT=self.workdir):
             response = self.client.delete(url)
         self.assertEqual(response.status_code, 404)
+
+    def test_save(self):
+        self.authenticate()
+        uid = self._create_compose_session()
+        # Upload an attachment
+        url = reverse("v2:webmail-compose-session-attachments", args=[uid])
+        with self.settings(MEDIA_ROOT=self.workdir):
+            response = self.client.post(url, {"attachment": get_gif()})
+            # Save the message as draft
+            url = reverse("v2:webmail-compose-session-save", args=[uid])
+            response = self.client.post(
+                url,
+                {
+                    "sender": self.user.email,
+                    "to": ["test@example.test"],
+                    "subject": "test",
+                    "body": "Test",
+                },
+                format="json",
+            )
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json()["mailid"], 11)
+
+    def test_save_existing_draft(self):
+        self.authenticate()
+        uid = self._create_compose_session()
+        url = reverse("v2:webmail-compose-session-save", args=[uid])
+        response = self.client.post(
+            url,
+            {
+                "sender": self.user.email,
+                "to": ["test@example.test"],
+                "subject": "test",
+                "body": "Test",
+                "mailid": 11,
+            },
+            format="json",
+        )
+        self.assertEqual(response.status_code, 200)
 
     def test_send(self):
         self.authenticate()
