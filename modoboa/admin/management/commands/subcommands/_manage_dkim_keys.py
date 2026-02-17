@@ -6,6 +6,7 @@ from django.core.management.base import BaseCommand
 from django.utils.encoding import smart_str
 from django.utils.translation import gettext as _
 
+from modoboa.admin import signals
 from modoboa.lib import sysutils
 from modoboa.parameters import tools as param_tools
 
@@ -86,14 +87,19 @@ class ManageDKIMKeys(BaseCommand):
             "dkim_default_key_length"
         )
 
+        domains = []
         if options["domain"] != "":
             domain = models.Domain.objects.filter(
                 name=options["domain"], enable_dkim=True, dkim_private_key_path=""
+            ).first()
+            if domain:
+                self.create_new_dkim_key(domain)
+                domains.append(domain)
+        else:
+            qset = models.Domain.objects.filter(
+                enable_dkim=True, dkim_private_key_path=""
             )
-            if domain.exists():
-                self.create_new_dkim_key(domain[0])
-            return
-
-        qset = models.Domain.objects.filter(enable_dkim=True, dkim_private_key_path="")
-        for domain in qset:
-            self.create_new_dkim_key(domain)
+            for domain in qset:
+                self.create_new_dkim_key(domain)
+                domains.append(domain)
+        signals.dkim_keys_created.send(self, domains=domains)

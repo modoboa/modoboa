@@ -1,23 +1,30 @@
-"""Management command to create DKIM keys."""
+"""Async jobs."""
 
-from django.core.management.base import BaseCommand, CommandError
+import logging
 
-from modoboa.parameters import tools as param_tools
 from modoboa.admin import models
+from modoboa.parameters import tools as param_tools
+
+logger = logging.getLogger("modoboa.jobs")
 
 
-class Command(BaseCommand):
-    """Command class."""
+class MapsUpdater:
+
+    def __init__(self) -> None:
+        self.modified_selector_file = False
+        self.modified_key_path_file = False
+        self.config = dict(param_tools.get_global_parameters("rspamd"))
+        self.dkim_path_map: dict[str, str] = {}
+        self.selector_map: dict[str, str] = {}
 
     def load_files(self):
-        self.config = dict(param_tools.get_global_parameters("rspamd"))
         if not self.config["key_map_path"] or not self.config["selector_map_path"]:
-            raise CommandError(
+            logger.error(
                 "path map path and/or selector map path "
                 "not set in modoboa rspamd settings."
             )
+            return False
 
-        self.dkim_path_map = {}
         try:
             with open(self.config["key_map_path"]) as f:
                 for line in f:
@@ -25,7 +32,6 @@ class Command(BaseCommand):
                     self.dkim_path_map[domain_name] = path.replace("\n", "")
         except FileNotFoundError:
             pass
-        self.selector_map = {}
         try:
             with open(self.config["selector_map_path"]) as f:
                 for line in f:
@@ -33,6 +39,7 @@ class Command(BaseCommand):
                     self.selector_map[domain_name] = selector
         except FileNotFoundError:
             pass
+        return True
 
     def manage_domain(self, domain_instance):
         domain_name = domain_instance.name
@@ -65,30 +72,13 @@ class Command(BaseCommand):
             self.dkim_path_map[domain_name] = domain_instance.dkim_private_key_path
             self.modified_key_path_file = True
 
-    def add_arguments(self, parser):
-        """Add arguments to command."""
-        parser.add_argument(
-            "--domain",
-            type=str,
-            dest="domain",
-            default="",
-            help="Domain target for keys generation.",
-        )
-
-    def handle(self, *args, **options):
+    def run(self, domains):
         """Entry point."""
-        self.modified_selector_file = False
-        self.modified_key_path_file = False
-        self.load_files()
+        if not self.load_files():
+            return
 
-        if options["domain"] != "":
-            domain = models.Domain.objects.filter(name=options["domain"])
-            if domain.exists():
-                self.manage_domain(domain[0])
-        else:
-            qset = models.Domain.objects.all()
-            for domain in qset:
-                self.manage_domain(domain)
+        for domain in domains:
+            self.manage_domain(domain)
 
         if self.modified_selector_file:
             with open(self.config["selector_map_path"], "w") as f:
@@ -98,3 +88,9 @@ class Command(BaseCommand):
             with open(self.config["key_map_path"], "w") as f:
                 for domain_name, key_path in self.dkim_path_map.items():
                     f.write(f"{domain_name} {key_path}\n")
+
+
+def update_rspamd_maps(domain_ids: list[int]) -> None:
+    """Launch map files update."""
+    domains = models.Domain.objects.filter(id__in=domain_ids)
+    MapsUpdater().run(domains)

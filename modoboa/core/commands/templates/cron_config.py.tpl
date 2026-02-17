@@ -2,7 +2,6 @@ from rq.cron import register
 
 from django.conf import settings
 
-from modoboa.amavis import jobs as amavis_jobs
 from modoboa.calendars import jobs as calendars_jobs
 from modoboa.core import jobs as core_jobs
 from modoboa.admin import jobs as admin_jobs
@@ -29,5 +28,6 @@ register(calendars_jobs.generate_rights, queue_name="privileged", cron="*/2 * * 
 register(webmail_jobs.send_scheduled_messages, queue_name="modoboa", cron="* * * * *")
 
 if "modoboa.amavis" in settings.MODOBOA_APPS:
+    from modoboa.amavis import jobs as amavis_jobs
     register(amavis_jobs.qcleanup, queue_name="modoboa", cron="0 0 * * *")
     register(amavis_jobs.amnotify, queue_name="modoboa", cron="0 12 * * *")
