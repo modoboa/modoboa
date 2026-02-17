@@ -1,12 +1,9 @@
 """Django signal handlers for admin."""
 
 from django.contrib.contenttypes.models import ContentType
-from django.core.management import call_command
 from django.db.models import signals
 from django.dispatch import receiver
 from django.utils.translation import gettext as _
-
-import django_rq
 
 from modoboa.core import models as core_models, signals as core_signals
 from modoboa.lib import exceptions, permissions, signals as lib_signals
@@ -40,14 +37,6 @@ def update_domain_mxs_and_mailboxes(sender, instance, **kwargs):
     for alias in instance.alias_set.all():
         alias.address = "{}@{}".format(alias.address.split("@", 1)[0], instance.name)
         alias.save(update_fields=["address"])
-
-
-@receiver(signals.post_save, sender=models.Domain)
-def create_dkim_key(sender, instance, **kwargs):
-    if not instance.enable_dkim:
-        return
-    queue = django_rq.get_queue("dkim")
-    queue.enqueue(call_command, "modo", "manage_dkim_keys", f"--domain={instance.name}")
 
 
 @receiver(signals.post_save, sender=models.DomainAlias)

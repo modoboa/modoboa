@@ -7,6 +7,7 @@ from django.urls import reverse
 
 from modoboa.admin import factories as admin_factories, models as admin_models
 from modoboa.lib.tests import ModoAPITestCase
+from modoboa.rspamd import jobs
 
 
 @modify_settings(
@@ -35,13 +36,15 @@ class ManagementCommandTestCase(ModoAPITestCase):
         self.set_global_parameter("key_map_path", "")
         self.set_global_parameter("selector_map_path", "")
 
-    def test_command(self):
+    def test_job(self):
         self.unconfigure()
         with self.assertRaises(management.CommandError):
             management.call_command("manage_rspamd_maps")
 
         self.configure()
-        management.call_command("manage_rspamd_maps")
+        jobs.update_rspamd_maps(
+            list(admin_models.Domain.objects.all().values_list("id", flat=True))
+        )
         self.assertFalse(os.path.exists(self.key_map_path))
         self.assertFalse(os.path.exists(self.selector_map_path))
 
@@ -49,26 +52,21 @@ class ManagementCommandTestCase(ModoAPITestCase):
         domain.enable_dkim = True
         domain.dkim_private_key_path = "xxx"
         domain.save()
-        management.call_command("manage_rspamd_maps")
+        jobs.update_rspamd_maps(
+            list(admin_models.Domain.objects.all().values_list("id", flat=True))
+        )
         self.assertTrue(os.path.exists(self.key_map_path))
         self.assertTrue(os.path.exists(self.selector_map_path))
 
         # Now, empty map files
         domain.enable_dkim = False
         domain.save()
-        management.call_command("manage_rspamd_maps")
+        jobs.update_rspamd_maps(
+            list(admin_models.Domain.objects.all().values_list("id", flat=True))
+        )
         with open(self.key_map_path) as fp:
             content = fp.read()
         self.assertNotIn(domain.name, content)
-
-    def test_command_with_arg(self):
-        self.configure()
-        domain = admin_models.Domain.objects.get(name="test.com")
-        domain.enable_dkim = True
-        domain.save()
-        management.call_command("manage_rspamd_maps", "--domain", "test.com")
-        self.assertTrue(os.path.exists(self.key_map_path))
-        self.assertTrue(os.path.exists(self.selector_map_path))
 
 
 class ParametersAPITestCase(ModoAPITestCase):
