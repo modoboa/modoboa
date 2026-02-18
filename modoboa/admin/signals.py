@@ -7,3 +7,4 @@ extra_domain_qset_filters = django.dispatch.Signal()  # Provides domfilter, extr
 import_object = django.dispatch.Signal()  # Provides objtype
 use_external_recipients = django.dispatch.Signal()  # Provides recipients
 extra_account_identities_actions = django.dispatch.Signal()  # Provides account
+dkim_keys_created = django.dispatch.Signal()  # Provides domains

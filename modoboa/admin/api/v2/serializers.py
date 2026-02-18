@@ -111,6 +111,8 @@ class DomainSerializer(v1_serializers.DomainSerializer):
         domain_admin = validated_data.pop("domain_admin", None)
         transport_def = validated_data.pop("transport", None)
         domain = super().create(validated_data)
+        if domain.enable_dkim:
+            domain.generate_dkim_key()
         if transport_def:
             transport = transport_models.Transport(**transport_def)
             transport.pattern = domain.name
@@ -182,6 +184,13 @@ class DomainSerializer(v1_serializers.DomainSerializer):
         transport_def = validated_data.pop("transport", None)
         resources = validated_data.pop("domainobjectlimit_set", None)
         instance = super().update(instance, validated_data)
+        if (
+            instance._loaded_values.get("enable_dkim") != instance.enable_dkim
+            and instance.enable_dkim
+        ) or (
+            instance._loaded_values.get("dkim_key_length") != instance.dkim_key_length
+        ):
+            instance.generate_dkim_key()
         if transport_def and instance.type == "relaydomain":
             transport = getattr(instance, "transport", None)
             created = False
