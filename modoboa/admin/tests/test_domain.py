@@ -4,10 +4,13 @@ import os
 import shutil
 import tempfile
 
+from rq import SimpleWorker
 from testfixtures import compare
 
 from django.core.management import call_command
 from django.urls import reverse
+
+import django_rq
 
 from modoboa.core.models import User
 from modoboa.lib.tests import ModoAPITestCase, SETTINGS_SAMPLE
@@ -194,7 +197,7 @@ class DKIMTestCase(ModoAPITestCase):
         self.assertEqual(domain.dkim_private_key_path, "")
 
     def test_dkim_key_length_modification(self):
-        """ """
+        """Check that key length change triggers a new key creation."""
         self.set_global_parameter("dkim_keys_storage_dir", self.workdir)
         values = {
             "name": "pouet.com",
@@ -207,9 +210,12 @@ class DKIMTestCase(ModoAPITestCase):
         url = reverse("v2:domain-list")
         response = self.client.post(url, values, format="json")
         self.assertEqual(response.status_code, 201)
-        call_command("modo", "manage_dkim_keys")
+        queue = django_rq.get_queue("dkim")
+        worker = SimpleWorker([queue], connection=queue.connection)
+        worker.work(burst=True)
         key_path = os.path.join(self.workdir, "{}.pem".format(values["name"]))
         self.assertTrue(os.path.exists(key_path))
+
         dom = Domain.objects.get(name="pouet.com")
         values["dkim_key_length"] = 4096
         response = self.client.put(
@@ -219,5 +225,5 @@ class DKIMTestCase(ModoAPITestCase):
         dom.refresh_from_db()
         self.assertEqual(dom.dkim_private_key_path, "")
         os.unlink(key_path)
-        call_command("modo", "manage_dkim_keys")
+        worker.work(burst=True)
         self.assertTrue(os.path.exists(key_path))

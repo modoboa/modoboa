@@ -4,11 +4,14 @@ import datetime
 
 from reversion import revisions as reversion
 
+from django.core.management import call_command
 from django.db import models
 from django.utils import timezone
 from django.utils.encoding import force_str, smart_str
 from django.utils.functional import cached_property
 from django.utils.translation import gettext as _, gettext_lazy
+
+import django_rq
 
 from modoboa.core import signals as core_signals
 from modoboa.core.models import User
@@ -304,6 +307,11 @@ class Domain(mixins.MessageLimitMixin, AdminObject):
 
     def __str__(self):
         return smart_str(self.name)
+
+    def generate_dkim_key(self):
+        """Launch domain key creation."""
+        queue = django_rq.get_queue("dkim")
+        queue.enqueue(call_command, "modo", "manage_dkim_keys", f"--domain={self.name}")
 
     def from_csv(self, user, row):
         """Create a new domain from a CSV entry.
