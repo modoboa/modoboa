@@ -187,6 +187,8 @@ class DomainSerializer(v1_serializers.DomainSerializer):
         if (
             instance._loaded_values.get("enable_dkim") != instance.enable_dkim
             and instance.enable_dkim
+        ) or (
+            instance._loaded_values.get("dkim_key_length") != instance.dkim_key_length
         ):
             instance.generate_dkim_key()
         if transport_def and instance.type == "relaydomain":
