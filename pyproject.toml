@@ -70,7 +70,7 @@ dependencies = [
 	"python-magic>=0.4.24",
 	# RQ
 	"rq>=2.4.0",
-	"django-rq",
+	"django-rq>=3.2.2",
 	# Sieve
 	"sievelib>=1.4.1",
         # User
