@@ -2,7 +2,7 @@
   <v-col cols="6">
     <v-text-field
       v-model="email.address"
-      :label="$gettext('Address')"
+      :label="$gettext('Email address')"
       variant="outlined"
       prepend-icon="mdi-email"
       density="compact"
