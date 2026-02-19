@@ -218,7 +218,7 @@ def import_from_imap(options):
 def week_range(year, weeknumber):
     """Return start and end dates of a given week."""
     tz = timezone.get_current_timezone()
-    fmt = "%Y-%W-%w"
+    fmt = "%G-%V-%w"
     start_week = datetime.datetime.strptime(f"{year}-{weeknumber}-{1}", fmt)
     end_week = datetime.datetime.strptime(f"{year}-{weeknumber}-{0}", fmt)
     return start_week.replace(tzinfo=tz), end_week.replace(tzinfo=tz)
