@@ -38,6 +38,10 @@ export default defineConfig({
           { text: 'Contributors', link: '/contributors' },
         ],
       },
+      {
+        text: 'Migration',
+        items: [{ text: 'Moving to Modoboa', link: '/moving' }],
+      },
     ],
 
     sidebar: {
@@ -119,50 +123,58 @@ export default defineConfig({
     // console.log(pageData);
 
     const baseUrl = process.env.READTHEDOCS_CANONICAL_URL
-      ? new URL(process.env.READTHEDOCS_CANONICAL_URL).pathname.replace(/\/$/, '')
+      ? new URL(process.env.READTHEDOCS_CANONICAL_URL).pathname.replace(
+          /\/$/,
+          ''
+        )
       : ''
 
-    const canonicalUrl = baseUrl + '/' + pageData.relativePath.replace(/\.md$/, "").replace(/^index$/, "");
-    
-    let updtDate = new Date();
+    const canonicalUrl =
+      baseUrl +
+      '/' +
+      pageData.relativePath.replace(/\.md$/, '').replace(/^index$/, '')
+
+    let updtDate = new Date()
     // If no commit for a page (dev in progress), lastUpdated == NaN
     // Ensure lastUpdated is defined and a number before passing it to isNaN/new Date
-    if (typeof pageData.lastUpdated === 'number' && !isNaN(pageData.lastUpdated)) {
-      updtDate = new Date(pageData.lastUpdated);
+    if (
+      typeof pageData.lastUpdated === 'number' &&
+      !isNaN(pageData.lastUpdated)
+    ) {
+      updtDate = new Date(pageData.lastUpdated)
     }
 
-    pageData.frontmatter.head ??= [];
-		pageData.frontmatter.head.push([
-			"link",
-			{ rel: "canonical", href: canonicalUrl },
-		]);
-		pageData.frontmatter.head.push([
-			"meta",
-			{ property: "og:title", content: pageData.frontmatter.title },
-		]);
-		pageData.frontmatter.head.push([
-			"meta",
-			{ property: "og:description", content: pageData.frontmatter.description },
-		]);
-		pageData.frontmatter.head.push([
-			"meta",
-			{ property: "og:type", content: 'article' },
-		]);
-		pageData.frontmatter.head.push([
-			"meta",
-			{ property: "og:url", content: canonicalUrl },
-		]);
+    pageData.frontmatter.head ??= []
+    pageData.frontmatter.head.push([
+      'link',
+      { rel: 'canonical', href: canonicalUrl },
+    ])
+    pageData.frontmatter.head.push([
+      'meta',
+      { property: 'og:title', content: pageData.frontmatter.title },
+    ])
+    pageData.frontmatter.head.push([
+      'meta',
+      { property: 'og:description', content: pageData.frontmatter.description },
+    ])
+    pageData.frontmatter.head.push([
+      'meta',
+      { property: 'og:type', content: 'article' },
+    ])
+    pageData.frontmatter.head.push([
+      'meta',
+      { property: 'og:url', content: canonicalUrl },
+    ])
 
     // TODO: Uncomment when modoboa image is available on the public folder
     // pageData.frontmatter.head.push([
-		// 	"meta",
-		// 	{ property: "og:image", content: 'https://xxxx/modoboa.png' },
-		// ]);
+    // 	"meta",
+    // 	{ property: "og:image", content: 'https://xxxx/modoboa.png' },
+    // ]);
 
     pageData.frontmatter.head.push([
-			"meta",
-			{ property: "og:locale", content: 'en_GB' },
-		]);
-
-  }
+      'meta',
+      { property: 'og:locale', content: 'en_GB' },
+    ])
+  },
 })
