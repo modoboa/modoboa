@@ -4,7 +4,7 @@ description: Migrate from actual provider to modoboa
 head:
   - - meta
     - name: 'keywords'
-      content: 'modoboa, imap, migration, constraint, offlineimap' 
+      content: 'modoboa, imap, migration, constraint, offlineimap'
 ---
 
 
@@ -35,16 +35,13 @@ It works as follows:
   instructions to migrate all declared migrations and lauching
   OfflineIMAP to start/continue migrations
 
-:::: warning
-::: title
-Warning
-:::
+::: warning
 
 As you probably already understood, you can\'t migrate all your accounts
 at the same time since you don\'t know their corresponding password
 (most of the time). Every account migration must be started by the
 account\'s owner.
-::::
+:::
 
 ### Configuration
 
@@ -61,16 +58,13 @@ Once done, *the new admin interface (v2)* will let you:
 - customize the behaviour of OfflineIMAP : go to \'Parameters \> Imap
   Migration\' from the left menu
 
-:::: warning
-::: title
-Warning
-:::
+::: warning
 
 **Auto create domain** option must be enabled to make this feature
 
 :   work. Go to \'Parameters \> Administration \> Mailboxes\' and check
     if it\'s the case.
-::::
+:::
 
 To generate an OfflineIMAP configuration file, run the following
 command:
@@ -120,14 +114,11 @@ The first time an account of your old platform successfuly log into
 Modoboa (using old credentials), a local account and a migration task
 will be created.
 
-:::: warning
-::: title
-Warning
-:::
+::: warning
 
 In case of domain renaming as described in Providers section, users
 must use the new email address as username for next connection attempts.
-::::
+:::
 
 SuperAdmins can monitor running migrations and stop/delete them from the
 [IMAP Migration] section (left menu).
@@ -135,14 +126,14 @@ SuperAdmins can monitor running migrations and stop/delete them from the
 ## From postfixadmin
 
 A dedicated command allows you to convert an existing [postfixadmin](http://postfixadmin.sourceforge.net/)
-database to a Modoboa one. 
+database to a Modoboa one.
 
 Consult the [documentation](https://github.com/modoboa/modoboa-pfxadmin-migrate) to know more about the process.
 
 ## Using CSV files
 
 Modoboa allows you to import any object (domain, domain alias, mailbox
-and alias) using a simple CSV file encoded using **UTF8**. 
+and alias) using a simple CSV file encoded using **UTF8**.
 
 Each line corresponds to a single object and must respect one of the following format:
 
