@@ -61,7 +61,7 @@ class ScheduledMessage(models.Model):
                 constants.MAILBOX_NAME_SCHEDULED,
                 "header",
                 constants.CUSTOM_HEADER_SCHEDULED_ID,
-                self.id,
+                str(self.id),
             ]
         )
         if code:

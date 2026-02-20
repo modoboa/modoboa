@@ -111,7 +111,7 @@ class SpamassassinClient:
             self._learn_cmd_kwargs = {}
             self._expected_exit_codes = [5, 6]
 
-    def _find_binary(self, name):
+    def _find_binary(self, name: str) -> str:
         """Find path to binary."""
         code, output = exec_cmd(f"which {name}", shell=True)
         if not code:
@@ -134,7 +134,7 @@ class SpamassassinClient:
                 "-d",
                 self.conf["spamd_address"],
                 "-p",
-                self.conf["spamd_port"],
+                str(self.conf["spamd_port"]),
                 "-L",
                 mtype,
                 "-u",
