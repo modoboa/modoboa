@@ -10,6 +10,8 @@ from django.core.cache import cache
 from django.test import override_settings
 from django.urls import reverse
 
+from django.contrib.auth import authenticate
+
 from rest_framework.authtoken.models import Token
 from reversion.models import Version
 
@@ -461,13 +463,17 @@ class AccountAPITestCase(ModoAPITestCase):
         account.refresh_from_db()
         account.mailbox.refresh_from_db()
         self.assertEqual(account.email, account.mailbox.full_address)
-        self.assertTrue(account.check_password("Toto1234"))
+        self.assertIsNot(
+            authenticate(username=account.username, password="Toto1234"), None
+        )
 
         del data["password"]
         response = self.client.put(url, data, format="json")
         self.assertEqual(response.status_code, 200)
         account.refresh_from_db()
-        self.assertTrue(account.check_password("Toto1234"))
+        self.assertIsNot(
+            authenticate(username=account.username, password="Toto1234"), None
+        )
 
     def test_update_account_with_no_mailbox(self):
         """Try to disable an account."""
@@ -577,7 +583,9 @@ class AccountAPITestCase(ModoAPITestCase):
         )
         self.assertEqual(response.status_code, 200)
         account.refresh_from_db()
-        self.assertTrue(account.check_password("Toto1234"))
+        self.assertIsNot(
+            authenticate(username=account.username, password="Toto1234"), None
+        )
 
     @mock.patch("ovh.Client.get")
     @mock.patch("ovh.Client.post")

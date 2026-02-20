@@ -2,7 +2,7 @@
 
 import logging
 
-from django.contrib.auth import password_validation
+from django.contrib.auth import authenticate, password_validation
 from django.core.exceptions import ValidationError
 from django.utils.html import escape
 from django.utils.translation import gettext as _
@@ -31,7 +31,7 @@ class AccountPasswordSerializer(serializers.ModelSerializer):
         """Check password."""
         authentication_type = param_tools.get_global_parameter("authentication_type")
         if authentication_type != "ldap":
-            check = self.instance.check_password(value)
+            check = authenticate(username=self.instance.username, password=value)
         else:
             from django_auth_ldap.backend import LDAPBackend
 
@@ -80,9 +80,9 @@ class CheckPasswordTFASerializer(serializers.Serializer):
 
     password = serializers.CharField()
 
-    def validate_password(self, value):
-        user = self.context["user"]
-        if not user.check_password(value):
+    def validate_password(self, value: str) -> str:
+        user: models.User = self.context["user"]
+        if not authenticate(username=user.username, password=value):
             msg = _(
                 "Failed TFA settings editing attempt from '%(addr)s' as user '%(user)s'"
             ) % {

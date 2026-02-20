@@ -3,6 +3,7 @@
 import imaplib
 import ssl
 
+from django.contrib.auth import authenticate
 from django.utils.encoding import smart_bytes, smart_str
 from django.utils.translation import gettext as _
 
@@ -94,7 +95,7 @@ class IMAPBackend:
                 # No migration => either someone else account, or
                 # migration is done
                 return None
-            if not user.check_password(password):
+            if not authenticate(username=user.username, password=password):
                 # User may have changed its password on modoboa
                 # Remote password and local now differs
                 # We block the connection in that case
