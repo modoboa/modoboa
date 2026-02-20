@@ -6,7 +6,7 @@ import oath
 from django.conf import settings
 from django.db.models import Q
 
-from django.contrib.auth import password_validation
+from django.contrib.auth import authenticate, password_validation
 from django.contrib.sites.shortcuts import get_current_site
 from django.contrib.auth.tokens import default_token_generator
 from django.core.mail import send_mail
@@ -434,7 +434,7 @@ class CheckPasswordSerializer(serializers.Serializer):
 
     def validate_password(self, value):
         user = self.context["user"]
-        if not user.check_password(value):
+        if not authenticate(username=user.username, password=value):
             raise serializers.ValidationError(_("Invalid password"))
         return value
 
