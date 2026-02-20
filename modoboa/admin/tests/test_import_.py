@@ -8,6 +8,8 @@ from django.core.management import call_command
 from django.core.management.base import CommandError
 from django.urls import reverse
 
+from django.contrib.auth import authenticate
+
 from modoboa.core import factories as core_factories
 from modoboa.core.models import User
 from modoboa.lib.tests import ModoAPITestCase
@@ -335,4 +337,4 @@ alias; alias1@test.com; True; user1@test.com
         )
         call_command("modo", "import", "--crypt-passwords", test_file)
         user = User.objects.get(username="user1@test.com")
-        self.assertTrue(user.check_password("toto"))
+        self.assertIsNot(authenticate(username=user.username, password="toto"), None)
