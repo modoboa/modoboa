@@ -274,7 +274,7 @@ class AdminGlobalParametersSerializer(serializers.Serializer):
     def validate_dkim_keys_storage_dir(self, value):
         """Check that directory exists."""
         if value:
-            code, output = exec_cmd("which openssl")
+            code, output = exec_cmd("which openssl", shell=True)
             if code:
                 raise serializers.ValidationError(
                     _("openssl not found, please make sure it is installed.")

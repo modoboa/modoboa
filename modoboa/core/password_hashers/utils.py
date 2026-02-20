@@ -1,4 +1,4 @@
-""" Utils for password schemes caching/retrieval. """
+"""Utils for password schemes caching/retrieval."""
 
 from django.conf import settings
 from django.core.cache import cache
@@ -30,7 +30,7 @@ def get_dovecot_schemes():
 
     if not schemes:
         try:
-            retcode, schemes = doveadm_cmd("pw -l")
+            retcode, schemes = doveadm_cmd(["pw", "-l"])
         except OSError:
             schemes = default_schemes
             status = 2

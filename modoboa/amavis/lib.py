@@ -92,37 +92,28 @@ class SpamassassinClient:
 
     def __init__(self, user, recipient_db):
         """Constructor."""
-        conf = dict(param_tools.get_global_parameters("amavis"))
-        self._sa_is_local = conf["sa_is_local"]
-        self._default_username = conf["default_user"]
+        self.conf = dict(param_tools.get_global_parameters("amavis"))
+        self._sa_is_local = self.conf["sa_is_local"]
+        self._default_username = self.conf["default_user"]
         self._recipient_db = recipient_db
         self._setup_cache = {}
         self._username_cache = []
         if user.role == "SimpleUsers":
-            if conf["user_level_learning"]:
+            if self.conf["user_level_learning"]:
                 self._username = user.email
         else:
             self._username = None
         self.error = None
         if self._sa_is_local:
-            self._learn_cmd = self._find_binary("sa-learn")
-            self._learn_cmd += " --{0} --no-sync -u {1}"
             self._learn_cmd_kwargs = {}
             self._expected_exit_codes = [0]
-            self._sync_cmd = self._find_binary("sa-learn")
-            self._sync_cmd += " -u {0} --sync"
         else:
-            self._learn_cmd = self._find_binary("spamc")
-            self._learn_cmd += " -d {} -p {}".format(
-                conf["spamd_address"], conf["spamd_port"]
-            )
-            self._learn_cmd += " -L {0} -u {1}"
             self._learn_cmd_kwargs = {}
             self._expected_exit_codes = [5, 6]
 
     def _find_binary(self, name):
         """Find path to binary."""
-        code, output = exec_cmd(f"which {name}")
+        code, output = exec_cmd(f"which {name}", shell=True)
         if not code:
             return smart_str(output).strip()
         known_paths = getattr(settings, "SA_LOOKUP_PATH", ("/usr/bin",))
@@ -131,6 +122,32 @@ class SpamassassinClient:
             if os.path.isfile(bpath) and os.access(bpath, os.X_OK):
                 return bpath
         raise InternalError(_("Failed to find {} binary").format(name))
+
+    def get_learn_cmd(self, mtype: str, username: str) -> list[str]:
+        result = []
+        if self._sa_is_local:
+            result += [self._find_binary("sa-learn")]
+            result += [f"--{mtype}", "--no-sync", "-u", username]
+        else:
+            result += [self._find_binary("spamc")]
+            result += [
+                "-d",
+                self.conf["spamd_address"],
+                "-p",
+                self.conf["spamd_port"],
+                "-L",
+                mtype,
+                "-u",
+                username,
+            ]
+        return result
+
+    def get_sync_cmd(self, username: str) -> list[str]:
+        result = []
+        if self._sa_is_local:
+            result += [self._find_binary("sa-learn")]
+            result += ["-u", username, "--sync"]
+        return result
 
     def _get_mailbox_from_rcpt(self, rcpt):
         """Retrieve a mailbox from a recipient address."""
@@ -199,7 +216,7 @@ class SpamassassinClient:
                     self._setup_cache[username] = True
         if username not in self._username_cache:
             self._username_cache.append(username)
-        cmd = self._learn_cmd.format(mtype, username)
+        cmd = self.get_learn_cmd(mtype, username)
         code, output = exec_cmd(cmd, pinput=smart_bytes(msg), **self._learn_cmd_kwargs)
         if code in self._expected_exit_codes:
             return True
@@ -218,7 +235,7 @@ class SpamassassinClient:
         """Call this method at the end of the processing."""
         if self._sa_is_local:
             for username in self._username_cache:
-                cmd = self._sync_cmd.format(username)
+                cmd = self.get_sync_cmd(username)
                 exec_cmd(cmd, **self._learn_cmd_kwargs)
 
 

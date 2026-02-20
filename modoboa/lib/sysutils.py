@@ -13,7 +13,13 @@ from django.conf import settings
 from django.utils.encoding import force_str
 
 
-def exec_cmd(cmd, sudo_user=None, pinput=None, capture_output=True, **kwargs):
+def exec_cmd(
+    cmd: str | list[str],
+    sudo_user: str | None = None,
+    pinput: str | None = None,
+    capture_output: bool = True,
+    **kwargs,
+):
     """Execute a shell command.
 
     Run a command using the current user. Set :keyword:`sudo_user` if
@@ -28,7 +34,6 @@ def exec_cmd(cmd, sudo_user=None, pinput=None, capture_output=True, **kwargs):
     """
     if sudo_user is not None:
         cmd = f"sudo -u {sudo_user} {cmd}"
-    kwargs["shell"] = True
     if pinput is not None:
         kwargs["stdin"] = subprocess.PIPE
     if capture_output:
@@ -43,7 +48,7 @@ def exec_cmd(cmd, sudo_user=None, pinput=None, capture_output=True, **kwargs):
     return process.returncode, output
 
 
-def doveadm_cmd(params: str, pinput=None, capture_output=True, **kwargs):
+def doveadm_cmd(params: list[str], pinput=None, capture_output=True, **kwargs):
     """Execute doveadm command.
 
     Run doveadm command using the current user. Set :keyword:`sudo_user` if
@@ -57,7 +62,7 @@ def doveadm_cmd(params: str, pinput=None, capture_output=True, **kwargs):
     :return: return code, command output
     """
     dpath = None
-    code, output = exec_cmd("which doveadm")
+    code, output = exec_cmd("which doveadm", shell=True)
     if not code:
         dpath = force_str(output).strip()
     else:
@@ -75,7 +80,7 @@ def doveadm_cmd(params: str, pinput=None, capture_output=True, **kwargs):
     sudo_user = dovecot_user if curuser != dovecot_user else None
     if dpath:
         return exec_cmd(
-            f"{dpath} {params}",
+            [dpath] + params,
             sudo_user=sudo_user,
             pinput=pinput,
             capture_output=capture_output,

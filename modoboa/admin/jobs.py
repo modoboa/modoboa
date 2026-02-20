@@ -35,7 +35,7 @@ def rename_mailbox(operation):
                 f"renaming of {operation.argument} to {new_mail_home} failed (reason: {reason})"
             )
             return
-    code, output = exec_cmd(f"mv {operation.argument} {new_mail_home}")
+    code, output = exec_cmd(["mv", operation.argument, new_mail_home])
     if code:
         logger.critical(f"Renaming of {new_mail_home} failed (reason: {output})")
         return

@@ -7,7 +7,7 @@ from itertools import chain
 import os
 
 from django.conf import settings
-from django.utils.encoding import smart_bytes, smart_str
+from django.utils.encoding import smart_str
 from django.utils.translation import gettext as _, gettext_lazy
 
 from modoboa.admin import models as admin_models
@@ -75,7 +75,7 @@ class Graphic:
     def rrdtool_binary(self):
         """Return path to rrdtool binary."""
         dpath = None
-        code, output = exec_cmd("which rrdtool")
+        code, output = exec_cmd("which rrdtool", shell=True)
         if not code:
             dpath = output.strip()
         else:
@@ -102,9 +102,17 @@ class Graphic:
             cmdargs += curve.to_rrd_command_args(rrdfile)
         code = 0
 
-        cmd = f"{self.rrdtool_binary} xport --json -t --start {str(start)} --end {str(end)} "
-        cmd += " ".join(cmdargs)
-        code, output = exec_cmd(smart_bytes(cmd))
+        cmd = [
+            self.rrdtool_binary,
+            "xport",
+            "--json",
+            "-t",
+            "--start",
+            str(start),
+            "--end",
+            str(end),
+        ] + cmdargs
+        code, output = exec_cmd(cmd)
         if code:
             return []
 
