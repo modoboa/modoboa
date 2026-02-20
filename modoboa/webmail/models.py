@@ -52,9 +52,17 @@ class ScheduledMessage(models.Model):
         # TODO: use doveadm HTTP API when dovecot is not local
         sent_folder = self.account.parameters.get_value("sent_folder")
         code, output = doveadm_cmd(
-            f"move -u {self.account.email} {sent_folder} "
-            f"mailbox {constants.MAILBOX_NAME_SCHEDULED} "
-            f"header {constants.CUSTOM_HEADER_SCHEDULED_ID} {self.id}"
+            [
+                "move",
+                "-u",
+                self.account.email,
+                sent_folder,
+                "mailbox",
+                constants.MAILBOX_NAME_SCHEDULED,
+                "header",
+                constants.CUSTOM_HEADER_SCHEDULED_ID,
+                self.id,
+            ]
         )
         if code:
             self.status = constants.SchedulingState.MOVE_ERROR.value
@@ -64,8 +72,15 @@ class ScheduledMessage(models.Model):
 
         # Try to delete mailbox when empty
         doveadm_cmd(
-            f"mailbox delete -u {self.account.email} -s -e "
-            f"{constants.MAILBOX_NAME_SCHEDULED}"
+            [
+                "mailbox",
+                "delete",
+                "-u",
+                self.account.email,
+                "-s",
+                "-e",
+                constants.MAILBOX_NAME_SCHEDULED,
+            ]
         )
 
         return True

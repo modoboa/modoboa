@@ -44,7 +44,9 @@ class ManageDKIMKeys(BaseCommand):
             if domain.dkim_key_length
             else self.default_key_length
         )
-        code, output = sysutils.exec_cmd(f"openssl genrsa -out {pkey_path} {key_size}")
+        code, output = sysutils.exec_cmd(
+            ["openssl", "genrsa", "-out", pkey_path, str(key_size)]
+        )
         if code:
             print(
                 f"Failed to generate DKIM private key for domain {domain.name}: {smart_str(output)}"
@@ -54,7 +56,9 @@ class ManageDKIMKeys(BaseCommand):
             )
             return
         domain.dkim_private_key_path = pkey_path
-        code, output = sysutils.exec_cmd(f"openssl rsa -in {pkey_path} -pubout")
+        code, output = sysutils.exec_cmd(
+            ["openssl", "rsa", "-in", pkey_path, "-pubout"]
+        )
         if code:
             print(
                 f"Failed to generate DKIM public key for domain {domain.name}: {smart_str(output)}"

@@ -147,7 +147,7 @@ class Mailbox(mixins.MessageLimitMixin, AdminObject):
         if not admin_params.get("handle_mailboxes"):
             return None
         if self.__mail_home is None:
-            code, output = doveadm_cmd(f"user -f home {self.full_address}")
+            code, output = doveadm_cmd(["user", "-f", "home", self.full_address])
             if code:
                 raise lib_exceptions.InternalError(
                     _("Failed to retrieve mailbox location (%s)") % output
