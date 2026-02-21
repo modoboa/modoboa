@@ -39,6 +39,7 @@ class DeployTest(unittest.TestCase):
             self.projname,
         ]
         code, output = exec_cmd(cmd, cwd=self.workdir, shell=True)
+        print(output)
         self.assertEqual(code, 0)
 
 
