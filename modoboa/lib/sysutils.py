@@ -14,7 +14,7 @@ from django.utils.encoding import force_str
 
 
 def exec_cmd(
-    cmd: str | list[str],
+    cmd: list[str],
     sudo_user: str | None = None,
     pinput: str | None = None,
     capture_output: bool = True,
@@ -33,11 +33,7 @@ def exec_cmd(
     :return: return code, command output
     """
     if sudo_user is not None:
-        if isinstance(cmd, list):
-            cmd = ["sudo", "-u", sudo_user] + cmd
-        else:
-            cmd = f"sudo -u {sudo_user} {cmd}"
-
+        cmd = ["sudo", "-u", sudo_user] + cmd
     if pinput is not None:
         kwargs["stdin"] = subprocess.PIPE
     if capture_output:
