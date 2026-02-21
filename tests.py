@@ -26,10 +26,18 @@ class DeployTest(unittest.TestCase):
 
     def test_silent(self):
         dburl = f"default:{self.dbtype}://{self.dbuser}:{self.dbpassword}@{self.dbhost}:{self.dbport}/modoboa"
-        cmd = (
-            f"modoboa-admin.py deploy --collectstatic "
-            f"--dburl {dburl} --domain localhost --admin-username admin {self.projname}"
-        )
+        cmd = [
+            "modoboa-admin.py",
+            "deploy",
+            "--collectstatic",
+            "--dburl",
+            dburl,
+            "--domain",
+            "localhost",
+            "--admin-username",
+            "admin",
+            self.projname,
+        ]
         code, output = exec_cmd(cmd, cwd=self.workdir, shell=True)
         self.assertEqual(code, 0)
 
