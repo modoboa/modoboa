@@ -298,7 +298,7 @@ def init_structure() -> dict:
     structure = copy.deepcopy(GLOBAL_PARAMETERS_STRUCT)
     hide_fields = False
     dpath = None
-    code, output = exec_cmd("which dovecot")
+    code, output = exec_cmd(["which", "dovecot"])
     if not code:
         dpath = force_str(output).strip()
     else:
@@ -312,7 +312,7 @@ def init_structure() -> dict:
                 dpath = fpath
     if dpath:
         try:
-            code, version = exec_cmd(f"{dpath} --version")
+            code, version = exec_cmd([dpath, "--version"])
         except OSError:
             hide_fields = True
         else:
