@@ -113,7 +113,7 @@ class SpamassassinClient:
 
     def _find_binary(self, name: str) -> str:
         """Find path to binary."""
-        code, output = exec_cmd(f"which {name}", shell=True)
+        code, output = exec_cmd(["which", name])
         if not code:
             return smart_str(output).strip()
         known_paths = getattr(settings, "SA_LOOKUP_PATH", ("/usr/bin",))

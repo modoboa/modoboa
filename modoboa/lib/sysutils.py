@@ -33,7 +33,11 @@ def exec_cmd(
     :return: return code, command output
     """
     if sudo_user is not None:
-        cmd = f"sudo -u {sudo_user} {cmd}"
+        if isinstance(cmd, list):
+            cmd = ["sudo", "-u", sudo_user] + cmd
+        else:
+            cmd = f"sudo -u {sudo_user} {cmd}"
+
     if pinput is not None:
         kwargs["stdin"] = subprocess.PIPE
     if capture_output:
@@ -62,7 +66,7 @@ def doveadm_cmd(params: list[str], pinput=None, capture_output=True, **kwargs):
     :return: return code, command output
     """
     dpath = None
-    code, output = exec_cmd("which doveadm", shell=True)
+    code, output = exec_cmd(["which", "doveadm"])
     if not code:
         dpath = force_str(output).strip()
     else:
