@@ -112,7 +112,7 @@ class Graphic:
             "--end",
             str(end),
         ] + cmdargs
-        code, output = exec_cmd(cmd, shell=True)
+        code, output = exec_cmd(cmd)
         if code:
             return []
 
