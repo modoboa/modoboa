@@ -26,7 +26,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-04 09:30+0100\n"
+"POT-Creation-Date: 2026-02-23 16:14+0100\n"
 "PO-Revision-Date: 2011-07-01 08:15+0000\n"
 "Last-Translator: Rafael Barretto Alves <ch3yd@hotmail.com>, "
 "2013,2015-2017,2025\n"
@@ -68,12 +68,12 @@ msgid "Cannot be greater than domain quota"
 msgstr "Não pode ser maior que a cota de domínio"
 
 #: admin/api/v1/serializers.py:168 admin/api/v1/serializers.py:364
-#: admin/api/v2/serializers.py:571 admin/models/alias.py:45
+#: admin/api/v2/serializers.py:581 admin/models/alias.py:45
 msgid "Permission denied."
 msgstr "Permissão negada."
 
-#: admin/api/v1/serializers.py:231 admin/api/v2/serializers.py:90
-#: admin/api/v2/serializers.py:492 amavis/serializers.py:39
+#: admin/api/v1/serializers.py:231 admin/api/v2/serializers.py:91
+#: admin/api/v2/serializers.py:502 amavis/serializers.py:39
 #: core/api/v2/serializers.py:248 core/api/v2/serializers.py:250
 #: core/api/v2/serializers.py:259 transport/backends.py:40
 msgid "This field is required"
@@ -86,7 +86,7 @@ msgstr ""
 "Lista de domínios administrados (somente revendedores e administradores de "
 "domínio)."
 
-#: admin/api/v1/serializers.py:337 admin/api/v2/serializers.py:553
+#: admin/api/v1/serializers.py:337 admin/api/v2/serializers.py:563
 msgid "Not allowed for this role."
 msgstr "Não é permitido para esta função."
 
@@ -94,12 +94,12 @@ msgstr "Não é permitido para esta função."
 msgid "Must be equal to mailbox full_address"
 msgstr "Deve ser igual a full_address de caixa de correio"
 
-#: admin/api/v1/serializers.py:397 admin/api/v2/serializers.py:605
+#: admin/api/v1/serializers.py:397 admin/api/v2/serializers.py:615
 #: calendars/serializers.py:182 pdfcredentials/api/v2/serializers.py:91
 msgid "This field is required."
 msgstr "Este campo é obrigatório."
 
-#: admin/api/v1/serializers.py:409 admin/api/v2/serializers.py:622
+#: admin/api/v1/serializers.py:409 admin/api/v2/serializers.py:632
 msgid "Local domain {} does not exist"
 msgstr "Domínio local {} não existe"
 
@@ -123,58 +123,58 @@ msgstr "Você não tem acesso a esta caixa de correio."
 msgid "Here is your new Modoboa password: {}"
 msgstr "Aqui está sua nova senha do Modoboa: {}"
 
-#: admin/api/v2/serializers.py:82
+#: admin/api/v2/serializers.py:83
 msgid "DKIM keys storage directory not configured"
 msgstr "Diretório de armazenamento de chaves DKIM não configurado"
 
-#: admin/api/v2/serializers.py:94
+#: admin/api/v2/serializers.py:95
 msgid "This field is valid when type is relaydomain"
 msgstr ""
 
-#: admin/api/v2/serializers.py:101
+#: admin/api/v2/serializers.py:102
 msgid "You can't define an unlimited quota."
 msgstr "Você não pode definir uma cota ilimitada."
 
-#: admin/api/v2/serializers.py:135
+#: admin/api/v2/serializers.py:138
 #, python-format
 msgid "User '%s' already exists"
 msgstr "O usuário '%s' já existe"
 
-#: admin/api/v2/serializers.py:256 admin/api/v2/serializers.py:262
+#: admin/api/v2/serializers.py:266 admin/api/v2/serializers.py:272
 msgid "Must be a positive integer"
 msgstr "Deve ser um inteiro positivo"
 
-#: admin/api/v2/serializers.py:271
+#: admin/api/v2/serializers.py:281
 msgid "openssl not found, please make sure it is installed."
 msgstr "openssl não encontrado, certifique-se que está instalado."
 
-#: admin/api/v2/serializers.py:274 pdfcredentials/api/v2/serializers.py:84
+#: admin/api/v2/serializers.py:284 pdfcredentials/api/v2/serializers.py:84
 msgid "Directory not found."
 msgstr "Diretório não encontrado."
 
-#: admin/api/v2/serializers.py:285
+#: admin/api/v2/serializers.py:295
 msgid "This field only allows valid IP addresses (or networks)"
 msgstr "Este campo permite apenas endereços IP válidos (ou redes)"
 
-#: admin/api/v2/serializers.py:298
+#: admin/api/v2/serializers.py:308
 msgid "Please disable imap migration before disabling this option."
 msgstr "Desative a migração imap antes de desativar esta opção."
 
-#: admin/api/v2/serializers.py:311
+#: admin/api/v2/serializers.py:321
 msgid "Define at least one authorized network / address"
 msgstr "Defina pelo menos uma rede/endereço autorizado"
 
-#: admin/api/v2/serializers.py:588
+#: admin/api/v2/serializers.py:598
 msgid "The left part of an email address can't be more than 64 characters."
 msgstr ""
 "A parte à esquerda de um endereço de e-mail não pode ter mais de 64 "
 "caracteres."
 
-#: admin/api/v2/serializers.py:610
+#: admin/api/v2/serializers.py:620
 msgid "A mailbox is required to create aliases."
 msgstr "Uma caixa de correio é necessária para criar apelidos."
 
-#: admin/api/v2/serializers.py:783
+#: admin/api/v2/serializers.py:793
 msgid "Unknown status"
 msgstr "Status desconhecido"
 
@@ -356,7 +356,7 @@ msgstr ""
 "Renomeie ou remova caixas de correio no sistema de arquivos quando elas "
 "forem renomeadas ou removidas no Modoboa"
 
-#: admin/app_settings.py:198 admin/models/domain.py:36
+#: admin/app_settings.py:198 admin/models/domain.py:39
 msgid "Default mailbox quota"
 msgstr "Cota de caixa de correio padrão"
 
@@ -488,16 +488,16 @@ msgstr "[modoboa] Problema(s) de MX para o domínio {}"
 msgid "[modoboa] DNSBL issue(s) for domain {}"
 msgstr "[modoboa] Problema(s) de DNSBL para o domínio {}"
 
-#: admin/handlers.py:179
+#: admin/handlers.py:168
 msgid "domain alias"
 msgstr "apelido de domínio"
 
-#: admin/handlers.py:227
+#: admin/handlers.py:216
 #, python-format
 msgid "Account import failed (%s): domain does not exist"
 msgstr "Falha na importação da conta (%s): o domínio não existe"
 
-#: admin/handlers.py:246
+#: admin/handlers.py:235
 #, python-format
 msgid "Account import failed (%s): wrong quota value"
 msgstr "Falha na importação da conta (%s): valor de cota incorreto"
@@ -567,18 +567,18 @@ msgid "Unable to decode CSV file using %(encoding)s encoding"
 msgstr ""
 "Não é possível decodificar o arquivo CSV usando a codificação %(encoding)s"
 
-#: admin/management/commands/subcommands/_manage_dkim_keys.py:29
+#: admin/management/commands/subcommands/_manage_dkim_keys.py:30
 msgid ""
 "DKIM path non-writable (either a permission issue or the directory does not "
 "exist)"
 msgstr ""
 "Caminho DKIM não gravável (problema de permissão ou o diretório não existe)"
 
-#: admin/management/commands/subcommands/_manage_dkim_keys.py:52
+#: admin/management/commands/subcommands/_manage_dkim_keys.py:55
 msgid "Failed to generate DKIM private key"
 msgstr "Falha ao gerar a chave privada DKIM"
 
-#: admin/management/commands/subcommands/_manage_dkim_keys.py:62
+#: admin/management/commands/subcommands/_manage_dkim_keys.py:67
 msgid "Failed to generate DKIM public key"
 msgstr "Falha ao gerar a chave pública DKIM"
 
@@ -594,7 +594,7 @@ msgstr "endereço"
 msgid "The alias address."
 msgstr "O endereço do apelido."
 
-#: admin/models/alias.py:123 admin/models/domain.py:45
+#: admin/models/alias.py:123 admin/models/domain.py:48
 #: admin/models/domain_alias.py:45 autoreply/models.py:25
 msgid "enabled"
 msgstr "habilitado"
@@ -633,66 +633,66 @@ msgstr "Destinatário {}@{} local não encontrado"
 msgid "Invalid line: {}"
 msgstr "Linha inválida: {}"
 
-#: admin/models/domain.py:27 admin/models/domain_alias.py:33
+#: admin/models/domain.py:30 admin/models/domain_alias.py:33
 msgid "name"
 msgstr "nome"
 
-#: admin/models/domain.py:30
+#: admin/models/domain.py:33
 msgid "The domain name"
 msgstr "O nome do domínio"
 
-#: admin/models/domain.py:39 admin/models/mailbox.py:92
+#: admin/models/domain.py:42 admin/models/mailbox.py:92
 msgid "Message sending limit"
 msgstr "Limite de envio de mensagens"
 
-#: admin/models/domain.py:42
+#: admin/models/domain.py:45
 msgid "Number of messages this domain can send per day"
 msgstr "Número de mensagens que este domínio pode enviar por dia"
 
-#: admin/models/domain.py:46
+#: admin/models/domain.py:49
 msgid "Check to activate this domain"
 msgstr "Marque para ativar este domínio"
 
-#: admin/models/domain.py:51
+#: admin/models/domain.py:54
 msgid "Enable DNS checks"
 msgstr "Habilitar verificação de DNS"
 
-#: admin/models/domain.py:53
+#: admin/models/domain.py:56
 msgid "Check to enable DNS checks for this domain"
 msgstr "Marque para habilitar verificações de DNS para este domínio"
 
-#: admin/models/domain.py:61
+#: admin/models/domain.py:65
 msgid "Enable DKIM signing"
 msgstr "Habilitar assinatura DKIM"
 
-#: admin/models/domain.py:63
+#: admin/models/domain.py:67
 msgid ""
 "If you activate this feature, a DKIM key will be generated for this domain."
 msgstr ""
 "Se você ativar esse recurso, uma chave DKIM será gerada para esse domínio."
 
-#: admin/models/domain.py:70
+#: admin/models/domain.py:74
 msgid "Key length"
 msgstr "Comprimento da chave"
 
-#: admin/models/domain.py:321 admin/models/domain_alias.py:70
+#: admin/models/domain.py:330 admin/models/domain_alias.py:70
 #: core/models.py:352 relaydomains/lib.py:13
 msgid "Invalid line"
 msgstr "Linha inválida"
 
-#: admin/models/domain.py:331
+#: admin/models/domain.py:340
 msgid "{}: no authorized MX record found for domain"
 msgstr "{}: nenhum registro MX autorizado encontrado para o domínio"
 
-#: admin/models/domain.py:337
+#: admin/models/domain.py:346
 msgid "{}: invalid quota value for domain"
 msgstr "{}: valor de cota inválido para domínio"
 
-#: admin/models/domain.py:343
+#: admin/models/domain.py:352
 msgid "{}: invalid default mailbox quota value for domain"
 msgstr "{}: valor de cota de caixa de correio padrão inválido para domínio"
 
-#: admin/models/domain.py:350
+#: admin/models/domain.py:359
 msgid "{}: default mailbox quota cannot be greater than domain quota"
 msgstr ""
 "{}: a cota de caixa de correio padrão não pode ser maior que a cota de "
@@ -1043,19 +1043,19 @@ msgstr ""
 msgid "Connection to amavis failed: %s"
 msgstr "Falha na conexão com o servidor IMAP: %s"
 
-#: amavis/lib.py:133
+#: amavis/lib.py:124
 #, fuzzy
 #| msgid "Failed to locate rrdtool binary."
 msgid "Failed to find {} binary"
 msgstr "Falha ao localizar o binário rrdtool."
 
-#: amavis/lib.py:148
+#: amavis/lib.py:165
 #, fuzzy
 #| msgid "Local recipient {}@{} not found"
 msgid "No recipient found"
 msgstr "Destinatário {}@{} local não encontrado"
 
-#: amavis/lib.py:159
+#: amavis/lib.py:176
 #, fuzzy
 #| msgid "Domain not found."
 msgid "Local domain not found"
@@ -2849,63 +2849,63 @@ msgstr "Estatísticas"
 msgid "Failed to locate rrdtool binary."
 msgstr "Falha ao localizar o binário rrdtool."
 
-#: maillog/graphics.py:166
+#: maillog/graphics.py:174
 msgid "Average traffic (msgs/min)"
 msgstr "Tráfego médio (msgs/min)"
 
-#: maillog/graphics.py:169
+#: maillog/graphics.py:177
 msgid "sent messages"
 msgstr "mensagens enviadas"
 
-#: maillog/graphics.py:170
+#: maillog/graphics.py:178
 msgid "received messages"
 msgstr "mensagens recebidas"
 
-#: maillog/graphics.py:171
+#: maillog/graphics.py:179
 msgid "bounced messages"
 msgstr "mensagens devolvidas"
 
-#: maillog/graphics.py:172
+#: maillog/graphics.py:180
 msgid "rejected messages"
 msgstr "mensagens rejeitadas"
 
-#: maillog/graphics.py:173
+#: maillog/graphics.py:181
 msgid "virus messages"
 msgstr "mensagens com vírus"
 
-#: maillog/graphics.py:174
+#: maillog/graphics.py:182
 msgid "spam messages"
 msgstr "mensagens de spam"
 
-#: maillog/graphics.py:181
+#: maillog/graphics.py:189
 msgid "greylisted messages"
 msgstr "mensagens na lista cinza"
 
-#: maillog/graphics.py:198
+#: maillog/graphics.py:206
 msgid "Average normal traffic size (bytes/min)"
 msgstr "Tamanho médio do tráfego normal (bytes/min)"
 
-#: maillog/graphics.py:201
+#: maillog/graphics.py:209
 msgid "received size"
 msgstr "tamanho recebido"
 
-#: maillog/graphics.py:202
+#: maillog/graphics.py:210
 msgid "sent size"
 msgstr "tamanho enviado"
 
-#: maillog/graphics.py:209
+#: maillog/graphics.py:217
 msgid "Mail traffic"
 msgstr "Tráfego de e-mail"
 
-#: maillog/graphics.py:252
+#: maillog/graphics.py:260
 msgid "Average account creation (account/hour)"
 msgstr "Média de criação de conta (conta/hora)"
 
-#: maillog/graphics.py:254
+#: maillog/graphics.py:262
 msgid "New accounts"
 msgstr "Novas contas"
 
-#: maillog/graphics.py:261
+#: maillog/graphics.py:269
 msgid "Accounts"
 msgstr "Contas"
 
@@ -3301,7 +3301,7 @@ msgstr "é"
 msgid "is not"
 msgstr "não é"
 
-#: sievefilters/constants.py:23 webmail/lib/imapemail.py:302
+#: sievefilters/constants.py:23 webmail/lib/imapemail.py:315
 msgid "Subject"
 msgstr "Assunto"
 
@@ -3699,21 +3699,21 @@ msgstr "Assinatura de e-mail definida pelo usuário"
 msgid "Server response"
 msgstr "Endereço do servidor"
 
-#: webmail/lib/attachments.py:112
+#: webmail/lib/attachments.py:146
 #, fuzzy
 #| msgid "Failed to create LDAP account: {}"
 msgid "Failed to remove attachment: "
 msgstr "Falha ao remover anexo:"
 
-#: webmail/lib/imapemail.py:270
+#: webmail/lib/imapemail.py:283
 msgid "wrote:"
 msgstr ""
 
-#: webmail/lib/imapemail.py:304
+#: webmail/lib/imapemail.py:317
 msgid "Date"
 msgstr "Data"
 
-#: webmail/lib/imapemail.py:320 webmail/lib/imapemail.py:323
+#: webmail/lib/imapemail.py:333 webmail/lib/imapemail.py:336
 #, fuzzy
 #| msgid "All messages"
 msgid "Original message"
@@ -3749,19 +3749,19 @@ msgstr ""
 msgid "Trash"
 msgstr ""
 
-#: webmail/serializers.py:220
+#: webmail/serializers.py:221
 msgid "Moving scheduled messages is forbidden"
 msgstr ""
 
-#: webmail/serializers.py:253
+#: webmail/serializers.py:254
 msgid "Only datetime in the future is allowed"
 msgstr ""
 
-#: webmail/serializers.py:258
+#: webmail/serializers.py:259
 msgid "Provived datetime must be one minute in the future at least"
 msgstr ""
 
-#: webmail/viewsets.py:359
+#: webmail/viewsets.py:392
 #, python-format
 msgid "Attachment is too big (limit: %s)"
 msgstr "Anexo muito grande (limite: %s)"

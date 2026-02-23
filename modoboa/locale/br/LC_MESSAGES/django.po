@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-04 09:30+0100\n"
+"POT-Creation-Date: 2026-02-23 16:14+0100\n"
 "PO-Revision-Date: 2020-05-06 11:16+0000\n"
 "Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
 "Language-Team: Breton (http://www.transifex.com/tonio/modoboa/language/br/)\n"
@@ -51,12 +51,12 @@ msgid "Cannot be greater than domain quota"
 msgstr "N'hall ket bezañ brasoc'h evit kota an domani"
 
 #: admin/api/v1/serializers.py:168 admin/api/v1/serializers.py:364
-#: admin/api/v2/serializers.py:571 admin/models/alias.py:45
+#: admin/api/v2/serializers.py:581 admin/models/alias.py:45
 msgid "Permission denied."
 msgstr "Aotreadur nac'het"
 
-#: admin/api/v1/serializers.py:231 admin/api/v2/serializers.py:90
-#: admin/api/v2/serializers.py:492 amavis/serializers.py:39
+#: admin/api/v1/serializers.py:231 admin/api/v2/serializers.py:91
+#: admin/api/v2/serializers.py:502 amavis/serializers.py:39
 #: core/api/v2/serializers.py:248 core/api/v2/serializers.py:250
 #: core/api/v2/serializers.py:259 transport/backends.py:40
 msgid "This field is required"
@@ -67,7 +67,7 @@ msgid ""
 "List of administered domains (resellers and domain administrators only)."
 msgstr "Listenn domanioù meret (eilgwerzherien ha merourien zomani hepken)."
 
-#: admin/api/v1/serializers.py:337 admin/api/v2/serializers.py:553
+#: admin/api/v1/serializers.py:337 admin/api/v2/serializers.py:563
 msgid "Not allowed for this role."
 msgstr "Neket aotreet evit ar rol-mañ."
 
@@ -75,12 +75,12 @@ msgstr "Neket aotreet evit ar rol-mañ."
 msgid "Must be equal to mailbox full_address"
 msgstr "Rankout a ra bezañ par ouzh boest-postell chomlec'h_klok"
 
-#: admin/api/v1/serializers.py:397 admin/api/v2/serializers.py:605
+#: admin/api/v1/serializers.py:397 admin/api/v2/serializers.py:615
 #: calendars/serializers.py:182 pdfcredentials/api/v2/serializers.py:91
 msgid "This field is required."
 msgstr "Ar vaezienn-mañ a zo rekiset."
 
-#: admin/api/v1/serializers.py:409 admin/api/v2/serializers.py:622
+#: admin/api/v1/serializers.py:409 admin/api/v2/serializers.py:632
 msgid "Local domain {} does not exist"
 msgstr "N'eus ket eus an domani lec'hel {}"
 
@@ -106,58 +106,58 @@ msgstr "N'ho peus moned ebet d'ar voest-posteloù-mañ."
 msgid "Here is your new Modoboa password: {}"
 msgstr ""
 
-#: admin/api/v2/serializers.py:82
+#: admin/api/v2/serializers.py:83
 msgid "DKIM keys storage directory not configured"
 msgstr "Kavlec'h stokiñ an alc'hwezioù DKIM chomet digefluniet"
 
-#: admin/api/v2/serializers.py:94
+#: admin/api/v2/serializers.py:95
 msgid "This field is valid when type is relaydomain"
 msgstr ""
 
-#: admin/api/v2/serializers.py:101
+#: admin/api/v2/serializers.py:102
 msgid "You can't define an unlimited quota."
 msgstr "N'hallit ket termeniñ ur c'hota divevenn"
 
-#: admin/api/v2/serializers.py:135
+#: admin/api/v2/serializers.py:138
 #, python-format
 msgid "User '%s' already exists"
 msgstr "An implijer \"%s\" a zo anezhañ endeo"
 
-#: admin/api/v2/serializers.py:256 admin/api/v2/serializers.py:262
+#: admin/api/v2/serializers.py:266 admin/api/v2/serializers.py:272
 msgid "Must be a positive integer"
 msgstr "Rankout a ra bezañ un anterin pozitivel"
 
-#: admin/api/v2/serializers.py:271
+#: admin/api/v2/serializers.py:281
 msgid "openssl not found, please make sure it is installed."
 msgstr "n'heller ket kavout openssl, bezit asur emañ staliet."
 
-#: admin/api/v2/serializers.py:274 pdfcredentials/api/v2/serializers.py:84
+#: admin/api/v2/serializers.py:284 pdfcredentials/api/v2/serializers.py:84
 msgid "Directory not found."
 msgstr "Neket bet kavet an domani."
 
-#: admin/api/v2/serializers.py:285
+#: admin/api/v2/serializers.py:295
 msgid "This field only allows valid IP addresses (or networks)"
 msgstr ""
 
-#: admin/api/v2/serializers.py:298
+#: admin/api/v2/serializers.py:308
 msgid "Please disable imap migration before disabling this option."
 msgstr ""
 
-#: admin/api/v2/serializers.py:311
+#: admin/api/v2/serializers.py:321
 msgid "Define at least one authorized network / address"
 msgstr "Termeniñ da vihanañ ur rouedad / chomlec'h aotreet"
 
-#: admin/api/v2/serializers.py:588
+#: admin/api/v2/serializers.py:598
 msgid "The left part of an email address can't be more than 64 characters."
 msgstr ""
 
-#: admin/api/v2/serializers.py:610
+#: admin/api/v2/serializers.py:620
 #, fuzzy
 #| msgid "A mailbox is required"
 msgid "A mailbox is required to create aliases."
 msgstr "Ur voest-posteloù a zo rekiset"
 
-#: admin/api/v2/serializers.py:783
+#: admin/api/v2/serializers.py:793
 #, fuzzy
 #| msgid "Unknown"
 msgid "Unknown status"
@@ -355,7 +355,7 @@ msgstr ""
 "Adenvel pe zilemel boest-posteloù war ar restr-sistem pa vezont adanvet pe "
 "dilamet diwar Modoboa"
 
-#: admin/app_settings.py:198 admin/models/domain.py:36
+#: admin/app_settings.py:198 admin/models/domain.py:39
 msgid "Default mailbox quota"
 msgstr "Kota boest-posteloù dre-ziouer"
 
@@ -494,16 +494,16 @@ msgstr "[modoboa] kudenn(où) MX evit an domani {}"
 msgid "[modoboa] DNSBL issue(s) for domain {}"
 msgstr "[modoboa] Kudenn(où) DNSBL gant an domani {}"
 
-#: admin/handlers.py:179
+#: admin/handlers.py:168
 msgid "domain alias"
 msgstr "alias an domani"
 
-#: admin/handlers.py:227
+#: admin/handlers.py:216
 #, python-format
 msgid "Account import failed (%s): domain does not exist"
 msgstr "Enporzhiadur kont c'hwitet (%s): n'eus ket eus an domani"
 
-#: admin/handlers.py:246
+#: admin/handlers.py:235
 #, python-format
 msgid "Account import failed (%s): wrong quota value"
 msgstr "Enporzhiadur kont c'hwitet (%s): talvoudegezh kota fall"
@@ -574,17 +574,17 @@ msgid "Unable to decode CSV file using %(encoding)s encoding"
 msgstr ""
 "N'heller ket digodiñ ar restroù CSV en ur ober gant an enkodañ %(encoding)s"
 
-#: admin/management/commands/subcommands/_manage_dkim_keys.py:29
+#: admin/management/commands/subcommands/_manage_dkim_keys.py:30
 msgid ""
 "DKIM path non-writable (either a permission issue or the directory does not "
 "exist)"
 msgstr ""
 
-#: admin/management/commands/subcommands/_manage_dkim_keys.py:52
+#: admin/management/commands/subcommands/_manage_dkim_keys.py:55
 msgid "Failed to generate DKIM private key"
 msgstr ""
 
-#: admin/management/commands/subcommands/_manage_dkim_keys.py:62
+#: admin/management/commands/subcommands/_manage_dkim_keys.py:67
 #, fuzzy
 #| msgid "Enable communication with Modoboa public API"
 msgid "Failed to generate DKIM public key"
@@ -602,7 +602,7 @@ msgstr "chomlec'h"
 msgid "The alias address."
 msgstr "Chomlec'h an alias."
 
-#: admin/models/alias.py:123 admin/models/domain.py:45
+#: admin/models/alias.py:123 admin/models/domain.py:48
 #: admin/models/domain_alias.py:45 autoreply/models.py:25
 msgid "enabled"
 msgstr "enaouet"
@@ -643,73 +643,73 @@ msgstr "Resever lec'hel {}@{} nann-kavet"
 msgid "Invalid line: {}"
 msgstr "Linenn direizh: %s"
 
-#: admin/models/domain.py:27 admin/models/domain_alias.py:33
+#: admin/models/domain.py:30 admin/models/domain_alias.py:33
 msgid "name"
 msgstr "anv"
 
-#: admin/models/domain.py:30
+#: admin/models/domain.py:33
 msgid "The domain name"
 msgstr "Anv an domani"
 
-#: admin/models/domain.py:39 admin/models/mailbox.py:92
+#: admin/models/domain.py:42 admin/models/mailbox.py:92
 msgid "Message sending limit"
 msgstr ""
 
-#: admin/models/domain.py:42
+#: admin/models/domain.py:45
 msgid "Number of messages this domain can send per day"
 msgstr ""
 
-#: admin/models/domain.py:46
+#: admin/models/domain.py:49
 msgid "Check to activate this domain"
 msgstr "Kochit evit enaouiñ an domani-mañ"
 
-#: admin/models/domain.py:51
+#: admin/models/domain.py:54
 msgid "Enable DNS checks"
 msgstr "Enaouiñ ar gwiriañ DNS"
 
-#: admin/models/domain.py:53
+#: admin/models/domain.py:56
 msgid "Check to enable DNS checks for this domain"
 msgstr "Kochit evit enaouiñ ar gwiriadenoù DNs evit an domani-mañ"
 
-#: admin/models/domain.py:61
+#: admin/models/domain.py:65
 msgid "Enable DKIM signing"
 msgstr "Enaouiñ ar sinadur DKIM"
 
-#: admin/models/domain.py:63
+#: admin/models/domain.py:67
 msgid ""
 "If you activate this feature, a DKIM key will be generated for this domain."
 msgstr ""
 "Ma enaouit an arc'hweladur-mañ, un alc'hwez DKIM a vo ganet evit an domani-"
 "mañ."
 
-#: admin/models/domain.py:70
+#: admin/models/domain.py:74
 msgid "Key length"
 msgstr "Padelezh an alc'hwez"
 
-#: admin/models/domain.py:321 admin/models/domain_alias.py:70
+#: admin/models/domain.py:330 admin/models/domain_alias.py:70
 #: core/models.py:352 relaydomains/lib.py:13
 msgid "Invalid line"
 msgstr "Linenn direizh"
 
-#: admin/models/domain.py:331
+#: admin/models/domain.py:340
 #, fuzzy
 #| msgid "No authorized MX record found for domain {}"
 msgid "{}: no authorized MX record found for domain"
 msgstr "Enrolladenn MX aotreet ebet kavet evit an domani {}"
 
-#: admin/models/domain.py:337
+#: admin/models/domain.py:346
 #, fuzzy
 #| msgid "Invalid quota value for domain '{}'"
 msgid "{}: invalid quota value for domain"
 msgstr "Talvoudegezh kota direizh evit an domani \"{}\""
 
-#: admin/models/domain.py:343
+#: admin/models/domain.py:352
 #, fuzzy
 #| msgid "Invalid default mailbox quota value for domain '{}'"
 msgid "{}: invalid default mailbox quota value for domain"
 msgstr "Talvoudegezh kota direizh evit boest-posteloù an domani \"{}\""
 
-#: admin/models/domain.py:350
+#: admin/models/domain.py:359
 #, fuzzy
 #| msgid "Default mailbox quota cannot be greater than domain quota"
 msgid "{}: default mailbox quota cannot be greater than domain quota"
@@ -1056,17 +1056,17 @@ msgstr ""
 msgid "Connection to amavis failed: %s"
 msgstr ""
 
-#: amavis/lib.py:133
+#: amavis/lib.py:124
 msgid "Failed to find {} binary"
 msgstr ""
 
-#: amavis/lib.py:148
+#: amavis/lib.py:165
 #, fuzzy
 #| msgid "Local recipient {}@{} not found"
 msgid "No recipient found"
 msgstr "Resever lec'hel {}@{} nann-kavet"
 
-#: amavis/lib.py:159
+#: amavis/lib.py:176
 #, fuzzy
 #| msgid "Domain not found."
 msgid "Local domain not found"
@@ -2854,69 +2854,69 @@ msgstr "Kas statistikoù"
 msgid "Failed to locate rrdtool binary."
 msgstr ""
 
-#: maillog/graphics.py:166
+#: maillog/graphics.py:174
 msgid "Average traffic (msgs/min)"
 msgstr ""
 
-#: maillog/graphics.py:169
+#: maillog/graphics.py:177
 #, fuzzy
 #| msgid "Message"
 msgid "sent messages"
 msgstr "Kemennadenn"
 
-#: maillog/graphics.py:170
+#: maillog/graphics.py:178
 msgid "received messages"
 msgstr ""
 
-#: maillog/graphics.py:171
+#: maillog/graphics.py:179
 msgid "bounced messages"
 msgstr ""
 
-#: maillog/graphics.py:172
+#: maillog/graphics.py:180
 msgid "rejected messages"
 msgstr ""
 
-#: maillog/graphics.py:173
+#: maillog/graphics.py:181
 msgid "virus messages"
 msgstr ""
 
-#: maillog/graphics.py:174
+#: maillog/graphics.py:182
 #, fuzzy
 #| msgid "Message"
 msgid "spam messages"
 msgstr "Kemennadenn"
 
-#: maillog/graphics.py:181
+#: maillog/graphics.py:189
 msgid "greylisted messages"
 msgstr ""
 
-#: maillog/graphics.py:198
+#: maillog/graphics.py:206
 msgid "Average normal traffic size (bytes/min)"
 msgstr ""
 
-#: maillog/graphics.py:201
+#: maillog/graphics.py:209
 msgid "received size"
 msgstr ""
 
-#: maillog/graphics.py:202
+#: maillog/graphics.py:210
 msgid "sent size"
 msgstr ""
 
-#: maillog/graphics.py:209
+#: maillog/graphics.py:217
 msgid "Mail traffic"
 msgstr ""
 
-#: maillog/graphics.py:252
+#: maillog/graphics.py:260
 msgid "Average account creation (account/hour)"
 msgstr ""
 
-#: maillog/graphics.py:254
+#: maillog/graphics.py:262
 #, fuzzy
 #| msgid "New account"
 msgid "New accounts"
 msgstr "Kont nevez"
 
-#: maillog/graphics.py:261
+#: maillog/graphics.py:269
 #, fuzzy
 #| msgid "Account"
 msgid "Accounts"
@@ -3334,7 +3334,7 @@ msgstr ""
 msgid "is not"
 msgstr ""
 
-#: sievefilters/constants.py:23 webmail/lib/imapemail.py:302
+#: sievefilters/constants.py:23 webmail/lib/imapemail.py:315
 msgid "Subject"
 msgstr "Sujed"
 
@@ -3749,20 +3749,20 @@ msgstr ""
 msgid "Server response"
 msgstr "Chomlec'h ar servijer"
 
-#: webmail/lib/attachments.py:112
+#: webmail/lib/attachments.py:146
 #, fuzzy
 msgid "Failed to remove attachment: "
 msgstr "N'heller ket adsevel lec'hiadur ar voest-posteloù (%s)"
 
-#: webmail/lib/imapemail.py:270
+#: webmail/lib/imapemail.py:283
 msgid "wrote:"
 msgstr ""
 
-#: webmail/lib/imapemail.py:304
+#: webmail/lib/imapemail.py:317
 msgid "Date"
 msgstr "Deiziad"
 
-#: webmail/lib/imapemail.py:320 webmail/lib/imapemail.py:323
+#: webmail/lib/imapemail.py:333 webmail/lib/imapemail.py:336
 #, fuzzy
 #| msgid "Message"
 msgid "Original message"
@@ -3798,19 +3798,19 @@ msgstr ""
 msgid "Trash"
 msgstr ""
 
-#: webmail/serializers.py:220
+#: webmail/serializers.py:221
 msgid "Moving scheduled messages is forbidden"
 msgstr ""
 
-#: webmail/serializers.py:253
+#: webmail/serializers.py:254
 msgid "Only datetime in the future is allowed"
 msgstr ""
 
-#: webmail/serializers.py:258
+#: webmail/serializers.py:259
 msgid "Provived datetime must be one minute in the future at least"
 msgstr ""
 
-#: webmail/viewsets.py:359
+#: webmail/viewsets.py:392
 #, python-format
 msgid "Attachment is too big (limit: %s)"
 msgstr ""

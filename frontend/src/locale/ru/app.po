@@ -60,7 +60,7 @@ msgstr "Токен API создан"
 
 #: src/components/account/APISetupForm.vue:94
 #: src/components/account/FidoAuthForm.vue:184
-#: src/components/admin/domains/DNSDetail.vue:258
+#: src/components/admin/domains/DNSDetail.vue:265
 #: src/components/admin/domains/DomainList.vue:300
 #: src/components/admin/identities/IdentityList.vue:482
 #: src/components/admin/identities/IdentityList.vue:522
@@ -115,7 +115,7 @@ msgstr "Включено"
 #: src/components/account/AutoReplyForm.vue:12
 #: src/components/quarantine/QuarantineList.vue:49
 #: src/components/quarantine/QuarantineList.vue:235
-#: src/components/webmail/ComposeEmailForm.vue:158
+#: src/components/webmail/ComposeEmailForm.vue:166
 msgid "Subject"
 msgstr "Тема"
 
@@ -138,7 +138,7 @@ msgstr ""
 #: src/components/calendars/EventForm.vue:24
 #: src/components/quarantine/QuarantineList.vue:234
 #: src/components/tools/TimeSerieChart.vue:19
-#: src/components/webmail/ComposeEmailForm.vue:48
+#: src/components/webmail/ComposeEmailForm.vue:56
 msgid "From"
 msgstr "От"
 
@@ -231,7 +231,7 @@ msgstr "название"
 #: src/components/account/FidoAuthForm.vue:130
 #: src/components/account/FilterForm.vue:7
 #: src/components/account/FilterSetForm.vue:9
-#: src/components/admin/domains/DNSDetail.vue:188
+#: src/components/admin/domains/DNSDetail.vue:195
 #: src/components/admin/domains/DomainAdminList.vue:112
 #: src/components/admin/domains/DomainAliasForm.vue:8
 #: src/components/admin/domains/DomainCreationForm.vue:164
@@ -285,8 +285,8 @@ msgid "Do you really want to delete this WebAuthn device?"
 msgstr "Вы действительно хотите удалить это устройство WebAuthn?"
 
 #: src/components/account/FidoAuthForm.vue:188
-#: src/components/admin/domains/DNSDetail.vue:244
-#: src/components/admin/domains/DNSDetail.vue:264
+#: src/components/admin/domains/DNSDetail.vue:251
+#: src/components/admin/domains/DNSDetail.vue:271
 #: src/components/admin/domains/DomainList.vue:306
 #: src/components/admin/identities/IdentityList.vue:487
 #: src/components/admin/identities/IdentityList.vue:527
@@ -296,8 +296,8 @@ msgid "No"
 msgstr "Нет"
 
 #: src/components/account/FidoAuthForm.vue:189
-#: src/components/admin/domains/DNSDetail.vue:245
-#: src/components/admin/domains/DNSDetail.vue:265
+#: src/components/admin/domains/DNSDetail.vue:252
+#: src/components/admin/domains/DNSDetail.vue:272
 #: src/components/admin/domains/DomainList.vue:307
 #: src/components/admin/identities/IdentityList.vue:486
 #: src/components/admin/identities/IdentityList.vue:526
@@ -552,7 +552,7 @@ msgstr ""
 #: src/components/webmail/EmailSchedulingForm.vue:28
 #: src/components/webmail/MailboxForm.vue:29
 #: src/layouts/connected/ConnectedLayout.vue:19
-#: src/views/webmail/EmailView.vue:158
+#: src/views/webmail/EmailView.vue:167
 msgid "Close"
 msgstr "Закрыть"
 
@@ -810,82 +810,87 @@ msgstr "IP-адрес %{ address } сейчас находится в следу
 msgid "DNS configuration help"
 msgstr "Помощь по настройке DNS"
 
-#: src/components/admin/domains/DNSDetail.vue:20
-#: src/components/admin/domains/DNSDetail.vue:51
+#: src/components/admin/domains/DNSDetail.vue:17
+#, fuzzy
+msgid "Last check:"
+msgstr "Последнее использование"
+
+#: src/components/admin/domains/DNSDetail.vue:27
+#: src/components/admin/domains/DNSDetail.vue:58
 #: src/components/admin/domains/DNSStatusChip.vue:21
 msgid "Pending"
 msgstr "В ожидании"
 
-#: src/components/admin/domains/DNSDetail.vue:46
+#: src/components/admin/domains/DNSDetail.vue:53
 #: src/components/admin/domains/DomainDNSConfig.vue:71
 msgid "Auto configuration"
 msgstr "Автоматическая настройка"
 
-#: src/components/admin/domains/DNSDetail.vue:61
+#: src/components/admin/domains/DNSDetail.vue:68
 msgid "autoconfig record (Mozilla): %{ value }"
 msgstr "Запись автонастройки (Mozilla): %{ value }"
 
-#: src/components/admin/domains/DNSDetail.vue:67
+#: src/components/admin/domains/DNSDetail.vue:74
 msgid "autoconfig record (Mozilla) not found"
 msgstr "Запись автонастройки (Mozilla) не найдена"
 
-#: src/components/admin/domains/DNSDetail.vue:73
+#: src/components/admin/domains/DNSDetail.vue:80
 msgid "autodiscover record (Microsoft): %{ value }"
 msgstr "запись автообнаружения (Microsoft): %{ value }"
 
-#: src/components/admin/domains/DNSDetail.vue:79
+#: src/components/admin/domains/DNSDetail.vue:86
 msgid "autodiscover record (Microsoft) not found"
 msgstr "запись автообнаружения (Microsoft) не найдена"
 
-#: src/components/admin/domains/DNSDetail.vue:83
+#: src/components/admin/domains/DNSDetail.vue:90
 msgid "Authentication"
 msgstr "Аутентификация"
 
-#: src/components/admin/domains/DNSDetail.vue:87
+#: src/components/admin/domains/DNSDetail.vue:94
 msgid "SPF record found"
 msgstr "SPF-запись найдена"
 
-#: src/components/admin/domains/DNSDetail.vue:90
+#: src/components/admin/domains/DNSDetail.vue:97
 msgid "SPF record not found"
 msgstr "SPF-запись не найдена"
 
-#: src/components/admin/domains/DNSDetail.vue:95
+#: src/components/admin/domains/DNSDetail.vue:102
 msgid "DKIM record found"
 msgstr "DKIM-запись найдена"
 
-#: src/components/admin/domains/DNSDetail.vue:98
+#: src/components/admin/domains/DNSDetail.vue:105
 msgid "DKIM record not found"
 msgstr "DKIM-запись не найдена"
 
-#: src/components/admin/domains/DNSDetail.vue:103
+#: src/components/admin/domains/DNSDetail.vue:110
 msgid "DMARC record found"
 msgstr "DMARC-запись найдена"
 
-#: src/components/admin/domains/DNSDetail.vue:106
+#: src/components/admin/domains/DNSDetail.vue:113
 msgid "DMARC record not found"
 msgstr "DMARC-запись не найдена"
 
-#: src/components/admin/domains/DNSDetail.vue:114
+#: src/components/admin/domains/DNSDetail.vue:121
 msgid "DKIM key"
 msgstr "Ключ DKIM"
 
-#: src/components/admin/domains/DNSDetail.vue:119
+#: src/components/admin/domains/DNSDetail.vue:126
 msgid "Show key"
 msgstr "Показать ключ"
 
-#: src/components/admin/domains/DNSDetail.vue:125
+#: src/components/admin/domains/DNSDetail.vue:132
 msgid "Copy key to clipboard"
 msgstr "Скопировать ключ в буфер обмена"
 
-#: src/components/admin/domains/DNSDetail.vue:130
+#: src/components/admin/domains/DNSDetail.vue:137
 msgid "Generate a new DKIM key"
 msgstr "Создать новый ключ DKIM"
 
-#: src/components/admin/domains/DNSDetail.vue:137
+#: src/components/admin/domains/DNSDetail.vue:144
 msgid "Not generated"
 msgstr "Не создан"
 
-#: src/components/admin/domains/DNSDetail.vue:189
+#: src/components/admin/domains/DNSDetail.vue:196
 #: src/components/admin/identities/AccountSenderAddresses.vue:73
 #: src/components/admin/identities/AliasCreationForm.vue:60
 #: src/components/admin/identities/AliasEditForm.vue:16
@@ -893,30 +898,29 @@ msgstr "Не создан"
 #: src/components/admin/imap_migration/ProviderCreationForm.vue:54
 #: src/components/admin/imap_migration/ProvidersList.vue:115
 #: src/components/contacts/ContactForm.vue:85
-#: src/components/contacts/EmailField.vue:5
 msgid "Address"
 msgstr "Адрес"
 
-#: src/components/admin/domains/DNSDetail.vue:190
+#: src/components/admin/domains/DNSDetail.vue:197
 msgid "Updated"
 msgstr "Обновлено"
 
-#: src/components/admin/domains/DNSDetail.vue:203
+#: src/components/admin/domains/DNSDetail.vue:210
 msgid "DKIM key copied to clipboard"
 msgstr "Ключ DKIM скопирован в буфер обмена"
 
-#: src/components/admin/domains/DNSDetail.vue:216
+#: src/components/admin/domains/DNSDetail.vue:223
 msgid ""
 "A new key will be generated soon. Refresh the page in a moment to see it."
 msgstr ""
 "Новый ключ будет сгенерирован в ближайшее время. Обновите страницу через "
 "минуту, чтобы увидеть это."
 
-#: src/components/admin/domains/DNSDetail.vue:238
+#: src/components/admin/domains/DNSDetail.vue:245
 msgid "warning"
 msgstr "предупреждение"
 
-#: src/components/admin/domains/DNSDetail.vue:239
+#: src/components/admin/domains/DNSDetail.vue:246
 msgid ""
 "DKIM key does not seem to be generated yet or has failed. Do you want to "
 "requeue the job?"
@@ -924,7 +928,7 @@ msgstr ""
 "Ключ DKIM ещё не создан или создание завершилось ошибкой. Поставить задачу "
 "на повторное создание?"
 
-#: src/components/admin/domains/DNSDetail.vue:259
+#: src/components/admin/domains/DNSDetail.vue:266
 msgid "DKIM keys already exist for this domain. Do you want to overwrite them?"
 msgstr "Для этого домена уже существуют ключи DKIM. Перезаписать их?"
 
@@ -1779,6 +1783,7 @@ msgstr ""
 "к функциям конечного пользователя."
 
 #: src/components/admin/identities/form_steps/AliasGeneralForm.vue:10
+#: src/components/contacts/EmailField.vue:5
 msgid "Email address"
 msgstr "Адрес электронной почты"
 
@@ -1982,8 +1987,8 @@ msgstr "ID очереди"
 #: src/components/quarantine/QuarantineList.vue:52
 #: src/components/quarantine/QuarantineList.vue:233
 #: src/components/tools/TimeSerieChart.vue:20
-#: src/components/webmail/ComposeEmailForm.vue:65
-#: src/views/webmail/EmailView.vue:103
+#: src/components/webmail/ComposeEmailForm.vue:73
+#: src/views/webmail/EmailView.vue:112
 msgid "To"
 msgstr "Кому"
 
@@ -2465,32 +2470,36 @@ msgstr "Прикрепить"
 msgid "Schedule sending"
 msgstr ""
 
-#: src/components/webmail/ComposeEmailForm.vue:73
-#: src/components/webmail/ComposeEmailForm.vue:118
-#: src/components/webmail/ComposeEmailForm.vue:145
+#: src/components/webmail/ComposeEmailForm.vue:47
+msgid "Save as draft"
+msgstr ""
+
+#: src/components/webmail/ComposeEmailForm.vue:81
+#: src/components/webmail/ComposeEmailForm.vue:126
+#: src/components/webmail/ComposeEmailForm.vue:153
 msgid "Provide one or more addresses"
 msgstr "Укажите один или несколько адресов"
 
-#: src/components/webmail/ComposeEmailForm.vue:86
-#: src/components/webmail/ComposeEmailForm.vue:104
+#: src/components/webmail/ComposeEmailForm.vue:94
+#: src/components/webmail/ComposeEmailForm.vue:112
 msgid "Cc"
 msgstr "Копия"
 
-#: src/components/webmail/ComposeEmailForm.vue:94
-#: src/components/webmail/ComposeEmailForm.vue:131
+#: src/components/webmail/ComposeEmailForm.vue:102
+#: src/components/webmail/ComposeEmailForm.vue:139
 msgid "Bcc"
 msgstr "Скрытая копия"
 
-#: src/components/webmail/ComposeEmailForm.vue:300
+#: src/components/webmail/ComposeEmailForm.vue:318
 #, fuzzy
 msgid "Email scheduled"
 msgstr "Письмо отправлено"
 
-#: src/components/webmail/ComposeEmailForm.vue:301
+#: src/components/webmail/ComposeEmailForm.vue:319
 msgid "Email sent"
 msgstr "Письмо отправлено"
 
-#: src/components/webmail/ComposeEmailForm.vue:354
+#: src/components/webmail/ComposeEmailForm.vue:393
 msgid "You must provide one recipient at least"
 msgstr ""
 
@@ -3092,7 +3101,7 @@ msgstr "Показать все заголовки"
 msgid "Hide full headers"
 msgstr "Скрыть все заголовки"
 
-#: src/views/quarantine/MessageView.vue:201 src/views/webmail/EmailView.vue:267
+#: src/views/quarantine/MessageView.vue:201 src/views/webmail/EmailView.vue:276
 msgid "Message deleted"
 msgstr "Письмо удалено"
 
@@ -3112,33 +3121,33 @@ msgstr "Ответить"
 msgid "Reply all"
 msgstr "Ответить всем"
 
-#: src/views/webmail/EmailView.vue:63
+#: src/views/webmail/EmailView.vue:72
 msgid "Enable links"
 msgstr "Включить ссылки"
 
-#: src/views/webmail/EmailView.vue:68
+#: src/views/webmail/EmailView.vue:77
 msgid "Disable links"
 msgstr "Отключить ссылки"
 
-#: src/views/webmail/EmailView.vue:72
+#: src/views/webmail/EmailView.vue:81
 msgid "Display source"
 msgstr "Показать источник"
 
-#: src/views/webmail/EmailView.vue:145
+#: src/views/webmail/EmailView.vue:154
 #, fuzzy
 msgid "Message scheduled at:"
 msgstr "Письмо удалено"
 
-#: src/views/webmail/EmailView.vue:151
+#: src/views/webmail/EmailView.vue:160
 #, fuzzy
 msgid "Message source"
 msgstr "История письма"
 
-#: src/views/webmail/EmailView.vue:281
+#: src/views/webmail/EmailView.vue:290
 msgid "Message marked as junk"
 msgstr "Письмо помечено как спам"
 
-#: src/views/webmail/EmailView.vue:295
+#: src/views/webmail/EmailView.vue:304
 msgid "Message marked as not junk"
 msgstr "Письмо помечено как НЕ спам"
 
