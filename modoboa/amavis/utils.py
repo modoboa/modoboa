@@ -37,7 +37,7 @@ def smart_str(value, *args, **kwargs):
     return django_smart_str(value, *args, **kwargs)
 
 
-def fix_utf8_encoding(value):
+def fix_utf8_encoding(value: str) -> str:
     """Fix utf-8 strings that contain utf-8 escaped characters.
 
     msgs.from_addr and msgs.subject potentialy contain badly escaped utf-8
@@ -58,12 +58,13 @@ def fix_utf8_encoding(value):
         value = bytes_value.decode("utf-8")
     except UnicodeDecodeError:
         encoding = chardet.detect(bytes_value)
-        try:
-            value = bytes_value.decode(encoding["encoding"], "replace")
-        except (TypeError, UnicodeDecodeError):
-            # ??? use the original value, we've done our best to try and
-            # convert it to a clean utf-8 string.
-            pass
+        if encoding["confidence"] > 50.0:
+            try:
+                value = bytes_value.decode(encoding["encoding"], "replace")
+            except (TypeError, UnicodeDecodeError):
+                # ??? use the original value, we've done our best to try and
+                # convert it to a clean utf-8 string.
+                pass
 
     return value
 
