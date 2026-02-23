@@ -55,6 +55,7 @@ class Domain(mixins.MessageLimitMixin, AdminObject):
         default=True,
         help_text=gettext_lazy("Check to enable DNS checks for this domain"),
     )
+    last_dns_check_execution = models.DateTimeField(null=True, blank=True)
 
     transport = models.OneToOneField(
         "transport.Transport", null=True, on_delete=models.SET_NULL
