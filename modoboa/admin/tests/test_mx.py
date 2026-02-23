@@ -242,7 +242,9 @@ class DNSBLTestCase(ModoTestCase):
         worker = SimpleWorker([queue], connection=queue.connection)
         worker.work(burst=True)
 
+        self.domain.refresh_from_db()
         self.assertTrue(models.DNSBLResult.objects.filter(domain=self.domain).exists())
+        self.assertIsNot(self.domain.last_dns_check_execution, None)
         self.assertFalse(
             models.DNSBLResult.objects.filter(domain=self.domain3).exists()
         )

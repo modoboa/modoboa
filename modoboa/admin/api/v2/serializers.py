@@ -63,6 +63,7 @@ class DomainSerializer(v1_serializers.DomainSerializer):
             "opened_alarms_count",
             "sent_messages",
             "sent_messages_in_percent",
+            "last_dns_check_execution",
         )
 
     def __init__(self, *args, **kwargs):
