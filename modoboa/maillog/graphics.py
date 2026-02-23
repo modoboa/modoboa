@@ -41,16 +41,16 @@ class Curve:
         return [
             f"DEF:{self.dsname}={rrdfile}:{self.dsname}:{self.cfunc}",
             f"CDEF:{self.dsname}pm={self.dsname},UN,0,{self.dsname},IF,60,*",
-            f'XPORT:{self.dsname}pm:"{self.legend}"',
+            f"XPORT:{self.dsname}pm:'{self.legend}'",
         ]
 
 
 class Graphic:
     """Graphic."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Constructor."""
-        self._curves = []
+        self._curves: list[Curve] = []
         try:
             order = self.order
         except AttributeError:
@@ -112,7 +112,7 @@ class Graphic:
             "--end",
             str(end),
         ] + cmdargs
-        code, output = exec_cmd(cmd)
+        code, output = exec_cmd(cmd, shell=True)
         if code:
             return []
 
@@ -131,9 +131,9 @@ class Graphic:
 class GraphicSet:
     """A set of graphics."""
 
-    domain_selector = False
-    title = None
-    _graphics = []
+    domain_selector: bool = False
+    title: str | None = None
+    _graphics: list[Graphic] = []
 
     def __init__(self, instances=None):
         if instances is None:
