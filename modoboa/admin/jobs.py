@@ -72,6 +72,8 @@ def handle_mailbox_operations():
 def launch_domain_dns_checks(domain_id: int):
     domain = models.Domain.objects.get(id=domain_id)
     DNSChecker().run(domain)
+    domain.last_dns_check_execution = timezone.now()
+    domain.save()
 
 
 def handle_dns_checks():
