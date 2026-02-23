@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-04 09:30+0100\n"
+"POT-Creation-Date: 2026-02-23 16:14+0100\n"
 "PO-Revision-Date: 2021-10-04 13:27+0000\n"
 "Last-Translator: Simona Iacob <s@zp1.net>\n"
 "Language-Team: Romanian (Romania) (http://www.transifex.com/tonio/modoboa/"
@@ -51,12 +51,12 @@ msgid "Cannot be greater than domain quota"
 msgstr "Nu poate fi mai mare decat cota domeniului"
 
 #: admin/api/v1/serializers.py:168 admin/api/v1/serializers.py:364
-#: admin/api/v2/serializers.py:571 admin/models/alias.py:45
+#: admin/api/v2/serializers.py:581 admin/models/alias.py:45
 msgid "Permission denied."
 msgstr "Permisiune refuzată."
 
-#: admin/api/v1/serializers.py:231 admin/api/v2/serializers.py:90
-#: admin/api/v2/serializers.py:492 amavis/serializers.py:39
+#: admin/api/v1/serializers.py:231 admin/api/v2/serializers.py:91
+#: admin/api/v2/serializers.py:502 amavis/serializers.py:39
 #: core/api/v2/serializers.py:248 core/api/v2/serializers.py:250
 #: core/api/v2/serializers.py:259 transport/backends.py:40
 msgid "This field is required"
@@ -68,7 +68,7 @@ msgid ""
 msgstr ""
 "Lista domenilor administrate (doar reselleri și administratori de domeniu)"
 
-#: admin/api/v1/serializers.py:337 admin/api/v2/serializers.py:553
+#: admin/api/v1/serializers.py:337 admin/api/v2/serializers.py:563
 msgid "Not allowed for this role."
 msgstr "Ne permis pentru acest rol."
 
@@ -76,12 +76,12 @@ msgstr "Ne permis pentru acest rol."
 msgid "Must be equal to mailbox full_address"
 msgstr "Trebuie să fie egal cu mailbox full_address"
 
-#: admin/api/v1/serializers.py:397 admin/api/v2/serializers.py:605
+#: admin/api/v1/serializers.py:397 admin/api/v2/serializers.py:615
 #: calendars/serializers.py:182 pdfcredentials/api/v2/serializers.py:91
 msgid "This field is required."
 msgstr "Acest câmp este necesar."
 
-#: admin/api/v1/serializers.py:409 admin/api/v2/serializers.py:622
+#: admin/api/v1/serializers.py:409 admin/api/v2/serializers.py:632
 msgid "Local domain {} does not exist"
 msgstr "Domeniu local {} nu există"
 
@@ -107,58 +107,58 @@ msgstr "Nu ai acces la această cutie postală"
 msgid "Here is your new Modoboa password: {}"
 msgstr "Aici este noua ta parolă Modoboa: {}"
 
-#: admin/api/v2/serializers.py:82
+#: admin/api/v2/serializers.py:83
 msgid "DKIM keys storage directory not configured"
 msgstr "Folderul de stocare a cheilor DKIM nu este configurat"
 
-#: admin/api/v2/serializers.py:94
+#: admin/api/v2/serializers.py:95
 msgid "This field is valid when type is relaydomain"
 msgstr ""
 
-#: admin/api/v2/serializers.py:101
+#: admin/api/v2/serializers.py:102
 msgid "You can't define an unlimited quota."
 msgstr "Nu poți sa definești o cotă nelimitată"
 
-#: admin/api/v2/serializers.py:135
+#: admin/api/v2/serializers.py:138
 #, python-format
 msgid "User '%s' already exists"
 msgstr "Utilizatorul '%s'  exista deja"
 
-#: admin/api/v2/serializers.py:256 admin/api/v2/serializers.py:262
+#: admin/api/v2/serializers.py:266 admin/api/v2/serializers.py:272
 msgid "Must be a positive integer"
 msgstr "Trebuie să fie un număr întreg pozitiv"
 
-#: admin/api/v2/serializers.py:271
+#: admin/api/v2/serializers.py:281
 msgid "openssl not found, please make sure it is installed."
 msgstr "openssl nu a fost găsit, asigurați-vă că este instalat."
 
-#: admin/api/v2/serializers.py:274 pdfcredentials/api/v2/serializers.py:84
+#: admin/api/v2/serializers.py:284 pdfcredentials/api/v2/serializers.py:84
 msgid "Directory not found."
 msgstr "Directorul nu a fost găsit."
 
-#: admin/api/v2/serializers.py:285
+#: admin/api/v2/serializers.py:295
 msgid "This field only allows valid IP addresses (or networks)"
 msgstr ""
 
-#: admin/api/v2/serializers.py:298
+#: admin/api/v2/serializers.py:308
 msgid "Please disable imap migration before disabling this option."
 msgstr ""
 
-#: admin/api/v2/serializers.py:311
+#: admin/api/v2/serializers.py:321
 msgid "Define at least one authorized network / address"
 msgstr "Definiți cel puțin o adresă de rețea autorizată"
 
-#: admin/api/v2/serializers.py:588
+#: admin/api/v2/serializers.py:598
 msgid "The left part of an email address can't be more than 64 characters."
 msgstr ""
 
-#: admin/api/v2/serializers.py:610
+#: admin/api/v2/serializers.py:620
 #, fuzzy
 #| msgid "A mailbox is required"
 msgid "A mailbox is required to create aliases."
 msgstr "O căsuță poștală este necesară"
 
-#: admin/api/v2/serializers.py:783
+#: admin/api/v2/serializers.py:793
 #, fuzzy
 #| msgid "Unknown"
 msgid "Unknown status"
@@ -344,7 +344,7 @@ msgstr ""
 "Redenumește sau eliminează căsuțele poștale din sistemul de fișiere atunci "
 "când se redenumesc sau se elimină în Modoboa"
 
-#: admin/app_settings.py:198 admin/models/domain.py:36
+#: admin/app_settings.py:198 admin/models/domain.py:39
 msgid "Default mailbox quota"
 msgstr "Cota implicită pentru cutia poștală"
 
@@ -479,16 +479,16 @@ msgstr "[modoboa] Problemă(e) MX pentru domeniul {}"
 msgid "[modoboa] DNSBL issue(s) for domain {}"
 msgstr "[modoboa] Problemă(e) DNSBL pentru domeniul {}  "
 
-#: admin/handlers.py:179
+#: admin/handlers.py:168
 msgid "domain alias"
 msgstr "alias domeniu"
 
-#: admin/handlers.py:227
+#: admin/handlers.py:216
 #, python-format
 msgid "Account import failed (%s): domain does not exist"
 msgstr "Importul de cont a esuat (%s): domeniul nu există"
 
-#: admin/handlers.py:246
+#: admin/handlers.py:235
 #, python-format
 msgid "Account import failed (%s): wrong quota value"
 msgstr "Importul de cont a esuat (%s): valuare de cotă incorectă"
@@ -557,17 +557,17 @@ msgstr "Citim fișierul CSV folosind codarea %(encoding)s"
 msgid "Unable to decode CSV file using %(encoding)s encoding"
 msgstr "Imposibil de decodat fișierul CSV folosind codarea %(encoding)s"
 
-#: admin/management/commands/subcommands/_manage_dkim_keys.py:29
+#: admin/management/commands/subcommands/_manage_dkim_keys.py:30
 msgid ""
 "DKIM path non-writable (either a permission issue or the directory does not "
 "exist)"
 msgstr ""
 
-#: admin/management/commands/subcommands/_manage_dkim_keys.py:52
+#: admin/management/commands/subcommands/_manage_dkim_keys.py:55
 msgid "Failed to generate DKIM private key"
 msgstr ""
 
-#: admin/management/commands/subcommands/_manage_dkim_keys.py:62
+#: admin/management/commands/subcommands/_manage_dkim_keys.py:67
 #, fuzzy
 #| msgid "Enable communication with Modoboa public API"
 msgid "Failed to generate DKIM public key"
@@ -585,7 +585,7 @@ msgstr "adresă"
 msgid "The alias address."
 msgstr "Adresă alias."
 
-#: admin/models/alias.py:123 admin/models/domain.py:45
+#: admin/models/alias.py:123 admin/models/domain.py:48
 #: admin/models/domain_alias.py:45 autoreply/models.py:25
 msgid "enabled"
 msgstr "activat"
@@ -626,73 +626,73 @@ msgstr "Destinatar local {}@{} nu poate fi găsit"
 msgid "Invalid line: {}"
 msgstr "Linie invalidă: %s"
 
-#: admin/models/domain.py:27 admin/models/domain_alias.py:33
+#: admin/models/domain.py:30 admin/models/domain_alias.py:33
 msgid "name"
 msgstr "nume"
 
-#: admin/models/domain.py:30
+#: admin/models/domain.py:33
 msgid "The domain name"
 msgstr "Numele domeniului"
 
-#: admin/models/domain.py:39 admin/models/mailbox.py:92
+#: admin/models/domain.py:42 admin/models/mailbox.py:92
 msgid "Message sending limit"
 msgstr "Limita de trimitere a mesajelor"
 
-#: admin/models/domain.py:42
+#: admin/models/domain.py:45
 msgid "Number of messages this domain can send per day"
 msgstr "Numărul de mesaje pe care acest domeniu le poate trimite pe zi"
 
-#: admin/models/domain.py:46
+#: admin/models/domain.py:49
 msgid "Check to activate this domain"
 msgstr "Bifează pentru a activa domeniul"
 
-#: admin/models/domain.py:51
+#: admin/models/domain.py:54
 msgid "Enable DNS checks"
 msgstr "Activează verificările DNS"
 
-#: admin/models/domain.py:53
+#: admin/models/domain.py:56
 msgid "Check to enable DNS checks for this domain"
 msgstr "Bifează pentru a activa verificările DNS pentru acest domeniu"
 
-#: admin/models/domain.py:61
+#: admin/models/domain.py:65
 msgid "Enable DKIM signing"
 msgstr "Activează semnarea DKIM"
 
-#: admin/models/domain.py:63
+#: admin/models/domain.py:67
 msgid ""
 "If you activate this feature, a DKIM key will be generated for this domain."
 msgstr ""
 "Dacă activezi această facilitate, o chieie DKIM se va genera pt acest "
 "domeniu."
 
-#: admin/models/domain.py:70
+#: admin/models/domain.py:74
 msgid "Key length"
 msgstr "Mărime cheie"
 
-#: admin/models/domain.py:321 admin/models/domain_alias.py:70
+#: admin/models/domain.py:330 admin/models/domain_alias.py:70
 #: core/models.py:352 relaydomains/lib.py:13
 msgid "Invalid line"
 msgstr "Linie invalidă"
 
-#: admin/models/domain.py:331
+#: admin/models/domain.py:340
 #, fuzzy
 #| msgid "No authorized MX record found for domain {}"
 msgid "{}: no authorized MX record found for domain"
 msgstr "Nu s-au gasit înregistrări MX autorizate pentru acest domeniu {}"
 
-#: admin/models/domain.py:337
+#: admin/models/domain.py:346
 #, fuzzy
 #| msgid "Invalid quota value for domain '{}'"
 msgid "{}: invalid quota value for domain"
 msgstr "Valuare de cotă invalidă pentru domeniul '{}'"
 
-#: admin/models/domain.py:343
+#: admin/models/domain.py:352
 #, fuzzy
 #| msgid "Invalid default mailbox quota value for domain '{}'"
 msgid "{}: invalid default mailbox quota value for domain"
 msgstr "Valuare implicită de cotă invalidă pentru domeniul '{}'"
 
-#: admin/models/domain.py:350
+#: admin/models/domain.py:359
 #, fuzzy
 #| msgid "Default mailbox quota cannot be greater than domain quota"
 msgid "{}: default mailbox quota cannot be greater than domain quota"
@@ -1046,19 +1046,19 @@ msgstr ""
 msgid "Connection to amavis failed: %s"
 msgstr ""
 
-#: amavis/lib.py:133
+#: amavis/lib.py:124
 #, fuzzy
 #| msgid "Failed to locate rrdtool binary."
 msgid "Failed to find {} binary"
 msgstr "Nu s-a gasit binarul rrdtool"
 
-#: amavis/lib.py:148
+#: amavis/lib.py:165
 #, fuzzy
 #| msgid "Local recipient {}@{} not found"
 msgid "No recipient found"
 msgstr "Destinatar local {}@{} nu poate fi găsit"
 
-#: amavis/lib.py:159
+#: amavis/lib.py:176
 #, fuzzy
 #| msgid "Domain not found."
 msgid "Local domain not found"
@@ -2874,63 +2874,63 @@ msgstr "Statistici"
 msgid "Failed to locate rrdtool binary."
 msgstr "Nu s-a gasit binarul rrdtool"
 
-#: maillog/graphics.py:166
+#: maillog/graphics.py:174
 msgid "Average traffic (msgs/min)"
 msgstr "Media traficului (mesaje/min)"
 
-#: maillog/graphics.py:169
+#: maillog/graphics.py:177
 msgid "sent messages"
 msgstr "mesaje trimise"
 
-#: maillog/graphics.py:170
+#: maillog/graphics.py:178
 msgid "received messages"
 msgstr "mesaje primite "
 
-#: maillog/graphics.py:171
+#: maillog/graphics.py:179
 msgid "bounced messages"
 msgstr "mesaje returnate"
 
-#: maillog/graphics.py:172
+#: maillog/graphics.py:180
 msgid "rejected messages"
 msgstr "mesaje rejectate"
 
-#: maillog/graphics.py:173
+#: maillog/graphics.py:181
 msgid "virus messages"
 msgstr "mesaje cu virus"
 
-#: maillog/graphics.py:174
+#: maillog/graphics.py:182
 msgid "spam messages"
 msgstr "mesaje spam"
 
-#: maillog/graphics.py:181
+#: maillog/graphics.py:189
 msgid "greylisted messages"
 msgstr "mesaje suspecte"
 
-#: maillog/graphics.py:198
+#: maillog/graphics.py:206
 msgid "Average normal traffic size (bytes/min)"
 msgstr "Media de trafic (octecți/minut)"
 
-#: maillog/graphics.py:201
+#: maillog/graphics.py:209
 msgid "received size"
 msgstr "mărime pentru primite"
 
-#: maillog/graphics.py:202
+#: maillog/graphics.py:210
 msgid "sent size"
 msgstr "mărime pentru trimise"
 
-#: maillog/graphics.py:209
+#: maillog/graphics.py:217
 msgid "Mail traffic"
 msgstr "Trafic Email"
 
-#: maillog/graphics.py:252
+#: maillog/graphics.py:260
 msgid "Average account creation (account/hour)"
 msgstr "Media creări de conturi (cont/oră)"
 
-#: maillog/graphics.py:254
+#: maillog/graphics.py:262
 msgid "New accounts"
 msgstr "Conturi noi"
 
-#: maillog/graphics.py:261
+#: maillog/graphics.py:269
 msgid "Accounts"
 msgstr "Conturi"
 
@@ -3350,7 +3350,7 @@ msgstr ""
 msgid "is not"
 msgstr ""
 
-#: sievefilters/constants.py:23 webmail/lib/imapemail.py:302
+#: sievefilters/constants.py:23 webmail/lib/imapemail.py:315
 msgid "Subject"
 msgstr "Subiect"
 
@@ -3775,21 +3775,21 @@ msgstr ""
 msgid "Server response"
 msgstr "Adresă server"
 
-#: webmail/lib/attachments.py:112
+#: webmail/lib/attachments.py:146
 #, fuzzy
 #| msgid "Failed to create LDAP account: {}"
 msgid "Failed to remove attachment: "
 msgstr "Nu s-a reușit crearea unui cont LDAP: {}"
 
-#: webmail/lib/imapemail.py:270
+#: webmail/lib/imapemail.py:283
 msgid "wrote:"
 msgstr ""
 
-#: webmail/lib/imapemail.py:304
+#: webmail/lib/imapemail.py:317
 msgid "Date"
 msgstr "Dată"
 
-#: webmail/lib/imapemail.py:320 webmail/lib/imapemail.py:323
+#: webmail/lib/imapemail.py:333 webmail/lib/imapemail.py:336
 #, fuzzy
 #| msgid "sent messages"
 msgid "Original message"
@@ -3825,19 +3825,19 @@ msgstr ""
 msgid "Trash"
 msgstr ""
 
-#: webmail/serializers.py:220
+#: webmail/serializers.py:221
 msgid "Moving scheduled messages is forbidden"
 msgstr ""
 
-#: webmail/serializers.py:253
+#: webmail/serializers.py:254
 msgid "Only datetime in the future is allowed"
 msgstr ""
 
-#: webmail/serializers.py:258
+#: webmail/serializers.py:259
 msgid "Provived datetime must be one minute in the future at least"
 msgstr ""
 
-#: webmail/viewsets.py:359
+#: webmail/viewsets.py:392
 #, python-format
 msgid "Attachment is too big (limit: %s)"
 msgstr ""

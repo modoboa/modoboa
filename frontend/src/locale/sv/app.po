@@ -54,7 +54,7 @@ msgstr "API token skapat"
 
 #: src/components/account/APISetupForm.vue:94
 #: src/components/account/FidoAuthForm.vue:184
-#: src/components/admin/domains/DNSDetail.vue:258
+#: src/components/admin/domains/DNSDetail.vue:265
 #: src/components/admin/domains/DomainList.vue:300
 #: src/components/admin/identities/IdentityList.vue:482
 #: src/components/admin/identities/IdentityList.vue:522
@@ -109,7 +109,7 @@ msgstr "Aktiverad"
 #: src/components/account/AutoReplyForm.vue:12
 #: src/components/quarantine/QuarantineList.vue:49
 #: src/components/quarantine/QuarantineList.vue:235
-#: src/components/webmail/ComposeEmailForm.vue:158
+#: src/components/webmail/ComposeEmailForm.vue:166
 msgid "Subject"
 msgstr "Ämne"
 
@@ -131,7 +131,7 @@ msgstr ""
 #: src/components/calendars/EventForm.vue:24
 #: src/components/quarantine/QuarantineList.vue:234
 #: src/components/tools/TimeSerieChart.vue:19
-#: src/components/webmail/ComposeEmailForm.vue:48
+#: src/components/webmail/ComposeEmailForm.vue:56
 msgid "From"
 msgstr "Från"
 
@@ -224,7 +224,7 @@ msgstr "namn"
 #: src/components/account/FidoAuthForm.vue:130
 #: src/components/account/FilterForm.vue:7
 #: src/components/account/FilterSetForm.vue:9
-#: src/components/admin/domains/DNSDetail.vue:188
+#: src/components/admin/domains/DNSDetail.vue:195
 #: src/components/admin/domains/DomainAdminList.vue:112
 #: src/components/admin/domains/DomainAliasForm.vue:8
 #: src/components/admin/domains/DomainCreationForm.vue:164
@@ -279,8 +279,8 @@ msgid "Do you really want to delete this WebAuthn device?"
 msgstr "Vill du verkligen ta bort den här WebAuthn-enheten?"
 
 #: src/components/account/FidoAuthForm.vue:188
-#: src/components/admin/domains/DNSDetail.vue:244
-#: src/components/admin/domains/DNSDetail.vue:264
+#: src/components/admin/domains/DNSDetail.vue:251
+#: src/components/admin/domains/DNSDetail.vue:271
 #: src/components/admin/domains/DomainList.vue:306
 #: src/components/admin/identities/IdentityList.vue:487
 #: src/components/admin/identities/IdentityList.vue:527
@@ -290,8 +290,8 @@ msgid "No"
 msgstr "Nej"
 
 #: src/components/account/FidoAuthForm.vue:189
-#: src/components/admin/domains/DNSDetail.vue:245
-#: src/components/admin/domains/DNSDetail.vue:265
+#: src/components/admin/domains/DNSDetail.vue:252
+#: src/components/admin/domains/DNSDetail.vue:272
 #: src/components/admin/domains/DomainList.vue:307
 #: src/components/admin/identities/IdentityList.vue:486
 #: src/components/admin/identities/IdentityList.vue:526
@@ -547,7 +547,7 @@ msgstr ""
 #: src/components/webmail/EmailSchedulingForm.vue:28
 #: src/components/webmail/MailboxForm.vue:29
 #: src/layouts/connected/ConnectedLayout.vue:19
-#: src/views/webmail/EmailView.vue:158
+#: src/views/webmail/EmailView.vue:167
 msgid "Close"
 msgstr "Stäng"
 
@@ -810,82 +810,87 @@ msgstr ""
 msgid "DNS configuration help"
 msgstr "DNS konfigurering hjälp"
 
-#: src/components/admin/domains/DNSDetail.vue:20
-#: src/components/admin/domains/DNSDetail.vue:51
+#: src/components/admin/domains/DNSDetail.vue:17
+#, fuzzy
+msgid "Last check:"
+msgstr "Senast använd"
+
+#: src/components/admin/domains/DNSDetail.vue:27
+#: src/components/admin/domains/DNSDetail.vue:58
 #: src/components/admin/domains/DNSStatusChip.vue:21
 msgid "Pending"
 msgstr "Väntande"
 
-#: src/components/admin/domains/DNSDetail.vue:46
+#: src/components/admin/domains/DNSDetail.vue:53
 #: src/components/admin/domains/DomainDNSConfig.vue:71
 msgid "Auto configuration"
 msgstr "Automatisk konfiguration"
 
-#: src/components/admin/domains/DNSDetail.vue:61
+#: src/components/admin/domains/DNSDetail.vue:68
 msgid "autoconfig record (Mozilla): %{ value }"
 msgstr "\"autoconfig-post (Mozilla): %{ value }\""
 
-#: src/components/admin/domains/DNSDetail.vue:67
+#: src/components/admin/domains/DNSDetail.vue:74
 msgid "autoconfig record (Mozilla) not found"
 msgstr "autoconfig-posten (Mozilla) hittades inte"
 
-#: src/components/admin/domains/DNSDetail.vue:73
+#: src/components/admin/domains/DNSDetail.vue:80
 msgid "autodiscover record (Microsoft): %{ value }"
 msgstr "autodiscover-post (Microsoft): %{ value }"
 
-#: src/components/admin/domains/DNSDetail.vue:79
+#: src/components/admin/domains/DNSDetail.vue:86
 msgid "autodiscover record (Microsoft) not found"
 msgstr "autodiscover-post (Microsoft) hittades inte"
 
-#: src/components/admin/domains/DNSDetail.vue:83
+#: src/components/admin/domains/DNSDetail.vue:90
 msgid "Authentication"
 msgstr "Autentisering"
 
-#: src/components/admin/domains/DNSDetail.vue:87
+#: src/components/admin/domains/DNSDetail.vue:94
 msgid "SPF record found"
 msgstr "SPF post hittad"
 
-#: src/components/admin/domains/DNSDetail.vue:90
+#: src/components/admin/domains/DNSDetail.vue:97
 msgid "SPF record not found"
 msgstr "SPF post saknas"
 
-#: src/components/admin/domains/DNSDetail.vue:95
+#: src/components/admin/domains/DNSDetail.vue:102
 msgid "DKIM record found"
 msgstr "DKIM-post hittades"
 
-#: src/components/admin/domains/DNSDetail.vue:98
+#: src/components/admin/domains/DNSDetail.vue:105
 msgid "DKIM record not found"
 msgstr "DKIM-posten hittades inte"
 
-#: src/components/admin/domains/DNSDetail.vue:103
+#: src/components/admin/domains/DNSDetail.vue:110
 msgid "DMARC record found"
 msgstr "DMARC post hittad"
 
-#: src/components/admin/domains/DNSDetail.vue:106
+#: src/components/admin/domains/DNSDetail.vue:113
 msgid "DMARC record not found"
 msgstr "DMARC post ej hittad"
 
-#: src/components/admin/domains/DNSDetail.vue:114
+#: src/components/admin/domains/DNSDetail.vue:121
 msgid "DKIM key"
 msgstr "DKIM nyckel"
 
-#: src/components/admin/domains/DNSDetail.vue:119
+#: src/components/admin/domains/DNSDetail.vue:126
 msgid "Show key"
 msgstr "Visa nyckel"
 
-#: src/components/admin/domains/DNSDetail.vue:125
+#: src/components/admin/domains/DNSDetail.vue:132
 msgid "Copy key to clipboard"
 msgstr "Kopiera nyckel till urklipp"
 
-#: src/components/admin/domains/DNSDetail.vue:130
+#: src/components/admin/domains/DNSDetail.vue:137
 msgid "Generate a new DKIM key"
 msgstr "Generera en ny DKIM nyckel"
 
-#: src/components/admin/domains/DNSDetail.vue:137
+#: src/components/admin/domains/DNSDetail.vue:144
 msgid "Not generated"
 msgstr "Ej genererad"
 
-#: src/components/admin/domains/DNSDetail.vue:189
+#: src/components/admin/domains/DNSDetail.vue:196
 #: src/components/admin/identities/AccountSenderAddresses.vue:73
 #: src/components/admin/identities/AliasCreationForm.vue:60
 #: src/components/admin/identities/AliasEditForm.vue:16
@@ -893,30 +898,29 @@ msgstr "Ej genererad"
 #: src/components/admin/imap_migration/ProviderCreationForm.vue:54
 #: src/components/admin/imap_migration/ProvidersList.vue:115
 #: src/components/contacts/ContactForm.vue:85
-#: src/components/contacts/EmailField.vue:5
 msgid "Address"
 msgstr "Adress"
 
-#: src/components/admin/domains/DNSDetail.vue:190
+#: src/components/admin/domains/DNSDetail.vue:197
 msgid "Updated"
 msgstr "Uppdaterad"
 
-#: src/components/admin/domains/DNSDetail.vue:203
+#: src/components/admin/domains/DNSDetail.vue:210
 msgid "DKIM key copied to clipboard"
 msgstr "DKIM-nyckel kopierad till urklipp"
 
-#: src/components/admin/domains/DNSDetail.vue:216
+#: src/components/admin/domains/DNSDetail.vue:223
 msgid ""
 "A new key will be generated soon. Refresh the page in a moment to see it."
 msgstr ""
 "En ny nyckel kommer snart att skapas. Ladda om sidan om en stund för att se "
 "den."
 
-#: src/components/admin/domains/DNSDetail.vue:238
+#: src/components/admin/domains/DNSDetail.vue:245
 msgid "warning"
 msgstr "varning"
 
-#: src/components/admin/domains/DNSDetail.vue:239
+#: src/components/admin/domains/DNSDetail.vue:246
 msgid ""
 "DKIM key does not seem to be generated yet or has failed. Do you want to "
 "requeue the job?"
@@ -924,7 +928,7 @@ msgstr ""
 "DKIM-nyckeln verkar inte ha genererats ännu eller har misslyckats. Vill du "
 "köa jobbet?"
 
-#: src/components/admin/domains/DNSDetail.vue:259
+#: src/components/admin/domains/DNSDetail.vue:266
 msgid "DKIM keys already exist for this domain. Do you want to overwrite them?"
 msgstr "DKIM-nycklar finns redan för den här domänen. Vill du skriva över dem?"
 
@@ -1795,6 +1799,7 @@ msgstr ""
 "här användare ingen brevlåda så den kan inte komma åt slutanvändarfunktioner."
 
 #: src/components/admin/identities/form_steps/AliasGeneralForm.vue:10
+#: src/components/contacts/EmailField.vue:5
 msgid "Email address"
 msgstr "E-postadress"
 
@@ -2007,8 +2012,8 @@ msgstr "Kö ID"
 #: src/components/quarantine/QuarantineList.vue:52
 #: src/components/quarantine/QuarantineList.vue:233
 #: src/components/tools/TimeSerieChart.vue:20
-#: src/components/webmail/ComposeEmailForm.vue:65
-#: src/views/webmail/EmailView.vue:103
+#: src/components/webmail/ComposeEmailForm.vue:73
+#: src/views/webmail/EmailView.vue:112
 msgid "To"
 msgstr "Till"
 
@@ -2508,32 +2513,36 @@ msgstr "Bifoga"
 msgid "Schedule sending"
 msgstr ""
 
-#: src/components/webmail/ComposeEmailForm.vue:73
-#: src/components/webmail/ComposeEmailForm.vue:118
-#: src/components/webmail/ComposeEmailForm.vue:145
+#: src/components/webmail/ComposeEmailForm.vue:47
+msgid "Save as draft"
+msgstr ""
+
+#: src/components/webmail/ComposeEmailForm.vue:81
+#: src/components/webmail/ComposeEmailForm.vue:126
+#: src/components/webmail/ComposeEmailForm.vue:153
 msgid "Provide one or more addresses"
 msgstr "Ange en eller flera adresser"
 
-#: src/components/webmail/ComposeEmailForm.vue:86
-#: src/components/webmail/ComposeEmailForm.vue:104
+#: src/components/webmail/ComposeEmailForm.vue:94
+#: src/components/webmail/ComposeEmailForm.vue:112
 msgid "Cc"
 msgstr "Cc"
 
-#: src/components/webmail/ComposeEmailForm.vue:94
-#: src/components/webmail/ComposeEmailForm.vue:131
+#: src/components/webmail/ComposeEmailForm.vue:102
+#: src/components/webmail/ComposeEmailForm.vue:139
 msgid "Bcc"
 msgstr "Bcc"
 
-#: src/components/webmail/ComposeEmailForm.vue:300
+#: src/components/webmail/ComposeEmailForm.vue:318
 #, fuzzy
 msgid "Email scheduled"
 msgstr "E-post skickat"
 
-#: src/components/webmail/ComposeEmailForm.vue:301
+#: src/components/webmail/ComposeEmailForm.vue:319
 msgid "Email sent"
 msgstr "E-post skickat"
 
-#: src/components/webmail/ComposeEmailForm.vue:354
+#: src/components/webmail/ComposeEmailForm.vue:393
 msgid "You must provide one recipient at least"
 msgstr ""
 
@@ -3142,7 +3151,7 @@ msgstr ""
 msgid "Hide full headers"
 msgstr ""
 
-#: src/views/quarantine/MessageView.vue:201 src/views/webmail/EmailView.vue:267
+#: src/views/quarantine/MessageView.vue:201 src/views/webmail/EmailView.vue:276
 msgid "Message deleted"
 msgstr "Meddelandet raderat"
 
@@ -3162,33 +3171,33 @@ msgstr "Svara"
 msgid "Reply all"
 msgstr "Svara alla"
 
-#: src/views/webmail/EmailView.vue:63
+#: src/views/webmail/EmailView.vue:72
 msgid "Enable links"
 msgstr "Aktivera länkar"
 
-#: src/views/webmail/EmailView.vue:68
+#: src/views/webmail/EmailView.vue:77
 msgid "Disable links"
 msgstr "Inaktivera länkar"
 
-#: src/views/webmail/EmailView.vue:72
+#: src/views/webmail/EmailView.vue:81
 msgid "Display source"
 msgstr "Visa källa"
 
-#: src/views/webmail/EmailView.vue:145
+#: src/views/webmail/EmailView.vue:154
 #, fuzzy
 msgid "Message scheduled at:"
 msgstr "Meddelandet raderat"
 
-#: src/views/webmail/EmailView.vue:151
+#: src/views/webmail/EmailView.vue:160
 #, fuzzy
 msgid "Message source"
 msgstr "Meddelande historik"
 
-#: src/views/webmail/EmailView.vue:281
+#: src/views/webmail/EmailView.vue:290
 msgid "Message marked as junk"
 msgstr "Meddelande markerat som skräp"
 
-#: src/views/webmail/EmailView.vue:295
+#: src/views/webmail/EmailView.vue:304
 msgid "Message marked as not junk"
 msgstr "Meddelandet markerat som inte skräp"
 
