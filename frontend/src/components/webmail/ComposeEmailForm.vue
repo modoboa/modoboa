@@ -436,7 +436,6 @@ watch(
 if (!route.query.uid) {
   const args =
     route.query.mailbox === constants.DRAFTS_FOLDER ? [route.query.mailid] : []
-  console.log(args)
   api.createComposeSession(...args).then((resp) => {
     const query = { ...route.query, uid: resp.data.uid }
     attachmentCount.value = resp.data.attachments?.length || 0
