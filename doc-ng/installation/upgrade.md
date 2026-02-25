@@ -131,6 +131,25 @@ If you need to rebuild you virtualenv, you can check this [part of the documenta
 
 The section below containt specific migration steps to upgrade Modoboa instance.
 
+## Version 2.7.3
+
+### Required changes to `settings.py`
+
+* Add new permission to Swagger/Spectacular (prevents HTTP 401 error)
+
+```python
+SPECTACULAR_SETTINGS = {
+    'SCHEMA_PATH_PREFIX': r'/api/v[0-9]',
+    'TITLE': 'Modoboa API',
+    'VERSION': None,
+    'SERVE_AUTHENTICATION': [], # [!code --]
+    'SERVE_AUTHENTICATION': ['rest_framework.permissions.AllowAny'], # [!code ++]
+    'DEFAULT_FILTER_INSPECTORS': [
+        'drf_spectacular.contrib.django_filters.DjangoFilterBackendInspector',
+    ],
+}
+```
+
 ## Version 2.7.0
 
 ### Required changes to `settings.py`
