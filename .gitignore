@@ -13,6 +13,7 @@ modoboa_test
 bin/instance
 .coverage
 ./build/
+build/
 dist/
 modoboa/frontend_dist
 # JS stuff
