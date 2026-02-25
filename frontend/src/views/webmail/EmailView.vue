@@ -54,7 +54,7 @@
         >
         </v-btn>
         <v-btn
-          v-if="route.query.mailbox === 'Drafts'"
+          v-if="route.query.mailbox === constants.DRAFTS_FOLDER"
           class="ml-2"
           variant="tonal"
           icon="mdi-pencil"
@@ -177,6 +177,7 @@ import { nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useGettext } from 'vue3-gettext'
 import { useBusStore } from '@/stores'
+import constants from '@/constants.json'
 import api from '@/api/webmail'
 import ContactCard from '@/components/webmail/ContactCard.vue'
 

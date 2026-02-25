@@ -4,5 +4,6 @@
     "SUPER_ADMIN": "SuperAdmins",
     "RESELLER": "Resellers",
     "DOMAIN_ADMIN": "DomainAdmins",
-    "USER": "SimpleUsers"
+    "USER": "SimpleUsers",
+    "DRAFTS_FOLDER": "Drafts"
 }
