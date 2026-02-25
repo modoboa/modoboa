@@ -202,6 +202,7 @@ import { ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useGettext } from 'vue3-gettext'
 import { useAuthStore, useBusStore } from '@/stores'
+import constants from '@/constants.json'
 import debounce from 'debounce'
 import AttachmentsDialog from '@/components/webmail/AttachmentsDialog'
 import BodyEditor from '@/components/webmail/BodyEditor'
@@ -356,9 +357,12 @@ const lookForContacts = debounce(async (search) => {
 }, 500)
 
 const initialize = async (body) => {
-  if (route.query.mailid) {
+  if (route.params.mailbox === constants.DRAFTS_FOLDER && route.query.mailid) {
     // Load draft
-    const draft = await api.getEmailContent('Drafts', route.query.mailid)
+    const draft = await api.getEmailContent(
+      constants.DRAFTS_FOLDER,
+      route.query.mailid
+    )
     form.value.sender = draft.data.from_address.address
     if (draft.data.to?.length) {
       form.value.to = draft.data.to.map((rcpt) => rcpt.address)
@@ -430,7 +434,9 @@ watch(
 )
 
 if (!route.query.uid) {
-  api.createComposeSession(route.query.mailid).then((resp) => {
+  const args =
+    route.query.mailbox === constants.DRAFTS_FOLDER ? [route.query.mailid] : []
+  api.createComposeSession(...args).then((resp) => {
     const query = { ...route.query, uid: resp.data.uid }
     attachmentCount.value = resp.data.attachments?.length || 0
     router.push({ name: route.name, query })

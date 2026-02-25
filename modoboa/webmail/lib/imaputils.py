@@ -783,6 +783,8 @@ class IMAPconnector:
             bcmd = "BODY.PEEK" if readonly else "BODY"
             to_fetch = f"(BODYSTRUCTURE {bcmd}[HEADER.FIELDS ({what})])"
         data = self._cmd("FETCH", mailid, to_fetch)
+        if int(mailid) not in data:
+            raise ImapError(f"Message with UID {mailid} not found in {mbox} folder")
         return data[int(mailid)]
 
 
