@@ -131,11 +131,11 @@ If you need to rebuild you virtualenv, you can check this [part of the documenta
 
 The section below containt specific migration steps to upgrade Modoboa instance.
 
-## Version 2.7.1
+## Version 2.7.3
 
 ### Required changes to `settings.py`
 
-* Add new permissions to Swagger/Spectacular (prevent HTTP 401 error)
+* Add new permission to Swagger/Spectacular (prevents HTTP 401 error)
 
 ```python
 SPECTACULAR_SETTINGS = {
