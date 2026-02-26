@@ -95,16 +95,19 @@ query = {{ query|safe }}
             if dburl
             else settings.DATABASES["default"]
         )
+        dbhost = db_settings.get("HOST", "127.0.0.1")
         if "sqlite" in db_settings["ENGINE"]:
             dbtype = "sqlite"
+            dbport = None
         elif "postgresql" in db_settings["ENGINE"]:
             dbtype = "postgres"
+            dbport = db_settings.get("PORT", "5432")
         else:
             dbtype = "mysql"
-        dbhost = db_settings.get("HOST", "127.0.0.1")
-        dbport = db_settings.get("PORT", "")
-        if len(dbport):
-            dbhost += ":" + dbport
+            dbport = db_settings.get("PORT", "3306")
+        
+        if dbport:
+            dbhost += f":{dbport}"
 
         commandline = "{} {}".format(
             os.path.basename(sys.argv[0]), " ".join(sys.argv[1:])
