@@ -12,7 +12,7 @@ from ... import backends
 class TransportViewSet(GetThrottleViewsetMixin, viewsets.ViewSet):
     """Viewset for Transport."""
 
-    permissions = (permissions.IsAuthenticated,)
+    permission_classes = (permissions.IsAuthenticated,)
 
     @extend_schema(responses={200: serializers.TransportBackendSerializer})
     def list(self, request, *args, **kwargs):

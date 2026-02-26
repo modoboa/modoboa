@@ -35,6 +35,14 @@ class ARMessageSerializer(serializers.ModelSerializer):
         model = models.ARmessage
         fields = "__all__"
 
+    def validate_mbox(self, value):
+        user = self.context["request"].user
+        if user.mailbox != value:
+            raise serializers.ValidationError(
+                _("You don't have ownership on this mailbox")
+            )
+        return value
+
     def validate(self, data):
         """Check dates."""
         if not data.get("fromdate"):
