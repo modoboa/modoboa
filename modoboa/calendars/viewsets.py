@@ -21,9 +21,7 @@ from . import serializers
 
 def parse_date_from_iso(value):
     """Return a tz aware datetime parsed from an ISO date."""
-    result = dateutil.parser.parse(value)
-    print(result)
-    return result
+    return dateutil.parser.parse(value)
 
 
 class CheckTokenMixin:
@@ -91,6 +89,7 @@ class BaseEventViewSet(viewsets.ViewSet):
     """Event viewset."""
 
     lookup_value_regex = r"[0-9a-zA-Z\-\.@]+"
+    permission_classes = (permissions.IsAuthenticated,)
 
     def get_serializer(self, data=None, **kwargs):
         args = []
@@ -212,7 +211,12 @@ class UserEventViewSet(BaseEventViewSet):
 
     def get_calendar(self, pk):
         """Return UserCalendar instance."""
-        return models.UserCalendar.objects.get(pk=pk)
+        calendar = models.UserCalendar.objects.filter(
+            mailbox__user=self.request.user, pk=pk
+        ).first()
+        if not calendar:
+            raise http.Http404
+        return calendar
 
 
 class SharedEventViewSet(BaseEventViewSet):
