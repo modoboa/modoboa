@@ -5,6 +5,7 @@ from django.utils.translation import gettext as _
 
 from rest_framework import serializers
 
+from modoboa.admin import models as admin_models
 from modoboa.autoreply import models
 
 
@@ -37,10 +38,17 @@ class ARMessageSerializer(serializers.ModelSerializer):
 
     def validate_mbox(self, value):
         user = self.context["request"].user
-        if user.mailbox != value:
+        role = user.role
+        if role == "SimpleUsers" and user.mailbox != value:
             raise serializers.ValidationError(
                 _("You don't have ownership on this mailbox")
             )
+        elif role in ["DomainAdmins", "Resellers"]:
+            mailboxes = admin_models.Mailbox.objects.get_for_admin(user)
+            if value not in mailboxes:
+                raise serializers.ValidationError(
+                    _("You don't have ownership on this mailbox")
+                )
         return value
 
     def validate(self, data):
