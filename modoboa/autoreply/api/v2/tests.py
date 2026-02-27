@@ -3,7 +3,7 @@ from django.utils import timezone
 
 from dateutil.relativedelta import relativedelta
 
-from modoboa.admin import factories as admin_factories
+from modoboa.admin import factories as admin_factories, models as admin_models
 from modoboa.core.models import User
 from modoboa.lib.tests import ModoAPITestCase
 from modoboa.sievefilters.api.v2.tests import PatcherMixin
@@ -21,6 +21,14 @@ class ARMessageViewSetTestCase(PatcherMixin, ModoAPITestCase):
         cls.account2 = User.objects.get(username="user@test2.com")
         cls.arm = factories.ARmessageFactory(mbox=cls.account.mailbox)
         cls.arm2 = factories.ARmessageFactory(mbox=cls.account2.mailbox)
+        cls.account3 = admin_factories.UserFactory.create(
+            username="user3@test.com", groups=("SimpleUsers",)
+        )
+        admin_factories.MailboxFactory.create(
+            address="user3",
+            domain=admin_models.Domain.objects.get(name="test.com"),
+            user=cls.account3,
+        )
 
     def test_update_global_settings(self):
         data = {
@@ -61,7 +69,6 @@ class ARMessageViewSetTestCase(PatcherMixin, ModoAPITestCase):
 
     def test_retrieve_armessage_domadmin(self):
         admin = User.objects.get(username="admin@test.com")
-        self.client.logout()
         self.client.force_authenticate(admin)
         url = reverse("api:armessage-list")
         response = self.client.get(url)
@@ -72,8 +79,32 @@ class ARMessageViewSetTestCase(PatcherMixin, ModoAPITestCase):
         response = self.client.get(url)
         self.assertEqual(response.status_code, 404)
 
+    def test_create_armessage_constraints(self):
+        admin = User.objects.get(username="admin@test.com")
+        self.client.force_authenticate(admin)
+        mbox = admin_models.Mailbox.objects.get(user__email="admin@test2.com")
+        url = reverse("api:armessage-list")
+        data = {
+            "mbox": mbox.pk,
+            "subject": "Je suis absent",
+            "content": "Je reviens bientôt",
+            "enabled": True,
+        }
+        response = self.client.post(url, data, format="json")
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(
+            response.json()["mbox"][0], "You don't have ownership on this mailbox"
+        )
+
+        # As Simpluser now
+        self.client.force_authenticate(self.account3)
+        response = self.client.post(url, data, format="json")
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(
+            response.json()["mbox"][0], "You don't have ownership on this mailbox"
+        )
+
     def test_retrieve_armessage_simpleuser(self):
-        self.client.logout()
         self.client.force_authenticate(self.account)
         url = reverse("api:armessage-list")
         response = self.client.get(url)

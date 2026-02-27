@@ -440,5 +440,5 @@ class AlarmViewSet(
         """Delete multiple alarms at the same time."""
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        models.Alarm.objects.filter(pk__in=serializer.validated_data["ids"]).delete()
+        self.get_queryset().filter(pk__in=serializer.validated_data["ids"]).delete()
         return response.Response(status=204)

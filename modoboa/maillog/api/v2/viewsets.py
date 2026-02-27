@@ -55,7 +55,7 @@ class MaillogViewSet(GetThrottleViewsetMixin, viewsets.ReadOnlyModelViewSet):
     ordering = ["-date"]
     ordering_fields = "__all__"
     pagination_class = pagination.CustomPageNumberPagination
-    permissions = (permissions.IsAuthenticated,)
+    permission_classes = (permissions.IsAuthenticated,)
     search_fields = ["queue_id", "sender", "rcpt", "original_rcpt", "status"]
     serializer_class = serializers.MaillogSerializer
 

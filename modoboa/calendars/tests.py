@@ -389,9 +389,6 @@ class EventViewSetTestCase(TestDataMixin, ModoAPITestCase):
 
     def test_get_user_events(self):
         """Test event(s) retrieval."""
-        data = {"username": "user@test.com", "password": "toto"}
-        self.client.post(reverse("core:login"), data)
-
         # FIXME: drf nested routers does not handle reverse() properly
         url = f"/api/v2/user-calendars/{self.calendar.pk}/events/{1234}/"
         response = self.client.get(url)
@@ -404,11 +401,14 @@ class EventViewSetTestCase(TestDataMixin, ModoAPITestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.json()), 2)
 
+    def test_get_user_events_wrong_calendar(self):
+        url = f"/api/v2/user-calendars/{self.calendar2.pk}/events/"
+        url = "{}?start={}&end={}".format(url, "20060712T182145Z", "20070712T182145Z")
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 404)
+
     def test_get_shared_events(self):
         """Test event(s) retrieval."""
-        data = {"username": "user@test.com", "password": "toto"}
-        self.client.post(reverse("core:login"), data)
-
         # FIXME: drf nested routers does not handle reverse() properly
         url = f"/api/v2/shared-calendars/{self.scalendar.pk}/events/{1234}/"
         response = self.client.get(url)
@@ -423,9 +423,6 @@ class EventViewSetTestCase(TestDataMixin, ModoAPITestCase):
 
     def test_create_event(self):
         """Test event creation."""
-        data = {"username": "user@test.com", "password": "toto"}
-        self.client.post(reverse("core:login"), data)
-
         url = f"/api/v2/user-calendars/{self.calendar.pk}/events/"
         data = {
             "title": "Test event",
@@ -456,9 +453,6 @@ class EventViewSetTestCase(TestDataMixin, ModoAPITestCase):
 
     def test_update_event(self):
         """Test event update."""
-        data = {"username": "user@test.com", "password": "toto"}
-        self.client.post(reverse("core:login"), data)
-
         url = f"/api/v2/user-calendars/{self.calendar.pk}/events/1234/"
         data = {
             "title": "Test event",
@@ -479,9 +473,6 @@ class EventViewSetTestCase(TestDataMixin, ModoAPITestCase):
 
     def test_patch_event(self):
         """Test event partial update."""
-        data = {"username": "user@test.com", "password": "toto"}
-        self.client.post(reverse("core:login"), data)
-
         url = f"/api/v2/user-calendars/{self.calendar.pk}/events/1234/"
         data = {
             "start_date": "2018-03-27",
@@ -493,8 +484,6 @@ class EventViewSetTestCase(TestDataMixin, ModoAPITestCase):
 
     def test_move_event_between_cals(self):
         """Move an event."""
-        data = {"username": "user@test.com", "password": "toto"}
-        self.client.post(reverse("core:login"), data)
         data = {
             "title": "Test event",
             "start_date": "2018-03-27",
@@ -511,17 +500,12 @@ class EventViewSetTestCase(TestDataMixin, ModoAPITestCase):
 
     def test_delete_event(self):
         """Test event deletion."""
-        data = {"username": "user@test.com", "password": "toto"}
-        self.client.post(reverse("core:login"), data)
-
         url = f"/api/v2/shared-calendars/{self.scalendar.pk}/events/1234/"
         response = self.client.delete(url)
         self.assertEqual(response.status_code, 200)
 
     def test_import_from_file(self):
         """Check import feature."""
-        data = {"username": "user@test.com", "password": "toto"}
-        self.client.post(reverse("core:login"), data)
         url = reverse("api:user-event-import-from-file", args=[self.calendar.pk])
         path = os.path.join(
             os.path.abspath(os.path.dirname(__file__)), "test_data/events.ics"
