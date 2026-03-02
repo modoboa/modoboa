@@ -81,11 +81,15 @@ def import_record(xml_node, report):
         rnode = auth_results.find(rtype)
         if not rnode:
             continue
+        domain = (rnode.findtext("domain") or "").strip()
+        if not domain:
+            domain = record.header_from.name
+        result = (rnode.findtext("result") or "").strip()
         models.Result.objects.create(
             record=record,
             type=rtype,
-            domain=rnode.find("domain").text,
-            result=rnode.find("result").text,
+            domain=domain,
+            result=result,
         )
 
 
