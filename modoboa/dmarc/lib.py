@@ -100,7 +100,7 @@ def import_report(content):
         )
     )
     reporter, created = models.Reporter.objects.get_or_create(
-        email=metadata.find("email").text,
+        email=metadata.find("email").text or "-",
         defaults={"org_name": metadata.find("org_name").text},
     )
     qs = models.Report.objects.filter(
