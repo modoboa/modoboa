@@ -4,6 +4,7 @@ from io import StringIO
 import json
 import pathlib
 import shutil
+import tempfile
 
 import httmock
 from dateutil.relativedelta import relativedelta
@@ -132,6 +133,21 @@ class ManagementCommandsTestCase(SimpleModoTestCase):
             "OAUTH_POST_REDIRECT_URI",
         ]:
             self.assertFalse(config[param].startswith("http"))
+
+    def test_generate_postfix_maps(self):
+        """Run generate_postfix_maps command"""
+        
+        workdir = tempfile.mkdtemp()
+        # test SQLite URL
+        management.call_command("generate_postfix_maps", "--dburl", "sqlite://testdb.sqlite", "--destdir", workdir)
+
+        workdir = tempfile.mkdtemp()
+        # test PostgreSQL URL
+        management.call_command("generate_postfix_maps", "--dburl", "postgres://user:password@localhost/testdb", "--destdir", workdir)    
+
+        workdir = tempfile.mkdtemp()
+        # test MySQL URL 
+        management.call_command("generate_postfix_maps", "--dburl", "mysql://user:password@localhost/testdb", "--destdir", workdir)    
 
     def test_clean_inactive_accounts(self):
         """Run clean_inactive_accounts command."""
