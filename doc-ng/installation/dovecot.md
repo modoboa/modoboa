@@ -663,3 +663,20 @@ exec "$@"
 ```
 
 :::
+
+## self signed certificate
+
+If you wish to use a self-signed certificate, you must add the following line to the Dovecot configuration.
+
+```ini
+# https://doc.dovecot.org/2.4.0/core/config/ssl.html#client-connections
+ssl_client_ca_file = /etc/xxx/xxxx/nginx-self-signed-ssl-cert.pem
+``` 
+
+::: warning
+It is important to verify that the hostname matches the one in your certificate.
+
+```shell
+hostname -f
+```
+:::
