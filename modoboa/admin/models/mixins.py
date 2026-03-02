@@ -17,7 +17,10 @@ class MessageLimitMixin:
         """Return number of sent messages for the current day."""
         if self.message_limit is None:
             return None
-        return self.message_limit - get_message_counter(self.message_counter_key)
+        counter = get_message_counter(self.message_counter_key)
+        if counter is None:
+            return 0
+        return self.message_limit - counter
 
     @property
     def sent_messages_in_percent(self) -> Optional[int]:  # noqa
