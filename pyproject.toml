@@ -54,7 +54,7 @@ dependencies = [
 	"pytz",
 	"requests",
 	"lxml_html_clean",
-	"chardet",
+	"chardet==6.0.0.post1",
 	"ovh",
 	"oath",
         "packaging",
