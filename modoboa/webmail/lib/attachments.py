@@ -6,7 +6,6 @@ from tempfile import NamedTemporaryFile
 from typing import TypedDict
 import uuid
 
-import six
 
 from django.conf import settings
 from django.core.files.uploadhandler import FileUploadHandler, SkipFile
@@ -184,10 +183,10 @@ def create_mail_attachment(attdef, payload=None):
     else:
         res.set_payload(payload)
     encoders.encode_base64(res)
-    if isinstance(attdef["fname"], six.binary_type):
+    if isinstance(attdef["fname"], bytes):
         attdef["fname"] = attdef["fname"].decode("utf-8")
     content_disposition = build_header(attdef["fname"])
-    if isinstance(content_disposition, six.binary_type):
+    if isinstance(content_disposition, bytes):
         res["Content-Disposition"] = content_disposition.decode("utf-8")
     else:
         res["Content-Disposition"] = content_disposition
