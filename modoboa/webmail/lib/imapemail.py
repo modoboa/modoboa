@@ -6,7 +6,7 @@ import os
 import re
 import email
 
-import chardet
+from charset_normalizer import detect as charset_detect
 
 from django.conf import settings
 from django.core.files.base import ContentFile
@@ -159,7 +159,7 @@ class ImapEmail(Email):
                         try:
                             content = content.decode(charset)
                         except (UnicodeDecodeError, LookupError):
-                            result = chardet.detect(content)
+                            result = charset_detect(content)
                             content = content.decode(result["encoding"])
                 bodyc += content
             self._fetch_inlines()

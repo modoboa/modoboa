@@ -5,7 +5,7 @@
       <a
         href="#"
         class="edit-link ml-auto"
-        @click="emit('modify-step', index + 1)"
+        @click.prevent="emit('modify-step', index + 1)"
       >
         {{ $gettext('Modify') }}</a
       >
