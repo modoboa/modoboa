@@ -8,8 +8,7 @@ This module is Python 3 only; chunks may be ``str`` or ``bytes``.
 """
 import re
 
-import chardet
-
+from charset_normalizer import detect as charset_detect
 
 
 class ParseError(Exception):
@@ -228,7 +227,7 @@ class FetchResponseParser:
         except UnicodeDecodeError:
             pass
         try:
-            result = chardet.detect(chunk)
+            result = charset_detect(chunk)
         except UnicodeDecodeError:
             raise RuntimeError("Can't find string encoding") from None
         return chunk.decode(result["encoding"])

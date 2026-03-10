@@ -3,7 +3,7 @@
 import datetime
 import email
 
-import chardet
+from charset_normalizer import detect as charset_detect
 
 from django.utils import timezone
 from django.utils.formats import date_format
@@ -58,7 +58,7 @@ def to_unicode(value):
     else:
         return value
     try:
-        res = chardet.detect(value)
+        res = charset_detect(value)
     except UnicodeDecodeError:
         return value
     if res["encoding"] == "ascii":

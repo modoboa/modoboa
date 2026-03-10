@@ -1,6 +1,6 @@
 """A collection of utility functions for working with the Amavis database."""
 
-import chardet
+from charset_normalizer import detect as charset_detect
 
 from django.conf import settings
 from django.db.models.expressions import Func
@@ -57,7 +57,7 @@ def fix_utf8_encoding(value: str) -> str:
     try:
         value = bytes_value.decode("utf-8")
     except UnicodeDecodeError:
-        encoding = chardet.detect(bytes_value)
+        encoding = charset_detect(bytes_value)
         if encoding["confidence"] > 50.0:
             try:
                 value = bytes_value.decode(encoding["encoding"], "replace")
