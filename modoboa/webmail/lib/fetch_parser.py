@@ -10,7 +10,7 @@ run with Python3 and str (not unicode) ones with Python2.
 
 import re
 
-import chardet
+from charset_normalizer import detect as charset_detect
 import six
 
 
@@ -231,7 +231,7 @@ class FetchResponseParser:
         else:
             return chunk
         try:
-            result = chardet.detect(chunk)
+            result = charset_detect(chunk)
         except UnicodeDecodeError:
             raise RuntimeError("Can't find string encoding") from None
         return chunk.decode(result["encoding"])
