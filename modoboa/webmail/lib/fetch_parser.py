@@ -4,14 +4,12 @@ The ``imaplib`` module doesn't parse IMAP responses, it returns raw
 values. Since Modoboa relies on BODYSTRUCTURE attributes to display
 messages (we don't want to overload the server), a parser is required.
 
-Python 2/3 compatibility note: this parser excepts bytes objects when
-run with Python3 and str (not unicode) ones with Python2.
+This module is Python 3 only; chunks may be ``str`` or ``bytes``.
 """
-
 import re
 
 import chardet
-import six
+
 
 
 class ParseError(Exception):
@@ -215,21 +213,20 @@ class FetchResponseParser:
         )
 
     def __convert_to_str(self, chunk):
-        """Convert chunk to str and guess encoding."""
-        condition = (
-            six.PY2
-            and isinstance(chunk, six.text_type)
-            or six.PY3
-            and isinstance(chunk, six.binary_type)
-        )
-        if not condition:
+        """Convert chunk to str and guess encoding.
+
+        On Python 3 we expect either ``str`` or ``bytes``.  ``bytes`` values
+        are decoded; ``str`` is returned unchanged.
+        """
+        if not isinstance(chunk, (bytes, str)):
             return chunk
+        if isinstance(chunk, str):
+            return chunk
+        # chunk is bytes
         try:
-            chunk = chunk.decode("utf-8")
+            return chunk.decode("utf-8")
         except UnicodeDecodeError:
             pass
-        else:
-            return chunk
         try:
             result = chardet.detect(chunk)
         except UnicodeDecodeError:
