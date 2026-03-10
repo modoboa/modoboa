@@ -4,7 +4,6 @@ import datetime
 import email
 
 import chardet
-import six
 
 from django.utils import timezone
 from django.utils.formats import date_format
@@ -44,10 +43,14 @@ DATETIME_FORMATS = {
 
 
 def to_unicode(value):
-    """Try to convert a string to unicode."""
-    condition = value is None or isinstance(value, six.text_type)
-    if condition:
+    """Try to convert a string to unicode.
+
+    Accept ``str`` or ``bytes``. ``bytes`` values are decoded using
+    UTF‑8 (with charset detection fallback).
+    """
+    if value is None or isinstance(value, str):
         return value
+
     try:
         value = value.decode("utf-8")
     except UnicodeDecodeError:
