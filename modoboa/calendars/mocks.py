@@ -1,6 +1,6 @@
 """Radicale test mocks."""
 
-from caldav import objects
+from caldav import Event
 from caldav.lib.url import URL
 
 
@@ -53,13 +53,13 @@ class Calendar:
         return True
 
     def event_by_url(self, url):
-        res = objects.Event(url=url, data=EV1, parent=self)
+        res = Event(url=url, data=EV1, parent=self)
         return res
 
     def search(self, **kwargs):
         return [
-            objects.Event(data=EV1, parent=self),
-            objects.Event(data=EV2, parent=self),
+            Event(data=EV1, parent=self),
+            Event(data=EV2, parent=self),
         ]
 
     def set_properties(self, properties):
