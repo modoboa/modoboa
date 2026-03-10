@@ -1,6 +1,6 @@
 """Radicale test mocks."""
 
-from caldav import objects
+from caldav import Event
 from caldav.lib.url import URL
 
 
@@ -31,41 +31,6 @@ END:VCALENDAR
 """
 
 
-class Url:
-
-    def __init__(self, path):
-        self.path = path
-
-    def geturl(self):
-        return self.path
-
-
-class Calendar:
-
-    def __init__(self, client=None, url=None, parent=None, name=None, id=None, **extra):
-        self.url = Url(url)
-        self.client = client
-
-    def add_event(self, data):
-        return True
-
-    def save_event(self, *args, **kwargs):
-        return True
-
-    def event_by_url(self, url):
-        res = objects.Event(url=url, data=EV1, parent=self)
-        return res
-
-    def search(self, **kwargs):
-        return [
-            objects.Event(data=EV1, parent=self),
-            objects.Event(data=EV2, parent=self),
-        ]
-
-    def set_properties(self, properties):
-        return True
-
-
 class Response:
     """Fake requests response."""
 
@@ -90,3 +55,29 @@ class DAVClientMock:
 
     def request(self, url, method="GET", body="", headers=None):
         return Response(200)
+
+
+class Calendar:
+
+    def __init__(self, client=None, url=None, parent=None, name=None, id=None, **extra):
+        self.url = URL.objectify(url or "http://localhost/calendar")
+        self.client = DAVClientMock()
+
+    def add_event(self, data):
+        return True
+
+    def save_event(self, *args, **kwargs):
+        return True
+
+    def event_by_url(self, url):
+        res = Event(url=url, data=EV1, parent=self)
+        return res
+
+    def search(self, **kwargs):
+        return [
+            Event(data=EV1, parent=self),
+            Event(data=EV2, parent=self),
+        ]
+
+    def set_properties(self, properties):
+        return True
