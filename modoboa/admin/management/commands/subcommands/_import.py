@@ -4,7 +4,7 @@ import csv
 import os
 
 import progressbar
-from chardet.universaldetector import UniversalDetector
+from charset_normalizer import detect as charset_detect
 
 from django.core.management.base import BaseCommand, CommandError
 from django.db import transaction
@@ -99,27 +99,19 @@ class ImportCommand(BaseCommand):
                         )
                     )
                 )
-                detector = UniversalDetector()
                 with open(filename, "rb") as fp:
-                    for line in fp:
-                        detector.feed(line)
-                        if detector.done:
-                            break
-                    detector.close()
+                    result = charset_detect(fp.read())
 
                 self.stdout.write(
                     self.style.NOTICE(
-                        _("Reading CSV file using %(encoding)s encoding")
-                        % detector.result
+                        _("Reading CSV file using %(encoding)s encoding") % result
                     )
                 )
                 try:
                     with transaction.atomic():
-                        self._import(
-                            filename, options, encoding=detector.result["encoding"]
-                        )
+                        self._import(filename, options, encoding=result["encoding"])
                 except UnicodeDecodeError as exc:
                     raise CommandError(
                         _("Unable to decode CSV file using %(encoding)s " "encoding")
-                        % detector.result
+                        % result
                     ) from exc

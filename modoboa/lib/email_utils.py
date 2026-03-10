@@ -7,7 +7,7 @@ from email.mime.text import MIMEText
 from email.utils import formataddr, formatdate, getaddresses, make_msgid
 from importlib.metadata import version
 
-import chardet
+from charset_normalizer import detect as charset_detect
 import lxml.html
 from lxml.html import defs
 from lxml_html_clean import Cleaner
@@ -132,7 +132,7 @@ class Email:
                     # SMTPUTF8 fallback (most of the time)
                     # Address contains non ASCII chars but is not RFC2047
                     # encoded...
-                    encoding = chardet.detect(value)
+                    encoding = charset_detect(value)
                     try:
                         value = value.decode(encoding["encoding"], "replace")
                     except (TypeError, UnicodeDecodeError) as exc:
@@ -343,7 +343,7 @@ def decode(value_bytes: bytes, encoding: str, append_to_error: str = "") -> str:
     try:
         value = value_bytes.decode(encoding)
     except (UnicodeDecodeError, LookupError):
-        encoding = chardet.detect(value_bytes)
+        encoding = charset_detect(value_bytes)
         try:
             value = value_bytes.decode(encoding["encoding"], "replace")
         except (TypeError, UnicodeDecodeError) as exc:
