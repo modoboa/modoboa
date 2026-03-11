@@ -47,7 +47,7 @@ below:
 If Dovecot is not running on the same host than Modoboa, you will have
 to define which password schemes are supported.
 
-To do so, open the `settings.py` file and add a `DOVECOT_SUPPORTED_SCHEMES` 
+To do so, open the `settings.py` file and add a `DOVECOT_SUPPORTED_SCHEMES`
 variable with the output of the command:
 ```shell
 $ doveadm pw -l
@@ -56,8 +56,8 @@ $ doveadm pw -l
 
 ::: info
 
-If you are not familiar with virtual domain hosting, you should take a look at 
-[postfix's documentation](http://www.postfix.org/VIRTUAL_README.html). 
+If you are not familiar with virtual domain hosting, you should take a look at
+[postfix's documentation](http://www.postfix.org/VIRTUAL_README.html).
 
 This [How to](https://help.ubuntu.com/community/PostfixVirtualMailBoxClamSmtpHowto)
 also contains useful information.
@@ -76,9 +76,9 @@ authentication <ldap_auth>`.
 ### Media files
 
 Modoboa uses a specific directory to upload files (ie. when the webmail
-is in use) or to create ones (ex: graphical statistics). 
+is in use) or to create ones (ex: graphical statistics).
 
-This directory is named `media` and is located inside modoboa's 
+This directory is named `media` and is located inside modoboa's
 installation directory (called `modoboa_site` in this documentation).
 
 To work properly, the system user which runs modoboa (`www-data`,
@@ -122,11 +122,11 @@ Then, edit the `config.json` file located in this very same directory and add th
 
 ::: tip
 This section is only relevant when Modoboa handles mailboxes renaming
-and removal from the filesystem, 
+and removal from the filesystem,
 which requires that Dovecot is installed and running on this host.
 
-If it is installed at a non-standard directory, 
-paths to its binaries can be set in the `settings.py` file 
+If it is installed at a non-standard directory,
+paths to its binaries can be set in the `settings.py` file
 with the `DOVECOT_LOOKUP_PATH` and `DOVEADM_LOOKUP_PATH` variables.
 :::
 
@@ -156,7 +156,7 @@ LANGUAGE_CODE = 'fr' # or 'en' for english, etc.
 Each user has the possibility to define the language he prefers.
 :::
 
-In the same configuration file, specify the timezone to use 
+In the same configuration file, specify the timezone to use
 by modifying the `TIME_ZONE` variable. For example:
 
 ```python
@@ -180,12 +180,12 @@ The default configuration file provided by the `modoboa-admin.py` command is pro
 
 ### Logging authentication
 
-To trace login attempts to the web interface, Modoboa uses python 
+To trace login attempts to the web interface, Modoboa uses python
 [SysLogHandler](https://docs.python.org/3/library/logging.handlers.html#logging.handlers.SysLogHandler)
 
 so you can see them in your syslog authentication log file ([/var/log/auth.log] in most cases).
 
-Depending on your configuration, you may have to edit the `settings.py` file and add 
+Depending on your configuration, you may have to edit the `settings.py` file and add
 ['address': \'/dev/log\'] to the logging section:
 
 ```python
@@ -212,7 +212,7 @@ If you want to use this feature, you must first install those components:
 $ pip install python-ldap django-auth-ldap
 ```
 
-Then, all you have to do is to modify the `settings.py` file. 
+Then, all you have to do is to modify the `settings.py` file.
 
 Add a new authentication backend to the [AUTHENTICATION_BACKENDS] variable, like this:
 
@@ -237,16 +237,16 @@ They are described just below:
 | Server port | The TCP port number used by the LDAP server | 389 |
 | Use a secure connection | Use an SSL/TLS connection to access the LDAP server | no |
 | Authentication method | Choose the authentication method to use | Direct bind |
-| User DN template (direct bind mode)|  The template used to construct a user\'s DN. It should contain one placeholder (ie.`%(user)s`) | | 
+| User DN template (direct bind mode)|  The template used to construct a user\'s DN. It should contain one placeholder (ie.`%(user)s`) | |
 | Bind BN | The distinguished name to use when binding to the LDAP server. Leave empty for an anonymous bind | |
-| Bind password | The password to use when binding to the LDAP server (with \'Bind DN\') | |      
-| Search base | The distinguished name of the search base | | 
+| Bind password | The password to use when binding to the LDAP server (with \'Bind DN\') | |
+| Search base | The distinguished name of the search base | |
 | Search filter | An optional filter string (e.g. \'(objectClass=person)\'). In order to be valid, it must be enclosed in parentheses. | (mail=%(user)s) |
 | Password attribute |  The attribute used to store user passwords |   userPassword |
-| Active Directory | Tell if the LDAP server is an no Active Directory one | |                            
-| Administrator groups | Members of those LDAP Posix groups will be created ad domain administrators. Use ';' characters to separate groups. | |   
+| Active Directory | Tell if the LDAP server is an no Active Directory one | |
+| Administrator groups | Members of those LDAP Posix groups will be created ad domain administrators. Use ';' characters to separate groups. | |
 | Group type | The type of group used by your PosixGroup LDAP directory. | |
-| Groups search base | The distinguished name of the  search base used to find groups | | 
+| Groups search base | The distinguished name of the  search base used to find groups | |
 | Domain/mailbox creation | Automatically create a domain and a mailbox when a new user is created just after the first successful authentication. You will generally want to disable this feature when the relay domains extension is in use | yes |
 
 ::: tip
@@ -265,7 +265,7 @@ belongs to the `SimpleUsers` group and it has a mailbox.
 To automatically create domain administrators, you can use the
 **Administrator groups** setting. If a LDAP user belongs to one the
 listed groups, its local account will belong to the `DomainAdmins`
-group. 
+group.
 
 In this case, the username is not necessarily an email address.
 
@@ -283,7 +283,7 @@ the Modoboa record, it will be recreated on the next user login.
 ## SMTP {#smtp_auth}
 
 It is possible to use an existing SMTP server as an authentication
-source. 
+source.
 
 To enable this feature, edit the `settings.py` file and change the following setting:
 
@@ -305,7 +305,7 @@ AUTH_SMTP_SECURED_MODE = None  # 'ssl' or 'starttls' are accepted
 ### LDAP synchronization {#ldap-sync}
 
 Modoboa can synchronize accounts with an LDAP directory (tested with
-OpenLDAP) but this feature is not enabled by default. 
+OpenLDAP) but this feature is not enabled by default.
 
 To activate it, add `modoboa.ldapsync` to `MODOBOA_APPS` in the `settings.py` file:
 
@@ -336,26 +336,11 @@ The following parameters are available and must be filled:
 | Name | Description | Default Value |
 | :-: | :-- | :-: |
 | Enable LDAP synchronization | Control LDAP synchronization state | no |
-| Bind DN | The DN of a user with write permission to create/update accounts | |                        
-| Bind password | The associated password | |   
+| Bind DN | The DN of a user with write permission to create/update accounts | |
+| Bind password | The associated password | |
 | Account DN template | The template used to build account DNs (must contain a %(user)s placeholder ) |
 
 ## Database maintenance
-
-### Cleaning the logs table
-
-Modoboa logs administrator specific actions into the database. A
-clean-up script is provided to automatically remove oldest records. The
-maximum log record age can be configured through the online panel.
-
-To use it, you can setup a cron job to run every night:
-
-```txt
-0 0 * * * <modoboa_site>/manage.py cleanlogs
-#
-# Or like this if you use a virtual environment:
-# 0 0 * * * <virtualenv path/bin/python> <modoboa_site>/manage.py cleanlogs
-```
 
 ### Cleaning the session table
 
@@ -384,7 +369,7 @@ login has been recorded for the last 30 days (this value can be changed
 through the admin panel).
 
 A management command is available to disable or delete inactive
-accounts. 
+accounts.
 
 For example, you could setup a cron job to run it every night:
 
@@ -421,9 +406,9 @@ to your distribution:
 ### Integration with Postfix
 
 A management command is provided to automatically parse DMARC aggregated
-reports (rua) and feed the database. 
+reports (rua) and feed the database.
 
-The execution of this command can be automated with the definition of a 
+The execution of this command can be automated with the definition of a
 postfix service and a custom transport table.
 
 First, declare a new service in `/etc/postfix/master.cf`:
