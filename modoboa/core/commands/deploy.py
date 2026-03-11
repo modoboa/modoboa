@@ -251,6 +251,7 @@ class DeployCommand(Command):
                 "extensions": extensions,
                 "extra_settings": extra_settings,
                 "amavis_enabled": amavis_enabled,
+                "server_domain": parsed_args.domain,
             },
         )
         with open(f"{path}/settings.py", "w") as fp:

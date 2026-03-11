@@ -258,6 +258,9 @@ SPECTACULAR_SETTINGS = {
     'DEFAULT_FILTER_INSPECTORS': [
         'drf_spectacular.contrib.django_filters.DjangoFilterBackendInspector',
     ],
+    'SERVERS': [
+        {'url': '{{ server_domain }}', 'description': 'Modoboa Mail Server'},
+    ],
 }
 
 # Modoboa settings
