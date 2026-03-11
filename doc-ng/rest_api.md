@@ -42,3 +42,7 @@ within an Authorization HTTP header like this:
     Authorization: Token <YOUR_TOKEN>
 
 and the content type of those requests must be `application/json`.
+
+<OAInfo />
+
+<OAServers />
