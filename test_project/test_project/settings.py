@@ -266,6 +266,10 @@ SPECTACULAR_SETTINGS = {
     "DEFAULT_FILTER_INSPECTORS": [
         "drf_spectacular.contrib.django_filters.DjangoFilterBackendInspector",
     ],
+    'SERVERS': [
+        {'url': 'http://localhost', 'description': 'Modoboa Mail Server Unsecure Endpoint'},
+        {'url': 'https://localhost', 'description': 'Modoboa Mail Server Secure Endpoint'},
+    ],    
 }
 
 # Modoboa settings
