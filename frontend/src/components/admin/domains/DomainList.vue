@@ -29,7 +29,7 @@
             class="flex-grow-0 w-33 mr-4"
           ></v-text-field>
           <slot name="extraActions" />
-          <v-menu location="bottom">
+          <v-menu v-if="selected.length > 1" location="bottom">
             <template #activator="{ props }">
               <v-btn
                 variant="flat"
@@ -40,7 +40,9 @@
                 {{ $gettext('Actions') }}
               </v-btn>
             </template>
-            <v-list density="compact"> </v-list>
+            <v-list density="compact">
+              <MenuItems :items="getActionMenuItems()" />
+            </v-list>
           </v-menu>
           <v-btn
             variant="text"
@@ -344,6 +346,47 @@ async function loadAliases(item, internalItem, isItemExpanded, toggleExpand) {
 function openAdminList(domain) {
   selectedDomain.value = domain
   showAdminList.value = true
+}
+
+function getActionMenuItems() {
+  const result = []
+  if (selected.value.length > 0) {
+    result.push({
+      label: $gettext('Delete'),
+      icon: 'mdi-delete-outline',
+      onClick: deleteSelectedDomains,
+      color: 'red',
+    })
+  }
+  return result
+}
+
+async function deleteSelectedDomains() {
+  const result = await confirm.value.open(
+    $gettext('Warning'),
+    $gettext('Do you really want to delete the selected domains?'),
+    {
+      color: 'error',
+      cancelLabel: $gettext('No'),
+      agreeLabel: $gettext('Yes'),
+    }
+  )
+  if (!result) {
+    return
+  }
+  loading.value = true
+  try {
+    const data = { keep_folder: keepDomainFolder.value }
+    for (const pk of selected.value) {
+      await domainsApi.deleteDomain(pk, data)
+    }
+    selected.value = []
+    reloadDomains()
+    busStore.displayNotification({ msg: $gettext('Domains deleted') })
+    keepDomainFolder.value = false
+  } finally {
+    loading.value = false
+  }
 }
 
 function getDomainMenuItems(domain) {
