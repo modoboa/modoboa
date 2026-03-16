@@ -181,7 +181,7 @@ import DomainTransportForm from './form_steps/DomainTransportForm.vue'
 import LoadingData from '@/components/tools/LoadingData.vue'
 import parametersApi from '@/api/parameters'
 import ResourcesForm from '@/components/tools/ResourcesForm.vue'
-import { computed, ref, onMounted } from 'vue'
+import { computed, ref } from 'vue'
 import { useGettext } from 'vue3-gettext'
 import { useAuthStore } from '@/stores'
 import { useRouter } from 'vue-router'
@@ -270,9 +270,7 @@ async function save() {
     working.value = false
   }
 }
-onMounted(() => {
-  parametersApi.getGlobalApplication('limits').then((resp) => {
-    limitsConfig.value.data = resp.data
-  })
-})
+
+const resp = await parametersApi.getGlobalApplication('limits')
+limitsConfig.value = resp.data
 </script>
