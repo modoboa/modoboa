@@ -100,6 +100,7 @@ import { computed, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { useGlobalStore } from '@/stores'
 import domainsApi from '@/api/domains'
+import parametersApi from '@/api/parameters'
 
 const { $gettext } = useGettext()
 const route = useRoute()
@@ -113,13 +114,16 @@ const isAmavisEnabled = computed(() => {
   return 'amavis' in globalStore.capabilities
 })
 
-function refreshDomain() {
+async function refreshDomain() {
   domainsApi.getDomain(route.params.id).then((resp) => {
     domain.value = resp.data
   })
 }
 
-refreshDomain()
+const resp = await parametersApi.getGlobalApplication('limits')
+limitsConfig.value = resp.data
+
+await refreshDomain()
 </script>
 
 <style scoped>
