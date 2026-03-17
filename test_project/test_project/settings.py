@@ -429,18 +429,18 @@ WEBMAIL_DEV_PASSWORD = os.environ.get("WEBMAIL_DEV_PASSWORD", "")
 
 # Amavis
 
-# MIGRATION_MODULES = {"amavis": None}
-# TEST_RUNNER = "modoboa.lib.test_runners.UnManagedModelTestRunner"
+MIGRATION_MODULES = {"amavis": None}
+TEST_RUNNER = "modoboa.lib.test_runners.UnManagedModelTestRunner"
 
 # We force sqlite backend for tests because the generated database is
 # not the same as the one provided by amavis...
 
-# DATABASES["amavis"] = {  # noqa
-#     "ENGINE": "django.db.backends.sqlite3",
-#     "NAME": "amavis.db",
-#     "PORT": "",
-#     "ATOMIC_REQUESTS": True,
-# }
+DATABASES["amavis"] = {  # noqa
+    "ENGINE": "django.db.backends.sqlite3",
+    "NAME": "amavis.db",
+    "PORT": "",
+    "ATOMIC_REQUESTS": True,
+}
 
 # Uncomment this in dev mode (docker)
 # DATABASES["amavis"] = {  # NOQA
@@ -451,7 +451,7 @@ WEBMAIL_DEV_PASSWORD = os.environ.get("WEBMAIL_DEV_PASSWORD", "")
 #     "PASSWORD": "Password1000",
 # }
 
-# DATABASE_ROUTERS = ["modoboa.amavis.dbrouter.AmavisRouter"]
+DATABASE_ROUTERS = ["modoboa.amavis.dbrouter.AmavisRouter"]
 
 AMAVIS_DEFAULT_DATABASE_ENCODING = "UTF-8"
 # AMAVIS_DEFAULT_DATABASE_ENCODING = "LATIN1"
