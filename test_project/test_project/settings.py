@@ -266,10 +266,16 @@ SPECTACULAR_SETTINGS = {
     "DEFAULT_FILTER_INSPECTORS": [
         "drf_spectacular.contrib.django_filters.DjangoFilterBackendInspector",
     ],
-    'SERVERS': [
-        {'url': 'http://localhost', 'description': 'Modoboa Mail Server Unsecure Endpoint'},
-        {'url': 'https://localhost', 'description': 'Modoboa Mail Server Secure Endpoint'},
-    ],    
+    "SERVERS": [
+        {
+            "url": "http://localhost",
+            "description": "Modoboa Mail Server Unsecure Endpoint",
+        },
+        {
+            "url": "https://localhost",
+            "description": "Modoboa Mail Server Secure Endpoint",
+        },
+    ],
 }
 
 # Modoboa settings
@@ -299,6 +305,10 @@ REDIS_QUOTA_DB = 0
 REDIS_URL = f"redis://{REDIS_HOST}:{REDIS_PORT}/{REDIS_QUOTA_DB}"
 
 # RQ
+
+RQ = {
+    "COMMIT_MODE": "auto",
+}
 
 RQ_QUEUES = {
     "dkim": {
@@ -419,18 +429,18 @@ WEBMAIL_DEV_PASSWORD = os.environ.get("WEBMAIL_DEV_PASSWORD", "")
 
 # Amavis
 
-MIGRATION_MODULES = {"amavis": None}
-TEST_RUNNER = "modoboa.lib.test_runners.UnManagedModelTestRunner"
+# MIGRATION_MODULES = {"amavis": None}
+# TEST_RUNNER = "modoboa.lib.test_runners.UnManagedModelTestRunner"
 
 # We force sqlite backend for tests because the generated database is
 # not the same as the one provided by amavis...
 
-DATABASES["amavis"] = {  # noqa
-    "ENGINE": "django.db.backends.sqlite3",
-    "NAME": "amavis.db",
-    "PORT": "",
-    "ATOMIC_REQUESTS": True,
-}
+# DATABASES["amavis"] = {  # noqa
+#     "ENGINE": "django.db.backends.sqlite3",
+#     "NAME": "amavis.db",
+#     "PORT": "",
+#     "ATOMIC_REQUESTS": True,
+# }
 
 # Uncomment this in dev mode (docker)
 # DATABASES["amavis"] = {  # NOQA
@@ -441,7 +451,7 @@ DATABASES["amavis"] = {  # noqa
 #     "PASSWORD": "Password1000",
 # }
 
-DATABASE_ROUTERS = ["modoboa.amavis.dbrouter.AmavisRouter"]
+# DATABASE_ROUTERS = ["modoboa.amavis.dbrouter.AmavisRouter"]
 
 AMAVIS_DEFAULT_DATABASE_ENCODING = "UTF-8"
 # AMAVIS_DEFAULT_DATABASE_ENCODING = "LATIN1"
