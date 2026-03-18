@@ -42,10 +42,24 @@ def send_mail(request, attributes: dict, attachments: list) -> tuple[bool, str |
                     "password": settings.WEBMAIL_DEV_PASSWORD,
                 }
             )
+    request_dsn = attributes.get("request_dsn", False)
     try:
         with mail.get_connection(**options) as connection:
-            msg.connection = connection
-            msg.send()
+            if request_dsn:
+                connection.open()
+                from_email = msg.from_email
+                recipients = msg.recipients()
+                message_data = msg.message().as_bytes(linesep="\r\n")
+                connection.connection.sendmail(
+                    from_email,
+                    recipients,
+                    message_data,
+                    mail_options=["RET=HDRS"],
+                    rcpt_options=["NOTIFY=SUCCESS,FAILURE,DELAY"],
+                )
+            else:
+                msg.connection = connection
+                msg.send()
     except smtplib.SMTPResponseException as inst:
         return False, str(inst.smtp_error)
     except smtplib.SMTPRecipientsRefused as inst:
@@ -76,6 +90,8 @@ def schedule_email(
         subject=attributes.get("subject", ""),
         body=attributes.get("body", ""),
         in_reply_to=attributes.get("in_reply_to", ""),
+        request_dsn=attributes.get("request_dsn", False),
+        request_mdn=attributes.get("request_mdn", False),
     )
     for attr in ["cc", "bcc"]:
         if attr in attributes:
@@ -129,8 +145,21 @@ def send_scheduled_message(sched_msg: models.ScheduledMessage) -> bool:
 
     try:
         with mail.get_connection(**options) as connection:
-            msg.connection = connection
-            msg.send()
+            if sched_msg.request_dsn:
+                connection.open()
+                from_email = msg.from_email
+                recipients = msg.recipients()
+                message_data = msg.message().as_bytes(linesep="\r\n")
+                connection.connection.sendmail(
+                    from_email,
+                    recipients,
+                    message_data,
+                    mail_options=["RET=HDRS"],
+                    rcpt_options=["NOTIFY=SUCCESS,FAILURE,DELAY"],
+                )
+            else:
+                msg.connection = connection
+                msg.send()
     except (smtplib.SMTPResponseException, smtplib.SMTPRecipientsRefused) as inst:
         if isinstance(inst, smtplib.SMTPRecipientsRefused):
             error = ", ".join(

@@ -282,6 +282,8 @@ class SendEmailSerializer(ScheduledDatetimeMixin, BaseEmailSerializer):
 
     in_reply_to = serializers.CharField(required=False)
     scheduled_datetime = serializers.DateTimeField(required=False)
+    request_dsn = serializers.BooleanField(required=False, default=False)
+    request_mdn = serializers.BooleanField(required=False, default=False)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

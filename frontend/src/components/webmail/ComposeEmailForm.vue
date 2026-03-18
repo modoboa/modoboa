@@ -33,6 +33,33 @@
           </v-btn>
         </v-btn-group>
 
+        <v-menu :close-on-content-click="false">
+          <template #activator="{ props: menuProps }">
+            <v-btn
+              class="ml-2"
+              variant="tonal"
+              prepend-icon="mdi-cog-outline"
+              :text="$gettext('Options')"
+              v-bind="menuProps"
+            />
+          </template>
+          <v-card class="pa-4">
+            <v-switch
+              v-model="form.request_dsn"
+              :label="$gettext('Request delivery status notification')"
+              density="compact"
+              hide-details
+              color="primary"
+            />
+            <v-switch
+              v-model="form.request_mdn"
+              :label="$gettext('Request read receipt')"
+              density="compact"
+              hide-details
+              color="primary"
+            />
+          </v-card>
+        </v-menu>
         <v-btn
           class="ml-2"
           variant="tonal"
@@ -250,6 +277,8 @@ const close = () => {
 const initForm = () => {
   form.value = {
     sender: authStore.authUser.username,
+    request_dsn: false,
+    request_mdn: false,
   }
   if (props.originalEmail) {
     form.value.to = props.originalEmail.reply_to
