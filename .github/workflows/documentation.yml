@@ -21,8 +21,9 @@ jobs:
       - uses: pnpm/action-setup@v4
         name: Install pnpm
         with:
-          version: 10
           cache: true
+          cache_dependency_path: doc-ng/pnpm-lock.yaml
+          package_json_file: doc-ng/package.json
 
       - name: Install dependencies
         run: cd doc-ng && pnpm install

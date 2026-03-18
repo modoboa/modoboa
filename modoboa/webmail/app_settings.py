@@ -194,15 +194,6 @@ USER_PREFERENCES_STRUCT = collections.OrderedDict(
                                 ),
                             },
                         ),
-                        (
-                            "mboxes_col_width",
-                            {
-                                "label": gettext_lazy("Folder container's width"),
-                                "help_text": gettext_lazy(
-                                    "The width of the folder list container"
-                                ),
-                            },
-                        ),
                     ]
                 ),
             },
