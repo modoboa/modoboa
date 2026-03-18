@@ -4,9 +4,11 @@
       <v-navigation-drawer
         v-model="drawer"
         :rail="rail"
+        :width="drawerWidth"
         permanent
         color="primary"
       >
+        <div class="resize-handle" @mousedown="startResize" />
         <template #prepend>
           <div class="d-flex align-center">
             <v-img :src="menuLogoPath" max-width="190" class="logo" />
@@ -120,6 +122,24 @@ const { menuLogoPath } = useLogos()
 const confirm = ref()
 const drawer = ref(true)
 const rail = ref(false)
+const drawerWidth = ref(256)
+const isResizing = ref(false)
+
+function startResize(e) {
+  e.preventDefault()
+  isResizing.value = true
+  const onMouseMove = (event) => {
+    const newWidth = Math.min(Math.max(event.clientX, 200), 600)
+    drawerWidth.value = newWidth
+  }
+  const onMouseUp = () => {
+    isResizing.value = false
+    document.removeEventListener('mousemove', onMouseMove)
+    document.removeEventListener('mouseup', onMouseUp)
+  }
+  document.addEventListener('mousemove', onMouseMove)
+  document.addEventListener('mouseup', onMouseUp)
+}
 const editedMailbox = ref(null)
 const hdelimiter = ref(null)
 const mailboxQuota = ref(null)
@@ -222,3 +242,18 @@ await fetchUserMailboxes()
 const resp = await api.getUserMailboxQuota(route.query.mailbox || 'INBOX')
 mailboxQuota.value = resp.data
 </script>
+
+<style scoped>
+.resize-handle {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 4px;
+  height: 100%;
+  cursor: col-resize;
+  z-index: 100;
+}
+.resize-handle:hover {
+  background-color: rgba(0, 0, 0, 0.12);
+}
+</style>
