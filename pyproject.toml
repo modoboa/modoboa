@@ -76,7 +76,7 @@ dependencies = [
         # User
         "drf-nested-routers",
         "vobject",
-        "caldav==3.0.1",
+        "caldav==3.0.2",
         # Amavis
         "html2text",
         "idna",
