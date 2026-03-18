@@ -28,6 +28,8 @@ class ScheduledMessage(models.Model):
         db_index=True,
     )
     error = models.CharField(max_length=255, null=True, blank=True)
+    request_dsn = models.BooleanField(default=False)
+    request_mdn = models.BooleanField(default=False)
 
     def __str__(self):
         return f"{self.subject} - {self.sender.username} - {self.scheduled_datetime}"
@@ -37,6 +39,8 @@ class ScheduledMessage(models.Model):
             "in_reply_to": self.in_reply_to,
             "sender": self.sender,
             "to": self.to.split(","),
+            "request_dsn": self.request_dsn,
+            "request_mdn": self.request_mdn,
         }
         if self.subject:
             result["subject"] = self.subject
