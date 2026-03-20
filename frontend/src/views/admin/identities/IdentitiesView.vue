@@ -6,7 +6,7 @@
 
     <IdentityList ref="idList">
       <template #extraActions>
-        <v-menu offset-y>
+        <v-menu location="bottom">
           <template #activator="{ props }">
             <v-btn
               color="primary"

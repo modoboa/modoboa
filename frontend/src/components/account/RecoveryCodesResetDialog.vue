@@ -21,7 +21,7 @@
     </v-card-text>
     <v-card-actions>
       <v-spacer></v-spacer>
-      <v-btn color="grey darken-1" text @click="close">
+      <v-btn color="grey-darken-1" variant="text" @click="close">
         {{ $gettext('Close') }}
       </v-btn>
     </v-card-actions>

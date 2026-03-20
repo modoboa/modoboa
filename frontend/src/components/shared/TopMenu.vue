@@ -45,7 +45,7 @@
             >
               <v-sheet
                 rounded
-                class="application text-center pa-4 text-body-2"
+                class="application text-center pa-4 text-body-medium"
                 @click="$router.push(application.url)"
               >
                 <v-icon
@@ -68,7 +68,7 @@
           <v-list>
             <div class="text-center">
               <v-avatar color="primary">
-                <span class="text-h5">{{ userInitials }}</span>
+                <span class="text-headline-medium">{{ userInitials }}</span>
               </v-avatar>
               <v-list-item :title="user.username" />
             </div>

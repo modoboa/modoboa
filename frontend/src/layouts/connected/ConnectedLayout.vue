@@ -15,7 +15,7 @@
     >
       {{ notification }}
       <template #actions>
-        <v-btn color="white" text @click="snackbar = false">
+        <v-btn color="white" variant="text" @click="snackbar = false">
           {{ $gettext('Close') }}
         </v-btn>
       </template>

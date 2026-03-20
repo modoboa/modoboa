@@ -1,6 +1,6 @@
 <template>
   <div>
-    <span class="text-h4"> {{ $gettext('Edit provider') }} </span>
+    <span class="text-headline-large"> {{ $gettext('Edit provider') }} </span>
     <div class="mt-4" />
     <ProviderForm :provider="provider" />
   </div>
