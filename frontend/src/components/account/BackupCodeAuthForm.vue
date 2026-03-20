@@ -2,7 +2,7 @@
   <div>
     <v-card flat>
       <v-card-title>
-        <span class="text-h6">
+        <span class="text-headline-small">
           {{ $gettext('Backup codes') }}
         </span>
       </v-card-title>

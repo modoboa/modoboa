@@ -1,6 +1,6 @@
 <template>
   <v-card>
-    <v-card-title class="text-h5">
+    <v-card-title class="text-headline-medium">
       <span> {{ $gettext('DNS configuration for ') }} {{ domain.name }} </span>
     </v-card-title>
     <v-card-text>
@@ -18,7 +18,7 @@
         elevation="2"
         color="white"
       >
-        <div class="text-h6">MX</div>
+        <div class="text-headline-small">MX</div>
         <pre>
 mail.{{ domain.name }}. IN A <strong>[{{$gettext('IP address of your Modoboa server')}}]</strong>
 @ IN MX 10 mail.{{ domain.name }}.</pre>
@@ -31,7 +31,7 @@ mail.{{ domain.name }}. IN A <strong>[{{$gettext('IP address of your Modoboa ser
         dense
         color="white"
       >
-        <div class="text-h6">SPF</div>
+        <div class="text-headline-small">SPF</div>
         <pre>@ IN TXT "v=spf1 mx ~all"</pre>
       </v-alert>
 
@@ -44,7 +44,7 @@ mail.{{ domain.name }}. IN A <strong>[{{$gettext('IP address of your Modoboa ser
         dense
         color="white"
       >
-        <div class="text-h6">DKIM</div>
+        <div class="text-headline-small">DKIM</div>
         <DKIMKeyViewer :domain="domain" />
       </v-alert>
       <v-alert
@@ -55,7 +55,7 @@ mail.{{ domain.name }}. IN A <strong>[{{$gettext('IP address of your Modoboa ser
         dense
         color="white"
       >
-        <div class="text-h6">DMARC</div>
+        <div class="text-headline-small">DMARC</div>
         <pre>
 _dmarc.{{ domain.name }}. IN TXT "v=DMARC1; p=quarantine; pct=100;"</pre
         >
@@ -68,7 +68,9 @@ _dmarc.{{ domain.name }}. IN TXT "v=DMARC1; p=quarantine; pct=100;"</pre
         dense
         color="white"
       >
-        <div class="text-h6">{{ $gettext('Auto configuration') }}</div>
+        <div class="text-headline-small">
+          {{ $gettext('Auto configuration') }}
+        </div>
         <pre>
 autoconfig.{{ domain.name }}. IN CNAME <strong>[{{$gettext('hostname of your automx server')}}]</strong>
 autodiscover.{{ domain.name }}. IN CNAME <strong>[{{$gettext('hostname of your automx server')}}]</strong></pre>

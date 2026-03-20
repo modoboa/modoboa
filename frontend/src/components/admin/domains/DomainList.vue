@@ -121,7 +121,7 @@
 
       <template #[`item.actions`]="{ item }">
         <div class="text-right">
-          <v-menu offset-y>
+          <v-menu location="bottom">
             <template #activator="{ props }">
               <v-badge
                 v-if="item.opened_alarms_count"

@@ -12,7 +12,7 @@
       ></v-btn>
       <span
         v-if="domain.last_dns_check_execution"
-        class="ml-2 text-body-2 font-italic text-grey"
+        class="ml-2 text-body-medium font-italic text-grey"
       >
         ({{ $gettext('Last check:') }}
         {{ $date(domain.last_dns_check_execution) }})
