@@ -7,7 +7,7 @@
   >
     <v-card>
       <v-toolbar :color="options.color" density="compact" variant="flat">
-        <v-toolbar-title class="text-body-2 font-weight-bold">
+        <v-toolbar-title class="text-body-medium font-weight-bold">
           {{ title }}
         </v-toolbar-title>
       </v-toolbar>

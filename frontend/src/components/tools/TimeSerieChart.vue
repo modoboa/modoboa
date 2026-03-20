@@ -3,7 +3,7 @@
     <v-toolbar dense elevation="0">
       <v-toolbar-title>{{ title }}</v-toolbar-title>
       <v-spacer />
-      <v-menu v-model="menu" offset-y>
+      <v-menu v-model="menu" location="bottom">
         <template #activator="{ props }">
           <v-btn size="small" v-bind="props" prepend-icon="mdi-calendar">
             {{ $gettext('Period') }}
@@ -140,8 +140,8 @@ function fetchStatistics() {
     args.searchQuery = _props.domain.name
   }
   if (period.value === 'custom') {
-    args.start = start.value
-    args.end = end.value
+    args.start = start.value.toISOString().split('T')[0]
+    args.end = end.value.toISOString().split('T')[0]
   }
   statisticsApi.getStatistics(args).then((resp) => {
     statistics.value = resp.data.graphs[_props.graphicName]

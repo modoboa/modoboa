@@ -1,6 +1,6 @@
 <template>
   <v-card>
-    <v-card-title class="text-h5">
+    <v-card-title class="text-headline-medium">
       <span> {{ $gettext('Content filter settings') }} </span>
     </v-card-title>
     <v-card-text>
