@@ -84,7 +84,7 @@
         </tr>
       </template>
       <template #[`item.actions`]="{ item }">
-        <v-menu offset-y>
+        <v-menu location="bottom">
           <template #activator="{ props }">
             <v-btn icon="mdi-dots-horizontal" variant="text" v-bind="props" />
           </template>

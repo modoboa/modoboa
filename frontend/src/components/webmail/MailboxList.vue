@@ -3,7 +3,7 @@
     <div
       v-for="mailbox in props.mailboxes"
       :key="mailbox.name"
-      class="pl-3 text-body-2"
+      class="pl-3 text-body-medium"
       :class="{ 'py-1': !props.compact }"
     >
       <div
