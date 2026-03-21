@@ -79,7 +79,7 @@ class DomainViewSet(
         return models.Domain.objects.none()
 
     def get_serializer_class(self, *args, **kwargs):
-        if self.action == "delete":
+        if self.action in ("delete", "bulk_delete"):
             return serializers.DeleteDomainSerializer
         if self.action == "administrators":
             return serializers.DomainAdminSerializer
@@ -99,6 +99,28 @@ class DomainViewSet(
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         domain.delete(request.user, serializer.validated_data["keep_folder"])
+        return response.Response(status=status.HTTP_204_NO_CONTENT)
+
+    @action(methods=["post"], detail=False, url_path="bulk_delete")
+    def bulk_delete(self, request, **kwargs):
+        """Delete multiple domains at once."""
+        ids = request.data.get("ids", [])
+        if not ids:
+            return response.Response(
+                {"ids": [_("This field is required.")]},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        keep_folder = serializer.validated_data["keep_folder"]
+        queryset = self.get_queryset().filter(pk__in=ids)
+        mb = getattr(request.user, "mailbox", None)
+        for domain in queryset:
+            if mb and mb.domain == domain:
+                raise PermissionDenied(
+                    _("You can't delete your own domain (%s)") % domain.name
+                )
+            domain.delete(request.user, keep_folder)
         return response.Response(status=status.HTTP_204_NO_CONTENT)
 
     @action(methods=["get"], detail=True)
