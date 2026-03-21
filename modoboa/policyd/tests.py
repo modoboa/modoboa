@@ -243,3 +243,20 @@ class ModelsTestCase(RedisTestCaseMixin, ModoAPITestCase):
         domain.message_limit = None
         domain.save()
         self.assertFalse(self.rclient.hexists(constants.REDIS_HASHNAME, domain.name))
+
+    def test_domain_sent_messages_none_counter(self):
+        """sent_messages returns 0 when Redis counter is missing."""
+        domain = admin_models.Domain.objects.get(name="test.com")
+        domain.message_limit = 10
+        domain.save()
+        self.rclient.delete(constants.REDIS_HASHNAME)
+        self.assertEqual(domain.sent_messages, 0)
+
+    def test_mailbox_sent_messages_none_counter(self):
+        """sent_messages returns 0 when Redis counter is missing."""
+        account = core_models.User.objects.get(username="user@test.com")
+        mb = account.mailbox
+        mb.message_limit = 10
+        mb.save()
+        self.rclient.delete(constants.REDIS_HASHNAME)
+        self.assertEqual(mb.sent_messages, 0)
