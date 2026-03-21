@@ -376,10 +376,7 @@ async function deleteSelectedDomains() {
   }
   loading.value = true
   try {
-    const data = { keep_folder: keepDomainFolder.value }
-    for (const pk of selected.value) {
-      await domainsApi.deleteDomain(pk, data)
-    }
+    await domainsApi.bulkDeleteDomains(selected.value, keepDomainFolder.value)
     selected.value = []
     reloadDomains()
     busStore.displayNotification({ msg: $gettext('Domains deleted') })
