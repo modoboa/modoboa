@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-23 16:14+0100\n"
+"POT-Creation-Date: 2026-03-21 11:28+0100\n"
 "PO-Revision-Date: 2024-07-17 11:46+0200\n"
 "Last-Translator: J Rosier <vertalen@tagora.nl>\n"
 "Language-Team: Dutch (Netherlands) (http://www.transifex.com/tonio/modoboa/"
@@ -318,7 +318,7 @@ msgstr ""
 msgid "Default domain sending limit"
 msgstr "Standaard verzendlimiet per domein"
 
-#: admin/app_settings.py:170
+#: admin/app_settings.py:171
 msgid ""
 "Number of messages freshly created domains will be allowed to send per day. "
 "Leave empty for no limit."
@@ -326,16 +326,16 @@ msgstr ""
 "Aantal mails dat nieuwe domeinen per dag mogen verzenden. Laat leeg voor "
 "geen limiet."
 
-#: admin/app_settings.py:182 limits/app_settings.py:61
+#: admin/app_settings.py:183 limits/app_settings.py:61
 #: limits/app_settings.py:135 limits/constants.py:31 limits/constants.py:84
 msgid "Mailboxes"
 msgstr ""
 
-#: admin/app_settings.py:188
+#: admin/app_settings.py:189
 msgid "Handle mailboxes on filesystem"
 msgstr "Pas mailboxen op het bestandssysteem aan"
 
-#: admin/app_settings.py:190
+#: admin/app_settings.py:191
 msgid ""
 "Rename or remove mailboxes on the filesystem when they get renamed or "
 "removed within Modoboa"
@@ -343,11 +343,11 @@ msgstr ""
 "Hernoem of verwijder mailboxen op het bestandssysteem wanner ze hernoemd of "
 "verwijderd worden in Modoboa."
 
-#: admin/app_settings.py:198 admin/models/domain.py:39
+#: admin/app_settings.py:199 admin/models/domain.py:39
 msgid "Default mailbox quota"
 msgstr "Standaard mailbox quota"
 
-#: admin/app_settings.py:200
+#: admin/app_settings.py:201
 msgid ""
 "Default mailbox quota (in MB) applied to freshly created domains with no "
 "value specified. A value of 0 means no quota."
@@ -355,11 +355,11 @@ msgstr ""
 "Standaard mailboxquota (in MB) die worden toegepast op nieuwe domeinen "
 "zonder gespecificeerde waarde. Een 0 betekent geen quota."
 
-#: admin/app_settings.py:209
+#: admin/app_settings.py:210
 msgid "Default mailbox sending limit"
 msgstr "Standaard verzendlimiet voor mailboxen"
 
-#: admin/app_settings.py:211
+#: admin/app_settings.py:213
 msgid ""
 "Number of messages freshly created mailboxes will be allowed to send per "
 "day. Leave empty for no limit."
@@ -367,63 +367,63 @@ msgstr ""
 "Aantal mails dat nieuwe mailboxen per dag mogen verzenden. Laat leeg voor "
 "geen limiet."
 
-#: admin/app_settings.py:219
+#: admin/app_settings.py:221
 msgid "Automatic account removal"
 msgstr "Automatish een account verwijderen"
 
-#: admin/app_settings.py:221
+#: admin/app_settings.py:223
 msgid "When a mailbox is removed, also remove the associated account"
 msgstr ""
 "Als een mailbox wordt verwijderd, verwijder dan ook het bijbehorende account"
 
-#: admin/app_settings.py:230
+#: admin/app_settings.py:232
 msgid "Automatic domain/mailbox creation"
 msgstr "Domein en mailbox automatisch aanmaken"
 
-#: admin/app_settings.py:233
+#: admin/app_settings.py:235
 msgid "Create a domain and a mailbox when an account is automatically created."
 msgstr ""
 "Maak een domein en mailbox aan wanneer een account automatisch is aangemaakt."
 
-#: admin/app_settings.py:242
+#: admin/app_settings.py:244
 msgid "Create an alias when a mailbox is renamed"
 msgstr "Maak een alias aan als een mailbox hernoemd wordt."
 
-#: admin/app_settings.py:245
+#: admin/app_settings.py:247
 msgid "Create an alias using the old address when a mailbox is renamed."
 msgstr "Maak een alias aan voor het oude adres als een mailbox hernoemd wordt."
 
-#: admin/app_settings.py:257
+#: admin/app_settings.py:259
 #, fuzzy
 #| msgid "alias"
 msgid "Aliases"
 msgstr "alias"
 
-#: admin/app_settings.py:263
+#: admin/app_settings.py:265
 msgid "Alias can target any domain"
 msgstr ""
 
-#: admin/app_settings.py:265
+#: admin/app_settings.py:267
 msgid "Allow aliases to target any domain, not just the local domains."
 msgstr ""
 
-#: admin/app_settings.py:272
+#: admin/app_settings.py:274
 msgid "Alias target block list"
 msgstr ""
 
-#: admin/app_settings.py:274
+#: admin/app_settings.py:276
 msgid "A list of domains that aliases cannot target (comma separated)."
 msgstr ""
 
-#: admin/app_settings.py:282
+#: admin/app_settings.py:284
 msgid "Alias target allow list"
 msgstr ""
 
-#: admin/app_settings.py:284
+#: admin/app_settings.py:286
 msgid "A list of domains that aliases can target (comma separated)."
 msgstr ""
 
-#: admin/app_settings.py:338 core/api/v2/viewsets.py:174
+#: admin/app_settings.py:340 core/api/v2/viewsets.py:174
 msgid "Administration"
 msgstr "Beheer"
 
@@ -541,12 +541,12 @@ msgstr ""
 "CSV bestand is niet gecodeerd in UTF-8, aan het proberen om de codering te "
 "raden"
 
-#: admin/management/commands/subcommands/_import.py:112
+#: admin/management/commands/subcommands/_import.py:107
 #, python-format
 msgid "Reading CSV file using %(encoding)s encoding"
 msgstr "CSV bestand aan het lezen met %(encoding)scodering"
 
-#: admin/management/commands/subcommands/_import.py:123
+#: admin/management/commands/subcommands/_import.py:115
 #, python-format
 msgid "Unable to decode CSV file using %(encoding)s encoding"
 msgstr "Kan CSV bestand niet decoderen met %(encoding)scodering"
@@ -1143,17 +1143,23 @@ msgstr ""
 msgid "Invalid request"
 msgstr "Ongeldig adres"
 
-#: autoreply/api/v2/serializers.py:27
+#: autoreply/api/v2/serializers.py:28
 msgid "Value can't be less than 1 day"
 msgstr ""
 
-#: autoreply/api/v2/serializers.py:47
+#: autoreply/api/v2/serializers.py:44 autoreply/api/v2/serializers.py:50
+#, fuzzy
+#| msgid "You don't have access to this mailbox."
+msgid "You don't have ownership on this mailbox"
+msgstr "Je hebt geen toegang tot deze mailbox."
+
+#: autoreply/api/v2/serializers.py:63
 #, fuzzy
 #| msgid "This field is required"
 msgid "This date is over"
 msgstr "Deze datum is over"
 
-#: autoreply/api/v2/serializers.py:50
+#: autoreply/api/v2/serializers.py:66
 #, fuzzy
 #| msgid "Cannot be greater than domain quota"
 msgid "Must be greater than start date"
@@ -1292,7 +1298,7 @@ msgstr ""
 msgid "Server location is not set, please fix it."
 msgstr ""
 
-#: calendars/viewsets.py:199
+#: calendars/viewsets.py:198
 msgid "Uploaded file is too big (max: {} bytes)"
 msgstr ""
 
@@ -1439,7 +1445,7 @@ msgid "Calendar"
 msgstr ""
 
 #: core/api/v2/viewsets.py:215 core/api/v2/viewsets.py:217
-#: webmail/app_settings.py:295 webmail/app_settings.py:302
+#: webmail/app_settings.py:286 webmail/app_settings.py:293
 #, fuzzy
 #| msgid "E-mail"
 msgid "Webmail"
@@ -3660,73 +3666,65 @@ msgstr "Lijst vernieuwen frequentie"
 msgid "Automatic listing refresh rate (in secconds)"
 msgstr ""
 
-#: webmail/app_settings.py:200
-msgid "Folder container's width"
-msgstr "Mappenlijst wijdte"
-
-#: webmail/app_settings.py:202
-msgid "The width of the folder list container"
-msgstr "De wijdte van de mappenlijst"
-
-#: webmail/app_settings.py:213
+#: webmail/app_settings.py:204
 msgid "Folders"
 msgstr "Mappen"
 
-#: webmail/app_settings.py:219
+#: webmail/app_settings.py:210
 msgid "Trash folder"
 msgstr "Prullenbak"
 
-#: webmail/app_settings.py:221
+#: webmail/app_settings.py:212
 msgid "Folder where deleted messages go"
 msgstr "Map voor verwijderde berichten"
 
-#: webmail/app_settings.py:228
+#: webmail/app_settings.py:219
 msgid "Sent folder"
 msgstr "Verzonden items"
 
-#: webmail/app_settings.py:230
+#: webmail/app_settings.py:221
 msgid "Folder where copies of sent messages go"
 msgstr "Map waar verzonden berichten worden opgeslagen"
 
-#: webmail/app_settings.py:237
+#: webmail/app_settings.py:228
 msgid "Drafts folder"
 msgstr "Concepten"
 
-#: webmail/app_settings.py:238
+#: webmail/app_settings.py:229
 msgid "Folder where drafts go"
 msgstr "Map waar concepten heen gaan"
 
-#: webmail/app_settings.py:244
+#: webmail/app_settings.py:235
 msgid "Junk folder"
 msgstr "Ongewenste e-mail map"
 
-#: webmail/app_settings.py:246
+#: webmail/app_settings.py:237
 msgid "Folder where junk messages should go"
 msgstr "Map voor ongewenste e-mail"
 
-#: webmail/app_settings.py:257
+#: webmail/app_settings.py:248
 #, fuzzy
 #| msgid "sent messages"
 msgid "Composing messages"
 msgstr "Berichten opstellen"
 
-#: webmail/app_settings.py:263
+#: webmail/app_settings.py:254
 #, fuzzy
 #| msgid "Default top redirection"
 msgid "Default editor"
 msgstr "Standaard editor"
 
-#: webmail/app_settings.py:265
+#: webmail/app_settings.py:256
 #, fuzzy
 #| msgid "The default redirection used when no application is specified"
 msgid "The default editor to use when composing a message"
 msgstr "De standaard editor voor het schrijven van een bericht"
 
-#: webmail/app_settings.py:272
+#: webmail/app_settings.py:263
 msgid "Signature text"
 msgstr "Handtekeningtekst"
 
-#: webmail/app_settings.py:274
+#: webmail/app_settings.py:265
 msgid "User defined email signature"
 msgstr "Door gebruiker opgegeven e-mailhandtekening"
 
@@ -3736,7 +3734,7 @@ msgstr "Door gebruiker opgegeven e-mailhandtekening"
 msgid "Server response"
 msgstr "Serveradres"
 
-#: webmail/lib/attachments.py:146
+#: webmail/lib/attachments.py:145
 #, fuzzy
 #| msgid "Failed to remove filter"
 msgid "Failed to remove attachment: "
@@ -3784,15 +3782,15 @@ msgstr ""
 msgid "Trash"
 msgstr "Prullenbak"
 
-#: webmail/serializers.py:221
+#: webmail/serializers.py:219
 msgid "Moving scheduled messages is forbidden"
 msgstr ""
 
-#: webmail/serializers.py:254
+#: webmail/serializers.py:252
 msgid "Only datetime in the future is allowed"
 msgstr ""
 
-#: webmail/serializers.py:259
+#: webmail/serializers.py:257
 msgid "Provived datetime must be one minute in the future at least"
 msgstr ""
 
@@ -3800,6 +3798,12 @@ msgstr ""
 #, python-format
 msgid "Attachment is too big (limit: %s)"
 msgstr "Bijlage is te groot (maximaal toegestane grootte: %s)"
+
+#~ msgid "Folder container's width"
+#~ msgstr "Mappenlijst wijdte"
+
+#~ msgid "The width of the folder list container"
+#~ msgstr "De wijdte van de mappenlijst"
 
 #~ msgid "User profile"
 #~ msgstr "Gebruikersprofiel"

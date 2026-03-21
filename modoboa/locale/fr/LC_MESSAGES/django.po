@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-23 16:14+0100\n"
+"POT-Creation-Date: 2026-03-21 11:28+0100\n"
 "PO-Revision-Date: 2011-07-01 08:15+0000\n"
 "Last-Translator: Antoine Nguyen <tonio@ngyn.org>, 2016-2017,2020,2023-2026\n"
 "Language-Team: French (http://app.transifex.com/tonio/modoboa/language/fr/)\n"
@@ -320,7 +320,7 @@ msgstr ""
 msgid "Default domain sending limit"
 msgstr "Limite d'envoi par défaut du domaine"
 
-#: admin/app_settings.py:170
+#: admin/app_settings.py:171
 msgid ""
 "Number of messages freshly created domains will be allowed to send per day. "
 "Leave empty for no limit."
@@ -328,16 +328,16 @@ msgstr ""
 "Nombre maximal de messages que les nouveaux domaines seront autorisés à "
 "envoyer par jour. Laisser vide pour n'indiquer aucune limite."
 
-#: admin/app_settings.py:182 limits/app_settings.py:61
+#: admin/app_settings.py:183 limits/app_settings.py:61
 #: limits/app_settings.py:135 limits/constants.py:31 limits/constants.py:84
 msgid "Mailboxes"
 msgstr "Boites"
 
-#: admin/app_settings.py:188
+#: admin/app_settings.py:189
 msgid "Handle mailboxes on filesystem"
 msgstr "Gérer les boites sur le système de fichiers"
 
-#: admin/app_settings.py:190
+#: admin/app_settings.py:191
 msgid ""
 "Rename or remove mailboxes on the filesystem when they get renamed or "
 "removed within Modoboa"
@@ -345,11 +345,11 @@ msgstr ""
 "Renommer ou supprimer les boites sur le système de fichiers quand elles sont "
 "renommées ou supprimées dans Modoboa"
 
-#: admin/app_settings.py:198 admin/models/domain.py:39
+#: admin/app_settings.py:199 admin/models/domain.py:39
 msgid "Default mailbox quota"
 msgstr "Quota par défaut pour une boîte aux lettres"
 
-#: admin/app_settings.py:200
+#: admin/app_settings.py:201
 msgid ""
 "Default mailbox quota (in MB) applied to freshly created domains with no "
 "value specified. A value of 0 means no quota."
@@ -357,11 +357,11 @@ msgstr ""
 "Quota par défaut (en Mo) appliqué aux nouveaux domaines quand aucune valeur "
 "n'est spécifiée. Une valeur de 0 signifie pas de quota."
 
-#: admin/app_settings.py:209
+#: admin/app_settings.py:210
 msgid "Default mailbox sending limit"
 msgstr "Limite d'envoi par défaut d'une boîte aux lettres"
 
-#: admin/app_settings.py:211
+#: admin/app_settings.py:213
 msgid ""
 "Number of messages freshly created mailboxes will be allowed to send per "
 "day. Leave empty for no limit."
@@ -369,70 +369,70 @@ msgstr ""
 "Nombre maximal de messages que les nouveaux comptes seront autorisés à "
 "envoyer par jour. Laisser vide pour n'indiquer aucune limite."
 
-#: admin/app_settings.py:219
+#: admin/app_settings.py:221
 msgid "Automatic account removal"
 msgstr "Suppression automatique de compte"
 
-#: admin/app_settings.py:221
+#: admin/app_settings.py:223
 msgid "When a mailbox is removed, also remove the associated account"
 msgstr ""
 "Lorsqu'une boite aux lettres est supprimée, supprimer le compte associé en "
 "même temps"
 
-#: admin/app_settings.py:230
+#: admin/app_settings.py:232
 msgid "Automatic domain/mailbox creation"
 msgstr "Création automatique de domaine/boite aux lettres"
 
-#: admin/app_settings.py:233
+#: admin/app_settings.py:235
 msgid "Create a domain and a mailbox when an account is automatically created."
 msgstr ""
 "Créer un domaine et une boite aux lettres quand un compte est créé "
 "automatiquement."
 
-#: admin/app_settings.py:242
+#: admin/app_settings.py:244
 msgid "Create an alias when a mailbox is renamed"
 msgstr "Créer un alias quand une boite aux lettres est renommée"
 
-#: admin/app_settings.py:245
+#: admin/app_settings.py:247
 msgid "Create an alias using the old address when a mailbox is renamed."
 msgstr ""
 "Créer un alias en utilisant l'ancienne adresse quand une boite aux lettres "
 "est renommée."
 
-#: admin/app_settings.py:257
+#: admin/app_settings.py:259
 msgid "Aliases"
 msgstr "Alias"
 
-#: admin/app_settings.py:263
+#: admin/app_settings.py:265
 msgid "Alias can target any domain"
 msgstr "Les alias peuvent cibler n'importe quel domaine"
 
-#: admin/app_settings.py:265
+#: admin/app_settings.py:267
 msgid "Allow aliases to target any domain, not just the local domains."
 msgstr ""
 "Autoriser les alias à cibler n'importe quel domaine, pas uniquement les "
 "domaines locaux."
 
-#: admin/app_settings.py:272
+#: admin/app_settings.py:274
 msgid "Alias target block list"
 msgstr "Cibles interdites pour les alias"
 
-#: admin/app_settings.py:274
+#: admin/app_settings.py:276
 msgid "A list of domains that aliases cannot target (comma separated)."
 msgstr ""
 "Une liste de domaines que les alias ne peuvent pas cibler (séparés par une "
 "virgule)."
 
-#: admin/app_settings.py:282
+#: admin/app_settings.py:284
 msgid "Alias target allow list"
 msgstr "Cibles autorisées pour les alias"
 
-#: admin/app_settings.py:284
+#: admin/app_settings.py:286
 msgid "A list of domains that aliases can target (comma separated)."
 msgstr ""
 "Une liste de domaines que les alias peuvent cibler (séparés par une virgule)."
 
-#: admin/app_settings.py:338 core/api/v2/viewsets.py:174
+#: admin/app_settings.py:340 core/api/v2/viewsets.py:174
 msgid "Administration"
 msgstr "Administration"
 
@@ -548,12 +548,12 @@ msgstr ""
 "Le fichier CSV n'est pas encodé en UTF-8, tentative de détermination de "
 "l'encodage"
 
-#: admin/management/commands/subcommands/_import.py:112
+#: admin/management/commands/subcommands/_import.py:107
 #, python-format
 msgid "Reading CSV file using %(encoding)s encoding"
 msgstr "Lire le fichier CSV en utilisant l'encodage %(encoding)s"
 
-#: admin/management/commands/subcommands/_import.py:123
+#: admin/management/commands/subcommands/_import.py:115
 #, python-format
 msgid "Unable to decode CSV file using %(encoding)s encoding"
 msgstr ""
@@ -1116,15 +1116,21 @@ msgstr "Veuillez visiter %(listingurl)s pour une liste complète."
 msgid "Invalid request"
 msgstr "Requête invalide"
 
-#: autoreply/api/v2/serializers.py:27
+#: autoreply/api/v2/serializers.py:28
 msgid "Value can't be less than 1 day"
 msgstr "La valeur ne peut pas être inférieure à 1 jour"
 
-#: autoreply/api/v2/serializers.py:47
+#: autoreply/api/v2/serializers.py:44 autoreply/api/v2/serializers.py:50
+#, fuzzy
+#| msgid "You don't have access to this mailbox."
+msgid "You don't have ownership on this mailbox"
+msgstr "Vous n'avez pas accès à cette boîtes aux lettres."
+
+#: autoreply/api/v2/serializers.py:63
 msgid "This date is over"
 msgstr "Cette date est dépassée"
 
-#: autoreply/api/v2/serializers.py:50
+#: autoreply/api/v2/serializers.py:66
 msgid "Must be greater than start date"
 msgstr "Doit être supérieure à la date de début"
 
@@ -1251,7 +1257,7 @@ msgstr "Calendriers"
 msgid "Server location is not set, please fix it."
 msgstr "L'emplacement du serveur n'est pas renseigné, veuillez corriger"
 
-#: calendars/viewsets.py:199
+#: calendars/viewsets.py:198
 msgid "Uploaded file is too big (max: {} bytes)"
 msgstr "Le fichier téléchargé est trop gros (max : {} octets)"
 
@@ -1386,7 +1392,7 @@ msgid "Calendar"
 msgstr "Calendrier"
 
 #: core/api/v2/viewsets.py:215 core/api/v2/viewsets.py:217
-#: webmail/app_settings.py:295 webmail/app_settings.py:302
+#: webmail/app_settings.py:286 webmail/app_settings.py:293
 msgid "Webmail"
 msgstr "Webmail"
 
@@ -3556,67 +3562,59 @@ msgstr "Taux de rafraichissement de la liste"
 msgid "Automatic listing refresh rate (in secconds)"
 msgstr "Taux de rafraichissement automatique de la liste (en secondes)"
 
-#: webmail/app_settings.py:200
-msgid "Folder container's width"
-msgstr "Largeur du conteneur des dossiers"
-
-#: webmail/app_settings.py:202
-msgid "The width of the folder list container"
-msgstr "La largeur du conteneur de la liste des dossiers"
-
-#: webmail/app_settings.py:213
+#: webmail/app_settings.py:204
 msgid "Folders"
 msgstr "Dossiers"
 
-#: webmail/app_settings.py:219
+#: webmail/app_settings.py:210
 msgid "Trash folder"
 msgstr "Dossier poubelle"
 
-#: webmail/app_settings.py:221
+#: webmail/app_settings.py:212
 msgid "Folder where deleted messages go"
 msgstr "Dossier dans lequel vont les messages supprimés"
 
-#: webmail/app_settings.py:228
+#: webmail/app_settings.py:219
 msgid "Sent folder"
 msgstr "Dossier envoyé"
 
-#: webmail/app_settings.py:230
+#: webmail/app_settings.py:221
 msgid "Folder where copies of sent messages go"
 msgstr "Dossier dans lequel vont les copies de messages envoyés"
 
-#: webmail/app_settings.py:237
+#: webmail/app_settings.py:228
 msgid "Drafts folder"
 msgstr "Dossier brouillon"
 
-#: webmail/app_settings.py:238
+#: webmail/app_settings.py:229
 msgid "Folder where drafts go"
 msgstr "Dossier dans lequel vont les brouillons"
 
-#: webmail/app_settings.py:244
+#: webmail/app_settings.py:235
 msgid "Junk folder"
 msgstr "Dossier Junk"
 
-#: webmail/app_settings.py:246
+#: webmail/app_settings.py:237
 msgid "Folder where junk messages should go"
 msgstr "Dossier dans lequel les messages indésirables doivent aller"
 
-#: webmail/app_settings.py:257
+#: webmail/app_settings.py:248
 msgid "Composing messages"
 msgstr "Rédaction de messages"
 
-#: webmail/app_settings.py:263
+#: webmail/app_settings.py:254
 msgid "Default editor"
 msgstr "Editeur par défaut"
 
-#: webmail/app_settings.py:265
+#: webmail/app_settings.py:256
 msgid "The default editor to use when composing a message"
 msgstr "L'éditeur à utiliser par défaut pour rédiger un message"
 
-#: webmail/app_settings.py:272
+#: webmail/app_settings.py:263
 msgid "Signature text"
 msgstr "Texte de signature"
 
-#: webmail/app_settings.py:274
+#: webmail/app_settings.py:265
 msgid "User defined email signature"
 msgstr "Signature email personnalisée"
 
@@ -3624,7 +3622,7 @@ msgstr "Signature email personnalisée"
 msgid "Server response"
 msgstr "Réponse du serveur"
 
-#: webmail/lib/attachments.py:146
+#: webmail/lib/attachments.py:145
 msgid "Failed to remove attachment: "
 msgstr "Impossible de supprimer la pièce jointe :"
 
@@ -3668,15 +3666,15 @@ msgstr "Planifiés"
 msgid "Trash"
 msgstr "Corbeille"
 
-#: webmail/serializers.py:221
+#: webmail/serializers.py:219
 msgid "Moving scheduled messages is forbidden"
 msgstr "Déplacer des messages planifiés n'est pas autorisé"
 
-#: webmail/serializers.py:254
+#: webmail/serializers.py:252
 msgid "Only datetime in the future is allowed"
 msgstr "Seule une date à venir est autorisée"
 
-#: webmail/serializers.py:259
+#: webmail/serializers.py:257
 msgid "Provived datetime must be one minute in the future at least"
 msgstr "La date fournie doit être au minimum une minute dans le futur"
 
@@ -3684,3 +3682,9 @@ msgstr "La date fournie doit être au minimum une minute dans le futur"
 #, python-format
 msgid "Attachment is too big (limit: %s)"
 msgstr "La pièce jointe est trop grosse (limite : %s)"
+
+#~ msgid "Folder container's width"
+#~ msgstr "Largeur du conteneur des dossiers"
+
+#~ msgid "The width of the folder list container"
+#~ msgstr "La largeur du conteneur de la liste des dossiers"
