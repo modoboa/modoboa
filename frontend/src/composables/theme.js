@@ -10,37 +10,26 @@ export function useModoboaTheme() {
     const response = await themeApi.getTheme()
 
     theme.value = response.data
-    if (
-      theme.value.theme_primary_color !==
-      vTheme.themes.value.light.colors.primary
-    ) {
-      vTheme.themes.value.light.colors.primary = theme.value.theme_primary_color
+    const themeName = vTheme.global.name.value
+    const themeColors = vTheme.themes.value[themeName].colors
+    if (theme.value.theme_primary_color !== themeColors.primary) {
+      themeColors.primary = theme.value.theme_primary_color
     }
     if (
-      theme.value.theme_primary_color_light !==
-      vTheme.themes.value.light.colors['primary-lighten-1']
+      theme.value.theme_primary_color_light !== themeColors['primary-lighten-1']
     ) {
-      vTheme.themes.value.light.colors['primary-lighten-1'] =
-        theme.value.theme_primary_color_light
+      themeColors['primary-lighten-1'] = theme.value.theme_primary_color_light
     }
     if (
-      theme.value.theme_primary_color_dark !==
-      vTheme.themes.value.light.colors['primary-darken-1']
+      theme.value.theme_primary_color_dark !== themeColors['primary-darken-1']
     ) {
-      vTheme.themes.value.light.colors['primary-darken-1'] =
-        theme.value.theme_primary_color_dark
+      themeColors['primary-darken-1'] = theme.value.theme_primary_color_dark
     }
-    if (
-      theme.value.theme_secondary_color !==
-      vTheme.themes.value.light.colors.secondary
-    ) {
-      vTheme.themes.value.light.colors.secondary =
-        theme.value.theme_secondary_color
+    if (theme.value.theme_secondary_color !== themeColors.secondary) {
+      themeColors.secondary = theme.value.theme_secondary_color
     }
-    if (
-      theme.value.theme_label_color !== vTheme.themes.value.light.colors.label
-    ) {
-      vTheme.themes.value.light.colors.label = theme.value.theme_label_color
+    if (theme.value.theme_label_color !== themeColors.label) {
+      themeColors.label = theme.value.theme_label_color
     }
   }
 

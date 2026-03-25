@@ -93,7 +93,7 @@
       </v-btn>
       <v-spacer />
       <div v-if="emails.results" class="d-flex align-center">
-        <div class="text-caption mr-2">
+        <div class="text-body-small mr-2">
           {{ emails.first_index }}-{{ emails.last_index }} {{ $gettext('on') }}
           {{ emails.count }}
         </div>

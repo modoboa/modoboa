@@ -166,6 +166,7 @@ GLOBAL_PARAMETERS_STRUCT = collections.OrderedDict(
                             "default_domain_message_limit",
                             {
                                 "label": gettext_lazy("Default domain sending limit"),
+                                "widget": "NumberField",
                                 "help_text": gettext_lazy(
                                     "Number of messages freshly created domains will be "
                                     "allowed to send per day. Leave empty for no limit."
@@ -207,6 +208,7 @@ GLOBAL_PARAMETERS_STRUCT = collections.OrderedDict(
                             "default_mailbox_message_limit",
                             {
                                 "label": gettext_lazy("Default mailbox sending limit"),
+                                "widget": "NumberField",
                                 "help_text": gettext_lazy(
                                     "Number of messages freshly created mailboxes will be "
                                     "allowed to send per day. Leave empty for no limit."

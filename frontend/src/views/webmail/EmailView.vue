@@ -94,7 +94,7 @@
             <h3 v-bind="props">
               <template v-if="email.from_address.name">
                 {{ email.from_address.name }}
-                <span class="text-grey text-body-2">
+                <span class="text-grey text-body-medium">
                   &lt;{{ email.from_address.address }}&gt;
                 </span>
               </template>
@@ -158,7 +158,7 @@
   </div>
   <v-dialog v-model="showEmailSource" max-width="1200">
     <v-card :title="$gettext('Message source')">
-      <v-card-text class="text-caption overflow-x-auto">
+      <v-card-text class="text-body-small overflow-x-auto">
         <pre>{{ emailSource }}</pre>
       </v-card-text>
       <v-card-actions>

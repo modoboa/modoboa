@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="text-h5 ml-4">
+    <div class="text-headline-medium ml-4">
       {{ $gettext('Contacts') }}
     </div>
     <ContactList @edit-category="openEditCategoryForm" />

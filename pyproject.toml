@@ -37,7 +37,7 @@ dependencies = [
 	"django-rename-app==0.1.7",
 	"django-environ",
 	"dj-database-url",
-	"djangorestframework>=3.16,<3.17",
+	"djangorestframework>=3.16,<3.18",
 	"drf-spectacular",
 	"uritemplate",
 	"django-oauth-toolkit",
@@ -69,14 +69,14 @@ dependencies = [
 	"defusedxml>=0.6.0",
 	"python-magic>=0.4.24",
 	# RQ
-	"rq>=2.4.0",
-	"django-rq>=3.2.2",
+	"rq>=2.7.0",
+	"django-rq>=4.0.1",
 	# Sieve
 	"sievelib>=1.4.1",
         # User
         "drf-nested-routers",
         "vobject",
-        "caldav==3.0.1",
+        "caldav==3.1.0",
         # Amavis
         "html2text",
         "idna",

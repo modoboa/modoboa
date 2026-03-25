@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-23 16:14+0100\n"
+"POT-Creation-Date: 2026-03-21 11:28+0100\n"
 "PO-Revision-Date: 2011-07-01 08:15+0000\n"
 "Last-Translator: INOUE Daisuke, 2025-2026\n"
 "Language-Team: Japanese (Japan) (http://app.transifex.com/tonio/modoboa/"
@@ -307,7 +307,7 @@ msgstr ""
 msgid "Default domain sending limit"
 msgstr "ドメイン送信通数制限のデフォルト"
 
-#: admin/app_settings.py:170
+#: admin/app_settings.py:171
 msgid ""
 "Number of messages freshly created domains will be allowed to send per day. "
 "Leave empty for no limit."
@@ -315,16 +315,16 @@ msgstr ""
 "新たにドメインを作成する際、1 日間に送信可能なメッセージ数。空にすると制限し"
 "ません。"
 
-#: admin/app_settings.py:182 limits/app_settings.py:61
+#: admin/app_settings.py:183 limits/app_settings.py:61
 #: limits/app_settings.py:135 limits/constants.py:31 limits/constants.py:84
 msgid "Mailboxes"
 msgstr "メールボックス"
 
-#: admin/app_settings.py:188
+#: admin/app_settings.py:189
 msgid "Handle mailboxes on filesystem"
 msgstr "ファイルシステムのメールボックスも操作"
 
-#: admin/app_settings.py:190
+#: admin/app_settings.py:191
 msgid ""
 "Rename or remove mailboxes on the filesystem when they get renamed or "
 "removed within Modoboa"
@@ -332,11 +332,11 @@ msgstr ""
 "Modoboa でメールボックスを変名・削除すると、ファイルシステム上も変名・削除す"
 "る"
 
-#: admin/app_settings.py:198 admin/models/domain.py:39
+#: admin/app_settings.py:199 admin/models/domain.py:39
 msgid "Default mailbox quota"
 msgstr "メールボックス容量制限のデフォルト"
 
-#: admin/app_settings.py:200
+#: admin/app_settings.py:201
 msgid ""
 "Default mailbox quota (in MB) applied to freshly created domains with no "
 "value specified. A value of 0 means no quota."
@@ -344,11 +344,11 @@ msgstr ""
 "特に値をせずに新たにドメインを作成する際の、メールボックスの容量制限のデフォ"
 "ルト値 ( MB ) 。値を 0 にすると容量制限しません。"
 
-#: admin/app_settings.py:209
+#: admin/app_settings.py:210
 msgid "Default mailbox sending limit"
 msgstr "メールボックス送信通数制限のデフォルト"
 
-#: admin/app_settings.py:211
+#: admin/app_settings.py:213
 msgid ""
 "Number of messages freshly created mailboxes will be allowed to send per "
 "day. Leave empty for no limit."
@@ -356,63 +356,63 @@ msgstr ""
 "新たにメールボックスを作成する際に設定する、1 日に送信できるメッセージ数。空"
 "にすると制限しません。"
 
-#: admin/app_settings.py:219
+#: admin/app_settings.py:221
 msgid "Automatic account removal"
 msgstr "自動アカウント削除"
 
-#: admin/app_settings.py:221
+#: admin/app_settings.py:223
 msgid "When a mailbox is removed, also remove the associated account"
 msgstr "メールボックスを削除すると、関連するアカウントも削除します"
 
-#: admin/app_settings.py:230
+#: admin/app_settings.py:232
 msgid "Automatic domain/mailbox creation"
 msgstr "自動ドメイン・メールボックス作成"
 
-#: admin/app_settings.py:233
+#: admin/app_settings.py:235
 msgid "Create a domain and a mailbox when an account is automatically created."
 msgstr "アカウントを作成するとドメインとメールボックスも自動で作成します。"
 
-#: admin/app_settings.py:242
+#: admin/app_settings.py:244
 msgid "Create an alias when a mailbox is renamed"
 msgstr "メールボックスの変名でエイリアスを作成"
 
-#: admin/app_settings.py:245
+#: admin/app_settings.py:247
 msgid "Create an alias using the old address when a mailbox is renamed."
 msgstr ""
 "メールボックスの名前を変更する際、古いアドレスをエイリアスとして作成します。"
 
-#: admin/app_settings.py:257
+#: admin/app_settings.py:259
 msgid "Aliases"
 msgstr "エイリアス"
 
-#: admin/app_settings.py:263
+#: admin/app_settings.py:265
 msgid "Alias can target any domain"
 msgstr "エイリアスはどのドメインにも設定可"
 
-#: admin/app_settings.py:265
+#: admin/app_settings.py:267
 msgid "Allow aliases to target any domain, not just the local domains."
 msgstr ""
 "エイリアスは、ローカルドメインだけでなく、どのドメインに対しても設定できま"
 "す。"
 
-#: admin/app_settings.py:272
+#: admin/app_settings.py:274
 msgid "Alias target block list"
 msgstr "エイリアス対象ブロックリスト"
 
-#: admin/app_settings.py:274
+#: admin/app_settings.py:276
 msgid "A list of domains that aliases cannot target (comma separated)."
 msgstr ""
 "エイリアスの対象として設定不可とするドメインのリスト ( カンマ区切り ) 。"
 
-#: admin/app_settings.py:282
+#: admin/app_settings.py:284
 msgid "Alias target allow list"
 msgstr "エイリアス対象許可リスト"
 
-#: admin/app_settings.py:284
+#: admin/app_settings.py:286
 msgid "A list of domains that aliases can target (comma separated)."
 msgstr "エイリアスの対象として設定可とするドメインのリスト ( カンマ区切り ) 。"
 
-#: admin/app_settings.py:338 core/api/v2/viewsets.py:174
+#: admin/app_settings.py:340 core/api/v2/viewsets.py:174
 msgid "Administration"
 msgstr "管理"
 
@@ -528,12 +528,12 @@ msgid "CSV file is not encoded in UTF-8, attempting to guess encoding"
 msgstr ""
 "CSV ファイルが UTF-8 でエンコードされていません。エンコードの推測を試みます"
 
-#: admin/management/commands/subcommands/_import.py:112
+#: admin/management/commands/subcommands/_import.py:107
 #, python-format
 msgid "Reading CSV file using %(encoding)s encoding"
 msgstr "CSV ファイルを %(encoding)s エンコードで読んでいます"
 
-#: admin/management/commands/subcommands/_import.py:123
+#: admin/management/commands/subcommands/_import.py:115
 #, python-format
 msgid "Unable to decode CSV file using %(encoding)s encoding"
 msgstr "%(encoding)s エンコードでは CSV ファイルをデコードできません"
@@ -1080,15 +1080,21 @@ msgstr "全体は %(listingurl)s で表示できます。"
 msgid "Invalid request"
 msgstr "不正なリクエスト"
 
-#: autoreply/api/v2/serializers.py:27
+#: autoreply/api/v2/serializers.py:28
 msgid "Value can't be less than 1 day"
 msgstr "1 日以上の値を設定してください"
 
-#: autoreply/api/v2/serializers.py:47
+#: autoreply/api/v2/serializers.py:44 autoreply/api/v2/serializers.py:50
+#, fuzzy
+#| msgid "You don't have access to this mailbox."
+msgid "You don't have ownership on this mailbox"
+msgstr "このメールボックスにアクセスできません。"
+
+#: autoreply/api/v2/serializers.py:63
 msgid "This date is over"
 msgstr "過去の日付です"
 
-#: autoreply/api/v2/serializers.py:50
+#: autoreply/api/v2/serializers.py:66
 msgid "Must be greater than start date"
 msgstr "開始日より後を設定してください"
 
@@ -1206,7 +1212,7 @@ msgstr "カレンダー"
 msgid "Server location is not set, please fix it."
 msgstr "サーバーの場所を設定していないので登録してください。"
 
-#: calendars/viewsets.py:199
+#: calendars/viewsets.py:198
 msgid "Uploaded file is too big (max: {} bytes)"
 msgstr "アップロード ファイルが大きすぎます ( 最大 : {} バイト )"
 
@@ -1337,7 +1343,7 @@ msgid "Calendar"
 msgstr "カレンダー"
 
 #: core/api/v2/viewsets.py:215 core/api/v2/viewsets.py:217
-#: webmail/app_settings.py:295 webmail/app_settings.py:302
+#: webmail/app_settings.py:286 webmail/app_settings.py:293
 msgid "Webmail"
 msgstr "Web メール"
 
@@ -3425,67 +3431,59 @@ msgstr "リストの表示更新間隔"
 msgid "Automatic listing refresh rate (in secconds)"
 msgstr "リストの表示を自動で更新する間隔 ( 秒 )"
 
-#: webmail/app_settings.py:200
-msgid "Folder container's width"
-msgstr "フォルダーコンテナーの幅"
-
-#: webmail/app_settings.py:202
-msgid "The width of the folder list container"
-msgstr "フォルダーリストコンテナの幅"
-
-#: webmail/app_settings.py:213
+#: webmail/app_settings.py:204
 msgid "Folders"
 msgstr "フォルダー"
 
-#: webmail/app_settings.py:219
+#: webmail/app_settings.py:210
 msgid "Trash folder"
 msgstr "ごみ箱"
 
-#: webmail/app_settings.py:221
+#: webmail/app_settings.py:212
 msgid "Folder where deleted messages go"
 msgstr "削除メッセージの行き先フォルダー"
 
-#: webmail/app_settings.py:228
+#: webmail/app_settings.py:219
 msgid "Sent folder"
 msgstr "送信済みフォルダー"
 
-#: webmail/app_settings.py:230
+#: webmail/app_settings.py:221
 msgid "Folder where copies of sent messages go"
 msgstr "送信済みメッセージの行き先フォルダー"
 
-#: webmail/app_settings.py:237
+#: webmail/app_settings.py:228
 msgid "Drafts folder"
 msgstr "下書きフォルダー"
 
-#: webmail/app_settings.py:238
+#: webmail/app_settings.py:229
 msgid "Folder where drafts go"
 msgstr "下書きの行き先フォルダー"
 
-#: webmail/app_settings.py:244
+#: webmail/app_settings.py:235
 msgid "Junk folder"
 msgstr "SPAM フォルダー"
 
-#: webmail/app_settings.py:246
+#: webmail/app_settings.py:237
 msgid "Folder where junk messages should go"
 msgstr "SPAM メッセージの行き先フォルダー"
 
-#: webmail/app_settings.py:257
+#: webmail/app_settings.py:248
 msgid "Composing messages"
 msgstr "メッセージの作成"
 
-#: webmail/app_settings.py:263
+#: webmail/app_settings.py:254
 msgid "Default editor"
 msgstr "デフォルトエディター"
 
-#: webmail/app_settings.py:265
+#: webmail/app_settings.py:256
 msgid "The default editor to use when composing a message"
 msgstr "メッセージを作成するエディターのデフォルト値"
 
-#: webmail/app_settings.py:272
+#: webmail/app_settings.py:263
 msgid "Signature text"
 msgstr "署名テキスト"
 
-#: webmail/app_settings.py:274
+#: webmail/app_settings.py:265
 msgid "User defined email signature"
 msgstr "ユーザー定義のメール署名"
 
@@ -3493,7 +3491,7 @@ msgstr "ユーザー定義のメール署名"
 msgid "Server response"
 msgstr "サーバー応答"
 
-#: webmail/lib/attachments.py:146
+#: webmail/lib/attachments.py:145
 msgid "Failed to remove attachment: "
 msgstr "添付ファイルの削除に失敗 : "
 
@@ -3537,15 +3535,15 @@ msgstr "予定済み"
 msgid "Trash"
 msgstr "ごみ箱"
 
-#: webmail/serializers.py:221
+#: webmail/serializers.py:219
 msgid "Moving scheduled messages is forbidden"
 msgstr "送信予定メールの移動は禁止"
 
-#: webmail/serializers.py:254
+#: webmail/serializers.py:252
 msgid "Only datetime in the future is allowed"
 msgstr "未来の日時を設定してください"
 
-#: webmail/serializers.py:259
+#: webmail/serializers.py:257
 msgid "Provived datetime must be one minute in the future at least"
 msgstr "少なくとも 1 分以上先の日時を指定してください"
 
@@ -3553,3 +3551,9 @@ msgstr "少なくとも 1 分以上先の日時を指定してください"
 #, python-format
 msgid "Attachment is too big (limit: %s)"
 msgstr "添付ファイルが大きすぎます ( 最大 : %s )"
+
+#~ msgid "Folder container's width"
+#~ msgstr "フォルダーコンテナーの幅"
+
+#~ msgid "The width of the folder list container"
+#~ msgstr "フォルダーリストコンテナの幅"

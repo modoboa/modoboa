@@ -2,7 +2,7 @@
   <div>
     <v-card flat>
       <v-card-title>
-        <span class="text-h6">
+        <span class="text-headline-small">
           {{ $gettext('WebAuthn') }}
         </span>
       </v-card-title>
@@ -148,9 +148,11 @@ async function startFidoRegistration() {
   registrationLoading.value = true
   const creationOption = await authApi.beginFidoRegistration()
   if (creationOption) {
-    const options = PublicKeyCredential.parseCreationOptionsFromJSON(creationOption.data.publicKey)
+    const options = PublicKeyCredential.parseCreationOptionsFromJSON(
+      creationOption.data.publicKey
+    )
     navigator.credentials
-      .create({publicKey: options})
+      .create({ publicKey: options })
       .then((device) => {
         const result = device.toJSON()
         result.name = name.value
@@ -168,7 +170,10 @@ async function startFidoRegistration() {
         console.log(err)
         fidoForm.value.reset()
         registrationLoading.value = false
-        busStore.displayNotification({msg: $gettext('Failed to register the webAuthN device'), type: 'error'})
+        busStore.displayNotification({
+          msg: $gettext('Failed to register the webAuthN device'),
+          type: 'error',
+        })
       })
   }
   registrationLoading.value = false
