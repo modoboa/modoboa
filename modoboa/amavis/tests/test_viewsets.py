@@ -92,11 +92,32 @@ class QuarantineViewSetTestCase(TestDataMixin, ModoAPITestCase):
         self.msgrcpt.refresh_from_db()
         self.assertEqual(self.msgrcpt.rs, "V")
 
+    def test_retrieve_denied(self):
+        """User cannot retrieve a message they don't have access to."""
+        other_msgrcpt = factories.create_spam("user@test2.com")
+        mail_id = smart_str(other_msgrcpt.mail.mail_id)
+        rcpt = smart_str(other_msgrcpt.rid.email)
+        user = core_models.User.objects.get(username="user@test.com")
+        self.client.force_authenticate(user)
+        url = reverse("v2:amavis-quarantine-detail", args=[mail_id])
+        resp = self.client.get(f"{url}?rcpt={rcpt}")
+        self.assertEqual(resp.status_code, 404)
+
     def test_headers(self):
         mail_id = smart_str(self.msgrcpt.mail.mail_id)
         url = reverse("v2:amavis-quarantine-headers", args=[mail_id])
         resp = self.client.get(url)
         self.assertEqual(resp.status_code, 200)
+
+    def test_headers_denied(self):
+        """User cannot access headers of a message they don't have access to."""
+        other_msgrcpt = factories.create_spam("user@test2.com")
+        mail_id = smart_str(other_msgrcpt.mail.mail_id)
+        user = core_models.User.objects.get(username="user@test.com")
+        self.client.force_authenticate(user)
+        url = reverse("v2:amavis-quarantine-headers", args=[mail_id])
+        resp = self.client.get(url)
+        self.assertEqual(resp.status_code, 404)
 
     def test_headers_selfservice(self):
         self.client.logout()
