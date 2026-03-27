@@ -315,34 +315,59 @@ class AccessRuleViewSetTestCase(TestDataMixin, ModoAPITestCase):
         self.assertEqual(len(response.json()), 1)
 
     def test_create_accessrule(self):
+        self.client.force_authenticate(self.admin_account)
         data = {
             "mailbox": {
-                "pk": self.account2.mailbox.pk,
-                "full_address": self.account2.mailbox.full_address,
+                "pk": self.account.mailbox.pk,
+                "full_address": self.account.mailbox.full_address,
+            },
+            "read": True,
+            "calendar": self.calendar2.pk,
+        }
+        url = reverse("api:access-rule-list")
+        response = self.client.post(url, data=data, format="json")
+        self.assertEqual(response.status_code, 201)
+
+    def test_create_accessrule_denied_mailbox(self):
+        """Try to create an access rule with a mailbox the user doesn't own."""
+        other_mbox = admin_models.Mailbox.objects.get(
+            address="user", domain__name="test2.com"
+        )
+        data = {
+            "mailbox": {
+                "pk": other_mbox.pk,
+                "full_address": other_mbox.full_address,
             },
             "read": True,
             "calendar": self.calendar.pk,
         }
         url = reverse("api:access-rule-list")
         response = self.client.post(url, data=data, format="json")
-        self.assertEqual(response.status_code, 201)
+        self.assertEqual(response.status_code, 400)
 
     def test_update_accessrule(self):
         """Test access rule modification."""
+        self.client.force_authenticate(self.admin_account)
+        acr = factories.AccessRuleFactory(
+            calendar=self.calendar2,
+            mailbox=self.account.mailbox,
+            read=True,
+            write=False,
+        )
         data = {
             "mailbox": {
-                "pk": self.admin_account.mailbox.pk,
-                "full_address": self.admin_account.email,
+                "pk": self.account.mailbox.pk,
+                "full_address": self.account.mailbox.full_address,
             },
-            "calendar": self.calendar.pk,
+            "calendar": self.calendar2.pk,
             "read": False,
             "write": True,
         }
-        url = reverse("api:access-rule-detail", args=[self.acr1.pk])
+        url = reverse("api:access-rule-detail", args=[acr.pk])
         response = self.client.put(url, data=data, format="json")
         self.assertEqual(response.status_code, 200)
-        self.acr1.refresh_from_db()
-        self.assertFalse(self.acr1.read)
+        acr.refresh_from_db()
+        self.assertFalse(acr.read)
 
     def test_update_accessrule_permission(self):
         """Try to modify an access rule the user does not own."""
