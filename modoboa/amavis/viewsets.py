@@ -1,5 +1,6 @@
 """Amavis viewsets."""
 
+from django.db.models import Q
 from django.http import Http404
 from django.shortcuts import get_object_or_404
 from django.utils.translation import gettext as _
@@ -53,6 +54,40 @@ class QuarantineViewSet(viewsets.GenericViewSet):
         "type",
     ]
     permission_classes = (permissions.IsAuthenticated,)
+
+    def _check_message_access(self, request, mail_id):
+        """Check that the current user can access the given message.
+
+        For selfservice auth, access is already validated by
+        SelfServiceAuthentication.
+        For authenticated users, check that at least one recipient of
+        the message matches the user's valid addresses / domains.
+        """
+        if request.auth == "selfservice":
+            return
+        if not request.user or request.user.is_superuser:
+            return
+        from modoboa.amavis.models import Msgrcpt
+        from modoboa.amavis.utils import ConvertFrom
+
+        rcpts = Msgrcpt.objects.annotate(str_email=ConvertFrom("rid__email")).filter(
+            mail=mail_id.encode("ascii")
+        )
+        if request.user.role == "SimpleUsers":
+            valid_addresses = get_user_valid_addresses(request.user)
+            if not rcpts.filter(str_email__in=valid_addresses).exists():
+                raise Http404
+        else:
+            domains = admin_models.Domain.objects.get_for_admin(
+                request.user
+            ).values_list("name", flat=True)
+            domain_suffixes = [f"@{name}" for name in domains]
+            domain_filter = None
+            for suffix in domain_suffixes:
+                q = Q(str_email__endswith=suffix)
+                domain_filter = q if domain_filter is None else domain_filter | q
+            if domain_filter is None or not rcpts.filter(domain_filter).exists():
+                raise Http404
 
     def get_serializer_class(self):
         if self.action == "retrieve":
@@ -120,6 +155,7 @@ class QuarantineViewSet(viewsets.GenericViewSet):
         rcpt = request.GET.get("rcpt")
         if rcpt is None:
             return response.Response({"error": _("Invalid request")}, status=400)
+        self._check_message_access(request, pk)
         if request.user:
             if request.user.email == rcpt:
                 SQLconnector().set_msgrcpt_status(rcpt, pk, "V")
@@ -133,6 +169,7 @@ class QuarantineViewSet(viewsets.GenericViewSet):
 
     @action(methods=["get"], detail=True)
     def headers(self, request, pk):
+        self._check_message_access(request, pk)
         email = SQLemail(pk.encode("ascii"))
         headers = []
         for name in email.msg.keys():
