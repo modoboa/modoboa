@@ -345,6 +345,21 @@ class AccessRuleViewSetTestCase(TestDataMixin, ModoAPITestCase):
         response = self.client.post(url, data=data, format="json")
         self.assertEqual(response.status_code, 400)
 
+    def test_create_accessrule_mailbox_not_found(self):
+        """Try to create an access rule with a non-existent mailbox."""
+        data = {
+            "mailbox": {
+                "pk": 99999,
+                "full_address": "doesnotexist@test.com",
+            },
+            "read": True,
+            "calendar": self.calendar.pk,
+        }
+        url = reverse("api:access-rule-list")
+        response = self.client.post(url, data=data, format="json")
+        self.assertEqual(response.status_code, 400)
+        self.assertIn("mailbox", response.json())
+
     def test_update_accessrule(self):
         """Test access rule modification."""
         self.client.force_authenticate(self.admin_account)
