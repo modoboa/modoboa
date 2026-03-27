@@ -119,6 +119,24 @@ class QuarantineViewSetTestCase(TestDataMixin, ModoAPITestCase):
         resp = self.client.get(url)
         self.assertEqual(resp.status_code, 404)
 
+    def test_retrieve_domain_admin(self):
+        """Domain admin can access messages for their domains only."""
+        mail_id = smart_str(self.msgrcpt.mail.mail_id)
+        rcpt = smart_str(self.msgrcpt.rid.email)
+        url = reverse("v2:amavis-quarantine-detail", args=[mail_id])
+
+        # admin@test.com manages test.com, message is for user@test.com -> allowed
+        admin = core_models.User.objects.get(username="admin@test.com")
+        self.client.force_authenticate(admin)
+        resp = self.client.get(f"{url}?rcpt={rcpt}")
+        self.assertEqual(resp.status_code, 200)
+
+        # admin@test2.com manages test2.com, message is for user@test.com -> denied
+        admin2 = core_models.User.objects.get(username="admin@test2.com")
+        self.client.force_authenticate(admin2)
+        resp = self.client.get(f"{url}?rcpt={rcpt}")
+        self.assertEqual(resp.status_code, 404)
+
     def test_headers_selfservice(self):
         self.client.logout()
         mail_id = smart_str(self.msgrcpt.mail.mail_id)
