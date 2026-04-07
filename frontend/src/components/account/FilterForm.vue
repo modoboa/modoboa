@@ -98,7 +98,7 @@
                   v-if="arg.type === 'list'"
                   v-model="action.args[arg.name]"
                   :items="arg.choices"
-                  item-title="label"
+                  :item-title="(item) => buildItemTitle(arg.name, item)"
                   density="compact"
                   variant="outlined"
                   :rules="[rules.required]"
@@ -246,6 +246,18 @@ function getConditionType(index) {
       }
     }
   }
+}
+
+function buildItemTitle(argName, item) {
+  if (argName !== 'mailbox') {
+    return item.label
+  }
+  const name = item.name
+  if (!name.includes('/')) {
+    return name
+  }
+  const parts = name.split('/')
+  return '\u00A0'.repeat((parts.length - 1) * 4) + parts[parts.length - 1]
 }
 
 function getActionArguments(action) {
