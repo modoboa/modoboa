@@ -12,6 +12,7 @@ from drf_spectacular.types import OpenApiTypes
 from drf_spectacular.utils import extend_schema, OpenApiParameter
 from rest_framework import permissions, response, viewsets
 from rest_framework.decorators import action
+from rest_framework.exceptions import ValidationError as DRFValidationError
 
 from modoboa.lib.viewsets import HasMailbox
 from modoboa.sievefilters import constants
@@ -38,6 +39,21 @@ class FilterSetViewSet(viewsets.ViewSet):
         HasMailbox,
     )
     serializer_class = serializers.FilterSetSerializer
+    lookup_value_regex = "[^/]+"
+
+    # Characters forbidden in ManageSieve quoted-string arguments (RFC 5804).
+    # Rejecting them prevents protocol injection through script/filter names
+    # and CRLF injection in the Content-Disposition header used by `download`.
+    FORBIDDEN_NAME_CHARS = ("\r", "\n", "\x00", '"', "\\")
+
+    def initial(self, request, *args, **kwargs):
+        super().initial(request, *args, **kwargs)
+        for key in ("pk", "filter"):
+            value = kwargs.get(key)
+            if value is None:
+                continue
+            if any(c in value for c in self.FORBIDDEN_NAME_CHARS):
+                raise DRFValidationError({key: _("Name contains forbidden characters")})
 
     def get_sieve_client(self, request):
         return SieveClient(user=request.user.username, password=str(request.auth))
