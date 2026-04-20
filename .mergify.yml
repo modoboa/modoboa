@@ -61,11 +61,13 @@ priority_rules:
       - "#commented-reviews-by=0"
       - label=ready-to-merge
     priority: 2750
+    allow_checks_interruption: true
   - name: priority for queue `duplicated default from automatic merge for pyUp pull requests`
     conditions:
       - author=pyup-bot
       - "#approved-reviews-by>=1"
     priority: 2500
+    allow_checks_interruption: true
   - name: priority for queue `duplicated default from automatic merge for dependabot pull 
       requests`
     conditions:
@@ -73,3 +75,4 @@ priority_rules:
       - check-success=test (postgres, 3.12)
       - label=dependencies
     priority: 2250
+    allow_checks_interruption: true
