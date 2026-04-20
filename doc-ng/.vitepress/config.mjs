@@ -1,4 +1,12 @@
 import { defineConfig } from 'vitepress'
+import { useSidebar } from 'vitepress-openapi';
+import spec from '../openapi.json';
+
+const sidebar = useSidebar({
+  spec,
+  // Optionally, you can specify a link prefix for all generated sidebar items.
+  linkPrefix: '/openapi/',
+});
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
@@ -35,6 +43,7 @@ export default defineConfig({
           { text: 'Write a Plugin', link: '/contributing/plugin_api' },
           { text: 'Translate', link: '/contributing/translation' },
           { text: 'REST API', link: '/rest_api' },
+          { text: 'OPENAPI', link: '/openapi/index' },
           { text: 'Contributors', link: '/contributors' },
         ],
       },
@@ -69,6 +78,26 @@ export default defineConfig({
         { text: 'Getting Started', link: '/contributing/getting_start' },
         { text: 'Write a Plugin', link: '/contributing/plugin_api' },
         { text: 'Translate', link: '/contributing/translate' },
+      ],
+      '/openapi/': [
+        /* {
+          text: 'By Tags',
+          items: [
+            ...sidebar.itemsByTags(),
+          ],
+        }, */
+        {
+          text: 'By Operations',
+          items: [
+            ...sidebar.generateSidebarGroups(),
+          ],
+        },
+        /* {
+          text: 'By Paths',
+          items: [
+            ...sidebar.itemsByPaths(),
+          ],
+        } */
       ],
     },
     socialLinks: [
