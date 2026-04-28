@@ -13,6 +13,15 @@ from django.conf import settings
 from django.utils.encoding import force_str
 
 
+# Query `umask` at startup/import time BEFORE there are other threads
+#
+# Unfortunately, there is *no* way to query the kernel umask value without
+# also modifying it *process-wide*. So temporarily clearing it and then
+# restoring it is the best one can do.
+UMASK = os.umask(0)
+os.umask(UMASK)
+
+
 def exec_cmd(
     cmd: list[str],
     sudo_user: str | None = None,
