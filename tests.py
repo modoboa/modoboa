@@ -38,7 +38,7 @@ class DeployTest(unittest.TestCase):
             "--dburl %s --domain %s --admin-username admin %s"
             % (dburl, "localhost", self.projname)
         )
-        code, output = exec_cmd(cmd, cwd=self.workdir)
+        code, output = exec_cmd(cmd, shell=True, cwd=self.workdir)
         self.assertEqual(code, 0)
 
 
