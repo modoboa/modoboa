@@ -36,6 +36,7 @@ export default defineConfig({
           { text: 'Translate', link: '/contributing/translation' },
           { text: 'REST API', link: '/rest_api' },
           { text: 'Contributors', link: '/contributors' },
+          { text: 'Lifecycle', link: '/lifecycle' },
         ],
       },
       {
