@@ -198,7 +198,7 @@ class AdminParametersForm(param_forms.AdminParametersForm):
         self.field_widths = {"default_domain_quota": 2, "default_mailbox_quota": 2}
         hide_fields = False
         dpath = None
-        code, output = exec_cmd("which dovecot")
+        code, output = exec_cmd("which dovecot", shell=True)
         if not code:
             dpath = force_str(output).strip()
         else:
@@ -212,7 +212,7 @@ class AdminParametersForm(param_forms.AdminParametersForm):
                     dpath = fpath
         if dpath:
             try:
-                code, version = exec_cmd("%s --version" % dpath)
+                code, version = exec_cmd([dpath, "--version"])
             except OSError:
                 hide_fields = True
             else:
@@ -242,7 +242,7 @@ class AdminParametersForm(param_forms.AdminParametersForm):
         if storage_dir:
             if not os.path.isdir(storage_dir):
                 raise forms.ValidationError(gettext_lazy("Directory not found."))
-            code, output = exec_cmd("which openssl")
+            code, output = exec_cmd("which openssl", shell=True)
             if code:
                 raise forms.ValidationError(
                     gettext_lazy("openssl not found, please make sure it is installed.")

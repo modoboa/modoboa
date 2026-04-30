@@ -30,7 +30,7 @@ def get_dovecot_schemes():
 
     if not schemes:
         try:
-            retcode, schemes = doveadm_cmd("pw -l")
+            retcode, schemes = doveadm_cmd(["pw", "-l"])
         except OSError:
             schemes = default_schemes
             status = 2
