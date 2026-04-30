@@ -146,7 +146,7 @@ class FilterSetViewSetTestCase(PatcherMixin, ModoAPITestCase):
         url = reverse("v2:filterset-get-filters", args=["main_script"])
         resp = self.client.get(url)
         self.assertEqual(resp.status_code, 200)
-        self.assertEqual(len(resp.json()), 5)
+        self.assertEqual(len(resp.json()), 6)
         url = reverse("v2:filterset-get-filters", args=["complex_script"])
         resp = self.client.get(url)
         self.assertEqual(resp.status_code, 518)
@@ -243,6 +243,53 @@ class FilterSetViewSetTestCase(PatcherMixin, ModoAPITestCase):
         self.assertEqual(resp.status_code, 404)
         url = reverse("v2:filterset-move-filter-up", args=["main_script", "test2"])
         resp = self.client.post(url)
+        self.assertEqual(resp.status_code, 204)
+
+    def test_filter_with_email_name(self):
+        """Test filter operations when the filter name is an email address."""
+        self.authenticate()
+        email_filter = "user@example.com"
+        data = {
+            "name": email_filter,
+            "enabled": True,
+            "match_type": "anyof",
+            "conditions": [
+                {"name": "From", "operator": "is", "value": email_filter},
+            ],
+            "actions": [
+                {"name": "fileinto", "args": {"mailbox": "Hotels"}},
+            ],
+        }
+        # Update
+        url = reverse("v2:filterset-update-filter", args=["main_script", email_filter])
+        resp = self.client.put(url, data, format="json")
+        self.assertEqual(resp.status_code, 200)
+
+        # Disable
+        url = reverse("v2:filterset-disable-filter", args=["main_script", email_filter])
+        resp = self.client.post(url)
+        self.assertEqual(resp.status_code, 204)
+
+        # Enable
+        url = reverse("v2:filterset-enable-filter", args=["main_script", email_filter])
+        resp = self.client.post(url)
+        self.assertEqual(resp.status_code, 204)
+
+        # Move up
+        url = reverse("v2:filterset-move-filter-up", args=["main_script", email_filter])
+        resp = self.client.post(url)
+        self.assertEqual(resp.status_code, 204)
+
+        # Move down
+        url = reverse(
+            "v2:filterset-move-filter-down", args=["main_script", email_filter]
+        )
+        resp = self.client.post(url)
+        self.assertEqual(resp.status_code, 204)
+
+        # Delete
+        url = reverse("v2:filterset-update-filter", args=["main_script", email_filter])
+        resp = self.client.delete(url)
         self.assertEqual(resp.status_code, 204)
 
     def test_move_filter_down(self):
