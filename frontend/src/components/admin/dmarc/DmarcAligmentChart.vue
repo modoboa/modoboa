@@ -1,7 +1,7 @@
 <template>
   <div v-if="alignments">
     <v-card>
-      <v-toolbar dense elevation="0" class="mr-2">
+      <v-toolbar density="compact" elevation="0" class="mr-2">
         <v-toolbar-title>{{ $gettext('Alignment') }}</v-toolbar-title>
         <v-spacer />
         <v-btn icon="mdi-arrow-left" size="x-small" @click="previousWeek">

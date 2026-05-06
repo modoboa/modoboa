@@ -9,12 +9,18 @@ from django.utils.translation import gettext as _, gettext_lazy
 
 import django_otp
 
+from modoboa.core import signals
 from modoboa.lib.form_utils import UserKwargModelFormMixin
 
 
 class AuthenticationForm(auth_forms.AuthenticationForm):
 
     rememberme = forms.BooleanField(initial=False, required=False)
+
+    def confirm_login_allowed(self, user):
+        """Extra authorizations to check if login is allowed."""
+        super().confirm_login_allowed(user)
+        signals.user_can_login.send(sender=self, user=user)
 
 
 class PasswordResetForm(auth_forms.PasswordResetForm):

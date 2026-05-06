@@ -1,6 +1,7 @@
 """Extension management."""
 
 from django.conf import settings
+from django.templatetags.static import static
 from django.urls import include
 from django.urls import re_path
 from django.utils.encoding import smart_str
@@ -22,6 +23,10 @@ class ModoExtension:
     always_active: bool = False
     url: str | None = None
     topredirection_url: str | None = None
+    frontend_menu_entries: list[dict] = []
+    frontend_routes: list[dict] = []
+    frontend_remote: dict | None = None
+    frontend_ui_extensions: dict[str, list[dict]] = {}
 
     def get_available_apps(self) -> list:
         return []
@@ -42,6 +47,51 @@ class ModoExtension:
             "url": self.get_url(),
             "topredirection_url": self.topredirection_url,
             "always_active": self.always_active,
+        }
+
+    def get_frontend_menu_entries(self) -> list[dict]:
+        """Return menu entries this extension wants to expose to the frontend."""
+        return list(self.frontend_menu_entries)
+
+    def get_frontend_routes(self) -> list[dict]:
+        """Return routes this extension wants to register in the frontend router."""
+        return list(self.frontend_routes)
+
+    def get_frontend_remote(self) -> dict | None:
+        """Return the federated remote descriptor for this extension, if any.
+
+        Plugins may declare ``frontend_remote`` with either:
+
+        - ``url``: an absolute or pre-resolved URL (used verbatim, e.g. CDN or
+          dev server URL).
+        - ``static_path``: a path relative to ``STATIC_URL``. The host resolves
+          it through Django's ``static()`` helper so it picks up the configured
+          ``STATIC_URL`` prefix and any hashed filename produced by
+          ``ManifestStaticFilesStorage``.
+
+        ``url`` takes precedence over ``static_path`` if both are set.
+        """
+        if not self.frontend_remote:
+            return None
+        remote = dict(self.frontend_remote)
+        static_path = remote.pop("static_path", None)
+        if not remote.get("url") and static_path:
+            remote["url"] = static(static_path)
+        return remote
+
+    def get_frontend_ui_extensions(self) -> dict[str, list[dict]]:
+        """Return UI extension descriptors keyed by extension-point id."""
+        return {key: list(value) for key, value in self.frontend_ui_extensions.items()}
+
+    def get_frontend_manifest(self) -> dict:
+        """Return the frontend manifest of this extension."""
+        return {
+            "name": self.name,
+            "label": self.label,
+            "remote": self.get_frontend_remote(),
+            "menu_entries": self.get_frontend_menu_entries(),
+            "routes": self.get_frontend_routes(),
+            "ui_extensions": self.get_frontend_ui_extensions(),
         }
 
     def load_initial_data(self):
@@ -130,6 +180,16 @@ class ExtensionsPool:
                 # No urls for this extension
                 pass
         return result
+
+    def get_frontend_manifests(self) -> list[dict]:
+        """Return frontend manifests of all registered extensions."""
+        manifests = []
+        for ext_name in list(self.extensions.keys()):
+            ext = self.get_extension(ext_name)
+            if ext is None:
+                continue
+            manifests.append(ext.get_frontend_manifest())
+        return manifests
 
     def list_all(self):
         """List all defined extensions."""

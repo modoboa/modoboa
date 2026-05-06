@@ -22,6 +22,7 @@ node_modules
 /frontend/webpack-stats.json
 /frontend/src/translations.json
 /frontend/.__mf__temp/
+/frontend/.npm/
 doc-ng/.vitepress/cache/
 doc-ng/.vitepress/dist/
 

@@ -12,7 +12,7 @@
         colored-border
         border-color="primary lighten-3"
         elevation="2"
-        dense
+        density="compact"
       >
         <button class="dkimbutton" @click="copyPubDKIM()">
           <pre id="dkimpub" class="dkim">{{ domain.dkim_public_key }}</pre>
@@ -26,7 +26,7 @@
         colored-border
         border-color="primary lighten-3"
         elevation="2"
-        dense
+        density="compact"
       >
         <DKIMKeyViewer :domain="domain" />
       </v-alert>

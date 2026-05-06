@@ -1,6 +1,6 @@
 <template>
   <v-card>
-    <v-toolbar dense elevation="0">
+    <v-toolbar density="compact" elevation="0">
       <v-toolbar-title>{{ title }}</v-toolbar-title>
       <v-spacer />
       <v-menu v-model="menu" location="bottom">
