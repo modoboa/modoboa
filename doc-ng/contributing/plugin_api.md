@@ -170,8 +170,8 @@ field. Use `write_only=True` for input fields and connect to
 `extra_domain_serializer_data` to provide the read value.
 :::
 
-Example — a plugin that attaches a single `virtual_host` string to a
-domain:
+Example — a plugin that attaches a free-form `billing_reference`
+string to a domain, stored in its own model:
 
 ```python
 from django.dispatch import receiver
@@ -180,12 +180,14 @@ from rest_framework import serializers
 from modoboa.admin import signals as admin_signals
 from modoboa.admin.api.v2 import serializers as admin_serializers
 
+from . import models  # plugin-local model: DomainBilling(domain, reference)
+
 
 @receiver(admin_signals.extra_domain_serializer_fields,
           sender=admin_serializers.DomainSerializer)
-def add_virtual_host_field(sender, **kwargs):
+def add_billing_reference_field(sender, **kwargs):
     return {
-        "virtual_host": serializers.CharField(
+        "billing_reference": serializers.CharField(
             required=False,
             allow_null=True,
             allow_blank=True,
@@ -196,18 +198,20 @@ def add_virtual_host_field(sender, **kwargs):
 
 @receiver(admin_signals.extra_domain_serializer_data,
           sender=admin_serializers.DomainSerializer)
-def add_virtual_host_data(sender, domain, **kwargs):
-    vhost = domain.virtualhosts.first()
-    return {"virtual_host": vhost.name if vhost else None}
+def add_billing_reference_data(sender, domain, **kwargs):
+    billing = models.DomainBilling.objects.filter(domain=domain).first()
+    return {"billing_reference": billing.reference if billing else None}
 
 
 @receiver(admin_signals.domain_post_create_via_api,
           sender=admin_serializers.DomainSerializer)
-def save_virtual_host(sender, domain, plugin_data, request, **kwargs):
-    name = (plugin_data.get("virtual_host") or "").strip().lower()
-    if not name:
+def save_billing_reference(sender, domain, plugin_data, request, **kwargs):
+    reference = (plugin_data.get("billing_reference") or "").strip()
+    if not reference:
         return
-    # ... create / link VirtualHost row
+    models.DomainBilling.objects.update_or_create(
+        domain=domain, defaults={"reference": reference}
+    )
 ```
 
 ## Frontend extension points
@@ -317,17 +321,17 @@ Example:
 frontend_ui_extensions = {
     "domain.detail.tabs": [
         {
-            "name": "myext.virtualhost",
-            "title": "Virtual host",
-            "component": "./VirtualHostTab",
+            "name": "myext.billing",
+            "title": "Billing",
+            "component": "./BillingTab",
             "applies_to": ["domain"],
         }
     ],
     "domain.edit_form.panels": [
         {
-            "name": "myext.virtualhost_panel",
-            "title": "Virtual host",
-            "component": "./VirtualHostPanel",
+            "name": "myext.billing_panel",
+            "title": "Billing",
+            "component": "./BillingPanel",
         }
     ],
 }
@@ -352,8 +356,8 @@ export default defineConfig({
       filename: 'remoteEntry.js',
       dts: false,
       exposes: {
-        './VirtualHostTab': './src/VirtualHostTab.vue',
-        './VirtualHostPanel': './src/VirtualHostPanel.vue',
+        './BillingTab': './src/BillingTab.vue',
+        './BillingPanel': './src/BillingPanel.vue',
       },
       // Consume host-shared singletons (host exposes the same set):
       shared: {
