@@ -36,8 +36,11 @@ export default defineConfig({
     federation({
       name: 'modoboa_host',
       filename: 'remoteEntry.js',
-      // JS-only project — skip TypeScript declaration generation
-      // (otherwise @module-federation/dts-plugin demands a tsconfig.json).
+      // JS-only project — disable TypeScript declaration generation.
+      // Note: `typescript` must still be installed as a devDep because
+      // @module-federation/dts-plugin unconditionally `import`s it at
+      // module load (the dts: false flag only disables the feature,
+      // not the import).
       dts: false,
       // Plugin remotes are registered dynamically at runtime from the
       // backend manifest (see src/utils/federation.js).
