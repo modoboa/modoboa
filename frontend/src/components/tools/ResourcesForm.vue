@@ -6,7 +6,7 @@
         v-model="resource.max_value"
         type="number"
         variant="outlined"
-        dense
+        density="compact"
         :rules="[rules.required]"
       />
     </template>

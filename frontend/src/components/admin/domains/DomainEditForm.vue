@@ -155,6 +155,28 @@
           <ResourcesForm ref="resourcesForm" v-model="editedDomain.resources" />
         </v-expansion-panel-text>
       </v-expansion-panel>
+      <v-expansion-panel
+        v-for="panelDef in pluginPanels"
+        :key="panelDef.name"
+        :value="panelDef.name"
+        eager
+      >
+        <v-expansion-panel-title>
+          <v-row no-gutters>
+            <v-col cols="4">
+              {{ panelDef.title }}
+            </v-col>
+          </v-row>
+        </v-expansion-panel-title>
+        <v-expansion-panel-text>
+          <component
+            :is="panelDef.component"
+            v-bind="panelDef.props || {}"
+            :ref="(el) => setPluginPanelRef(panelDef.name, el)"
+            v-model="editedDomain"
+          />
+        </v-expansion-panel-text>
+      </v-expansion-panel>
     </v-expansion-panels>
     <div class="mt-4 d-flex justify-end">
       <v-btn :loading="working" variant="outlined" @click="router.go(-1)">
@@ -183,7 +205,7 @@ import parametersApi from '@/api/parameters'
 import ResourcesForm from '@/components/tools/ResourcesForm.vue'
 import { computed, ref } from 'vue'
 import { useGettext } from 'vue3-gettext'
-import { useAuthStore } from '@/stores'
+import { useAuthStore, usePluginsStore } from '@/stores'
 import { useRouter } from 'vue-router'
 import domainsApi from '@/api/domains'
 import constants from '@/constants.json'
@@ -191,6 +213,9 @@ import constants from '@/constants.json'
 const router = useRouter()
 const { $gettext } = useGettext()
 const authStore = useAuthStore()
+const pluginsStore = usePluginsStore()
+
+const PLUGIN_EXTENSION_POINT = 'domain.edit_form.panels'
 
 const props = defineProps({ domain: { type: Object, default: null } })
 
@@ -209,6 +234,27 @@ const transportForm = ref()
 const limitationForm = ref()
 const dnsForm = ref()
 
+const pluginPanelRefs = ref({})
+
+function setPluginPanelRef(name, el) {
+  if (el) {
+    pluginPanelRefs.value[name] = el
+  } else {
+    delete pluginPanelRefs.value[name]
+  }
+}
+
+const pluginPanels = computed(() =>
+  pluginsStore
+    .uiExtensions(PLUGIN_EXTENSION_POINT)
+    .filter(
+      (item) =>
+        !Array.isArray(item.applies_to) ||
+        item.applies_to.length === 0 ||
+        item.applies_to.includes(editedDomain.value?.type)
+    )
+)
+
 // Form map
 const formMap = computed(() => {
   const map = {
@@ -226,6 +272,12 @@ const formMap = computed(() => {
       authUser.value.role === constants.RESELLER)
   ) {
     map.resourcesForm = resourcesForm
+  }
+  for (const panelDef of pluginPanels.value) {
+    const el = pluginPanelRefs.value[panelDef.name]
+    if (el && el.vFormRef) {
+      map[panelDef.name] = { value: el }
+    }
   }
   return map
 })

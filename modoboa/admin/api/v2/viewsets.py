@@ -401,7 +401,7 @@ class AlarmViewSet(
         dj_filters.DjangoFilterBackend,
     )
     filterset_class = AlarmFilterSet
-    ordering_fields = ["created", "status", "title"]
+    ordering_fields = ["creation", "status", "title"]
     pagination_class = pagination.CustomPageNumberPagination
     permission_classes = (permissions.IsAuthenticated,)
     search_fields = ["domain__name", "title"]

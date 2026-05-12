@@ -44,6 +44,11 @@ urlpatterns += [
     ),
     path("capabilities/", views.CapabilitiesAPIView.as_view(), name="capabilities"),
     path(
+        "frontend/plugins/",
+        views.FrontendPluginsAPIView.as_view(),
+        name="frontend_plugins",
+    ),
+    path(
         "notifications/",
         views.NotificationsAPIView.as_view(),
         name="notifications",

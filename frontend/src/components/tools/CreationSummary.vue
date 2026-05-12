@@ -10,7 +10,11 @@
         {{ $gettext('Modify') }}</a
       >
     </div>
-    <v-row v-for="(item, itemIndex) in section.items" :key="itemIndex" dense>
+    <v-row
+      v-for="(item, itemIndex) in section.items"
+      :key="itemIndex"
+      density="compact"
+    >
       <template v-if="item.value !== undefined">
         <slot
           :name="`item.${item.name}`"

@@ -38,9 +38,7 @@ class AuthenticationTestCase(ModoTestCase):
         response = self.client.post(reverse("core:login"), data)
         self.assertEqual(response.status_code, 302)
 
-        response = self.client.post(reverse("core:logout"), {})
-        self.assertEqual(response.status_code, 302)
-
+        self.client.logout()
         data = {"username": "admin", "password": "password"}
         response = self.client.post(reverse("core:login"), data)
         self.assertEqual(response.status_code, 302)
@@ -136,18 +134,36 @@ class ManagementCommandsTestCase(SimpleModoTestCase):
 
     def test_generate_postfix_maps(self):
         """Run generate_postfix_maps command"""
-        
+
         workdir = tempfile.mkdtemp()
         # test SQLite URL
-        management.call_command("generate_postfix_maps", "--dburl", "sqlite://testdb.sqlite", "--destdir", workdir)
+        management.call_command(
+            "generate_postfix_maps",
+            "--dburl",
+            "sqlite://testdb.sqlite",
+            "--destdir",
+            workdir,
+        )
 
         workdir = tempfile.mkdtemp()
         # test PostgreSQL URL
-        management.call_command("generate_postfix_maps", "--dburl", "postgres://user:password@localhost/testdb", "--destdir", workdir)    
+        management.call_command(
+            "generate_postfix_maps",
+            "--dburl",
+            "postgres://user:password@localhost/testdb",
+            "--destdir",
+            workdir,
+        )
 
         workdir = tempfile.mkdtemp()
-        # test MySQL URL 
-        management.call_command("generate_postfix_maps", "--dburl", "mysql://user:password@localhost/testdb", "--destdir", workdir)    
+        # test MySQL URL
+        management.call_command(
+            "generate_postfix_maps",
+            "--dburl",
+            "mysql://user:password@localhost/testdb",
+            "--destdir",
+            workdir,
+        )
 
     def test_clean_inactive_accounts(self):
         """Run clean_inactive_accounts command."""

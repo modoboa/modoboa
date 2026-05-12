@@ -56,9 +56,6 @@ class AuthenticationTestCase(ModoTestCase):
         response = self.client.post(reverse("core:login"), data)
         self.assertEqual(response.status_code, 302)
 
-        response = self.client.post(reverse("core:logout"), {})
-        self.assertEqual(response.status_code, 302)
-
     @mock.patch("django_otp.match_token")
     @mock.patch("django_otp.login")
     def test_authentication_with_2fa(self, login_mock, match_mock):

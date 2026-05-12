@@ -4,7 +4,7 @@ description: Discover how to develop a plugin for modoboa to extend functionnali
 head:
   - - meta
     - name: 'keywords'
-      content: 'modoboa, plugin, extension, api, navigation, Django signals' 
+      content: 'modoboa, plugin, extension, api, navigation, Django signals, module federation, vue'
 ---
 
 # Create a new plugin
@@ -15,22 +15,25 @@ Modoboa offers a plugin API to expand its capabilities.
 
 The current implementation provides the following possibilities:
 
-- Expand navigation by adding entry points to your plugin inside the GUI
-- Access and modify administrative objects (domains, mailboxes, etc.)
-- Register callback actions for specific events
+- Expand backend navigation, register callbacks, and extend administrative
+  objects through [Django signals](https://docs.djangoproject.com/en/5.2/topics/signals/).
+- Add fields to the REST API by attaching to dedicated serializer signals
+  (e.g. `DomainSerializer`).
+- Inject menu entries, routes, and UI components into the Vue 3 frontend
+  via a federated remote that the host loads at runtime.
 
 ::: tip
 Plugins are nothing more than Django applications with an extra piece of
-code that integrates them into Modoboa.
+code that integrates them into Modoboa. A plugin **may** ship a frontend
+bundle, but it is not required: pure backend plugins remain perfectly
+valid.
 :::
 
-The `modo_extension.py` file will contain a complete description of the plugin:
+The `modo_extension.py` file contains a complete description of the plugin:
 
 - Admin and user parameters
 - Custom menu entries
-
-The communication between both applications is provided by
-[Django signals](https://docs.djangoproject.com/en/5.2/topics/signals/).
+- Frontend manifest (routes, UI extensions, federated remote)
 
 The following subsections describe the plugin architecture and explain
 how you can create your own.
@@ -141,3 +144,252 @@ def extra_role_permissions(sender, role, **kwargs):
    """Add permissions to the Resellers group."""
    return constants.PERMISSIONS.get(role, [])
 ```
+
+## Extending the `DomainSerializer`
+
+Plugins can hook into the REST `DomainSerializer` to add fields, expose
+extra read-only data, and react to create/update side effects. Four
+signals from `modoboa.admin.signals` cover the full lifecycle.
+
+| Signal | Provides | Receivers return |
+|---|---|---|
+| `extra_domain_serializer_fields` | (nothing) | `dict[str, serializers.Field]` — declarative fields merged into the serializer (typically `write_only=True`). |
+| `extra_domain_serializer_data` | `domain` | `dict[str, Any]` — merged into the JSON representation (read side). |
+| `domain_post_create_via_api` | `domain`, `plugin_data`, `request` | — (side-effects only). |
+| `domain_post_update_via_api` | `domain`, `plugin_data`, `request` | — (side-effects only). |
+
+`plugin_data` is the dict of values popped out of `validated_data` for
+the fields contributed by `extra_domain_serializer_fields`, so plugins
+get exactly what was submitted without polluting the `Domain` model.
+
+::: warning Read side is not automatic
+Fields declared via `extra_domain_serializer_fields` are not read back
+automatically — DRF would try to look the attribute up on the
+`Domain` instance, fail with `AttributeError`, and silently drop the
+field. Use `write_only=True` for input fields and connect to
+`extra_domain_serializer_data` to provide the read value.
+:::
+
+Example — a plugin that attaches a single `virtual_host` string to a
+domain:
+
+```python
+from django.dispatch import receiver
+from rest_framework import serializers
+
+from modoboa.admin import signals as admin_signals
+from modoboa.admin.api.v2 import serializers as admin_serializers
+
+
+@receiver(admin_signals.extra_domain_serializer_fields,
+          sender=admin_serializers.DomainSerializer)
+def add_virtual_host_field(sender, **kwargs):
+    return {
+        "virtual_host": serializers.CharField(
+            required=False,
+            allow_null=True,
+            allow_blank=True,
+            write_only=True,
+        ),
+    }
+
+
+@receiver(admin_signals.extra_domain_serializer_data,
+          sender=admin_serializers.DomainSerializer)
+def add_virtual_host_data(sender, domain, **kwargs):
+    vhost = domain.virtualhosts.first()
+    return {"virtual_host": vhost.name if vhost else None}
+
+
+@receiver(admin_signals.domain_post_create_via_api,
+          sender=admin_serializers.DomainSerializer)
+def save_virtual_host(sender, domain, plugin_data, request, **kwargs):
+    name = (plugin_data.get("virtual_host") or "").strip().lower()
+    if not name:
+        return
+    # ... create / link VirtualHost row
+```
+
+## Frontend extension points
+
+A plugin extends the Vue 3 frontend by declaring its UI contribution on
+the `ModoExtension` subclass. The host fetches the aggregated manifest
+from `GET /api/v2/frontend/plugins/` and wires everything up at startup
+through [Module Federation](https://module-federation.io/).
+
+The following class attributes are recognized on `ModoExtension`:
+
+| Attribute | Purpose |
+|---|---|
+| `frontend_menu_entries: list[dict]` | Items injected into the host navigation, grouped by category. |
+| `frontend_routes: list[dict]` | Vue Router routes loaded into the host router at startup. |
+| `frontend_remote: dict \| None` | Federated remote descriptor (where the host loads your bundle from). |
+| `frontend_ui_extensions: dict[str, list[dict]]` | Items inserted at named extension points throughout the UI. |
+
+### Declaring the remote
+
+`frontend_remote` describes the federated entry the host should load:
+
+```python
+class MyExtension(ModoExtension):
+    name = "myext"
+    label = "My Extension"
+    frontend_remote = {
+        "name": "myext",
+        # In production, ship the build under STATIC_URL and let
+        # ManifestStaticFilesStorage handle the hashed filename:
+        "static_path": "myext/remoteEntry.js",
+        # In dev, point directly at the plugin's preview server:
+        # "url": "https://localhost:5174/remoteEntry.js",
+        "format": "esm",
+    }
+```
+
+- `url` — used verbatim. Use for absolute CDN/dev-server URLs.
+- `static_path` — relative to `STATIC_URL`, resolved through Django's
+  `static()` helper so hashed filenames produced by
+  `ManifestStaticFilesStorage` are picked up automatically.
+- `url` takes precedence over `static_path` if both are set.
+
+### Menu entries
+
+```python
+frontend_menu_entries = [
+    {
+        "label": "My Extension",
+        "icon": "mdi-puzzle",
+        "to": "MyExtensionRoute",   # route name (preferred)
+        "url": "https://...",        # OR an external URL
+        "category": "admin",         # admin | user | account
+        "roles": ["SuperAdmins"],   # optional role gate
+        "children": [...],           # nested submenu items
+    }
+]
+```
+
+### Routes
+
+```python
+frontend_routes = [
+    {
+        "name": "MyExtensionRoute",
+        "path": "myext",
+        "component": "./MyExtensionView",   # exposed module name in your remote
+        "parent": "AdminLayout",             # mount under an existing route…
+        "meta": {...},
+        "props": {...},
+        "children": [...],
+    }
+]
+```
+
+`component` is resolved against the plugin's federated remote — the
+host calls `loadRemote("<remote.name>/<component>")` lazily. If
+`parent` is set, the route is added as a child of that named route in
+the host router; otherwise it is added at the top level.
+
+### UI extension points
+
+`frontend_ui_extensions` is keyed by extension-point id. Each item is a
+loose dict; the host passes through any extra keys so the consuming
+extension point can interpret them.
+
+Common fields per item:
+
+- `name` — unique id (required).
+- `title` — display label, where applicable.
+- `component` — module path on the plugin remote (e.g. `"./MyTab"`).
+- `applies_to` — optional list of domain types (`"domain"`, `"relaydomain"`); empty/missing means "any".
+- `position`, `props`, `summary` — interpreted by the extension point.
+
+The extension points currently exposed by the host:
+
+| Extension point id | Where it renders |
+|---|---|
+| `domain.creation_form.steps` | Extra step(s) appended to the domain creation wizard. |
+| `domain.edit_form.panels` | Extra panels in the domain edit form. |
+| `domain.detail.general.blocks` | Blocks added to the *General* tab of the domain detail view (set `column: "left"` or `"right"`). |
+| `domain.detail.tabs` | Top-level tabs added to the domain detail view. |
+
+Example:
+
+```python
+frontend_ui_extensions = {
+    "domain.detail.tabs": [
+        {
+            "name": "myext.virtualhost",
+            "title": "Virtual host",
+            "component": "./VirtualHostTab",
+            "applies_to": ["domain"],
+        }
+    ],
+    "domain.edit_form.panels": [
+        {
+            "name": "myext.virtualhost_panel",
+            "title": "Virtual host",
+            "component": "./VirtualHostPanel",
+        }
+    ],
+}
+```
+
+### Building the remote with Module Federation
+
+The host expects an ESM federated build. The plugin's `vite.config.js`
+should use [`@module-federation/vite`](https://github.com/module-federation/vite)
+and pin shared dependencies as singletons matching the host's pins:
+
+```js
+import { defineConfig } from 'vite'
+import vue from '@vitejs/plugin-vue'
+import { federation } from '@module-federation/vite'
+
+export default defineConfig({
+  plugins: [
+    vue(),
+    federation({
+      name: 'myext',
+      filename: 'remoteEntry.js',
+      dts: false,
+      exposes: {
+        './VirtualHostTab': './src/VirtualHostTab.vue',
+        './VirtualHostPanel': './src/VirtualHostPanel.vue',
+      },
+      // Consume host-shared singletons (host exposes the same set):
+      shared: {
+        vue: { singleton: true, requiredVersion: '^3.4.0' },
+        'vue-router': { singleton: true, requiredVersion: '^4.0.0' },
+        pinia: { singleton: true, requiredVersion: '^3.0.0' },
+        vuetify: { singleton: true, requiredVersion: '^4.0.0' },
+        'vue3-gettext': { singleton: true, requiredVersion: '^4.0.0-beta.1' },
+      },
+    }),
+  ],
+  build: { target: 'esnext', minify: false },
+})
+```
+
+The host additionally exposes the following modules under the
+`modoboa_host` remote, so plugins can reuse host stores and components
+instead of importing their own copies:
+
+- `modoboa_host/stores` — the shared pinia stores (`useAuthStore`,
+  `useGlobalStore`, `usePluginsStore`, …)
+- `modoboa_host/repository` — the configured axios instance.
+- `modoboa_host/MenuItems` — the host navigation component.
+- `modoboa_host/ConfirmDialog` — the host confirmation dialog.
+
+::: warning Federation does not work with `vite dev`
+`@module-federation/vite` only generates `remoteEntry.js` during the
+production build. While developing a plugin, run `yarn build && yarn
+preview` (HTTPS) — the host's federation runtime cannot consume the
+dev server's transformed module graph.
+:::
+
+### Shipping the build
+
+For production, run `yarn build` and place the output under a Django
+static folder so `collectstatic` picks it up. With the default
+`static_path` setting, the bundle is reachable at
+`STATIC_URL + "myext/remoteEntry.js"` and benefits from the hashed
+filenames produced by `ManifestStaticFilesStorage`.

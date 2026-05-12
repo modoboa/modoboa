@@ -695,3 +695,89 @@ class StatisticsSerializer(serializers.Serializer):
     domain_alias_count = serializers.IntegerField()
     account_count = serializers.IntegerField()
     alias_count = serializers.IntegerField()
+
+
+class FrontendMenuEntrySerializer(serializers.Serializer):
+    """Serializer used to describe a menu entry exposed by a plugin."""
+
+    label = serializers.CharField()
+    icon = serializers.CharField(required=False, allow_blank=True, allow_null=True)
+    to = serializers.CharField(required=False, allow_blank=True, allow_null=True)
+    url = serializers.CharField(required=False, allow_blank=True, allow_null=True)
+    roles = serializers.ListField(
+        child=serializers.CharField(), required=False, default=list
+    )
+    category = serializers.ChoiceField(
+        choices=[("admin", "admin"), ("user", "user"), ("account", "account")],
+        required=False,
+        default="admin",
+    )
+    children = serializers.ListField(
+        child=serializers.DictField(), required=False, default=list
+    )
+
+
+class FrontendRouteSerializer(serializers.Serializer):
+    """Serializer used to describe a frontend route exposed by a plugin."""
+
+    name = serializers.CharField()
+    path = serializers.CharField()
+    component = serializers.CharField()
+    parent = serializers.CharField(required=False, allow_null=True, allow_blank=True)
+    meta = serializers.DictField(required=False, default=dict)
+    props = serializers.DictField(required=False, default=dict)
+    children = serializers.ListField(
+        child=serializers.DictField(), required=False, default=list
+    )
+
+
+class FrontendRemoteSerializer(serializers.Serializer):
+    """Serializer describing a Module Federation remote exposed by a plugin."""
+
+    name = serializers.CharField()
+    url = serializers.CharField()
+    format = serializers.ChoiceField(
+        choices=[("esm", "esm"), ("systemjs", "systemjs"), ("var", "var")],
+        required=False,
+        default="esm",
+    )
+
+
+class FrontendUIExtensionPositionSerializer(serializers.Serializer):
+    """Serializer describing where a UI extension item should be inserted."""
+
+    after = serializers.CharField(required=False, allow_blank=True, allow_null=True)
+    before = serializers.CharField(required=False, allow_blank=True, allow_null=True)
+    at = serializers.IntegerField(required=False, allow_null=True)
+
+
+class FrontendUIExtensionSerializer(serializers.Serializer):
+    """Generic serializer for a UI extension descriptor.
+
+    Plugin-specific shapes are validated against this loose schema; any
+    extra keys declared by a plugin are passed through unchanged so that
+    extension points can interpret them as needed on the frontend.
+    """
+
+    name = serializers.CharField()
+    title = serializers.CharField(required=False, allow_blank=True, allow_null=True)
+    component = serializers.CharField(required=False, allow_blank=True, allow_null=True)
+    position = FrontendUIExtensionPositionSerializer(required=False, allow_null=True)
+    applies_to = serializers.ListField(
+        child=serializers.CharField(), required=False, default=list
+    )
+    props = serializers.DictField(required=False, default=dict)
+    summary = serializers.DictField(required=False, default=dict)
+
+
+class FrontendPluginManifestSerializer(serializers.Serializer):
+    """Serializer used to expose a plugin manifest to the frontend."""
+
+    name = serializers.CharField()
+    label = serializers.CharField()
+    remote = FrontendRemoteSerializer(required=False, allow_null=True)
+    menu_entries = FrontendMenuEntrySerializer(many=True, default=list)
+    routes = FrontendRouteSerializer(many=True, default=list)
+    ui_extensions = serializers.DictField(
+        child=FrontendUIExtensionSerializer(many=True), required=False, default=dict
+    )

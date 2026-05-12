@@ -5,11 +5,12 @@
 <script setup>
 import { computed, ref } from 'vue'
 import { useGettext } from 'vue3-gettext'
-import { useAuthStore } from '@/stores'
+import { useAuthStore, usePluginsStore } from '@/stores'
 import ConnectedLayout from '@/layouts/connected/ConnectedLayout.vue'
 import parametersApi from '@/api/parameters'
 
 const authStore = useAuthStore()
+const pluginsStore = usePluginsStore()
 const { $gettext } = useGettext()
 
 const applications = ref([])
@@ -43,8 +44,11 @@ const userSettingsMenuItems = computed(() => {
       })
     }
   }
+  result.push(...pluginsStore.menuItemsByCategory('account'))
   return result
 })
+
+await pluginsStore.fetchManifests()
 
 parametersApi.getUserApplications().then((resp) => {
   applications.value = resp.data

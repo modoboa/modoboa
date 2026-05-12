@@ -3,7 +3,6 @@
 from .auth import (
     PasswordResetView,
     LoginView,
-    dologout,
     VerifySMSCodeView,
     ResendSMSCodeView,
     TwoFactorCodeVerifyView,
@@ -16,7 +15,6 @@ __all__ = [
     "PasswordResetView",
     "ResendSMSCodeView",
     "VerifySMSCodeView",
-    "dologout",
     "TwoFactorCodeVerifyView",
     "FidoAuthenticationBeginView",
     "FidoAuthenticationEndView",
