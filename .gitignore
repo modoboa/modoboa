@@ -16,6 +16,7 @@ bin/instance
 build/
 dist/
 modoboa/frontend_dist
+/frontend_dist/
 # JS stuff
 node_modules
 /static/dist

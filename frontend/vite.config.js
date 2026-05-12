@@ -9,6 +9,39 @@ import { federation } from '@module-federation/vite'
 import { defineConfig } from 'vite'
 import { fileURLToPath, URL } from 'node:url'
 
+// @module-federation/vite emits its bootstrap shim files via emitFile() with
+// an explicit `fileName`, which bypasses Rollup's entry/asset naming patterns
+// and dumps them at the bundle root. Relocate them under assets/ so the
+// produced layout matches the rest of the build (single canonical asset
+// directory for collectstatic / CDN sync).
+function relocateMfBootstrap() {
+  return {
+    name: 'modoboa-relocate-mf-bootstrap',
+    enforce: 'post',
+    generateBundle(_options, bundle) {
+      const moved = new Map()
+      for (const fileName of Object.keys(bundle)) {
+        if (fileName.startsWith('mf-entry-bootstrap-')) {
+          const newName = `assets/${fileName}`
+          bundle[fileName].fileName = newName
+          bundle[newName] = bundle[fileName]
+          delete bundle[fileName]
+          moved.set(fileName, newName)
+        }
+      }
+      for (const asset of Object.values(bundle)) {
+        if (asset.type === 'asset' && asset.fileName.endsWith('.html')) {
+          let html = asset.source.toString()
+          for (const [oldName, newName] of moved) {
+            html = html.split(`/${oldName}`).join(`/${newName}`)
+          }
+          asset.source = html
+        }
+      }
+    },
+  }
+}
+
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
@@ -61,6 +94,7 @@ export default defineConfig({
         'vue3-gettext': { singleton: true, requiredVersion: '^4.0.0-beta.1' },
       },
     }),
+    relocateMfBootstrap(),
   ],
   base: '/',
   define: { 'process.env': {} },
