@@ -28,7 +28,7 @@ mail.{{ domain.name }}. IN A <strong>[{{$gettext('IP address of your Modoboa ser
         border="start"
         border-color="primary lighten-3"
         elevation="2"
-        dense
+        density="compact"
         color="white"
       >
         <div class="text-headline-small">SPF</div>
@@ -41,7 +41,7 @@ mail.{{ domain.name }}. IN A <strong>[{{$gettext('IP address of your Modoboa ser
         border="start"
         border-color="primary lighten-3"
         elevation="2"
-        dense
+        density="compact"
         color="white"
       >
         <div class="text-headline-small">DKIM</div>
@@ -52,7 +52,7 @@ mail.{{ domain.name }}. IN A <strong>[{{$gettext('IP address of your Modoboa ser
         border="start"
         border-color="primary lighten-3"
         elevation="2"
-        dense
+        density="compact"
         color="white"
       >
         <div class="text-headline-small">DMARC</div>
@@ -65,7 +65,7 @@ _dmarc.{{ domain.name }}. IN TXT "v=DMARC1; p=quarantine; pct=100;"</pre
         border="start"
         border-color="primary lighten-3"
         elevation="2"
-        dense
+        density="compact"
         color="white"
       >
         <div class="text-headline-small">

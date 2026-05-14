@@ -6,6 +6,7 @@ from rest_framework import serializers
 
 from modoboa.admin import models as admin_models
 from modoboa.lib import fields as lib_fields
+from modoboa.lib.permissions import check_mailbox_ownership
 
 from . import backends
 from . import models
@@ -208,6 +209,13 @@ class AccessRuleSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.AccessRule
         fields = ("pk", "mailbox", "calendar", "read", "write")
+
+    def validate_mailbox(self, value):
+        mailbox = admin_models.Mailbox.objects.filter(pk=value["pk"]).first()
+        if mailbox is None:
+            raise serializers.ValidationError(_("Mailbox not found"))
+        check_mailbox_ownership(self.context["request"].user, mailbox)
+        return value
 
     def create(self, validated_data):
         """Create access rule."""

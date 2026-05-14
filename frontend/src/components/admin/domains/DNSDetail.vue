@@ -19,7 +19,7 @@
       </span>
     </v-card-title>
     <v-card-text>
-      <translate class="overline">MX records</translate>
+      <div class="overline">{{ $gettext('MX records') }}</div>
       <template v-if="domain.dns_global_status == 'pending'">
         <v-row>
           <v-col>

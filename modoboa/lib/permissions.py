@@ -2,11 +2,32 @@
 
 from django.contrib.auth.models import Group, Permission
 from django.contrib.contenttypes.models import ContentType
+from django.utils.translation import gettext as _
 
-from rest_framework import permissions
+from rest_framework import permissions, serializers
 
 from modoboa.core import constants as core_constants, signals as core_signals
 from modoboa.core.models import ObjectAccess, User
+
+
+def check_mailbox_ownership(user, mailbox):
+    """Check that user is allowed to manipulate the given mailbox.
+
+    :param user: a ``User`` instance (the current request user)
+    :param mailbox: a ``Mailbox`` instance
+    :raises serializers.ValidationError: if user has no ownership
+    """
+    from modoboa.admin import models as admin_models
+
+    role = user.role
+    if role == "SimpleUsers" and user.mailbox != mailbox:
+        raise serializers.ValidationError(_("You don't have ownership on this mailbox"))
+    elif role in ["DomainAdmins", "Resellers"]:
+        mailboxes = admin_models.Mailbox.objects.get_for_admin(user)
+        if mailbox not in mailboxes:
+            raise serializers.ValidationError(
+                _("You don't have ownership on this mailbox")
+            )
 
 
 def get_account_roles(user, account=None):

@@ -124,7 +124,7 @@ services:
       - ./frontend/:/home/node/
     command: >
         sh -c "yarn install
-               yarn dev --host"
+               yarn dev --host --force"
     environment:
       DOCKER: "yes"
     depends_on:

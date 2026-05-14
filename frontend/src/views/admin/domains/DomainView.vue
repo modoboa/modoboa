@@ -27,6 +27,9 @@
       <v-tab>
         {{ $gettext('DMARC') }}
       </v-tab>
+      <v-tab v-for="extraTab in pluginTabs" :key="extraTab.name">
+        {{ extraTab.title }}
+      </v-tab>
     </v-tabs>
 
     <v-tabs-window v-model="tab">
@@ -42,6 +45,15 @@
             <DomainAdminList :domain="domain" />
             <div class="mt-4" />
             <DomainPolicy v-if="isAmavisEnabled" :domain="domain" />
+            <template v-for="block in pluginLeftBlocks" :key="block.name">
+              <div class="mt-4" />
+              <component
+                :is="block.component"
+                :domain="domain"
+                v-bind="block.props || {}"
+                @refresh="refreshDomain"
+              />
+            </template>
           </v-col>
           <v-col cols="12" md="6">
             <DNSDetail v-model="domain" />
@@ -55,6 +67,15 @@
               "
               :resources="domain.resources"
             />
+            <template v-for="block in pluginRightBlocks" :key="block.name">
+              <div class="mt-4" />
+              <component
+                :is="block.component"
+                :domain="domain"
+                v-bind="block.props || {}"
+                @refresh="refreshDomain"
+              />
+            </template>
           </v-col>
         </v-row>
       </v-tabs-window-item>
@@ -81,6 +102,14 @@
       <v-tabs-window-item>
         <DmarcAligmentChart :domain="domain" />
       </v-tabs-window-item>
+      <v-tabs-window-item v-for="extraTab in pluginTabs" :key="extraTab.name">
+        <component
+          :is="extraTab.component"
+          :domain="domain"
+          v-bind="extraTab.props || {}"
+          @refresh="refreshDomain"
+        />
+      </v-tabs-window-item>
     </v-tabs-window>
   </div>
 </template>
@@ -98,13 +127,17 @@ import TimeSerieChart from '@/components/tools/TimeSerieChart.vue'
 import { useGettext } from 'vue3-gettext'
 import { computed, ref } from 'vue'
 import { useRoute } from 'vue-router'
-import { useGlobalStore } from '@/stores'
+import { useGlobalStore, usePluginsStore } from '@/stores'
 import domainsApi from '@/api/domains'
 import parametersApi from '@/api/parameters'
 
 const { $gettext } = useGettext()
 const route = useRoute()
 const globalStore = useGlobalStore()
+const pluginsStore = usePluginsStore()
+
+const PLUGIN_BLOCKS_EXTENSION_POINT = 'domain.detail.general.blocks'
+const PLUGIN_TABS_EXTENSION_POINT = 'domain.detail.tabs'
 
 const domain = ref(null)
 const limitsConfig = ref({})
@@ -113,6 +146,29 @@ const tab = ref(null)
 const isAmavisEnabled = computed(() => {
   return 'amavis' in globalStore.capabilities
 })
+
+function appliesToDomain(item) {
+  return (
+    !Array.isArray(item.applies_to) ||
+    item.applies_to.length === 0 ||
+    item.applies_to.includes(domain.value?.type)
+  )
+}
+
+const pluginBlocks = computed(() =>
+  pluginsStore
+    .uiExtensions(PLUGIN_BLOCKS_EXTENSION_POINT)
+    .filter(appliesToDomain)
+)
+const pluginLeftBlocks = computed(() =>
+  pluginBlocks.value.filter((block) => block.column === 'left')
+)
+const pluginRightBlocks = computed(() =>
+  pluginBlocks.value.filter((block) => block.column !== 'left')
+)
+const pluginTabs = computed(() =>
+  pluginsStore.uiExtensions(PLUGIN_TABS_EXTENSION_POINT).filter(appliesToDomain)
+)
 
 async function refreshDomain() {
   domainsApi.getDomain(route.params.id).then((resp) => {

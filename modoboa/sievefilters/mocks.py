@@ -26,6 +26,11 @@ if anyof (not header :contains "Sender" "toto@toto.com") {
 if true {
     fileinto "All";
 }
+
+# Filter: user@example.com
+if anyof (header :contains "From" "user@example.com") {
+    fileinto "Hotels";
+}
 """
 
 SAMPLE_SIEVE_SCRIPT2 = """require ["fileinto"];

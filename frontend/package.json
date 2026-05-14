@@ -22,7 +22,7 @@
     "@tiptap/starter-kit": "^3.11.0",
     "@tiptap/vue-3": "^3.11.0",
     "apexcharts": "^5.3.5",
-    "axios": "^1.13.5",
+    "axios": "^1.15.2",
     "core-js": "^3.37.1",
     "debounce": "^2.1.0",
     "filesize": "^10.1.6",
@@ -40,6 +40,8 @@
     "vuetify": "^4.0.0"
   },
   "devDependencies": {
+    "@module-federation/runtime": "^2.4.0",
+    "@module-federation/vite": "^1.15.2",
     "@vitejs/plugin-basic-ssl": "^1.1.0",
     "@vitejs/plugin-vue": "^5.0.5",
     "eslint": "^9.6.0",
@@ -47,8 +49,9 @@
     "eslint-plugin-vue": "^10",
     "prettier": "^3.3.2",
     "sass": "^1.97.3",
+    "typescript": "^5",
     "unplugin-fonts": "^1.0.3",
-    "vite": "^6.4.1",
+    "vite": "^6.4.2",
     "vite-plugin-vuetify": "^2.1.0"
   }
 }

@@ -16,6 +16,7 @@ from rest_framework.views import APIView
 
 from modoboa.admin import models as admin_models
 from modoboa.core import models, signals
+from modoboa.core.extensions import exts_pool
 from modoboa.core.utils import check_for_updates, get_capabilities
 from modoboa.lib.permissions import IsSuperUser, IsPrivilegedUser
 from modoboa.lib.throttle import (
@@ -230,6 +231,19 @@ class NewsFeedAPIView(APIView):
                 entries.append(entry)
 
         serializer = serializers.NewsFeedEntrySerializer(entries, many=True)
+        return response.Response(serializer.data)
+
+
+class FrontendPluginsAPIView(APIView):
+    """Expose registered Modoboa plugins frontend manifest."""
+
+    permission_classes = [permissions.IsAuthenticated]
+    throttle_classes = [UserLesserDdosUser]
+
+    @extend_schema(responses=serializers.FrontendPluginManifestSerializer(many=True))
+    def get(self, request, *args, **kwargs):
+        manifests = exts_pool.get_frontend_manifests()
+        serializer = serializers.FrontendPluginManifestSerializer(manifests, many=True)
         return response.Response(serializer.data)
 
 

@@ -16,9 +16,8 @@ from django.utils.html import escape
 from django.utils.http import urlsafe_base64_encode, url_has_allowed_host_and_scheme
 from django.utils.translation import gettext as _
 from django.views import generic
-from django.views.decorators.http import require_http_methods
 
-from django.contrib.auth import load_backend, login, logout
+from django.contrib.auth import load_backend, login
 from django.contrib.auth.tokens import default_token_generator
 import django.contrib.auth.views as auth_views
 
@@ -161,19 +160,6 @@ class LoginView(ModoboaThemeMixin, LoginViewMixin, auth_views.LoginView):
             )
         )
         return self.render_to_response(self.get_context_data(form=form), status=401)
-
-
-@require_http_methods(["POST"])
-def dologout(request):
-    """Logout current user."""
-    if not request.user.is_anonymous:
-        signals.user_logout.send(sender="dologout", request=request)
-        logger = logging.getLogger("modoboa.auth")
-        logger.info(
-            _("User '{}' successfully logged out").format(request.user.username)
-        )
-        logout(request)
-    return HttpResponseRedirect(reverse("core:login"))
 
 
 class PasswordResetView(ModoboaThemeMixin, auth_views.PasswordResetView):

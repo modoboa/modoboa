@@ -45,6 +45,7 @@ export default defineConfig({
           { text: 'REST API', link: '/rest_api' },
           { text: 'OPENAPI', link: '/openapi/index' },
           { text: 'Contributors', link: '/contributors' },
+          { text: 'Lifecycle', link: '/lifecycle' },
         ],
       },
       {
