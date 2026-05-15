@@ -131,6 +131,38 @@ If you need to rebuild you virtualenv, you can check this [part of the documenta
 
 The section below containt specific migration steps to upgrade Modoboa instance.
 
+## Next release
+
+### Required changes to `settings.py`
+
+* Register the new theme context processor so Django's built-in
+  authentication views (e.g. the password reset confirmation page) can
+  render the configured theme colors:
+
+```python
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.template.context_processors.i18n',
+                'django.template.context_processors.media',
+                'django.template.context_processors.static',
+                'django.template.context_processors.tz',
+                'django.contrib.messages.context_processors.messages',
+                'modoboa.core.context_processors.theme', # [!code ++]
+            ],
+            'debug': DEBUG,
+        },
+    },
+]
+```
+
 ## Version 2.8.0
 
 ### Required changes to `settings.py`
