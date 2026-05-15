@@ -6,9 +6,9 @@ from modoboa.parameters import tools as param_tools
 def theme(request):
     """Expose theme colors to all templates.
 
-    Modoboa's own views inject these via ``ModoboaThemeMixin``, but
-    Django's built-in auth views (e.g. ``PasswordResetConfirmView``)
-    don't — so ``registration/base.html`` would otherwise render with
+    ``registration/base.html`` references these on every auth-related
+    page, including Django's built-in views (e.g.
+    ``PasswordResetConfirmView``), which would otherwise render with
     empty color values.
     """
     try:
