@@ -484,7 +484,7 @@ class PasswordRecoveryEmailSerializer(serializers.Serializer):
         # Email subject *must not* contain newlines
         subject = "".join(subject.splitlines())
         body = loader.render_to_string(
-            "registration/password_reset_email_v2.html", context
+            "registration/password_reset_email.html", context
         )
         send_mail(subject, body, None, [to_email], fail_silently=False)
 
