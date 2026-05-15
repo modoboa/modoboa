@@ -36,23 +36,6 @@ from .. import signals
 logger = logging.getLogger("modoboa.auth")
 
 
-class ModoboaThemeMixin:
-
-    def dispatch(self, request, *args, **kwargs):
-        self.parameters = dict(param_tools.get_global_parameters(app="core"))
-        return super().dispatch(request, *args, **kwargs)
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context.update(
-            {
-                "theme_primary_color": self.parameters["theme_primary_color"],
-                "theme_primary_color_dark": self.parameters["theme_primary_color_dark"],
-            }
-        )
-        return context
-
-
 class LoginViewMixin:
     @cached_property
     def logger(self):
@@ -90,7 +73,7 @@ class LoginViewMixin:
         return response
 
 
-class LoginView(ModoboaThemeMixin, LoginViewMixin, auth_views.LoginView):
+class LoginView(LoginViewMixin, auth_views.LoginView):
     """Login view with 2FA support."""
 
     form_class = forms.AuthenticationForm
@@ -110,7 +93,10 @@ class LoginView(ModoboaThemeMixin, LoginViewMixin, auth_views.LoginView):
         return context
 
     def check_password_hash(self, user, form):
-        condition = user.is_local and self.parameters.get("update_scheme")
+        update_scheme = param_tools.get_global_parameter(
+            "update_scheme", app="core", raise_exception=False
+        )
+        condition = user.is_local and update_scheme
         if not condition:
             return
         # check if password scheme is correct
@@ -162,7 +148,7 @@ class LoginView(ModoboaThemeMixin, LoginViewMixin, auth_views.LoginView):
         return self.render_to_response(self.get_context_data(form=form), status=401)
 
 
-class PasswordResetView(ModoboaThemeMixin, auth_views.PasswordResetView):
+class PasswordResetView(auth_views.PasswordResetView):
     """Custom view to override form."""
 
     form_class = forms.PasswordResetForm
@@ -207,7 +193,7 @@ class PasswordResetView(ModoboaThemeMixin, auth_views.PasswordResetView):
         return HttpResponseRedirect(reverse("password_reset_confirm_code"))
 
 
-class VerifySMSCodeView(ModoboaThemeMixin, generic.FormView):
+class VerifySMSCodeView(generic.FormView):
     """View to verify a code received by SMS."""
 
     form_class = forms.VerifySMSCodeForm
@@ -259,7 +245,7 @@ class ResendSMSCodeView(generic.View):
         return JsonResponse({"status": "ok"})
 
 
-class TwoFactorCodeVerifyView(ModoboaThemeMixin, LoginViewMixin, generic.FormView):
+class TwoFactorCodeVerifyView(LoginViewMixin, generic.FormView):
     """View to verify a 2FA code after login."""
 
     form_class = forms.Verify2FACodeForm

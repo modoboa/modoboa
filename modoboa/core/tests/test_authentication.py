@@ -14,6 +14,7 @@ except ImportError:
     argon2 = None
 
 from modoboa.core import constants
+from modoboa.core.context_processors import theme
 from modoboa.core.password_hashers import get_password_hasher
 from modoboa.core.password_hashers.utils import get_dovecot_schemes
 from modoboa.lib.tests import NO_SMTP, ModoTestCase
@@ -397,6 +398,32 @@ class PasswordResetTestCase(ModoTestCase):
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
         self.assertIn("totp_secret", self.client.session)
+
+
+class ThemeContextProcessorTestCase(ModoTestCase):
+    """Test the theme template context processor."""
+
+    def test_returns_configured_colors(self):
+        """The processor exposes the global theme parameters."""
+        self.set_global_parameter("theme_primary_color", "#aabbcc", app="core")
+        self.set_global_parameter("theme_primary_color_dark", "#112233", app="core")
+        result = theme(request=None)
+        self.assertEqual(result["theme_primary_color"], "#aabbcc")
+        self.assertEqual(result["theme_primary_color_dark"], "#112233")
+
+    def test_django_builtin_auth_view_renders_theme(self):
+        """A Django built-in auth view inherits the theme via the processor.
+
+        ``PasswordResetCompleteView`` has no Modoboa mixin and is the
+        canonical case that motivated the context processor.
+        """
+        self.set_global_parameter("theme_primary_color", "#aabbcc", app="core")
+        self.set_global_parameter("theme_primary_color_dark", "#112233", app="core")
+        self.client.logout()
+        response = self.client.get(reverse("password_reset_complete"))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "#aabbcc")
+        self.assertContains(response, "#112233")
 
 
 @skipIf(NO_SMTP, "No SMTP server available")
