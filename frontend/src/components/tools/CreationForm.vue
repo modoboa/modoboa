@@ -10,7 +10,7 @@
         <v-img
           :src="creationFormLogoPath"
           max-width="190"
-          class="hidden-sm-and-down"
+          class="d-none d-sm-block"
         />
         <v-stepper-item
           v-for="(step, index) in steps"
@@ -43,7 +43,7 @@
           <v-container fluid>
             <v-row align="center" justify="center">
               <v-col cols="8" align="start">
-                <div class="mb-5 text-h5">
+                <div class="mb-5 text-headline-medium">
                   <span class="text-grey-darken-1">{{ title }}</span>
                   /
                   {{ step.title }}
@@ -75,7 +75,7 @@
           </div>
         </v-stepper-window-item>
         <v-stepper-window-item :value="steps.length + 1" class="flex-grow-0">
-          <div class="text-center text-h3">
+          <div class="text-center text-display-small">
             {{ $gettext('Summary') }}
           </div>
           <CreationSummary

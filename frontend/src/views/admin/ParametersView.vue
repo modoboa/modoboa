@@ -16,7 +16,6 @@
 </template>
 
 <script setup>
-import { useBusStore } from '@/stores'
 import parametersApi from '@/api/parameters'
 import { ref, computed, watch } from 'vue'
 import { useGettext } from 'vue3-gettext'

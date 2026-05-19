@@ -7,6 +7,7 @@
 // Styles
 import '@mdi/font/css/materialdesignicons.css'
 import 'vuetify/styles'
+import '@/styles/main.scss'
 import {
   cs,
   de,
@@ -28,10 +29,15 @@ import {
 
 // Composables
 import { createVuetify } from 'vuetify'
+import * as components from 'vuetify/components'
+import * as directives from 'vuetify/directives'
 
 // https://vuetifyjs.com/en/introduction/why-vuetify/#feature-guides
 export default createVuetify({
+  components,
+  directives,
   theme: {
+    defaultTheme: 'light',
     themes: {
       light: {
         colors: {
@@ -68,6 +74,10 @@ export default createVuetify({
   },
   styles: { configFile: 'src/styles/settings.scss' },
   defaults: {
+    VBtn: {
+      class: 'text-uppercase',
+      style: 'letter-spacing: 0.05em',
+    },
     VCard: {
       class: 'pa-2',
       VCardTitle: { class: 'd-flex', style: 'align-items: center;' },

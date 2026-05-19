@@ -6,7 +6,7 @@
 
     <DomainList ref="domainList">
       <template #extraActions>
-        <v-menu v-if="canAddDomain" offset-y>
+        <v-menu v-if="canAddDomain" location="bottom">
           <template #activator="{ props }">
             <v-btn
               color="primary"

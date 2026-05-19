@@ -108,7 +108,7 @@ const headers = [
     title: $gettext('Actions'),
     key: 'actions',
     sortable: false,
-    align: 'right',
+    align: 'end',
   },
 ]
 const itemsPerPageOptions = [

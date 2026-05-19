@@ -1,7 +1,7 @@
 <template>
   <div v-if="alignments">
     <v-card>
-      <v-toolbar dense elevation="0" class="mr-2">
+      <v-toolbar density="compact" elevation="0" class="mr-2">
         <v-toolbar-title>{{ $gettext('Alignment') }}</v-toolbar-title>
         <v-spacer />
         <v-btn icon="mdi-arrow-left" size="x-small" @click="previousWeek">
@@ -28,9 +28,9 @@
               <v-col v-for="box in boxes" :key="box.key" cols="6">
                 <v-sheet outlined :color="box.color" rounded>
                   <v-card outlined class="pa-10 text-center">
-                    <span :class="'text-h4 ' + getTextColors(box.color)">{{
-                      stats[box.key]
-                    }}</span
+                    <span
+                      :class="'text-headline-large ' + getTextColors(box.color)"
+                      >{{ stats[box.key] }}</span
                     ><br />
                     <span class="text-subtitle-1">{{ box.label }}</span>
                   </v-card>

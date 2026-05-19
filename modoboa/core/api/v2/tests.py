@@ -5,6 +5,7 @@ import getpass
 import oath
 from unittest import mock
 
+from django.core import mail
 from django.core.cache import cache
 from django.test import override_settings
 from django.urls import reverse
@@ -365,6 +366,15 @@ class PasswordResetTestCase(AccountViewSetTestCase):
         response = self.client.post(url, data, format="json")
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json()["type"], "email")
+
+        # The email must contain a valid confirmation link (regression
+        # guard: an unset template variable previously produced a stray
+        # double slash that broke the link).
+        self.assertEqual(len(mail.outbox), 1)
+        uid = urlsafe_base64_encode(force_bytes(account.pk))
+        email_body = mail.outbox[0].body
+        self.assertIn(f"/reset/{uid}/", email_body)
+        self.assertNotIn("//reset/", email_body)
 
         # SMS reset test
         self.set_global_parameters(

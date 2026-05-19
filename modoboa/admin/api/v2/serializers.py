@@ -68,11 +68,38 @@ class DomainSerializer(v1_serializers.DomainSerializer):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self._plugin_field_names: set[str] = set()
+        responses = admin_signals.extra_domain_serializer_fields.send(
+            sender=self.__class__
+        )
+        for _receiver, fields in responses:
+            if not fields:
+                continue
+            for name, field in fields.items():
+                self.fields[name] = field
+                self._plugin_field_names.add(name)
         if not param_tools.get_global_parameter("enable_domain_limits", app="limits"):
             return
         self.fields["resources"] = DomainResourceSerializer(
             many=True, source="domainobjectlimit_set", required=False
         )
+
+    def _pop_plugin_data(self, validated_data: dict) -> dict:
+        return {
+            name: validated_data.pop(name)
+            for name in self._plugin_field_names
+            if name in validated_data
+        }
+
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        responses = admin_signals.extra_domain_serializer_data.send(
+            sender=self.__class__, domain=instance
+        )
+        for _receiver, data in responses:
+            if data:
+                representation.update(data)
+        return representation
 
     def validate_enable_dkim(self, value):
         """Check prerequisites."""
@@ -111,6 +138,7 @@ class DomainSerializer(v1_serializers.DomainSerializer):
         """Create administrator and other stuff if needed."""
         domain_admin = validated_data.pop("domain_admin", None)
         transport_def = validated_data.pop("transport", None)
+        plugin_data = self._pop_plugin_data(validated_data)
         domain = super().create(validated_data)
         if domain.enable_dkim:
             domain.generate_dkim_key()
@@ -121,6 +149,12 @@ class DomainSerializer(v1_serializers.DomainSerializer):
             domain.transport = transport
             domain.save()
         if not domain_admin:
+            admin_signals.domain_post_create_via_api.send(
+                sender=self.__class__,
+                domain=domain,
+                plugin_data=plugin_data,
+                request=self.context.get("request"),
+            )
             return domain
 
         # 0. Check user limit
@@ -178,12 +212,19 @@ class DomainSerializer(v1_serializers.DomainSerializer):
                 alias.post_create(user)
 
         domain.add_admin(da)
+        admin_signals.domain_post_create_via_api.send(
+            sender=self.__class__,
+            domain=domain,
+            plugin_data=plugin_data,
+            request=self.context.get("request"),
+        )
         return domain
 
     def update(self, instance, validated_data):
         """Update domain and create/update transport."""
         transport_def = validated_data.pop("transport", None)
         resources = validated_data.pop("domainobjectlimit_set", None)
+        plugin_data = self._pop_plugin_data(validated_data)
         instance = super().update(instance, validated_data)
         if (
             instance._loaded_values.get("enable_dkim") != instance.enable_dkim
@@ -212,6 +253,12 @@ class DomainSerializer(v1_serializers.DomainSerializer):
                 instance.domainobjectlimit_set.filter(name=resource["name"]).update(
                     max_value=resource["max_value"]
                 )
+        admin_signals.domain_post_update_via_api.send(
+            sender=self.__class__,
+            domain=instance,
+            plugin_data=plugin_data,
+            request=self.context.get("request"),
+        )
         return instance
 
 

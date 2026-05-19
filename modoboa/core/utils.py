@@ -103,6 +103,37 @@ def check_for_deprecated_password_schemes() -> Optional[type[PasswordHasher]]:  
     return None
 
 
+def add_allowed_hosts(hostnames) -> bool:
+    """Register hostnames on the frontend OAuth2 application.
+
+    Returns True if the application was found, False otherwise.
+    """
+    from oauth2_provider.models import get_application_model
+
+    app = get_application_model().objects.filter(name="modoboa_frontend").first()
+    if app is None:
+        return False
+    redirect_uris = app.redirect_uris.split() if app.redirect_uris else []
+    post_logout_redirect_uris = (
+        app.post_logout_redirect_uris.split() if app.post_logout_redirect_uris else []
+    )
+    changed = False
+    for hostname in hostnames:
+        uri = f"https://{hostname}/login/logged"
+        if uri not in redirect_uris:
+            redirect_uris.append(uri)
+            changed = True
+        uri = f"https://{hostname}"
+        if uri not in post_logout_redirect_uris:
+            post_logout_redirect_uris.append(uri)
+            changed = True
+    if changed:
+        app.redirect_uris = " ".join(redirect_uris)
+        app.post_logout_redirect_uris = " ".join(post_logout_redirect_uris)
+        app.save()
+    return True
+
+
 def get_capabilities():
     """Return the list of capabilities of this modoboa instance."""
     capabilities = {}

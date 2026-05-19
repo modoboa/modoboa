@@ -1,6 +1,6 @@
 <template>
   <div class="pa-4">
-    <div class="text-h6 font-weight-regular mb-4">
+    <div class="text-headline-small font-weight-regular mb-4">
       {{ $gettext('Message filters') }}
     </div>
 
@@ -71,7 +71,7 @@
             {{ $yesno(item.enabled) }}
           </template>
           <template #[`item.filter_actions`]="{ index, item }">
-            <v-menu offset-y>
+            <v-menu location="bottom">
               <template #activator="{ props }">
                 <v-btn icon="mdi-dots-horizontal" variant="text" v-bind="props">
                 </v-btn>

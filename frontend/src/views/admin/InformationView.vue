@@ -102,7 +102,7 @@
           <div tag="p">
             {{ $gettext('One or more updates are available') }}
           </div>
-          <div tag="p" class="text-body-2">
+          <div tag="p" class="text-body-medium">
             {{
               $gettext(
                 'Check out the following list to find related components'

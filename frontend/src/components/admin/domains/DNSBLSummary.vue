@@ -1,6 +1,6 @@
 <template>
   <v-card>
-    <v-card-title class="text-h5">
+    <v-card-title class="text-headline-medium">
       <span>
         {{ $gettext('DNSBL summary for ') }} {{ props.mxrecord.name }}
       </span>

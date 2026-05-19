@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="text-h6">
+    <div class="text-headline-small">
       {{ title }}
       <span :class="`text-${color}-lighten-2`">{{ total }}</span>
     </div>

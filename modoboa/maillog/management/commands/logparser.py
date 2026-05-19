@@ -84,7 +84,7 @@ class LogParser:
         self._date_expressions = [re.compile(v) for v in self._date_expressions]
         self.date_expr = None
         self._regex = {
-            "line": r"\s+([-\w\.]+)\s+(\w+)/?(\w*)[[](\d+)[]]:\s+(.*)",
+            "line": r"\s+([-\w\.]+)\s+(\w+)/?(\w*)\[(\d+)\]:\s+(.*)",
             "id": r"(\w+): (.*)",
             "reject": r"reject: .*from=<.*>,? to=<[^@]+@([^>]+)>",
             "message-id": r"message-id=<([^>]*)>",

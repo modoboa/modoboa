@@ -60,10 +60,7 @@ Once done, *the new admin interface (v2)* will let you:
 
 ::: warning
 
-**Auto create domain** option must be enabled to make this feature
-
-:   work. Go to \'Parameters \> Administration \> Mailboxes\' and check
-    if it\'s the case.
+**Auto create domain** option must be enabled to make this feature work. Go to \'Parameters \> Administration \> Mailboxes\' and check if it\'s the case.
 :::
 
 To generate an OfflineIMAP configuration file, run the following

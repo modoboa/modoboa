@@ -14,7 +14,7 @@ import tldextract
 from defusedxml.ElementTree import fromstring
 from dns import resolver, reversename
 import magic
-import six
+import io
 
 from django.db import transaction
 from django.db.models import Q
@@ -81,11 +81,15 @@ def import_record(xml_node, report):
         rnode = auth_results.find(rtype)
         if not rnode:
             continue
+        domain = (rnode.findtext("domain") or "").strip()
+        if not domain:
+            domain = record.header_from.name
+        result = (rnode.findtext("result") or "").strip()
         models.Result.objects.create(
             record=record,
             type=rtype,
-            domain=rnode.find("domain").text,
-            result=rnode.find("result").text,
+            domain=domain,
+            result=result,
         )
 
 
@@ -154,9 +158,9 @@ def import_archive(archive, content_type=None):
 
 def import_report_from_email(content):
     """Import a report from an email."""
-    if isinstance(content, six.string_types):
+    if isinstance(content, str):
         msg = email.message_from_string(content)
-    elif isinstance(content, six.binary_type):
+    elif isinstance(content, bytes):
         msg = email.message_from_bytes(content)
     else:
         msg = email.message_from_file(content)
@@ -165,7 +169,7 @@ def import_report_from_email(content):
         if part.get_content_type() not in ZIP_CONTENT_TYPES:
             continue
         try:
-            fpo = six.BytesIO(part.get_payload(decode=True))
+            fpo = io.BytesIO(part.get_payload(decode=True))
             # Try to get the actual file type of the buffer
             # required to make sure we are dealing with an XML file
             file_type = magic.Magic(uncompress=True, mime=True).from_buffer(
@@ -188,7 +192,7 @@ def import_report_from_email(content):
 
 def import_report_from_stdin():
     """Parse a report from stdin."""
-    content = six.StringIO()
+    content = io.StringIO()
     for line in fileinput.input([]):
         content.write(line)
     content.seek(0)
