@@ -1,7 +1,7 @@
 <template>
   <template v-for="(section, index) in sections" :key="index">
     <div class="subtitle mt-4 d-flex">
-      <span class="text-h6">{{ section.title }}</span>
+      <span class="text-headline-small">{{ section.title }}</span>
       <a
         href="#"
         class="edit-link ml-auto"
@@ -10,7 +10,11 @@
         {{ $gettext('Modify') }}</a
       >
     </div>
-    <v-row v-for="(item, itemIndex) in section.items" :key="itemIndex" dense>
+    <v-row
+      v-for="(item, itemIndex) in section.items"
+      :key="itemIndex"
+      density="compact"
+    >
       <template v-if="item.value !== undefined">
         <slot
           :name="`item.${item.name}`"

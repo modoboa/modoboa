@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="text-h5 ml-4">
+    <div class="text-headline-medium ml-4">
       {{ $gettext('Quarantined message') }}
     </div>
     <div class="bg-white rounded-lg pa-4 position-relative mt-6 h-100">

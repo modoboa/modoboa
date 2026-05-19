@@ -437,6 +437,97 @@ class ComposeSessionViewSetTestCase(WebmailTestCase):
         self.assertEqual(len(mail.outbox), 1)
         self.assertEqual(mail.outbox[0].from_email, '"Antoine Nguyen" <user@test.com>')
 
+    @mock.patch("modoboa.webmail.lib.sendmail.mail.get_connection")
+    def test_send_with_dsn(self, mock_get_conn):
+        mock_smtp = mock.MagicMock()
+        mock_connection = mock.MagicMock()
+        mock_connection.connection = mock_smtp
+        mock_connection.__enter__ = mock.Mock(return_value=mock_connection)
+        mock_connection.__exit__ = mock.Mock(return_value=False)
+        mock_get_conn.return_value = mock_connection
+
+        self.authenticate()
+        uid = self._create_compose_session()
+        url = reverse("v2:webmail-compose-session-send", args=[uid])
+        response = self.client.post(
+            url,
+            {
+                "sender": self.user.email,
+                "to": ["test@example.test"],
+                "subject": "test DSN",
+                "body": "Test",
+                "request_dsn": True,
+            },
+            format="json",
+        )
+        self.assertEqual(response.status_code, 204)
+        mock_connection.open.assert_called_once()
+        mock_smtp.sendmail.assert_called_once()
+        call_kwargs = mock_smtp.sendmail.call_args
+        self.assertEqual(call_kwargs[1]["mail_options"], ["RET=HDRS"])
+        self.assertEqual(
+            call_kwargs[1]["rcpt_options"], ["NOTIFY=SUCCESS,FAILURE,DELAY"]
+        )
+
+    def test_send_with_mdn(self):
+        self.authenticate()
+        uid = self._create_compose_session()
+        url = reverse("v2:webmail-compose-session-send", args=[uid])
+        response = self.client.post(
+            url,
+            {
+                "sender": self.user.email,
+                "to": ["test@example.test"],
+                "subject": "test MDN",
+                "body": "Test",
+                "request_mdn": True,
+            },
+            format="json",
+        )
+        self.assertEqual(response.status_code, 204)
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertIn("Disposition-Notification-To", mail.outbox[0].extra_headers)
+        self.assertEqual(
+            mail.outbox[0].extra_headers["Disposition-Notification-To"],
+            "user@test.com",
+        )
+
+    @mock.patch("modoboa.webmail.lib.sendmail.mail.get_connection")
+    def test_send_with_dsn_and_mdn(self, mock_get_conn):
+        mock_smtp = mock.MagicMock()
+        mock_connection = mock.MagicMock()
+        mock_connection.connection = mock_smtp
+        mock_connection.__enter__ = mock.Mock(return_value=mock_connection)
+        mock_connection.__exit__ = mock.Mock(return_value=False)
+        mock_get_conn.return_value = mock_connection
+
+        self.authenticate()
+        uid = self._create_compose_session()
+        url = reverse("v2:webmail-compose-session-send", args=[uid])
+        response = self.client.post(
+            url,
+            {
+                "sender": self.user.email,
+                "to": ["test@example.test"],
+                "subject": "test both",
+                "body": "Test",
+                "request_dsn": True,
+                "request_mdn": True,
+            },
+            format="json",
+        )
+        self.assertEqual(response.status_code, 204)
+        # Verify DSN options were used
+        mock_smtp.sendmail.assert_called_once()
+        call_kwargs = mock_smtp.sendmail.call_args
+        self.assertEqual(call_kwargs[1]["mail_options"], ["RET=HDRS"])
+        self.assertEqual(
+            call_kwargs[1]["rcpt_options"], ["NOTIFY=SUCCESS,FAILURE,DELAY"]
+        )
+        # Verify MDN header is present in the message data
+        message_data = call_kwargs[0][2]  # third positional arg
+        self.assertIn(b"Disposition-Notification-To", message_data)
+
     @override_settings(
         DOVEADM_LOOKUP_PATH=[DOVEADM_TEST_PATH], DOVECOT_USER=DOVECOT_USER
     )
@@ -491,6 +582,86 @@ class ComposeSessionViewSetTestCase(WebmailTestCase):
             self.assertEqual(len(mail.outbox), 1)
             self.assertEqual(models.ScheduledMessage.objects.count(), 0)
             self.assertEqual(models.MessageAttachment.objects.count(), 0)
+
+    @override_settings(
+        DOVEADM_LOOKUP_PATH=[DOVEADM_TEST_PATH], DOVECOT_USER=DOVECOT_USER
+    )
+    def test_schedule_with_mdn(self):
+        self.authenticate()
+        uid = self._create_compose_session()
+        url = reverse("v2:webmail-compose-session-send", args=[uid])
+        scheduled_datetime = timezone.now() + relativedelta(hours=1)
+        response = self.client.post(
+            url,
+            {
+                "sender": self.user.email,
+                "to": ["test@example.test"],
+                "subject": "test MDN scheduled",
+                "body": "Test",
+                "scheduled_datetime": scheduled_datetime.isoformat(),
+                "request_mdn": True,
+            },
+            format="json",
+        )
+        self.assertEqual(response.status_code, 204)
+        sched_msg = models.ScheduledMessage.objects.first()
+        self.assertTrue(sched_msg.request_mdn)
+        self.assertFalse(sched_msg.request_dsn)
+
+        with freeze_time(scheduled_datetime + relativedelta(minutes=1)):
+            jobs.send_scheduled_messages()
+            queue = django_rq.get_queue("modoboa")
+            worker = SimpleWorker([queue], connection=queue.connection)
+            worker.work(burst=True)
+
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertIn("Disposition-Notification-To", mail.outbox[0].extra_headers)
+
+    @override_settings(
+        DOVEADM_LOOKUP_PATH=[DOVEADM_TEST_PATH], DOVECOT_USER=DOVECOT_USER
+    )
+    @mock.patch("modoboa.webmail.lib.sendmail.mail.get_connection")
+    def test_schedule_with_dsn(self, mock_get_conn):
+        mock_smtp = mock.MagicMock()
+        mock_connection = mock.MagicMock()
+        mock_connection.connection = mock_smtp
+        mock_connection.__enter__ = mock.Mock(return_value=mock_connection)
+        mock_connection.__exit__ = mock.Mock(return_value=False)
+        mock_get_conn.return_value = mock_connection
+
+        self.authenticate()
+        uid = self._create_compose_session()
+        url = reverse("v2:webmail-compose-session-send", args=[uid])
+        scheduled_datetime = timezone.now() + relativedelta(hours=1)
+        response = self.client.post(
+            url,
+            {
+                "sender": self.user.email,
+                "to": ["test@example.test"],
+                "subject": "test DSN scheduled",
+                "body": "Test",
+                "scheduled_datetime": scheduled_datetime.isoformat(),
+                "request_dsn": True,
+            },
+            format="json",
+        )
+        self.assertEqual(response.status_code, 204)
+        sched_msg = models.ScheduledMessage.objects.first()
+        self.assertTrue(sched_msg.request_dsn)
+
+        with freeze_time(scheduled_datetime + relativedelta(minutes=1)):
+            jobs.send_scheduled_messages()
+            queue = django_rq.get_queue("modoboa")
+            worker = SimpleWorker([queue], connection=queue.connection)
+            worker.work(burst=True)
+
+        mock_connection.open.assert_called_once()
+        mock_smtp.sendmail.assert_called_once()
+        call_kwargs = mock_smtp.sendmail.call_args
+        self.assertEqual(call_kwargs[1]["mail_options"], ["RET=HDRS"])
+        self.assertEqual(
+            call_kwargs[1]["rcpt_options"], ["NOTIFY=SUCCESS,FAILURE,DELAY"]
+        )
 
 
 @override_settings(DOVEADM_LOOKUP_PATH=[DOVEADM_TEST_PATH], DOVECOT_USER=DOVECOT_USER)

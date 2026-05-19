@@ -172,6 +172,7 @@ TEMPLATES = [
                 "django.template.context_processors.static",
                 "django.template.context_processors.tz",
                 "django.contrib.messages.context_processors.messages",
+                "modoboa.core.context_processors.theme",
             ],
             "debug": DEBUG,
         },
@@ -266,6 +267,16 @@ SPECTACULAR_SETTINGS = {
     "DEFAULT_FILTER_INSPECTORS": [
         "drf_spectacular.contrib.django_filters.DjangoFilterBackendInspector",
     ],
+    "SERVERS": [
+        {
+            "url": "http://localhost",
+            "description": "Modoboa Mail Server Unsecure Endpoint",
+        },
+        {
+            "url": "https://localhost",
+            "description": "Modoboa Mail Server Secure Endpoint",
+        },
+    ],
 }
 
 # Modoboa settings
@@ -295,6 +306,10 @@ REDIS_QUOTA_DB = 0
 REDIS_URL = f"redis://{REDIS_HOST}:{REDIS_PORT}/{REDIS_QUOTA_DB}"
 
 # RQ
+
+RQ = {
+    "COMMIT_MODE": "auto",
+}
 
 RQ_QUEUES = {
     "dkim": {

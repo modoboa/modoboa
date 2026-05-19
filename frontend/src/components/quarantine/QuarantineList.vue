@@ -121,19 +121,19 @@
             hide-details
             @update:model-value="fetchContent"
           >
-            <template #chip="{ props, item }">
+            <template #chip="{ props, internalItem }">
               <span class="mr-2">{{ $gettext('Display') }}</span>
               <v-chip
                 v-bind="props"
-                :color="item.raw.color"
-                :text="item.raw.label"
+                :color="internalItem.raw.color"
+                :text="internalItem.raw.label"
                 label
               ></v-chip>
             </template>
-            <template #item="{ props, item }">
+            <template #item="{ props, internalItem }">
               <v-list-item v-bind="props" title="">
-                <v-chip :color="item.raw.color" label>
-                  {{ item.raw.label }}
+                <v-chip :color="internalItem.raw.color" label>
+                  {{ internalItem.raw.label }}
                 </v-chip>
               </v-list-item>
             </template>

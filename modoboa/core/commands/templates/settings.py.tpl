@@ -165,6 +165,7 @@ TEMPLATES = [
                 'django.template.context_processors.static',
                 'django.template.context_processors.tz',
                 'django.contrib.messages.context_processors.messages',
+                'modoboa.core.context_processors.theme',
             ],
             'debug': {{ devmode }},
         },
@@ -257,6 +258,9 @@ SPECTACULAR_SETTINGS = {
     'SERVE_AUTHENTICATION': ['rest_framework.permissions.AllowAny'],
     'DEFAULT_FILTER_INSPECTORS': [
         'drf_spectacular.contrib.django_filters.DjangoFilterBackendInspector',
+    ],
+    'SERVERS': [
+        {'url': '{{ server_domain }}', 'description': 'Modoboa Mail Server'},
     ],
 }
 

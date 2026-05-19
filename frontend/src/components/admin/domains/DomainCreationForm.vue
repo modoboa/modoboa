@@ -35,6 +35,19 @@
         class="ml-4"
       />
     </template>
+    <template
+      v-for="step in pluginSteps"
+      :key="step.name"
+      #[`form.${step.name}`]
+    >
+      <component
+        :is="step.component"
+        v-bind="step.props || {}"
+        :ref="(el) => setPluginStepRef(step.name, el)"
+        v-model="domain"
+        class="ml-4"
+      />
+    </template>
     <template #[`item.random_password`]="{ item }">
       <template v-if="item.value">
         <v-col cols="12" class="highligth text-white">
@@ -79,12 +92,15 @@ import DomainOptionsForm from './form_steps/DomainOptionsForm.vue'
 import DomainTransportForm from './form_steps/DomainTransportForm.vue'
 import { useGettext } from 'vue3-gettext'
 import { ref, computed, onMounted } from 'vue'
-import { useBusStore } from '@/stores'
+import { useBusStore, usePluginsStore } from '@/stores'
 import { useRouter } from 'vue-router'
 
 const { $gettext } = useGettext()
 const busStore = useBusStore()
+const pluginsStore = usePluginsStore()
 const router = useRouter()
+
+const PLUGIN_EXTENSION_POINT = 'domain.creation_form.steps'
 
 const emit = defineEmits(['close', 'created'])
 
@@ -139,6 +155,16 @@ const formStepsComponents = {
   transport: transport,
 }
 
+const pluginStepRefs = ref({})
+
+function setPluginStepRef(name, el) {
+  if (el) {
+    pluginStepRefs.value[name] = el
+  } else {
+    delete pluginStepRefs.value[name]
+  }
+}
+
 const domainSteps = [
   { name: 'general', title: $gettext('General') },
   { name: 'dns', title: $gettext('DNS') },
@@ -152,8 +178,41 @@ const relaySteps = [
   { name: 'transport', title: $gettext('Transport') },
 ]
 
+const pluginSteps = computed(() => {
+  const all = pluginsStore.uiExtensions(PLUGIN_EXTENSION_POINT)
+  return all.filter(
+    (step) =>
+      !Array.isArray(step.applies_to) ||
+      step.applies_to.length === 0 ||
+      step.applies_to.includes(domain.value.type)
+  )
+})
+
+function mergeSteps(base, extras) {
+  const result = [...base]
+  for (const extra of extras) {
+    const pos = extra.position || {}
+    let index = result.length
+    if (typeof pos.at === 'number') {
+      index = Math.max(0, Math.min(pos.at, result.length))
+    } else if (pos.before) {
+      const idx = result.findIndex((s) => s.name === pos.before)
+      if (idx >= 0) index = idx
+    } else if (pos.after) {
+      const idx = result.findIndex((s) => s.name === pos.after)
+      if (idx >= 0) index = idx + 1
+    }
+    result.splice(index, 0, {
+      name: extra.name,
+      title: extra.title || extra.name,
+    })
+  }
+  return result
+}
+
 const steps = computed(() => {
-  return domain.value.type === 'domain' ? domainSteps : relaySteps
+  const base = domain.value.type === 'domain' ? domainSteps : relaySteps
+  return mergeSteps(base, pluginSteps.value)
 })
 
 const summarySections = computed(() => {
@@ -287,10 +346,16 @@ function copyPassword() {
 }
 
 function getForm(step) {
-  return formStepsComponents.value[step.name]
+  if (formStepsComponents[step.name]) {
+    return formStepsComponents[step.name]
+  }
+  return { value: pluginStepRefs.value[step.name] }
 }
 function getVFormRef(step) {
-  return formStepsComponents[step.name].value.vFormRef
+  if (formStepsComponents[step.name]) {
+    return formStepsComponents[step.name].value.vFormRef
+  }
+  return pluginStepRefs.value[step.name]?.vFormRef
 }
 
 async function validateDomain() {}

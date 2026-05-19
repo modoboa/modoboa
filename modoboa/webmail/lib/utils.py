@@ -131,6 +131,10 @@ def create_message(
 ) -> EmailMessage:
     """Create an EmailMessage instance ready to be sent."""
     extra_headers = {"User-Agent": "Modoboa {}".format(version("modoboa"))}
+    if attributes.get("request_mdn"):
+        extra_headers["Disposition-Notification-To"] = format_sender_address(
+            user, attributes["sender"]
+        )
     headers = {}
     origmsgid = attributes.get("in_reply_to")
     if origmsgid:

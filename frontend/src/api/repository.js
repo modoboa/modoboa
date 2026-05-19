@@ -10,7 +10,9 @@ _axios.interceptors.request.use(
     const authStore = useAuthStore()
     if (authStore.isAuthenticated) {
       const token = await authStore.getAccessToken()
-      config.headers['Accept-Language'] = authStore.authUser.language
+      if (authStore.authUser) {
+        config.headers['Accept-Language'] = authStore.authUser.language
+      }
       config.headers['Authorization'] = `Bearer ${token}`
     }
     return config
@@ -28,6 +30,10 @@ _axios.interceptors.response.use(
     return response
   },
   function (error) {
+    if (!error.response) {
+      console.log(error)
+      return
+    }
     if (error.response.status === 418) {
       router.push({ name: 'TwoFA' })
       return Promise.reject(error)

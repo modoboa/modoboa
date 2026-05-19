@@ -113,7 +113,7 @@ export const useAuthStore = defineStore('auth', () => {
     }
     repository.defaults.headers.common.Authorization = `Bearer ${user.access_token}`
     repository.defaults.headers.post['Content-Type'] = 'application/json'
-    if (!isAuthenticated.value) {
+    if (!isAuthenticated.value || !authUser.value) {
       await fetchUser()
     }
     return true
@@ -130,7 +130,9 @@ export const useAuthStore = defineStore('auth', () => {
   async function completeLogin(redirectUrl) {
     try {
       const user = await manager.signinCallback()
-      isAuthenticated.value = true
+      repository.defaults.headers.common.Authorization = `Bearer ${user.access_token}`
+      repository.defaults.headers.post['Content-Type'] = 'application/json'
+      await fetchUser()
       const previousPage = sessionStorage.getItem('previousPage')
       // Redirect the user to the previous page if available
       if (previousPage) {

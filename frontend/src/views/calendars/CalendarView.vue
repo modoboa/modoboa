@@ -1,6 +1,6 @@
 <template>
   <div style="display: grid; grid-template-rows: auto auto 1fr; height: 96vh">
-    <div class="text-h5 ml-4 mb-6">
+    <div class="text-headline-medium ml-4 mb-6">
       {{ $gettext('Calendar') }}
     </div>
 

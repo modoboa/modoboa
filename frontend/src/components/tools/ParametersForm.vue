@@ -86,9 +86,7 @@
                     persistent-hint
                     :error="formErrors[param.name] !== undefined"
                     :error-messages="formErrors[param.name]"
-                    :type="
-                      param.widget === 'PasswordField' ? 'password' : 'text'
-                    "
+                    :type="getTextInputType(param)"
                     density="compact"
                     variant="outlined"
                   />
@@ -144,6 +142,16 @@ const displayableElements = computed(() =>
   props.structure.filter((element) => display(element))
 )
 
+const parameterTypes = computed(() => {
+  const result = {}
+  for (const element of props.structure) {
+    for (const param of element.parameters) {
+      result[param.name] = param.widget
+    }
+  }
+  return result
+})
+
 const active = ref(0)
 const formErrors = ref({})
 const parameters = ref({})
@@ -180,11 +188,23 @@ function displayableParams(params) {
   return params.filter((param) => display(param))
 }
 
+function getTextInputType(parameter) {
+  if (parameter.widget === 'PasswordField') return 'password'
+  if (parameter.widget === 'NumberField') return 'number'
+  return 'text'
+}
+
 async function save() {
   formErrors.value = {}
   tab_error.value = []
+  const body = { ...parameters.value }
+  for (const name in body) {
+    if (parameterTypes.value[name] === 'NumberField' && body[name] === '') {
+      body[name] = null
+    }
+  }
   try {
-    await props.saveFunction(props.app, parameters.value)
+    await props.saveFunction(props.app, body)
     displayNotification({
       msg: $gettext('Parameters updated'),
     })

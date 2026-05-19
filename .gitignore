@@ -16,12 +16,14 @@ bin/instance
 build/
 dist/
 modoboa/frontend_dist
+/frontend_dist/
 # JS stuff
 node_modules
 /static/dist
 /frontend/webpack-stats.json
 /frontend/src/translations.json
 /frontend/.__mf__temp/
+/frontend/.npm/
 doc-ng/.vitepress/cache/
 doc-ng/.vitepress/dist/
 

@@ -5,7 +5,12 @@
 <script setup>
 import { ref, computed } from 'vue'
 import { useGettext } from 'vue3-gettext'
-import { useAuthStore, useGlobalStore, useParametersStore } from '@/stores'
+import {
+  useAuthStore,
+  useGlobalStore,
+  useParametersStore,
+  usePluginsStore,
+} from '@/stores'
 import parametersApi from '@/api/parameters'
 import ConnectedLayout from '@/layouts/connected/ConnectedLayout.vue'
 import constants from '@/constants.json'
@@ -14,6 +19,7 @@ const { $gettext } = useGettext()
 const authStore = useAuthStore()
 const globalStore = useGlobalStore()
 const parametersStore = useParametersStore()
+const pluginsStore = usePluginsStore()
 
 const isRspamdVisible = ref(false)
 const rspamdUrl = ref('/rspamd')
@@ -110,6 +116,7 @@ const adminMenuItems = computed(() => {
       ],
     },
   ]
+  result.push(...pluginsStore.menuItemsByCategory('admin'))
   const settings = []
   registeredApplications.value.forEach((item) => {
     settings.push({
@@ -140,6 +147,8 @@ const adminMenuItems = computed(() => {
     },
   ])
 })
+
+await pluginsStore.fetchManifests()
 
 if (authUser.value.role === constants.SUPER_ADMIN) {
   let response = await parametersApi.getGlobalApplications()

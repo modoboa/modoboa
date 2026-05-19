@@ -28,16 +28,16 @@ classifiers = [
 keywords = ["email"]
 license = {file = "LICENSE"}
 dependencies = [
-	"django==5.2.12",
+	"django==5.2.14",
 	"django-phonenumber-field[phonenumbers]==8.4.0",
-	"django-reversion==6.1.0",
+	"django-reversion==6.2.0",
 	"django-xforwardedfor-middleware==2.0",
 	"django-otp==1.7.0",
 	"django-filter",
 	"django-rename-app==0.1.7",
 	"django-environ",
 	"dj-database-url",
-	"djangorestframework>=3.16,<3.17",
+	"djangorestframework>=3.16,<3.18",
 	"drf-spectacular",
 	"uritemplate",
 	"django-oauth-toolkit",
@@ -47,7 +47,7 @@ dependencies = [
 	"asgiref",
 	"dnspython==2.8.0",
 	"feedparser==6.0.12",
-	"fido2==2.1.1",
+	"fido2==2.2.0",
 	"progressbar33==2.4",
 	"python-dateutil",
 	"cryptography",
@@ -69,14 +69,14 @@ dependencies = [
 	"defusedxml>=0.6.0",
 	"python-magic>=0.4.24",
 	# RQ
-	"rq>=2.4.0",
-	"django-rq>=3.2.2",
+	"rq>=2.7.0",
+	"django-rq>=4.0.1",
 	# Sieve
 	"sievelib>=1.4.1",
         # User
         "drf-nested-routers",
         "vobject",
-        "caldav==2.2.6",
+        "caldav==3.2.0",
         # Amavis
         "html2text",
         "idna",

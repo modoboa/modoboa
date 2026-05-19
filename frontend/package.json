@@ -22,7 +22,7 @@
     "@tiptap/starter-kit": "^3.11.0",
     "@tiptap/vue-3": "^3.11.0",
     "apexcharts": "^5.3.5",
-    "axios": "^1.13.5",
+    "axios": "^1.15.2",
     "core-js": "^3.37.1",
     "debounce": "^2.1.0",
     "filesize": "^10.1.6",
@@ -33,21 +33,25 @@
     "qrcode.vue": "^3.6.0",
     "roboto-fontface": "*",
     "vue": "^3.4.31",
+    "vue-eslint-parser": "^10",
     "vue-router": "^4.6.3",
     "vue3-apexcharts": "^1.10.0",
     "vue3-gettext": "^4.0.0-beta.1",
-    "vuetify": "^3.11.0"
+    "vuetify": "^4.0.0"
   },
   "devDependencies": {
+    "@module-federation/runtime": "^2.4.0",
+    "@module-federation/vite": "^1.15.2",
     "@vitejs/plugin-basic-ssl": "^1.1.0",
     "@vitejs/plugin-vue": "^5.0.5",
     "eslint": "^9.6.0",
     "eslint-config-prettier": "^9.1.0",
-    "eslint-plugin-vue": "^9.27.0",
+    "eslint-plugin-vue": "^10",
     "prettier": "^3.3.2",
     "sass": "^1.97.3",
+    "typescript": "^5",
     "unplugin-fonts": "^1.0.3",
-    "vite": "^6.4.1",
-    "vite-plugin-vuetify": "^2.0.3"
+    "vite": "^6.4.2",
+    "vite-plugin-vuetify": "^2.1.0"
   }
 }

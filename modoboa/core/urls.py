@@ -9,7 +9,6 @@ app_name = "core"
 
 urlpatterns = [
     path("accounts/login/", views.LoginView.as_view(), name="login"),
-    path("accounts/logout/", views.dologout, name="logout"),
     path(
         "accounts/2fa_verify/",
         views.TwoFactorCodeVerifyView.as_view(),

@@ -42,8 +42,6 @@ class UserPreferencesSerializer(serializers.Serializer):
     enable_links = serializers.BooleanField(default=False)
     messages_per_page = serializers.IntegerField(default=40)
     refresh_interval = serializers.IntegerField(default=300)
-    mboxes_col_width = serializers.IntegerField(default=200)
-
     trash_folder = serializers.CharField(default="Trash")
     sent_folder = serializers.CharField(default="Sent")
     drafts_folder = serializers.CharField(default="Drafts")
@@ -284,6 +282,8 @@ class SendEmailSerializer(ScheduledDatetimeMixin, BaseEmailSerializer):
 
     in_reply_to = serializers.CharField(required=False)
     scheduled_datetime = serializers.DateTimeField(required=False)
+    request_dsn = serializers.BooleanField(required=False, default=False)
+    request_mdn = serializers.BooleanField(required=False, default=False)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

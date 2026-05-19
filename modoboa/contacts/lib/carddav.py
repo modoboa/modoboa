@@ -29,7 +29,7 @@ import logging
 
 from six.moves import urllib
 
-from caldav import elements
+from caldav.elements import base as elements_base, dav as elements_dav
 import lxml.etree as ET
 import requests
 
@@ -59,35 +59,35 @@ def ns(prefix, tag=None):
     return name
 
 
-class Mkcol(elements.base.BaseElement):
+class Mkcol(elements_base.BaseElement):
     tag = ns("CARD", "mkcol")
 
 
-class AddressBook(elements.base.BaseElement):
+class AddressBook(elements_base.BaseElement):
     tag = ns("CARD", "addressbook")
 
 
-class AddressBookQuery(elements.base.BaseElement):
+class AddressBookQuery(elements_base.BaseElement):
     tag = ns("CARD", "addressbook-query")
 
 
-class AddressData(elements.base.BaseElement):
+class AddressData(elements_base.BaseElement):
     tag = ns("CARD", "address-data")
 
 
-class Etag(elements.base.BaseElement):
+class Etag(elements_base.BaseElement):
     tag = ns("D", "getetag")
 
 
-class SyncToken(elements.base.BaseElement):
+class SyncToken(elements_base.BaseElement):
     tag = ns("D", "sync-token")
 
 
-class SyncLevel(elements.base.BaseElement):
+class SyncLevel(elements_base.BaseElement):
     tag = ns("D", "sync-level")
 
 
-class SyncCollectionQuery(elements.base.BaseElement):
+class SyncCollectionQuery(elements_base.BaseElement):
     tag = ns("D", "sync-collection")
 
 
@@ -186,12 +186,12 @@ class PyCardDAV:
         """Create a new address book."""
         self._check_write_support()
         data = Mkcol() + [
-            elements.dav.Set()
+            elements_dav.Set()
             + [
-                elements.dav.Prop()
+                elements_dav.Prop()
                 + [
-                    elements.dav.ResourceType()
-                    + elements.dav.Collection()
+                    elements_dav.ResourceType()
+                    + elements_dav.Collection()
                     + AddressBook()
                 ]
             ]
@@ -232,7 +232,7 @@ class PyCardDAV:
         """Retrieve the current sync token."""
         headers = self.headers
         headers["Depth"] = "0"
-        data = elements.dav.Propfind() + [elements.dav.Prop() + SyncToken()]
+        data = elements_dav.Propfind() + [elements_dav.Prop() + SyncToken()]
         body = ET.tostring(data.xmlelement(), encoding="utf-8", xml_declaration=True)
         response = self.session.request(
             "PROPFIND", self.url.resource, data=body, headers=headers, **self._settings
@@ -245,7 +245,7 @@ class PyCardDAV:
         """Synchronize vcards using webdav sync."""
         data = (
             SyncCollectionQuery()
-            + [elements.dav.Prop() + Etag()]
+            + [elements_dav.Prop() + Etag()]
             + SyncToken(value=sync_token)
             + SyncLevel(value="1")
         )
@@ -280,7 +280,7 @@ class PyCardDAV:
         if not response.ok:
             response.raise_for_status()
         # Now retrieve the new etag
-        data = AddressBookQuery() + [elements.dav.Prop() + Etag()]
+        data = AddressBookQuery() + [elements_dav.Prop() + Etag()]
         body = ET.tostring(data.xmlelement(), encoding="utf-8", xml_declaration=True)
         response = self.session.request(
             "REPORT", remotepath, data=body, headers=self.headers, **self._settings

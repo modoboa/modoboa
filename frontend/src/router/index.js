@@ -1,7 +1,65 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import { useAuthStore, useGlobalStore } from '@/stores'
+import { useAuthStore, useGlobalStore, usePluginsStore } from '@/stores'
 import { useGlobalConfig } from '@/main'
 import constants from '@/constants.json'
+import { registerRemote, loadRemoteComponent } from '@/utils/federation'
+
+function buildPluginRoute(routeDef, remoteName) {
+  const route = { ...routeDef }
+  delete route.parent
+  delete route.remote
+  if (typeof route.component === 'string' && route.component) {
+    if (!remoteName) {
+      throw new Error(
+        `Plugin route "${route.name}" declares a component but its plugin has no remote`
+      )
+    }
+    route.component = loadRemoteComponent(remoteName, route.component)
+  }
+  if (Array.isArray(route.children)) {
+    route.children = route.children.map((child) =>
+      buildPluginRoute(child, remoteName)
+    )
+  }
+  return route
+}
+
+let pluginRoutesRegistered = false
+
+async function ensurePluginRoutes(router) {
+  if (pluginRoutesRegistered) {
+    return
+  }
+  pluginRoutesRegistered = true
+  const pluginsStore = usePluginsStore()
+  try {
+    await pluginsStore.fetchManifests()
+  } catch (err) {
+    pluginRoutesRegistered = false
+    throw err
+  }
+  for (const manifest of pluginsStore.manifests) {
+    const remoteOk = registerRemote(manifest.remote)
+    for (const routeDef of manifest.routes || []) {
+      try {
+        const route = buildPluginRoute(
+          routeDef,
+          remoteOk ? manifest.remote.name : null
+        )
+        if (routeDef.parent) {
+          router.addRoute(routeDef.parent, route)
+        } else {
+          router.addRoute(route)
+        }
+      } catch (err) {
+        console.error(
+          `Failed to register plugin route "${routeDef.name}" of ${manifest.name}`,
+          err
+        )
+      }
+    }
+  }
+}
 
 const routes = [
   {
@@ -25,6 +83,7 @@ const routes = [
   },
   {
     path: '/admin',
+    name: 'AdminLayout',
     component: () => import('@/layouts/admin/AdminLayout.vue'),
     meta: {
       allowedRoles: [
@@ -497,6 +556,24 @@ router.beforeEach(async (to, from, next) => {
     const globalStore = useGlobalStore()
     const isAuth = await authStore.validateAccess()
     if (isAuth) {
+      const justRegistered = !pluginRoutesRegistered
+      if (!pluginRoutesRegistered) {
+        try {
+          await ensurePluginRoutes(router)
+        } catch (err) {
+          console.error('Failed to load plugin routes', err)
+        }
+      }
+      if (justRegistered) {
+        const resolved = router.resolve(to.fullPath)
+        if (
+          resolved.matched.length &&
+          resolved.matched[0].path !== to.matched[0]?.path
+        ) {
+          next({ ...resolved, replace: true })
+          return
+        }
+      }
       if (to.meta.allowedRoles !== undefined) {
         if (to.meta.allowedRoles.indexOf(authStore.authUser.role) === -1) {
           await globalStore.fetchAvailableApplications()

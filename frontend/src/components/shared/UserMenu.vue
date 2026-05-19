@@ -6,7 +6,7 @@
         <v-list>
           <div class="text-center">
             <v-avatar color="primary">
-              <span class="text-h5">{{ userInitials }}</span>
+              <span class="text-headline-medium">{{ userInitials }}</span>
             </v-avatar>
             <v-list-item :title="user.username" />
           </div>
