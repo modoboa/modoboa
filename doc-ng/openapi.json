@@ -7,8 +7,12 @@
     "servers": [
         {
         "url": "https://demo.modoboa.org/api/schema-v2/",
-        "description": "Demo server"
-        }
+        "description": "Remote Demo server"
+        },
+        {
+        "url": "https://localhost:5000/api/schema-v2/",
+        "description": "Local server"
+        }        
     ],
     "paths": {
         "/api/v2/accessrules/": {

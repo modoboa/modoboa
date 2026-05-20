@@ -81,24 +81,12 @@ export default defineConfig({
         { text: 'Translate', link: '/contributing/translate' },
       ],
       '/openapi/': [
-        /* {
-          text: 'By Tags',
-          items: [
-            ...sidebar.itemsByTags(),
-          ],
-        }, */
         {
           text: 'By Operations',
           items: [
             ...sidebar.generateSidebarGroups(),
           ],
         },
-        /* {
-          text: 'By Paths',
-          items: [
-            ...sidebar.itemsByPaths(),
-          ],
-        } */
       ],
     },
     socialLinks: [
@@ -151,6 +139,13 @@ export default defineConfig({
   lastUpdated: true,
   transformPageData(pageData) {
     // console.log(pageData);
+    const pageTitle = pageData.params?.pageTitle;
+
+    if (pageTitle) {
+      pageData.title = pageTitle;
+      pageData.frontmatter ??= {};
+      pageData.frontmatter.title = pageTitle;
+    }
 
     const baseUrl = process.env.READTHEDOCS_CANONICAL_URL
       ? new URL(process.env.READTHEDOCS_CANONICAL_URL).pathname.replace(
