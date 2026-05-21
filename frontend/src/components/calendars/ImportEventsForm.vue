@@ -76,7 +76,7 @@ async function sendFile() {
   data.append('ics_file', file.value)
   runningUpload.value = true
   try {
-    const response = await api.importUserEvents(props.calendar, data)
+    const response = await api.importUserEvents(props.calendar.pk, data)
     close()
     var msg = $ngettext(
       '%{ n } event imported',
