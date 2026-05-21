@@ -48,7 +48,10 @@ export default {
   importUserEvents(calendarPk, data) {
     return repository.post(
       `/user-calendars/${calendarPk}/events/import_from_file/`,
-      data
+      data,
+      {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      }
     )
   },
   deleteUserEvent(calendarPk, eventId) {
