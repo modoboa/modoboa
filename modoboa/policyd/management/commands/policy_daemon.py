@@ -36,6 +36,9 @@ class Command(BaseCommand):
         """Entry point."""
         try:
             loop = asyncio.get_event_loop()
+            if loop.is_closed():
+                # Raised on Python 3.11- after fork when *using* the loop
+                raise RuntimeError("Event loop is closed")
         except RuntimeError:
             loop = asyncio.new_event_loop()
             asyncio.set_event_loop(loop)
