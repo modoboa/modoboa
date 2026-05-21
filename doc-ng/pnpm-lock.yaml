@@ -9,11 +9,11 @@ importers:
   .:
     devDependencies:
       vitepress:
-        specifier: 2.0.0-alpha.16
-        version: 2.0.0-alpha.16(postcss@8.5.8)
+        specifier: 2.0.0-alpha.17
+        version: 2.0.0-alpha.17(postcss@8.5.8)
       vitepress-openapi:
-        specifier: ^0.1.17
-        version: 0.1.17(vitepress@2.0.0-alpha.16(postcss@8.5.8))(vue@3.5.30)
+        specifier: ^0.1.20
+        version: 0.1.20(vitepress@2.0.0-alpha.17(postcss@8.5.8))(vue@3.5.30)
 
 packages:
 
@@ -577,8 +577,8 @@ packages:
       picomatch:
         optional: true
 
-  focus-trap@7.8.0:
-    resolution: {integrity: sha512-/yNdlIkpWbM0ptxno3ONTuf+2g318kh2ez3KSeZN5dZ8YC6AAmgeWz+GasYYiBJPFaYcSAPeu4GfhUaChzIJXA==}
+  focus-trap@8.2.1:
+    resolution: {integrity: sha512-6CxwrrFRquH7pDXb1mWxudkU9LSfYBMRZutpgddb2o6iwCk7cIRrBhyY3c8SGKcmIKdeMTrGSNg4Bedh2RSF/w==}
 
   fsevents@2.3.3:
     resolution: {integrity: sha512-5xoDfX+fL7faATnagmWPpbFtwh/R77WmMMqqHGS65C3vvB0YHrgF+B1YmZ3441tMj5n63k0212XNoJwzlhffQw==}
@@ -770,15 +770,15 @@ packages:
       yaml:
         optional: true
 
-  vitepress-openapi@0.1.17:
-    resolution: {integrity: sha512-FhxbzdD1hyrceFaKnIYC9v81UMrT5HfyQHHfHcWzasrBZJxbRZQgQbfZNKlW9Lr4rdKRHMITxJDXJx1cMYq7vA==}
+  vitepress-openapi@0.1.20:
+    resolution: {integrity: sha512-0BRwfMdsXmQx/mI0akoJgfhPhxzJ+T5jriIC/oavaPR6+Jg0TsriZZb3VGQYq3sryOYbWzqI4gfun+Tq2jP33w==}
     engines: {node: ^20.19.0 || ^22.13.0 || >=24.0.0}
     peerDependencies:
       vitepress: '>=1.0.0'
       vue: ^3.0.0
 
-  vitepress@2.0.0-alpha.16:
-    resolution: {integrity: sha512-w1nwsefDVIsje7BZr2tsKxkZutDGjG0YoQ2yxO7+a9tvYVqfljYbwj5LMYkPy8Tb7YbPwa22HtIhk62jbrvuEQ==}
+  vitepress@2.0.0-alpha.17:
+    resolution: {integrity: sha512-Z3VPUpwk/bHYqt1uMVOOK1/4xFiWQov1GNc2FvMdz6kvje4JRXEOngVI9C+bi5jeedMSHiA4dwKkff1NCvbZ9Q==}
     hasBin: true
     peerDependencies:
       markdown-it-mathjax3: ^4
@@ -1180,13 +1180,13 @@ snapshots:
       '@vueuse/shared': 14.2.1(vue@3.5.30)
       vue: 3.5.30
 
-  '@vueuse/integrations@14.2.1(focus-trap@7.8.0)(vue@3.5.30)':
+  '@vueuse/integrations@14.2.1(focus-trap@8.2.1)(vue@3.5.30)':
     dependencies:
       '@vueuse/core': 14.2.1(vue@3.5.30)
       '@vueuse/shared': 14.2.1(vue@3.5.30)
       vue: 3.5.30
     optionalDependencies:
-      focus-trap: 7.8.0
+      focus-trap: 8.2.1
 
   '@vueuse/metadata@14.2.1': {}
 
@@ -1261,7 +1261,7 @@ snapshots:
     optionalDependencies:
       picomatch: 4.0.3
 
-  focus-trap@7.8.0:
+  focus-trap@8.2.1:
     dependencies:
       tabbable: 6.4.0
 
@@ -1491,7 +1491,7 @@ snapshots:
     optionalDependencies:
       fsevents: 2.3.3
 
-  vitepress-openapi@0.1.17(vitepress@2.0.0-alpha.16(postcss@8.5.8))(vue@3.5.30):
+  vitepress-openapi@0.1.20(vitepress@2.0.0-alpha.17(postcss@8.5.8))(vue@3.5.30):
     dependencies:
       '@vueuse/core': 14.2.1(vue@3.5.30)
       class-variance-authority: 0.7.1
@@ -1499,12 +1499,12 @@ snapshots:
       lucide-vue-next: 0.577.0(vue@3.5.30)
       markdown-it-link-attributes: 4.0.1
       reka-ui: 2.9.0(vue@3.5.30)
-      vitepress: 2.0.0-alpha.16(postcss@8.5.8)
+      vitepress: 2.0.0-alpha.17(postcss@8.5.8)
       vue: 3.5.30
     transitivePeerDependencies:
       - '@vue/composition-api'
 
-  vitepress@2.0.0-alpha.16(postcss@8.5.8):
+  vitepress@2.0.0-alpha.17(postcss@8.5.8):
     dependencies:
       '@docsearch/css': 4.6.0
       '@docsearch/js': 4.6.0
@@ -1518,8 +1518,8 @@ snapshots:
       '@vue/devtools-api': 8.0.7
       '@vue/shared': 3.5.30
       '@vueuse/core': 14.2.1(vue@3.5.30)
-      '@vueuse/integrations': 14.2.1(focus-trap@7.8.0)(vue@3.5.30)
-      focus-trap: 7.8.0
+      '@vueuse/integrations': 14.2.1(focus-trap@8.2.1)(vue@3.5.30)
+      focus-trap: 8.2.1
       mark.js: 8.11.1
       minisearch: 7.2.0
       shiki: 3.23.0

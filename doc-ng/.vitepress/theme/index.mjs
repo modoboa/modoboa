@@ -4,13 +4,13 @@ import 'vitepress-openapi/dist/style.css';
 import spec from '../../openapi.json';
 
 export default {
-  ...DefaultTheme,
+  extends: DefaultTheme,
   async enhanceApp({ app, router, siteData }) {
-    const openapi = useOpenapi({
+    useOpenapi({
       spec,
-      config: {},
+      config: {}
     });
 
-    theme.enhanceApp({ app, openapi });
+    theme.enhanceApp({ app });
   },
 };
