@@ -520,10 +520,17 @@ GLOBAL_PARAMETERS_STRUCT = collections.OrderedDict(
                 "params": collections.OrderedDict(
                     [
                         (
+                            "theme_colors_separator",
+                            {
+                                "label": gettext_lazy("Colors"),
+                                "separator": True,
+                            },
+                        ),
+                        (
                             "theme_primary_color",
                             {
                                 "label": gettext_lazy("Primary theme color"),
-                                "help": gettext_lazy(
+                                "help_text": gettext_lazy(
                                     "Primary color of the theme (hexadecimal code), used as the background color of the left menu for example"
                                 ),
                                 "widget": "ColorPicker",
@@ -535,7 +542,7 @@ GLOBAL_PARAMETERS_STRUCT = collections.OrderedDict(
                                 "label": gettext_lazy(
                                     "Primary theme color (lighter version)"
                                 ),
-                                "help": gettext_lazy(
+                                "help_text": gettext_lazy(
                                     "Primary color of the theme (hexadecimal code)"
                                 ),
                                 "widget": "ColorPicker",
@@ -547,7 +554,7 @@ GLOBAL_PARAMETERS_STRUCT = collections.OrderedDict(
                                 "label": gettext_lazy(
                                     "Primary theme color (darker version)"
                                 ),
-                                "help": gettext_lazy(
+                                "help_text": gettext_lazy(
                                     "Primary color of the theme (hexadecimal code)"
                                 ),
                                 "widget": "ColorPicker",
@@ -557,7 +564,7 @@ GLOBAL_PARAMETERS_STRUCT = collections.OrderedDict(
                             "theme_secondary_color",
                             {
                                 "label": gettext_lazy("Secondary theme color"),
-                                "help": gettext_lazy(
+                                "help_text": gettext_lazy(
                                     "Secondary color of the theme (hexadecimal code), used as the background color of some buttons for example"
                                 ),
                                 "widget": "ColorPicker",
@@ -567,10 +574,53 @@ GLOBAL_PARAMETERS_STRUCT = collections.OrderedDict(
                             "theme_label_color",
                             {
                                 "label": gettext_lazy("Labels theme color"),
-                                "help": gettext_lazy(
+                                "help_text": gettext_lazy(
                                     "Theme color for labels (hexadecimal code)"
                                 ),
                                 "widget": "ColorPicker",
+                            },
+                        ),
+                        (
+                            "theme_logos_separator",
+                            {
+                                "label": gettext_lazy("Logos"),
+                                "separator": True,
+                            },
+                        ),
+                        (
+                            "theme_login_logo_url",
+                            {
+                                "label": gettext_lazy("Login page logo"),
+                                "help_text": gettext_lazy(
+                                    "Logo displayed on the login and "
+                                    "password-reset pages. Upload an image or "
+                                    "clear it to use the default Modoboa logo."
+                                ),
+                                "widget": "ImageField",
+                            },
+                        ),
+                        (
+                            "theme_menu_logo_url",
+                            {
+                                "label": gettext_lazy("Menu logo"),
+                                "help_text": gettext_lazy(
+                                    "Logo displayed in the side menu and "
+                                    "webmail. Upload an image or clear it to "
+                                    "use the default Modoboa logo."
+                                ),
+                                "widget": "ImageField",
+                            },
+                        ),
+                        (
+                            "theme_creation_form_logo_url",
+                            {
+                                "label": gettext_lazy("Creation form logo"),
+                                "help_text": gettext_lazy(
+                                    "Logo displayed at the top of object "
+                                    "creation forms. Upload an image or clear "
+                                    "it to use the default Modoboa logo."
+                                ),
+                                "widget": "ImageField",
                             },
                         ),
                     ]

@@ -114,6 +114,13 @@ export default defineConfig({
             : 'http://127.0.0.1:8000',
         secure: false,
       },
+      '/media': {
+        target:
+          process.env.DOCKER == 'yes'
+            ? 'https://api:8000'
+            : 'http://127.0.0.1:8000',
+        secure: false,
+      },
     },
     https: true,
     cors: {
@@ -126,6 +133,13 @@ export default defineConfig({
     port: 3000,
     proxy: {
       '/api': {
+        target:
+          process.env.DOCKER == 'yes'
+            ? 'https://api:8000'
+            : 'http://127.0.0.1:8000',
+        secure: false,
+      },
+      '/media': {
         target:
           process.env.DOCKER == 'yes'
             ? 'https://api:8000'
