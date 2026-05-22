@@ -13,7 +13,9 @@ try:
 except ImportError:
     argon2 = None
 
-from modoboa.core import constants
+from django.template import Context, Template
+
+from modoboa.core import constants, signals as core_signals
 from modoboa.core.context_processors import theme
 from modoboa.core.password_hashers import get_password_hasher
 from modoboa.core.password_hashers.utils import get_dovecot_schemes
@@ -424,6 +426,68 @@ class ThemeContextProcessorTestCase(ModoTestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "#aabbcc")
         self.assertContains(response, "#112233")
+
+    def test_get_theme_parameters_signal_overrides_values(self):
+        """A plugin receiver can override the values returned to templates."""
+        self.set_global_parameter("theme_primary_color", "#000000", app="core")
+
+        def handler(sender, current_values, **kwargs):
+            # Receiver sees the pre-override stored value.
+            self.assertEqual(current_values["theme_primary_color"], "#000000")
+            return {
+                "theme_primary_color": "#ff00ff",
+                "theme_login_logo_url": "https://cdn.example.com/login.png",
+            }
+
+        core_signals.get_theme_parameters.connect(handler)
+        try:
+            result = theme(request=None)
+        finally:
+            core_signals.get_theme_parameters.disconnect(handler)
+
+        self.assertEqual(result["theme_primary_color"], "#ff00ff")
+        self.assertEqual(
+            result["theme_login_logo_url"], "https://cdn.example.com/login.png"
+        )
+
+
+class GetModoboaLogoTagTestCase(ModoTestCase):
+    """Test the ``get_modoboa_logo`` template tag."""
+
+    TEMPLATE = Template("{% load core_tags %}{% get_modoboa_logo %}")
+
+    def _render(self, context_data):
+        return self.TEMPLATE.render(Context(context_data))
+
+    def test_theme_login_logo_url_wins(self):
+        """Theme parameter (via context) takes precedence over settings/static."""
+        with override_settings(MODOBOA_CUSTOM_LOGO="/media/never.png"):
+            result = self._render(
+                {"theme_login_logo_url": "https://cdn.example.com/login.png"}
+            )
+        self.assertEqual(result, "https://cdn.example.com/login.png")
+
+    def test_falls_back_to_custom_logo_setting(self):
+        """Without a theme param, ``MODOBOA_CUSTOM_LOGO`` is used."""
+        with override_settings(MODOBOA_CUSTOM_LOGO="/media/custom.png"):
+            result = self._render({"theme_login_logo_url": ""})
+        self.assertEqual(result, "/media/custom.png")
+
+    def test_falls_back_to_static_default(self):
+        """No theme param and no setting → bundled static asset."""
+        # MODOBOA_CUSTOM_LOGO is unset by default in the test settings.
+        result = self._render({"theme_login_logo_url": ""})
+        self.assertTrue(result.endswith("css/modoboa-white.png"))
+
+    def test_ignores_other_logo_context_keys(self):
+        """Only ``theme_login_logo_url`` is honored — menu/form keys must not leak."""
+        result = self._render(
+            {
+                "theme_login_logo_url": "",
+                "theme_menu_logo_url": "/media/should-not-be-used.png",
+            }
+        )
+        self.assertTrue(result.endswith("css/modoboa-white.png"))
 
 
 @skipIf(NO_SMTP, "No SMTP server available")
