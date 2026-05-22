@@ -2,9 +2,12 @@ import { ref } from 'vue'
 import { useTheme } from 'vuetify'
 import themeApi from '@/api/theme'
 
+// Module-level ref so the fetched theme (colors + logo URLs) is shared with
+// other composables such as useLogos().
+const theme = ref(null)
+
 export function useModoboaTheme() {
   const vTheme = useTheme()
-  const theme = ref(null)
 
   const enableTheme = async () => {
     const response = await themeApi.getTheme()
@@ -34,4 +37,8 @@ export function useModoboaTheme() {
   }
 
   return { theme, enableTheme }
+}
+
+export function useThemeState() {
+  return { theme }
 }

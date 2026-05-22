@@ -2,11 +2,17 @@
 
 import copy
 import getpass
+import io
+import shutil
+import tempfile
 import oath
 from unittest import mock
 
+from PIL import Image
+
 from django.core import mail
 from django.core.cache import cache
+from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import override_settings
 from django.urls import reverse
 from django.utils.encoding import force_bytes
@@ -17,9 +23,11 @@ from modoboa.admin import (
     models as admin_models,
     constants as admin_constants,
 )
-from modoboa.core import models, constants
+from modoboa.core import factories as core_factories
+from modoboa.core import models, constants, signals
 from modoboa.core.tests import utils
 from modoboa.lib.tests import ModoAPITestCase
+from modoboa.parameters import tools as param_tools
 
 DOVEADM_TEST_PATH = utils.get_doveadm_test_path()
 DOVECOT_USER = getpass.getuser()
@@ -613,12 +621,150 @@ class ThemeAPITestCase(ModoAPITestCase):
         self.assertEqual(response.status_code, 200)
         theme = response.json()
         self.assertEqual(theme["theme_primary_color"], "#046BF8")
+        # Logo URL fields default to empty so the frontend / auth template
+        # fall back to the bundled defaults.
+        self.assertEqual(theme["theme_login_logo_url"], "")
+        self.assertEqual(theme["theme_menu_logo_url"], "")
+        self.assertEqual(theme["theme_creation_form_logo_url"], "")
 
         self.set_global_parameter("theme_primary_color", "#FF0000")
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
         theme = response.json()
         self.assertEqual(theme["theme_primary_color"], "#FF0000")
+
+    def test_get_theme_parameters_signal(self):
+        """Plugin receivers can override theme colors via the signal."""
+        received = {}
+
+        def handler(sender, current_values, **kwargs):
+            received["current_values"] = dict(current_values)
+            return {"theme_primary_color": "#123456"}
+
+        signals.get_theme_parameters.connect(handler)
+        try:
+            url = reverse("v2:theme")
+            response = self.client.get(url)
+        finally:
+            signals.get_theme_parameters.disconnect(handler)
+
+        self.assertEqual(response.status_code, 200)
+        theme = response.json()
+        self.assertEqual(theme["theme_primary_color"], "#123456")
+        # Non-overridden keys keep their stored value.
+        self.assertEqual(theme["theme_secondary_color"], "#F18429")
+        # Receiver was passed the pre-override values as current_values.
+        self.assertEqual(received["current_values"]["theme_primary_color"], "#046BF8")
+
+
+class ThemeLogoUploadAPITestCase(ModoAPITestCase):
+    """Tests for POST/DELETE on /api/v2/theme/logo/."""
+
+    def setUp(self):
+        super().setUp()
+        # Isolate file writes from the real MEDIA_ROOT.
+        media_root = tempfile.mkdtemp()
+        self.addCleanup(shutil.rmtree, media_root, ignore_errors=True)
+        media_override = override_settings(MEDIA_ROOT=media_root)
+        media_override.enable()
+        self.addCleanup(media_override.disable)
+
+    @staticmethod
+    def _png_file(name="logo.png"):
+        buf = io.BytesIO()
+        Image.new("RGB", (1, 1), (255, 0, 0)).save(buf, format="PNG")
+        return SimpleUploadedFile(name, buf.getvalue(), content_type="image/png")
+
+    def _get_param(self, logo_type):
+        return param_tools.get_global_parameter(
+            f"theme_{logo_type}_logo_url", app="core"
+        )
+
+    def test_upload_saves_param_and_returns_url(self):
+        url = reverse("v2:theme-logo-upload")
+        response = self.client.post(
+            url,
+            {"logo_type": "menu", "image": self._png_file()},
+            format="multipart",
+        )
+        self.assertEqual(response.status_code, 200)
+        body = response.json()
+        self.assertEqual(body["logo_type"], "menu")
+        self.assertTrue(body["url"].startswith("/media/theme_logos/menu_"))
+        self.assertEqual(self._get_param("menu"), body["url"])
+
+    def test_upload_supports_each_logo_type(self):
+        url = reverse("v2:theme-logo-upload")
+        for logo_type in ("login", "menu", "creation_form"):
+            with self.subTest(logo_type=logo_type):
+                response = self.client.post(
+                    url,
+                    {"logo_type": logo_type, "image": self._png_file()},
+                    format="multipart",
+                )
+                self.assertEqual(response.status_code, 200)
+                self.assertEqual(response.json()["logo_type"], logo_type)
+                self.assertTrue(self._get_param(logo_type))
+
+    def test_upload_rejects_invalid_logo_type(self):
+        url = reverse("v2:theme-logo-upload")
+        response = self.client.post(
+            url,
+            {"logo_type": "header", "image": self._png_file()},
+            format="multipart",
+        )
+        self.assertEqual(response.status_code, 400)
+
+    def test_upload_rejects_non_image_file(self):
+        url = reverse("v2:theme-logo-upload")
+        response = self.client.post(
+            url,
+            {
+                "logo_type": "menu",
+                "image": SimpleUploadedFile(
+                    "evil.txt", b"not an image", content_type="text/plain"
+                ),
+            },
+            format="multipart",
+        )
+        self.assertEqual(response.status_code, 400)
+
+    def test_clear_resets_param(self):
+        self.set_global_parameter(
+            "theme_menu_logo_url", "/media/theme_logos/old.png", app="core"
+        )
+        url = reverse("v2:theme-logo-upload")
+        response = self.client.delete(f"{url}?logo_type=menu")
+        self.assertEqual(response.status_code, 204)
+        self.assertEqual(self._get_param("menu"), "")
+
+    def test_clear_rejects_invalid_logo_type(self):
+        url = reverse("v2:theme-logo-upload")
+        response = self.client.delete(f"{url}?logo_type=header")
+        self.assertEqual(response.status_code, 400)
+
+    def test_clear_rejects_missing_logo_type(self):
+        url = reverse("v2:theme-logo-upload")
+        response = self.client.delete(url)
+        self.assertEqual(response.status_code, 400)
+
+    def test_endpoint_requires_superuser(self):
+        # Authenticated regular user — IsSuperUser should reject both verbs.
+        regular = core_factories.UserFactory(username="user@test.com")
+        self.authenticate_user(regular)
+        url = reverse("v2:theme-logo-upload")
+
+        with self.subTest(method="POST"):
+            response = self.client.post(
+                url,
+                {"logo_type": "menu", "image": self._png_file()},
+                format="multipart",
+            )
+            self.assertEqual(response.status_code, 403)
+
+        with self.subTest(method="DELETE"):
+            response = self.client.delete(f"{url}?logo_type=menu")
+            self.assertEqual(response.status_code, 403)
 
 
 class NewsFeedAPIViewTestCase(ModoAPITestCase):

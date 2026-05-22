@@ -15,6 +15,7 @@ can_create_object = (
 
 extra_role_permissions = django.dispatch.Signal()  # Provides role
 get_announcements = django.dispatch.Signal()  # Provides location
+get_theme_parameters = django.dispatch.Signal()  # Provides current_values
 get_top_notifications = django.dispatch.Signal()  # Provides include_all
 initial_data_loaded = django.dispatch.Signal()  # Provides extname
 register_postfix_maps = django.dispatch.Signal()

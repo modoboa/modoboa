@@ -10,8 +10,10 @@ import feedparser
 from django.conf import settings
 from django.utils.datastructures import MultiValueDictKeyError
 
+from django.core.files.storage import default_storage
+
 from drf_spectacular.utils import extend_schema
-from rest_framework import permissions, response
+from rest_framework import parsers, permissions, response
 from rest_framework.views import APIView
 
 from modoboa.admin import models as admin_models
@@ -200,10 +202,61 @@ class ThemeAPIView(APIView):
             "theme_primary_color_light",
             "theme_secondary_color",
             "theme_label_color",
+            "theme_login_logo_url",
+            "theme_menu_logo_url",
+            "theme_creation_form_logo_url",
         ]
         for param in params:
             values[param] = request.localconfig.parameters.get_value(param)
+        results = signals.get_theme_parameters.send(
+            sender=self.__class__, current_values=values
+        )
+        for _receiver, result in results:
+            if result:
+                values.update(result)
         return response.Response(values)
+
+
+class ThemeLogoUploadAPIView(APIView):
+    """Upload or clear a custom theme logo."""
+
+    permission_classes = [permissions.IsAuthenticated, IsSuperUser]
+    parser_classes = [parsers.MultiPartParser]
+
+    @extend_schema(
+        request=serializers.ThemeLogoUploadSerializer,
+        responses=serializers.ThemeLogoUploadSerializer,
+    )
+    def post(self, request, *args, **kwargs):
+        serializer = serializers.ThemeLogoUploadSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        logo_type = serializer.validated_data["logo_type"]
+        image = serializer.validated_data["image"]
+
+        stored_path = default_storage.save(
+            f"theme_logos/{logo_type}_{image.name}", image
+        )
+        url = default_storage.url(stored_path)
+
+        param_name = f"theme_{logo_type}_logo_url"
+        request.localconfig.parameters.set_value(param_name, url, app="core")
+        request.localconfig.save()
+
+        return response.Response({"logo_type": logo_type, "url": url})
+
+    def delete(self, request, *args, **kwargs):
+        logo_type = request.query_params.get("logo_type")
+        if logo_type not in serializers.ThemeLogoUploadSerializer.LOGO_TYPES:
+            return response.Response(
+                {"logo_type": "Invalid or missing logo_type."},
+                status=400,
+            )
+
+        param_name = f"theme_{logo_type}_logo_url"
+        request.localconfig.parameters.set_value(param_name, "", app="core")
+        request.localconfig.save()
+
+        return response.Response(status=204)
 
 
 class NewsFeedAPIView(APIView):
