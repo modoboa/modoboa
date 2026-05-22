@@ -77,16 +77,11 @@
                     v-model="parameters[param.name]"
                   >
                   </HtmlEditor>
-                  <v-color-picker
+                  <ColorField
                     v-else-if="param.widget === 'ColorPicker'"
                     v-model="parameters[param.name]"
-                    mode="hexa"
                     :hint="param.help_text"
-                    persistent-hint
-                    :error="formErrors[param.name] !== undefined"
                     :error-messages="formErrors[param.name]"
-                    density="compact"
-                    variant="outlined"
                   />
                   <v-text-field
                     v-else
@@ -122,6 +117,7 @@
 import { computed, ref, useSlots, watch } from 'vue'
 import { useGettext } from 'vue3-gettext'
 import { useBusStore } from '@/stores'
+import ColorField from '@/components/tools/ColorField'
 import HtmlEditor from '@/components/tools/HtmlEditor'
 
 const props = defineProps({
