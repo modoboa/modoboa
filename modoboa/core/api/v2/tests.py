@@ -17,7 +17,7 @@ from modoboa.admin import (
     models as admin_models,
     constants as admin_constants,
 )
-from modoboa.core import models, constants
+from modoboa.core import models, constants, signals
 from modoboa.core.tests import utils
 from modoboa.lib.tests import ModoAPITestCase
 
@@ -619,6 +619,29 @@ class ThemeAPITestCase(ModoAPITestCase):
         self.assertEqual(response.status_code, 200)
         theme = response.json()
         self.assertEqual(theme["theme_primary_color"], "#FF0000")
+
+    def test_get_theme_parameters_signal(self):
+        """Plugin receivers can override theme colors via the signal."""
+        received = {}
+
+        def handler(sender, current_values, **kwargs):
+            received["current_values"] = dict(current_values)
+            return {"theme_primary_color": "#123456"}
+
+        signals.get_theme_parameters.connect(handler)
+        try:
+            url = reverse("v2:theme")
+            response = self.client.get(url)
+        finally:
+            signals.get_theme_parameters.disconnect(handler)
+
+        self.assertEqual(response.status_code, 200)
+        theme = response.json()
+        self.assertEqual(theme["theme_primary_color"], "#123456")
+        # Non-overridden keys keep their stored value.
+        self.assertEqual(theme["theme_secondary_color"], "#F18429")
+        # Receiver was passed the pre-override values as current_values.
+        self.assertEqual(received["current_values"]["theme_primary_color"], "#046BF8")
 
 
 class NewsFeedAPIViewTestCase(ModoAPITestCase):
