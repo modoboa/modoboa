@@ -12,6 +12,6 @@ build:
         # The site was created by running `vitepress init`
         # and following the official guide
         # https://vitepress.dev/guide/getting-started
-        - ./node_modules/.bin/vitepress build doc-ng
+        - ./doc-ng/node_modules/.bin/vitepress build doc-ng
         - mkdir -p $READTHEDOCS_OUTPUT/
         - mv doc-ng/dist $READTHEDOCS_OUTPUT/html
