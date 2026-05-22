@@ -6,7 +6,7 @@ build:
     nodejs: "latest"
   jobs:
     install:
-      - npm install --prefix doc-ng
+      - npm install --prefix doc-ng --force
     build:
       html:
         # The site was created by running `vitepress init`
