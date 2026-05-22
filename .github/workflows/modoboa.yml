@@ -212,7 +212,7 @@ jobs:
         run: |
           sudo apt-get install gettext
           cd frontend
-          nvm install 20
+          nvm install 22
           yarn install
           yarn gettext:compile
           yarn build
