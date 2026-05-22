@@ -14,29 +14,41 @@ import { fileURLToPath, URL } from 'node:url'
 // and dumps them at the bundle root. Relocate them under assets/ so the
 // produced layout matches the rest of the build (single canonical asset
 // directory for collectstatic / CDN sync).
+//
+// We do this in writeBundle (post-emit, on the filesystem) rather than
+// rewriting the bundle map in generateBundle. Vite 8 runs on Rolldown,
+// which ignores `bundle[k] = …; delete bundle[old]` reassignment with a
+// warning — the old generateBundle approach silently no-op'd. Filesystem
+// moves work identically on Rollup and Rolldown.
 function relocateMfBootstrap() {
   return {
     name: 'modoboa-relocate-mf-bootstrap',
     enforce: 'post',
-    generateBundle(_options, bundle) {
+    async writeBundle(options, bundle) {
+      const fs = await import('node:fs/promises')
+      const path = await import('node:path')
+      const outDir = options.dir
       const moved = new Map()
+      const htmlFiles = []
       for (const fileName of Object.keys(bundle)) {
         if (fileName.startsWith('mf-entry-bootstrap-')) {
           const newName = `assets/${fileName}`
-          bundle[fileName].fileName = newName
-          bundle[newName] = bundle[fileName]
-          delete bundle[fileName]
+          const oldPath = path.join(outDir, fileName)
+          const newPath = path.join(outDir, newName)
+          await fs.mkdir(path.dirname(newPath), { recursive: true })
+          await fs.rename(oldPath, newPath)
           moved.set(fileName, newName)
+        } else if (fileName.endsWith('.html')) {
+          htmlFiles.push(path.join(outDir, fileName))
         }
       }
-      for (const asset of Object.values(bundle)) {
-        if (asset.type === 'asset' && asset.fileName.endsWith('.html')) {
-          let html = asset.source.toString()
-          for (const [oldName, newName] of moved) {
-            html = html.split(`/${oldName}`).join(`/${newName}`)
-          }
-          asset.source = html
+      if (moved.size === 0) return
+      for (const htmlPath of htmlFiles) {
+        let html = await fs.readFile(htmlPath, 'utf8')
+        for (const [oldName, newName] of moved) {
+          html = html.split(`/${oldName}`).join(`/${newName}`)
         }
+        await fs.writeFile(htmlPath, html)
       }
     },
   }
@@ -82,6 +94,7 @@ export default defineConfig({
         './repository': './src/api/repository.js',
         './MenuItems': './src/components/tools/MenuItems.vue',
         './ConfirmDialog': './src/components/tools/ConfirmDialog.vue',
+        './ColorField': './src/components/tools/ColorField.vue',
       },
       // Pinned majors for version-skew protection. @module-federation/vite
       // negotiates these correctly across host and plugin even when the
