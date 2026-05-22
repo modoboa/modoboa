@@ -38,6 +38,15 @@
                     persistent-hint
                   />
                 </template>
+                <template v-else-if="hasWidgetSlot(param.widget)">
+                  <slot
+                    :name="widgetSlotName(param.widget)"
+                    :param="param"
+                    :model-value="parameters[param.name]"
+                    :update-model-value="(v) => (parameters[param.name] = v)"
+                    :error-message="formErrors[param.name]"
+                  />
+                </template>
                 <template v-else>
                   <label class="m-label">{{ param.label }}</label>
                   <v-select
@@ -110,7 +119,7 @@
 </template>
 
 <script setup>
-import { computed, ref, watch } from 'vue'
+import { computed, ref, useSlots, watch } from 'vue'
 import { useGettext } from 'vue3-gettext'
 import { useBusStore } from '@/stores'
 import HtmlEditor from '@/components/tools/HtmlEditor'
@@ -137,6 +146,7 @@ const emit = defineEmits(['success'])
 
 const { $gettext } = useGettext()
 const { displayNotification } = useBusStore()
+const slots = useSlots()
 
 const displayableElements = computed(() =>
   props.structure.filter((element) => display(element))
@@ -156,6 +166,16 @@ const active = ref(0)
 const formErrors = ref({})
 const parameters = ref({})
 const tab_error = ref([])
+
+// Lets callers plug in custom rendering for any widget type by providing
+// a scoped slot named `widget-<WidgetName>` (e.g. `widget-ImageField`).
+// The slot receives { param, modelValue, updateModelValue, errorMessage }.
+function widgetSlotName(widget) {
+  return `widget-${widget}`
+}
+function hasWidgetSlot(widget) {
+  return !!slots[widgetSlotName(widget)]
+}
 
 watch(
   () => props.values,
