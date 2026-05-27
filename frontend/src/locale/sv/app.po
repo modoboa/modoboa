@@ -72,7 +72,7 @@ msgstr "Du håller på att radera din API-åtkomsttoken"
 #: src/components/account/FidoAuthForm.vue:215
 #: src/components/account/FilterForm.vue:147
 #: src/components/account/FilterSetForm.vue:24
-#: src/components/admin/domains/DomainEditForm.vue:161
+#: src/components/admin/domains/DomainEditForm.vue:183
 #: src/components/admin/domains/DomainPolicyForm.vue:93
 #: src/components/admin/identities/AccountEditForm.vue:212
 #: src/components/admin/identities/AliasEditForm.vue:69
@@ -90,7 +90,7 @@ msgid "API token deleted"
 msgstr "API token raderat"
 
 #: src/components/account/AutoReplyForm.vue:7
-#: src/components/admin/domains/DomainCreationForm.vue:167
+#: src/components/admin/domains/DomainCreationForm.vue:226
 #: src/components/admin/domains/DomainList.vue:212
 #: src/components/admin/domains/DomainSummary.vue:68
 #: src/components/admin/domains/form_steps/DomainGeneralForm.vue:20
@@ -227,7 +227,7 @@ msgstr "namn"
 #: src/components/admin/domains/DNSDetail.vue:195
 #: src/components/admin/domains/DomainAdminList.vue:112
 #: src/components/admin/domains/DomainAliasForm.vue:8
-#: src/components/admin/domains/DomainCreationForm.vue:164
+#: src/components/admin/domains/DomainCreationForm.vue:223
 #: src/components/admin/domains/DomainList.vue:211
 #: src/components/admin/domains/form_steps/DomainOptionsForm.vue:11
 #: src/components/admin/identities/IdentityList.vue:265
@@ -309,7 +309,7 @@ msgid "Edit your device"
 msgstr "Redigera din enhet"
 
 #: src/components/account/FidoAuthForm.vue:216
-#: src/components/admin/domains/DomainEditForm.vue:170
+#: src/components/admin/domains/DomainEditForm.vue:192
 #: src/components/admin/identities/AccountEditForm.vue:221
 #: src/components/admin/identities/AliasEditForm.vue:78
 #: src/components/admin/imap_migration/ProviderForm.vue:66
@@ -392,11 +392,11 @@ msgstr "Uppdatera"
 msgid "Create"
 msgstr "Skapa"
 
-#: src/components/account/FilterForm.vue:300
+#: src/components/account/FilterForm.vue:312
 msgid "Filter added"
 msgstr "Filter har lagts till"
 
-#: src/components/account/FilterForm.vue:303
+#: src/components/account/FilterForm.vue:315
 msgid "Filter updated"
 msgstr "Filter uppdaterat"
 
@@ -701,7 +701,7 @@ msgid "Alarm re-opened"
 msgstr "Larm öppnat på nytt"
 
 #: src/components/admin/dashboard/GlobalStatisticsWidget.vue:2
-#: src/layouts/admin/AdminLayout.vue:74
+#: src/layouts/admin/AdminLayout.vue:80
 #: src/views/admin/domains/DomainView.vue:25
 #: src/views/admin/monitoring/StatisticsView.vue:3
 msgid "Statistics"
@@ -814,6 +814,10 @@ msgstr "DNS konfigurering hjälp"
 #, fuzzy
 msgid "Last check:"
 msgstr "Senast använd"
+
+#: src/components/admin/domains/DNSDetail.vue:22
+msgid "MX records"
+msgstr "MX poster"
 
 #: src/components/admin/domains/DNSDetail.vue:27
 #: src/components/admin/domains/DNSDetail.vue:58
@@ -1018,15 +1022,15 @@ msgstr "Domänalias uppdaterat"
 msgid "New domain"
 msgstr "Ny domän"
 
-#: src/components/admin/domains/DomainCreationForm.vue:54
+#: src/components/admin/domains/DomainCreationForm.vue:67
 #: src/components/admin/identities/AccountCreationForm.vue:43
 #: src/components/admin/identities/form_steps/AccountPasswordSubForm.vue:44
 msgid "Copy to clipboard"
 msgstr "Kopiera till urklipp"
 
-#: src/components/admin/domains/DomainCreationForm.vue:143
-#: src/components/admin/domains/DomainCreationForm.vue:149
-#: src/components/admin/domains/DomainCreationForm.vue:162
+#: src/components/admin/domains/DomainCreationForm.vue:169
+#: src/components/admin/domains/DomainCreationForm.vue:175
+#: src/components/admin/domains/DomainCreationForm.vue:221
 #: src/components/admin/domains/DomainEditForm.vue:9
 #: src/components/admin/identities/AliasCreationForm.vue:53
 #: src/components/admin/identities/AliasCreationForm.vue:93
@@ -1038,49 +1042,49 @@ msgstr "Kopiera till urklipp"
 msgid "General"
 msgstr "Allmän"
 
-#: src/components/admin/domains/DomainCreationForm.vue:144
-#: src/components/admin/domains/DomainCreationForm.vue:150
-#: src/components/admin/domains/DomainCreationForm.vue:174
+#: src/components/admin/domains/DomainCreationForm.vue:170
+#: src/components/admin/domains/DomainCreationForm.vue:176
+#: src/components/admin/domains/DomainCreationForm.vue:233
 #: src/components/admin/domains/DomainEditForm.vue:36
 msgid "DNS"
 msgstr "DNS"
 
-#: src/components/admin/domains/DomainCreationForm.vue:145
-#: src/components/admin/domains/DomainCreationForm.vue:151
-#: src/components/admin/domains/DomainCreationForm.vue:189
+#: src/components/admin/domains/DomainCreationForm.vue:171
+#: src/components/admin/domains/DomainCreationForm.vue:177
+#: src/components/admin/domains/DomainCreationForm.vue:248
 #: src/components/admin/domains/DomainEditForm.vue:73
 msgid "Limitations"
 msgstr "Gränser"
 
-#: src/components/admin/domains/DomainCreationForm.vue:146
-#: src/components/admin/domains/DomainCreationForm.vue:239
+#: src/components/admin/domains/DomainCreationForm.vue:172
+#: src/components/admin/domains/DomainCreationForm.vue:298
 #: src/components/webmail/ComposeEmailForm.vue:42
 msgid "Options"
 msgstr "Alternativ"
 
-#: src/components/admin/domains/DomainCreationForm.vue:152
-#: src/components/admin/domains/DomainCreationForm.vue:215
+#: src/components/admin/domains/DomainCreationForm.vue:178
+#: src/components/admin/domains/DomainCreationForm.vue:274
 #: src/components/admin/domains/DomainEditForm.vue:113
 #: src/components/admin/domains/RelayDomainSummary.vue:4
 msgid "Transport"
 msgstr "Transport"
 
-#: src/components/admin/domains/DomainCreationForm.vue:165
+#: src/components/admin/domains/DomainCreationForm.vue:224
 #: src/components/admin/domains/form_steps/DomainGeneralForm.vue:13
 msgid "Type"
 msgstr "Typ"
 
-#: src/components/admin/domains/DomainCreationForm.vue:177
+#: src/components/admin/domains/DomainCreationForm.vue:236
 #: src/components/admin/domains/form_steps/DomainDNSForm.vue:6
 msgid "Enable DNS checks"
 msgstr "Aktivera DNS kontroller"
 
-#: src/components/admin/domains/DomainCreationForm.vue:182
+#: src/components/admin/domains/DomainCreationForm.vue:241
 #: src/components/admin/domains/form_steps/DomainDNSForm.vue:11
 msgid "Enable DKIM signing"
 msgstr "Aktivera DKIM signering"
 
-#: src/components/admin/domains/DomainCreationForm.vue:191
+#: src/components/admin/domains/DomainCreationForm.vue:250
 #: src/components/admin/domains/DomainList.vue:221
 #: src/components/admin/domains/DomainSummary.vue:16
 #: src/components/admin/domains/form_steps/DomainLimitationsForm.vue:5
@@ -1091,65 +1095,65 @@ msgstr "Aktivera DKIM signering"
 msgid "Quota"
 msgstr "Kvota"
 
-#: src/components/admin/domains/DomainCreationForm.vue:193
+#: src/components/admin/domains/DomainCreationForm.vue:252
 #: src/components/admin/domains/DomainSummary.vue:23
 #: src/components/admin/domains/form_steps/DomainLimitationsForm.vue:19
 msgid "Default mailbox quota"
 msgstr "Standard brevlådekvota"
 
-#: src/components/admin/domains/DomainCreationForm.vue:197
+#: src/components/admin/domains/DomainCreationForm.vue:256
 #: src/components/admin/domains/form_steps/DomainLimitationsForm.vue:32
 #: src/components/admin/identities/AccountCreationForm.vue:135
 msgid "Message sending limit"
 msgstr "Begränsning för meddelandesändning"
 
-#: src/components/admin/domains/DomainCreationForm.vue:205
+#: src/components/admin/domains/DomainCreationForm.vue:264
 #: src/components/admin/domains/form_steps/DomainDNSForm.vue:16
 msgid "DKIM key selector"
 msgstr "DKIM nyckel väljare"
 
-#: src/components/admin/domains/DomainCreationForm.vue:209
+#: src/components/admin/domains/DomainCreationForm.vue:268
 #: src/components/admin/domains/form_steps/DomainDNSForm.vue:22
 msgid "DKIM key length"
 msgstr "DKIM nyckellängd"
 
-#: src/components/admin/domains/DomainCreationForm.vue:218
+#: src/components/admin/domains/DomainCreationForm.vue:277
 #: src/components/admin/domains/form_steps/DomainTransportForm.vue:3
 #: src/components/admin/domains/RelayDomainSummary.vue:8
 msgid "Service"
 msgstr "Tjänst"
 
-#: src/components/admin/domains/DomainCreationForm.vue:242
+#: src/components/admin/domains/DomainCreationForm.vue:301
 #: src/components/admin/domains/form_steps/DomainOptionsForm.vue:5
 msgid "Create a domain administrator"
 msgstr "Skapa en domänadministratör"
 
-#: src/components/admin/domains/DomainCreationForm.vue:251
+#: src/components/admin/domains/DomainCreationForm.vue:310
 msgid "Administrator name"
 msgstr "Administratörs namn"
 
-#: src/components/admin/domains/DomainCreationForm.vue:256
+#: src/components/admin/domains/DomainCreationForm.vue:315
 #: src/components/admin/identities/AccountCreationForm.vue:107
 #: src/components/admin/identities/form_steps/AccountPasswordSubForm.vue:21
 msgid "Random password"
 msgstr "Slumpmässigt lösenord"
 
-#: src/components/admin/domains/DomainCreationForm.vue:261
+#: src/components/admin/domains/DomainCreationForm.vue:320
 msgid "With mailbox"
 msgstr "Med brevlåda"
 
-#: src/components/admin/domains/DomainCreationForm.vue:266
+#: src/components/admin/domains/DomainCreationForm.vue:325
 #: src/components/admin/domains/form_steps/DomainOptionsForm.vue:33
 msgid "Create aliases"
 msgstr "Skapa alias"
 
-#: src/components/admin/domains/DomainCreationForm.vue:284
+#: src/components/admin/domains/DomainCreationForm.vue:343
 #: src/components/admin/identities/AccountCreationForm.vue:214
 #: src/components/admin/identities/form_steps/AccountPasswordSubForm.vue:104
 msgid "Password copied to clipboard"
 msgstr "Lösenord kopierat till urklipp"
 
-#: src/components/admin/domains/DomainCreationForm.vue:318
+#: src/components/admin/domains/DomainCreationForm.vue:383
 msgid "Domain created"
 msgstr "Domän skapad"
 
@@ -1281,7 +1285,7 @@ msgid "Edit"
 msgstr "Redigera"
 
 #: src/components/admin/domains/DomainList.vue:370
-#: src/layouts/admin/AdminLayout.vue:60
+#: src/layouts/admin/AdminLayout.vue:66
 msgid "Alarms"
 msgstr "Larm"
 
@@ -2396,9 +2400,22 @@ msgstr ""
 msgid "Modify"
 msgstr "Ändra"
 
-#: src/components/tools/CreationSummary.vue:45
+#: src/components/tools/CreationSummary.vue:49
 msgid "Empty"
 msgstr "Tom"
+
+#: src/components/tools/ImageFieldWidget.vue:8
+msgid "No custom image, default will be used."
+msgstr ""
+
+#: src/components/tools/ImageFieldWidget.vue:13
+msgid "Upload image"
+msgstr ""
+
+#: src/components/tools/ImageFieldWidget.vue:33
+#, fuzzy
+msgid "Remove image"
+msgstr "Radera denna adress"
 
 #: src/components/tools/ImportForm.vue:10
 msgid "Provide a CSV file where lines respect one of the following formats:"
@@ -2437,11 +2454,11 @@ msgstr "Behandla inte duplicerade objekt som fel"
 msgid "Import"
 msgstr "Importera"
 
-#: src/components/tools/ParametersForm.vue:209
+#: src/components/tools/ParametersForm.vue:225
 msgid "Parameters updated"
 msgstr "Parametrar uppdaterade"
 
-#: src/components/tools/ParametersForm.vue:214
+#: src/components/tools/ParametersForm.vue:230
 msgid "Could not save parameters"
 msgstr "Kunde inte spara parametrar"
 
@@ -2696,56 +2713,56 @@ msgstr "Domän uppdaterad"
 msgid "User's database"
 msgstr ""
 
-#: src/layouts/account/AccountLayout.vue:28
-#: src/layouts/admin/AdminLayout.vue:123
+#: src/layouts/account/AccountLayout.vue:29
+#: src/layouts/admin/AdminLayout.vue:130
 msgid "Settings"
 msgstr "Inställningar"
 
-#: src/layouts/account/AccountLayout.vue:34
+#: src/layouts/account/AccountLayout.vue:35
 msgid "Filters"
 msgstr "Filter"
 
-#: src/layouts/admin/AdminLayout.vue:34
+#: src/layouts/admin/AdminLayout.vue:40
 msgid "Dashboard"
 msgstr "Instrumentbräda"
 
-#: src/layouts/admin/AdminLayout.vue:40
+#: src/layouts/admin/AdminLayout.vue:46
 #: src/views/admin/domains/DomainsView.vue:4
 msgid "Domains"
 msgstr "Domäner"
 
-#: src/layouts/admin/AdminLayout.vue:50
+#: src/layouts/admin/AdminLayout.vue:56
 #: src/views/admin/identities/IdentitiesView.vue:4
 msgid "Identities"
 msgstr "Identiteter"
 
-#: src/layouts/admin/AdminLayout.vue:66
+#: src/layouts/admin/AdminLayout.vue:72
 msgid "Monitoring"
 msgstr "Monitoring"
 
-#: src/layouts/admin/AdminLayout.vue:79
+#: src/layouts/admin/AdminLayout.vue:85
 #: src/views/admin/monitoring/AuditTrailView.vue:3
 msgid "Audit trail"
 msgstr "Verifieringskedja"
 
-#: src/layouts/admin/AdminLayout.vue:84
+#: src/layouts/admin/AdminLayout.vue:90
 msgid "Messages"
 msgstr "Meddelanden"
 
-#: src/layouts/admin/AdminLayout.vue:96
+#: src/layouts/admin/AdminLayout.vue:102
 msgid "IMAP Migration"
 msgstr "IMAP migrering"
 
-#: src/layouts/admin/AdminLayout.vue:101
+#: src/layouts/admin/AdminLayout.vue:107
 msgid "Email providers"
 msgstr "E-postleverantörer"
 
-#: src/layouts/admin/AdminLayout.vue:106
+#: src/layouts/admin/AdminLayout.vue:112
 #: src/views/admin/imap_migration/MigrationsView.vue:4
 msgid "Migrations"
 msgstr "Migreringar"
 
-#: src/layouts/admin/AdminLayout.vue:136 src/views/admin/InformationView.vue:4
+#: src/layouts/admin/AdminLayout.vue:143 src/views/admin/InformationView.vue:4
 #: src/views/calendars/CalendarView.vue:194
 msgid "Information"
 msgstr "Information"
@@ -2914,7 +2931,7 @@ msgid "Deactivate filter set"
 msgstr "Aktivera filteruppsättning"
 
 #: src/views/account/ParametersView.vue:30
-#: src/views/admin/ParametersView.vue:35
+#: src/views/admin/ParametersView.vue:60
 #, fuzzy
 msgid "Settings: "
 msgstr "Inställningar"
@@ -3096,6 +3113,24 @@ msgstr "Senaste version"
 msgid "Message history"
 msgstr "Meddelande historik"
 
+#: src/views/admin/ParametersView.vue:85
+msgid "Image uploaded"
+msgstr ""
+
+#: src/views/admin/ParametersView.vue:88
+msgid "Could not upload image"
+msgstr ""
+
+#: src/views/admin/ParametersView.vue:106
+#, fuzzy
+msgid "Image removed"
+msgstr "Filter borttaget"
+
+#: src/views/admin/ParametersView.vue:109
+#, fuzzy
+msgid "Could not remove image"
+msgstr "Kunde inte spara parametrar"
+
 #: src/views/calendars/CalendarView.vue:14
 msgid "Today"
 msgstr ""
@@ -3225,9 +3260,6 @@ msgstr "Webmail"
 
 #~ msgid "inactive"
 #~ msgstr "inaktiv"
-
-#~ msgid "MX records"
-#~ msgstr "MX poster"
 
 #~ msgid "Fullname/recipient"
 #~ msgstr "Komplett namn/mottagare"

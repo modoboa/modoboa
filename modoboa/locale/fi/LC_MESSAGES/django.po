@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-21 11:28+0100\n"
+"POT-Creation-Date: 2026-05-27 15:08+0200\n"
 "PO-Revision-Date: 2023-02-17 22:03+0200\n"
 "Last-Translator: Ossi Mäntylahti <ossiman@gmail.com>\n"
 "Language-Team: \n"
@@ -47,14 +47,14 @@ msgid "Cannot be greater than domain quota"
 msgstr "Ei voi olla suurempi kuin verkkotunnuksen kiintiö"
 
 #: admin/api/v1/serializers.py:168 admin/api/v1/serializers.py:364
-#: admin/api/v2/serializers.py:581 admin/models/alias.py:45
+#: admin/api/v2/serializers.py:628 admin/models/alias.py:45
 msgid "Permission denied."
 msgstr "Lupa evätty."
 
-#: admin/api/v1/serializers.py:231 admin/api/v2/serializers.py:91
-#: admin/api/v2/serializers.py:502 amavis/serializers.py:39
-#: core/api/v2/serializers.py:248 core/api/v2/serializers.py:250
-#: core/api/v2/serializers.py:259 transport/backends.py:40
+#: admin/api/v1/serializers.py:231 admin/api/v2/serializers.py:118
+#: admin/api/v2/serializers.py:549 amavis/serializers.py:39
+#: core/api/v2/serializers.py:257 core/api/v2/serializers.py:259
+#: core/api/v2/serializers.py:268 transport/backends.py:40
 msgid "This field is required"
 msgstr "Tämä kenttä on pakollinen"
 
@@ -65,7 +65,7 @@ msgstr ""
 "Luettelo hallinnoiduista verkkotunnuksista (vain jälleenmyyjät ja "
 "verkkotunnusten ylläpitäjät)."
 
-#: admin/api/v1/serializers.py:337 admin/api/v2/serializers.py:563
+#: admin/api/v1/serializers.py:337 admin/api/v2/serializers.py:610
 msgid "Not allowed for this role."
 msgstr "Ei sallittu tässä roolissa."
 
@@ -73,12 +73,12 @@ msgstr "Ei sallittu tässä roolissa."
 msgid "Must be equal to mailbox full_address"
 msgstr "Täytyy olla yhtä suuri kuin postilaatikon koko osoite"
 
-#: admin/api/v1/serializers.py:397 admin/api/v2/serializers.py:615
-#: calendars/serializers.py:182 pdfcredentials/api/v2/serializers.py:91
+#: admin/api/v1/serializers.py:397 admin/api/v2/serializers.py:662
+#: calendars/serializers.py:183 pdfcredentials/api/v2/serializers.py:91
 msgid "This field is required."
 msgstr "Tämä kenttä on pakollinen."
 
-#: admin/api/v1/serializers.py:409 admin/api/v2/serializers.py:632
+#: admin/api/v1/serializers.py:409 admin/api/v2/serializers.py:679
 msgid "Local domain {} does not exist"
 msgstr "Paikallista verkkotunnusta {} ei ole olemassa"
 
@@ -100,62 +100,62 @@ msgstr "Sinulla ei ole pääsyä tähän verkkotunnukseen."
 msgid "You don't have access to this mailbox."
 msgstr "Sinulla ei ole pääsyä tähän postilaatikkoon."
 
-#: admin/api/v1/viewsets.py:184
+#: admin/api/v1/viewsets.py:180
 msgid "Here is your new Modoboa password: {}"
 msgstr "Tässä on uusi Modoboa-salasanasi: {}"
 
-#: admin/api/v2/serializers.py:83
+#: admin/api/v2/serializers.py:110
 msgid "DKIM keys storage directory not configured"
 msgstr "DKIM-avainten tallennushakemistoa ei ole määritetty"
 
-#: admin/api/v2/serializers.py:95
+#: admin/api/v2/serializers.py:122
 msgid "This field is valid when type is relaydomain"
 msgstr ""
 
-#: admin/api/v2/serializers.py:102
+#: admin/api/v2/serializers.py:129
 msgid "You can't define an unlimited quota."
 msgstr "Et voi määritellä rajoittamatonta kiintiötä."
 
-#: admin/api/v2/serializers.py:138
+#: admin/api/v2/serializers.py:172
 #, python-format
 msgid "User '%s' already exists"
 msgstr "Käyttäjä '%s' on jo olemassa"
 
-#: admin/api/v2/serializers.py:266 admin/api/v2/serializers.py:272
+#: admin/api/v2/serializers.py:313 admin/api/v2/serializers.py:319
 msgid "Must be a positive integer"
 msgstr "Täytyy olla positiivinen kokonaisluku"
 
-#: admin/api/v2/serializers.py:281
+#: admin/api/v2/serializers.py:328
 msgid "openssl not found, please make sure it is installed."
 msgstr "openssl ei löydy, varmista, että se on asennettu."
 
-#: admin/api/v2/serializers.py:284 pdfcredentials/api/v2/serializers.py:84
+#: admin/api/v2/serializers.py:331 pdfcredentials/api/v2/serializers.py:84
 msgid "Directory not found."
 msgstr "Hakemistoa ei löydy."
 
-#: admin/api/v2/serializers.py:295
+#: admin/api/v2/serializers.py:342
 msgid "This field only allows valid IP addresses (or networks)"
 msgstr ""
 
-#: admin/api/v2/serializers.py:308
+#: admin/api/v2/serializers.py:355
 msgid "Please disable imap migration before disabling this option."
 msgstr ""
 
-#: admin/api/v2/serializers.py:321
+#: admin/api/v2/serializers.py:368
 msgid "Define at least one authorized network / address"
 msgstr "Määritä vähintään yksi valtuutettu verkko/osoite"
 
-#: admin/api/v2/serializers.py:598
+#: admin/api/v2/serializers.py:645
 msgid "The left part of an email address can't be more than 64 characters."
 msgstr ""
 
-#: admin/api/v2/serializers.py:620
+#: admin/api/v2/serializers.py:667
 #, fuzzy
 #| msgid "A mailbox is required"
 msgid "A mailbox is required to create aliases."
 msgstr "Tarvitaan postilaatikko"
 
-#: admin/api/v2/serializers.py:793
+#: admin/api/v2/serializers.py:840
 #, fuzzy
 #| msgid "Unknown tag {}"
 msgid "Unknown status"
@@ -1153,7 +1153,7 @@ msgstr "lähetetyt viestit"
 msgid "Please visit %(listingurl)s for a full listing."
 msgstr ""
 
-#: amavis/viewsets.py:122
+#: amavis/viewsets.py:157
 #, fuzzy
 #| msgid "Invalid address"
 msgid "Invalid request"
@@ -1163,19 +1163,13 @@ msgstr "Virheellinen osoite"
 msgid "Value can't be less than 1 day"
 msgstr ""
 
-#: autoreply/api/v2/serializers.py:44 autoreply/api/v2/serializers.py:50
-#, fuzzy
-#| msgid "You don't have access to this mailbox."
-msgid "You don't have ownership on this mailbox"
-msgstr "Sinulla ei ole pääsyä tähän postilaatikkoon."
-
-#: autoreply/api/v2/serializers.py:63
+#: autoreply/api/v2/serializers.py:52
 #, fuzzy
 #| msgid "This code is invalid"
 msgid "This date is over"
 msgstr "Tämä koodi on virheellinen"
 
-#: autoreply/api/v2/serializers.py:66
+#: autoreply/api/v2/serializers.py:55
 #, fuzzy
 #| msgid "Cannot be greater than domain quota"
 msgid "Must be greater than start date"
@@ -1281,7 +1275,7 @@ msgstr "Luo verkkotunnuksen ylläpitäjä"
 msgid "Allow domain administrators to manage user calendars (read and write)"
 msgstr "Salli tämän järjestelmänvalvojan pääsy käyttäjien postilaatikoihin"
 
-#: calendars/app_settings.py:60 core/app_settings.py:664
+#: calendars/app_settings.py:60 core/app_settings.py:714
 #: rspamd/app_settings.py:45
 msgid "Miscellaneous"
 msgstr "Sekalaiset"
@@ -1302,6 +1296,12 @@ msgstr ""
 #: calendars/models.py:48 calendars/models.py:65 contacts/models.py:39
 msgid "Server location is not set, please fix it."
 msgstr ""
+
+#: calendars/serializers.py:216
+#, fuzzy
+#| msgid "Domain not found."
+msgid "Mailbox not found"
+msgstr "Verkkotunnusta ei löydy."
 
 #: calendars/viewsets.py:198
 msgid "Uploaded file is too big (max: {} bytes)"
@@ -1390,7 +1390,7 @@ msgstr "Kaksivaiheinen tunnistus (2FA) on jo käytössä"
 msgid "Failed TFA settings editing attempt from '%(addr)s' as user '%(user)s'"
 msgstr ""
 
-#: core/api/v1/serializers.py:93 core/api/v2/serializers.py:438
+#: core/api/v1/serializers.py:93 core/api/v2/serializers.py:447
 #, fuzzy
 #| msgid "Old password"
 msgid "Invalid password"
@@ -1404,20 +1404,20 @@ msgstr "Kaksivaiheinen tunnistautuminen (2FA) ei ole käytössä"
 msgid "Local"
 msgstr "Paikallinen"
 
-#: core/api/v2/serializers.py:206 core/api/v2/serializers.py:214
-#: core/api/v2/serializers.py:221
+#: core/api/v2/serializers.py:215 core/api/v2/serializers.py:223
+#: core/api/v2/serializers.py:230
 msgid "Invalid syntax"
 msgstr "Virheellinen syntaksi"
 
-#: core/api/v2/serializers.py:226
+#: core/api/v2/serializers.py:235
 msgid "Invalid rounds number"
 msgstr "Virheellinen kierrosluku"
 
-#: core/api/v2/serializers.py:426 core/forms.py:81
+#: core/api/v2/serializers.py:435 core/forms.py:87
 msgid "This code is invalid"
 msgstr "Tämä koodi on virheellinen"
 
-#: core/api/v2/serializers.py:496 core/views/auth.py:213 core/views/auth.py:266
+#: core/api/v2/serializers.py:505 core/views/auth.py:185 core/views/auth.py:238
 msgid "Please use the following code to recover your Modoboa password: {}"
 msgstr "Käytä seuraavaa koodia saadaksesi takaisin Modoboa-salasanasi: {}"
 
@@ -1864,119 +1864,157 @@ msgid "Theme"
 msgstr ""
 
 #: core/app_settings.py:525
+msgid "Colors"
+msgstr ""
+
+#: core/app_settings.py:532
 msgid "Primary theme color"
 msgstr ""
 
-#: core/app_settings.py:527
+#: core/app_settings.py:534
 msgid ""
 "Primary color of the theme (hexadecimal code), used as the background color "
 "of the left menu for example"
 msgstr ""
 
-#: core/app_settings.py:536
+#: core/app_settings.py:543
 msgid "Primary theme color (lighter version)"
 msgstr ""
 
-#: core/app_settings.py:539 core/app_settings.py:551
+#: core/app_settings.py:546 core/app_settings.py:558
 msgid "Primary color of the theme (hexadecimal code)"
 msgstr ""
 
-#: core/app_settings.py:548
+#: core/app_settings.py:555
 msgid "Primary theme color (darker version)"
 msgstr ""
 
-#: core/app_settings.py:559
+#: core/app_settings.py:566
 #, fuzzy
 #| msgid "Secondary email"
 msgid "Secondary theme color"
 msgstr "Toissijainen sähköpostiosoite"
 
-#: core/app_settings.py:561
+#: core/app_settings.py:568
 msgid ""
 "Secondary color of the theme (hexadecimal code), used as the background "
 "color of some buttons for example"
 msgstr ""
 
-#: core/app_settings.py:569
+#: core/app_settings.py:576
 msgid "Labels theme color"
 msgstr ""
 
-#: core/app_settings.py:571
+#: core/app_settings.py:578
 msgid "Theme color for labels (hexadecimal code)"
 msgstr ""
 
-#: core/app_settings.py:583
+#: core/app_settings.py:586
+msgid "Logos"
+msgstr ""
+
+#: core/app_settings.py:593
+msgid "Login page logo"
+msgstr ""
+
+#: core/app_settings.py:595
+msgid ""
+"Logo displayed on the login and password-reset pages. Upload an image or "
+"clear it to use the default Modoboa logo."
+msgstr ""
+
+#: core/app_settings.py:605
+msgid "Menu logo"
+msgstr ""
+
+#: core/app_settings.py:607
+msgid ""
+"Logo displayed in the side menu and webmail. Upload an image or clear it to "
+"use the default Modoboa logo."
+msgstr ""
+
+#: core/app_settings.py:617
+msgid "Creation form logo"
+msgstr ""
+
+#: core/app_settings.py:619
+msgid ""
+"Logo displayed at the top of object creation forms. Upload an image or clear "
+"it to use the default Modoboa logo."
+msgstr ""
+
+#: core/app_settings.py:633
 msgid "Notifications"
 msgstr "Ilmoitukset"
 
-#: core/app_settings.py:589
+#: core/app_settings.py:639
 msgid "Sender address"
 msgstr "Lähettäjän osoite"
 
-#: core/app_settings.py:591
+#: core/app_settings.py:641
 msgid "Email address used to send notifications."
 msgstr "Ilmoitusten lähettämiseen käytettävä sähköpostiosoite."
 
-#: core/app_settings.py:602
+#: core/app_settings.py:652
 msgid "Public API"
 msgstr "Julkinen API"
 
-#: core/app_settings.py:608
+#: core/app_settings.py:658
 msgid "Enable communication"
 msgstr "Ota viestintä käyttöön"
 
-#: core/app_settings.py:610 core/app_settings.py:620
+#: core/app_settings.py:660 core/app_settings.py:670
 msgid "Automatically checks if a newer version is available"
 msgstr "Tarkistaa automaattisesti, onko uudempi versio saatavana"
 
-#: core/app_settings.py:617
+#: core/app_settings.py:667
 msgid "Check new versions"
 msgstr "Tarkista uudet versiot"
 
-#: core/app_settings.py:628
+#: core/app_settings.py:678
 msgid "Send an email when new versions are found"
 msgstr "Lähetä sähköpostia, kun uusia versioita löytyy"
 
-#: core/app_settings.py:632
+#: core/app_settings.py:682
 msgid "Send an email to notify admins about new versions"
 msgstr ""
 "Lähetä sähköpostiviesti, joka ilmoittaa ylläpitäjille uusista versioista"
 
-#: core/app_settings.py:639 sievefilters/constants.py:25
+#: core/app_settings.py:689 sievefilters/constants.py:25
 msgid "Recipient"
 msgstr "Vastaanottaja"
 
-#: core/app_settings.py:642
+#: core/app_settings.py:692
 msgid "Recipient of new versions notification emails."
 msgstr "Uusia versioita koskevien ilmoitussähköpostiviestien vastaanottaja."
 
-#: core/app_settings.py:649
+#: core/app_settings.py:699
 msgid "Send statistics"
 msgstr "Lähetä tilastot"
 
-#: core/app_settings.py:652
+#: core/app_settings.py:702
 msgid "Send statistics to Modoboa public API (counters and used extensions)"
 msgstr ""
 "Lähetä tilastoja Modoboan julkiseen API:han (laskurit ja käytetyt "
 "laajennukset)"
 
-#: core/app_settings.py:671
+#: core/app_settings.py:721
 #, fuzzy
 #| msgid "Inactive account threshold"
 msgid "Enable inactive account tracking"
 msgstr "Inaktiivisen tilin kynnysarvo"
 
-#: core/app_settings.py:674
+#: core/app_settings.py:724
 msgid ""
 "Allow the administrator to set a threshold (in days) beyond which an account "
 "is considered inactive if the user hasn't logged in"
 msgstr ""
 
-#: core/app_settings.py:683
+#: core/app_settings.py:733
 msgid "Inactive account threshold"
 msgstr "Inaktiivisen tilin kynnysarvo"
 
-#: core/app_settings.py:686
+#: core/app_settings.py:736
 msgid ""
 "An account with a last login date greater than this threshold (in days) will "
 "be considered as inactive"
@@ -1984,35 +2022,35 @@ msgstr ""
 "Tiliä, jonka viimeisin kirjautumispäivä on suurempi kuin tämä kynnysarvo "
 "(päivinä), pidetään inaktiivisena"
 
-#: core/app_settings.py:695
+#: core/app_settings.py:745
 msgid "Top notifications check interval"
 msgstr "Ylimpien ilmoitusten tarkistusväli"
 
-#: core/app_settings.py:698
+#: core/app_settings.py:748
 msgid "Interval between two top notification checks (in seconds)"
 msgstr "Kahden ylimmän ilmoituksen tarkistuksen välinen aika (sekunteina)"
 
-#: core/app_settings.py:705
+#: core/app_settings.py:755
 msgid "Maximum log record age"
 msgstr "Lokitiedoston enimmäisikä"
 
-#: core/app_settings.py:707
+#: core/app_settings.py:757
 msgid "The maximum age in days of a log record"
 msgstr "Lokitietueen enimmäisikä päivinä"
 
-#: core/app_settings.py:715
+#: core/app_settings.py:765
 msgid "Retention time in message history"
 msgstr ""
 
-#: core/app_settings.py:718
+#: core/app_settings.py:768
 msgid "Retention time (in days) of a message in the message history section"
 msgstr ""
 
-#: core/app_settings.py:725
+#: core/app_settings.py:775
 msgid "Items per page"
 msgstr "Kohteita per sivu"
 
-#: core/app_settings.py:727
+#: core/app_settings.py:777
 msgid "Number of displayed items per page"
 msgstr "Näytettävien kohteiden määrä sivua kohti"
 
@@ -2100,11 +2138,11 @@ msgstr "Valitse palveluntarjoaja"
 msgid "Dummy"
 msgstr "Harjoitus"
 
-#: core/forms.py:56
+#: core/forms.py:62
 msgid "Verification code"
 msgstr "Tarkistuskoodi"
 
-#: core/forms.py:67
+#: core/forms.py:73
 msgid "Invalid code"
 msgstr "Virheellinen koodi"
 
@@ -2313,24 +2351,20 @@ msgstr[1] ""
 msgid "The core part of Modoboa"
 msgstr "Modoboan ydinosa"
 
-#: core/views/auth.py:82
+#: core/views/auth.py:64
 #, python-format
 msgid "User '%s' successfully logged in"
 msgstr "Käyttäjä '%s' kirjautui onnistuneesti sisään"
 
-#: core/views/auth.py:128
+#: core/views/auth.py:113
 #, python-format
 msgid "Password scheme mismatch. Updating %s password"
 msgstr "Salasanajärjestelmä ei vastaa toisiaan. Salasanan %s päivittäminen"
 
-#: core/views/auth.py:135
+#: core/views/auth.py:120
 #, python-format
 msgid "Password hash parameter missmatch. Updating %s password"
 msgstr "Salasanan hash-parametrit eivät täsmää. Salasanan %s päivittäminen"
-
-#: core/views/auth.py:173
-msgid "User '{}' successfully logged out"
-msgstr "Käyttäjä '{}' kirjautui onnistuneesti ulos"
 
 #: dmarc/forms.py:15
 #, fuzzy
@@ -2350,7 +2384,7 @@ msgstr ""
 msgid "DMARC"
 msgstr ""
 
-#: dmarc/lib.py:294
+#: dmarc/lib.py:298
 #, fuzzy
 #| msgid "Not defined"
 msgid "Not resolved"
@@ -2622,6 +2656,12 @@ msgstr "Syötä oikean muotoinen sähköpostiosoite."
 #: lib/ldap_utils.py:126
 msgid "Failed to update password: {}"
 msgstr "Salasanan päivitys epäonnistui: {}"
+
+#: lib/permissions.py:24 lib/permissions.py:29
+#, fuzzy
+#| msgid "You don't have access to this mailbox."
+msgid "You don't have ownership on this mailbox"
+msgstr "Sinulla ei ole pääsyä tähän postilaatikkoon."
 
 #: lib/validators.py:13
 msgid "Enter a valid domain name"
@@ -3237,7 +3277,11 @@ msgstr ""
 msgid "Rspamd"
 msgstr ""
 
-#: sievefilters/api/v2/viewsets.py:203
+#: sievefilters/api/v2/viewsets.py:56
+msgid "Name contains forbidden characters"
+msgstr ""
+
+#: sievefilters/api/v2/viewsets.py:219
 #, fuzzy, python-format
 #| msgid "User '%s' already exists"
 msgid "Filter %s already exists"
@@ -3491,7 +3535,6 @@ msgstr ""
 "syöttänyt ensisijaisen osoitteesi, ja tarkista roskapostikansiosi.</p>"
 
 #: templates/registration/password_reset_email.html:4
-#: templates/registration/password_reset_email_v2.html:4
 #, python-format
 msgid ""
 "To initiate the password reset process for your %(username)s Modoboa "
@@ -3501,7 +3544,6 @@ msgstr ""
 "klikkaamalla alla olevaa linkkiä:"
 
 #: templates/registration/password_reset_email.html:10
-#: templates/registration/password_reset_email_v2.html:10
 msgid ""
 "If clicking the link above doesn't work, please copy and paste the URL in a "
 "new browser window instead."
@@ -3510,7 +3552,6 @@ msgstr ""
 "uuteen selainikkunaan."
 
 #: templates/registration/password_reset_email.html:14
-#: templates/registration/password_reset_email_v2.html:14
 msgid "Sincerely, The Modoboa Team."
 msgstr "Ystävällisin terveisin, Modoboa Team."
 
@@ -3812,6 +3853,9 @@ msgstr ""
 #, python-format
 msgid "Attachment is too big (limit: %s)"
 msgstr ""
+
+#~ msgid "User '{}' successfully logged out"
+#~ msgstr "Käyttäjä '{}' kirjautui onnistuneesti ulos"
 
 #~ msgid "User profile"
 #~ msgstr "Käyttäjäprofiili"
