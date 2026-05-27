@@ -4,7 +4,7 @@ description: Discover how to develop and extend modoboa
 head:
   - - meta
     - name: 'keywords'
-      content: 'modoboa, getting started, backend, frontend, docker' 
+      content: 'modoboa, getting started, backend, frontend, docker'
 ---
 
 # Getting started
@@ -14,7 +14,7 @@ You're at the right place! Browse this page to learn useful tips.
 
 ## With Docker
 
-A docker image is available for developers. 
+A docker image is available for developers.
 
 To use it, you must install docker and docker-compose
 
@@ -37,7 +37,7 @@ $ docker-compose up
 Then if not done already, run this command to create an OIDC application in order to be able to log in from the frontend:
 
 ``` bash
-$ docker exec modoboa-api '/bin/sh -c python3 /code/test_project/manage.py createapplication --name frontend --client-id "LVQbfIIX3khWR3nDvix1u9yEGHZUxcx53bhJ7FlD" --user 1 --algorithm RS256 --redirect-uris 'https://localhost:3000/login/logged' public authorization-code'
+$ docker exec modoboa-api '/bin/sh -c python3 /code/test_project/manage.py createapplication --name modoboa_frontend --client-id "LVQbfIIX3khWR3nDvix1u9yEGHZUxcx53bhJ7FlD" --user 1 --algorithm RS256 --redirect-uris 'https://localhost:3000/login/logged' public authorization-code'
 $ docker exec modoboa-api '/bin/sh -c python3 /code/test_project/manage.py createapplication --name Dovecot --skip-authorization --client-id=dovecot --client-secret=Toto12345 confidential client-credentials'
 ```
 
@@ -70,7 +70,7 @@ no need to copy them.
 ### Deploy an instance for development
 
 ::: warning
-Make sure to `create a database <database>` before running this step. 
+Make sure to `create a database <database>` before running this step.
 
 The format of the database url is also described in this page.
 :::
@@ -87,12 +87,12 @@ You're ready to go! You should be able to access Modoboa at `http://localhost:80
 
 ## Frontend
 
-The 2.0 version of Modoboa introduces a completely new interface written with the [Vue.js](https://vuejs.org/) framework. 
+The 2.0 version of Modoboa introduces a completely new interface written with the [Vue.js](https://vuejs.org/) framework.
 
 The source files are located in the `frontend/`{.interpreted-text role="file"} directory.
 
 To set it up, you will need to install NodeJS and Yarn - to manage the
-dependencies. 
+dependencies.
 
 Then, navigate to the `frontend/` directory and run:
 
@@ -121,7 +121,7 @@ You could also test just some them, i.e.:
 $ python manage.py test modoboa.core.tests.test_authentication
 ```
 
-Alternatively, you can use [tox](https://tox.readthedocs.io) 
+Alternatively, you can use [tox](https://tox.readthedocs.io)
 from the repository to run all the tests and check the coverage with:
 
 ```shell
@@ -139,7 +139,7 @@ $ tox -e serve
 ## Documentation
 
 The source files are located in the `/doc-ng/`[ folder and are
-written in markdown. 
+written in markdown.
 
 They are formatted in HTML and compiled thanks to VitePress
 

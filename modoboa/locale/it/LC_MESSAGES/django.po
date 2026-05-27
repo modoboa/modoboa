@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-21 11:28+0100\n"
+"POT-Creation-Date: 2026-05-27 15:08+0200\n"
 "PO-Revision-Date: 2011-07-01 08:15+0000\n"
 "Last-Translator: Eli Spizzichino, 2026\n"
 "Language-Team: Italian (http://app.transifex.com/tonio/modoboa/language/"
@@ -57,14 +57,14 @@ msgstr ""
 "Non può essere maggiore dello spazio massimo definito a livello di dominio"
 
 #: admin/api/v1/serializers.py:168 admin/api/v1/serializers.py:364
-#: admin/api/v2/serializers.py:581 admin/models/alias.py:45
+#: admin/api/v2/serializers.py:628 admin/models/alias.py:45
 msgid "Permission denied."
 msgstr "Permesso negato."
 
-#: admin/api/v1/serializers.py:231 admin/api/v2/serializers.py:91
-#: admin/api/v2/serializers.py:502 amavis/serializers.py:39
-#: core/api/v2/serializers.py:248 core/api/v2/serializers.py:250
-#: core/api/v2/serializers.py:259 transport/backends.py:40
+#: admin/api/v1/serializers.py:231 admin/api/v2/serializers.py:118
+#: admin/api/v2/serializers.py:549 amavis/serializers.py:39
+#: core/api/v2/serializers.py:257 core/api/v2/serializers.py:259
+#: core/api/v2/serializers.py:268 transport/backends.py:40
 msgid "This field is required"
 msgstr "Questo campo è obbligatorio"
 
@@ -75,7 +75,7 @@ msgstr ""
 "Lista dei domini amministrati (solo per rivenditori e amministratori di "
 "dominio)."
 
-#: admin/api/v1/serializers.py:337 admin/api/v2/serializers.py:563
+#: admin/api/v1/serializers.py:337 admin/api/v2/serializers.py:610
 msgid "Not allowed for this role."
 msgstr "Non consentito per questo ruolo."
 
@@ -83,12 +83,12 @@ msgstr "Non consentito per questo ruolo."
 msgid "Must be equal to mailbox full_address"
 msgstr "Deve essere uguale a full_address della casella di posta"
 
-#: admin/api/v1/serializers.py:397 admin/api/v2/serializers.py:615
-#: calendars/serializers.py:182 pdfcredentials/api/v2/serializers.py:91
+#: admin/api/v1/serializers.py:397 admin/api/v2/serializers.py:662
+#: calendars/serializers.py:183 pdfcredentials/api/v2/serializers.py:91
 msgid "This field is required."
 msgstr "Questo campo è obbligatorio."
 
-#: admin/api/v1/serializers.py:409 admin/api/v2/serializers.py:632
+#: admin/api/v1/serializers.py:409 admin/api/v2/serializers.py:679
 msgid "Local domain {} does not exist"
 msgstr "Il dominio locale {} non esiste"
 
@@ -108,62 +108,62 @@ msgstr "Non hai accesso a questo dominio"
 msgid "You don't have access to this mailbox."
 msgstr "Non hai accesso a questa casella di posta."
 
-#: admin/api/v1/viewsets.py:184
+#: admin/api/v1/viewsets.py:180
 msgid "Here is your new Modoboa password: {}"
 msgstr "Ecco la nuova password di Modoboa: {}"
 
-#: admin/api/v2/serializers.py:83
+#: admin/api/v2/serializers.py:110
 msgid "DKIM keys storage directory not configured"
 msgstr "Cartella di salvataggio per le chiavi DKIM non configurata."
 
-#: admin/api/v2/serializers.py:95
+#: admin/api/v2/serializers.py:122
 msgid "This field is valid when type is relaydomain"
 msgstr "Questo campo è valido quando è di tipo \"relay domain\""
 
-#: admin/api/v2/serializers.py:102
+#: admin/api/v2/serializers.py:129
 msgid "You can't define an unlimited quota."
 msgstr "Non puoi definire uno spazio illimitato."
 
-#: admin/api/v2/serializers.py:138
+#: admin/api/v2/serializers.py:172
 #, python-format
 msgid "User '%s' already exists"
 msgstr "L'utente '%s' esiste già"
 
-#: admin/api/v2/serializers.py:266 admin/api/v2/serializers.py:272
+#: admin/api/v2/serializers.py:313 admin/api/v2/serializers.py:319
 msgid "Must be a positive integer"
 msgstr "Dev'essere un intero positivo"
 
-#: admin/api/v2/serializers.py:281
+#: admin/api/v2/serializers.py:328
 msgid "openssl not found, please make sure it is installed."
 msgstr "openssl non trovato, assicurarsi che sia installato."
 
-#: admin/api/v2/serializers.py:284 pdfcredentials/api/v2/serializers.py:84
+#: admin/api/v2/serializers.py:331 pdfcredentials/api/v2/serializers.py:84
 msgid "Directory not found."
 msgstr "Cartella non trovata."
 
-#: admin/api/v2/serializers.py:295
+#: admin/api/v2/serializers.py:342
 msgid "This field only allows valid IP addresses (or networks)"
 msgstr "Questo campo permette solo indirizzi IP validi (o networks)"
 
-#: admin/api/v2/serializers.py:308
+#: admin/api/v2/serializers.py:355
 msgid "Please disable imap migration before disabling this option."
 msgstr ""
 "Perf avore disabilità la migrazione imap prima di disattivare questa opzione"
 
-#: admin/api/v2/serializers.py:321
+#: admin/api/v2/serializers.py:368
 msgid "Define at least one authorized network / address"
 msgstr "Definire almeno una rete / indirizzo autorizzato"
 
-#: admin/api/v2/serializers.py:598
+#: admin/api/v2/serializers.py:645
 msgid "The left part of an email address can't be more than 64 characters."
 msgstr ""
 "La parte a sinistra di un indirizzo email non può superare i 64 caratteri."
 
-#: admin/api/v2/serializers.py:620
+#: admin/api/v2/serializers.py:667
 msgid "A mailbox is required to create aliases."
 msgstr "È necessaria una casella di posta per creare degli alias."
 
-#: admin/api/v2/serializers.py:793
+#: admin/api/v2/serializers.py:840
 msgid "Unknown status"
 msgstr "Stato sconosciuto"
 
@@ -1104,7 +1104,7 @@ msgstr "Agisci su questo messaggio:"
 msgid "Please visit %(listingurl)s for a full listing."
 msgstr "Per un elenco completo prova a visitare %(listingurl)s"
 
-#: amavis/viewsets.py:122
+#: amavis/viewsets.py:157
 msgid "Invalid request"
 msgstr "Richiesta non valida"
 
@@ -1112,17 +1112,11 @@ msgstr "Richiesta non valida"
 msgid "Value can't be less than 1 day"
 msgstr "Il valore non può essere inferiore a 1 giorno"
 
-#: autoreply/api/v2/serializers.py:44 autoreply/api/v2/serializers.py:50
-#, fuzzy
-#| msgid "You don't have access to this mailbox."
-msgid "You don't have ownership on this mailbox"
-msgstr "Non hai accesso a questa casella di posta."
-
-#: autoreply/api/v2/serializers.py:63
+#: autoreply/api/v2/serializers.py:52
 msgid "This date is over"
 msgstr "Questa data è passata"
 
-#: autoreply/api/v2/serializers.py:66
+#: autoreply/api/v2/serializers.py:55
 msgid "Must be greater than start date"
 msgstr "Dev'essere successiva alla data di inizio"
 
@@ -1222,7 +1216,7 @@ msgstr ""
 "Permetti agli aministratori di dominio di aministrare i Calendari utenti "
 "(lettura e scrittura)"
 
-#: calendars/app_settings.py:60 core/app_settings.py:664
+#: calendars/app_settings.py:60 core/app_settings.py:714
 #: rspamd/app_settings.py:45
 msgid "Miscellaneous"
 msgstr "Varie"
@@ -1245,6 +1239,12 @@ msgstr "Calendari"
 #: calendars/models.py:48 calendars/models.py:65 contacts/models.py:39
 msgid "Server location is not set, please fix it."
 msgstr "La posizione del server non è impostata, per favore correggila."
+
+#: calendars/serializers.py:216
+#, fuzzy
+#| msgid "Domain not found."
+msgid "Mailbox not found"
+msgstr "Dominio non trovato."
 
 #: calendars/viewsets.py:198
 msgid "Uploaded file is too big (max: {} bytes)"
@@ -1329,7 +1329,7 @@ msgstr ""
 "Tentativo di modifica impostazioni TFA fallito da '%(addr)s' come utente "
 "'%(user)s'"
 
-#: core/api/v1/serializers.py:93 core/api/v2/serializers.py:438
+#: core/api/v1/serializers.py:93 core/api/v2/serializers.py:447
 msgid "Invalid password"
 msgstr "Password non valida"
 
@@ -1341,20 +1341,20 @@ msgstr "2FA non è abilitato"
 msgid "Local"
 msgstr "Locale"
 
-#: core/api/v2/serializers.py:206 core/api/v2/serializers.py:214
-#: core/api/v2/serializers.py:221
+#: core/api/v2/serializers.py:215 core/api/v2/serializers.py:223
+#: core/api/v2/serializers.py:230
 msgid "Invalid syntax"
 msgstr "Sintassi errata"
 
-#: core/api/v2/serializers.py:226
+#: core/api/v2/serializers.py:235
 msgid "Invalid rounds number"
 msgstr "Numero di cicli non valido"
 
-#: core/api/v2/serializers.py:426 core/forms.py:81
+#: core/api/v2/serializers.py:435 core/forms.py:87
 msgid "This code is invalid"
 msgstr "Questo codice non è valido"
 
-#: core/api/v2/serializers.py:496 core/views/auth.py:213 core/views/auth.py:266
+#: core/api/v2/serializers.py:505 core/views/auth.py:185 core/views/auth.py:238
 msgid "Please use the following code to recover your Modoboa password: {}"
 msgstr ""
 "Per favore usa il seguente codice per recuperare la tua password di Modoboa: "
@@ -1792,10 +1792,14 @@ msgid "Theme"
 msgstr "Tema"
 
 #: core/app_settings.py:525
+msgid "Colors"
+msgstr ""
+
+#: core/app_settings.py:532
 msgid "Primary theme color"
 msgstr "Colore principale del tema"
 
-#: core/app_settings.py:527
+#: core/app_settings.py:534
 msgid ""
 "Primary color of the theme (hexadecimal code), used as the background color "
 "of the left menu for example"
@@ -1803,23 +1807,23 @@ msgstr ""
 "Colore principale del tema (codice esadecimale), utilizzato ad esempio come "
 "colore di sfondo del menu a sinistra"
 
-#: core/app_settings.py:536
+#: core/app_settings.py:543
 msgid "Primary theme color (lighter version)"
 msgstr "Colore principale del tema (versione più chiara)"
 
-#: core/app_settings.py:539 core/app_settings.py:551
+#: core/app_settings.py:546 core/app_settings.py:558
 msgid "Primary color of the theme (hexadecimal code)"
 msgstr "Colore principale del tema (codice esadecimale)"
 
-#: core/app_settings.py:548
+#: core/app_settings.py:555
 msgid "Primary theme color (darker version)"
 msgstr "Colore principale del tema (versione più scura)"
 
-#: core/app_settings.py:559
+#: core/app_settings.py:566
 msgid "Secondary theme color"
 msgstr "Colore secondario del tema"
 
-#: core/app_settings.py:561
+#: core/app_settings.py:568
 msgid ""
 "Secondary color of the theme (hexadecimal code), used as the background "
 "color of some buttons for example"
@@ -1827,73 +1831,107 @@ msgstr ""
 "Colore secondario del tema (codice esadecimale), utilizzato ad esempio come "
 "colore di sfondo di alcuni pulsanti"
 
-#: core/app_settings.py:569
+#: core/app_settings.py:576
 msgid "Labels theme color"
 msgstr "Colore del tema delle etichette"
 
-#: core/app_settings.py:571
+#: core/app_settings.py:578
 msgid "Theme color for labels (hexadecimal code)"
 msgstr "Colore del tema per le etichette (codice esadecimale)"
 
-#: core/app_settings.py:583
+#: core/app_settings.py:586
+msgid "Logos"
+msgstr ""
+
+#: core/app_settings.py:593
+msgid "Login page logo"
+msgstr ""
+
+#: core/app_settings.py:595
+msgid ""
+"Logo displayed on the login and password-reset pages. Upload an image or "
+"clear it to use the default Modoboa logo."
+msgstr ""
+
+#: core/app_settings.py:605
+msgid "Menu logo"
+msgstr ""
+
+#: core/app_settings.py:607
+msgid ""
+"Logo displayed in the side menu and webmail. Upload an image or clear it to "
+"use the default Modoboa logo."
+msgstr ""
+
+#: core/app_settings.py:617
+msgid "Creation form logo"
+msgstr ""
+
+#: core/app_settings.py:619
+msgid ""
+"Logo displayed at the top of object creation forms. Upload an image or clear "
+"it to use the default Modoboa logo."
+msgstr ""
+
+#: core/app_settings.py:633
 msgid "Notifications"
 msgstr "Notifiche"
 
-#: core/app_settings.py:589
+#: core/app_settings.py:639
 msgid "Sender address"
 msgstr "Indirizzo di invio"
 
-#: core/app_settings.py:591
+#: core/app_settings.py:641
 msgid "Email address used to send notifications."
 msgstr "Indirizzo email utilizzato per inviare le notifiche"
 
-#: core/app_settings.py:602
+#: core/app_settings.py:652
 msgid "Public API"
 msgstr "API pubblica"
 
-#: core/app_settings.py:608
+#: core/app_settings.py:658
 msgid "Enable communication"
 msgstr "Abilita comunicazione"
 
-#: core/app_settings.py:610 core/app_settings.py:620
+#: core/app_settings.py:660 core/app_settings.py:670
 msgid "Automatically checks if a newer version is available"
 msgstr "Controlla automaticamente se è disponibile una nuova versione"
 
-#: core/app_settings.py:617
+#: core/app_settings.py:667
 msgid "Check new versions"
 msgstr "Controlla nuove versioni"
 
-#: core/app_settings.py:628
+#: core/app_settings.py:678
 msgid "Send an email when new versions are found"
 msgstr "Invia una email quando vengono trovate nuove versioni"
 
-#: core/app_settings.py:632
+#: core/app_settings.py:682
 msgid "Send an email to notify admins about new versions"
 msgstr "Invia una email per notificare agli amministratori le nuove versioni"
 
-#: core/app_settings.py:639 sievefilters/constants.py:25
+#: core/app_settings.py:689 sievefilters/constants.py:25
 msgid "Recipient"
 msgstr "Destinatario"
 
-#: core/app_settings.py:642
+#: core/app_settings.py:692
 msgid "Recipient of new versions notification emails."
 msgstr "Destinatario delle email di notifica delle nuove versioni."
 
-#: core/app_settings.py:649
+#: core/app_settings.py:699
 msgid "Send statistics"
 msgstr "Invia statistiche"
 
-#: core/app_settings.py:652
+#: core/app_settings.py:702
 msgid "Send statistics to Modoboa public API (counters and used extensions)"
 msgstr ""
 "Invia statistiche all'API pubblica di modoboa (contatori ed estensioni "
 "utilizzate)"
 
-#: core/app_settings.py:671
+#: core/app_settings.py:721
 msgid "Enable inactive account tracking"
 msgstr "Abilita il tracciamento degli account inattivi"
 
-#: core/app_settings.py:674
+#: core/app_settings.py:724
 msgid ""
 "Allow the administrator to set a threshold (in days) beyond which an account "
 "is considered inactive if the user hasn't logged in"
@@ -1902,11 +1940,11 @@ msgstr ""
 "quale un account è considerato inattivo se l'utente non ha effettuato "
 "l'accesso"
 
-#: core/app_settings.py:683
+#: core/app_settings.py:733
 msgid "Inactive account threshold"
 msgstr "Soglia account inattivo"
 
-#: core/app_settings.py:686
+#: core/app_settings.py:736
 msgid ""
 "An account with a last login date greater than this threshold (in days) will "
 "be considered as inactive"
@@ -1914,37 +1952,37 @@ msgstr ""
 "Un account con una data di ultimo accesso più vecchia di questa soglia (in "
 "giorni) verrà considerato inattivo"
 
-#: core/app_settings.py:695
+#: core/app_settings.py:745
 msgid "Top notifications check interval"
 msgstr "Intervallo notifiche"
 
-#: core/app_settings.py:698
+#: core/app_settings.py:748
 msgid "Interval between two top notification checks (in seconds)"
 msgstr "Intervallo di tempo per la ricerca di nuove notifiche (in secondi)"
 
-#: core/app_settings.py:705
+#: core/app_settings.py:755
 msgid "Maximum log record age"
 msgstr "Età massima dei log"
 
-#: core/app_settings.py:707
+#: core/app_settings.py:757
 msgid "The maximum age in days of a log record"
 msgstr "La persistenza massima in giorni dei log"
 
-#: core/app_settings.py:715
+#: core/app_settings.py:765
 msgid "Retention time in message history"
 msgstr "Tempo di conservazione nella cronologia dei messaggi"
 
-#: core/app_settings.py:718
+#: core/app_settings.py:768
 msgid "Retention time (in days) of a message in the message history section"
 msgstr ""
 "Tempo di conservazione (in giorni) di un messaggio nella sezione cronologia "
 "messaggi"
 
-#: core/app_settings.py:725
+#: core/app_settings.py:775
 msgid "Items per page"
 msgstr "Elementi per pagina"
 
-#: core/app_settings.py:727
+#: core/app_settings.py:777
 msgid "Number of displayed items per page"
 msgstr "Numero degli elementi visualizzati in ciascuna pagina"
 
@@ -2038,11 +2076,11 @@ msgstr "Scegli un fornitore"
 msgid "Dummy"
 msgstr "Fittizio"
 
-#: core/forms.py:56
+#: core/forms.py:62
 msgid "Verification code"
 msgstr "Codice di verifica"
 
-#: core/forms.py:67
+#: core/forms.py:73
 msgid "Invalid code"
 msgstr "Codice non valido"
 
@@ -2254,28 +2292,24 @@ msgstr[2] ""
 msgid "The core part of Modoboa"
 msgstr "Parte centrale di Modoboa"
 
-#: core/views/auth.py:82
+#: core/views/auth.py:64
 #, python-format
 msgid "User '%s' successfully logged in"
 msgstr "L'utente '%s' è correttamente registrato"
 
-#: core/views/auth.py:128
+#: core/views/auth.py:113
 #, python-format
 msgid "Password scheme mismatch. Updating %s password"
 msgstr ""
 "Mancata corrispondenza dello schema della password. Aggiornamento della "
 "password di %s"
 
-#: core/views/auth.py:135
+#: core/views/auth.py:120
 #, python-format
 msgid "Password hash parameter missmatch. Updating %s password"
 msgstr ""
 "Mancata corrispondenza del parametro hash della password. Aggiornamento "
 "della password di %s"
-
-#: core/views/auth.py:173
-msgid "User '{}' successfully logged out"
-msgstr "Utente '{}' disconnesso"
 
 #: dmarc/forms.py:15
 msgid "DNS settings"
@@ -2294,7 +2328,7 @@ msgstr ""
 msgid "DMARC"
 msgstr "DMARC"
 
-#: dmarc/lib.py:294
+#: dmarc/lib.py:298
 msgid "Not resolved"
 msgstr "Non risolto"
 
@@ -2552,6 +2586,12 @@ msgstr "Inserisci un indirizzo email valido."
 #: lib/ldap_utils.py:126
 msgid "Failed to update password: {}"
 msgstr "Aggiornamento della password fallito: {}"
+
+#: lib/permissions.py:24 lib/permissions.py:29
+#, fuzzy
+#| msgid "You don't have access to this mailbox."
+msgid "You don't have ownership on this mailbox"
+msgstr "Non hai accesso a questa casella di posta."
 
 #: lib/validators.py:13
 msgid "Enter a valid domain name"
@@ -3168,7 +3208,11 @@ msgstr ""
 msgid "Rspamd"
 msgstr "Rspamd"
 
-#: sievefilters/api/v2/viewsets.py:203
+#: sievefilters/api/v2/viewsets.py:56
+msgid "Name contains forbidden characters"
+msgstr ""
+
+#: sievefilters/api/v2/viewsets.py:219
 #, python-format
 msgid "Filter %s already exists"
 msgstr "Il filtro %s esiste già"
@@ -3390,7 +3434,6 @@ msgstr ""
 "indesiderata.</p>"
 
 #: templates/registration/password_reset_email.html:4
-#: templates/registration/password_reset_email_v2.html:4
 #, python-format
 msgid ""
 "To initiate the password reset process for your %(username)s Modoboa "
@@ -3400,7 +3443,6 @@ msgstr ""
 "%(username)s, clicca il link sottostante:"
 
 #: templates/registration/password_reset_email.html:10
-#: templates/registration/password_reset_email_v2.html:10
 msgid ""
 "If clicking the link above doesn't work, please copy and paste the URL in a "
 "new browser window instead."
@@ -3409,7 +3451,6 @@ msgstr ""
 "una nuova finestra del browser."
 
 #: templates/registration/password_reset_email.html:14
-#: templates/registration/password_reset_email_v2.html:14
 msgid "Sincerely, The Modoboa Team."
 msgstr "Cordialmente, il Team Modoboa."
 
@@ -3660,6 +3701,9 @@ msgstr "La data e l'ora fornite devono essere almeno un minuto nel futuro"
 #, python-format
 msgid "Attachment is too big (limit: %s)"
 msgstr "L'allegato è troppo grande (limite: %s)"
+
+#~ msgid "User '{}' successfully logged out"
+#~ msgstr "Utente '{}' disconnesso"
 
 #~ msgid "Folder container's width"
 #~ msgstr "Larghezza della casella di posta"

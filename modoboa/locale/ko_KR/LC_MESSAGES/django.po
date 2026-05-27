@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-21 11:28+0100\n"
+"POT-Creation-Date: 2026-05-27 15:08+0200\n"
 "PO-Revision-Date: 2011-07-01 08:15+0000\n"
 "Last-Translator: 미나리나물, 2026\n"
 "Language-Team: Korean (Korea) (http://app.transifex.com/tonio/modoboa/"
@@ -48,14 +48,14 @@ msgid "Cannot be greater than domain quota"
 msgstr "도메인 할당량보다 큰 값을 설정할 수 없습니다."
 
 #: admin/api/v1/serializers.py:168 admin/api/v1/serializers.py:364
-#: admin/api/v2/serializers.py:581 admin/models/alias.py:45
+#: admin/api/v2/serializers.py:628 admin/models/alias.py:45
 msgid "Permission denied."
 msgstr "권한이 거부되었습니다."
 
-#: admin/api/v1/serializers.py:231 admin/api/v2/serializers.py:91
-#: admin/api/v2/serializers.py:502 amavis/serializers.py:39
-#: core/api/v2/serializers.py:248 core/api/v2/serializers.py:250
-#: core/api/v2/serializers.py:259 transport/backends.py:40
+#: admin/api/v1/serializers.py:231 admin/api/v2/serializers.py:118
+#: admin/api/v2/serializers.py:549 amavis/serializers.py:39
+#: core/api/v2/serializers.py:257 core/api/v2/serializers.py:259
+#: core/api/v2/serializers.py:268 transport/backends.py:40
 msgid "This field is required"
 msgstr "이 필드는 필수 항목입니다."
 
@@ -64,7 +64,7 @@ msgid ""
 "List of administered domains (resellers and domain administrators only)."
 msgstr "관리 중인 도메인 목록 (리셀러 및 도메인 관리자 전용)."
 
-#: admin/api/v1/serializers.py:337 admin/api/v2/serializers.py:563
+#: admin/api/v1/serializers.py:337 admin/api/v2/serializers.py:610
 msgid "Not allowed for this role."
 msgstr "이 역할에는 허용되지 않는 작업입니다."
 
@@ -72,12 +72,12 @@ msgstr "이 역할에는 허용되지 않는 작업입니다."
 msgid "Must be equal to mailbox full_address"
 msgstr "사서함의 전체 주소(full_address)와 일치해야 합니다."
 
-#: admin/api/v1/serializers.py:397 admin/api/v2/serializers.py:615
-#: calendars/serializers.py:182 pdfcredentials/api/v2/serializers.py:91
+#: admin/api/v1/serializers.py:397 admin/api/v2/serializers.py:662
+#: calendars/serializers.py:183 pdfcredentials/api/v2/serializers.py:91
 msgid "This field is required."
 msgstr "이 필드는 필수 입력 항목입니다."
 
-#: admin/api/v1/serializers.py:409 admin/api/v2/serializers.py:632
+#: admin/api/v1/serializers.py:409 admin/api/v2/serializers.py:679
 msgid "Local domain {} does not exist"
 msgstr "로컬 도메인 {}이(가) 존재하지 않습니다."
 
@@ -97,60 +97,60 @@ msgstr "이 도메인에 대한 접근 권한이 없습니다."
 msgid "You don't have access to this mailbox."
 msgstr "이 사서함에 대한 접근 권한이 없습니다."
 
-#: admin/api/v1/viewsets.py:184
+#: admin/api/v1/viewsets.py:180
 msgid "Here is your new Modoboa password: {}"
 msgstr "요청하신 새로운 Modoboa 비밀번호입니다: {}"
 
-#: admin/api/v2/serializers.py:83
+#: admin/api/v2/serializers.py:110
 msgid "DKIM keys storage directory not configured"
 msgstr "DKIM 키 저장 디렉토리가 설정되지 않았습니다."
 
-#: admin/api/v2/serializers.py:95
+#: admin/api/v2/serializers.py:122
 msgid "This field is valid when type is relaydomain"
 msgstr "이 필드는 유형이 릴레이 도메인(relaydomain)일 때만 유효합니다."
 
-#: admin/api/v2/serializers.py:102
+#: admin/api/v2/serializers.py:129
 msgid "You can't define an unlimited quota."
 msgstr "무제한 할당량을 설정할 수 없습니다."
 
-#: admin/api/v2/serializers.py:138
+#: admin/api/v2/serializers.py:172
 #, python-format
 msgid "User '%s' already exists"
 msgstr "사용자 '%s'이(가) 이미 존재합니다."
 
-#: admin/api/v2/serializers.py:266 admin/api/v2/serializers.py:272
+#: admin/api/v2/serializers.py:313 admin/api/v2/serializers.py:319
 msgid "Must be a positive integer"
 msgstr "양의 정수여야 합니다."
 
-#: admin/api/v2/serializers.py:281
+#: admin/api/v2/serializers.py:328
 msgid "openssl not found, please make sure it is installed."
 msgstr "openssl을 찾을 수 없습니다. 설치 여부를 확인해 주세요."
 
-#: admin/api/v2/serializers.py:284 pdfcredentials/api/v2/serializers.py:84
+#: admin/api/v2/serializers.py:331 pdfcredentials/api/v2/serializers.py:84
 msgid "Directory not found."
 msgstr "디렉토리를 찾을 수 없습니다."
 
-#: admin/api/v2/serializers.py:295
+#: admin/api/v2/serializers.py:342
 msgid "This field only allows valid IP addresses (or networks)"
 msgstr "이 필드에는 유효한 IP 주소(또는 네트워크)만 입력할 수 있습니다."
 
-#: admin/api/v2/serializers.py:308
+#: admin/api/v2/serializers.py:355
 msgid "Please disable imap migration before disabling this option."
 msgstr "이 옵션을 끄기 전에 IMAP 마이그레이션을 먼저 비활성화하세요."
 
-#: admin/api/v2/serializers.py:321
+#: admin/api/v2/serializers.py:368
 msgid "Define at least one authorized network / address"
 msgstr "최소 하나 이상의 허용된 네트워크 또는 주소를 정의해야 합니다."
 
-#: admin/api/v2/serializers.py:598
+#: admin/api/v2/serializers.py:645
 msgid "The left part of an email address can't be more than 64 characters."
 msgstr "이메일 주소의 앞부분(ID)은 64자를 초과할 수 없습니다."
 
-#: admin/api/v2/serializers.py:620
+#: admin/api/v2/serializers.py:667
 msgid "A mailbox is required to create aliases."
 msgstr "별칭을 생성하려면 사서함이 지정되어야 합니다."
 
-#: admin/api/v2/serializers.py:793
+#: admin/api/v2/serializers.py:840
 msgid "Unknown status"
 msgstr "알 수 없는 상태"
 
@@ -1062,7 +1062,7 @@ msgstr "이 메시지에 대한 조치:"
 msgid "Please visit %(listingurl)s for a full listing."
 msgstr "전체 목록을 보려면 %(listingurl)s을(를) 방문하세요."
 
-#: amavis/viewsets.py:122
+#: amavis/viewsets.py:157
 msgid "Invalid request"
 msgstr "유효하지 않은 요청"
 
@@ -1070,17 +1070,11 @@ msgstr "유효하지 않은 요청"
 msgid "Value can't be less than 1 day"
 msgstr "값은 1일보다 작을 수 없습니다."
 
-#: autoreply/api/v2/serializers.py:44 autoreply/api/v2/serializers.py:50
-#, fuzzy
-#| msgid "You don't have access to this mailbox."
-msgid "You don't have ownership on this mailbox"
-msgstr "이 사서함에 대한 접근 권한이 없습니다."
-
-#: autoreply/api/v2/serializers.py:63
+#: autoreply/api/v2/serializers.py:52
 msgid "This date is over"
 msgstr "이미 지난 날짜입니다."
 
-#: autoreply/api/v2/serializers.py:66
+#: autoreply/api/v2/serializers.py:55
 msgid "Must be greater than start date"
 msgstr "시작 날짜보다 커야 합니다."
 
@@ -1175,7 +1169,7 @@ msgid "Allow domain administrators to manage user calendars (read and write)"
 msgstr ""
 "도메인 관리자가 사용자의 캘린더를 관리(읽기 및 쓰기)할 수 있도록 허용합니다."
 
-#: calendars/app_settings.py:60 core/app_settings.py:664
+#: calendars/app_settings.py:60 core/app_settings.py:714
 #: rspamd/app_settings.py:45
 msgid "Miscellaneous"
 msgstr "기타 설정"
@@ -1197,6 +1191,12 @@ msgstr "캘린더"
 #: calendars/models.py:48 calendars/models.py:65 contacts/models.py:39
 msgid "Server location is not set, please fix it."
 msgstr "서버 위치가 설정되지 않았습니다. 설정을 수정해 주세요."
+
+#: calendars/serializers.py:216
+#, fuzzy
+#| msgid "Domain not found."
+msgid "Mailbox not found"
+msgstr "도메인을 찾을 수 없습니다."
 
 #: calendars/viewsets.py:198
 msgid "Uploaded file is too big (max: {} bytes)"
@@ -1281,7 +1281,7 @@ msgstr ""
 "사용자 '%(user)s'이(가) '%(addr)s'에서 시도한 2단계 인증 설정 변경에 실패했습"
 "니다."
 
-#: core/api/v1/serializers.py:93 core/api/v2/serializers.py:438
+#: core/api/v1/serializers.py:93 core/api/v2/serializers.py:447
 msgid "Invalid password"
 msgstr "유효하지 않은 비밀번호입니다."
 
@@ -1293,20 +1293,20 @@ msgstr "2단계 인증(2FA)이 활성화되어 있지 않습니다."
 msgid "Local"
 msgstr "로컬"
 
-#: core/api/v2/serializers.py:206 core/api/v2/serializers.py:214
-#: core/api/v2/serializers.py:221
+#: core/api/v2/serializers.py:215 core/api/v2/serializers.py:223
+#: core/api/v2/serializers.py:230
 msgid "Invalid syntax"
 msgstr "유효하지 않은 구문"
 
-#: core/api/v2/serializers.py:226
+#: core/api/v2/serializers.py:235
 msgid "Invalid rounds number"
 msgstr "유효하지 않은 라운드(Rounds) 횟수입니다."
 
-#: core/api/v2/serializers.py:426 core/forms.py:81
+#: core/api/v2/serializers.py:435 core/forms.py:87
 msgid "This code is invalid"
 msgstr "이 코드는 유효하지 않습니다."
 
-#: core/api/v2/serializers.py:496 core/views/auth.py:213 core/views/auth.py:266
+#: core/api/v2/serializers.py:505 core/views/auth.py:185 core/views/auth.py:238
 msgid "Please use the following code to recover your Modoboa password: {}"
 msgstr "Modoboa 비밀번호를 복구하려면 다음 코드를 사용하세요: {}"
 
@@ -1715,10 +1715,14 @@ msgid "Theme"
 msgstr "테마"
 
 #: core/app_settings.py:525
+msgid "Colors"
+msgstr ""
+
+#: core/app_settings.py:532
 msgid "Primary theme color"
 msgstr "기본 테마 색상"
 
-#: core/app_settings.py:527
+#: core/app_settings.py:534
 msgid ""
 "Primary color of the theme (hexadecimal code), used as the background color "
 "of the left menu for example"
@@ -1726,23 +1730,23 @@ msgstr ""
 "테마의 기본 색상(16진수 코드)입니다. 예를 들어 왼쪽 메뉴의 배경색으로 사용됩"
 "니다."
 
-#: core/app_settings.py:536
+#: core/app_settings.py:543
 msgid "Primary theme color (lighter version)"
 msgstr "기본 테마 색상 (밝은 버전)"
 
-#: core/app_settings.py:539 core/app_settings.py:551
+#: core/app_settings.py:546 core/app_settings.py:558
 msgid "Primary color of the theme (hexadecimal code)"
 msgstr "테마의 기본 색상 (16진수 코드)"
 
-#: core/app_settings.py:548
+#: core/app_settings.py:555
 msgid "Primary theme color (darker version)"
 msgstr "기본 테마 색상 (어두운 버전)"
 
-#: core/app_settings.py:559
+#: core/app_settings.py:566
 msgid "Secondary theme color"
 msgstr "보조 테마 색상"
 
-#: core/app_settings.py:561
+#: core/app_settings.py:568
 msgid ""
 "Secondary color of the theme (hexadecimal code), used as the background "
 "color of some buttons for example"
@@ -1750,71 +1754,105 @@ msgstr ""
 "테마의 보조 색상(16진수 코드)입니다. 예를 들어 일부 버튼의 배경색으로 사용됩"
 "니다."
 
-#: core/app_settings.py:569
+#: core/app_settings.py:576
 msgid "Labels theme color"
 msgstr "라벨 테마 색상"
 
-#: core/app_settings.py:571
+#: core/app_settings.py:578
 msgid "Theme color for labels (hexadecimal code)"
 msgstr "라벨용 테마 색상 (16진수 코드)"
 
-#: core/app_settings.py:583
+#: core/app_settings.py:586
+msgid "Logos"
+msgstr ""
+
+#: core/app_settings.py:593
+msgid "Login page logo"
+msgstr ""
+
+#: core/app_settings.py:595
+msgid ""
+"Logo displayed on the login and password-reset pages. Upload an image or "
+"clear it to use the default Modoboa logo."
+msgstr ""
+
+#: core/app_settings.py:605
+msgid "Menu logo"
+msgstr ""
+
+#: core/app_settings.py:607
+msgid ""
+"Logo displayed in the side menu and webmail. Upload an image or clear it to "
+"use the default Modoboa logo."
+msgstr ""
+
+#: core/app_settings.py:617
+msgid "Creation form logo"
+msgstr ""
+
+#: core/app_settings.py:619
+msgid ""
+"Logo displayed at the top of object creation forms. Upload an image or clear "
+"it to use the default Modoboa logo."
+msgstr ""
+
+#: core/app_settings.py:633
 msgid "Notifications"
 msgstr "알림"
 
-#: core/app_settings.py:589
+#: core/app_settings.py:639
 msgid "Sender address"
 msgstr "발신자 주소"
 
-#: core/app_settings.py:591
+#: core/app_settings.py:641
 msgid "Email address used to send notifications."
 msgstr "알림 전송에 사용되는 이메일 주소입니다."
 
-#: core/app_settings.py:602
+#: core/app_settings.py:652
 msgid "Public API"
 msgstr "공개 API"
 
-#: core/app_settings.py:608
+#: core/app_settings.py:658
 msgid "Enable communication"
 msgstr "통신 활성화"
 
-#: core/app_settings.py:610 core/app_settings.py:620
+#: core/app_settings.py:660 core/app_settings.py:670
 msgid "Automatically checks if a newer version is available"
 msgstr "최신 버전의 사용 가능 여부를 자동으로 확인합니다."
 
-#: core/app_settings.py:617
+#: core/app_settings.py:667
 msgid "Check new versions"
 msgstr "새 버전 확인"
 
-#: core/app_settings.py:628
+#: core/app_settings.py:678
 msgid "Send an email when new versions are found"
 msgstr "새 버전을 찾으면 이메일을 보냅니다."
 
-#: core/app_settings.py:632
+#: core/app_settings.py:682
 msgid "Send an email to notify admins about new versions"
 msgstr "관리자에게 새 버전을 알리는 이메일을 보냅니다."
 
-#: core/app_settings.py:639 sievefilters/constants.py:25
+#: core/app_settings.py:689 sievefilters/constants.py:25
 msgid "Recipient"
 msgstr "수신자"
 
-#: core/app_settings.py:642
+#: core/app_settings.py:692
 msgid "Recipient of new versions notification emails."
 msgstr "새 버전 알림 이메일을 받을 수신자입니다."
 
-#: core/app_settings.py:649
+#: core/app_settings.py:699
 msgid "Send statistics"
 msgstr "통계 전송"
 
-#: core/app_settings.py:652
+#: core/app_settings.py:702
 msgid "Send statistics to Modoboa public API (counters and used extensions)"
 msgstr "Modoboa 공개 API로 통계(카운터 및 사용된 확장 기능)를 보냅니다."
 
-#: core/app_settings.py:671
+#: core/app_settings.py:721
 msgid "Enable inactive account tracking"
 msgstr "비활성 계정 추적 활성화"
 
-#: core/app_settings.py:674
+#: core/app_settings.py:724
 msgid ""
 "Allow the administrator to set a threshold (in days) beyond which an account "
 "is considered inactive if the user hasn't logged in"
@@ -1822,11 +1860,11 @@ msgstr ""
 "사용자가 로그인하지 않을 경우 계정을 비활성 상태로 간주할 임계값(일 단위)을 "
 "설정합니다."
 
-#: core/app_settings.py:683
+#: core/app_settings.py:733
 msgid "Inactive account threshold"
 msgstr "비활성 계정 임계값(기준)"
 
-#: core/app_settings.py:686
+#: core/app_settings.py:736
 msgid ""
 "An account with a last login date greater than this threshold (in days) will "
 "be considered as inactive"
@@ -1834,35 +1872,35 @@ msgstr ""
 "마지막 로그인 날짜가 이 임계값(일 단위)을 초과한 계정은 비활성 상태로 간주됩"
 "니다."
 
-#: core/app_settings.py:695
+#: core/app_settings.py:745
 msgid "Top notifications check interval"
 msgstr "상단 알림 확인 간격"
 
-#: core/app_settings.py:698
+#: core/app_settings.py:748
 msgid "Interval between two top notification checks (in seconds)"
 msgstr "두 상단 알림 확인 사이의 간격 (초 단위)"
 
-#: core/app_settings.py:705
+#: core/app_settings.py:755
 msgid "Maximum log record age"
 msgstr "로그 기록 최대 보관 기간"
 
-#: core/app_settings.py:707
+#: core/app_settings.py:757
 msgid "The maximum age in days of a log record"
 msgstr "로그 기록의 최대 보관 기간 (일 단위)"
 
-#: core/app_settings.py:715
+#: core/app_settings.py:765
 msgid "Retention time in message history"
 msgstr "메시지 기록 보관 기간"
 
-#: core/app_settings.py:718
+#: core/app_settings.py:768
 msgid "Retention time (in days) of a message in the message history section"
 msgstr "메시지 기록 섹션에서 메시지의 보관 기간 (일 단위)"
 
-#: core/app_settings.py:725
+#: core/app_settings.py:775
 msgid "Items per page"
 msgstr "페이지당 항목 수"
 
-#: core/app_settings.py:727
+#: core/app_settings.py:777
 msgid "Number of displayed items per page"
 msgstr "페이지당 표시될 항목 수"
 
@@ -1957,11 +1995,11 @@ msgstr "제공업체 선택"
 msgid "Dummy"
 msgstr "더미(Dummy)"
 
-#: core/forms.py:56
+#: core/forms.py:62
 msgid "Verification code"
 msgstr "인증 코드"
 
-#: core/forms.py:67
+#: core/forms.py:73
 msgid "Invalid code"
 msgstr "유효하지 않은 코드"
 
@@ -2156,24 +2194,20 @@ msgstr[0] ""
 msgid "The core part of Modoboa"
 msgstr "Modoboa의 핵심부"
 
-#: core/views/auth.py:82
+#: core/views/auth.py:64
 #, python-format
 msgid "User '%s' successfully logged in"
 msgstr "사용자 '%s'님이 성공적으로 로그인했습니다."
 
-#: core/views/auth.py:128
+#: core/views/auth.py:113
 #, python-format
 msgid "Password scheme mismatch. Updating %s password"
 msgstr "비밀번호 암호화 방식 불일치. %s의 비밀번호를 업데이트하는 중"
 
-#: core/views/auth.py:135
+#: core/views/auth.py:120
 #, python-format
 msgid "Password hash parameter missmatch. Updating %s password"
 msgstr "비밀번호 해시 파라미터 불일치. %s의 비밀번호를 업데이트하는 중"
-
-#: core/views/auth.py:173
-msgid "User '{}' successfully logged out"
-msgstr "사용자 '{}'님이 성공적으로 로그아웃되었습니다."
 
 #: dmarc/forms.py:15
 msgid "DNS settings"
@@ -2191,7 +2225,7 @@ msgstr "역방향 DNS 조회 활성화 (보고서 표시 시간이 길어질 수
 msgid "DMARC"
 msgstr "DMARC"
 
-#: dmarc/lib.py:294
+#: dmarc/lib.py:298
 msgid "Not resolved"
 msgstr "해결되지 않음"
 
@@ -2445,6 +2479,12 @@ msgstr "유효한 이메일 주소를 입력하세요."
 #: lib/ldap_utils.py:126
 msgid "Failed to update password: {}"
 msgstr "비밀번호 업데이트 실패: {}"
+
+#: lib/permissions.py:24 lib/permissions.py:29
+#, fuzzy
+#| msgid "You don't have access to this mailbox."
+msgid "You don't have ownership on this mailbox"
+msgstr "이 사서함에 대한 접근 권한이 없습니다."
 
 #: lib/validators.py:13
 msgid "Enter a valid domain name"
@@ -3041,7 +3081,11 @@ msgstr ""
 msgid "Rspamd"
 msgstr "Rspamd"
 
-#: sievefilters/api/v2/viewsets.py:203
+#: sievefilters/api/v2/viewsets.py:56
+msgid "Name contains forbidden characters"
+msgstr ""
+
+#: sievefilters/api/v2/viewsets.py:219
 #, python-format
 msgid "Filter %s already exists"
 msgstr "필터 %s이(가) 이미 존재합니다."
@@ -3262,7 +3306,6 @@ msgstr ""
 "p>"
 
 #: templates/registration/password_reset_email.html:4
-#: templates/registration/password_reset_email_v2.html:4
 #, python-format
 msgid ""
 "To initiate the password reset process for your %(username)s Modoboa "
@@ -3272,7 +3315,6 @@ msgstr ""
 "릭하세요:"
 
 #: templates/registration/password_reset_email.html:10
-#: templates/registration/password_reset_email_v2.html:10
 msgid ""
 "If clicking the link above doesn't work, please copy and paste the URL in a "
 "new browser window instead."
@@ -3280,7 +3322,6 @@ msgstr ""
 "위 링크가 작동하지 않으면 URL을 복사하여 새 브라우저 창에 붙여넣어 주세요."
 
 #: templates/registration/password_reset_email.html:14
-#: templates/registration/password_reset_email_v2.html:14
 msgid "Sincerely, The Modoboa Team."
 msgstr "Modoboa 팀 드림."
 
@@ -3529,6 +3570,9 @@ msgstr "제공된 시간은 최소 1분 뒤의 미래여야 합니다."
 #, python-format
 msgid "Attachment is too big (limit: %s)"
 msgstr "첨부 파일이 너무 큽니다 (제한: %s)"
+
+#~ msgid "User '{}' successfully logged out"
+#~ msgstr "사용자 '{}'님이 성공적으로 로그아웃되었습니다."
 
 #~ msgid "Folder container's width"
 #~ msgstr "폴더 컨테이너 너비"
