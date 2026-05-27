@@ -1,6 +1,5 @@
 """Admin API."""
 
-from django import http
 from django.contrib.contenttypes.models import ContentType
 from django.utils.translation import gettext as _
 
@@ -133,10 +132,7 @@ class AccountViewSet(
     @action(methods=["put"], detail=True)
     def password(self, request, pk=None):
         """Change account password."""
-        try:
-            user = core_models.User.objects.get(pk=pk)
-        except core_models.User.DoesNotExist:
-            raise http.Http404 from None
+        user = self.get_object()
         serializer = self.get_serializer(user, data=request.data)
         if serializer.is_valid():
             serializer.save()

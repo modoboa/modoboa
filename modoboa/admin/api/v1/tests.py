@@ -587,6 +587,59 @@ class AccountAPITestCase(ModoAPITestCase):
             authenticate(username=account.username, password="Toto1234"), None
         )
 
+    def test_change_password_as_domainadmin(self):
+        """A domain admin can change a password of an account they manage."""
+        self.client.credentials(HTTP_AUTHORIZATION="Token " + self.da_token.key)
+        account = core_models.User.objects.get(username="user@test.com")
+        url = reverse("v1:account-password", args=[account.pk])
+        response = self.client.put(
+            url, {"password": "toto", "new_password": "Toto1234"}, format="json"
+        )
+        self.assertEqual(response.status_code, 200)
+        account.refresh_from_db()
+        self.assertIsNot(
+            authenticate(username=account.username, password="Toto1234"), None
+        )
+
+    def test_change_password_of_superadmin_denied(self):
+        """A domain admin must not change a super admin's password.
+
+        Regression test for an IDOR allowing a domain administrator to take
+        over a super admin account by targeting its primary key directly.
+        The targeted account is outside the admin's scope and must not be
+        reachable: the endpoint answers 404 instead of changing the password.
+        """
+        self.client.credentials(HTTP_AUTHORIZATION="Token " + self.da_token.key)
+        superadmin = self.sadmin
+        url = reverse("v1:account-password", args=[superadmin.pk])
+        response = self.client.put(
+            url, {"password": "password", "new_password": "Toto1234"}, format="json"
+        )
+        self.assertEqual(response.status_code, 404)
+        superadmin.refresh_from_db()
+        # The super admin credentials are left untouched.
+        self.assertIsNot(
+            authenticate(username=superadmin.username, password="password"), None
+        )
+        self.assertIs(
+            authenticate(username=superadmin.username, password="Toto1234"), None
+        )
+
+    def test_change_password_of_account_from_other_domain_denied(self):
+        """A domain admin must not change a password outside their domains."""
+        self.client.credentials(HTTP_AUTHORIZATION="Token " + self.da_token.key)
+        account = core_models.User.objects.get(username="user@test2.com")
+        url = reverse("v1:account-password", args=[account.pk])
+        response = self.client.put(
+            url, {"password": "toto", "new_password": "Toto1234"}, format="json"
+        )
+        self.assertEqual(response.status_code, 404)
+        account.refresh_from_db()
+        self.assertIsNot(authenticate(username=account.username, password="toto"), None)
+        self.assertIs(
+            authenticate(username=account.username, password="Toto1234"), None
+        )
+
     @mock.patch("ovh.Client.get")
     @mock.patch("ovh.Client.post")
     def test_reset_password(self, client_post, client_get):
