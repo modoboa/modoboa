@@ -131,7 +131,7 @@ If you need to rebuild you virtualenv, you can check this [part of the documenta
 
 The section below containt specific migration steps to upgrade Modoboa instance.
 
-## Next release
+## 2.9.0
 
 ### Required changes to `settings.py`
 
