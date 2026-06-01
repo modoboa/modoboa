@@ -2675,7 +2675,7 @@ msgstr "Фильтры"
 
 #: src/layouts/admin/AdminLayout.vue:40
 msgid "Dashboard"
-msgstr "Приборная панель"
+msgstr "Панель управления"
 
 #: src/layouts/admin/AdminLayout.vue:46
 #: src/views/admin/domains/DomainsView.vue:4
