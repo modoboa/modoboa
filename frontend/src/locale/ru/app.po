@@ -2685,7 +2685,7 @@ msgstr "Домены"
 #: src/layouts/admin/AdminLayout.vue:56
 #: src/views/admin/identities/IdentitiesView.vue:4
 msgid "Identities"
-msgstr "Личности"
+msgstr "Пользователи"
 
 #: src/layouts/admin/AdminLayout.vue:72
 msgid "Monitoring"
