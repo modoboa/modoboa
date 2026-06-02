@@ -1,17 +1,17 @@
 # Translators:
 # Antoine Nguyen <tonio@ngyn.org>, 2024
 # Ilya Chaycowskiy, 2025
+# Nikolay Khudenko, 2025
 # Кирилл Казючиц, 2025
 # Aleksandr Mokrushin, 2025
-# Nikolay Khudenko, 2025
 # Николай Грищенков, 2026
-# badcore990, 2026
+# Dmitriy Popov <badcore990@gmail.com>, 2026
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "PO-Revision-Date: 2024-08-01 12:26+0000\n"
-"Last-Translator: badcore990, 2026\n"
+"Last-Translator: Dmitriy Popov <badcore990@gmail.com>, 2026\n"
 "Language-Team: Russian (https://app.transifex.com/tonio/teams/13749/ru/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -21,7 +21,7 @@ msgstr ""
 
 #: src/components/account/APISetupForm.vue:4
 msgid "Your API token has not been generated yet."
-msgstr "Ваш API токен еще не сгенерирован."
+msgstr "Ваш API-токен ещё не сгенерирован."
 
 #: src/components/account/APISetupForm.vue:13
 msgid "Generate"
@@ -29,7 +29,7 @@ msgstr "Сгенерировать"
 
 #: src/components/account/APISetupForm.vue:20
 msgid "Your API token is:"
-msgstr "Ваш API токен:"
+msgstr "Ваш API-токен:"
 
 #: src/components/account/APISetupForm.vue:28
 msgid "Copy token to clipboard"
@@ -129,7 +129,7 @@ msgid ""
 msgstr ""
 "Содержимое вашего ответа. Вы можете использовать следующие переменные, "
 "которые будут автоматически заменены соответствующим значением: %(name)s, "
-"%(fromdate)s,%(untildate)s"
+"%(fromdate)s, %(untildate)s"
 
 #: src/components/account/AutoReplyForm.vue:36
 #: src/components/admin/logs/MessageList.vue:50
@@ -169,8 +169,8 @@ msgid ""
 "You already have generated backup codes for this account. If you don't "
 "remember them or have used them all, you can generate new ones."
 msgstr ""
-"У вас уже есть резервные коды. Если вы их потеряли или использовали все — "
-"можно создать новые."
+"У вас уже есть резервные коды. Если вы их забыли или использовали все, можно"
+" создать новые."
 
 #: src/components/account/BackupCodeAuthForm.vue:19
 #: src/components/account/ProfileForm.vue:69
@@ -186,7 +186,7 @@ msgstr "Сбросить коды восстановления"
 #: src/components/account/BackupCodeAuthForm.vue:43
 msgid "No two-factor authentificator is yet set for your account."
 msgstr ""
-"Для вашей учётной записи ещё не настроена двухфакторная аутентификация"
+"Для вашей учётной записи ещё не настроена двухфакторная аутентификация."
 
 #: src/components/account/FidoAuthForm.vue:6
 msgid "WebAuthn"
@@ -197,7 +197,7 @@ msgid ""
 "You don't have any WebAuthN device registered as a second authentication "
 "method."
 msgstr ""
-"У вас пока нет зарегистрированных устройств WebAuthn для второго фактора"
+"У вас пока нет зарегистрированных устройств WebAuthn для второго фактора."
 
 #: src/components/account/FidoAuthForm.vue:21
 msgid "Registered Webauthn devices"
@@ -209,7 +209,7 @@ msgstr "Никогда"
 
 #: src/components/account/FidoAuthForm.vue:55
 msgid "Enter a name to register a new webauthn device."
-msgstr "Введите имя для регистрации нового устройства webauthn."
+msgstr "Введите имя для регистрации нового устройства WebAuthn."
 
 #: src/components/account/FidoAuthForm.vue:61
 msgid "New device name"
@@ -492,7 +492,7 @@ msgstr "Номер телефона"
 #: src/components/admin/identities/form_steps/AccountProfileForm.vue:19
 #: src/components/admin/identities/IdentityList.vue:287
 msgid "Secondary email"
-msgstr "Дополнительная электронная почта"
+msgstr "Дополнительный адрес электронной почты"
 
 #: src/components/account/ProfileForm.vue:62
 msgid "Update settings"
@@ -504,7 +504,7 @@ msgstr "Изменить пароль"
 
 #: src/components/account/ProfileForm.vue:130
 msgid "Profile updated"
-msgstr "Профиль обновлен"
+msgstr "Профиль обновлён"
 
 #: src/components/account/ProfileForm.vue:132
 msgid "Language does no exist"
@@ -574,7 +574,7 @@ msgstr ""
 
 #: src/components/account/TotpAuthForm.vue:39
 msgid "Pin code"
-msgstr "Пин-код"
+msgstr "PIN-код"
 
 #: src/components/account/TotpAuthForm.vue:45
 msgid "Register"
@@ -585,7 +585,7 @@ msgid ""
 "Congratulations! Two-factor authentication using one-time passwords is now "
 "enabled for your account."
 msgstr ""
-"Поздравляем! Двухфакторная аутентификация с одноразовыми паролями включена"
+"Поздравляем! Двухфакторная аутентификация с одноразовыми паролями включена."
 
 #: src/components/account/TotpAuthForm.vue:78
 msgid ""
@@ -597,7 +597,7 @@ msgstr ""
 
 #: src/components/account/TotpAuthForm.vue:101
 msgid "Disable 2FA"
-msgstr "Отключить двухфакторную аутентификацию 2FA"
+msgstr "Отключить двухфакторную аутентификацию (2FA)"
 
 #: src/components/account/TotpAuthForm.vue:109
 msgid ""
@@ -651,7 +651,7 @@ msgstr "Домен"
 #: src/components/admin/identities/AccountCreationForm.vue:176
 #: src/components/admin/identities/AccountEditForm.vue:98
 msgid "Mailbox"
-msgstr "Почтовые ящики"
+msgstr "Почтовый ящик"
 
 #: src/components/admin/alarms/AlarmList.vue:106
 #: src/components/admin/logs/AuditTrailList.vue:54
@@ -717,7 +717,7 @@ msgstr "Количество доменов"
 
 #: src/components/admin/dashboard/GlobalStatisticsWidget.vue:11
 msgid "Domain alias count"
-msgstr "Количество псевдонимов домена"
+msgstr "Количество псевдонимов доменов"
 
 #: src/components/admin/dashboard/GlobalStatisticsWidget.vue:15
 msgid "Account count"
@@ -761,7 +761,7 @@ msgstr "Неизвестные источники / Угрозы"
 
 #: src/components/admin/dmarc/DmarcAligmentChart.vue:89
 msgid "DMARC support does not seem to be enabled for this domain."
-msgstr "Похоже, для этого домена поддержка DMARC не включена"
+msgstr "Похоже, для этого домена поддержка DMARC не включена."
 
 #: src/components/admin/dmarc/DmarcAligmentChart.vue:94
 msgid ""
@@ -917,7 +917,7 @@ msgid ""
 "A new key will be generated soon. Refresh the page in a moment to see it."
 msgstr ""
 "Новый ключ будет сгенерирован в ближайшее время. Обновите страницу через "
-"минуту, чтобы увидеть это."
+"минуту, чтобы увидеть его."
 
 #: src/components/admin/domains/DNSDetail.vue:245
 msgid "warning"
@@ -985,7 +985,7 @@ msgstr "Администратор добавлен"
 
 #: src/components/admin/domains/DomainAdminList.vue:170
 msgid "Administrator removed"
-msgstr "Администратор удален"
+msgstr "Администратор удалён"
 
 #: src/components/admin/domains/DomainAliasForm.vue:15
 msgid "Choose a domain"
@@ -1178,7 +1178,7 @@ msgid ""
 "Here is an example of DNS configuration (bind format). Replace values "
 "between [ ] by the appropriate ones."
 msgstr ""
-"Пример DNS-конфигурации (формат BIND). Замените значения в [ ] на свои"
+"Пример DNS-конфигурации (формат BIND). Замените значения в [ ] на свои."
 
 #: src/components/admin/domains/DomainDNSConfig.vue:23
 msgid "IP address of your Modoboa server"
@@ -1191,11 +1191,11 @@ msgstr "Имя хоста вашего сервера automx"
 
 #: src/components/admin/domains/DomainEditForm.vue:16
 msgid "Name: "
-msgstr "Имя:"
+msgstr "Имя: "
 
 #: src/components/admin/domains/DomainEditForm.vue:20
 msgid "Type: "
-msgstr "Тип:"
+msgstr "Тип: "
 
 #: src/components/admin/domains/DomainEditForm.vue:43
 msgid "DNS checks"
@@ -1209,11 +1209,11 @@ msgstr "Подпись DKIM"
 #: src/components/admin/identities/AccountEditForm.vue:110
 #: src/components/admin/identities/AccountEditForm.vue:116
 msgid "Quota: "
-msgstr "Квота:"
+msgstr "Квота: "
 
 #: src/components/admin/domains/DomainEditForm.vue:87
 msgid "Sending limit: "
-msgstr "Лимит отправки:"
+msgstr "Лимит отправки: "
 
 #: src/components/admin/domains/DomainEditForm.vue:93
 msgid "No sending limit"
@@ -1221,7 +1221,7 @@ msgstr "Без лимита отправки"
 
 #: src/components/admin/domains/DomainEditForm.vue:121
 msgid "Service: "
-msgstr "Сервис:"
+msgstr "Сервис: "
 
 #: src/components/admin/domains/DomainEditForm.vue:150
 #: src/components/admin/identities/AccountEditForm.vue:172
@@ -1491,7 +1491,7 @@ msgstr "Значение по умолчанию для домена"
 #: src/components/admin/identities/AccountCreationForm.vue:139
 #: src/components/admin/identities/form_steps/AccountMailboxForm.vue:40
 msgid "Send only account"
-msgstr "Отправить только учётную запись"
+msgstr "Учётная запись только для отправки"
 
 #: src/components/admin/identities/AccountCreationForm.vue:281
 msgid "Account created"
@@ -1589,7 +1589,7 @@ msgstr "Ещё ни разу не входил"
 
 #: src/components/admin/identities/AccountSummary.vue:19
 msgid "Full name"
-msgstr "Имя файла"
+msgstr "Полное имя"
 
 #: src/components/admin/identities/AliasCreationForm.vue:4
 msgid "New alias"
@@ -1713,7 +1713,7 @@ msgstr "Лимит писем в сутки для ящика. Оставьте 
 
 #: src/components/admin/identities/form_steps/AccountMailboxForm.vue:112
 msgid "Use domain default value"
-msgstr "Используются значения домена по умолчанию "
+msgstr "Использовать значение домена по умолчанию"
 
 #: src/components/admin/identities/form_steps/AccountMailboxForm.vue:115
 msgid "unlimited"
@@ -1776,7 +1776,7 @@ msgstr ""
 
 #: src/components/admin/identities/form_steps/AccountRoleForm.vue:109
 msgid "Super administrator"
-msgstr "Супер администратор"
+msgstr "Суперадминистратор"
 
 #: src/components/admin/identities/form_steps/AccountRoleForm.vue:111
 msgid ""
@@ -1883,7 +1883,7 @@ msgstr "Адрес (имя хоста или IP)"
 
 #: src/components/admin/imap_migration/form_steps/ProviderGeneralForm.vue:19
 msgid "IMAP Port"
-msgstr "IMAP Порт"
+msgstr "Порт IMAP"
 
 #: src/components/admin/imap_migration/form_steps/ProviderGeneralForm.vue:27
 #: src/components/admin/imap_migration/ProviderCreationForm.vue:57
@@ -2028,7 +2028,7 @@ msgstr ""
 #: src/components/calendars/CalendarDetail.vue:19
 #: src/components/contacts/AddressBookInfo.vue:19
 msgid "The credentials are the same than the ones you use to access Modoboa."
-msgstr "Используйте тот же логин и пароль, что и для входа в Modoboa"
+msgstr "Используйте тот же логин и пароль, что и для входа в Modoboa."
 
 #: src/components/calendars/CalendarDetail.vue:26
 msgid ""
@@ -2053,7 +2053,7 @@ msgstr "Цвет"
 
 #: src/components/calendars/CalendarForm.vue:103
 msgid "Calendar updated"
-msgstr "Календарь обновлен"
+msgstr "Календарь обновлён"
 
 #: src/components/calendars/CalendarForm.vue:106
 msgid "Calendar created"
@@ -2115,21 +2115,21 @@ msgstr "Отправить"
 msgid "%{ n } event imported"
 msgid_plural "%{ n } events imported"
 msgstr[0] "%{ n } событие импортировано"
-msgstr[1] "%{ n } событий импортировано"
+msgstr[1] "%{ n } события импортировано"
 msgstr[2] "%{ n } событий импортировано"
-msgstr[3] "Импортировано событий: %{ n }"
+msgstr[3] "%{ n } событий импортировано"
 
 #: src/components/contacts/AddressBookInfo.vue:4
 msgid "Address book information"
-msgstr "О адресной книге"
+msgstr "Об адресной книге"
 
 #: src/components/contacts/AddressBookInfo.vue:9
 msgid ""
 "To access this address book from the outside (such as Mozilla Thunderbird or"
 " your smartphone), use the following URL:"
 msgstr ""
-"Для доступа к этой адресной книге извне (например из Mozilla Thunderbird или"
-" со смартфона) используйте следующий URL:"
+"Для доступа к этой адресной книге извне (например, из Mozilla Thunderbird "
+"или со смартфона) используйте следующий URL:"
 
 #: src/components/contacts/CategoryForm.vue:57
 msgid "Edit category"
@@ -2187,7 +2187,7 @@ msgstr "Заметка"
 
 #: src/components/contacts/ContactForm.vue:141
 msgid "More"
-msgstr "Еще"
+msgstr "Ещё"
 
 #: src/components/contacts/ContactForm.vue:144
 msgid "Less"
@@ -2223,7 +2223,7 @@ msgstr "Номера телефонов"
 
 #: src/components/contacts/ContactList.vue:280
 msgid "Contact removed"
-msgstr "Контакт удален"
+msgstr "Контакт удалён"
 
 #: src/components/contacts/ContactList.vue:325
 #: src/components/contacts/ContactList.vue:346
@@ -2381,7 +2381,7 @@ msgid ""
 "previous values."
 msgstr ""
 "Первый элемент каждой строки обязателен и должен быть одним из указанных "
-"выше типов"
+"выше типов."
 
 #: src/components/tools/ImportForm.vue:20
 msgid "You can use a different character as separator."
@@ -2489,7 +2489,7 @@ msgstr "Уведомление о статусе доставки"
 
 #: src/components/webmail/ComposeEmailForm.vue:56
 msgid "Request read receipt"
-msgstr "Запросить отчет о прочтении"
+msgstr "Запросить отчёт о прочтении"
 
 #: src/components/webmail/ComposeEmailForm.vue:74
 msgid "Save as draft"
@@ -2675,7 +2675,7 @@ msgstr "Фильтры"
 
 #: src/layouts/admin/AdminLayout.vue:40
 msgid "Dashboard"
-msgstr "Приборная панель"
+msgstr "Панель управления"
 
 #: src/layouts/admin/AdminLayout.vue:46
 #: src/views/admin/domains/DomainsView.vue:4
@@ -2685,7 +2685,7 @@ msgstr "Домены"
 #: src/layouts/admin/AdminLayout.vue:56
 #: src/views/admin/identities/IdentitiesView.vue:4
 msgid "Identities"
-msgstr "Личности"
+msgstr "Пользователи"
 
 #: src/layouts/admin/AdminLayout.vue:72
 msgid "Monitoring"
@@ -2702,7 +2702,7 @@ msgstr "Письма"
 
 #: src/layouts/admin/AdminLayout.vue:102
 msgid "IMAP Migration"
-msgstr "IMAP Миграция"
+msgstr "Миграция IMAP"
 
 #: src/layouts/admin/AdminLayout.vue:107
 msgid "Email providers"
@@ -2881,7 +2881,7 @@ msgstr "Отключить набор фильтров"
 #: src/views/account/ParametersView.vue:30
 #: src/views/admin/ParametersView.vue:60
 msgid "Settings: "
-msgstr "Настройки:"
+msgstr "Настройки: "
 
 #: src/views/account/SettingsView.vue:4
 msgid "Account settings"
@@ -2960,7 +2960,7 @@ msgstr "Шифровать пароль"
 
 #: src/views/admin/identities/IdentitiesView.vue:95
 msgid "Check this option if passwords contained in your file are not crypted"
-msgstr "Выберите эту опцию если пароль в вашем файле не зашифрован "
+msgstr "Выберите эту опцию, если пароли в вашем файле не зашифрованы"
 
 #: src/views/admin/imap_migration/ProviderEditView.vue:3
 msgid "Edit provider"
@@ -2985,11 +2985,11 @@ msgstr ""
 
 #: src/views/admin/InformationView.vue:29
 msgid "Go to <strong>Settings > General</strong> section"
-msgstr "Перейдите в  <strong>Настройки  > Общие</strong>"
+msgstr "Перейдите в раздел <strong>Настройки  > Общие</strong>"
 
 #: src/views/admin/InformationView.vue:37
 msgid "Change the value of <strong>Default password scheme</strong>"
-msgstr "Изменить схему <strong>шифрования паролей по умолчанию</strong>"
+msgstr "Измените значение <strong>Схема пароля по умолчанию</strong>"
 
 #: src/views/admin/InformationView.vue:45
 msgid ""
@@ -3000,19 +3000,19 @@ msgstr ""
 
 #: src/views/admin/InformationView.vue:51
 msgid "Save your changes"
-msgstr "Сохранить изменения"
+msgstr "Сохраните изменения"
 
 #: src/views/admin/InformationView.vue:54
 msgid "Logout / Login with your current account so its password gets updated"
-msgstr "Выйдите и зайдите снова, чтобы обновился пароль"
+msgstr "Выйдите и зайдите снова, чтобы пароль обновился"
 
 #: src/views/admin/InformationView.vue:61
 msgid ""
 "Inform <strong>ALL</strong> your users that they must login to Modoboa to "
 "complete the operation"
 msgstr ""
-"Сообщите <strong>ВСЕМ</strong> пользователям, что они должны зайти в Modoboa"
-" для завершения операции"
+"Сообщите <strong>ВСЕМ</strong> пользователям, что они должны зайти в "
+"Modoboa, чтобы завершить операцию"
 
 #: src/views/admin/InformationView.vue:71
 msgid ""
@@ -3028,8 +3028,8 @@ msgid ""
 "Please note that you will see this message until <strong>ALL</strong> user "
 "passwords have been converted using the new scheme."
 msgstr ""
-"Это сообщение будет показываться, пока <strong>ВСЕ </strong>пароли "
-"пользователей не будут переведены на новую схему"
+"Это сообщение будет показываться, пока <strong>ВСЕ</strong> пароли "
+"пользователей не будут переведены на новую схему."
 
 #: src/views/admin/InformationView.vue:92
 msgid "Installed components"
@@ -3089,7 +3089,7 @@ msgstr "Вы действительно хотите удалить этот к�
 
 #: src/views/calendars/CalendarView.vue:546
 msgid "Calendar deleted"
-msgstr "Календарь удален"
+msgstr "Календарь удалён"
 
 #: src/views/contacts/AddressBook.vue:4 src/views/contacts/AddressBook.vue:41
 msgid "Contacts"
