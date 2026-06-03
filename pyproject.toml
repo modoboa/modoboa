@@ -22,6 +22,8 @@ classifiers = [
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
+	"Programming Language :: Python :: 3.14",
+	"Programming Language :: SQL",
     "Topic :: Communications :: Email",
     "Topic :: Internet :: WWW/HTTP",
 ]
@@ -57,7 +59,7 @@ dependencies = [
 	"charset-normalizer>=3.0.0",
 	"ovh",
 	"oath",
-        "packaging",
+	"packaging",
 	"redis>=7.1.0",
 	"rrdtool-bindings>=0.2.0",
 	"qrcode",
@@ -73,13 +75,13 @@ dependencies = [
 	"django-rq>=4.0.1",
 	# Sieve
 	"sievelib>=1.4.1",
-        # User
-        "drf-nested-routers",
-        "vobject",
-        "caldav==3.2.1",
-        # Amavis
-        "html2text",
-        "idna",
+	# User
+	"drf-nested-routers",
+	"vobject",
+	"caldav==3.2.1",
+	# Amavis
+	"html2text",
+	"idna",
 ]
 [project.optional-dependencies]
 dev = [
@@ -101,7 +103,7 @@ test = [
 	"factory-boy<3.4.0",
 	"httmock==1.4.0",
 	"testfixtures==8.3.0",
-        "freezegun",
+    "freezegun",
 	"tox",
 ]
 ldap = ["django-auth-ldap<6.0.0"]
@@ -112,9 +114,12 @@ modoboa-cli = "modoboa:modoboa_admin"
 [project.urls]
 Homepage = "http://modoboa.org/"
 Documentation = "https://modoboa.readthedocs.io/en/latest/"
+Discussion = "https://github.com/modoboa/modoboa/discussions"
 Repository = "https://github.com/modoboa/modoboa"
 Changelog = "https://github.com/modoboa/modoboa/blob/master/CHANGELOG.md"
 Issues = "https://github.com/modoboa/modoboa/issues"
+Wiki = "https://github.com/modoboa/modoboa/wiki"
+Demo = "https://demo.modoboa.org/"
 
 [tool.setuptools.dynamic]
 version = {attr = "modoboa.version.get_version"}
