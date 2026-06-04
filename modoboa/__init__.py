@@ -6,7 +6,7 @@ try:
     __version__ = version(__name__)
 except PackageNotFoundError:
     # package is not installed
-    pass
+    __version__ = None
 
 
 def modoboa_admin():
