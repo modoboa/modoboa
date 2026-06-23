@@ -1,12 +1,12 @@
 import { defineConfig } from 'vitepress'
-import { useSidebar } from 'vitepress-openapi';
-import spec from '../openapi.json';
+import { useSidebar } from 'vitepress-openapi'
+import spec from '../openapi.json'
 
 const sidebar = useSidebar({
   spec,
   // Optionally, you can specify a link prefix for all generated sidebar items.
   linkPrefix: '/openapi/',
-});
+})
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
@@ -52,6 +52,13 @@ export default defineConfig({
         text: 'Migration',
         items: [{ text: 'Moving to Modoboa', link: '/moving' }],
       },
+      {
+        text: 'Modoboa Pro',
+        items: [
+          { text: 'Documentation', link: 'https://doc.modoboa.com' },
+          { text: 'Buy', link: 'https://modoboa.com/modoboa-pro/checkout/' },
+        ],
+      },
     ],
 
     sidebar: {
@@ -83,9 +90,7 @@ export default defineConfig({
       '/openapi/': [
         {
           text: 'By Operations',
-          items: [
-            ...sidebar.generateSidebarGroups(),
-          ],
+          items: [...sidebar.generateSidebarGroups()],
         },
       ],
     },
@@ -139,12 +144,12 @@ export default defineConfig({
   lastUpdated: true,
   transformPageData(pageData) {
     // console.log(pageData);
-    const pageTitle = pageData.params?.pageTitle;
+    const pageTitle = pageData.params?.pageTitle
 
     if (pageTitle) {
-      pageData.title = pageTitle;
-      pageData.frontmatter ??= {};
-      pageData.frontmatter.title = pageTitle;
+      pageData.title = pageTitle
+      pageData.frontmatter ??= {}
+      pageData.frontmatter.title = pageTitle
     }
 
     const baseUrl = process.env.READTHEDOCS_CANONICAL_URL
