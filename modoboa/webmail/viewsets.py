@@ -14,7 +14,29 @@ from modoboa.lib.paginator import Paginator
 from modoboa.lib.viewsets import HasMailbox
 from modoboa.webmail import lib, models, serializers
 from modoboa.webmail.lib import attachments
+from modoboa.webmail.lib.imaputils import UID_RE, PARTNUM_RE
 from modoboa.webmail.lib.sendmail import send_mail, schedule_email
+
+
+def _validate_mailid(value):
+    """Reject message identifiers that could inject IMAP commands."""
+    if not value or not UID_RE.match(value):
+        raise exceptions.BadRequest(_("Invalid message identifier"))
+    return value
+
+
+def _validate_partnum(value):
+    """Reject MIME part numbers that could inject IMAP commands."""
+    if not value or not PARTNUM_RE.match(value):
+        raise exceptions.BadRequest(_("Invalid part number"))
+    return value
+
+
+def _validate_search(value):
+    """Reject control characters that could inject IMAP commands."""
+    if value and any(ord(c) < 0x20 or ord(c) == 0x7F for c in value):
+        raise exceptions.BadRequest(_("Invalid search pattern"))
+    return value
 
 
 class UserMailboxViewSet(viewsets.GenericViewSet):
@@ -133,7 +155,7 @@ class UserEmailViewSet(viewsets.GenericViewSet):
 
     def list(self, request):
         mailbox = request.GET.get("mailbox", "INBOX")
-        search = request.GET.get("search")
+        search = _validate_search(request.GET.get("search"))
         with lib.get_imapconnector(request) as imapc:
             if search:
                 imapc.parse_search_parameters("both", search)
@@ -247,6 +269,7 @@ class UserEmailViewSet(viewsets.GenericViewSet):
         mailid = request.GET.get("mailid")
         if not mailbox or not mailid:
             raise Http404
+        _validate_mailid(mailid)
         dformat = request.user.parameters.get_value("displaymode")
         if "dformat" in request.GET:
             dformat = request.GET.get("dformat")
@@ -276,6 +299,7 @@ class UserEmailViewSet(viewsets.GenericViewSet):
         mailid = request.GET.get("mailid")
         if not mailbox or not mailid:
             raise Http404
+        _validate_mailid(mailid)
         email = lib.ImapEmail(
             request,
             f"{mailbox}:{mailid}",
@@ -287,8 +311,10 @@ class UserEmailViewSet(viewsets.GenericViewSet):
         mailbox = request.GET.get("mailbox", "INBOX")
         mailid = request.GET.get("mailid")
         partnum = request.GET.get("partnum")
-        if not mailbox or not mailbox or not partnum:
+        if not mailbox or not mailid or not partnum:
             raise Http404
+        _validate_mailid(mailid)
+        _validate_partnum(partnum)
         with lib.get_imapconnector(request) as imapc:
             partdef, payload = imapc.fetchpart(mailid, mailbox, partnum)
         resp = HttpResponse(lib.decode_payload(partdef["encoding"], payload))
