@@ -32,6 +32,7 @@ class MakeBodyImagesInlineTestCase(SimpleTestCase):
             self.assertIn("cid:", html)
             self.assertNotIn(rel, html)
         finally:
+            fd.close()
             os.unlink(path)
 
     def test_traversal_image_is_rejected(self):
