@@ -35,6 +35,14 @@ Main features
 * Autoreply messages 
 * Graphical statistics about email traffic
 
+***********
+Modoboa Pro
+***********
+
+Looking for more? `Modoboa Pro <https://modoboa.com/modoboa-pro/>`_ is the
+professional edition with advanced features and dedicated support to help you
+get the most out of your mail platform.
+
 ************
 Installation
 ************
