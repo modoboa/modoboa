@@ -16,6 +16,7 @@ from dns import resolver, reversename
 import magic
 import io
 
+from django.conf import settings
 from django.db import transaction
 from django.db.models import Q
 from django.utils import timezone
@@ -43,11 +44,18 @@ FILE_TYPES = [
 ]
 
 # Size bounds to protect the importer against decompression bombs
-# (CWE-409/CWE-400). DMARC aggregate reports are small in practice, so
+# (CWE-409/CWE-400). Defaults live in the project settings so they can be
+# tuned per deployment; DMARC aggregate reports are small in practice, so
 # these caps are generous while still preventing resource exhaustion.
-MAX_COMPRESSED_SIZE = 1 * 1024 * 1024  # 1 MiB of compressed attachment
-MAX_DECOMPRESSED_SIZE = 20 * 1024 * 1024  # 20 MiB once decompressed
-MAX_ZIP_MEMBERS = 20  # number of files allowed inside a zip archive
+MAX_COMPRESSED_SIZE = getattr(
+    settings, "DMARC_MAX_COMPRESSED_SIZE", 1 * 1024 * 1024
+)  # 1 MiB of compressed attachment
+MAX_DECOMPRESSED_SIZE = getattr(
+    settings, "DMARC_MAX_DECOMPRESSED_SIZE", 20 * 1024 * 1024
+)  # 20 MiB once decompressed
+MAX_ZIP_MEMBERS = getattr(
+    settings, "DMARC_MAX_ZIP_MEMBERS", 20
+)  # number of files allowed inside a zip archive
 
 
 def _read_bounded(fileobj, limit):
