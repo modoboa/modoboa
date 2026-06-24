@@ -224,8 +224,18 @@ class SharedEventViewSet(BaseEventViewSet):
     type = "shared"
 
     def get_calendar(self, pk):
-        """Return UserCalendar instance."""
-        return models.SharedCalendar.objects.get(pk=pk)
+        """Return SharedCalendar instance scoped to the current user."""
+        user = self.request.user
+        if user.role == "SimpleUsers":
+            qset = models.SharedCalendar.objects.filter(domain=user.mailbox.domain)
+        else:
+            qset = models.SharedCalendar.objects.filter(
+                domain__in=admin_models.Domain.objects.get_for_admin(user)
+            )
+        calendar = qset.filter(pk=pk).first()
+        if not calendar:
+            raise http.Http404
+        return calendar
 
 
 class AttendeeViewSet(viewsets.ReadOnlyModelViewSet):

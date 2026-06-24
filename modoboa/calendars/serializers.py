@@ -210,6 +210,16 @@ class AccessRuleSerializer(serializers.ModelSerializer):
         model = models.AccessRule
         fields = ("pk", "mailbox", "calendar", "read", "write")
 
+    def __init__(self, *args, **kwargs):
+        """Restrict the calendar field to the current user's calendars."""
+        super().__init__(*args, **kwargs)
+        user = self.context["request"].user
+        if user.is_anonymous or not hasattr(user, "mailbox"):
+            return
+        self.fields["calendar"].queryset = models.UserCalendar.objects.filter(
+            mailbox=user.mailbox
+        )
+
     def validate_mailbox(self, value):
         mailbox = admin_models.Mailbox.objects.filter(pk=value["pk"]).first()
         if mailbox is None:
