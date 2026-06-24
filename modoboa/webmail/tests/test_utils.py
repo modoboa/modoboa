@@ -32,7 +32,6 @@ class MakeBodyImagesInlineTestCase(SimpleTestCase):
             self.assertIn("cid:", html)
             self.assertNotIn(rel, html)
         finally:
-            os.close(fd)
             os.unlink(path)
 
     def test_traversal_image_is_rejected(self):
@@ -50,7 +49,6 @@ class MakeBodyImagesInlineTestCase(SimpleTestCase):
             # The src must be left untouched (no cid rewrite).
             self.assertNotIn("cid:", html)
         finally:
-            os.close(fd)
             os.unlink(path)
 
     def test_encoded_traversal_image_is_rejected(self):
@@ -65,7 +63,6 @@ class MakeBodyImagesInlineTestCase(SimpleTestCase):
             html, parts = utils.make_body_images_inline(body)
             self.assertEqual(parts, [])
         finally:
-            os.close(fd)
             os.unlink(path)
 
     def test_non_image_file_does_not_crash(self):
@@ -79,7 +76,6 @@ class MakeBodyImagesInlineTestCase(SimpleTestCase):
             html, parts = utils.make_body_images_inline(body)
             self.assertEqual(parts, [])
         finally:
-            os.close(fd)
             os.unlink(path)
 
     def test_remote_url_is_ignored(self):
