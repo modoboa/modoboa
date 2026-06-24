@@ -360,6 +360,86 @@ class AccessRuleViewSetTestCase(TestDataMixin, ModoAPITestCase):
         self.assertEqual(response.status_code, 400)
         self.assertIn("mailbox", response.json())
 
+    def test_create_accessrule_denied_calendar(self):
+        """Try to grant access to a calendar the user doesn't own."""
+        # self.account owns self.calendar; self.calendar2 belongs to admin_account
+        data = {
+            "mailbox": {
+                "pk": self.account.mailbox.pk,
+                "full_address": self.account.mailbox.full_address,
+            },
+            "read": True,
+            "write": True,
+            "calendar": self.calendar2.pk,
+        }
+        url = reverse("api:access-rule-list")
+        response = self.client.post(url, data=data, format="json")
+        self.assertEqual(response.status_code, 400)
+        self.assertIn("calendar", response.json())
+        self.assertFalse(
+            models.AccessRule.objects.filter(
+                mailbox=self.account.mailbox, calendar=self.calendar2
+            ).exists()
+        )
+
+    def test_update_accessrule_denied_calendar(self):
+        """Try to point an owned rule to a calendar the user doesn't own."""
+        acr = factories.AccessRuleFactory(
+            calendar=self.calendar,
+            mailbox=self.account.mailbox,
+            read=True,
+            write=False,
+        )
+        data = {
+            "mailbox": {
+                "pk": self.account.mailbox.pk,
+                "full_address": self.account.mailbox.full_address,
+            },
+            "read": True,
+            "write": True,
+            "calendar": self.calendar2.pk,
+        }
+        url = reverse("api:access-rule-detail", args=[acr.pk])
+        response = self.client.put(url, data=data, format="json")
+        self.assertEqual(response.status_code, 400)
+        self.assertIn("calendar", response.json())
+        acr.refresh_from_db()
+        self.assertEqual(acr.calendar, self.calendar)
+
+    def test_rights_generation_excludes_forged_rule(self):
+        """A rejected create must never reach the generated rights file."""
+        data = {
+            "mailbox": {
+                "pk": self.account.mailbox.pk,
+                "full_address": self.account.mailbox.full_address,
+            },
+            "read": True,
+            "write": True,
+            "calendar": self.calendar2.pk,
+        }
+        url = reverse("api:access-rule-list")
+        self.client.post(url, data=data, format="json")
+
+        rights_file_path = tempfile.mktemp()
+        self.set_global_parameter("rights_file_path", rights_file_path, app="calendars")
+        try:
+            management.call_command("generate_rights", verbosity=False)
+            cfg = ConfigParser()
+            with open(rights_file_path) as fpo:
+                cfg.read_file(fpo)
+        finally:
+            if os.path.exists(rights_file_path):
+                os.unlink(rights_file_path)
+        # No section may grant the attacker mailbox access to the victim calendar
+        forged = [
+            section
+            for section in cfg.sections()
+            if cfg.get(section, "user", fallback="")
+            == self.account.mailbox.full_address
+            and cfg.get(section, "collection", fallback="") == self.calendar2.path
+        ]
+        self.assertEqual(forged, [])
+
     def test_update_accessrule(self):
         """Test access rule modification."""
         self.client.force_authenticate(self.admin_account)
@@ -543,6 +623,56 @@ class EventViewSetTestCase(TestDataMixin, ModoAPITestCase):
         url = f"/api/v2/shared-calendars/{self.scalendar.pk}/events/1234/"
         response = self.client.delete(url)
         self.assertEqual(response.status_code, 200)
+
+    def test_shared_events_own_domain(self):
+        """A simple user can use events of a shared calendar in its domain."""
+        url = f"/api/v2/shared-calendars/{self.scalendar.pk}/events/"
+        url = "{}?start={}&end={}".format(url, "20060712T182145Z", "20070712T182145Z")
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+
+    def test_shared_events_cross_domain_denied(self):
+        """A simple user cannot reach a shared calendar from another domain."""
+        # self.account is a simple user in test.com, scalendar2 lives in test2.com
+        base = f"/api/v2/shared-calendars/{self.scalendar2.pk}/events"
+
+        url = "{}/?start={}&end={}".format(base, "20060712T182145Z", "20070712T182145Z")
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 404)
+
+        url = f"{base}/1234/"
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 404)
+
+        data = {
+            "title": "Test event",
+            "start_date": "2018-03-27",
+            "end_date": "2018-03-28",
+            "allDay": True,
+            "color": "#ffdddd",
+            "description": "Description",
+            "calendar": self.scalendar.pk,
+        }
+        response = self.client.put(f"{base}/1234/", data=data, format="json")
+        self.assertEqual(response.status_code, 404)
+
+        # A valid payload is required to reach the authorization check
+        response = self.client.patch(f"{base}/1234/", data=data, format="json")
+        self.assertEqual(response.status_code, 404)
+
+        response = self.client.delete(f"{base}/1234/")
+        self.assertEqual(response.status_code, 404)
+
+    def test_shared_events_import_cross_domain_denied(self):
+        """Importing into another domain's shared calendar is denied."""
+        url = reverse("api:shared-event-import-from-file", args=[self.scalendar2.pk])
+        path = os.path.join(
+            os.path.abspath(os.path.dirname(__file__)), "test_data/events.ics"
+        )
+        self.set_global_parameter("max_ics_file_size", "2048")
+        with open(path) as fp:
+            response = self.client.post(url, {"ics_file": fp})
+        self.assertEqual(response.status_code, 404)
 
     def test_import_from_file(self):
         """Check import feature."""
