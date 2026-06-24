@@ -185,6 +185,43 @@ class UserEmailViewSetTestCase(WebmailTestCase):
         self.assertEqual(response.status_code, 200)
         self.assertIn("Message-ID", response.json()["source"])
 
+    def test_imap_injection_rejected(self):
+        """CRLF / malformed identifiers in GET params must be rejected.
+
+        These would otherwise be concatenated into IMAP commands by
+        imaplib (CWE-93/CWE-74).
+        """
+        self.authenticate()
+        payload = "1%0d%0aA999%20UID%20STORE%201%20+FLAGS%20(\\Deleted)"
+
+        # mailid on content / source
+        for name in ["content", "source"]:
+            url = reverse(f"v2:webmail-email-{name}")
+            response = self.client.get(f"{url}?mailbox=INBOX&mailid={payload}")
+            self.assertEqual(response.status_code, 400)
+
+        # mailid and partnum on attachment
+        url = reverse("v2:webmail-email-attachment")
+        response = self.client.get(f"{url}?mailbox=INBOX&mailid={payload}&partnum=2")
+        self.assertEqual(response.status_code, 400)
+        response = self.client.get(
+            f"{url}?mailbox=INBOX&mailid=1&partnum=2%5d%20BODY%5b%5d"
+        )
+        self.assertEqual(response.status_code, 400)
+
+        # search on list
+        url = reverse("v2:webmail-email-list")
+        response = self.client.get(f"{url}?mailbox=INBOX&search={payload}")
+        self.assertEqual(response.status_code, 400)
+
+    def test_search_quote_is_escaped(self):
+        """A double quote in search must not break the IMAP quoted string."""
+        self.authenticate()
+        url = reverse("v2:webmail-email-list")
+        response = self.client.get(f'{url}?mailbox=INBOX&search=a"b')
+        # Request succeeds (no injection): the quote is escaped, not rejected.
+        self.assertEqual(response.status_code, 200)
+
     def test_move(self):
         self.authenticate()
         url = reverse("v2:webmail-email-move")

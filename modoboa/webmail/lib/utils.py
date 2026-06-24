@@ -4,6 +4,7 @@ from email.header import Header
 from email.mime.image import MIMEImage
 from importlib.metadata import version
 import os
+from pathlib import Path
 from urllib.parse import unquote, urlparse
 
 import lxml
@@ -71,19 +72,35 @@ def make_body_images_inline(body: str) -> tuple[str, list]:
     """
     html = lxml.html.fromstring(body)
     parts = []
+    root = Path(settings.BASE_DIR).resolve()
     for tag in html.iter("img"):
         src = tag.get("src")
         if src is None:
             continue
         o = urlparse(src)
-        path = unquote(os.path.join(settings.BASE_DIR, o.path[1:]))
-        if not os.path.exists(path):
+        # Only handle local references, never remote URLs.
+        if o.scheme or o.netloc:
             continue
-        fname = os.path.basename(path)
+        # Resolve the candidate path and make sure it stays inside BASE_DIR,
+        # otherwise an attacker could use ../ segments to read arbitrary
+        # local files (path traversal, CWE-22).
+        candidate = (root / unquote(o.path.lstrip("/"))).resolve()
+        try:
+            candidate.relative_to(root)
+        except ValueError:
+            continue
+        if not candidate.is_file():
+            continue
+        try:
+            with candidate.open("rb") as fp:
+                part = MIMEImage(fp.read())
+        except (OSError, TypeError):
+            # Unreadable file or unrecognized image format: skip it instead
+            # of aborting the whole send/save operation.
+            continue
+        fname = candidate.name
         cid = f"{os.path.splitext(fname)[0]}@modoboa"
         tag.set("src", f"cid:{cid}")
-        with open(path, "rb") as fp:
-            part = MIMEImage(fp.read())
         part["Content-ID"] = f"<{cid}>"
         part.replace_header("Content-Type", f'{part["Content-Type"]}; name="{fname}"')
         part["Content-Disposition"] = "inline"
