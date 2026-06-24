@@ -5,6 +5,8 @@ from io import StringIO
 
 from rest_framework import renderers
 
+from .csvutils import escape_csv_row
+
 
 class CSVRenderer(renderers.BaseRenderer):
     """Custom CSV renderer."""
@@ -16,6 +18,6 @@ class CSVRenderer(renderers.BaseRenderer):
         with StringIO() as fp:
             csvwriter = csv.writer(fp)
             for item in data:
-                csvwriter.writerow(item)
+                csvwriter.writerow(escape_csv_row(item))
             content = fp.getvalue()
         return content

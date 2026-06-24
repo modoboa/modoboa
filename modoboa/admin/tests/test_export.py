@@ -7,8 +7,62 @@ from django.core.management import call_command
 from django.urls import reverse
 from django.utils.encoding import force_str
 
+from modoboa.lib.csvutils import escape_csv_cell, escape_csv_row
 from modoboa.lib.tests import ModoAPITestCase
 from .. import factories, models
+
+
+class CSVInjectionTestCase(ModoAPITestCase):
+    """Regression tests for CSV/formula injection (CWE-1236)."""
+
+    @classmethod
+    def setUpTestData(cls):  # NOQA:N802
+        """Create test data."""
+        super().setUpTestData()
+        factories.populate_database()
+
+    def test_escape_csv_cell(self):
+        """Cells starting with a formula trigger are neutralized."""
+        for payload in ("=HYPERLINK(1)", "+1", "-1", "@SUM(1)", "\t=1", "\r=1", "\n=1"):
+            self.assertEqual(escape_csv_cell(payload), "'" + payload)
+        # Harmless values are left untouched.
+        for value in ("Léon", "user@test.com", "1+1", ""):
+            self.assertEqual(escape_csv_cell(value), value)
+        # Non-string values are coerced then checked.
+        self.assertEqual(escape_csv_cell(True), "True")
+
+    def test_escape_csv_row(self):
+        self.assertEqual(
+            escape_csv_row(["account", "=cmd", "ok"]),
+            ["account", "'=cmd", "ok"],
+        )
+
+    def test_identities_export_neutralizes_formula(self):
+        """A user controlled name must not be exported as a live formula."""
+        factories.MailboxFactory(
+            user__username="evil@test.com",
+            user__first_name="=HYPERLINK(0)",
+            user__last_name="+SUM(1,1)",
+            user__groups=("SimpleUsers",),
+            address="evil",
+            domain__name="test.com",
+        )
+        response = self.client.get(reverse("v2:identities-export"))
+        content = force_str(response.content)
+        self.assertIn("'=HYPERLINK(0)", content)
+        self.assertIn("'+SUM(1,1)", content)
+        # The raw (unescaped) formula must not appear as a cell value.
+        self.assertNotIn(",=HYPERLINK(0),", content)
+
+    def test_domains_export_command_neutralizes_formula(self):
+        """The management command export path is escaped too."""
+        dom = models.Domain.objects.get(name="test.com")
+        factories.DomainAliasFactory(name="=evil.test", target=dom)
+        stdout_backup, sys.stdout = sys.stdout, StringIO()
+        call_command("modo", "export", "domains")
+        response = force_str(sys.stdout.getvalue())
+        sys.stdout = stdout_backup
+        self.assertIn("domainalias;'=evil.test;test.com;True", response)
 
 
 class ExportTestCase(ModoAPITestCase):
