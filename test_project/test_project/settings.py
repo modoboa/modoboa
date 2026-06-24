@@ -428,6 +428,14 @@ WEBMAIL_DEV_MODE = os.environ.get("WEBMAIL_DEV_MODE", "off") == "on"
 WEBMAIL_DEV_USERNAME = os.environ.get("WEBMAIL_DEV_USERNAME", "")
 WEBMAIL_DEV_PASSWORD = os.environ.get("WEBMAIL_DEV_PASSWORD", "")
 
+# DMARC aggregate report importer size bounds. These protect the importer
+# against decompression bombs (CWE-409/CWE-400). DMARC aggregate reports
+# are small in practice, so these caps are generous while still preventing
+# resource exhaustion.
+DMARC_MAX_COMPRESSED_SIZE = 1 * 1024 * 1024  # 1 MiB of compressed attachment
+DMARC_MAX_DECOMPRESSED_SIZE = 20 * 1024 * 1024  # 20 MiB once decompressed
+DMARC_MAX_ZIP_MEMBERS = 20  # number of files allowed inside a zip archive
+
 # Amavis
 
 MIGRATION_MODULES = {"amavis": None}
