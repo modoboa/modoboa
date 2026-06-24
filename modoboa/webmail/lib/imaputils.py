@@ -26,6 +26,43 @@ MAXLINE = 1000000
 if hasattr(imaplib, "_MAXLINE") and imaplib._MAXLINE < MAXLINE:
     imaplib._MAXLINE = MAXLINE
 
+# A message UID set: one or more positive integers separated by commas.
+UID_RE = re.compile(r"^[0-9]+(?:,[0-9]+)*$")
+# A MIME part number: dot-separated positive integers (e.g. "1", "2.1").
+PARTNUM_RE = re.compile(r"^[0-9]+(?:\.[0-9]+)*$")
+
+
+def validate_imap_uid(value):
+    """Ensure a message UID (set) is safe to pass to imaplib.
+
+    Prevents IMAP command injection (CWE-93/CWE-74): imaplib does not
+    reject CRLF or quote command arguments, so any user-controlled value
+    reaching a command must be strictly validated first.
+    """
+    if value is None or not UID_RE.match(str(value)):
+        raise ImapError(_("Invalid message identifier"))
+    return str(value)
+
+
+def validate_imap_partnum(value):
+    """Ensure a MIME part number is safe to pass to imaplib."""
+    if value is None or not PARTNUM_RE.match(str(value)):
+        raise ImapError(_("Invalid part number"))
+    return str(value)
+
+
+def escape_search_pattern(pattern: str) -> str:
+    """Escape a user pattern before placing it in an IMAP quoted string.
+
+    Control characters (including CR/LF) cannot appear in an IMAP
+    quoted string and would allow command injection, so they are
+    rejected. Backslashes and double quotes are backslash-escaped as
+    required by RFC 3501.
+    """
+    if any(ord(c) < 0x20 or ord(c) == 0x7F for c in pattern):
+        raise ImapError(_("Invalid search pattern"))
+    return pattern.replace("\\", "\\\\").replace('"', '\\"')
+
 
 class BodyStructure:
     """
@@ -298,6 +335,7 @@ class IMAPconnector:
         if not pattern:
             criterions = "ALL"
         else:
+            pattern = escape_search_pattern(pattern)
             criterions = ""
             for c in criterion.split(","):
                 if c == "from_addr":
@@ -704,6 +742,8 @@ class IMAPconnector:
         :param partnum: the part number
         :return: a 2uple (dict, string)
         """
+        uid = validate_imap_uid(uid)
+        partnum = validate_imap_partnum(partnum)
         self.select_mailbox(mbox, False)
         data = self._cmd("FETCH", uid, f"(BODYSTRUCTURE BODY[{partnum}])")
         bs = BodyStructure(data[int(uid)]["BODYSTRUCTURE"])
@@ -774,6 +814,7 @@ class IMAPconnector:
         :param readonly:
         :param headers:
         """
+        mailid = validate_imap_uid(mailid)
         self.select_mailbox(mbox, readonly)
         if what == "bodystructure":
             to_fetch = "(BODYSTRUCTURE)"

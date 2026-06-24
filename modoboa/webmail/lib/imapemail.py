@@ -22,7 +22,7 @@ from modoboa.webmail import constants
 
 from . import imapheader
 from .attachments import get_storage_path
-from .imaputils import get_imapconnector, BodyStructure
+from .imaputils import get_imapconnector, validate_imap_uid, BodyStructure
 from .utils import decode_payload
 
 
@@ -45,6 +45,7 @@ class ImapEmail(Email):
         self.imapc = get_imapconnector(request)
         self.imapc = self.imapc.__enter__()
         self.mbox, self.mailid = self.mailid.split(":")
+        self.mailid = validate_imap_uid(self.mailid)
         self.attachments: dict[str, str] = {}
         self.To: list = []
 
