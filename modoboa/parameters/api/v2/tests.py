@@ -36,6 +36,42 @@ class GlobalParametersAPITestCase(ModoAPITestCase):
             resp = self.client.get(url)
             self.assertEqual(resp.status_code, 200)
 
+    def test_retrieve_hides_secrets_from_non_superadmins(self):
+        """Secret global parameters must not leak to privileged non-superusers."""
+        self.set_global_parameters(
+            {
+                "ldap_bind_password": "SECRET_BIND",
+                "ldap_sync_bind_password": "SECRET_SYNC",
+            },
+            app="core",
+        )
+        url = reverse("v2:parameter-global-detail", args=["core"])
+
+        # Superadmin keeps full read access (needed to pre-fill the admin form).
+        resp = self.client.get(url)
+        self.assertEqual(resp.status_code, 200)
+        params = resp.json()["params"]
+        self.assertEqual(params["ldap_bind_password"], "SECRET_BIND")
+        self.assertEqual(params["ldap_sync_bind_password"], "SECRET_SYNC")
+
+        # A DomainAdmin reads non-secret parameters but never the secrets.
+        populate_database()
+        domain_admin = User.objects.get(username="admin@test.com")
+        self.authenticate_user(domain_admin)
+        resp = self.client.get(url)
+        self.assertEqual(resp.status_code, 200)
+        params = resp.json()["params"]
+        self.assertNotIn("ldap_bind_password", params)
+        self.assertNotIn("ldap_sync_bind_password", params)
+        # Non-secret parameters are still returned.
+        self.assertIn("authentication_type", params)
+
+        # SimpleUsers remain forbidden entirely.
+        simple_user = User.objects.get(username="user@test.com")
+        self.authenticate_user(simple_user)
+        resp = self.client.get(url)
+        self.assertEqual(resp.status_code, 403)
+
     def test_update(self):
         data = {
             "enable_admin_limits": True,

@@ -52,13 +52,18 @@ class BaseParametersViewSet(GetThrottleViewsetMixin, viewsets.ViewSet):
         """Return all parameters for given app."""
         parameters = self._get_parameter_values(request, pk)
         serializer = tools.registry.get_serializer_class(self.level, pk)(parameters)
+        params = self._filter_parameter_values(request, pk, dict(serializer.data))
         result = serializers.AppParametersSerializer(
             {
                 "label": tools.registry.get_label(self.level, pk),
-                "params": serializer.data,
+                "params": params,
             }
         )
         return response.Response(result.data)
+
+    def _filter_parameter_values(self, request, app: str, data: dict) -> dict:
+        """Allow subclasses to redact serialized values before returning them."""
+        return data
 
     def _save_parameter_values(self, request, app: str, data: dict) -> None:
         raise NotImplementedError
@@ -100,6 +105,15 @@ class GlobalParametersViewSet(BaseParametersViewSet):
 
     def _get_parameter_values(self, request, app: str) -> dict:
         return request.localconfig.parameters.get_values_dict(app)
+
+    def _filter_parameter_values(self, request, app: str, data: dict) -> dict:
+        # Secret parameters (LDAP/SMS credentials, ...) must never be exposed
+        # to non-superadmins, even though privileged users may legitimately
+        # read non-secret global parameters.
+        if not request.user.is_superuser:
+            for name in tools.registry.get_secret_parameters(self.level, app):
+                data.pop(name, None)
+        return data
 
     def _save_parameter_values(self, request, app: str, data: dict) -> None:
         request.localconfig.parameters.set_values(data, app=app)
