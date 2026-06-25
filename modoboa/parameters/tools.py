@@ -140,6 +140,16 @@ class Registry:
                 result.append(item)
         return result
 
+    def get_secret_parameters(self, level: str, app: str) -> set:
+        """Return names of parameters flagged as secret (password fields)."""
+        fields = self._registry2[level].get(app, {})
+        return {
+            name
+            for sconfig in fields.get("structure", {}).values()
+            for name, config in sconfig.get("params", {}).items()
+            if config.get("password")
+        }
+
     def exists(self, level: str, app: str, parameter: str | None = None) -> bool:
         """Check if parameter exists."""
         parameters = self._registry2[level]
