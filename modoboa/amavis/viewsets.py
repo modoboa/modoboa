@@ -55,13 +55,18 @@ class QuarantineViewSet(viewsets.GenericViewSet):
     ]
     permission_classes = (permissions.IsAuthenticated,)
 
-    def _check_message_access(self, request, mail_id):
+    def _check_message_access(self, request, mail_id, rcpt=None):
         """Check that the current user can access the given message.
 
         For selfservice auth, access is already validated by
         SelfServiceAuthentication.
         For authenticated users, check that at least one recipient of
         the message matches the user's valid addresses / domains.
+
+        When ``rcpt`` is provided, the check is narrowed to that specific
+        recipient. This is required for write actions (delete/release)
+        which act on a single recipient and must not be allowed to target
+        a recipient outside the user's scope.
         """
         if request.auth == "selfservice":
             return
@@ -73,6 +78,8 @@ class QuarantineViewSet(viewsets.GenericViewSet):
         rcpts = Msgrcpt.objects.annotate(str_email=ConvertFrom("rid__email")).filter(
             mail=mail_id.encode("ascii")
         )
+        if rcpt is not None:
+            rcpts = rcpts.filter(str_email=rcpt)
         if request.user.role == "SimpleUsers":
             valid_addresses = get_user_valid_addresses(request.user)
             if not rcpts.filter(str_email__in=valid_addresses).exists():
@@ -179,13 +186,9 @@ class QuarantineViewSet(viewsets.GenericViewSet):
 
     def _release_selection(self, request, selection):
         connector = SQLconnector()
-        valid_addresses = None
-        if request.user:
-            valid_addresses = get_user_valid_addresses(request.user)
         msgrcpts = []
         for item in selection:
-            if valid_addresses and item["rcpt"] not in valid_addresses:
-                continue
+            self._check_message_access(request, item["mailid"], item["rcpt"])
             msgrcpts += [
                 (
                     item["mailid"],
@@ -231,12 +234,8 @@ class QuarantineViewSet(viewsets.GenericViewSet):
 
     def _delete_selection(self, request, selection):
         connector = SQLconnector()
-        valid_addresses = None
-        if request.user:
-            valid_addresses = get_user_valid_addresses(request.user)
         for item in selection:
-            if valid_addresses and item["rcpt"] not in valid_addresses:
-                continue
+            self._check_message_access(request, item["mailid"], item["rcpt"])
             connector.set_msgrcpt_status(item["rcpt"], item["mailid"], "D")
         return response.Response(status=204)
 
@@ -256,6 +255,8 @@ class QuarantineViewSet(viewsets.GenericViewSet):
     def mark_selection(self, request):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
+        for item in serializer.validated_data["selection"]:
+            self._check_message_access(request, item["mailid"], item["rcpt"])
         if not manual_learning_enabled(request.user):
             return response.Response({"status": "ok"})
         recipient_db = serializer.validated_data.get("database")

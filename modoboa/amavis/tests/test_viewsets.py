@@ -188,6 +188,89 @@ class QuarantineViewSetTestCase(TestDataMixin, ModoAPITestCase):
         self.msgrcpt.refresh_from_db()
         self.assertEqual(self.msgrcpt.rs, "D")
 
+    def test_delete_denied_cross_domain(self):
+        """A domain admin cannot delete a message for a domain they don't manage."""
+        admin2 = core_models.User.objects.get(username="admin@test2.com")
+        self.client.force_authenticate(admin2)
+        mail_id = smart_str(self.msgrcpt.mail.mail_id)
+        url = reverse("v2:amavis-quarantine-delete", args=[mail_id])
+        data = {"mailid": mail_id, "rcpt": smart_str(self.msgrcpt.rid.email)}
+        response = self.client.post(url, data, format="json")
+        self.assertEqual(response.status_code, 404)
+        self.msgrcpt.refresh_from_db()
+        self.assertEqual(self.msgrcpt.rs, " ")
+
+    def test_delete_denied_simple_user(self):
+        """A simple user cannot delete another user's message."""
+        user = core_models.User.objects.get(username="user@test2.com")
+        self.client.force_authenticate(user)
+        mail_id = smart_str(self.msgrcpt.mail.mail_id)
+        url = reverse("v2:amavis-quarantine-delete", args=[mail_id])
+        data = {"mailid": mail_id, "rcpt": smart_str(self.msgrcpt.rid.email)}
+        response = self.client.post(url, data, format="json")
+        self.assertEqual(response.status_code, 404)
+        self.msgrcpt.refresh_from_db()
+        self.assertEqual(self.msgrcpt.rs, " ")
+
+    def test_delete_selection_denied_cross_domain(self):
+        """A domain admin cannot bulk delete messages for other domains."""
+        admin2 = core_models.User.objects.get(username="admin@test2.com")
+        self.client.force_authenticate(admin2)
+        mail_id = smart_str(self.msgrcpt.mail.mail_id)
+        url = reverse("v2:amavis-quarantine-delete-selection")
+        data = {
+            "selection": [
+                {"mailid": mail_id, "rcpt": smart_str(self.msgrcpt.rid.email)}
+            ]
+        }
+        response = self.client.post(url, data, format="json")
+        self.assertEqual(response.status_code, 404)
+        self.msgrcpt.refresh_from_db()
+        self.assertEqual(self.msgrcpt.rs, " ")
+
+    def test_delete_domain_admin(self):
+        """A domain admin can delete a message for a domain they manage."""
+        admin = core_models.User.objects.get(username="admin@test.com")
+        self.client.force_authenticate(admin)
+        mail_id = smart_str(self.msgrcpt.mail.mail_id)
+        url = reverse("v2:amavis-quarantine-delete", args=[mail_id])
+        data = {"mailid": mail_id, "rcpt": smart_str(self.msgrcpt.rid.email)}
+        response = self.client.post(url, data, format="json")
+        self.assertEqual(response.status_code, 204)
+        self.msgrcpt.refresh_from_db()
+        self.assertEqual(self.msgrcpt.rs, "D")
+
+    @mock.patch("socket.socket")
+    def test_release_denied_cross_domain(self, mock_socket):
+        """A domain admin cannot release a message for a domain they don't manage."""
+        mock_socket.return_value.recv.return_value = b"250 1234 Ok\r\n"
+        admin2 = core_models.User.objects.get(username="admin@test2.com")
+        self.client.force_authenticate(admin2)
+        mail_id = smart_str(self.msgrcpt.mail.mail_id)
+        url = reverse("v2:amavis-quarantine-release", args=[mail_id])
+        data = {"mailid": mail_id, "rcpt": smart_str(self.msgrcpt.rid.email)}
+        response = self.client.post(url, data, format="json")
+        self.assertEqual(response.status_code, 404)
+        self.msgrcpt.refresh_from_db()
+        self.assertEqual(self.msgrcpt.rs, " ")
+
+    def test_mark_selection_denied_cross_domain(self):
+        """A domain admin cannot mark messages for a domain they don't manage."""
+        admin2 = core_models.User.objects.get(username="admin@test2.com")
+        self.client.force_authenticate(admin2)
+        mail_id = smart_str(self.msgrcpt.mail.mail_id)
+        url = reverse("v2:amavis-quarantine-mark-selection")
+        data = {
+            "selection": [
+                {"mailid": mail_id, "rcpt": smart_str(self.msgrcpt.rid.email)}
+            ],
+            "type": "ham",
+        }
+        response = self.client.post(url, data, format="json")
+        self.assertEqual(response.status_code, 404)
+        self.msgrcpt.refresh_from_db()
+        self.assertEqual(self.msgrcpt.rs, " ")
+
     @mock.patch("socket.socket")
     def test_release(self, mock_socket):
         mock_socket.return_value.recv.return_value = b"250 1234 Ok\r\n"
