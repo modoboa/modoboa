@@ -162,6 +162,96 @@ class ViewSetTestCase(DataMixin, ModoAPITestCase):
             "Migrated domain with name gmail.com already exists",
         )
 
+    def test_migration_list_cross_tenant_isolation(self):
+        """A user must not see migrations/providers of other tenants.
+
+        Reproduces MODOBOA-F02: an authenticated SimpleUser of test2.com
+        used to be able to list migrations and providers belonging to
+        test.com through GET /api/v2/migrations/ and
+        /api/v2/email-providers/.
+        """
+        # cls.migration targets user@test.com (see DataMixin).
+        factories.EmailProviderDomainFactory(
+            provider=self.migration.provider,
+            name="legacy-test.com",
+            new_domain=admin_models.Domain.objects.get(name="test.com"),
+        )
+        migration_url = reverse("v2:migration-list")
+        provider_url = reverse("v2:emailprovider-list")
+
+        # SuperAdmin sees everything.
+        for url in (migration_url, provider_url):
+            response = self.client.get(url)
+            self.assertEqual(response.status_code, 200)
+            self.assertEqual(len(response.json()), 1)
+
+        # SimpleUser of test2.com sees nothing belonging to test.com.
+        attacker = core_models.User.objects.get(username="user@test2.com")
+        self.authenticate_user(attacker)
+        for url in (migration_url, provider_url):
+            response = self.client.get(url)
+            self.assertEqual(response.status_code, 200)
+            self.assertEqual(response.json(), [])
+
+        # DomainAdmin of test2.com must not see test.com data either.
+        admin2 = core_models.User.objects.get(username="admin@test2.com")
+        self.authenticate_user(admin2)
+        for url in (migration_url, provider_url):
+            response = self.client.get(url)
+            self.assertEqual(response.status_code, 200)
+            self.assertEqual(response.json(), [])
+
+        # The legitimate SimpleUser (owner of the mailbox) sees its migration.
+        owner = core_models.User.objects.get(username="user@test.com")
+        self.authenticate_user(owner)
+        response = self.client.get(migration_url)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(response.json()), 1)
+
+        # DomainAdmin of test.com sees its tenant's data.
+        admin1 = core_models.User.objects.get(username="admin@test.com")
+        self.authenticate_user(admin1)
+        for url in (migration_url, provider_url):
+            response = self.client.get(url)
+            self.assertEqual(response.status_code, 200)
+            self.assertEqual(len(response.json()), 1)
+
+    def test_check_connection_denied_to_simple_users(self):
+        """check_connection/check_associated_domain are setup-only actions.
+
+        A SimpleUser must not be able to trigger outbound IMAP connections
+        or probe domains through these endpoints.
+        """
+        check_url = reverse("v2:emailprovider-check-connection")
+        domain_url = reverse("v2:emailprovider-check-associated-domain")
+
+        attacker = core_models.User.objects.get(username="user@test2.com")
+        self.authenticate_user(attacker)
+        with mock.patch("imaplib.IMAP4_SSL") as mock_imap:
+            response = self.client.post(
+                check_url,
+                {"address": "imap.example.test", "port": 993, "secured": True},
+                format="json",
+            )
+        self.assertEqual(response.status_code, 403)
+        mock_imap.assert_not_called()
+
+        response = self.client.post(
+            domain_url, {"name": "legacy-test.com"}, format="json"
+        )
+        self.assertEqual(response.status_code, 403)
+
+        # A privileged user is still allowed.
+        admin1 = core_models.User.objects.get(username="admin@test.com")
+        self.authenticate_user(admin1)
+        with mock.patch("imaplib.IMAP4_SSL"):
+            response = self.client.post(
+                check_url,
+                {"address": "imap.example.test", "port": 993, "secured": True},
+                format="json",
+            )
+        self.assertEqual(response.status_code, 200)
+
     def test_update_provider(self):
         provider_domain = factories.EmailProviderDomainFactory(name="outlook.com")
         url = reverse("v2:emailprovider-detail", args=[provider_domain.provider.pk])

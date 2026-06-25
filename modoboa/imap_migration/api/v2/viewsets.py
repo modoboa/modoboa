@@ -6,6 +6,8 @@ import ssl
 from rest_framework import response, filters, mixins, permissions, viewsets
 from rest_framework.decorators import action
 
+from modoboa.admin import models as admin_models
+from modoboa.lib.permissions import IsPrivilegedUser
 from modoboa.lib.throttle import GetThrottleViewsetMixin
 
 from ... import models
@@ -23,6 +25,24 @@ class EmailProviderViewSet(GetThrottleViewsetMixin, viewsets.ModelViewSet):
     queryset = models.EmailProvider.objects.all().prefetch_related("domains")
     search_fields = ("name",)
     serializer_class = serializers.EmailProviderSerializer
+
+    def get_queryset(self):
+        """Restrict providers to those the current user is allowed to see."""
+        user = self.request.user
+        qset = super().get_queryset()
+        if user.role == "SuperAdmins":
+            return qset
+        if user.role in ("DomainAdmins", "Resellers"):
+            domains = admin_models.Domain.objects.get_for_admin(user)
+            return qset.filter(domains__new_domain__in=domains).distinct()
+        # SimpleUsers have no business listing migration providers.
+        return qset.none()
+
+    def get_permissions(self):
+        """The setup-only actions must stay out of reach of simple users."""
+        if self.action in ("check_connection", "check_associated_domain"):
+            return [permissions.IsAuthenticated(), IsPrivilegedUser()]
+        return super().get_permissions()
 
     @action(methods=["post"], detail=False)
     def check_connection(self, request, **kwargs):
@@ -75,3 +95,16 @@ class MigrationViewSet(
         "mailbox__domain__name",
     )
     serializer_class = serializers.MigrationSerializer
+
+    def get_queryset(self):
+        """Restrict migrations to those the current user is allowed to see."""
+        user = self.request.user
+        qset = super().get_queryset()
+        if user.role == "SuperAdmins":
+            return qset
+        if user.role == "SimpleUsers":
+            return qset.filter(mailbox__user=user)
+        if user.role in ("DomainAdmins", "Resellers"):
+            mailboxes = admin_models.Mailbox.objects.get_for_admin(user)
+            return qset.filter(mailbox__in=mailboxes)
+        return qset.none()
