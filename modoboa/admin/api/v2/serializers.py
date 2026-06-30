@@ -670,14 +670,16 @@ class WritableAccountSerializer(v1_serializers.WritableAccountSerializer):
         if not domain_names:
             return data
         domains = []
+        creator = self.context["request"].user
         for name in domain_names:
             domain = models.Domain.objects.filter(name=name).first()
-            if domain:
-                domains.append(domain)
-                continue
-            raise serializers.ValidationError(
-                {"domains": _("Local domain {} does not exist").format(name)}
-            )
+            if not domain:
+                raise serializers.ValidationError(
+                    {"domains": _("Local domain {} does not exist").format(name)}
+                )
+            if not creator.can_access(domain):
+                raise serializers.ValidationError({"domains": _("Permission denied.")})
+            domains.append(domain)
         data["domains"] = domains
         return data
 
