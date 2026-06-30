@@ -1,5 +1,7 @@
 """API v2 serializers."""
 
+import re
+
 from django.utils.translation import gettext_lazy as _
 
 from rest_framework import serializers
@@ -8,6 +10,20 @@ from modoboa.admin.models import Mailbox
 from modoboa.admin.models.domain import Domain
 
 from modoboa.imap_migration import models
+
+
+def validate_no_code_injection(value):
+    """Reject characters allowing breakout from the offlineimap config.
+
+    The folder filter parameters are interpolated into Python expressions
+    that offlineimap evaluates (``lambda`` / list literal). A single quote,
+    backslash or newline would let an attacker escape the surrounding string
+    literal and inject arbitrary code (CWE-94).
+    """
+    if any(c in value for c in ("'", "\\", "\n", "\r")):
+        raise serializers.ValidationError(
+            _("Quotes, backslashes and newlines are not allowed.")
+        )
 
 
 class IMAPMigrationSettingsSerializer(serializers.Serializer):
@@ -27,6 +43,20 @@ class IMAPMigrationSettingsSerializer(serializers.Serializer):
     folder_filter_include = serializers.CharField(
         required=False, allow_blank=True, default=""
     )
+
+    def validate_folder_filter_exclude(self, value):
+        validate_no_code_injection(value)
+        try:
+            re.compile(value)
+        except re.error:
+            raise serializers.ValidationError(
+                _("Invalid regular expression.")
+            ) from None
+        return value
+
+    def validate_folder_filter_include(self, value):
+        validate_no_code_injection(value)
+        return value
 
 
 class EmailProviderDomainSerializer(serializers.ModelSerializer):
