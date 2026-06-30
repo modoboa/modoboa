@@ -89,6 +89,11 @@ class DomainSerializer(serializers.ModelSerializer):
 
     def validate_name(self, value):
         """Check name constraints."""
+        value = value.lower()
+        try:
+            validators.validate_hostname(value)
+        except ValidationError:
+            raise serializers.ValidationError(_("Enter a valid domain name")) from None
         if models.DomainAlias.objects.filter(name=value).exists():
             raise serializers.ValidationError(
                 _("domain alias with this name already exists")
@@ -97,7 +102,6 @@ class DomainSerializer(serializers.ModelSerializer):
             "domains_must_have_authorized_mx"
         )
         user = self.context["request"].user
-        value = value.lower()
         if domains_must_have_authorized_mx and not user.is_superuser:
             if not lib.domain_has_authorized_mx(value):
                 raise serializers.ValidationError(
