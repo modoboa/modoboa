@@ -167,6 +167,28 @@ class UserCalendarViewSetTestCase(TestDataMixin, ModoAPITestCase):
         self.assertEqual(response.status_code, 201)
 
     @mock.patch("caldav.DAVClient")
+    def test_create_calendar_rejects_rights_injection(self, client_mock):
+        """A newline in the name must not reach the rights file."""
+        client_mock.return_value = mocks.DAVClientMock()
+        data = {"username": "user@test.com", "password": "toto"}
+        self.client.post(reverse("core:login"), data)
+
+        url = reverse("api:user-calendar-list")
+        payload = {
+            "name": (
+                "cal\n[zzz-pwned]\nuser: attacker@example\n"
+                "collection: .*\npermissions: RrWw\n#"
+            ),
+            "color": "#ffffff",
+        }
+        response = self.client.post(url, payload, format="json")
+        self.assertEqual(response.status_code, 400)
+        self.assertIn("name", response.json())
+        self.assertFalse(
+            models.UserCalendar.objects.filter(name__contains="zzz-pwned").exists()
+        )
+
+    @mock.patch("caldav.DAVClient")
     @mock.patch("caldav.Calendar")
     def test_update_calendar(self, cal_mock, client_mock):
         """Update existing calendar."""
