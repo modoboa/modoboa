@@ -19,6 +19,7 @@ from modoboa.admin import factories
 from modoboa.admin import models
 from modoboa.admin.tests import utils
 from modoboa.core import factories as core_factories, models as core_models
+from modoboa.lib.permissions import grant_access_to_object
 from modoboa.lib.tests import ModoAPITestCase
 
 
@@ -378,6 +379,39 @@ class AccountAPITestCase(ModoAPITestCase):
 
         data["username"] = "domain_admin"
         del data["mailbox"]
+        response = self.client.post(url, data, format="json")
+        self.assertEqual(response.status_code, 201)
+
+    def test_create_domainadmin_account_non_owned_domain(self):
+        """A reseller must not assign domains it cannot access.
+
+        Regression test: the ``domains`` field used to be validated for
+        existence only, allowing a reseller to grant a planted domain admin
+        full access to another tenant's domain (cross-tenant takeover).
+        """
+        reseller = core_factories.UserFactory(
+            username="reseller", groups=("Resellers",)
+        )
+        # The reseller owns test.com but not test2.com.
+        grant_access_to_object(
+            reseller, models.Domain.objects.get(name="test.com"), is_owner=True
+        )
+        token = Token.objects.create(user=reseller)
+        self.client.credentials(HTTP_AUTHORIZATION="Token " + token.key)
+        url = reverse("v1:account-list")
+
+        data = copy.deepcopy(self.ACCOUNT_DATA)
+        del data["mailbox"]
+        data["username"] = "pwn"
+        data["role"] = "DomainAdmins"
+        data["domains"] = ["test2.com"]
+        response = self.client.post(url, data, format="json")
+        self.assertEqual(response.status_code, 400)
+        self.assertIn("domains", response.json())
+        self.assertFalse(core_models.User.objects.filter(username="pwn").exists())
+
+        # An owned domain is still accepted.
+        data["domains"] = ["test.com"]
         response = self.client.post(url, data, format="json")
         self.assertEqual(response.status_code, 201)
 

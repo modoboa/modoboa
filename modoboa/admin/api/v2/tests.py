@@ -8,6 +8,7 @@ from rest_framework.authtoken.models import Token
 
 from modoboa.admin import factories, models, constants
 from modoboa.core import factories as core_factories, models as core_models
+from modoboa.lib.permissions import grant_access_to_object
 from modoboa.lib.tests import ModoAPITestCase
 
 
@@ -230,6 +231,40 @@ class AccountViewSetTestCase(ModoAPITestCase):
         }
         resp = self.client.post(url, data, format="json")
         self.assertEqual(resp.status_code, 400)
+
+    def test_create_domainadmin_account_non_owned_domain(self):
+        """A reseller must not assign domains it cannot access.
+
+        Regression test for cross-tenant privilege escalation: the ``domains``
+        field used to be validated for existence only. The field is only
+        exposed when admin limits are disabled.
+        """
+        self.set_global_parameter("enable_admin_limits", False, app="limits")
+        reseller = core_factories.UserFactory(
+            username="reseller", groups=("Resellers",)
+        )
+        # The reseller owns test.com but not test2.com.
+        grant_access_to_object(
+            reseller, models.Domain.objects.get(name="test.com"), is_owner=True
+        )
+        token = Token.objects.create(user=reseller)
+        self.client.credentials(HTTP_AUTHORIZATION="Token " + token.key)
+        url = reverse("v2:account-list")
+        data = {
+            "username": "pwn",
+            "role": "DomainAdmins",
+            "password": "Toto12345",
+            "domains": ["test2.com"],
+        }
+        resp = self.client.post(url, data, format="json")
+        self.assertEqual(resp.status_code, 400)
+        self.assertIn("domains", resp.json())
+        self.assertFalse(core_models.User.objects.filter(username="pwn").exists())
+
+        # An owned domain is still accepted.
+        data["domains"] = ["test.com"]
+        resp = self.client.post(url, data, format="json")
+        self.assertEqual(resp.status_code, 201)
 
     def test_create_with_bad_password(self):
         url = reverse("v2:account-list")
