@@ -4,6 +4,7 @@ import os
 
 from six.moves import urllib
 
+from django.core.validators import RegexValidator
 from django.db import models
 from django.utils.encoding import smart_str
 from django.utils.translation import gettext as _
@@ -14,10 +15,19 @@ from modoboa.lib import exceptions as lib_exceptions
 from modoboa.parameters import tools as param_tools
 
 
+#: A calendar name ends up verbatim in the Radicale rights file (an INI file)
+#: and in the collection path. Forbid the characters that would let a name
+#: break out of its value: path separators, newlines and NUL.
+calendar_name_validator = RegexValidator(
+    regex=r"^[^/\\\r\n\x00]+$",
+    message=_("Calendar name contains invalid characters."),
+)
+
+
 class Calendar(models.Model):
     """Abstract calendar definition."""
 
-    name = models.CharField(max_length=200)
+    name = models.CharField(max_length=200, validators=[calendar_name_validator])
     color = models.CharField(max_length=7, default="#3a87ad")
     _path = models.TextField()
     access_token = models.CharField(max_length=50)
