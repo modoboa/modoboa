@@ -290,3 +290,50 @@ class ChecksTestCase(ModoTestCase):
         self.assertEqual(checks.check_auto_creation_is_enabled(None), [])
         self.set_global_parameter("auto_create_domain_and_mailbox", False, app="admin")
         self.assertEqual(checks.check_auto_creation_is_enabled(None), [checks.W001])
+
+
+class SettingsTestCase(ModoAPITestCase):
+    """Global parameters validation test case."""
+
+    def _update(self, data):
+        url = reverse("v2:parameter-global-detail", args=["imap_migration"])
+        return self.client.put(url, data, format="json")
+
+    def test_folder_filters_reject_code_injection(self):
+        """Folder filters must not allow breaking out of the offlineimap config.
+
+        ``folder_filter_exclude`` and ``folder_filter_include`` are
+        interpolated into Python expressions evaluated by offlineimap. A
+        single quote would let a SuperAdmin escape the surrounding string
+        literal and achieve arbitrary code execution (CWE-94).
+        """
+        # PoC payload from the report.
+        payload = (
+            ".*)', folder) or __import__('os').system('id > /tmp/pwned') "
+            "or re.search('(.*"
+        )
+        response = self._update({"folder_filter_exclude": payload})
+        self.assertEqual(response.status_code, 400)
+        self.assertIn("folder_filter_exclude", response.json())
+
+        response = self._update({"folder_filter_include": "a','b']);__import__"})
+        self.assertEqual(response.status_code, 400)
+        self.assertIn("folder_filter_include", response.json())
+
+        # A newline could inject extra offlineimap config directives.
+        response = self._update({"folder_filter_exclude": "Trash\npythonfile = /x"})
+        self.assertEqual(response.status_code, 400)
+
+    def test_folder_filter_exclude_rejects_invalid_regex(self):
+        response = self._update({"folder_filter_exclude": "(unbalanced"})
+        self.assertEqual(response.status_code, 400)
+        self.assertIn("folder_filter_exclude", response.json())
+
+    def test_legitimate_folder_filters_accepted(self):
+        response = self._update(
+            {
+                "folder_filter_exclude": "^Trash$|Del",
+                "folder_filter_include": "debian.user, debian.personal",
+            }
+        )
+        self.assertEqual(response.status_code, 200)
