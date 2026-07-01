@@ -43,6 +43,27 @@ class DomainViewSetTestCase(ModoAPITestCase):
             models.Alias.objects.filter(address="postmaster@domain.tld").exists()
         )
 
+    def test_create_rejects_invalid_name(self):
+        """Reject domain names with path traversal or other invalid chars."""
+        url = reverse("v2:domain-list")
+        for name in [
+            "../attacker_controlled",
+            "./test.com",
+            "foo/bar",
+            "test..com",
+            "/etc/passwd",
+        ]:
+            data = {
+                "name": name,
+                "quota": 0,
+                "default_mailbox_quota": 0,
+                "type": "domain",
+            }
+            resp = self.client.post(url, data, format="json")
+            self.assertEqual(resp.status_code, 400, f"{name} should be rejected")
+            self.assertIn("name", resp.json())
+            self.assertFalse(models.Domain.objects.filter(name=name).exists())
+
     def test_update(self):
         domain = models.Domain.objects.get(name="test2.com")
         data = {
