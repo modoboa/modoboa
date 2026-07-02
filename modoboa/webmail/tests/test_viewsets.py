@@ -128,6 +128,12 @@ class UserMailboxViewSetTestCase(WebmailTestCase):
         response = self.client.post(url, body, format="json")
         self.assertEqual(response.status_code, 200)
 
+        # Top-level folders send an empty parent_mailbox: it must not be
+        # rejected as blank.
+        body = {"name": "Test renamed", "oldname": "Test", "parent_mailbox": ""}
+        response = self.client.post(url, body, format="json")
+        self.assertEqual(response.status_code, 200)
+
     def test_compress(self):
         self.authenticate()
         url = reverse("v2:webmail-mailbox-compress")
