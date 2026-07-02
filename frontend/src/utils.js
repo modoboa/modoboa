@@ -50,4 +50,19 @@ function toGettextLocale(code) {
   return code
 }
 
-export { getAbsoluteUrl, localeToBCP47, toGettextLocale }
+/**
+ * Whether a backend language code has actual UI coverage.
+ *
+ * A language is considered covered when the compiled gettext
+ * `translations` object has a non-empty entry for its locale. The source
+ * language needs no translations and is always considered covered.
+ */
+function languageHasCoverage(translations, code, sourceLanguage) {
+  if (code === sourceLanguage) {
+    return true
+  }
+  const messages = translations[toGettextLocale(code)]
+  return !!messages && Object.keys(messages).length > 0
+}
+
+export { getAbsoluteUrl, localeToBCP47, toGettextLocale, languageHasCoverage }
