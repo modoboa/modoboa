@@ -1,12 +1,14 @@
 <template>
   <div class="email-list-wrapper">
     <v-card class="email-toolbar-card">
+      <!-- Contextual toolbar (Gmail-style): browsing state shows the search
+           and passive controls; the moment something is selected it swaps to
+           the bulk actions. The two never compete for width, so the bar fits
+           any pane width (wrapping is driven by @container, not viewport). -->
       <v-toolbar class="email-toolbar">
-        <!-- Desktop: select-all sits at the far left. On mobile it moves to the
-           bottom row, next to the message counter (see below). -->
         <v-checkbox
           v-model="selectAll"
-          class="mr-4 select-all-desktop"
+          class="select-all"
           density="compact"
           hide-details
           color="primary"
@@ -14,146 +16,176 @@
           @update:model-value="toggleAllSelection"
         />
 
-        <v-text-field
-          ref="searchField"
-          v-model="search"
-          prepend-inner-icon="mdi-magnify"
-          :placeholder="$gettext('Search in messages')"
-          :aria-label="$gettext('Search in messages')"
-          variant="outlined"
-          single-line
-          flat
-          hide-details
-          density="compact"
-          class="flex-grow-0 w-33 mr-4 search-field"
-          clearable
-          @click:clear="submitSearch"
-          @keyup.enter="submitSearch"
-        ></v-text-field>
-        <v-btn
-          v-if="!inScheduledView"
-          class="ml-2"
-          color="secondary"
-          variant="tonal"
-          icon="mdi-pencil"
-          size="small"
-          :title="$gettext('Compose')"
-          :aria-label="$gettext('Compose')"
-          @click="openComposeForm"
-        >
-        </v-btn>
-        <v-btn
-          v-if="!inScheduledView"
-          class="ml-2"
-          color="error"
-          variant="tonal"
-          icon="mdi-trash-can"
-          size="small"
-          :title="$gettext('Delete selection')"
-          :aria-label="$gettext('Delete selection')"
-          :loading="working"
-          @click="deleteSelection"
-        >
-        </v-btn>
-        <template v-if="!inScheduledView">
+        <template v-if="!hasSelection">
+          <v-text-field
+            ref="searchField"
+            v-model="search"
+            prepend-inner-icon="mdi-magnify"
+            :placeholder="$gettext('Search in messages')"
+            :aria-label="$gettext('Search in messages')"
+            variant="outlined"
+            single-line
+            flat
+            hide-details
+            density="compact"
+            class="search-field"
+            clearable
+            @click:clear="submitSearch"
+            @keyup.enter="submitSearch"
+          ></v-text-field>
+          <v-btn
+            v-if="!inScheduledView"
+            class="tb-btn"
+            variant="text"
+            icon="mdi-pencil"
+            size="small"
+            :title="$gettext('Compose')"
+            :aria-label="$gettext('Compose')"
+            @click="openComposeForm"
+          >
+          </v-btn>
+          <v-btn
+            class="tb-btn"
+            variant="text"
+            icon="mdi-refresh"
+            size="small"
+            :loading="loadingMore"
+            :title="$gettext('Refresh')"
+            :aria-label="$gettext('Refresh')"
+            @click="reloadListing"
+          >
+          </v-btn>
           <v-btn
             v-if="currentMailbox === 'Trash'"
-            class="ml-2"
-            color="primary"
-            variant="tonal"
-            icon="mdi-backup-restore"
+            class="tb-btn"
+            variant="text"
+            icon
             size="small"
-            :title="$gettext('Restore to Inbox')"
-            :aria-label="$gettext('Restore to Inbox')"
+            :title="$gettext('More actions')"
+            :aria-label="$gettext('More actions')"
+          >
+            <v-icon icon="mdi-cog" />
+            <v-menu activator="parent">
+              <v-list density="compact">
+                <v-list-item
+                  :title="$gettext('Empty mailbox')"
+                  prepend-icon="mdi-trash-can"
+                  @click="emptyMailbox"
+                />
+              </v-list>
+            </v-menu>
+          </v-btn>
+          <v-spacer />
+          <div
+            class="count-nav"
+            :title="$gettext('Loaded / total messages')"
+          >
+            {{ store.emails.length }}/{{ store.emailCount }}
+          </div>
+        </template>
+
+        <template v-else>
+          <span class="selection-label">{{ selectionLabel }}</span>
+          <v-spacer />
+          <v-btn
+            v-if="!inScheduledView"
+            class="ml-1"
+            color="error"
+            variant="tonal"
+            icon="mdi-trash-can"
+            size="small"
+            :title="$gettext('Delete selection')"
+            :aria-label="$gettext('Delete selection')"
             :loading="working"
-            @click="restoreSelection"
+            @click="deleteSelection"
           >
           </v-btn>
+          <template v-if="!inScheduledView">
+            <v-btn
+              v-if="currentMailbox === 'Trash'"
+              class="ml-1"
+              color="primary"
+              variant="tonal"
+              icon="mdi-backup-restore"
+              size="small"
+              :title="$gettext('Restore to Inbox')"
+              :aria-label="$gettext('Restore to Inbox')"
+              :loading="working"
+              @click="restoreSelection"
+            >
+            </v-btn>
+            <v-btn
+              v-else-if="currentMailbox === 'Junk'"
+              class="ml-1"
+              color="success"
+              variant="tonal"
+              icon="mdi-thumb-up"
+              size="small"
+              :title="$gettext('Mark selection as not junk')"
+              :aria-label="$gettext('Mark selection as not junk')"
+              :loading="working"
+              @click="markSelectionAsNotJunk"
+            >
+            </v-btn>
+            <v-btn
+              v-else
+              class="ml-1"
+              color="warning"
+              variant="tonal"
+              icon="mdi-alert-octagon-outline"
+              size="small"
+              :title="$gettext('Mark selection as junk')"
+              :aria-label="$gettext('Mark selection as junk')"
+              :loading="working"
+              @click="markSelectionAsJunk"
+            >
+            </v-btn>
+          </template>
           <v-btn
-            v-else-if="currentMailbox === 'Junk'"
-            class="ml-2"
-            color="success"
+            class="ml-1"
             variant="tonal"
-            icon="mdi-thumb-up"
+            icon
             size="small"
-            :title="$gettext('Mark selection as not junk')"
-            :aria-label="$gettext('Mark selection as not junk')"
-            :loading="working"
-            @click="markSelectionAsNotJunk"
+            :title="$gettext('More actions')"
+            :aria-label="$gettext('More actions')"
           >
+            <v-icon icon="mdi-dots-vertical" />
+            <v-menu activator="parent">
+              <v-list density="compact">
+                <v-list-item
+                  :title="$gettext('Mark as read')"
+                  prepend-icon="mdi-eye"
+                  @click="() => flagSelection('read')"
+                />
+                <v-list-item
+                  :title="$gettext('Mark as unread')"
+                  prepend-icon="mdi-eye-outline"
+                  @click="() => flagSelection('unread')"
+                />
+                <v-list-item
+                  :title="$gettext('Mark as followed')"
+                  prepend-icon="mdi-star"
+                  @click="() => flagSelection('flagged')"
+                />
+                <v-list-item
+                  :title="$gettext('Mark as unfollowed')"
+                  prepend-icon="mdi-star-outline"
+                  @click="() => flagSelection('unflagged')"
+                />
+              </v-list>
+            </v-menu>
           </v-btn>
           <v-btn
-            v-else
-            class="ml-2"
-            color="warning"
-            variant="tonal"
-            icon="mdi-alert-octagon-outline"
+            class="ml-1"
+            variant="text"
+            icon="mdi-close"
             size="small"
-            :title="$gettext('Mark selection as junk')"
-            :aria-label="$gettext('Mark selection as junk')"
-            :loading="working"
-            @click="markSelectionAsJunk"
+            :title="$gettext('Clear selection')"
+            :aria-label="$gettext('Clear selection')"
+            @click="clearSelection"
           >
           </v-btn>
         </template>
-        <v-btn
-          class="ml-2"
-          variant="tonal"
-          icon
-          size="small"
-          :title="$gettext('More actions')"
-          :aria-label="$gettext('More actions')"
-        >
-          <v-icon icon="mdi-cog" />
-          <v-menu activator="parent">
-            <v-list density="compact">
-              <v-list-item
-                :title="$gettext('Mark as read')"
-                prepend-icon="mdi-eye"
-                @click="() => flagSelection('read')"
-              />
-              <v-list-item
-                :title="$gettext('Mark as unread')"
-                prepend-icon="mdi-eye-outline"
-                @click="() => flagSelection('unread')"
-              />
-              <v-list-item
-                :title="$gettext('Mark as followed')"
-                prepend-icon="mdi-star"
-                @click="() => flagSelection('flagged')"
-              />
-              <v-list-item
-                :title="$gettext('Mark as unfollowed')"
-                prepend-icon="mdi-star-outline"
-                @click="() => flagSelection('unflagged')"
-              />
-              <v-list-item
-                v-if="$route.query.mailbox === 'Trash'"
-                :title="$gettext('Empty mailbox')"
-                prepend-icon="mdi-trash-can"
-                @click="emptyMailbox"
-              />
-            </v-list>
-          </v-menu>
-        </v-btn>
-        <!-- Mobile: force a new row, then put select-all on the same line as the
-           message counter / pagination (left = checkbox, right = counter). -->
-        <div class="toolbar-break" />
-        <v-checkbox
-          v-model="selectAll"
-          density="compact"
-          hide-details
-          color="primary"
-          class="select-all-mobile"
-          :aria-label="$gettext('Select all messages')"
-          @update:model-value="toggleAllSelection"
-        />
-        <v-spacer />
-        <div class="d-flex align-center count-nav">
-          <div class="text-body-small">
-            {{ store.emails.length }} / {{ store.emailCount }}
-          </div>
-        </div>
       </v-toolbar>
     </v-card>
     <div class="emails-content">
@@ -434,6 +466,23 @@ const showEmpty = computed(
   () => store.emails.length === 0 && store.nextPage === null
 )
 
+// Contextual toolbar: with a selection the search gives way to the bulk
+// actions (Gmail pattern).
+const hasSelection = computed(() => webmailStore.selection.length > 0)
+
+const selectionLabel = computed(() =>
+  $ngettext(
+    '%{ count } selected',
+    '%{ count } selected',
+    webmailStore.selection.length,
+    { count: webmailStore.selection.length }
+  )
+)
+
+const clearSelection = () => {
+  webmailStore.selection = []
+}
+
 let intervalId = null
 
 const currentMailbox = computed(() => {
@@ -601,7 +650,10 @@ const deleteActiveOrSelection = () => {
 }
 
 const focusSearch = () => {
-  searchField.value?.focus()
+  // The search field only exists in the browsing state of the contextual
+  // toolbar: drop any selection first, then focus once it rendered.
+  webmailStore.selection = []
+  nextTick(() => searchField.value?.focus())
 }
 
 defineExpose({
@@ -941,10 +993,71 @@ watch(
   flex-direction: column;
   flex: 1 1 auto;
   min-height: 0;
+  /* Size container: the toolbar adapts to the width of THIS pane (split
+     view can be ~400px on a 1920px screen), not the viewport. */
+  container-type: inline-size;
 }
 .email-toolbar-card {
   flex: 0 0 auto;
   margin: 1.5rem 0.25rem 0.5rem;
+}
+
+/* --- Contextual toolbar --- */
+.email-toolbar :deep(.v-toolbar__content) {
+  height: auto !important;
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  row-gap: 6px;
+  padding: 6px 10px;
+}
+/* Browsing state: the search takes all the free width between the select-all
+   checkbox and the passive action buttons. */
+.email-toolbar :deep(.search-field) {
+  flex: 1 1 auto;
+  min-width: 140px;
+  max-width: 520px;
+  margin-right: 8px;
+}
+.select-all {
+  flex: 0 0 auto;
+  margin-right: 4px;
+}
+/* Passive buttons stay quiet (dim, no fill); color belongs to the transient
+   selection actions. */
+.tb-btn {
+  color: var(--fg-dim);
+}
+.count-nav {
+  margin-left: 8px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  color: var(--fg-mute);
+  white-space: nowrap;
+}
+.selection-label {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  color: var(--fg);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+}
+
+/* Narrow pane/screen: search gets its own full-width row below the buttons
+   (order pushes it after everything else). Falls back to the single wrapping
+   row on engines without container queries. */
+@container (max-width: 480px) {
+  .email-toolbar :deep(.search-field) {
+    order: 10;
+    flex: 1 1 100%;
+    max-width: none;
+    margin-right: 0;
+  }
 }
 .emails-content {
   flex: 1 1 auto;
@@ -978,15 +1091,6 @@ watch(
 }
 .clickable {
   cursor: pointer;
-}
-.toolbar-break {
-  display: none;
-}
-.select-all-mobile {
-  display: none;
-}
-.select-all-desktop {
-  display: inline-flex;
 }
 
 /* Dense hairline message list (portfolio editorial rows). */
@@ -1105,39 +1209,9 @@ watch(
   color: var(--fg-mute);
 }
 
-/* On phones the toolbar can't fit on one row: let it wrap and give the
-   search field its own full-width row instead of a fixed 33% width. */
+/* Touch-size adjustments on phones (the toolbar LAYOUT itself is handled by
+   the container query above, since it depends on pane width, not viewport). */
 @media (max-width: 700px) {
-  .email-toolbar :deep(.v-toolbar__content) {
-    height: auto !important;
-    flex-wrap: wrap;
-    padding-top: 6px;
-    padding-bottom: 0px;
-    row-gap: 6px;
-  }
-  .email-toolbar :deep(.search-field) {
-    width: 100% !important;
-    flex: 1 1 100%;
-    margin-right: 0 !important;
-  }
-  .select-all-desktop {
-    display: none !important;
-  }
-  .select-all-mobile {
-    display: inline-flex !important;
-    flex: 0 0 auto;
-    margin-left: 1px;
-    margin-top: -4px;
-    margin-bottom: -4px;
-  }
-  /* Full-width zero-height break: forces select-all + counter onto their own
-     last row, away from the action buttons. */
-  .toolbar-break {
-    display: block !important;
-    flex: 1 1 100%;
-    height: 0;
-  }
-
   /* --- Message rows: optimise for reading on a narrow screen. --- */
   /* The per-row follow star is desktop chrome; drop it on mobile to give the
      subject/sender the full width (follow stays in the reading view + the
