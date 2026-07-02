@@ -2,7 +2,7 @@ import Cookies from 'js-cookie'
 
 import { defineStore } from 'pinia'
 import { computed, inject, ref } from 'vue'
-import gettext from '@/plugins/gettext'
+import gettext, { DEFAULT_LANGUAGE } from '@/plugins/gettext'
 import { useLocale } from 'vuetify'
 import router from '@/router/index.js'
 import { UserManager } from 'oidc-client-ts'
@@ -11,7 +11,7 @@ import repository from '@/api/repository'
 import accountApi from '@/api/account'
 import accountsApi from '@/api/accounts'
 import authApi from '@/api/auth.js'
-import { getAbsoluteUrl } from '@/utils'
+import { getAbsoluteUrl, toGettextLocale } from '@/utils'
 import { useGlobalConfig } from '@/main'
 
 export const useAuthStore = defineStore('auth', () => {
@@ -42,18 +42,25 @@ export const useAuthStore = defineStore('auth', () => {
   })
 
   const accountLanguage = computed(() => {
-    if (authUser.value.language.indexOf('-') !== -1) {
-      const parts = authUser.value.language.split('-')
-      return `${parts[0]}_${parts[1].toUpperCase()}`
-    }
-    return authUser.value.language
+    return toGettextLocale(authUser.value.language)
   })
+
+  function applyLanguage() {
+    // Only switch to locales vue3-gettext actually knows about, falling
+    // back to the default language otherwise so we never select an
+    // unsupported locale.
+    const locale =
+      accountLanguage.value in gettext.available
+        ? accountLanguage.value
+        : DEFAULT_LANGUAGE
+    gettext.current = locale
+    current.value = locale
+  }
 
   async function fetchUser() {
     const resp = await accountApi.getMe()
     authUser.value = resp.data
-    gettext.current = accountLanguage.value
-    current.value = accountLanguage.value
+    applyLanguage()
     isAuthenticated.value = true
   }
 
@@ -163,10 +170,7 @@ export const useAuthStore = defineStore('auth', () => {
       const newAuthUser = { ...authUser.value, ...response.data }
       delete newAuthUser.password
       authUser.value = { ...newAuthUser }
-      if (accountLanguage.value in gettext.available) {
-        gettext.current = accountLanguage.value
-        current.value = accountLanguage.value
-      }
+      applyLanguage()
     })
   }
 
