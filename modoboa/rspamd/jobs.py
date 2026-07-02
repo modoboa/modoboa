@@ -69,7 +69,11 @@ class MapsUpdater:
             or dkim_path_entry != domain_instance.dkim_private_key_path
         )
         if condition:
-            self.dkim_path_map[domain_name] = domain_instance.dkim_private_key_path
+            # Strip newlines to prevent injecting extra entries into the map
+            # file (defense-in-depth against a crafted dkim_private_key_path).
+            self.dkim_path_map[domain_name] = (
+                domain_instance.dkim_private_key_path.replace("\n", "")
+            )
             self.modified_key_path_file = True
 
     def run(self, domains):

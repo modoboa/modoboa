@@ -102,6 +102,27 @@ class DomainViewSetTestCase(ModoAPITestCase):
             domain.domainobjectlimit_set.get(name="domain_aliases").max_value, 20
         )
 
+    def test_dkim_private_key_path_is_read_only(self):
+        """The DKIM private key path must not be settable through the API.
+
+        A writable value would allow mass-assignment of an arbitrary on-disk
+        path (private key location disclosure) and newline injection into the
+        rspamd DKIM key map. It is computed server-side by the key generation
+        command and must stay read-only.
+        """
+        domain = models.Domain.objects.get(name="test.com")
+        domain.dkim_private_key_path = "/legit/test.com.pem"
+        domain.save()
+        malicious = "/tmp/evil.pem\nvictim.com /tmp/attacker.pem"
+        url = reverse("v2:domain-detail", args=[domain.pk])
+        resp = self.client.patch(
+            url, {"dkim_private_key_path": malicious}, format="json"
+        )
+        self.assertEqual(resp.status_code, 200)
+        domain.refresh_from_db()
+        self.assertEqual(domain.dkim_private_key_path, "/legit/test.com.pem")
+        self.assertNotEqual(resp.json().get("dkim_private_key_path"), malicious)
+
     def test_delete(self):
         self.client.credentials(HTTP_AUTHORIZATION="Token " + self.da_token.key)
 

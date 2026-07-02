@@ -77,6 +77,7 @@ class DomainSerializer(serializers.ModelSerializer):
         read_only_fields = (
             "pk",
             "dkim_public_key",
+            "dkim_private_key_path",
             "dns_global_status",
             "allocated_quota_in_percent",
             "mailbox_count",
