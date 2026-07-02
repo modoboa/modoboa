@@ -48,3 +48,6 @@ package-lock.json
 *.njsproj
 *.sln
 *.sw?
+
+.pnp.*
+.yarn/*
