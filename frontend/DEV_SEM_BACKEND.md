@@ -15,7 +15,7 @@ yarn install      # se ainda não instalou
 yarn dev:mock     # = VITE_MOCK_API=true vite
 ```
 
-Abra a URL que o Vite imprime (ex.: https://localhost:3000/). A app entra
+Abra a URL que o Vite imprime (ex.: http://localhost:3000/). A app entra
 "logada" como um SuperAdmin fake.
 
 **Como funciona (tudo atrás de `VITE_MOCK_API`, zero efeito em produção):**

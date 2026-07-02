@@ -76,10 +76,7 @@
             </v-menu>
           </v-btn>
           <v-spacer />
-          <div
-            class="count-nav"
-            :title="$gettext('Loaded / total messages')"
-          >
+          <div class="count-nav" :title="$gettext('Loaded / total messages')">
             {{ store.emails.length }}/{{ store.emailCount }}
           </div>
         </template>
@@ -1129,7 +1126,7 @@ watch(
    background highlight. */
 .email-row--focus {
   outline: 1px solid var(--accent);
-  outline-offset: -1px;
+  outline-offset: -2px;
 }
 /* Row open in the reading pane (desktop split view). */
 .email-row--active {
