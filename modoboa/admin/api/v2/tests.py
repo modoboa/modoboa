@@ -956,6 +956,26 @@ class AlarmViewSetTestCase(ModoAPITestCase):
         self.assertEqual(resp.status_code, 200)
         self.assertEqual(len(resp.json()["results"]), 1)
 
+    def test_alarm_does_not_expose_domain_secrets(self):
+        """The nested domain must expose only pk/name, not sensitive fields.
+
+        A previous __all__/depth=1 serializer leaked the whole related
+        Domain, including dkim_private_key_path.
+        """
+        domain = models.Domain.objects.get(name="test.com")
+        domain.dkim_private_key_path = "/secret/test.com.pem"
+        domain.save()
+        url = reverse("v2:alarm-list")
+        resp = self.client.get(url)
+        self.assertEqual(resp.status_code, 200)
+        alarm = resp.json()["results"][0]
+        self.assertEqual(set(alarm["domain"].keys()), {"pk", "name"})
+        self.assertEqual(alarm["domain"]["name"], "test.com")
+        self.assertNotIn("dkim_private_key_path", alarm["domain"])
+        # Sanity: expected scalar fields are still present.
+        self.assertIn("status", alarm)
+        self.assertIn("title", alarm)
+
     def test_update_alarm(self):
         """Try updating alarm status and delete it afterward."""
 
