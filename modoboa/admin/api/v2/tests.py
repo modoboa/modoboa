@@ -419,6 +419,32 @@ class AccountViewSetTestCase(ModoAPITestCase):
             .exists()
         )
 
+    def test_delete_keepdir(self):
+        """keepdir=true must preserve the mailbox directory.
+
+        Regression test: keepdir was validated but never forwarded to the
+        mailbox pre_delete handler (which read it from the empty request.POST
+        of a JSON body), so directories were always removed.
+        """
+        self.set_global_parameter("handle_mailboxes", True)
+        account = core_models.User.objects.get(username="user@test.com")
+        self.assertTrue(hasattr(account, "mailbox"))
+        models.MailboxOperation.objects.all().delete()
+        url = reverse("v2:account-delete", args=[account.pk])
+        resp = self.client.post(url, {"keepdir": True}, format="json")
+        self.assertEqual(resp.status_code, 204)
+        self.assertFalse(models.MailboxOperation.objects.filter(type="delete").exists())
+
+    def test_delete_removes_dir_by_default(self):
+        """Without keepdir the mailbox directory is scheduled for deletion."""
+        self.set_global_parameter("handle_mailboxes", True)
+        account = core_models.User.objects.get(username="user@test.com")
+        models.MailboxOperation.objects.all().delete()
+        url = reverse("v2:account-delete", args=[account.pk])
+        resp = self.client.post(url, {}, format="json")
+        self.assertEqual(resp.status_code, 204)
+        self.assertTrue(models.MailboxOperation.objects.filter(type="delete").exists())
+
     def test_delete_default_superadmin(self):
         """Delete default superadmin."""
         sadmin2 = core_factories.UserFactory(username="admin2")
