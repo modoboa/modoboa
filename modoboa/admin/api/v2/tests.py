@@ -918,6 +918,24 @@ class UserAccountViewSetTestCase(ModoAPITestCase):
             0,
         )
 
+    def test_forward_requires_authentication(self):
+        """Anonymous requests must be rejected, not served as AllowAny."""
+        self.client.credentials()  # drop the auth header
+        url = reverse("v2:user_account-forward")
+        resp = self.client.get(url)
+        self.assertIn(resp.status_code, (401, 403))
+
+    def test_forward_requires_a_mailbox(self):
+        """Authenticated users without a mailbox must be denied (HasMailbox)."""
+        user = core_factories.UserFactory(
+            username="nomailbox@test.com", groups=("SimpleUsers",)
+        )
+        self.assertFalse(hasattr(user, "mailbox"))
+        self.authenticate_user(user)
+        url = reverse("v2:user_account-forward")
+        resp = self.client.get(url)
+        self.assertEqual(resp.status_code, 403)
+
 
 class AlarmViewSetTestCase(ModoAPITestCase):
     @classmethod

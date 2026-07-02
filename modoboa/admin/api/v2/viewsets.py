@@ -343,6 +343,8 @@ class AliasViewSet(v1_viewsets.AliasViewSet):
 class UserAccountViewSet(GetThrottleViewsetMixin, viewsets.ViewSet):
     """Viewset for current user operations."""
 
+    permission_classes = (permissions.IsAuthenticated, lib_viewsets.HasMailbox)
+
     @action(methods=["get", "post"], detail=False)
     def forward(self, request, **kwargs):
         """Get or define user forward."""
