@@ -16,6 +16,11 @@ class ConfigBaseMixin:
 
     def get_common_context(self, emailaddress: str) -> dict:
         local_part, domain = split_address(emailaddress)
+
+        if domain is None:
+            parts = self.request.get_host().split(':')[0].split('.')
+            domain = '.'.join(parts[-2:])
+
         return {
             "emailaddress": emailaddress,
             "domain": domain,
@@ -35,7 +40,7 @@ class AutoConfigView(ConfigBaseMixin, generic.TemplateView):
     def get_context_data(self, **kwargs):
         emailaddress = self.request.GET.get("emailaddress")
         if not emailaddress:
-            emailaddress = "%EMAILLOCALPART%@%EMAILDOMAIN%"
+            emailaddress = "%EMAILADDRESS%"
         context = super().get_context_data(**kwargs)
         context.update(self.get_common_context(emailaddress))
         return context
