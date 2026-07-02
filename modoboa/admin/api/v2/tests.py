@@ -234,6 +234,17 @@ domainalias; domalias1.com; domain1.com; True
         self.assertFalse(dom.enabled)
         self.assertTrue(admin.is_owner(dom))
 
+    def test_domains_import_rejects_invalid_name(self):
+        """CSV import must enforce hostname validation like the API path."""
+        f = ContentFile(
+            b"domain; ../etc/passwd; 1000; 100; True\n",
+            name="domains.csv",
+        )
+        resp = self.client.post(reverse("v2:domain-import-from-csv"), {"sourcefile": f})
+        self.assertEqual(resp.status_code, 200)
+        self.assertFalse(resp.json()["status"])
+        self.assertFalse(models.Domain.objects.filter(name="../etc/passwd").exists())
+
     def test_export_domains(self):
         """Check domain export."""
         dom = models.Domain.objects.get(name="test.com")
