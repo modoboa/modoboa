@@ -387,6 +387,13 @@ class SimpleDomainAdminSerializer(serializers.Serializer):
         queryset=core_models.User.objects.all()
     )
 
+    def validate_account(self, value):
+        """Ensure the requester is allowed to manage the target account."""
+        user = self.context["request"].user
+        if not user.can_access(value):
+            raise serializers.ValidationError(_("Permission denied."))
+        return value
+
 
 class TagSerializer(serializers.Serializer):
     """Serializer used to represent a tag."""

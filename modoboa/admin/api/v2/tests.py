@@ -176,6 +176,40 @@ class DomainViewSetTestCase(ModoAPITestCase):
         resp = self.client.post(url, data, format="json")
         self.assertEqual(resp.status_code, 200)
 
+    def test_add_administrator_rejects_unowned_account(self):
+        """A reseller must not grant admin rights to an account it can't access.
+
+        The account field used to accept any user pk, letting a reseller add
+        an arbitrary account as administrator of its own domain.
+        """
+        self.set_global_parameter("enable_admin_limits", False, app="limits")
+        reseller = core_factories.UserFactory(
+            username="reseller", groups=("Resellers",)
+        )
+        grant_access_to_object(
+            reseller, models.Domain.objects.get(name="test.com"), is_owner=True
+        )
+        token = Token.objects.create(user=reseller)
+        self.client.credentials(HTTP_AUTHORIZATION="Token " + token.key)
+
+        domain = models.Domain.objects.get(name="test.com")
+        url = reverse("v2:domain-add-administrator", args=[domain.pk])
+
+        # An account the reseller does not own must be refused.
+        victim = core_models.User.objects.get(username="user@test2.com")
+        resp = self.client.post(url, {"account": victim.pk}, format="json")
+        self.assertEqual(resp.status_code, 400)
+        self.assertFalse(domain.admins.filter(pk=victim.pk).exists())
+
+        # An account the reseller owns is accepted.
+        owned = core_factories.UserFactory(
+            username="owned@test.com", groups=("DomainAdmins",)
+        )
+        grant_access_to_object(reseller, owned, is_owner=True)
+        resp = self.client.post(url, {"account": owned.pk}, format="json")
+        self.assertEqual(resp.status_code, 200)
+        self.assertTrue(domain.admins.filter(pk=owned.pk).exists())
+
     def test_domains_import(self):
         f = ContentFile(
             b"""domain; domain1.com; 1000; 100; True
