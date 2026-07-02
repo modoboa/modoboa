@@ -1,351 +1,376 @@
 <template>
   <div class="email-list-wrapper">
-  <v-card class="mt-6 mb-2 mx-1">
-    <v-toolbar flat class="email-toolbar">
-      <!-- Desktop: select-all sits at the far left. On mobile it moves to the
+    <v-card class="email-toolbar-card">
+      <v-toolbar class="email-toolbar">
+        <!-- Desktop: select-all sits at the far left. On mobile it moves to the
            bottom row, next to the message counter (see below). -->
-      <v-checkbox
-        v-model="selectAll"
-        class="mr-4 select-all-desktop"
-        density="compact"
-        hide-details
-        color="primary"
-        :aria-label="$gettext('Select all messages')"
-        @update:model-value="toggleAllSelection"
-      />
-
-      <v-text-field
-        ref="searchField"
-        v-model="search"
-        prepend-inner-icon="mdi-magnify"
-        :placeholder="$gettext('Search in messages')"
-        :aria-label="$gettext('Search in messages')"
-        variant="outlined"
-        single-line
-        flat
-        hide-details
-        density="compact"
-        class="flex-grow-0 w-33 mr-4 search-field"
-        clearable
-        @click:clear="submitSearch"
-        @keyup.enter="submitSearch"
-      ></v-text-field>
-      <v-btn
-        v-if="!inScheduledView"
-        class="ml-2"
-        color="secondary"
-        variant="tonal"
-        icon="mdi-pencil"
-        size="small"
-        :title="$gettext('Compose')"
-        :aria-label="$gettext('Compose')"
-        @click="openComposeForm"
-      >
-      </v-btn>
-      <v-btn
-        v-if="!inScheduledView"
-        class="ml-2"
-        color="error"
-        variant="tonal"
-        icon="mdi-trash-can"
-        size="small"
-        :title="$gettext('Delete selection')"
-        :aria-label="$gettext('Delete selection')"
-        :loading="working"
-        @click="deleteSelection"
-      >
-      </v-btn>
-      <template v-if="!inScheduledView">
-        <v-btn
-          v-if="currentMailbox === 'Trash'"
-          class="ml-2"
+        <v-checkbox
+          v-model="selectAll"
+          class="mr-4 select-all-desktop"
+          density="compact"
+          hide-details
           color="primary"
-          variant="tonal"
-          icon="mdi-backup-restore"
-          size="small"
-          :title="$gettext('Restore to Inbox')"
-          :aria-label="$gettext('Restore to Inbox')"
-          :loading="working"
-          @click="restoreSelection"
-        >
-        </v-btn>
-        <v-btn
-          v-else-if="currentMailbox === 'Junk'"
-          class="ml-2"
-          color="success"
-          variant="tonal"
-          icon="mdi-thumb-up"
-          size="small"
-          :title="$gettext('Mark selection as not junk')"
-          :aria-label="$gettext('Mark selection as not junk')"
-          :loading="working"
-          @click="markSelectionAsNotJunk"
-        >
-        </v-btn>
-        <v-btn
-          v-else
-          class="ml-2"
-          color="warning"
-          variant="tonal"
-          icon="mdi-alert-octagon-outline"
-          size="small"
-          :title="$gettext('Mark selection as junk')"
-          :aria-label="$gettext('Mark selection as junk')"
-          :loading="working"
-          @click="markSelectionAsJunk"
-        >
-        </v-btn>
-      </template>
-      <v-btn
-        class="ml-2"
-        variant="tonal"
-        icon
-        size="small"
-        :title="$gettext('More actions')"
-        :aria-label="$gettext('More actions')"
-      >
-        <v-icon icon="mdi-cog" />
-        <v-menu activator="parent">
-          <v-list density="compact">
-            <v-list-item
-              :title="$gettext('Mark as read')"
-              prepend-icon="mdi-eye"
-              @click="() => flagSelection('read')"
-            />
-            <v-list-item
-              :title="$gettext('Mark as unread')"
-              prepend-icon="mdi-eye-outline"
-              @click="() => flagSelection('unread')"
-            />
-            <v-list-item
-              :title="$gettext('Mark as followed')"
-              prepend-icon="mdi-star"
-              @click="() => flagSelection('flagged')"
-            />
-            <v-list-item
-              :title="$gettext('Mark as unfollowed')"
-              prepend-icon="mdi-star-outline"
-              @click="() => flagSelection('unflagged')"
-            />
-            <v-list-item
-              v-if="$route.query.mailbox === 'Trash'"
-              :title="$gettext('Empty mailbox')"
-              prepend-icon="mdi-trash-can"
-              @click="emptyMailbox"
-            />
-          </v-list>
-        </v-menu>
-      </v-btn>
-      <!-- Mobile: force a new row, then put select-all on the same line as the
-           message counter / pagination (left = checkbox, right = counter). -->
-      <div class="toolbar-break" />
-      <v-checkbox
-        v-model="selectAll"
-        density="compact"
-        hide-details
-        color="primary"
-        class="select-all-mobile"
-        :aria-label="$gettext('Select all messages')"
-        @update:model-value="toggleAllSelection"
-      />
-      <v-spacer />
-      <div class="d-flex align-center count-nav">
-        <div class="text-body-small">
-          {{ store.emails.length }} / {{ store.emailCount }}
-        </div>
-      </div>
-    </v-toolbar>
-  </v-card>
-    <div class="emails-content">
-    <v-alert
-      v-if="inScheduledView"
-      type="info"
-      variant="tonal"
-      density="compact"
-      class="mx-1"
-    >
-      {{
-        $gettext(
-          'Scheduled messages will be sent at the specified date and time. (visible on the right)'
-        )
-      }}
-    </v-alert>
-    <div ref="scroller" class="emails" @scroll="onScroll">
-      <div
-        v-show="pullPx > 0 || refreshing"
-        class="emails__ptr"
-        :style="{ transform: `translateY(${pullPx}px)` }"
-      >
-        <v-progress-circular
-          :indeterminate="refreshing"
-          :model-value="Math.min(100, (pullPx / 70) * 100)"
-          size="24"
-          width="2"
-          color="primary"
+          :aria-label="$gettext('Select all messages')"
+          @update:model-value="toggleAllSelection"
         />
-      </div>
-      <template v-if="store.emails.length">
-        <div class="email-list">
-          <SwipeableRow
-            v-for="(email, index) in store.emails"
-            :key="email.imapid"
-            :enabled="!inScheduledView"
-            :left-action="{
-              icon: 'mdi-trash-can',
-              color: 'error',
-              label: $gettext('Delete'),
-            }"
-            :right-action="{
-              icon: email.style === 'unseen' ? 'mdi-email-open-outline' : 'mdi-email-outline',
-              color: 'primary',
-              label: email.style === 'unseen' ? $gettext('Read') : $gettext('Unread'),
-            }"
-            @swipe-left="swipeDelete(email, index)"
-            @swipe-right="swipeToggleRead(email)"
-          >
-          <div
-            class="email-row"
-            :class="{
-              'email-row--unseen': email.style === 'unseen',
-              'email-row--active': email.imapid === activeMailid,
-              'email-row--focus': index === activeIndex,
-            }"
-            draggable="true"
-            @dragstart="onDragStart(email)"
-          >
-            <div class="email-row__actions">
-              <v-checkbox
-                v-model="webmailStore.selection"
-                :value="email.imapid"
-                color="primary"
-                density="compact"
-                hide-details
-                :aria-label="$gettext('Select message: %{subject}', { subject: email.subject })"
-              />
-              <v-btn
-                :icon="email.flagged ? 'mdi-star' : 'mdi-star-outline'"
-                :color="email.flagged ? 'warning' : undefined"
-                variant="text"
-                size="small"
-                class="email-row__star"
-                :title="
-                  email.flagged
-                    ? $gettext('Unfollow message')
-                    : $gettext('Follow message')
-                "
-                :aria-label="
-                  email.flagged
-                    ? $gettext('Unfollow message')
-                    : $gettext('Follow message')
-                "
-                @click="toggleFollowState(email)"
-              />
-              <v-menu v-if="inScheduledView" location="bottom">
-                <template #activator="{ props }">
-                  <v-btn
-                    icon="mdi-dots-vertical"
-                    v-bind="props"
-                    size="small"
-                    variant="text"
-                    :aria-label="$gettext('Message actions')"
-                  >
-                  </v-btn>
-                </template>
-                <MenuItems :items="getScheduledMessageActions()" :obj="email" />
-              </v-menu>
-            </div>
 
-            <div class="email-row__content">
-              <div
-                class="email-row__main clickable"
-                @click="openEmail(email.imapid)"
-              >
-                <div class="email-row__subject">{{ email.subject }}</div>
-                <div class="email-row__from">
-                  <EmailAddressList :addresses="getEmailAddresses(email)" />
-                </div>
-              </div>
-
-              <div class="email-row__meta">
-                <div v-if="!isScheduledDateOver(email)" class="email-row__date">
-                  {{ getEmailDate(email) }}
-                </div>
-                <div
-                  v-else
-                  class="email-row__date email-row__date--error clickable"
-                  @click="displaySchedulingError(email)"
-                >
-                  {{ getEmailDate(email) }}
-                </div>
-                <div class="email-row__flags">
-                  <v-icon
-                    v-if="email.answered"
-                    icon="mdi-reply-outline"
-                    size="small"
-                  />
-                  <v-icon
-                    v-if="email.forwarded"
-                    icon="mdi-share-outline"
-                    size="small"
-                  />
-                  <v-icon
-                    v-if="email.attachments"
-                    icon="mdi-paperclip"
-                    size="small"
-                  />
-                  <span>{{ $filesize(email.size) }}</span>
-                </div>
-              </div>
-            </div>
-          </div>
-          </SwipeableRow>
-        </div>
-      </template>
-      <EmptyState
-        v-else-if="showEmpty && search"
-        icon="mdi-magnify"
-        :eyebrow="$gettext('Search')"
-        :title="$gettext('No messages match your search')"
-        :message="$gettext('Try a different term or clear the search to see all messages.')"
-      />
-      <EmptyState
-        v-else-if="showEmpty"
-        icon="mdi-inbox"
-        :eyebrow="$gettext('Mailbox')"
-        :title="$gettext('This mailbox is empty')"
-        :message="$gettext('New messages will appear here.')"
-      />
-      <div v-if="loadingMore" class="emails__loader">
-        <v-progress-circular indeterminate size="20" width="2" color="primary" />
-      </div>
-    </div>
-    <v-dialog
-      v-model="showSchedulingForm"
-      :fullscreen="mobile"
-      :max-width="mobile ? undefined : 800"
-      :transition="mobile ? 'dialog-bottom-transition' : undefined"
-    >
-      <EmailSchedulingForm
-        :initial-date="selectedScheduledEmail.scheduled_datetime_raw"
-        @schedule="updateScheduledEmail"
-        @close="closeSchedulingForm"
-      />
-    </v-dialog>
-    <v-dialog v-model="showSchedulingError" max-width="400">
-      <v-card
-        max-width="400"
-        :text="schedulingError"
-        :title="$gettext('Sending failure')"
-      >
-        <template #:actions>
+        <v-text-field
+          ref="searchField"
+          v-model="search"
+          prepend-inner-icon="mdi-magnify"
+          :placeholder="$gettext('Search in messages')"
+          :aria-label="$gettext('Search in messages')"
+          variant="outlined"
+          single-line
+          flat
+          hide-details
+          density="compact"
+          class="flex-grow-0 w-33 mr-4 search-field"
+          clearable
+          @click:clear="submitSearch"
+          @keyup.enter="submitSearch"
+        ></v-text-field>
+        <v-btn
+          v-if="!inScheduledView"
+          class="ml-2"
+          color="secondary"
+          variant="tonal"
+          icon="mdi-pencil"
+          size="small"
+          :title="$gettext('Compose')"
+          :aria-label="$gettext('Compose')"
+          @click="openComposeForm"
+        >
+        </v-btn>
+        <v-btn
+          v-if="!inScheduledView"
+          class="ml-2"
+          color="error"
+          variant="tonal"
+          icon="mdi-trash-can"
+          size="small"
+          :title="$gettext('Delete selection')"
+          :aria-label="$gettext('Delete selection')"
+          :loading="working"
+          @click="deleteSelection"
+        >
+        </v-btn>
+        <template v-if="!inScheduledView">
           <v-btn
-            class="ms-auto"
-            :text="$gettext('Close')"
-            @click="showSchedulingError = false"
-          ></v-btn>
+            v-if="currentMailbox === 'Trash'"
+            class="ml-2"
+            color="primary"
+            variant="tonal"
+            icon="mdi-backup-restore"
+            size="small"
+            :title="$gettext('Restore to Inbox')"
+            :aria-label="$gettext('Restore to Inbox')"
+            :loading="working"
+            @click="restoreSelection"
+          >
+          </v-btn>
+          <v-btn
+            v-else-if="currentMailbox === 'Junk'"
+            class="ml-2"
+            color="success"
+            variant="tonal"
+            icon="mdi-thumb-up"
+            size="small"
+            :title="$gettext('Mark selection as not junk')"
+            :aria-label="$gettext('Mark selection as not junk')"
+            :loading="working"
+            @click="markSelectionAsNotJunk"
+          >
+          </v-btn>
+          <v-btn
+            v-else
+            class="ml-2"
+            color="warning"
+            variant="tonal"
+            icon="mdi-alert-octagon-outline"
+            size="small"
+            :title="$gettext('Mark selection as junk')"
+            :aria-label="$gettext('Mark selection as junk')"
+            :loading="working"
+            @click="markSelectionAsJunk"
+          >
+          </v-btn>
         </template>
-      </v-card>
-    </v-dialog>
+        <v-btn
+          class="ml-2"
+          variant="tonal"
+          icon
+          size="small"
+          :title="$gettext('More actions')"
+          :aria-label="$gettext('More actions')"
+        >
+          <v-icon icon="mdi-cog" />
+          <v-menu activator="parent">
+            <v-list density="compact">
+              <v-list-item
+                :title="$gettext('Mark as read')"
+                prepend-icon="mdi-eye"
+                @click="() => flagSelection('read')"
+              />
+              <v-list-item
+                :title="$gettext('Mark as unread')"
+                prepend-icon="mdi-eye-outline"
+                @click="() => flagSelection('unread')"
+              />
+              <v-list-item
+                :title="$gettext('Mark as followed')"
+                prepend-icon="mdi-star"
+                @click="() => flagSelection('flagged')"
+              />
+              <v-list-item
+                :title="$gettext('Mark as unfollowed')"
+                prepend-icon="mdi-star-outline"
+                @click="() => flagSelection('unflagged')"
+              />
+              <v-list-item
+                v-if="$route.query.mailbox === 'Trash'"
+                :title="$gettext('Empty mailbox')"
+                prepend-icon="mdi-trash-can"
+                @click="emptyMailbox"
+              />
+            </v-list>
+          </v-menu>
+        </v-btn>
+        <!-- Mobile: force a new row, then put select-all on the same line as the
+           message counter / pagination (left = checkbox, right = counter). -->
+        <div class="toolbar-break" />
+        <v-checkbox
+          v-model="selectAll"
+          density="compact"
+          hide-details
+          color="primary"
+          class="select-all-mobile"
+          :aria-label="$gettext('Select all messages')"
+          @update:model-value="toggleAllSelection"
+        />
+        <v-spacer />
+        <div class="d-flex align-center count-nav">
+          <div class="text-body-small">
+            {{ store.emails.length }} / {{ store.emailCount }}
+          </div>
+        </div>
+      </v-toolbar>
+    </v-card>
+    <div class="emails-content">
+      <v-alert
+        v-if="inScheduledView"
+        type="info"
+        variant="tonal"
+        density="compact"
+        class="mx-1"
+      >
+        {{
+          $gettext(
+            'Scheduled messages will be sent at the specified date and time. (visible on the right)'
+          )
+        }}
+      </v-alert>
+      <div ref="scroller" class="emails" @scroll="onScroll">
+        <div
+          v-show="pullPx > 0 || refreshing"
+          class="emails__ptr"
+          :style="{ transform: `translateY(${pullPx}px)` }"
+        >
+          <v-progress-circular
+            :indeterminate="refreshing"
+            :model-value="Math.min(100, (pullPx / 70) * 100)"
+            size="24"
+            width="2"
+            color="primary"
+          />
+        </div>
+        <template v-if="store.emails.length">
+          <div class="email-list">
+            <SwipeableRow
+              v-for="(email, index) in store.emails"
+              :key="email.imapid"
+              :enabled="!inScheduledView"
+              :left-action="{
+                icon: 'mdi-trash-can',
+                color: 'error',
+                label: $gettext('Delete'),
+              }"
+              :right-action="{
+                icon:
+                  email.style === 'unseen'
+                    ? 'mdi-email-open-outline'
+                    : 'mdi-email-outline',
+                color: 'primary',
+                label:
+                  email.style === 'unseen'
+                    ? $gettext('Read')
+                    : $gettext('Unread'),
+              }"
+              @swipe-left="swipeDelete(email, index)"
+              @swipe-right="swipeToggleRead(email)"
+            >
+              <div
+                class="email-row"
+                :class="{
+                  'email-row--unseen': email.style === 'unseen',
+                  'email-row--active': email.imapid === activeMailid,
+                  'email-row--focus': index === activeIndex,
+                }"
+                draggable="true"
+                @dragstart="onDragStart(email)"
+              >
+                <div class="email-row__actions">
+                  <v-checkbox
+                    v-model="webmailStore.selection"
+                    :value="email.imapid"
+                    color="primary"
+                    density="compact"
+                    hide-details
+                    :aria-label="
+                      $gettext('Select message: %{subject}', {
+                        subject: email.subject,
+                      })
+                    "
+                  />
+                  <v-btn
+                    :icon="email.flagged ? 'mdi-star' : 'mdi-star-outline'"
+                    :color="email.flagged ? 'warning' : undefined"
+                    variant="text"
+                    size="small"
+                    class="email-row__star"
+                    :title="
+                      email.flagged
+                        ? $gettext('Unfollow message')
+                        : $gettext('Follow message')
+                    "
+                    :aria-label="
+                      email.flagged
+                        ? $gettext('Unfollow message')
+                        : $gettext('Follow message')
+                    "
+                    @click="toggleFollowState(email)"
+                  />
+                  <v-menu v-if="inScheduledView" location="bottom">
+                    <template #activator="{ props }">
+                      <v-btn
+                        icon="mdi-dots-vertical"
+                        v-bind="props"
+                        size="small"
+                        variant="text"
+                        :aria-label="$gettext('Message actions')"
+                      >
+                      </v-btn>
+                    </template>
+                    <MenuItems
+                      :items="getScheduledMessageActions()"
+                      :obj="email"
+                    />
+                  </v-menu>
+                </div>
+
+                <div class="email-row__content">
+                  <div
+                    class="email-row__main clickable"
+                    @click="openEmail(email.imapid)"
+                  >
+                    <div class="email-row__subject">{{ email.subject }}</div>
+                    <div class="email-row__from">
+                      <EmailAddressList :addresses="getEmailAddresses(email)" />
+                    </div>
+                  </div>
+
+                  <div class="email-row__meta">
+                    <div
+                      v-if="!isScheduledDateOver(email)"
+                      class="email-row__date"
+                    >
+                      {{ getEmailDate(email) }}
+                    </div>
+                    <div
+                      v-else
+                      class="email-row__date email-row__date--error clickable"
+                      @click="displaySchedulingError(email)"
+                    >
+                      {{ getEmailDate(email) }}
+                    </div>
+                    <div class="email-row__flags">
+                      <v-icon
+                        v-if="email.answered"
+                        icon="mdi-reply-outline"
+                        size="small"
+                      />
+                      <v-icon
+                        v-if="email.forwarded"
+                        icon="mdi-share-outline"
+                        size="small"
+                      />
+                      <v-icon
+                        v-if="email.attachments"
+                        icon="mdi-paperclip"
+                        size="small"
+                      />
+                      <span>{{ $filesize(email.size) }}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </SwipeableRow>
+          </div>
+        </template>
+        <EmptyState
+          v-else-if="showEmpty && search"
+          icon="mdi-magnify"
+          :eyebrow="$gettext('Search')"
+          :title="$gettext('No messages match your search')"
+          :message="
+            $gettext(
+              'Try a different term or clear the search to see all messages.'
+            )
+          "
+        />
+        <EmptyState
+          v-else-if="showEmpty"
+          icon="mdi-inbox"
+          :eyebrow="$gettext('Mailbox')"
+          :title="$gettext('This mailbox is empty')"
+          :message="$gettext('New messages will appear here.')"
+        />
+        <div v-if="loadingMore" class="emails__loader">
+          <v-progress-circular
+            indeterminate
+            size="20"
+            width="2"
+            color="primary"
+          />
+        </div>
+      </div>
+      <v-dialog
+        v-model="showSchedulingForm"
+        :fullscreen="mobile"
+        :max-width="mobile ? undefined : 800"
+        :transition="mobile ? 'dialog-bottom-transition' : undefined"
+      >
+        <EmailSchedulingForm
+          :initial-date="selectedScheduledEmail.scheduled_datetime_raw"
+          @schedule="updateScheduledEmail"
+          @close="closeSchedulingForm"
+        />
+      </v-dialog>
+      <v-dialog v-model="showSchedulingError" max-width="400">
+        <v-card
+          max-width="400"
+          :text="schedulingError"
+          :title="$gettext('Sending failure')"
+        >
+          <template #:actions>
+            <v-btn
+              class="ms-auto"
+              :text="$gettext('Close')"
+              @click="showSchedulingError = false"
+            ></v-btn>
+          </template>
+        </v-card>
+      </v-dialog>
     </div>
   </div>
 </template>
@@ -523,7 +548,10 @@ const moveActive = (delta) => {
   const next =
     activeIndex.value === -1
       ? 0
-      : Math.min(Math.max(activeIndex.value + delta, 0), store.emails.length - 1)
+      : Math.min(
+          Math.max(activeIndex.value + delta, 0),
+          store.emails.length - 1
+        )
   activeIndex.value = next
   scrollActiveIntoView()
   // Keep j flowing past the loaded pages.
@@ -914,6 +942,10 @@ watch(
   flex: 1 1 auto;
   min-height: 0;
 }
+.email-toolbar-card {
+  flex: 0 0 auto;
+  margin: 1.5rem 0.25rem 0.5rem;
+}
 .emails-content {
   flex: 1 1 auto;
   min-height: 0;
@@ -956,8 +988,6 @@ watch(
 .select-all-desktop {
   display: inline-flex;
 }
-
-
 
 /* Dense hairline message list (portfolio editorial rows). */
 .email-list {
@@ -1153,7 +1183,6 @@ watch(
   .email-row__main {
     margin-left: 0;
   }
-
 
   .email-row__meta {
     display: flex;

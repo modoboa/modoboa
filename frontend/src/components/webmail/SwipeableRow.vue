@@ -6,7 +6,10 @@
     <div
       v-if="leftAction"
       class="swipeable-row__action swipeable-row__action--left"
-      :class="{ 'swipeable-row__action--armed': armed === 'left' }"
+      :class="{
+        'swipeable-row__action--armed': armed === 'left',
+        'swipeable-row__action--visible': swiping || armed,
+      }"
       :style="{ backgroundColor: `rgb(var(--v-theme-${leftAction.color}))` }"
     >
       <v-icon :icon="leftAction.icon" />
@@ -15,7 +18,10 @@
     <div
       v-if="rightAction"
       class="swipeable-row__action swipeable-row__action--right"
-      :class="{ 'swipeable-row__action--armed': armed === 'right' }"
+      :class="{
+        'swipeable-row__action--armed': armed === 'right',
+        'swipeable-row__action--visible': swiping || armed,
+      }"
       :style="{ backgroundColor: `rgb(var(--v-theme-${rightAction.color}))` }"
     >
       <v-icon :icon="rightAction.icon" />
@@ -75,8 +81,11 @@ const { offsetX, swiping, armed } = useHorizontalSwipe(root, {
   font-size: 12px;
   letter-spacing: 0.04em;
   text-transform: uppercase;
-  opacity: 0.85;
+  opacity: 0;
   transition: opacity 0.1s;
+}
+.swipeable-row__action--visible {
+  opacity: 0.85;
 }
 .swipeable-row__action--armed {
   opacity: 1;
