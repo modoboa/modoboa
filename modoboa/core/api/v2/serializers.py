@@ -466,14 +466,15 @@ class PasswordRecoveryEmailSerializer(serializers.Serializer):
                 Q(secondary_email__isnull=True) | Q(secondary_email="")
             )
         ).first()
-        if self.context["user"] is None:
-            raise CustomValidationError(
-                {"type": "email", "reason": "No valid user found."}, 404
-            )
+        # Do not disclose whether an account exists: always return a success
+        # response. When no matching user is found, sending is simply skipped
+        # in save().
         return data
 
     def save(self):
         user = self.context["user"]
+        if user is None:
+            return
         to_email = user.secondary_email
         current_site = get_current_site(self.context["request"])
         site_name = current_site.name
@@ -519,9 +520,9 @@ class PasswordRecoverySmsSerializer(serializers.Serializer):
 
         user = User.objects.filter(email__iexact=clean_email, is_active=True).first()
         if user is None:
-            raise CustomValidationError(
-                {"type": "sms", "reason": "No valid user found."}, 404
-            )
+            # Fall back to the generic email response instead of revealing
+            # that no account matches this address.
+            raise NoSMSAvailable()
 
         self.context["user"] = (
             User.objects.filter(email__iexact=clean_email, is_active=True).exclude(

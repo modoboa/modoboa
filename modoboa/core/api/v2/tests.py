@@ -353,20 +353,25 @@ class PasswordResetTestCase(AccountViewSetTestCase):
         response = self.client.post(url)
         self.assertEqual(response.status_code, 400)
 
-        # Invalid user
+        # Unknown account: the response must not disclose that no user
+        # exists. It looks exactly like a successful email request and no
+        # message is actually sent.
         data = {"email": "doesntexist@whoami.com"}
         response = self.client.post(url, data, format="json")
-        self.assertEqual(response.status_code, 404)
-        self.assertEqual(response.json()["type"], "sms")
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json()["type"], "email")
+        self.assertEqual(len(mail.outbox), 0)
 
         account = models.User.objects.get(username="user@test.com")
 
         # Email reset test
-        # No secondary email
+        # Known account without a recovery email: same generic response,
+        # still nothing sent.
         data = {"email": account.email}
         response = self.client.post(url, data, format="json")
-        self.assertEqual(response.status_code, 404)
+        self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json()["type"], "email")
+        self.assertEqual(len(mail.outbox), 0)
         # With secondary email
         account.secondary_email = "toto@test.com"
         account.is_active = True
@@ -404,6 +409,30 @@ class PasswordResetTestCase(AccountViewSetTestCase):
         response = self.client.post(url, data, format="json")
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json()["type"], "sms")
+
+    def test_password_reset_does_not_disclose_account_existence(self):
+        """Unknown and existing accounts must yield identical responses.
+
+        Regression test: the endpoint used to return a 404 for unknown
+        addresses (and different payloads depending on the account state),
+        turning it into an account-enumeration oracle.
+        """
+        url = reverse("v2:password_reset")
+
+        # Existing, active account with a working recovery email.
+        account = models.User.objects.get(username="user@test.com")
+        account.secondary_email = "toto@test.com"
+        account.is_active = True
+        account.save()
+
+        known = self.client.post(url, {"email": account.email}, format="json")
+        unknown = self.client.post(
+            url, {"email": "doesntexist@whoami.com"}, format="json"
+        )
+        # Same status code and body: the two cases are indistinguishable.
+        self.assertEqual(known.status_code, 200)
+        self.assertEqual(unknown.status_code, known.status_code)
+        self.assertEqual(unknown.json(), known.json())
 
     @mock.patch("ovh.Client.get")
     @mock.patch("ovh.Client.post")
