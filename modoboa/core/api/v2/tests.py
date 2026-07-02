@@ -469,6 +469,78 @@ class PasswordResetTestCase(AccountViewSetTestCase):
 
     @mock.patch("ovh.Client.get")
     @mock.patch("ovh.Client.post")
+    def test_sms_totp_resend_does_not_reset_throttle(self, client_post, client_get):
+        """Ensure "resend" cannot be used to bypass the TOTP brute-force limit.
+
+        Regression test: the throttle counter used to be cleared on every
+        request, including "resend". An attacker could interleave resends
+        between wrong "confirm" guesses to reset the limit and brute-force
+        the 6-digit code indefinitely. The counter must now only be cleared
+        on a successful confirmation.
+        """
+        url_create_sms = reverse("v2:password_reset")
+        url_sms_totp = reverse("v2:sms_totp")
+
+        # Prepare account
+        account = models.User.objects.get(username="user@test.com")
+        account.phone_number = "+33612345678"
+        account.secondary_email = "toto@test.com"
+        account.is_active = True
+        account.save()
+
+        client_get.return_value = ["service"]
+        client_post.return_value = {"totalCreditsRemoved": 1}
+        self.set_global_parameters(
+            {
+                "sms_password_recovery": True,
+                "sms_provider": "ovh",
+                "sms_ovh_application_key": "key",
+                "sms_ovh_application_secret": "secret",
+                "sms_ovh_consumer_key": "consumer",
+            }
+        )
+        self.client.logout()
+        self.create_session()
+
+        # Start the SMS recovery flow to populate the session.
+        response = self.client.post(
+            url_create_sms, {"email": account.email}, format="json"
+        )
+        self.assertEqual(response.status_code, 200)
+
+        # The throttle counter is IP-based and shared across confirm/resend;
+        # start from a clean slate (the request above uses a different scope).
+        cache.clear()
+        # password_recovery_totp_check is rate-limited to 25/hour, so more than
+        # that many requests must eventually be throttled. Interleave wrong
+        # "confirm" guesses with "resend" requests: if resend reset the counter
+        # (the bug), no request would ever be throttled and we would loop
+        # unbounded; with the fix the shared counter keeps growing and a 429
+        # must be returned.
+        throttled = False
+        for _ in range(30):
+            response = self.client.post(
+                url_sms_totp,
+                {"sms_totp": "000000", "type": "confirm"},
+                format="json",
+            )
+            if response.status_code == 429:
+                throttled = True
+                break
+            self.assertEqual(response.status_code, 400)
+            response = self.client.post(url_sms_totp, {"type": "resend"}, format="json")
+            if response.status_code == 429:
+                throttled = True
+                break
+            self.assertEqual(response.status_code, 200)
+        cache.clear()
+        self.assertTrue(
+            throttled,
+            "TOTP confirm attempts were not throttled; resend reset the counter.",
+        )
+
+    @mock.patch("ovh.Client.get")
+    @mock.patch("ovh.Client.post")
     def test_password_change(self, client_post, client_get):
         url = reverse("v2:password_reset_confirm_v2")
         url_create_sms = reverse("v2:password_reset")
