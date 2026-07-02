@@ -1,5 +1,6 @@
 import plistlib
 import uuid
+import xml.etree.ElementTree as ET
 
 from django.conf import settings
 from django.http import Http404, HttpResponse
@@ -8,6 +9,25 @@ from django.views import generic
 from django.views.decorators.csrf import csrf_exempt
 
 from modoboa.lib.email_utils import split_address
+
+
+def _email_address_from_xml_body(body: bytes) -> str | None:
+    """Extract EMailAddress from an Outlook Autodiscover request body.
+
+    Real Outlook clients POST an XML payload rather than form data, e.g.:
+    <Autodiscover xmlns="...requestschema/2006">
+      <Request><EMailAddress>user@example.com</EMailAddress>...</Request>
+    </Autodiscover>
+    """
+    try:
+        root = ET.fromstring(body)
+    except ET.ParseError:
+        return None
+    for elem in root.iter():
+        tag = elem.tag.rsplit("}", 1)[-1]  # strip XML namespace, if any
+        if tag == "EMailAddress" and elem.text:
+            return elem.text.strip()
+    return None
 
 
 class ConfigBaseMixin:
@@ -48,7 +68,11 @@ class AutoDiscoverView(ConfigBaseMixin, generic.TemplateView):
     template_name = "autoconfig/autodiscover.xml"
 
     def get_context_data(self, **kwargs):
-        emailaddress = self.request.POST.get("EmailAddress")
+        # Read body before touching request.POST: once POST is parsed,
+        # Django no longer allows access to the raw body.
+        emailaddress = _email_address_from_xml_body(self.request.body)
+        if not emailaddress:
+            emailaddress = self.request.POST.get("EmailAddress")
         if not emailaddress:
             raise Http404
         context = super().get_context_data(**kwargs)
