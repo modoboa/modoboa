@@ -1,5 +1,7 @@
 """Admin serializers."""
 
+import re
+
 from django.contrib.auth import password_validation
 from django.core.exceptions import ValidationError
 from django.shortcuts import get_object_or_404
@@ -108,6 +110,17 @@ class DomainSerializer(serializers.ModelSerializer):
                 raise serializers.ValidationError(
                     _("No authorized MX record found for this domain")
                 )
+        return value
+
+    def validate_dkim_key_selector(self, value):
+        """Restrict the selector to DNS-label characters.
+
+        The selector is written verbatim into the rspamd DKIM selector map,
+        so an unconstrained value (e.g. one containing a newline) could inject
+        extra map entries.
+        """
+        if not re.fullmatch(r"[A-Za-z0-9._-]+", value):
+            raise serializers.ValidationError(_("Enter a valid DKIM selector"))
         return value
 
     def validate_quota(self, value):

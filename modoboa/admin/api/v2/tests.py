@@ -123,6 +123,28 @@ class DomainViewSetTestCase(ModoAPITestCase):
         self.assertEqual(domain.dkim_private_key_path, "/legit/test.com.pem")
         self.assertNotEqual(resp.json().get("dkim_private_key_path"), malicious)
 
+    def test_dkim_selector_rejects_invalid_value(self):
+        """The DKIM selector must reject values that could inject map lines.
+
+        It is written verbatim into the rspamd DKIM selector map; a newline
+        would let a domain admin inject an entry for another domain.
+        """
+        domain = models.Domain.objects.get(name="test.com")
+        url = reverse("v2:domain-detail", args=[domain.pk])
+        resp = self.client.patch(
+            url,
+            {"dkim_key_selector": "a\nvictim.com evilsel"},
+            format="json",
+        )
+        self.assertEqual(resp.status_code, 400)
+        self.assertIn("dkim_key_selector", resp.json())
+        domain.refresh_from_db()
+        self.assertNotIn("\n", domain.dkim_key_selector)
+
+        # A valid selector is still accepted.
+        resp = self.client.patch(url, {"dkim_key_selector": "modoboa2"}, format="json")
+        self.assertEqual(resp.status_code, 200)
+
     def test_delete(self):
         self.client.credentials(HTTP_AUTHORIZATION="Token " + self.da_token.key)
 

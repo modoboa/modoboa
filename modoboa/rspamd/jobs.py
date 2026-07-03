@@ -60,7 +60,11 @@ class MapsUpdater:
             or selector_entry != domain_instance.dkim_key_selector
         )
         if condition:
-            self.selector_map[domain_name] = domain_instance.dkim_key_selector
+            # Strip newlines to prevent injecting extra entries into the map
+            # file (defense-in-depth against a crafted dkim_key_selector).
+            self.selector_map[domain_name] = domain_instance.dkim_key_selector.replace(
+                "\n", ""
+            )
             self.modified_selector_file = True
 
         # modify dkim path map
