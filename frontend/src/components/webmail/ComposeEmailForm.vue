@@ -57,93 +57,116 @@
           </v-btn>
         </div>
 
-        <v-menu :close-on-content-click="false">
-          <template #activator="{ props: menuProps }">
+        <v-spacer />
+        <div class="d-flex align-center flex-shrink-0">
+          <template v-if="!mobile">
+            <span v-if="autosaving" class="draft-indicator mr-1" role="status">
+              {{ $gettext('Saving…') }}
+            </span>
+            <span
+              v-else-if="draftSavedAt"
+              class="draft-indicator mr-1"
+              role="status"
+            >
+              {{ $gettext('Draft saved at %{ time }', { time: draftSavedAt }) }}
+            </span>
             <v-btn
-              v-if="mobile"
-              class="ml-2"
-              variant="tonal"
-              icon="mdi-cog-outline"
+              class="ml-1"
+              :class="{ 'tb-quiet': !htmlMode }"
+              :variant="htmlMode ? 'tonal' : 'text'"
+              :color="htmlMode ? 'primary' : undefined"
+              icon="mdi-code-tags"
               :height="btnSize"
               :width="btnSize"
-              :title="$gettext('Options')"
-              :aria-label="$gettext('Options')"
-              v-bind="menuProps"
-            />
-            <v-btn
-              v-else
-              class="ml-2"
-              variant="tonal"
-              prepend-icon="mdi-cog-outline"
-              height="36"
-              :text="$gettext('Options')"
-              v-bind="menuProps"
+              :title="$gettext('HTML mode')"
+              :aria-label="$gettext('HTML mode')"
+              :aria-pressed="htmlMode ? 'true' : 'false'"
+              @click="toggleHtmlMode"
             />
           </template>
-          <v-card class="pa-4">
-            <v-switch
-              v-model="form.request_dsn"
-              :label="$gettext('Request delivery status notification')"
-              density="compact"
-              hide-details
-              color="primary"
+          <v-badge
+            class="ml-1"
+            :content="attachmentCount"
+            :model-value="attachmentCount > 0"
+            color="primary"
+            offset-x="6"
+            offset-y="2"
+          >
+            <v-btn
+              variant="text"
+              class="tb-quiet"
+              icon="mdi-paperclip"
+              :height="btnSize"
+              :width="btnSize"
+              :title="$gettext('Attachments')"
+              :aria-label="$gettext('Attachments')"
+              @click="openAttachmentsDialog"
             />
-            <v-switch
-              v-model="form.request_mdn"
-              :label="$gettext('Request read receipt')"
-              density="compact"
-              hide-details
-              color="primary"
-            />
-          </v-card>
-        </v-menu>
-        <v-badge
-          class="ml-2"
-          :content="attachmentCount"
-          :model-value="attachmentCount > 0"
-          color="primary"
-          offset-x="6"
-          offset-y="2"
-        >
+          </v-badge>
           <v-btn
-            v-if="mobile"
-            variant="tonal"
-            icon="mdi-paperclip"
+            v-if="!mobile"
+            class="ml-1 tb-quiet"
+            variant="text"
+            icon="mdi-content-save-outline"
             :height="btnSize"
             :width="btnSize"
-            :title="$gettext('Attachments')"
-            :aria-label="$gettext('Attachments')"
-            @click="openAttachmentsDialog"
+            :title="$gettext('Save as draft')"
+            :aria-label="$gettext('Save as draft')"
+            :loading="working"
+            @click="saveDraft"
           />
-          <v-btn
-            v-else
-            variant="tonal"
-            prepend-icon="mdi-paperclip"
-            height="36"
-            :text="$gettext('Attachments')"
-            @click="openAttachmentsDialog"
-          />
-        </v-badge>
-        <v-btn
-          class="ml-2"
-          icon="mdi-content-save-outline"
-          :height="btnSize"
-          :width="btnSize"
-          :title="$gettext('Save as draft')"
-          :aria-label="$gettext('Save as draft')"
-          :loading="working"
-          @click="saveDraft"
-        />
-        <span v-if="autosaving" class="draft-indicator" role="status">
-          {{ $gettext('Saving…') }}
-        </span>
-        <span
-          v-else-if="draftSavedAt"
-          class="draft-indicator"
-          role="status"
-        >
-          {{ $gettext('Draft saved at %{ time }', { time: draftSavedAt }) }}
-        </span>
+          <v-menu :close-on-content-click="false">
+            <template #activator="{ props: menuProps }">
+              <v-btn
+                class="ml-1 tb-quiet"
+                variant="text"
+                :icon="mobile ? 'mdi-dots-vertical' : 'mdi-cog-outline'"
+                :height="btnSize"
+                :width="btnSize"
+                :title="$gettext('Options')"
+                :aria-label="$gettext('Options')"
+                v-bind="menuProps"
+              />
+            </template>
+            <v-card class="pa-4">
+              <!-- Mobile: HTML toggle and manual save collapse in here so the
+                   toolbar never wraps to a second line. -->
+              <template v-if="mobile">
+                <v-switch
+                  :model-value="htmlMode"
+                  :label="$gettext('HTML mode')"
+                  density="compact"
+                  hide-details
+                  color="primary"
+                  @update:model-value="toggleHtmlMode"
+                />
+                <v-btn
+                  block
+                  variant="tonal"
+                  prepend-icon="mdi-content-save-outline"
+                  class="mb-2 mt-1"
+                  :text="$gettext('Save as draft')"
+                  :loading="working"
+                  @click="saveDraft"
+                />
+              </template>
+              <v-switch
+                v-model="form.request_dsn"
+                :label="$gettext('Request delivery status notification')"
+                density="compact"
+                hide-details
+                color="primary"
+              />
+              <v-switch
+                v-model="form.request_mdn"
+                :label="$gettext('Request read receipt')"
+                density="compact"
+                hide-details
+                color="primary"
+              />
+            </v-card>
+          </v-menu>
+        </div>
       </v-toolbar>
       <v-form ref="formRef" class="flex-grow-1 d-flex flex-column">
         <div class="d-flex flex-column gap-3 mb-4">
@@ -243,11 +266,7 @@
             class="mb-3"
           />
         </div>
-        <BodyEditor
-          v-model="form.body"
-          :editor-mode="editorMode"
-          @on-toggle-html-mode="(value) => emit('onToggleHtmlMode', value)"
-        />
+        <BodyEditor v-model="form.body" :html-mode="htmlMode" />
       </v-form>
     </div>
     <v-dialog
@@ -300,6 +319,12 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  // Forward flow: quote the original (subject/body come from the backend's
+  // ForwardModifier) but never pre-fill recipients — the user picks them.
+  forward: {
+    type: Boolean,
+    default: false,
+  },
 })
 const emit = defineEmits(['onToggleHtmlMode'])
 
@@ -324,6 +349,7 @@ const draftMailid = ref(route.query.mailid || null)
 const draftSavedAt = ref(null)
 const autosaving = ref(false)
 const editorMode = ref('plain')
+const htmlMode = ref(false)
 const form = ref({})
 const formRef = ref()
 const showAttachmentsDialog = ref(false)
@@ -338,6 +364,18 @@ const close = () => {
   })
 }
 
+// The plain/HTML switch lives in the toolbar; reply/forward views listen to
+// the emit to refetch the quoted body in the matching format.
+const toggleHtmlMode = () => {
+  htmlMode.value = !htmlMode.value
+  emit('onToggleHtmlMode', htmlMode.value)
+}
+
+// Initial mode comes from the user's editor preference (compose session).
+watch(editorMode, (value) => {
+  htmlMode.value = value === 'html'
+})
+
 const initForm = () => {
   form.value = {
     sender: authStore.authUser.username,
@@ -345,26 +383,30 @@ const initForm = () => {
     request_mdn: false,
   }
   if (props.originalEmail) {
-    form.value.to = props.originalEmail.reply_to
-      ? [props.originalEmail.reply_to]
-      : [props.originalEmail.from_address.address]
-    if (props.replyAll) {
-      let addresses = props.originalEmail.to
-        .filter((rcpt) => rcpt.address !== authStore.authUser.username)
-        .map((rcpt) => rcpt.fulladdress)
-      if (props.originalEmail.cc && props.originalEmail.cc.length) {
-        addresses = addresses.concat(
-          props.originalEmail.cc.map((rcpt) => rcpt.fulladdress)
-        )
+    if (!props.forward) {
+      // Reply: address the original sender (recipients make no sense when
+      // forwarding — the whole point is picking new ones).
+      form.value.to = props.originalEmail.reply_to
+        ? [props.originalEmail.reply_to]
+        : [props.originalEmail.from_address.address]
+      if (props.replyAll) {
+        let addresses = props.originalEmail.to
+          .filter((rcpt) => rcpt.address !== authStore.authUser.username)
+          .map((rcpt) => rcpt.fulladdress)
+        if (props.originalEmail.cc && props.originalEmail.cc.length) {
+          addresses = addresses.concat(
+            props.originalEmail.cc.map((rcpt) => rcpt.fulladdress)
+          )
+        }
+        form.value.cc = addresses
+        showCcField.value = true
       }
-      form.value.cc = addresses
-      showCcField.value = true
+      if (props.originalEmail.message_id) {
+        form.value.in_reply_to = props.originalEmail.message_id
+      }
     }
     form.value.subject = props.originalEmail.subject
     form.value.body = props.originalEmail.body
-    if (props.originalEmail.message_id) {
-      form.value.in_reply_to = props.originalEmail.message_id
-    }
   }
 }
 
@@ -630,9 +672,12 @@ api.getAllowedSenders().then((resp) => {
   row-gap: 8px;
   padding-block: 8px;
 }
-/* Subtle autosave status next to the save-draft button. */
+/* Secondary toolbar actions stay quiet; Send is the single accent. */
+.compose-view .tb-quiet {
+  color: var(--fg-dim);
+}
+/* Subtle autosave status next to the toolbar actions. */
 .draft-indicator {
-  margin-left: 10px;
   font-family: var(--font-mono);
   font-size: 11px;
   letter-spacing: 0.04em;

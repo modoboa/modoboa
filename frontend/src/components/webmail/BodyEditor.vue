@@ -1,17 +1,5 @@
 <template>
   <div class="d-flex flex-column flex-grow-1">
-    <div class="d-flex align-center mt-4 mb-2">
-      <v-btn
-        :variant="htmlMode ? 'flat' : 'outlined'"
-        color="primary"
-        size="small"
-        prepend-icon="mdi-code-tags"
-        @click="toggleHtmlMode"
-      >
-        HTML
-      </v-btn>
-    </div>
-
     <HtmlEditor
       v-if="htmlMode"
       v-model="model"
@@ -30,33 +18,16 @@
 </template>
 
 <script setup>
-import { ref, watch } from 'vue'
 import HtmlEditor from '@/components/tools/HtmlEditor'
 
-const props = defineProps({
-  editorMode: {
-    type: String,
-    default: null,
+// The plain/HTML toggle lives in the compose toolbar; the mode is owned by
+// the parent and bound here (v-model:html-mode).
+defineProps({
+  htmlMode: {
+    type: Boolean,
+    default: false,
   },
 })
 
 const model = defineModel()
-const emit = defineEmits(['onToggleHtmlMode'])
-
-const htmlMode = ref(false)
-
-const toggleHtmlMode = () => {
-  htmlMode.value = !htmlMode.value
-  emit('onToggleHtmlMode', htmlMode.value)
-}
-
-watch(
-  () => props.editorMode,
-  (value) => {
-    htmlMode.value = value === 'html'
-  }
-)
 </script>
-
-<style scoped lang="scss">
-</style>

@@ -17,8 +17,10 @@ const route = useRoute()
 
 const email = ref()
 
+// Refetch the quoted body when the editor format changes. Do NOT null the
+// email first: v-if would unmount/remount ComposeEmailForm and reset its
+// html-mode state, leaving the HTML body in the plain-text textarea.
 const getEmailContent = (html) => {
-  email.value = null
   api
     .getEmailContent(route.query.mailbox, route.query.mailid, {
       context: 'reply',

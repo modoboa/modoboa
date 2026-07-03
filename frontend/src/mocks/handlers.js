@@ -348,20 +348,54 @@ export const handlers = [
     const url = new URL(request.url)
     const mailbox = url.searchParams.get('mailbox') || 'INBOX'
     const mailid = url.searchParams.get('mailid')
+    // Mesmo contrato do backend real (lib/imapemail.py): `dformat=plain`
+    // devolve texto puro; `context=reply` prefixa "Re: ", injeta a linha
+    // "Fulano wrote:" e cita com "> "; `context=forward` prefixa "Fwd: " e
+    // injeta o bloco de cabeçalhos originais.
+    const dformat = url.searchParams.get('dformat') || 'html'
+    const context = url.searchParams.get('context')
     const msg = webmailBox(mailbox).find((m) => m.imapid === mailid)
     if (!msg) {
       return new HttpResponse(null, { status: 404 })
     }
     // Como no IMAP: buscar o conteúdo marca a mensagem como lida.
     msg.style = ''
-    const paragraphs = Array.from(
-      { length: 6 },
-      (_, i) =>
-        `<p>Parágrafo ${i + 1} do corpo mockado de "${msg.subject}". ` +
-        'Texto suficiente para exercitar rolagem e leitura no dev:mock.</p>'
-    ).join('')
+    let subject = msg.subject
+    let body
+    if (dformat === 'plain') {
+      body = Array.from(
+        { length: 6 },
+        (_, i) =>
+          `Parágrafo ${i + 1} do corpo mockado de "${msg.subject}". ` +
+          'Texto suficiente para exercitar rolagem e leitura no dev:mock.'
+      ).join('\n\n')
+    } else {
+      const paragraphs = Array.from(
+        { length: 6 },
+        (_, i) =>
+          `<p>Parágrafo ${i + 1} do corpo mockado de "${msg.subject}". ` +
+          'Texto suficiente para exercitar rolagem e leitura no dev:mock.</p>'
+      ).join('')
+      body = `<h3>${msg.subject}</h3>${paragraphs}`
+    }
+    if (context === 'reply') {
+      subject = /^re\s*:/i.test(subject) ? subject : `Re: ${subject}`
+      const who = msg.from_address.name || msg.from_address.address
+      if (dformat === 'plain') {
+        body = `${who} wrote:\n` + body.split('\n').map((l) => `>${l}`).join('\n')
+      } else {
+        body = `<p>${who} wrote:</p>${body}`
+      }
+    } else if (context === 'forward') {
+      subject = `Fwd: ${subject}`
+      const hdr = `Subject: ${msg.subject}\nDate: ${msg.date}\nFrom: ${msg.from_address.fulladdress}`
+      body =
+        dformat === 'plain'
+          ? `----- Original message -----\n${hdr}\n\n${body}`
+          : `<p>----- Original message -----<br>${hdr.replace(/\n/g, '<br>')}</p>${body}`
+    }
     return json({
-      subject: msg.subject,
+      subject,
       from_address: msg.from_address,
       to: [
         {
@@ -371,7 +405,7 @@ export const handlers = [
         },
       ],
       cc: [],
-      body: `<h3>${msg.subject}</h3>${paragraphs}`,
+      body,
       date: msg.date,
       attachments: msg.attachments ? [{ name: 'anexo.pdf', partnum: '2' }] : [],
     })
