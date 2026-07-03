@@ -40,8 +40,6 @@ import {
 // Composables
 import { h } from 'vue'
 import { createVuetify } from 'vuetify'
-import * as components from 'vuetify/components'
-import * as directives from 'vuetify/directives'
 import { aliases, mdi } from 'vuetify/iconsets/mdi-svg'
 import { mdiIcons } from './icons'
 
@@ -55,9 +53,12 @@ const mdiSvg = {
 }
 
 // https://vuetifyjs.com/en/introduction/why-vuetify/#feature-guides
+// No global component/directive registration: vite-plugin-vuetify
+// (autoImport) injects per-SFC imports at build time, so only the
+// components actually used ship in the bundle (JS and CSS). Federated
+// plugin remotes must carry their own Vuetify imports (upstream plugin
+// builds use the same vite-plugin-vuetify setup).
 export default createVuetify({
-  components,
-  directives,
   icons: {
     defaultSet: 'mdi',
     aliases,
