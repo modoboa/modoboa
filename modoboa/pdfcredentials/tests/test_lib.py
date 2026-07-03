@@ -1,5 +1,6 @@
 """PDF credentials lib tests."""
 
+import base64
 from io import BytesIO
 import os
 import shutil
@@ -82,10 +83,17 @@ class PDFCredentialsLibTestCase(ModoAPITestCase):
         fname = os.path.join(self.workdir, "new@test.com.pdf")
         lib.crypt_and_save_to_file(BytesIO(data), fname, len(data))
         with open(fname, "rb") as fp:
-            content = bytearray(fp.read())
-        content[-2] ^= 0x01
+            content = fp.read()
+        # Flip one bit of the decoded token: flipping an encoded (base64)
+        # character instead could only touch its unused padding bits and
+        # leave the authenticated payload intact.
+        token = bytearray(
+            base64.urlsafe_b64decode(content[len(lib.ENCRYPTED_FILE_MAGIC) :])
+        )
+        token[-2] ^= 0x01
         with open(fname, "wb") as fp:
-            fp.write(content)
+            fp.write(lib.ENCRYPTED_FILE_MAGIC)
+            fp.write(base64.urlsafe_b64encode(token))
         with self.assertRaises(InvalidToken):
             lib.decrypt_file(fname)
 
