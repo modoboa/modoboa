@@ -369,6 +369,18 @@ export const handlers = [
           `Parágrafo ${i + 1} do corpo mockado de "${msg.subject}". ` +
           'Texto suficiente para exercitar rolagem e leitura no dev:mock.'
       ).join('\n\n')
+    } else if (/backup/i.test(msg.subject) && !context) {
+      // E-mail texto-puro (cron/log): o backend embrulha em <pre>
+      // (viewmail_plain). Linhas compridas sem espaço — o caso que era
+      // cortado na borda do iframe no celular.
+      const logLines = Array.from(
+        { length: 20 },
+        (_, i) =>
+          `Erro ao processar o conteúdo da notícia número ${i + 1} do portal\n` +
+          ` URL: https://exemplo.com.br/noticias/categoria/subcategoria/titulo-bem-comprido-da-noticia-${i + 1}?utm_source=cron&utm_medium=email\n` +
+          `  File "/usr/lib/python3/dist-packages/urllib3/connectionpool.py", line 700, in urlopen`
+      ).join('\n')
+      body = `<pre>${logLines}</pre>`
     } else if (/newsletter/i.test(msg.subject) && !context) {
       // E-mail "grande" estilo marketing, imitando a saída do backend após o
       // lxml Cleaner (page_structure=True embrulha tudo num fragmento e o

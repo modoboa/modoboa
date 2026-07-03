@@ -19,7 +19,22 @@
         />
 
         <div class="d-flex align-center flex-shrink-0">
+          <!-- Phones (xs): icon-only Reply so the toolbar stays on one line,
+               mirroring the compose Send button. -->
           <v-btn
+            v-if="xs"
+            icon="mdi-reply"
+            height="40"
+            width="40"
+            variant="tonal"
+            color="primary"
+            class="reply-btn"
+            :title="$gettext('Reply')"
+            :aria-label="$gettext('Reply')"
+            @click="() => replyToEmail()"
+          />
+          <v-btn
+            v-else
             prepend-icon="mdi-reply"
             height="36"
             variant="tonal"
@@ -30,8 +45,8 @@
             {{ $gettext('Reply') }}
           </v-btn>
           <v-btn
-            height="36"
-            width="28"
+            :height="xs ? 40 : 36"
+            :width="xs ? 36 : 28"
             icon
             variant="tonal"
             color="primary"
@@ -260,7 +275,7 @@ const props = defineProps({
 const emit = defineEmits(['close', 'deleted', 'loaded'])
 
 const { $gettext } = useGettext()
-const { mobile } = useDisplay()
+const { mobile, xs } = useDisplay()
 const { displayNotification, reloadMailboxCounters } = useBusStore()
 const progress = useProgressStore()
 const router = useRouter()
@@ -330,7 +345,9 @@ const fetchMailContent = () => {
           html {
             height: auto !important;
             max-width: 100% !important;
-            overflow-x: hidden !important;
+            /* auto, not hidden: anything that still can't shrink (fixed-width
+               tables etc.) becomes scrollable instead of cut off. */
+            overflow-x: auto !important;
             overflow-y: auto !important;
             word-wrap: break-word !important;
             box-sizing: border-box !important;
@@ -359,6 +376,13 @@ const fetchMailContent = () => {
           img, table, video, canvas, svg {
             max-width: 100% !important;
             height: auto !important;
+          }
+          /* Plain-text mail arrives as <pre> (backend viewmail_plain), and
+             pre never wraps: long lines (cron logs, URLs) were clipped at
+             the frame edge on phones. Wrap instead. */
+          pre {
+            white-space: pre-wrap !important;
+            word-break: break-word !important;
           }
         `
         iframeDoc.head.appendChild(style)
