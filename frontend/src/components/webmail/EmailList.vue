@@ -308,7 +308,10 @@
                     </div>
                   </div>
 
-                  <div class="email-row__meta">
+                  <div
+                    class="email-row__meta clickable"
+                    @click="openEmail(email.imapid)"
+                  >
                     <div
                       v-if="!isScheduledDateOver(email)"
                       class="email-row__date"
@@ -318,7 +321,7 @@
                     <div
                       v-else
                       class="email-row__date email-row__date--error clickable"
-                      @click="displaySchedulingError(email)"
+                      @click.stop="displaySchedulingError(email)"
                     >
                       {{ getEmailDate(email) }}
                     </div>
@@ -1128,10 +1131,21 @@ watch(
   outline: 1px solid var(--accent);
   outline-offset: -2px;
 }
-/* Row open in the reading pane (desktop split view). */
+/* Row open in the reading pane (desktop split view). Uses a painted
+   pseudo-element instead of an inset box-shadow so the accent bar survives
+   non-integer zoom levels (sub-pixel rounding was discarding the 2px shadow
+   on one or more edges, making the highlight vanish). */
 .email-row--active {
   background: rgba(124, 92, 255, 0.12);
-  box-shadow: inset 2px 0 0 var(--accent);
+}
+.email-row--active::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: var(--accent);
 }
 .email-row--active:hover {
   background: rgba(124, 92, 255, 0.16);
