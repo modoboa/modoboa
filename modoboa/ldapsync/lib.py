@@ -1,5 +1,7 @@
 """LDAP related functions."""
 
+import os
+
 import ldap
 import ldap.modlist as modlist
 from ldap.dn import escape_dn_chars
@@ -252,9 +254,22 @@ def build_ldap_uri(config, node=""):
     )
 
 
+def _check_dovecot_conf_value(name, value):
+    """Reject values that could inject directives into the generated file."""
+    if any(c in value for c in ("\r", "\n", "\x00")):
+        raise InternalError(
+            _("LDAP parameter {} contains forbidden characters").format(name)
+        )
+
+
 def update_dovecot_config_file(config):
     """Update dovecot configuration file from LDAP parameters."""
     conf_file = config["ldap_dovecot_conf_file"]
+    _check_dovecot_conf_value("ldap_dovecot_conf_file", conf_file)
+    if not os.path.isabs(conf_file) or not conf_file.endswith(".conf"):
+        raise InternalError(
+            _("ldap_dovecot_conf_file must be an absolute path ending with '.conf'")
+        )
 
     # Hosts conf
     uris = build_ldap_uri(config)
@@ -269,11 +284,27 @@ def update_dovecot_config_file(config):
     base = config["ldap_search_base"]
     user_filter = config["ldap_search_filter"].replace("(user)s", "u")
 
+    for name, value in (
+        ("uris", uris),
+        ("ldap_bind_dn", bind_dn),
+        ("ldap_bind_password", bind_pwd),
+        ("ldap_search_base", base),
+        ("ldap_search_filter", user_filter),
+    ):
+        _check_dovecot_conf_value(name, value)
+    # The dn/dnpass values are quoted below: a quote would break out
+    if '"' in bind_dn or "'" in bind_pwd:
+        raise InternalError(
+            _("LDAP bind DN and password cannot contain quote characters")
+        )
+
     with open(conf_file, "w") as fp:
-        fp.write(f"""uris = {uris}
+        fp.write(
+            f"""uris = {uris}
 dn = "{bind_dn}"
 dnpass = '{bind_pwd}'
 base = {base}
 user_filter = {user_filter}
 pass_filter = {user_filter}
-""")
+"""
+        )

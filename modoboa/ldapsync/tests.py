@@ -1,5 +1,8 @@
 """LDAP sync. related tests."""
 
+import os
+import shutil
+import tempfile
 from unittest import skipIf
 
 from django.conf import settings
@@ -9,6 +12,7 @@ from django.utils.encoding import force_bytes, force_str
 
 from modoboa.core import factories as core_factories
 from modoboa.core import models as core_models
+from modoboa.lib.exceptions import InternalError
 from modoboa.lib.tests import NO_LDAP, ModoTestCase
 from modoboa.parameters import tools as param_tools
 
@@ -37,6 +41,64 @@ class AccountDNTestCase(SimpleTestCase):
         # suffix must remain the trailing part of the DN.
         self.assertNotIn("evil,ou=admins", dn)
         self.assertTrue(dn.endswith(",ou=users,dc=example,dc=com"))
+
+
+@skipIf(NO_LDAP, "No ldap module installed")
+class DovecotConfFileTestCase(SimpleTestCase):
+    """The generated dovecot conf must be protected against injection."""
+
+    def setUp(self):
+        self.workdir = tempfile.mkdtemp()
+        self.addCleanup(shutil.rmtree, self.workdir)
+
+    def _config(self, **overrides):
+        config = {
+            "ldap_dovecot_conf_file": os.path.join(self.workdir, "dovecot-ldap.conf"),
+            "ldap_secured": "none",
+            "ldap_server_address": "localhost",
+            "ldap_server_port": 389,
+            "ldap_enable_secondary_server": False,
+            "ldap_bind_dn": "cn=admin,dc=example,dc=com",
+            "ldap_bind_password": "secret",
+            "ldap_search_base": "ou=users,dc=example,dc=com",
+            "ldap_search_filter": "(mail=%(user)s)",
+        }
+        config.update(overrides)
+        return config
+
+    def test_valid_config(self):
+        config = self._config()
+        lib.update_dovecot_config_file(config)
+        with open(config["ldap_dovecot_conf_file"]) as fp:
+            content = fp.read()
+        self.assertIn('dn = "cn=admin,dc=example,dc=com"', content)
+
+    def test_newline_in_value(self):
+        for name in (
+            "ldap_bind_dn",
+            "ldap_bind_password",
+            "ldap_search_base",
+            "ldap_search_filter",
+            "ldap_server_address",
+        ):
+            config = self._config(**{name: "value\nuris = ldap://evil"})
+            with self.assertRaises(InternalError):
+                lib.update_dovecot_config_file(config)
+            self.assertFalse(os.path.exists(config["ldap_dovecot_conf_file"]))
+
+    def test_quote_breakout(self):
+        config = self._config(ldap_bind_dn='cn=x" ,dc=com')
+        with self.assertRaises(InternalError):
+            lib.update_dovecot_config_file(config)
+        config = self._config(ldap_bind_password="pass'word")
+        with self.assertRaises(InternalError):
+            lib.update_dovecot_config_file(config)
+
+    def test_invalid_conf_file_path(self):
+        for path in ("relative/path.conf", os.path.join(self.workdir, "no-ext")):
+            config = self._config(ldap_dovecot_conf_file=path)
+            with self.assertRaises(InternalError):
+                lib.update_dovecot_config_file(config)
 
 
 @skipIf(NO_LDAP, "No ldap module installed")
