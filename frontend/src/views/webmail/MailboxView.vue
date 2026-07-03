@@ -43,7 +43,7 @@
          driven by the ?mailid= query so URLs stay shareable and back/forward
          walks through opened messages. Mobile keeps the single-column flow
          (list here, message on the EmailView route). -->
-    <div v-if="!mobile" class="mailbox-split">
+    <div v-if="!mobile" ref="splitRef" class="mailbox-split">
       <div class="mailbox-split__list" :style="{ width: listPaneWidth + 'px' }">
         <EmailList
           ref="listRef"
@@ -55,10 +55,13 @@
       </div>
       <div
         class="mailbox-split__divider"
+        :class="{ 'is-dragging': paneResizing }"
         role="separator"
         aria-orientation="vertical"
         :aria-label="$gettext('Resize reading pane')"
-        @mousedown="startPaneResize"
+        tabindex="0"
+        @pointerdown="startPaneResize"
+        @keydown="onDividerKeydown"
       />
       <div class="mailbox-split__pane">
         <EmailContent
@@ -203,21 +206,67 @@ const listPaneWidth = ref(
   Number(localStorage.getItem(LIST_WIDTH_KEY)) || 420
 )
 
+const paneResizing = ref(false)
+const splitRef = ref(null)
+
+const clampPaneWidth = (width) => {
+  const max = Math.round(
+    (splitRef.value?.clientWidth || window.innerWidth) * 0.6
+  )
+  return Math.min(Math.max(width, 320), max)
+}
+
+// Pointer capture (instead of document mousemove) so the drag keeps working
+// when the pointer crosses the reading pane's iframe (which otherwise
+// swallows mouse events and freezes the drag), and works with touch/pen.
+// The pane edge is measured from the split container instead of assuming a
+// fixed 256px sidebar — the sidebar is resizable too.
 const startPaneResize = (e) => {
   e.preventDefault()
+  const handle = e.currentTarget
+  handle.setPointerCapture(e.pointerId)
+  paneResizing.value = true
+  const splitLeft = splitRef.value.getBoundingClientRect().left
+  document.body.style.cursor = 'col-resize'
+  document.body.style.userSelect = 'none'
+  let pendingX = e.clientX
+  let frame = null
   const onMove = (event) => {
-    const max = Math.round(window.innerWidth * 0.6)
-    listPaneWidth.value = Math.min(Math.max(event.clientX - 256, 320), max)
+    pendingX = event.clientX
+    if (frame) {
+      return
+    }
+    frame = requestAnimationFrame(() => {
+      frame = null
+      listPaneWidth.value = clampPaneWidth(pendingX - splitLeft)
+    })
   }
   const onUp = () => {
+    paneResizing.value = false
+    document.body.style.cursor = ''
     document.body.style.userSelect = ''
+    if (frame) {
+      cancelAnimationFrame(frame)
+      frame = null
+    }
     localStorage.setItem(LIST_WIDTH_KEY, String(listPaneWidth.value))
-    document.removeEventListener('mousemove', onMove)
-    document.removeEventListener('mouseup', onUp)
+    handle.removeEventListener('pointermove', onMove)
+    handle.removeEventListener('pointerup', onUp)
+    handle.removeEventListener('pointercancel', onUp)
   }
-  document.body.style.userSelect = 'none'
-  document.addEventListener('mousemove', onMove)
-  document.addEventListener('mouseup', onUp)
+  handle.addEventListener('pointermove', onMove)
+  handle.addEventListener('pointerup', onUp)
+  handle.addEventListener('pointercancel', onUp)
+}
+
+const onDividerKeydown = (e) => {
+  if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') {
+    return
+  }
+  e.preventDefault()
+  const step = e.key === 'ArrowRight' ? 16 : -16
+  listPaneWidth.value = clampPaneWidth(listPaneWidth.value + step)
+  localStorage.setItem(LIST_WIDTH_KEY, String(listPaneWidth.value))
 }
 
 // ----- open / navigation -----
@@ -361,23 +410,46 @@ onMounted(fetchUserMailboxes)
   display: flex;
   flex-direction: column;
 }
+/* 18px gutter with the hairline centered: gives the list and the message
+   ~8px of breathing room off the divider on each side, and the whole gutter
+   (plus a 2px overhang) is grabbable — ~22px hit zone. The visible line
+   stays 1px, thickening to 3px accent on hover/focus/drag. */
 .mailbox-split__divider {
-  flex: 0 0 5px;
+  flex: 0 0 18px;
   cursor: col-resize;
   position: relative;
   background: transparent;
+  z-index: 1;
+  touch-action: none;
+  outline: none;
+}
+.mailbox-split__divider::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -2px;
+  right: -2px;
 }
 .mailbox-split__divider::after {
   content: '';
   position: absolute;
   top: 0;
   bottom: 0;
-  left: 2px;
+  left: 9px;
   width: 1px;
   background: var(--line-2);
+  transition:
+    background-color 0.15s ease,
+    width 0.15s ease,
+    left 0.15s ease;
 }
-.mailbox-split__divider:hover::after {
+.mailbox-split__divider:hover::after,
+.mailbox-split__divider:focus-visible::after,
+.mailbox-split__divider.is-dragging::after {
   background: var(--accent);
+  width: 3px;
+  left: 8px;
 }
 .mailbox-split__pane {
   flex: 1 1 auto;

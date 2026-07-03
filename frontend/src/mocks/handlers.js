@@ -369,6 +369,34 @@ export const handlers = [
           `Parágrafo ${i + 1} do corpo mockado de "${msg.subject}". ` +
           'Texto suficiente para exercitar rolagem e leitura no dev:mock.'
       ).join('\n\n')
+    } else if (/newsletter/i.test(msg.subject) && !context) {
+      // E-mail "grande" estilo marketing, imitando a saída do backend após o
+      // lxml Cleaner (page_structure=True embrulha tudo num fragmento e o
+      // <style> sobrevive dentro dele). CSS típico de newsletter: reset com
+      // html/body { height:100% }, tabelas de 600px, cores etc — é o caso que
+      // historicamente gera scroll duplo/perda de formatação no iframe.
+      const rows = Array.from(
+        { length: 30 },
+        (_, i) =>
+          `<tr><td class="cell"><h2>Seção ${i + 1}</h2>` +
+          `<p>Conteúdo longo da newsletter mockada, item ${i + 1}. ` +
+          'Texto suficiente para forçar rolagem vertical no leitor.</p>' +
+          `<a class="btn" href="#">Botão ${i + 1}</a></td></tr>`
+      ).join('')
+      body =
+        '<div><style>' +
+        'html, body { height: 100%; margin: 0; padding: 0; }' +
+        'body { background: #f2f2f7; font-family: Georgia, serif; }' +
+        '.wrap { width: 600px; margin: 0 auto; background: #ffffff; }' +
+        '.hero { background: #1a1a2e; color: #ffffff; padding: 32px; text-align: center; }' +
+        '.cell { padding: 20px 32px; border-bottom: 1px solid #e2e2ea; }' +
+        '.cell h2 { color: #4a2ea0; margin: 0 0 8px; }' +
+        '.btn { display: inline-block; background: #7c5cff; color: #ffffff; ' +
+        'padding: 10px 22px; text-decoration: none; font-weight: bold; }' +
+        '</style>' +
+        `<table class="wrap" cellpadding="0" cellspacing="0">` +
+        `<tr><td class="hero"><h1>${msg.subject}</h1></td></tr>${rows}` +
+        '</table></div>'
     } else {
       const paragraphs = Array.from(
         { length: 6 },

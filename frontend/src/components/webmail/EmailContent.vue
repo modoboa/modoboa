@@ -321,11 +321,26 @@ const fetchMailContent = () => {
         // Add style to prevent content overflow inside iframe on small screens
         const style = iframeDoc.createElement('style')
         style.textContent = `
-          html, body {
+          /* Exactly ONE scroll container: the iframe viewport (html).
+             Setting any overflow on <body> turns it into a second scroll
+             container (overflow-x:hidden computes overflow-y:auto), and
+             marketing emails ship body{height:100%} — result: two
+             scrollbars side by side and a body that scrolls where the
+             window's scroll listener (reading progress) can't see it. */
+          html {
+            height: auto !important;
             max-width: 100% !important;
             overflow-x: hidden !important;
+            overflow-y: auto !important;
             word-wrap: break-word !important;
-            word-break: break-word !important;
+            box-sizing: border-box !important;
+          }
+          body {
+            height: auto !important;
+            min-height: 0 !important;
+            max-width: 100% !important;
+            overflow: visible !important;
+            word-wrap: break-word !important;
             box-sizing: border-box !important;
           }
           /* Base typography for messages that bring no styling of their own

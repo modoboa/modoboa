@@ -49,12 +49,37 @@ class ImapEmail(Email):
         self.attachments: dict[str, str] = {}
         self.To: list = []
 
+    def close(self) -> None:
+        """Release the IMAP connection (back to the pool, or logout).
+
+        Views must call this (try/finally) once they are done with the
+        email — including after serialization, since ``body`` fetches
+        lazily. Relying on ``__del__`` alone leaks connections: the
+        instance holds ``self.request`` (reference cycles with the DRF
+        request), so garbage collection — and therefore the release —
+        happens at an arbitrary later time while Dovecot keeps counting
+        the open socket against ``mail_max_userip_connections``.
+        """
+        imapc = getattr(self, "imapc", None)
+        if imapc is None:
+            return
+        self.imapc = None
+        imapc.__exit__()
+
     def __del__(self):
-        self.imapc.__exit__()
+        # Safety net only; the deterministic path is an explicit close().
+        try:
+            self.close()
+        except Exception:  # noqa: BLE001 — never raise from __del__
+            pass
 
     def fetch_headers(self, raw_addresses: bool = False) -> None:
         """Fetch message headers from server."""
-        requested_headers = self.headernames
+        # Copy: headernames is a CLASS attribute, and += would mutate it in
+        # place — one Scheduled-mailbox fetch would permanently (and
+        # repeatedly) grow the header list for every later fetch in the
+        # worker process.
+        requested_headers = list(self.headernames)
         if self.mbox == constants.MAILBOX_NAME_SCHEDULED:
             requested_headers += [(constants.CUSTOM_HEADER_SCHEDULED_DATETIME, True)]
         header_names = [header[0].upper() for header in requested_headers]

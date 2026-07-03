@@ -1,5 +1,5 @@
 <template>
-  <div class="webmail-shell">
+  <div class="webmail-shell" :class="{ 'is-resizing': isResizing }">
     <ConnectedLayout>
     <template #navbar>
       <!-- Mobile-only top bar: hosts the hamburger that toggles the drawer. -->
@@ -19,7 +19,17 @@
         :temporary="mobile"
         color="background"
       >
-        <div class="resize-handle" @mousedown="startResize" />
+        <div
+          v-if="!mobile && !rail"
+          class="resize-handle"
+          :class="{ 'is-dragging': isResizing }"
+          role="separator"
+          aria-orientation="vertical"
+          :aria-label="$gettext('Resize sidebar')"
+          tabindex="0"
+          @pointerdown="startResize"
+          @keydown="onHandleKeydown"
+        />
         <template #prepend>
           <div v-if="!mobile" class="d-flex align-center">
             <span v-if="!rail" class="brand-wordmark">webmail</span>
@@ -117,23 +127,64 @@ const rail = ref(false)
 watch(mobile, (isMobile) => {
   drawer.value = !isMobile
 })
-const drawerWidth = ref(256)
+// ----- sidebar width, persisted -----
+const DRAWER_WIDTH_KEY = 'webmail.drawerWidth'
+const clampDrawerWidth = (width) => Math.min(Math.max(width, 200), 600)
+const drawerWidth = ref(
+  clampDrawerWidth(Number(localStorage.getItem(DRAWER_WIDTH_KEY)) || 256)
+)
 const isResizing = ref(false)
 
+// Pointer capture (instead of document mousemove) so the drag keeps working
+// over iframes and outside the window, and works with touch/pen too. The
+// `is-resizing` class on the shell disables the drawer/main transitions so
+// the width follows the pointer instead of easing behind it; moves are
+// coalesced per animation frame.
 function startResize(e) {
   e.preventDefault()
+  const handle = e.currentTarget
+  handle.setPointerCapture(e.pointerId)
   isResizing.value = true
-  const onMouseMove = (event) => {
-    const newWidth = Math.min(Math.max(event.clientX, 200), 600)
-    drawerWidth.value = newWidth
+  document.body.style.cursor = 'col-resize'
+  document.body.style.userSelect = 'none'
+  let pendingX = e.clientX
+  let frame = null
+  const onMove = (event) => {
+    pendingX = event.clientX
+    if (frame) {
+      return
+    }
+    frame = requestAnimationFrame(() => {
+      frame = null
+      drawerWidth.value = clampDrawerWidth(pendingX)
+    })
   }
-  const onMouseUp = () => {
+  const onUp = () => {
     isResizing.value = false
-    document.removeEventListener('mousemove', onMouseMove)
-    document.removeEventListener('mouseup', onMouseUp)
+    document.body.style.cursor = ''
+    document.body.style.userSelect = ''
+    if (frame) {
+      cancelAnimationFrame(frame)
+      frame = null
+    }
+    localStorage.setItem(DRAWER_WIDTH_KEY, String(drawerWidth.value))
+    handle.removeEventListener('pointermove', onMove)
+    handle.removeEventListener('pointerup', onUp)
+    handle.removeEventListener('pointercancel', onUp)
   }
-  document.addEventListener('mousemove', onMouseMove)
-  document.addEventListener('mouseup', onMouseUp)
+  handle.addEventListener('pointermove', onMove)
+  handle.addEventListener('pointerup', onUp)
+  handle.addEventListener('pointercancel', onUp)
+}
+
+function onHandleKeydown(e) {
+  if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') {
+    return
+  }
+  e.preventDefault()
+  const step = e.key === 'ArrowRight' ? 16 : -16
+  drawerWidth.value = clampDrawerWidth(drawerWidth.value + step)
+  localStorage.setItem(DRAWER_WIDTH_KEY, String(drawerWidth.value))
 }
 const hdelimiter = ref(null)
 const mailboxQuota = ref(null)
@@ -244,20 +295,43 @@ mailboxQuota.value = resp.data
   min-height: 0;
   overflow: hidden;
 }
+/* While dragging the sidebar handle, kill the drawer/main layout
+   transitions: with them on, every width update eases behind the pointer
+   and the drag feels rubber-banded. */
+.webmail-shell.is-resizing .v-navigation-drawer,
+.webmail-shell.is-resizing .v-main {
+  transition: none !important;
+}
 </style>
 
 <style scoped>
+/* Wide (12px) invisible grab zone along the drawer edge; the visible
+   feedback is a 3px accent line at the very edge on hover/focus/drag. */
 .resize-handle {
   position: absolute;
   top: 0;
   right: 0;
-  width: 4px;
+  width: 12px;
   height: 100%;
   cursor: col-resize;
   z-index: 100;
+  touch-action: none;
+  outline: none;
 }
-.resize-handle:hover {
-  background-color: rgba(0, 0, 0, 0.12);
+.resize-handle::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  width: 3px;
+  background: transparent;
+  transition: background-color 0.15s ease;
+}
+.resize-handle:hover::after,
+.resize-handle:focus-visible::after,
+.resize-handle.is-dragging::after {
+  background: var(--accent);
 }
 
 /* Storage / quota panel at the bottom of the drawer. */

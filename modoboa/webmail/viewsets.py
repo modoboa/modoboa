@@ -293,6 +293,7 @@ class UserEmailViewSet(viewsets.GenericViewSet):
                 dformat=dformat,
                 links=request.GET.get("links", "0") == "1",
             )
+            fetch_headers = False
         else:
             email = lib.ImapEmail(
                 request,
@@ -300,9 +301,18 @@ class UserEmailViewSet(viewsets.GenericViewSet):
                 dformat=dformat,
                 links=request.GET.get("links", "0") == "1",
             )
-            email.fetch_headers()
-        serializer = serializers.EmailSerializer(email)
-        return response.Response(serializer.data)
+            fetch_headers = True
+        # Release the IMAP connection as soon as the payload is built
+        # (serializer .data triggers the lazy body fetch). Leaving it to GC
+        # piles up open sockets under heavy use until Dovecot rejects the
+        # user (mail_max_userip_connections).
+        try:
+            if fetch_headers:
+                email.fetch_headers()
+            data = serializers.EmailSerializer(email).data
+        finally:
+            email.close()
+        return response.Response(data)
 
     @action(methods=["get"], detail=False)
     def source(self, request):
@@ -315,7 +325,11 @@ class UserEmailViewSet(viewsets.GenericViewSet):
             request,
             f"{mailbox}:{mailid}",
         )
-        return response.Response({"source": email.source})
+        try:
+            source = email.source
+        finally:
+            email.close()
+        return response.Response({"source": source})
 
     @action(methods=["get"], detail=False)
     def attachment(self, request):

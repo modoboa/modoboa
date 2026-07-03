@@ -323,6 +323,30 @@ class UserEmailViewSetTestCase(WebmailTestCase):
         self.assertEqual(response.status_code, 200)
         self.assertIn("scheduled_datetime", response.json())
 
+    @override_settings(WEBMAIL_IMAP_POOL=True)
+    def test_content_releases_imap_connection(self):
+        """The content view must release its connection before responding.
+
+        ImapEmail acquires the (pooled) IMAP connection in its constructor;
+        if the release were left to garbage collection, open sockets would
+        pile up under heavy use until Dovecot rejects the user
+        (mail_max_userip_connections).
+        """
+        from modoboa.webmail.lib import imap_pool
+
+        imap_pool.clear()
+        self.addCleanup(imap_pool.clear)
+        self.authenticate()
+        url = reverse("v2:webmail-email-content")
+        for query in (
+            "mailbox=INBOX&mailid=33",
+            "mailbox=INBOX&mailid=46931&context=reply",
+        ):
+            response = self.client.get(f"{url}?{query}")
+            self.assertEqual(response.status_code, 200)
+            # Deterministically back in the pool, ready for the next request.
+            self.assertEqual(len(imap_pool._pool), 1)
+
     def test_attachment(self):
         self.authenticate()
         url = reverse("v2:webmail-email-attachment")

@@ -14,7 +14,7 @@
         />
         <div class="d-flex align-center ml-2">
           <v-btn
-            v-if="mobile"
+            v-if="compact"
             icon="mdi-send"
             variant="tonal"
             color="primary"
@@ -30,7 +30,7 @@
             prepend-icon="mdi-send"
             variant="tonal"
             color="primary"
-            height="36"
+            :height="btnSize"
             :loading="working"
             :text="$gettext('Send')"
             @click="submit"
@@ -41,7 +41,7 @@
             variant="tonal"
             color="primary"
             :height="btnSize"
-            :width="mobile ? 36 : 24"
+            :width="compact ? 36 : 24"
             :aria-label="$gettext('More send options')"
           >
             <v-icon icon="mdi-chevron-down" />
@@ -59,7 +59,7 @@
 
         <v-spacer />
         <div class="d-flex align-center flex-shrink-0">
-          <template v-if="!mobile">
+          <template v-if="!compact">
             <span v-if="autosaving" class="draft-indicator mr-1" role="status">
               {{ $gettext('Saving…') }}
             </span>
@@ -104,7 +104,7 @@
             />
           </v-badge>
           <v-btn
-            v-if="!mobile"
+            v-if="!compact"
             class="ml-1 tb-quiet"
             variant="text"
             icon="mdi-content-save-outline"
@@ -120,7 +120,7 @@
               <v-btn
                 class="ml-1 tb-quiet"
                 variant="text"
-                :icon="mobile ? 'mdi-dots-vertical' : 'mdi-cog-outline'"
+                :icon="compact ? 'mdi-dots-vertical' : 'mdi-cog-outline'"
                 :height="btnSize"
                 :width="btnSize"
                 :title="$gettext('Options')"
@@ -129,9 +129,9 @@
               />
             </template>
             <v-card class="pa-4">
-              <!-- Mobile: HTML toggle and manual save collapse in here so the
-                   toolbar never wraps to a second line. -->
-              <template v-if="mobile">
+              <!-- Narrow screens: HTML toggle and manual save collapse in here
+                   so the toolbar never wraps to a second line. -->
+              <template v-if="compact">
                 <v-switch
                   :model-value="htmlMode"
                   :label="$gettext('HTML mode')"
@@ -168,7 +168,7 @@
           </v-menu>
         </div>
       </v-toolbar>
-      <v-form ref="formRef" class="flex-grow-1 d-flex flex-column">
+      <v-form ref="formRef" class="compose-form flex-grow-1 d-flex flex-column">
         <div class="d-flex flex-column gap-3 mb-4">
           <v-select
             v-model="form.sender"
@@ -330,7 +330,11 @@ const emit = defineEmits(['onToggleHtmlMode'])
 
 const route = useRoute()
 const router = useRouter()
-const { mobile } = useDisplay()
+// `mobile` (< lg by default) keeps driving touch sizing and fullscreen
+// dialogs; `compact` (xs, < 600px) drives the toolbar collapse (icon-only
+// Send, overflow kebab). Keying the collapse on `mobile` shrank the toolbar
+// on any half-width desktop window — way too early.
+const { mobile, xs: compact } = useDisplay()
 const { $gettext } = useGettext()
 const { displayNotification, reloadData } = useBusStore()
 const authStore = useAuthStore()
@@ -671,6 +675,22 @@ api.getAllowedSenders().then((resp) => {
   flex-wrap: wrap;
   row-gap: 8px;
   padding-block: 8px;
+}
+/* The user avatar (TopMenu) is position:fixed at the top-right corner with a
+   high z-index. On large screens (no mobile app bar above the content) the
+   compose toolbar reaches that corner, so reserve room for the avatar —
+   page content must never sit under it. */
+@media (min-width: 1280px) {
+  .compose-view :deep(.v-toolbar__content) {
+    padding-right: 68px;
+  }
+}
+/* The webmail shell clips overflow at the viewport (app-shell layout), so
+   the form provides its own vertical scroll for long messages; the toolbar
+   stays pinned above it. */
+.compose-form {
+  min-height: 0;
+  overflow-y: auto;
 }
 /* Secondary toolbar actions stay quiet; Send is the single accent. */
 .compose-view .tb-quiet {
