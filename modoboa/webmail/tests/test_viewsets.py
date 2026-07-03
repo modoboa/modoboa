@@ -354,6 +354,26 @@ class ComposeSessionViewSetTestCase(WebmailTestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.json()), 2)
 
+    def test_send_rejects_spoofed_sender(self):
+        """A user cannot send with a From address they do not own."""
+        self.authenticate()
+        uid = self._create_compose_session()
+        url = reverse("v2:webmail-compose-session-send", args=[uid])
+        mail.outbox = []
+        response = self.client.post(
+            url,
+            {
+                "sender": "victim@example.test",
+                "to": ["test@example.test"],
+                "subject": "spoofed",
+                "body": "Test",
+            },
+            format="json",
+        )
+        self.assertEqual(response.status_code, 400)
+        self.assertIn("sender", response.json())
+        self.assertEqual(len(mail.outbox), 0)
+
     def test_attachments(self):
         self.authenticate()
         uid = self._create_compose_session()
