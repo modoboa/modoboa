@@ -2,6 +2,8 @@
 
 import ldap
 import ldap.modlist as modlist
+from ldap.dn import escape_dn_chars
+from ldap.filter import escape_filter_chars
 
 from django.conf import settings
 from django.utils.encoding import force_bytes, force_str
@@ -96,9 +98,18 @@ def check_if_dn_exists(conn, dn):
     return True
 
 
+def _account_dn(config, username):
+    """Build the account DN, escaping the username to prevent DN injection.
+
+    Without escaping, a username containing DN metacharacters (``,``, ``=``,
+    ``+`` ...) could retarget the operation to another directory entry.
+    """
+    return config["ldap_sync_account_dn_template"] % {"user": escape_dn_chars(username)}
+
+
 def update_ldap_account(user, config):
     """Update existing account."""
-    dn = config["ldap_sync_account_dn_template"] % {"user": user.username}
+    dn = _account_dn(config, user.username)
     conn = get_connection(config)
     if not check_if_dn_exists(conn, dn):
         create_ldap_account(user, dn, conn)
@@ -123,7 +134,7 @@ def update_ldap_account(user, config):
 
 def delete_ldap_account(user, config):
     """Delete remote LDAP account."""
-    dn = config["ldap_sync_account_dn_template"] % {"user": user.username}
+    dn = _account_dn(config, user.username)
     conn = get_connection(config)
     if not check_if_dn_exists(conn, dn):
         return
@@ -152,9 +163,10 @@ def find_user_groups(conn, config, dn, entry):
         or config["ldap_group_type"] == "groupofnames"
     )
     if condition:
-        flt = f"(member={dn})"
+        flt = f"(member={escape_filter_chars(dn)})"
     elif config["ldap_group_type"] == "posixgroup":
-        flt = "(memberUid={})".format(force_str(entry["uid"][0]))
+        uid = escape_filter_chars(force_str(entry["uid"][0]))
+        flt = f"(memberUid={uid})"
 
     result = conn.search_s(config["ldap_groups_search_base"], ldap.SCOPE_SUBTREE, flt)
     groups = []
@@ -258,12 +270,10 @@ def update_dovecot_config_file(config):
     user_filter = config["ldap_search_filter"].replace("(user)s", "u")
 
     with open(conf_file, "w") as fp:
-        fp.write(
-            f"""uris = {uris}
+        fp.write(f"""uris = {uris}
 dn = "{bind_dn}"
 dnpass = '{bind_pwd}'
 base = {base}
 user_filter = {user_filter}
 pass_filter = {user_filter}
-"""
-        )
+""")

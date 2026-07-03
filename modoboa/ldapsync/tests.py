@@ -4,6 +4,7 @@ from unittest import skipIf
 
 from django.conf import settings
 from django.core.management import call_command
+from django.test import SimpleTestCase
 from django.utils.encoding import force_bytes, force_str
 
 from modoboa.core import factories as core_factories
@@ -14,6 +15,28 @@ from modoboa.parameters import tools as param_tools
 if not NO_LDAP:
     import ldap
     from . import lib
+
+
+@skipIf(NO_LDAP, "No ldap module installed")
+class AccountDNTestCase(SimpleTestCase):
+    """DN building must escape the username to prevent DN injection."""
+
+    template = "uid=%(user)s,ou=users,dc=example,dc=com"
+
+    def test_normal_username(self):
+        config = {"ldap_sync_account_dn_template": self.template}
+        self.assertEqual(
+            lib._account_dn(config, "john"),
+            "uid=john,ou=users,dc=example,dc=com",
+        )
+
+    def test_username_with_dn_metacharacters_is_escaped(self):
+        config = {"ldap_sync_account_dn_template": self.template}
+        dn = lib._account_dn(config, "evil,ou=admins")
+        # The injected separator must not appear unescaped, and the template
+        # suffix must remain the trailing part of the DN.
+        self.assertNotIn("evil,ou=admins", dn)
+        self.assertTrue(dn.endswith(",ou=users,dc=example,dc=com"))
 
 
 @skipIf(NO_LDAP, "No ldap module installed")
