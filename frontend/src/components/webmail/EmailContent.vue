@@ -384,6 +384,28 @@ const fetchMailContent = () => {
             white-space: pre-wrap !important;
             word-break: break-word !important;
           }
+          /* Same scrollbar as the rest of the app (portfolio.scss) — the
+             iframe is a separate document, so the site-wide rules don't
+             reach it. Hex values inlined from the --accent/--accent-2
+             tokens, which don't exist in here either. */
+          * {
+            scrollbar-width: thin;
+            scrollbar-color: #7c5cff #050505;
+          }
+          ::-webkit-scrollbar {
+            width: 10px;
+            height: 10px;
+          }
+          ::-webkit-scrollbar-track {
+            background: #050505;
+          }
+          ::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, #7c5cff, #4a32cf);
+            border: 2px solid #050505;
+          }
+          ::-webkit-scrollbar-thumb:hover {
+            background: #a594ff;
+          }
         `
         iframeDoc.head.appendChild(style)
         iframeDoc.close()
