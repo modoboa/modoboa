@@ -1,8 +1,13 @@
 """PDF credentials lib tests."""
 
+from io import BytesIO
 import os
 import shutil
+import struct
 
+from cryptography.fernet import InvalidToken
+
+from django.core.management import call_command
 from django.urls import reverse
 
 from modoboa.admin import factories
@@ -11,7 +16,6 @@ from modoboa.lib.tests import ModoAPITestCase
 from modoboa.lib.exceptions import InternalError
 
 import modoboa.pdfcredentials.lib as lib
-from subprocess import Popen, PIPE
 
 
 class PDFCredentialsLibTestCase(ModoAPITestCase):
@@ -50,6 +54,62 @@ class PDFCredentialsLibTestCase(ModoAPITestCase):
         self.set_global_parameter("storage_dir", self.workdir)
         self.assertIsNone(lib.init_storage_dir())
 
+    def _write_legacy_file(self, fname, data):
+        """Store data using the old AES-CBC format."""
+        iv = os.urandom(16)
+        encryptor = lib._get_legacy_cipher(iv).encryptor()
+        if len(data) % 16:
+            padded = data + b" " * (16 - len(data) % 16)
+        else:
+            padded = data
+        with open(fname, "wb") as fp:
+            fp.write(struct.pack(b"<Q", len(data)))
+            fp.write(iv)
+            fp.write(encryptor.update(padded) + encryptor.finalize())
+
+    def test_encrypt_decrypt_roundtrip(self):
+        """New files must use the authenticated format."""
+        data = b"%PDF-1.4 fake content"
+        fname = os.path.join(self.workdir, "new@test.com.pdf")
+        lib.crypt_and_save_to_file(BytesIO(data), fname, len(data))
+        with open(fname, "rb") as fp:
+            self.assertTrue(fp.read().startswith(lib.ENCRYPTED_FILE_MAGIC))
+        self.assertEqual(lib.decrypt_file(fname), data)
+
+    def test_tampered_file_rejected(self):
+        """A modified encrypted file must not decrypt."""
+        data = b"%PDF-1.4 fake content"
+        fname = os.path.join(self.workdir, "new@test.com.pdf")
+        lib.crypt_and_save_to_file(BytesIO(data), fname, len(data))
+        with open(fname, "rb") as fp:
+            content = bytearray(fp.read())
+        content[-2] ^= 0x01
+        with open(fname, "wb") as fp:
+            fp.write(content)
+        with self.assertRaises(InvalidToken):
+            lib.decrypt_file(fname)
+
+    def test_legacy_file_decryption(self):
+        """Files stored with the old AES-CBC format must still decrypt."""
+        data = b"%PDF-1.4 fake content"
+        fname = os.path.join(self.workdir, "legacy@test.com.pdf")
+        self._write_legacy_file(fname, data)
+        self.assertEqual(lib.decrypt_file(fname), data)
+
+    def test_reencrypt_command(self):
+        """Legacy files must be converted to the authenticated format."""
+        self.set_global_parameter("storage_dir", self.workdir)
+        data = b"%PDF-1.4 fake content"
+        fname = os.path.join(self.workdir, "legacy@test.com.pdf")
+        self._write_legacy_file(fname, data)
+        call_command("reencrypt_pdf_credentials")
+        with open(fname, "rb") as fp:
+            self.assertTrue(fp.read().startswith(lib.ENCRYPTED_FILE_MAGIC))
+        self.assertEqual(lib.decrypt_file(fname), data)
+        # Running it again must be a no-op
+        call_command("reencrypt_pdf_credentials")
+        self.assertEqual(lib.decrypt_file(fname), data)
+
     def test_pdf_decryption(self):
         """Test that PDFs are decrypted."""
         username = "toto1818@test.com"
@@ -57,15 +117,9 @@ class PDFCredentialsLibTestCase(ModoAPITestCase):
         fname = os.path.join(self.workdir, f"{username}.pdf")
         self.assertTrue(os.path.exists(fname))
         filebuff = lib.decrypt_file(fname)
-        self.assertIn(
-            "application/pdf",
-            Popen("/usr/bin/file -b --mime -", shell=True, stdout=PIPE, stdin=PIPE)
-            .communicate(filebuff)[0]
-            .strip()
-            .decode(),
-        )
-        with open(fname) as file:
-            with self.assertRaises(UnicodeDecodeError):
-                Popen(
-                    "/usr/bin/file -b --mime -", shell=True, stdout=PIPE, stdin=PIPE
-                ).communicate(file.read(1024))[0].strip()
+        self.assertTrue(filebuff.startswith(b"%PDF"))
+        # The stored file must not contain the plaintext document
+        with open(fname, "rb") as file:
+            raw = file.read()
+        self.assertTrue(raw.startswith(lib.ENCRYPTED_FILE_MAGIC))
+        self.assertNotIn(b"%PDF", raw)
