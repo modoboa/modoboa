@@ -3,7 +3,7 @@
     <label class="m-label">{{ $gettext('Language') }}</label>
     <v-autocomplete
       v-model="model.language"
-      :items="languageStore.availableLanguages"
+      :items="languageStore.selectableLanguages"
       item-title="label"
       item-value="code"
       variant="outlined"
