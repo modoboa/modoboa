@@ -4,12 +4,15 @@
       v-show="loaded"
       class="email-view bg-background h-100 d-flex flex-column"
     >
+      <!-- One accent anchor (Reply); every other action stays quiet, matching
+           the list's contextual toolbar language. -->
       <v-toolbar>
         <v-btn
           v-if="showBackButton"
           icon="mdi-arrow-left"
           size="small"
-          variant="tonal"
+          variant="text"
+          class="tb-quiet"
           :title="$gettext('Back')"
           :aria-label="$gettext('Back')"
           @click="emit('close')"
@@ -21,16 +24,18 @@
             height="36"
             variant="tonal"
             color="primary"
+            class="reply-btn"
             @click="() => replyToEmail()"
           >
             {{ $gettext('Reply') }}
           </v-btn>
           <v-btn
             height="36"
-            width="24"
+            width="28"
             icon
             variant="tonal"
             color="primary"
+            class="reply-btn reply-btn--menu"
             :title="$gettext('More reply options')"
             :aria-label="$gettext('More reply options')"
           >
@@ -49,24 +54,26 @@
             </v-menu>
           </v-btn>
         </div>
+        <v-spacer />
+        <!-- Single flex group: the quiet actions wrap to the next row as one
+             unit instead of leaving orphans behind. -->
+        <div class="d-flex align-center flex-shrink-0">
         <template v-if="mailbox !== 'Scheduled'">
           <v-btn
-            class="ml-2"
-            color="error"
-            variant="tonal"
-            icon="mdi-trash-can"
+            v-if="mailbox === constants.DRAFTS_FOLDER"
+            class="ml-1 tb-quiet"
+            variant="text"
+            icon="mdi-pencil"
             size="small"
-            :title="$gettext('Delete')"
-            :aria-label="$gettext('Delete')"
-            :loading="working"
-            @click="deleteEmail"
+            :title="$gettext('Edit draft')"
+            :aria-label="$gettext('Edit draft')"
+            @click="editDraft"
           >
           </v-btn>
           <v-btn
             v-if="mailbox === 'Trash'"
-            class="ml-2"
-            color="primary"
-            variant="tonal"
+            class="ml-1 tb-quiet"
+            variant="text"
             icon="mdi-backup-restore"
             size="small"
             :title="$gettext('Restore to Inbox')"
@@ -77,9 +84,8 @@
           </v-btn>
           <v-btn
             v-else-if="mailbox === 'Junk'"
-            class="ml-2"
-            color="success"
-            variant="tonal"
+            class="ml-1 tb-quiet"
+            variant="text"
             icon="mdi-thumb-up"
             size="small"
             :title="$gettext('Mark as not junk')"
@@ -90,9 +96,8 @@
           </v-btn>
           <v-btn
             v-else
-            class="ml-2"
-            color="warning"
-            variant="tonal"
+            class="ml-1 tb-quiet"
+            variant="text"
             icon="mdi-alert-octagon-outline"
             size="small"
             :title="$gettext('Mark as junk')"
@@ -102,20 +107,20 @@
           >
           </v-btn>
           <v-btn
-            v-if="mailbox === constants.DRAFTS_FOLDER"
-            class="ml-2"
-            variant="tonal"
-            icon="mdi-pencil"
+            class="ml-1 tb-quiet"
+            variant="text"
+            icon="mdi-trash-can"
             size="small"
-            :title="$gettext('Edit draft')"
-            :aria-label="$gettext('Edit draft')"
-            @click="editDraft"
+            :title="$gettext('Delete')"
+            :aria-label="$gettext('Delete')"
+            :loading="working"
+            @click="deleteEmail"
           >
           </v-btn>
         </template>
         <v-btn
-          class="ml-2"
-          variant="tonal"
+          class="ml-1 tb-quiet"
+          variant="text"
           icon
           size="small"
           :title="$gettext('More actions')"
@@ -141,6 +146,7 @@
             </v-list>
           </v-menu>
         </v-btn>
+        </div>
       </v-toolbar>
 
       <div v-if="email" class="email-header">
@@ -184,20 +190,19 @@
             </v-menu>
           </template>
         </div>
-        <div v-if="email.attachments?.length" class="mt-2">
-          <v-icon icon="mdi-paperclip" />
-          <template
-            v-for="(attachment, index) in email.attachments"
+        <div v-if="email.attachments?.length" class="attachment-list mt-3">
+          <v-chip
+            v-for="attachment in email.attachments"
             :key="attachment.name"
+            size="small"
+            label
+            prepend-icon="mdi-paperclip"
+            class="attachment-chip"
+            :title="$gettext('Download attachment')"
+            @click="downloadAttachment(attachment.name, attachment.partnum)"
           >
-            <template v-if="index > 0">, </template>
-            <a
-              href="#"
-              @click="downloadAttachment(attachment.name, attachment.partnum)"
-            >
-              {{ attachment.name }}
-            </a>
-          </template>
+            {{ attachment.name }}
+          </v-chip>
         </div>
       </div>
       <v-alert
@@ -322,6 +327,19 @@ const fetchMailContent = () => {
             word-wrap: break-word !important;
             word-break: break-word !important;
             box-sizing: border-box !important;
+          }
+          /* Base typography for messages that bring no styling of their own
+             (plain transactional mail would otherwise render in browser
+             default serif, glued to the frame edges). Deliberately body-level
+             only: styled emails keep their own look. */
+          body {
+            margin: 0;
+            padding: 18px 22px;
+            font-family: -apple-system, 'Segoe UI', Roboto, Helvetica, Arial,
+              sans-serif;
+            font-size: 15px;
+            line-height: 1.55;
+            color: #1c1c1c;
           }
           img, table, video, canvas, svg {
             max-width: 100% !important;
@@ -473,26 +491,46 @@ const editDraft = () => {
     min-height: 44px;
   }
 }
+/* Quiet toolbar actions (accent lives on the Reply anchor only). */
+.email-view .tb-quiet {
+  color: var(--fg-dim);
+}
 /* The wrapper owns the flex sizing so the iframe can be swapped freely
-   inside it without touching the column layout. */
+   inside it without touching the column layout. A hairline frames the light
+   canvas so it reads as a document inside the dark UI instead of a bare
+   white wall touching the pane edges. */
 .email-frame-wrap {
   flex: 1 1 auto;
   min-height: 0;
   min-width: 0;
   display: flex;
   flex-direction: column;
+  margin-top: 12px;
+  border: 1px solid var(--line-2);
+  background-color: #fff;
 }
 .email-frame {
   flex: 1 1 auto;
   min-height: 0;
   width: 100%;
-  margin-top: 12px;
   overflow-y: auto;
   border: none;
   /* The rendered email keeps a light canvas (messages assume white). */
   background-color: #fff;
   /* Soft fade-in instead of an abrupt white pop. */
   animation: email-frame-in 0.3s ease both;
+}
+/* Attachment chips under the recipients. */
+.attachment-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.attachment-chip {
+  cursor: pointer;
+  font-family: var(--font-mono);
+  font-size: 11px !important;
+  letter-spacing: 0.02em;
 }
 
 @keyframes email-frame-in {
@@ -514,7 +552,11 @@ const editDraft = () => {
 .email-header > .d-flex {
   flex-wrap: wrap;
   row-gap: 4px;
-  align-items: baseline;
+  align-items: center;
+}
+.email-header > .d-flex > .text-grey {
+  flex-shrink: 0;
+  margin-left: 12px;
 }
 .email-header h2 {
   font-family: var(--font-display);
