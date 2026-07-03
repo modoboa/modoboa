@@ -1,5 +1,7 @@
 """API v2 tests."""
 
+from unittest import mock
+
 from django.core.files.base import ContentFile
 from django.urls import reverse
 from django.utils.encoding import force_str
@@ -441,13 +443,16 @@ class AccountViewSetTestCase(ModoAPITestCase):
             .exists()
         )
 
-    def test_delete_keepdir(self):
+    @mock.patch("modoboa.admin.models.Mailbox.mail_home")
+    def test_delete_keepdir(self, mail_home_mock):
         """keepdir=true must preserve the mailbox directory.
 
         Regression test: keepdir was validated but never forwarded to the
         mailbox pre_delete handler (which read it from the empty request.POST
         of a JSON body), so directories were always removed.
         """
+        # mail_home shells out to doveadm, not available everywhere
+        mail_home_mock.__get__ = mock.Mock(return_value="/tmp/user@test.com")
         self.set_global_parameter("handle_mailboxes", True)
         account = core_models.User.objects.get(username="user@test.com")
         self.assertTrue(hasattr(account, "mailbox"))
@@ -457,8 +462,11 @@ class AccountViewSetTestCase(ModoAPITestCase):
         self.assertEqual(resp.status_code, 204)
         self.assertFalse(models.MailboxOperation.objects.filter(type="delete").exists())
 
-    def test_delete_removes_dir_by_default(self):
+    @mock.patch("modoboa.admin.models.Mailbox.mail_home")
+    def test_delete_removes_dir_by_default(self, mail_home_mock):
         """Without keepdir the mailbox directory is scheduled for deletion."""
+        # mail_home shells out to doveadm, not available everywhere
+        mail_home_mock.__get__ = mock.Mock(return_value="/tmp/user@test.com")
         self.set_global_parameter("handle_mailboxes", True)
         account = core_models.User.objects.get(username="user@test.com")
         models.MailboxOperation.objects.all().delete()
