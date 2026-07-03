@@ -14,6 +14,7 @@ from django.conf import settings
 from django.utils.encoding import force_bytes, smart_bytes
 from django.utils.translation import gettext as _
 
+from modoboa.lib import cryptutils
 from modoboa.lib.exceptions import InternalError
 from modoboa.parameters import tools as param_tools
 
@@ -51,30 +52,32 @@ def delete_credentials(account):
     os.remove(fname)
 
 
-def _get_cipher(iv):
-    """Return ready-to-user Cipher."""
+# Header identifying the authenticated encryption format. Legacy files
+# (AES-CBC, no authentication) start with an 8-byte length instead.
+ENCRYPTED_FILE_MAGIC = b"MODOBOA-FERNET:1\n"
+
+CRYPT_PURPOSE = "pdfcredentials"
+
+
+def _get_legacy_cipher(iv):
+    """Return the cipher used by the legacy (pre-authenticated) format."""
     key = smart_bytes(settings.SECRET_KEY[:32])
     backend = default_backend()
     return Cipher(algorithms.AES(force_bytes(key)), modes.CBC(iv), backend=backend)
 
 
 def crypt_and_save_to_file(content, filename, length, chunksize=64 * 512):
-    """Crypt content and save it to a file."""
-    iv = os.urandom(16)
-    cipher = _get_cipher(iv)
-    encryptor = cipher.encryptor()
+    """Crypt content and save it to a file.
+
+    Uses Fernet (authenticated encryption) with a key derived for this
+    sole purpose. ``length`` and ``chunksize`` are kept for backward
+    compatibility of the signature.
+    """
+    token = cryptutils.get_fernet(CRYPT_PURPOSE).encrypt(force_bytes(content.read()))
     try:
         with open(filename, "wb") as fp:
-            fp.write(struct.pack(b"<Q", length))
-            fp.write(iv)
-            while True:
-                chunk = content.read(chunksize)
-                if not len(chunk):
-                    break
-                elif len(chunk) % 16:
-                    chunk += b" " * (16 - len(chunk) % 16)
-                fp.write(encryptor.update(force_bytes(chunk)))
-            fp.write(encryptor.finalize())
+            fp.write(ENCRYPTED_FILE_MAGIC)
+            fp.write(token)
     except FileNotFoundError:
         logger = logging.getLogger("modoboa.admin")
         logger.error(
@@ -85,22 +88,31 @@ def crypt_and_save_to_file(content, filename, length, chunksize=64 * 512):
         )
 
 
+def _decrypt_file_legacy(fp, chunksize):
+    """Decrypt a file stored in the legacy AES-CBC format."""
+    buff = BytesIO()
+    origsize = struct.unpack(b"<Q", fp.read(struct.calcsize(b"Q")))[0]
+    iv = fp.read(16)
+    cipher = _get_legacy_cipher(iv)
+    decryptor = cipher.decryptor()
+    while True:
+        chunk = fp.read(chunksize)
+        if not len(chunk):
+            break
+        buff.write(decryptor.update(chunk))
+    buff.write(decryptor.finalize())
+    buff.truncate(origsize)
+    return buff.getvalue()
+
+
 def decrypt_file(filename, chunksize=24 * 1024):
     """Decrypt the content of a file and return it."""
-    buff = BytesIO()
     with open(filename, "rb") as fp:
-        origsize = struct.unpack(b"<Q", fp.read(struct.calcsize(b"Q")))[0]
-        iv = fp.read(16)
-        cipher = _get_cipher(iv)
-        decryptor = cipher.decryptor()
-        while True:
-            chunk = fp.read(chunksize)
-            if not len(chunk):
-                break
-            buff.write(decryptor.update(chunk))
-        buff.write(decryptor.finalize())
-        buff.truncate(origsize)
-    return buff.getvalue()
+        magic = fp.read(len(ENCRYPTED_FILE_MAGIC))
+        if magic == ENCRYPTED_FILE_MAGIC:
+            return cryptutils.get_fernet(CRYPT_PURPOSE).decrypt(fp.read())
+        fp.seek(0)
+        return _decrypt_file_legacy(fp, chunksize)
 
 
 def get_document_logo():
