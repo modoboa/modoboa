@@ -193,6 +193,8 @@ class AccountViewSet(v1_viewsets.AccountViewSet):
             return serializers.WritableAccountSerializer
         if self.action == "delete":
             return serializers.DeleteAccountSerializer
+        if self.action == "bulk_delete":
+            return serializers.AccountBulkDeleteSerializer
         if self.action in ["list", "retrieve"]:
             return serializers.AccountSerializer
         return super().get_serializer_class()
@@ -231,6 +233,24 @@ class AccountViewSet(v1_viewsets.AccountViewSet):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         account.delete()
+        return response.Response(status=status.HTTP_204_NO_CONTENT)
+
+    @action(methods=["post"], detail=False)
+    def bulk_delete(self, request, **kwargs):
+        """Delete multiple accounts at the same time."""
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        ids = serializer.validated_data["ids"]
+        if request.user.pk in ids:
+            return response.Response(
+                {"ids": [_("You can't delete your own account")]},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+        accounts = self.get_queryset().filter(pk__in=ids)
+        if accounts.count() != len(set(ids)):
+            return response.Response(status=status.HTTP_404_NOT_FOUND)
+        for account in accounts:
+            account.delete()
         return response.Response(status=status.HTTP_204_NO_CONTENT)
 
 
