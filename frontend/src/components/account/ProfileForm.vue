@@ -37,7 +37,7 @@
           </label>
           <v-autocomplete
             v-model="form.language"
-            :items="languages"
+            :items="languageStore.selectableLanguages"
             item-title="label"
             item-value="code"
             variant="outlined"
@@ -85,8 +85,7 @@
 </template>
 
 <script setup>
-import { useBusStore, useAuthStore } from '@/stores'
-import languagesApi from '@/api/languages'
+import { useBusStore, useAuthStore, useLanguageStore } from '@/stores'
 import AccountPasswordForm from '@/components/admin/identities/form_steps/AccountPasswordSubForm.vue'
 import { useGettext } from 'vue3-gettext'
 import { ref, computed, onMounted, watch } from 'vue'
@@ -95,6 +94,7 @@ import rules from '@/plugins/rules'
 const { $gettext, available } = useGettext()
 const busStore = useBusStore()
 const authStore = useAuthStore()
+const languageStore = useLanguageStore()
 
 const account = computed(() => authStore.authUser)
 
@@ -102,7 +102,6 @@ const form = ref({})
 const profileForm = ref()
 const passwordForm = ref()
 const passwordFormErrors = ref({})
-const languages = ref([])
 const panel = ref(0)
 const loadingUpdateProfile = ref(false)
 const loadingPasswordUpdate = ref(false)
@@ -157,11 +156,11 @@ async function updatePassword() {
   }
 }
 
-onMounted(() => {
+onMounted(async () => {
   initFormFromAccount(account.value)
-  languagesApi.getAll().then((resp) => {
-    languages.value = resp.data
-  })
+  if (!languageStore.loaded) {
+    await languageStore.getLanguages()
+  }
 })
 
 watch(

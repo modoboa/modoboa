@@ -91,7 +91,9 @@ class UserMailboxesSerializer(serializers.Serializer):
 class UserMailboxInputSerializer(serializers.Serializer):
 
     name = serializers.CharField()
-    parent_mailbox = serializers.CharField(required=False)
+    # Top-level folders send an empty parent: accept it (treated as "no
+    # parent" by the viewsets) instead of rejecting it as blank.
+    parent_mailbox = serializers.CharField(required=False, allow_blank=True)
 
 
 class UserMailboxUpdateSerializer(UserMailboxInputSerializer):

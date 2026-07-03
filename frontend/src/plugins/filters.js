@@ -1,6 +1,7 @@
 import gettext from './gettext'
 import { DateTime } from 'luxon'
 import { filesize } from 'filesize'
+import { localeToBCP47 } from '@/utils'
 
 const { $gettext } = gettext
 
@@ -11,7 +12,7 @@ export default {
     }
     app.config.globalProperties.$date = (value) => {
       return DateTime.fromISO(value)
-        .setLocale(gettext.current)
+        .setLocale(localeToBCP47(gettext.current))
         .toLocaleString(DateTime.DATETIME_MED)
     }
     app.config.globalProperties.$truncate = (value, length, clamp) => {
@@ -19,7 +20,7 @@ export default {
       return value.length > length ? value.slice(0, length) + clamp : value
     }
     app.config.globalProperties.$filesize = (value) => {
-      return filesize(value, { locale: gettext.current })
+      return filesize(value, { locale: localeToBCP47(gettext.current) })
     }
   },
 }
