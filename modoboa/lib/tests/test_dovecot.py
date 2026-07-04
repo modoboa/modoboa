@@ -222,6 +222,10 @@ class RestModeSchemesTestCase(TestCase):
         from modoboa.core.constants import DOVEADM_PASS_SCHEME_ALARM
         from modoboa.core.password_hashers.utils import get_dovecot_schemes
 
+        # An alarm may have been opened before this test runs (ie. if
+        # doveadm is not installed): get rid of it since we want to
+        # check that the call below doesn't create one.
+        Alarm.objects.filter(internal_name=DOVEADM_PASS_SCHEME_ALARM).delete()
         schemes, status = get_dovecot_schemes()
         self.assertEqual(schemes, ["{MD5-CRYPT}", "{PLAIN}"])
         self.assertEqual(status, 1)
