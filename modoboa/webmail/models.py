@@ -5,7 +5,7 @@ Webmail related models.
 from django.core.mail import EmailMessage
 from django.db import models
 
-from modoboa.lib.sysutils import doveadm_cmd
+from modoboa.lib import dovecot
 from modoboa.webmail import constants
 from modoboa.webmail.lib.utils import create_message
 
@@ -53,39 +53,29 @@ class ScheduledMessage(models.Model):
 
     def delete_imap_copy(self) -> bool:
         """Move IMAP message to Sent folder using doveadm."""
-        # TODO: use doveadm HTTP API when dovecot is not local
         sent_folder = self.account.parameters.get_value("sent_folder")
-        code, output = doveadm_cmd(
-            [
-                "move",
-                "-u",
+        backend = dovecot.get_dovecot_backend()
+        try:
+            backend.move_message(
                 self.account.email,
                 sent_folder,
-                "mailbox",
                 constants.MAILBOX_NAME_SCHEDULED,
-                "header",
                 constants.CUSTOM_HEADER_SCHEDULED_ID,
                 str(self.id),
-            ]
-        )
-        if code:
+            )
+        except dovecot.DoveadmError as err:
             self.status = constants.SchedulingState.MOVE_ERROR.value
-            self.error = output
+            self.error = str(err)
             self.save()
             return False
 
         # Try to delete mailbox when empty
-        doveadm_cmd(
-            [
-                "mailbox",
-                "delete",
-                "-u",
-                self.account.email,
-                "-s",
-                "-e",
-                constants.MAILBOX_NAME_SCHEDULED,
-            ]
-        )
+        try:
+            backend.delete_mailbox_if_empty(
+                self.account.email, constants.MAILBOX_NAME_SCHEDULED
+            )
+        except dovecot.DoveadmError:
+            pass
 
         return True
 

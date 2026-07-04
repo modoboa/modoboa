@@ -6,13 +6,13 @@ from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from django.db.models import Q
 from django.db.models.manager import Manager
-from django.utils.encoding import smart_str, force_str
+from django.utils.encoding import smart_str
 from django.utils.translation import gettext as _, gettext_lazy
 
 from modoboa.core.models import User
 from modoboa.lib import exceptions as lib_exceptions
+from modoboa.lib import dovecot
 from modoboa.lib.email_utils import split_mailbox
-from modoboa.lib.sysutils import doveadm_cmd
 from modoboa.parameters import tools as param_tools
 
 from .base import AdminObject
@@ -147,12 +147,14 @@ class Mailbox(mixins.MessageLimitMixin, AdminObject):
         if not admin_params.get("handle_mailboxes"):
             return None
         if self.__mail_home is None:
-            code, output = doveadm_cmd(["user", "-f", "home", self.full_address])
-            if code:
-                raise lib_exceptions.InternalError(
-                    _("Failed to retrieve mailbox location (%s)") % output
+            try:
+                self.__mail_home = dovecot.get_dovecot_backend().get_user_home(
+                    self.full_address
                 )
-            self.__mail_home = force_str(output.strip())
+            except dovecot.DoveadmError as err:
+                raise lib_exceptions.InternalError(
+                    _("Failed to retrieve mailbox location (%s)") % err
+                ) from err
         return self.__mail_home
 
     @property
@@ -192,6 +194,9 @@ class Mailbox(mixins.MessageLimitMixin, AdminObject):
         hm = param_tools.get_global_parameter("handle_mailboxes", raise_exception=False)
         if not hm:
             return
+        if dovecot.get_dovecot_operation_mode() != dovecot.DOVECOT_OPERATION_MODE_CMD:
+            # Dovecot lives on another host, we can't touch the filesystem
+            return
         MailboxOperation.objects.create(
             mailbox=self, type="rename", argument=old_mail_home
         )
@@ -222,6 +227,9 @@ class Mailbox(mixins.MessageLimitMixin, AdminObject):
     def delete_dir(self):
         hm = param_tools.get_global_parameter("handle_mailboxes", raise_exception=False)
         if not hm:
+            return
+        if dovecot.get_dovecot_operation_mode() != dovecot.DOVECOT_OPERATION_MODE_CMD:
+            # Dovecot lives on another host, we can't touch the filesystem
             return
         MailboxOperation.objects.create(type="delete", argument=self.mail_home)
 

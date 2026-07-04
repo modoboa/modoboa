@@ -48,10 +48,14 @@ If Dovecot is not running on the same host than Modoboa, you will have
 to define which password schemes are supported.
 
 To do so, open the `settings.py` file and add a `DOVECOT_SUPPORTED_SCHEMES`
-variable with the output of the command:
+variable with the output of the command (run on the Dovecot host):
 ```shell
 $ doveadm pw -l
 ```
+
+In this situation, you can also tell Modoboa to communicate with the
+remote Dovecot server through the
+[doveadm HTTP API](/installation/dovecot#doveadm_http_api).
 :::
 
 ::: info
@@ -123,7 +127,10 @@ Then, edit the `config.json` file located in this very same directory and add th
 ::: tip
 This section is only relevant when Modoboa handles mailboxes renaming
 and removal from the filesystem,
-which requires that Dovecot is installed and running on this host.
+which requires that Dovecot is installed and running on this host
+(ie. `DOVECOT_OPERATION_MODE` is not set or set to `'cmd'`). These
+operations are not available when the
+[doveadm HTTP API](/installation/dovecot#doveadm_http_api) is used.
 
 If it is installed at a non-standard directory,
 paths to its binaries can be set in the `settings.py` file
