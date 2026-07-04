@@ -771,6 +771,13 @@ class DeleteAccountSerializer(serializers.Serializer):
     keepdir = serializers.BooleanField(default=False)
 
 
+class AccountBulkDeleteSerializer(serializers.Serializer):
+    """Serializer used with bulk delete operation."""
+
+    ids = serializers.ListField(child=serializers.IntegerField(), allow_empty=False)
+    keepdir = serializers.BooleanField(default=False)
+
+
 class AliasSerializer(v1_serializers.AliasSerializer):
     """Alias serializer for v2 API."""
 

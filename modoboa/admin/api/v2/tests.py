@@ -374,6 +374,72 @@ class AccountViewSetTestCase(ModoAPITestCase):
         )
         self.assertEqual(response.status_code, 200)
 
+    def test_bulk_delete(self):
+        url = reverse("v2:account-bulk-delete")
+
+        # Invalid input
+        resp = self.client.post(url, {}, format="json")
+        self.assertEqual(resp.status_code, 400)
+        resp = self.client.post(url, {"ids": []}, format="json")
+        self.assertEqual(resp.status_code, 400)
+        resp = self.client.post(url, {"ids": ["toto"]}, format="json")
+        self.assertEqual(resp.status_code, 400)
+
+        # Valid request
+        accounts = core_models.User.objects.filter(
+            username__in=["user@test.com", "admin@test.com"]
+        )
+        ids = list(accounts.values_list("pk", flat=True))
+        resp = self.client.post(url, {"ids": ids}, format="json")
+        self.assertEqual(resp.status_code, 204)
+        self.assertFalse(core_models.User.objects.filter(pk__in=ids).exists())
+        # Check if self aliases have been deleted
+        self.assertFalse(
+            models.AliasRecipient.objects.select_related("alias")
+            .filter(
+                alias__address="user@test.com",
+                address="user@test.com",
+                alias__internal=True,
+            )
+            .exists()
+        )
+
+    def test_bulk_delete_own_account(self):
+        sadmin = core_models.User.objects.get(username="admin")
+        account = core_models.User.objects.get(username="user@test.com")
+        url = reverse("v2:account-bulk-delete")
+        resp = self.client.post(url, {"ids": [sadmin.pk, account.pk]}, format="json")
+        self.assertEqual(resp.status_code, 400)
+        # No account must have been deleted
+        self.assertTrue(core_models.User.objects.filter(pk=account.pk).exists())
+
+    def test_bulk_delete_permissions(self):
+        admin = core_models.User.objects.get(username="admin@test.com")
+        self.authenticate_user(admin)
+        url = reverse("v2:account-bulk-delete")
+
+        # Try to delete an account not owned by the connected domain admin
+        forbidden_account = core_models.User.objects.get(username="user@test2.com")
+        owned_account = core_models.User.objects.get(username="user@test.com")
+        resp = self.client.post(
+            url,
+            {"ids": [owned_account.pk, forbidden_account.pk]},
+            format="json",
+        )
+        self.assertEqual(resp.status_code, 404)
+        # No account must have been deleted
+        self.assertTrue(
+            core_models.User.objects.filter(
+                pk__in=[owned_account.pk, forbidden_account.pk]
+            ).count()
+            == 2
+        )
+
+        # Now delete an owned account
+        resp = self.client.post(url, {"ids": [owned_account.pk]}, format="json")
+        self.assertEqual(resp.status_code, 204)
+        self.assertFalse(core_models.User.objects.filter(pk=owned_account.pk).exists())
+
     def test_update(self):
         account = core_models.User.objects.get(username="user@test.com")
         url = reverse("v2:account-detail", args=[account.pk])
