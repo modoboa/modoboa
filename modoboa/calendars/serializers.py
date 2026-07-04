@@ -87,6 +87,21 @@ class SharedCalendarSerializer(CalDAVCalendarMixin, serializers.ModelSerializer)
         fields = ("pk", "name", "color", "path", "domain", "full_url", "share_url")
         read_only_fields = ("pk", "path", "full_url", "share_url")
 
+    def validate_domain(self, value):
+        """Ensure the target domain is one the requester administers.
+
+        Without this check any admin could create or move a shared calendar
+        under a domain they do not manage (cross-tenant resource creation).
+        """
+        user = self.context["request"].user
+        if (
+            not admin_models.Domain.objects.get_for_admin(user)
+            .filter(pk=value["pk"])
+            .exists()
+        ):
+            raise serializers.ValidationError(_("Permission denied."))
+        return value
+
     def create(self, validated_data):
         """Create shared calendar."""
         domain = validated_data.pop("domain")

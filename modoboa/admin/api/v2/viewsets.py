@@ -22,6 +22,7 @@ from modoboa.admin.api.v1 import viewsets as v1_viewsets
 from modoboa.core import constants as core_constants, models as core_models
 from modoboa.lib import pagination
 from modoboa.lib import renderers as lib_renderers
+from modoboa.lib import signals as lib_signals
 from modoboa.lib import viewsets as lib_viewsets
 from modoboa.lib.throttle import GetThrottleViewsetMixin
 from modoboa.lib.exceptions import AliasExists
@@ -232,6 +233,12 @@ class AccountViewSet(v1_viewsets.AccountViewSet):
         account = self.get_object()
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
+        # The mailbox pre_delete handler needs the keepdir intent, but it can
+        # only reach the request via the thread-local store and request.POST
+        # is empty for a JSON body. Expose it explicitly.
+        current_request = lib_signals.get_request()
+        if current_request is not None:
+            current_request._keepdir = serializer.validated_data["keepdir"]
         account.delete()
         return response.Response(status=status.HTTP_204_NO_CONTENT)
 
@@ -342,6 +349,8 @@ class AliasViewSet(v1_viewsets.AliasViewSet):
 
 class UserAccountViewSet(GetThrottleViewsetMixin, viewsets.ViewSet):
     """Viewset for current user operations."""
+
+    permission_classes = (permissions.IsAuthenticated, lib_viewsets.HasMailbox)
 
     @action(methods=["get", "post"], detail=False)
     def forward(self, request, **kwargs):

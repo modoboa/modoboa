@@ -1,5 +1,7 @@
 """API v2 tests."""
 
+from unittest import mock
+
 from django.core.files.base import ContentFile
 from django.urls import reverse
 from django.utils.encoding import force_str
@@ -102,6 +104,49 @@ class DomainViewSetTestCase(ModoAPITestCase):
             domain.domainobjectlimit_set.get(name="domain_aliases").max_value, 20
         )
 
+    def test_dkim_private_key_path_is_read_only(self):
+        """The DKIM private key path must not be settable through the API.
+
+        A writable value would allow mass-assignment of an arbitrary on-disk
+        path (private key location disclosure) and newline injection into the
+        rspamd DKIM key map. It is computed server-side by the key generation
+        command and must stay read-only.
+        """
+        domain = models.Domain.objects.get(name="test.com")
+        domain.dkim_private_key_path = "/legit/test.com.pem"
+        domain.save()
+        malicious = "/tmp/evil.pem\nvictim.com /tmp/attacker.pem"
+        url = reverse("v2:domain-detail", args=[domain.pk])
+        resp = self.client.patch(
+            url, {"dkim_private_key_path": malicious}, format="json"
+        )
+        self.assertEqual(resp.status_code, 200)
+        domain.refresh_from_db()
+        self.assertEqual(domain.dkim_private_key_path, "/legit/test.com.pem")
+        self.assertNotEqual(resp.json().get("dkim_private_key_path"), malicious)
+
+    def test_dkim_selector_rejects_invalid_value(self):
+        """The DKIM selector must reject values that could inject map lines.
+
+        It is written verbatim into the rspamd DKIM selector map; a newline
+        would let a domain admin inject an entry for another domain.
+        """
+        domain = models.Domain.objects.get(name="test.com")
+        url = reverse("v2:domain-detail", args=[domain.pk])
+        resp = self.client.patch(
+            url,
+            {"dkim_key_selector": "a\nvictim.com evilsel"},
+            format="json",
+        )
+        self.assertEqual(resp.status_code, 400)
+        self.assertIn("dkim_key_selector", resp.json())
+        domain.refresh_from_db()
+        self.assertNotIn("\n", domain.dkim_key_selector)
+
+        # A valid selector is still accepted.
+        resp = self.client.patch(url, {"dkim_key_selector": "modoboa2"}, format="json")
+        self.assertEqual(resp.status_code, 200)
+
     def test_delete(self):
         self.client.credentials(HTTP_AUTHORIZATION="Token " + self.da_token.key)
 
@@ -155,6 +200,40 @@ class DomainViewSetTestCase(ModoAPITestCase):
         resp = self.client.post(url, data, format="json")
         self.assertEqual(resp.status_code, 200)
 
+    def test_add_administrator_rejects_unowned_account(self):
+        """A reseller must not grant admin rights to an account it can't access.
+
+        The account field used to accept any user pk, letting a reseller add
+        an arbitrary account as administrator of its own domain.
+        """
+        self.set_global_parameter("enable_admin_limits", False, app="limits")
+        reseller = core_factories.UserFactory(
+            username="reseller", groups=("Resellers",)
+        )
+        grant_access_to_object(
+            reseller, models.Domain.objects.get(name="test.com"), is_owner=True
+        )
+        token = Token.objects.create(user=reseller)
+        self.client.credentials(HTTP_AUTHORIZATION="Token " + token.key)
+
+        domain = models.Domain.objects.get(name="test.com")
+        url = reverse("v2:domain-add-administrator", args=[domain.pk])
+
+        # An account the reseller does not own must be refused.
+        victim = core_models.User.objects.get(username="user@test2.com")
+        resp = self.client.post(url, {"account": victim.pk}, format="json")
+        self.assertEqual(resp.status_code, 400)
+        self.assertFalse(domain.admins.filter(pk=victim.pk).exists())
+
+        # An account the reseller owns is accepted.
+        owned = core_factories.UserFactory(
+            username="owned@test.com", groups=("DomainAdmins",)
+        )
+        grant_access_to_object(reseller, owned, is_owner=True)
+        resp = self.client.post(url, {"account": owned.pk}, format="json")
+        self.assertEqual(resp.status_code, 200)
+        self.assertTrue(domain.admins.filter(pk=owned.pk).exists())
+
     def test_domains_import(self):
         f = ContentFile(
             b"""domain; domain1.com; 1000; 100; True
@@ -178,6 +257,17 @@ domainalias; domalias1.com; domain1.com; True
         self.assertEqual(dom.default_mailbox_quota, 200)
         self.assertFalse(dom.enabled)
         self.assertTrue(admin.is_owner(dom))
+
+    def test_domains_import_rejects_invalid_name(self):
+        """CSV import must enforce hostname validation like the API path."""
+        f = ContentFile(
+            b"domain; ../etc/passwd; 1000; 100; True\n",
+            name="domains.csv",
+        )
+        resp = self.client.post(reverse("v2:domain-import-from-csv"), {"sourcefile": f})
+        self.assertEqual(resp.status_code, 200)
+        self.assertFalse(resp.json()["status"])
+        self.assertFalse(models.Domain.objects.filter(name="../etc/passwd").exists())
 
     def test_export_domains(self):
         """Check domain export."""
@@ -352,6 +442,38 @@ class AccountViewSetTestCase(ModoAPITestCase):
             )
             .exists()
         )
+
+    @mock.patch("modoboa.admin.models.Mailbox.mail_home")
+    def test_delete_keepdir(self, mail_home_mock):
+        """keepdir=true must preserve the mailbox directory.
+
+        Regression test: keepdir was validated but never forwarded to the
+        mailbox pre_delete handler (which read it from the empty request.POST
+        of a JSON body), so directories were always removed.
+        """
+        # mail_home shells out to doveadm, not available everywhere
+        mail_home_mock.__get__ = mock.Mock(return_value="/tmp/user@test.com")
+        self.set_global_parameter("handle_mailboxes", True)
+        account = core_models.User.objects.get(username="user@test.com")
+        self.assertTrue(hasattr(account, "mailbox"))
+        models.MailboxOperation.objects.all().delete()
+        url = reverse("v2:account-delete", args=[account.pk])
+        resp = self.client.post(url, {"keepdir": True}, format="json")
+        self.assertEqual(resp.status_code, 204)
+        self.assertFalse(models.MailboxOperation.objects.filter(type="delete").exists())
+
+    @mock.patch("modoboa.admin.models.Mailbox.mail_home")
+    def test_delete_removes_dir_by_default(self, mail_home_mock):
+        """Without keepdir the mailbox directory is scheduled for deletion."""
+        # mail_home shells out to doveadm, not available everywhere
+        mail_home_mock.__get__ = mock.Mock(return_value="/tmp/user@test.com")
+        self.set_global_parameter("handle_mailboxes", True)
+        account = core_models.User.objects.get(username="user@test.com")
+        models.MailboxOperation.objects.all().delete()
+        url = reverse("v2:account-delete", args=[account.pk])
+        resp = self.client.post(url, {}, format="json")
+        self.assertEqual(resp.status_code, 204)
+        self.assertTrue(models.MailboxOperation.objects.filter(type="delete").exists())
 
     def test_delete_default_superadmin(self):
         """Delete default superadmin."""
@@ -897,6 +1019,24 @@ class UserAccountViewSetTestCase(ModoAPITestCase):
             0,
         )
 
+    def test_forward_requires_authentication(self):
+        """Anonymous requests must be rejected, not served as AllowAny."""
+        self.client.credentials()  # drop the auth header
+        url = reverse("v2:user_account-forward")
+        resp = self.client.get(url)
+        self.assertIn(resp.status_code, (401, 403))
+
+    def test_forward_requires_a_mailbox(self):
+        """Authenticated users without a mailbox must be denied (HasMailbox)."""
+        user = core_factories.UserFactory(
+            username="nomailbox@test.com", groups=("SimpleUsers",)
+        )
+        self.assertFalse(hasattr(user, "mailbox"))
+        self.authenticate_user(user)
+        url = reverse("v2:user_account-forward")
+        resp = self.client.get(url)
+        self.assertEqual(resp.status_code, 403)
+
 
 class AlarmViewSetTestCase(ModoAPITestCase):
     @classmethod
@@ -916,6 +1056,26 @@ class AlarmViewSetTestCase(ModoAPITestCase):
         resp = self.client.get(url)
         self.assertEqual(resp.status_code, 200)
         self.assertEqual(len(resp.json()["results"]), 1)
+
+    def test_alarm_does_not_expose_domain_secrets(self):
+        """The nested domain must expose only pk/name, not sensitive fields.
+
+        A previous __all__/depth=1 serializer leaked the whole related
+        Domain, including dkim_private_key_path.
+        """
+        domain = models.Domain.objects.get(name="test.com")
+        domain.dkim_private_key_path = "/secret/test.com.pem"
+        domain.save()
+        url = reverse("v2:alarm-list")
+        resp = self.client.get(url)
+        self.assertEqual(resp.status_code, 200)
+        alarm = resp.json()["results"][0]
+        self.assertEqual(set(alarm["domain"].keys()), {"pk", "name"})
+        self.assertEqual(alarm["domain"]["name"], "test.com")
+        self.assertNotIn("dkim_private_key_path", alarm["domain"])
+        # Sanity: expected scalar fields are still present.
+        self.assertIn("status", alarm)
+        self.assertIn("title", alarm)
 
     def test_update_alarm(self):
         """Try updating alarm status and delete it afterward."""

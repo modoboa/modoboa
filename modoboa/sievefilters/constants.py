@@ -3,6 +3,11 @@
 from django.utils.translation import gettext_lazy as _
 
 
+# Characters forbidden in ManageSieve quoted-string arguments (RFC 5804).
+# Rejecting them prevents protocol injection through script/filter names
+# and CRLF injection in the Content-Disposition header used by `download`.
+FORBIDDEN_NAME_CHARS = ("\r", "\n", "\x00", '"', "\\")
+
 MATCH_TYPE_ALLOF = "allof"
 MATCH_TYPE_ANYOF = "anyof"
 MATCH_TYPE_ALL = "all"

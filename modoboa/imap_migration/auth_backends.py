@@ -22,6 +22,12 @@ class IMAPBackend:
         """Check the username/password and return a User."""
         if not param_tools.get_global_parameter("enabled_imapmigration"):
             return None
+        # Both values end up in the generated offlineimap configuration
+        # file: reject control characters that would allow injecting
+        # arbitrary directives into it.
+        for value in (username, password):
+            if value and any(c in value for c in ("\r", "\n", "\x00")):
+                return None
         condition = not param_tools.get_global_parameter(
             "auto_create_domain_and_mailbox", "admin"
         )

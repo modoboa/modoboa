@@ -270,6 +270,24 @@ class BaseEmailSerializer(serializers.Serializer):
     cc = serializers.ListField(child=serializers.EmailField(), required=False)
     bcc = serializers.ListField(child=serializers.EmailField(), required=False)
 
+    def validate_sender(self, value):
+        """Ensure the sender is an address the user is allowed to use.
+
+        Without this check a user could send with an arbitrary From address
+        (identity spoofing).
+        """
+        user = self.context["request"].user
+        allowed = {user.email}
+        mailbox = getattr(user, "mailbox", None)
+        if mailbox is not None:
+            allowed.update(mailbox.alias_addresses)
+            allowed.update(mailbox.senderaddress_set.values_list("address", flat=True))
+        if value.lower() not in {address.lower() for address in allowed if address}:
+            raise serializers.ValidationError(
+                _("You are not allowed to send from this address")
+            )
+        return value
+
     def validate_to(self, value):
         return email_utils.prepare_addresses(value, "envelope")
 

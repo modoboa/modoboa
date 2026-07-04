@@ -75,6 +75,16 @@ class FilterSetViewSetTestCase(PatcherMixin, ModoAPITestCase):
         resp = self.client.post(url, data, format="json")
         self.assertEqual(resp.status_code, 201)
 
+    def test_create_forbidden_characters(self):
+        """Check that ManageSieve protocol injection is rejected."""
+        self.authenticate()
+        url = reverse("v2:filterset-list")
+        for name in ['evil"script', "evil\\script", "evil\r\nPUTSCRIPT"]:
+            data = {"name": name, "active": False}
+            resp = self.client.post(url, data, format="json")
+            self.assertEqual(resp.status_code, 400)
+            self.assertIn("name", resp.json())
+
     def test_update(self):
         self.authenticate()
         url = reverse("v2:filterset-detail", args=["unknown"])

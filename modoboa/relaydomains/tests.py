@@ -249,6 +249,29 @@ class ImportTestCase(ModoAPITestCase):
                 name="relay.com", type="relaydomain"
             ).exists()
         )
+        transport = tr_models.Transport.objects.get(pattern="relay.com")
+        self.assertEqual(transport._settings["relay_target_port"], 25)
+
+    def test_webui_import_invalid_settings(self):
+        """Imported transport settings must be validated."""
+        url = reverse("v2:domain-import-from-csv")
+        # Invalid target host
+        f = ContentFile(
+            "relaydomain;relay2.com;bad host!;25;relay;True;True", name="domains.csv"
+        )
+        response = self.client.post(url, {"sourcefile": f})
+        self.assertEqual(response.status_code, 200)
+        self.assertFalse(response.json()["status"])
+        self.assertFalse(admin_models.Domain.objects.filter(name="relay2.com").exists())
+        # Invalid target port
+        f = ContentFile(
+            "relaydomain;relay2.com;127.0.0.1;25 evil;relay;True;True",
+            name="domains.csv",
+        )
+        response = self.client.post(url, {"sourcefile": f})
+        self.assertEqual(response.status_code, 200)
+        self.assertFalse(response.json()["status"])
+        self.assertFalse(admin_models.Domain.objects.filter(name="relay2.com").exists())
 
 
 class LimitsTestCase(ModoAPITestCase, Operations):
