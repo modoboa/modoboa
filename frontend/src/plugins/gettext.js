@@ -21,9 +21,11 @@ const availableLanguages = {
   zh: 'Chinese',
 }
 
+export const DEFAULT_LANGUAGE = 'en'
+
 export default createGettext({
   availableLanguages,
-  defaultLanguage: 'en',
+  defaultLanguage: DEFAULT_LANGUAGE,
   translations: translations,
   silent: true, // stop warnings
 })

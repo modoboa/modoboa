@@ -49,9 +49,9 @@ class Migration(models.Model):
     @property
     def password(self) -> str:
         """Password getter."""
-        return decrypt(self._password).replace("%", "%%")
+        return decrypt(self._password, purpose="imap-migration").replace("%", "%%")
 
     @password.setter
     def password(self, value: str) -> None:
         """Password setter."""
-        self._password = encrypt(value)
+        self._password = encrypt(value, purpose="imap-migration")

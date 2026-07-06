@@ -91,7 +91,7 @@ class UserMailboxViewSet(viewsets.GenericViewSet):
         with lib.get_imapconnector(request) as imapc:
             imapc.create_folder(
                 serializer.validated_data["name"],
-                serializer.validated_data.get("parent_mailbox"),
+                serializer.validated_data.get("parent_mailbox") or None,
             )
         return response.Response(serializer.validated_data, status=201)
 
@@ -104,7 +104,7 @@ class UserMailboxViewSet(viewsets.GenericViewSet):
                 serializer.validated_data["oldname"], sep=imapc.hdelimiter
             )
             name = serializer.validated_data["name"]
-            parent = serializer.validated_data.get("parent_mailbox")
+            parent = serializer.validated_data.get("parent_mailbox") or None
             if name != oldname or parent != oldparent:
                 newname = (
                     name if parent is None else imapc.hdelimiter.join([parent, name])

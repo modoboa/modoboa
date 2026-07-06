@@ -49,7 +49,7 @@ dependencies = [
 	"asgiref",
 	"dnspython==2.8.0",
 	"feedparser==6.0.12",
-	"fido2==2.2.0",
+	"fido2==2.2.1",
 	"progressbar33==2.4",
 	"python-dateutil",
 	"cryptography",
@@ -71,7 +71,10 @@ dependencies = [
 	"defusedxml>=0.6.0",
 	"python-magic>=0.4.24",
 	# RQ
-	"rq>=2.7.0",
+	# rq>=2.10.0 added a `webhooks` kwarg to cron.register() that
+	# django-rq==4.1.0's DjangoCronScheduler.register() override doesn't
+	# accept yet, breaking `rqcron` (TypeError, 0 jobs registered).
+	"rq>=2.7.0,<2.10.0",
 	"django-rq>=4.0.1",
 	# Sieve
 	"sievelib>=1.4.1",

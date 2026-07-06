@@ -15,6 +15,11 @@ from . import models
 class CalDAVCalendarMixin:
     """Mixin for calendar serializers."""
 
+    def validate_name(self, value):
+        """Reject names that could break out of the Radicale rights file."""
+        models.calendar_name_validator(value)
+        return value
+
     def create_remote_calendar(self, calendar):
         """Create caldav calendar."""
         request = self.context["request"]

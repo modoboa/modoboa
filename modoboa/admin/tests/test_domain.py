@@ -199,6 +199,30 @@ class DKIMTestCase(ModoAPITestCase):
         domain.refresh_from_db()
         self.assertEqual(domain.dkim_private_key_path, "")
 
+    def test_dkim_key_path_traversal_refused(self):
+        """A crafted domain name must not let the key escape storage_dir."""
+        # Use a nested storage dir so a "../" escape still lands inside the
+        # tmp tree cleaned up by tearDown (and stays isolated per test run).
+        storage_dir = os.path.join(self.workdir, "storage")
+        os.mkdir(storage_dir)
+        self.set_global_parameter("dkim_keys_storage_dir", storage_dir)
+        # Bypass serializer validation to simulate a tampered/legacy record.
+        domain = Domain.objects.create(
+            name="../evil", enable_dkim=True, dkim_private_key_path=""
+        )
+        escaped_path = os.path.realpath(os.path.join(storage_dir, "../evil.pem"))
+
+        call_command("modo", "manage_dkim_keys", f"--domain={domain.name}")
+
+        domain.refresh_from_db()
+        self.assertEqual(domain.dkim_private_key_path, "")
+        self.assertFalse(os.path.exists(escaped_path))
+        self.assertTrue(
+            Alarm.objects.filter(
+                domain=domain, internal_name=constants.DKIM_ERROR
+            ).exists()
+        )
+
     def test_dkim_key_length_modification(self):
         """Check that key length change triggers a new key creation."""
         self.set_global_parameter("dkim_keys_storage_dir", self.workdir)

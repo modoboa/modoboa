@@ -19,6 +19,8 @@ modoboa/frontend_dist
 /frontend_dist/
 # JS stuff
 node_modules
+yarn-error.log
+npm-debug.log*
 /static/dist
 /frontend/webpack-stats.json
 /frontend/src/translations.json
