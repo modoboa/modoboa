@@ -58,8 +58,10 @@ class QuarantineViewSet(viewsets.GenericViewSet):
     def _check_message_access(self, request, mail_id, rcpt=None):
         """Check that the current user can access the given message.
 
-        For selfservice auth, access is already validated by
-        SelfServiceAuthentication.
+        For selfservice auth, SelfServiceAuthentication only validated
+        the (pk, rcpt, secret_id) triplet from the URL/request: make
+        sure the operation actually targets that exact message and
+        recipient, not identifiers taken from the request body.
         For authenticated users, check that at least one recipient of
         the message matches the user's valid addresses / domains.
 
@@ -69,6 +71,14 @@ class QuarantineViewSet(viewsets.GenericViewSet):
         a recipient outside the user's scope.
         """
         if request.auth == "selfservice":
+            if request.method == "GET":
+                auth_rcpt = request.GET.get("rcpt")
+            else:
+                auth_rcpt = request.data.get("rcpt")
+            if mail_id != self.kwargs.get("pk") or (
+                rcpt is not None and rcpt != auth_rcpt
+            ):
+                raise Http404
             return
         if not request.user or request.user.is_superuser:
             return

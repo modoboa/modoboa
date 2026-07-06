@@ -5,7 +5,10 @@ from aiosmtplib import send
 from unittest.mock import AsyncMock
 import multiprocessing
 from multiprocessing import Process
+import os
 import socket
+import subprocess
+import sys
 import time
 
 from django import db
@@ -24,8 +27,8 @@ from . import constants
 multiprocessing.set_start_method("fork")
 
 
-def start_policy_daemon():
-    call_command("policy_daemon")
+def start_policy_daemon(*args):
+    call_command("policy_daemon", *args)
 
 
 class RedisTestCaseMixin:
@@ -35,6 +38,87 @@ class RedisTestCaseMixin:
         super().setUp()
         self.rclient = get_redis_connection()
         self.rclient.delete(constants.REDIS_HASHNAME)
+
+
+class SocketActivationTestCase(TransactionTestCase):
+	def test_socket_activation(self):
+		self.assertTrue(os.path.basename(sys.argv[0]) == "manage.py")
+
+		child_sock = socket.socket(socket.AF_UNIX)
+		child_sock.bind("\0modoboa_test")
+		child_sock.listen(1)
+		client_sock = socket.socket(socket.AF_UNIX)
+		client_sock.connect("\0modoboa_test")
+
+		# Extract file descriptor without Python wrapper
+		child_fd = child_sock.detach()
+
+		def set_up_activation_env():
+			"""
+			Called in child process before execve()
+			"""
+			# Move file descriptor to number 3 if not already
+			#
+			# Must be inheritable to survive the imminent execve().
+			if child_fd != 3:
+				os.dup2(child_fd, 3, inheritable=True)
+				os.close(child_fd)
+
+			# Expose expected process environment variables
+			os.environ["LISTEN_FDS"] = "1"
+			os.environ["LISTEN_PID"] = str(os.getpid())
+
+			# Child environment setup complete
+
+		# Launch policy daemon as external process with socket activation process
+		# environment
+		#
+		# To do this, `sock_b` is inherited to the child process, then moved to
+		# FD number 3 and the expected environment variables are set. We expect
+		# to be able to communicate with the policy daemon from `sock_a` after this.
+		proc = subprocess.Popen(
+			[sys.executable, sys.argv[0], "policy_daemon"],
+			pass_fds=(3,),  # FD number post dup2!
+			preexec_fn=set_up_activation_env,
+		)
+		try:
+			os.close(child_fd)  # Now belongs to child
+
+			client_sock.send(b"protocol_state=RCPT\n\n")
+			res = client_sock.recv(1024)
+			self.assertEqual(res, b"action=dunno\n\n")
+		finally:
+			client_sock.close()
+			proc.terminate()
+			proc.wait()
+
+	def test_socket_path(self):
+		try:
+			os.remove("/tmp/modoboa_socket_path")
+		except FileNotFoundError:
+			pass
+
+		process = Process(target=start_policy_daemon, args=("--socket", "/tmp/modoboa_socket_path"))
+		process.daemon = True
+		process.start()
+		try:
+			# Wait a bit for the daemon to start
+			process.join(1.0)
+
+			# Socket file should now exist
+			self.assertTrue(os.path.exists("/tmp/modoboa_socket_path"))
+
+			# Ensure that daemon is responding on other end of socket
+			with socket.socket(socket.AF_UNIX, socket.SOCK_STREAM) as s:
+				s.connect("/tmp/modoboa_socket_path")
+				s.send(b"protocol_state=RCPT\n\n")
+				res = s.recv(1024)
+				self.assertEqual(res, b"action=dunno\n\n")
+
+			os.remove("/tmp/modoboa_socket_path")
+		finally:
+			process.terminate()
+			process.join()
 
 
 class PolicyDaemonTestCase(RedisTestCaseMixin, ParametersMixin, TransactionTestCase):

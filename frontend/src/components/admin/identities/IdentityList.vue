@@ -462,7 +462,7 @@ function getMenuItems(item) {
 
 function getActionMenuItems() {
   const result = []
-  if (selected.value.length > 0) {
+  if (selected.value.length > 0 && identityType.value === 'account') {
     result.push({
       label: $gettext('Delete'),
       icon: 'mdi-delete-outline',
@@ -515,7 +515,31 @@ function editAlias(alias) {
   router.push({ name: 'AliasEdit', params: { id: alias.pk } })
 }
 
-function deleteIdentities() {}
+async function deleteIdentities() {
+  const result = await confirmAccount.value.open(
+    $gettext('Warning'),
+    $gettext('Are you sure you want to delete the selected accounts?'),
+    {
+      color: 'error',
+      agreeLabel: $gettext('Yes'),
+      cancelLabel: $gettext('No'),
+    }
+  )
+  if (!result) {
+    return
+  }
+  loading.value = true
+  try {
+    await accountsApi.bulkDelete({
+      ids: selected.value,
+      keepdir: keepAccountFolder.value,
+    })
+    displayNotification({ msg: $gettext('Accounts deleted') })
+    fetchIdentities()
+  } finally {
+    loading.value = false
+  }
+}
 
 async function deleteAlias(alias) {
   const result = await confirmAlias.value.open(

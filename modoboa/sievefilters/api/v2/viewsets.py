@@ -41,10 +41,7 @@ class FilterSetViewSet(viewsets.ViewSet):
     serializer_class = serializers.FilterSetSerializer
     lookup_value_regex = "[^/]+"
 
-    # Characters forbidden in ManageSieve quoted-string arguments (RFC 5804).
-    # Rejecting them prevents protocol injection through script/filter names
-    # and CRLF injection in the Content-Disposition header used by `download`.
-    FORBIDDEN_NAME_CHARS = ("\r", "\n", "\x00", '"', "\\")
+    FORBIDDEN_NAME_CHARS = constants.FORBIDDEN_NAME_CHARS
 
     def initial(self, request, *args, **kwargs):
         super().initial(request, *args, **kwargs)

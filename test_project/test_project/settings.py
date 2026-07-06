@@ -285,6 +285,16 @@ SPECTACULAR_SETTINGS = {
 # DOVECOT_LOOKUP_PATH = ('/path/to/dovecot', )
 DOVECOT_USER = "root"
 
+# Dovecot access mode: "cmd" (local doveadm binary, default) or "rest"
+# (doveadm HTTP API, allows Dovecot to run on a different host).
+# DOVECOT_OPERATION_MODE = "rest"
+# DOVEADM_API_URL = "https://imap.example.com:8080/doveadm/v1"
+# DOVEADM_API_KEY = "secret"
+# DOVEADM_API_TIMEOUT = 10
+# In rest mode, 'doveadm pw -l' can't be used to list supported password
+# schemes so you should define them manually:
+# DOVECOT_SUPPORTED_SCHEMES = "SHA512-CRYPT ARGON2ID BLF-CRYPT"
+
 MODOBOA_API_URL = "https://api.modoboa.org/1/"
 
 PID_FILE_STORAGE_PATH = "/tmp"

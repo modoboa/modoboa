@@ -4,6 +4,7 @@ import datetime
 
 from reversion import revisions as reversion
 
+from django.core.exceptions import ValidationError
 from django.core.management import call_command
 from django.db import models
 from django.utils import timezone
@@ -15,6 +16,7 @@ import django_rq
 
 from modoboa.core import signals as core_signals
 from modoboa.core.models import User
+from modoboa.lib import validators
 from modoboa.lib.exceptions import BadRequest, Conflict
 from modoboa.parameters import tools as param_tools
 
@@ -329,6 +331,14 @@ class Domain(mixins.MessageLimitMixin, AdminObject):
         if len(row) < 5:
             raise BadRequest(_("Invalid line"))
         self.name = row[1].strip().lower()
+        # Enforce the same hostname constraints as the API path: the name
+        # flows into DKIM key filenames and Postfix/rspamd maps.
+        if not self.name:
+            raise BadRequest(_("Invalid domain name"))
+        try:
+            validators.validate_hostname(self.name)
+        except ValidationError:
+            raise BadRequest(_("{}: invalid domain name").format(self.name)) from None
         if Domain.objects.filter(name=self.name).exists():
             raise Conflict
         domains_must_have_authorized_mx = param_tools.get_global_parameter(

@@ -3,6 +3,8 @@
 from sievelib import commands
 from sievelib.factory import Filter
 
+from django.utils.translation import gettext as _
+
 from rest_framework import serializers
 
 from modoboa.sievefilters import constants, lib
@@ -27,6 +29,11 @@ class SievefiltersSettingsSerializer(serializers.Serializer):
 class FilterSetSerializer(serializers.Serializer):
     name = serializers.CharField()
     active = serializers.BooleanField(default=False)
+
+    def validate_name(self, value: str):
+        if any(c in value for c in constants.FORBIDDEN_NAME_CHARS):
+            raise serializers.ValidationError(_("Name contains forbidden characters"))
+        return value
 
 
 class FilterSetContentSerializer(serializers.Serializer):

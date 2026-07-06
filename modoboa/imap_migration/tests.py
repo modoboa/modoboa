@@ -65,6 +65,23 @@ class AuthenticationTestCase(DataMixin, ModoTestCase):
         self.assertEqual(response.status_code, 401)
 
     @mock.patch("imaplib.IMAP4")
+    def test_authentication_forbidden_characters(self, mock_imap):
+        """Credentials with control characters must be rejected.
+
+        Both values end up in the generated offlineimap configuration
+        file: a newline would allow injecting arbitrary directives.
+        """
+        factories.EmailProviderDomainFactory(name="test.com")
+        mock_imap.return_value.login.return_value = ["OK", b""]
+        url = reverse("core:login")
+        data = {"username": "new_user@test.com", "password": "Toto1234\nssl = no"}
+        response = self.client.post(url, data)
+        self.assertEqual(response.status_code, 401)
+        self.assertFalse(
+            core_models.User.objects.filter(username="new_user@test.com").exists()
+        )
+
+    @mock.patch("imaplib.IMAP4")
     def test_authenticate_and_rename(self, mock_imap):
         """Check address renaming."""
         domain = admin_models.Domain.objects.get(name="test.com")

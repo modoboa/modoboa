@@ -277,6 +277,16 @@ SPECTACULAR_SETTINGS = {
 
 # DOVECOT_USER = 'vmail'
 
+# Dovecot access mode: 'cmd' (local doveadm binary, default) or 'rest'
+# (doveadm HTTP API, allows Dovecot to run on a different host).
+# When using 'rest', DOVEADM_API_URL and DOVEADM_API_KEY are required and
+# DOVECOT_SUPPORTED_SCHEMES should be defined ('doveadm pw' is not
+# available through the HTTP API).
+#DOVECOT_OPERATION_MODE = 'rest'
+#DOVEADM_API_URL = 'https://imap.example.com:8080/doveadm/v1'
+#DOVEADM_API_KEY = 'secret'
+#DOVEADM_API_TIMEOUT = 10
+
 MODOBOA_API_URL = 'https://api.modoboa.org/1/'
 
 DISABLE_DASHBOARD_EXTERNAL_QUERIES = False

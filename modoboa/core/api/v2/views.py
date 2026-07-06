@@ -117,7 +117,10 @@ class PasswordResetSmsTOTP(APIView):
                     "type": "confirm",
                 }
             )
-        delete_cache_key(PasswordResetTotpThrottle, self.get_throttles(), request)
+            # Only clear the throttle counter after a genuinely successful
+            # confirmation. Resetting it on "resend" would let an attacker wipe
+            # the counter between guesses and brute-force the TOTP code.
+            delete_cache_key(PasswordResetTotpThrottle, self.get_throttles(), request)
         return response.Response(payload, 200)
 
 

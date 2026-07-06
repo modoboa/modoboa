@@ -1,7 +1,11 @@
 """LDAP related functions."""
 
+import os
+
 import ldap
 import ldap.modlist as modlist
+from ldap.dn import escape_dn_chars
+from ldap.filter import escape_filter_chars
 
 from django.conf import settings
 from django.utils.encoding import force_bytes, force_str
@@ -96,9 +100,18 @@ def check_if_dn_exists(conn, dn):
     return True
 
 
+def _account_dn(config, username):
+    """Build the account DN, escaping the username to prevent DN injection.
+
+    Without escaping, a username containing DN metacharacters (``,``, ``=``,
+    ``+`` ...) could retarget the operation to another directory entry.
+    """
+    return config["ldap_sync_account_dn_template"] % {"user": escape_dn_chars(username)}
+
+
 def update_ldap_account(user, config):
     """Update existing account."""
-    dn = config["ldap_sync_account_dn_template"] % {"user": user.username}
+    dn = _account_dn(config, user.username)
     conn = get_connection(config)
     if not check_if_dn_exists(conn, dn):
         create_ldap_account(user, dn, conn)
@@ -123,7 +136,7 @@ def update_ldap_account(user, config):
 
 def delete_ldap_account(user, config):
     """Delete remote LDAP account."""
-    dn = config["ldap_sync_account_dn_template"] % {"user": user.username}
+    dn = _account_dn(config, user.username)
     conn = get_connection(config)
     if not check_if_dn_exists(conn, dn):
         return
@@ -152,9 +165,10 @@ def find_user_groups(conn, config, dn, entry):
         or config["ldap_group_type"] == "groupofnames"
     )
     if condition:
-        flt = f"(member={dn})"
+        flt = f"(member={escape_filter_chars(dn)})"
     elif config["ldap_group_type"] == "posixgroup":
-        flt = "(memberUid={})".format(force_str(entry["uid"][0]))
+        uid = escape_filter_chars(force_str(entry["uid"][0]))
+        flt = f"(memberUid={uid})"
 
     result = conn.search_s(config["ldap_groups_search_base"], ldap.SCOPE_SUBTREE, flt)
     groups = []
@@ -240,9 +254,22 @@ def build_ldap_uri(config, node=""):
     )
 
 
+def _check_dovecot_conf_value(name, value):
+    """Reject values that could inject directives into the generated file."""
+    if any(c in value for c in ("\r", "\n", "\x00")):
+        raise InternalError(
+            _("LDAP parameter {} contains forbidden characters").format(name)
+        )
+
+
 def update_dovecot_config_file(config):
     """Update dovecot configuration file from LDAP parameters."""
     conf_file = config["ldap_dovecot_conf_file"]
+    _check_dovecot_conf_value("ldap_dovecot_conf_file", conf_file)
+    if not os.path.isabs(conf_file) or not conf_file.endswith(".conf"):
+        raise InternalError(
+            _("ldap_dovecot_conf_file must be an absolute path ending with '.conf'")
+        )
 
     # Hosts conf
     uris = build_ldap_uri(config)
@@ -256,6 +283,20 @@ def update_dovecot_config_file(config):
     # Search conf
     base = config["ldap_search_base"]
     user_filter = config["ldap_search_filter"].replace("(user)s", "u")
+
+    for name, value in (
+        ("uris", uris),
+        ("ldap_bind_dn", bind_dn),
+        ("ldap_bind_password", bind_pwd),
+        ("ldap_search_base", base),
+        ("ldap_search_filter", user_filter),
+    ):
+        _check_dovecot_conf_value(name, value)
+    # The dn/dnpass values are quoted below: a quote would break out
+    if '"' in bind_dn or "'" in bind_pwd:
+        raise InternalError(
+            _("LDAP bind DN and password cannot contain quote characters")
+        )
 
     with open(conf_file, "w") as fp:
         fp.write(

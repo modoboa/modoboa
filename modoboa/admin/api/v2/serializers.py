@@ -387,6 +387,13 @@ class SimpleDomainAdminSerializer(serializers.Serializer):
         queryset=core_models.User.objects.all()
     )
 
+    def validate_account(self, value):
+        """Ensure the requester is allowed to manage the target account."""
+        user = self.context["request"].user
+        if not user.can_access(value):
+            raise serializers.ValidationError(_("Permission denied."))
+        return value
+
 
 class TagSerializer(serializers.Serializer):
     """Serializer used to represent a tag."""
@@ -771,6 +778,13 @@ class DeleteAccountSerializer(serializers.Serializer):
     keepdir = serializers.BooleanField(default=False)
 
 
+class AccountBulkDeleteSerializer(serializers.Serializer):
+    """Serializer used with bulk delete operation."""
+
+    ids = serializers.ListField(child=serializers.IntegerField(), allow_empty=False)
+    keepdir = serializers.BooleanField(default=False)
+
+
 class AliasSerializer(v1_serializers.AliasSerializer):
     """Alias serializer for v2 API."""
 
@@ -818,13 +832,43 @@ class CSVIdentityImportSerializer(CSVImportSerializer):
     crypt_passwords = serializers.BooleanField(default=False)
 
 
+class AlarmDomainSerializer(serializers.ModelSerializer):
+    """Minimal domain representation exposed through alarms."""
+
+    class Meta:
+        model = models.Domain
+        fields = ("pk", "name")
+
+
+class AlarmMailboxSerializer(serializers.ModelSerializer):
+    """Minimal mailbox representation exposed through alarms."""
+
+    class Meta:
+        model = models.Mailbox
+        fields = ("pk", "address")
+
+
 class AlarmSerializer(serializers.ModelSerializer):
     """Serializer for Alarm related endpoints."""
 
+    domain = AlarmDomainSerializer(read_only=True)
+    mailbox = AlarmMailboxSerializer(read_only=True)
+
     class Meta:
-        depth = 1
-        fields = "__all__"
         model = models.Alarm
+        # Explicit fields only: a nested "__all__" with depth=1 used to leak
+        # the whole related Domain (including dkim_private_key_path) and
+        # Mailbox objects.
+        fields = (
+            "id",
+            "domain",
+            "mailbox",
+            "created",
+            "closed",
+            "status",
+            "title",
+            "internal_name",
+        )
 
 
 class AlarmBulkDeleteSerializer(serializers.Serializer):

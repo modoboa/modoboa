@@ -87,6 +87,13 @@ For dovecot 2.0 and older, use the [autocreate](http://wiki2.dovecot.org/Plugins
 ### Operations on the file system {#fs_operations}
 
 ::: warning
+This section only applies when Dovecot runs on the same host than
+Modoboa (ie. `DOVECOT_OPERATION_MODE` is not set or set to `'cmd'`). If
+Dovecot runs on a different host, see the
+[doveadm HTTP API](#doveadm_http_api) section.
+:::
+
+::: warning
 Modoboa needs to access the `dovecot` binary to check its version. To
 find the binary path, we use the `which` command first and then try
 known locations (`/usr/sbin/dovecot`  and
@@ -140,6 +147,74 @@ instance.
 The result of each order is recorded into Modoboa's log. 
 
 Go to *Modoboa > Logs* to consult them.
+
+## Remote Dovecot: doveadm HTTP API {#doveadm_http_api}
+
+By default, Modoboa uses the `doveadm` command line tool for some
+operations (mailbox location retrieval, scheduled messages handling,
+supported password schemes discovery), which requires Dovecot to be
+installed on the same host.
+
+If Dovecot runs on a different host, Modoboa can use the
+[doveadm HTTP API](https://doc.dovecot.org/admin_manual/doveadm_http_api/)
+instead.
+
+### Dovecot configuration
+
+Enable the HTTP listener of the doveadm service and define an API key:
+
+```txt
+service doveadm {
+  inet_listener http {
+    port = 8080
+    # ssl = yes  # uncomment to enable TLS (recommended)
+  }
+}
+
+doveadm_api_key = <a strong random key>
+```
+
+::: warning
+The API key is sent with every request. Restrict access to the listener
+(firewall) and enable TLS if requests transit over an untrusted network.
+:::
+
+### Modoboa configuration
+
+Add the following variables to `settings.py`:
+
+``` python
+DOVECOT_OPERATION_MODE = 'rest'
+DOVEADM_API_URL = 'https://<dovecot_host>:8080/doveadm/v1'
+DOVEADM_API_KEY = '<same key than doveadm_api_key>'
+# Optional, request timeout in seconds (defaults to 10)
+DOVEADM_API_TIMEOUT = 10
+```
+
+Since `doveadm pw` is not available through the HTTP API, you must also
+define the list of supported password schemes manually. Run the
+following command on the Dovecot host:
+
+```shell
+$ doveadm pw -l
+```
+
+and copy its output into the `DOVECOT_SUPPORTED_SCHEMES` variable:
+
+``` python
+DOVECOT_SUPPORTED_SCHEMES = 'SHA512-CRYPT SHA256-CRYPT BLF-CRYPT ARGON2ID'
+```
+
+### Limitations
+
+* [Operations on the file system](#fs_operations) (mailbox renaming and
+  deletion) are not available in this mode since Modoboa can't access
+  the file system where the mailboxes are stored: renaming or removing
+  a mailbox within Modoboa won't modify the corresponding directories,
+  even if the *Handle mailboxes on filesystem* parameter is enabled.
+  The `handle_mailbox_operations` cron script is not needed.
+* Supported password schemes can't be discovered automatically, see
+  above.
 
 ## Authentication
 

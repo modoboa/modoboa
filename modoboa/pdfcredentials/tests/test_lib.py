@@ -118,6 +118,18 @@ class PDFCredentialsLibTestCase(ModoAPITestCase):
         call_command("reencrypt_pdf_credentials")
         self.assertEqual(lib.decrypt_file(fname), data)
 
+    def test_creds_filename_rejects_traversal(self):
+        """A username must not allow escaping the storage directory."""
+        self.set_global_parameter("storage_dir", self.workdir)
+
+        class FakeAccount:
+            username = "../outside"
+
+        with self.assertRaises(InternalError):
+            lib.get_creds_filename(FakeAccount())
+        # Deletion must stay silent for such accounts
+        self.assertIsNone(lib.delete_credentials(FakeAccount()))
+
     def test_pdf_decryption(self):
         """Test that PDFs are decrypted."""
         username = "toto1818@test.com"

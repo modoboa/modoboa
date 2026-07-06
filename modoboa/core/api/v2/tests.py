@@ -353,20 +353,25 @@ class PasswordResetTestCase(AccountViewSetTestCase):
         response = self.client.post(url)
         self.assertEqual(response.status_code, 400)
 
-        # Invalid user
+        # Unknown account: the response must not disclose that no user
+        # exists. It looks exactly like a successful email request and no
+        # message is actually sent.
         data = {"email": "doesntexist@whoami.com"}
         response = self.client.post(url, data, format="json")
-        self.assertEqual(response.status_code, 404)
-        self.assertEqual(response.json()["type"], "sms")
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json()["type"], "email")
+        self.assertEqual(len(mail.outbox), 0)
 
         account = models.User.objects.get(username="user@test.com")
 
         # Email reset test
-        # No secondary email
+        # Known account without a recovery email: same generic response,
+        # still nothing sent.
         data = {"email": account.email}
         response = self.client.post(url, data, format="json")
-        self.assertEqual(response.status_code, 404)
+        self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json()["type"], "email")
+        self.assertEqual(len(mail.outbox), 0)
         # With secondary email
         account.secondary_email = "toto@test.com"
         account.is_active = True
@@ -404,6 +409,30 @@ class PasswordResetTestCase(AccountViewSetTestCase):
         response = self.client.post(url, data, format="json")
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json()["type"], "sms")
+
+    def test_password_reset_does_not_disclose_account_existence(self):
+        """Unknown and existing accounts must yield identical responses.
+
+        Regression test: the endpoint used to return a 404 for unknown
+        addresses (and different payloads depending on the account state),
+        turning it into an account-enumeration oracle.
+        """
+        url = reverse("v2:password_reset")
+
+        # Existing, active account with a working recovery email.
+        account = models.User.objects.get(username="user@test.com")
+        account.secondary_email = "toto@test.com"
+        account.is_active = True
+        account.save()
+
+        known = self.client.post(url, {"email": account.email}, format="json")
+        unknown = self.client.post(
+            url, {"email": "doesntexist@whoami.com"}, format="json"
+        )
+        # Same status code and body: the two cases are indistinguishable.
+        self.assertEqual(known.status_code, 200)
+        self.assertEqual(unknown.status_code, known.status_code)
+        self.assertEqual(unknown.json(), known.json())
 
     @mock.patch("ovh.Client.get")
     @mock.patch("ovh.Client.post")
@@ -466,6 +495,78 @@ class PasswordResetTestCase(AccountViewSetTestCase):
         self.assertEqual(response.status_code, 200)
         self.assertIn("token", response.json())
         self.assertIn("id", response.json())
+
+    @mock.patch("ovh.Client.get")
+    @mock.patch("ovh.Client.post")
+    def test_sms_totp_resend_does_not_reset_throttle(self, client_post, client_get):
+        """Ensure "resend" cannot be used to bypass the TOTP brute-force limit.
+
+        Regression test: the throttle counter used to be cleared on every
+        request, including "resend". An attacker could interleave resends
+        between wrong "confirm" guesses to reset the limit and brute-force
+        the 6-digit code indefinitely. The counter must now only be cleared
+        on a successful confirmation.
+        """
+        url_create_sms = reverse("v2:password_reset")
+        url_sms_totp = reverse("v2:sms_totp")
+
+        # Prepare account
+        account = models.User.objects.get(username="user@test.com")
+        account.phone_number = "+33612345678"
+        account.secondary_email = "toto@test.com"
+        account.is_active = True
+        account.save()
+
+        client_get.return_value = ["service"]
+        client_post.return_value = {"totalCreditsRemoved": 1}
+        self.set_global_parameters(
+            {
+                "sms_password_recovery": True,
+                "sms_provider": "ovh",
+                "sms_ovh_application_key": "key",
+                "sms_ovh_application_secret": "secret",
+                "sms_ovh_consumer_key": "consumer",
+            }
+        )
+        self.client.logout()
+        self.create_session()
+
+        # Start the SMS recovery flow to populate the session.
+        response = self.client.post(
+            url_create_sms, {"email": account.email}, format="json"
+        )
+        self.assertEqual(response.status_code, 200)
+
+        # The throttle counter is IP-based and shared across confirm/resend;
+        # start from a clean slate (the request above uses a different scope).
+        cache.clear()
+        # password_recovery_totp_check is rate-limited to 25/hour, so more than
+        # that many requests must eventually be throttled. Interleave wrong
+        # "confirm" guesses with "resend" requests: if resend reset the counter
+        # (the bug), no request would ever be throttled and we would loop
+        # unbounded; with the fix the shared counter keeps growing and a 429
+        # must be returned.
+        throttled = False
+        for _ in range(30):
+            response = self.client.post(
+                url_sms_totp,
+                {"sms_totp": "000000", "type": "confirm"},
+                format="json",
+            )
+            if response.status_code == 429:
+                throttled = True
+                break
+            self.assertEqual(response.status_code, 400)
+            response = self.client.post(url_sms_totp, {"type": "resend"}, format="json")
+            if response.status_code == 429:
+                throttled = True
+                break
+            self.assertEqual(response.status_code, 200)
+        cache.clear()
+        self.assertTrue(
+            throttled,
+            "TOTP confirm attempts were not throttled; resend reset the counter.",
+        )
 
     @mock.patch("ovh.Client.get")
     @mock.patch("ovh.Client.post")

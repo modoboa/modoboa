@@ -9,7 +9,7 @@ from modoboa.admin.constants import ALARM_CLOSED, ALARM_OPENED
 
 from modoboa.core.constants import DOVEADM_PASS_SCHEME_ALARM
 
-from modoboa.lib.sysutils import doveadm_cmd
+from modoboa.lib import dovecot
 
 from .base import PasswordHasher
 
@@ -21,6 +21,11 @@ def get_dovecot_schemes():
     doveadm output, and fallback to {MD5-CRYPT} and {PLAIN} if the command
     is not found.
 
+    When the doveadm HTTP API is used (DOVECOT_OPERATION_MODE = "rest"),
+    schemes can't be retrieved remotely ('doveadm pw' is a local command)
+    so the DOVECOT_SUPPORTED_SCHEMES setting should be defined. Otherwise,
+    default schemes are used (without opening an alarm).
+
     :return: A tuple with [0] : a list of supported '{SCHEME}'
     [1] : the status (0=actual schemes, 1=settings schemes, 2=default schemes)
     """
@@ -29,13 +34,14 @@ def get_dovecot_schemes():
     status = 1
 
     if not schemes:
-        try:
-            retcode, schemes = doveadm_cmd(["pw", "-l"])
-        except OSError:
+        if dovecot.get_dovecot_operation_mode() != dovecot.DOVECOT_OPERATION_MODE_CMD:
+            # Not available through the HTTP API: fallback to default
+            # schemes without raising an alarm.
             schemes = default_schemes
-            status = 2
         else:
-            if retcode:
+            try:
+                schemes = dovecot.get_dovecot_backend().list_password_schemes()
+            except dovecot.DoveadmError:
                 schemes = default_schemes
                 status = 2
             else:
