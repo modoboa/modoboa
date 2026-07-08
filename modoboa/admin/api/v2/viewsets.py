@@ -256,8 +256,7 @@ class AccountViewSet(v1_viewsets.AccountViewSet):
         accounts = self.get_queryset().filter(pk__in=ids)
         if accounts.count() != len(set(ids)):
             return response.Response(status=status.HTTP_404_NOT_FOUND)
-        for account in accounts:
-            account.delete()
+        accounts.delete()
         return response.Response(status=status.HTTP_204_NO_CONTENT)
 
 
