@@ -255,7 +255,7 @@ class Mailbox(mixins.MessageLimitMixin, AdminObject):
         if self.quota == 0:
             if self.domain.quota and not override_rules:
                 raise lib_exceptions.BadRequest(_("A quota is required"))
-        elif self.domain.quota:
+        elif self.domain.quota and self.quota > old_quota:
             quota_usage = self.domain.allocated_quota
             if old_quota:
                 quota_usage -= old_quota
@@ -318,9 +318,13 @@ class Mailbox(mixins.MessageLimitMixin, AdminObject):
                     raise lib_exceptions.NotFound(_("Domain does not exist"))
                 if not user.can_access(domain):
                     raise lib_exceptions.PermDeniedException
+        old_use_domain_quota = self.use_domain_quota
         if "use_domain_quota" in values:
             self.use_domain_quota = values["use_domain_quota"]
-        if "use_domain_quota" in values or "quota" in values:
+        quota_changed = (
+            "quota" in values and values["quota"] != self.quota
+        ) or self.use_domain_quota != old_use_domain_quota
+        if quota_changed:
             override_rules = (
                 not self.quota
                 or user.is_superuser
