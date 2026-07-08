@@ -23,12 +23,14 @@ class HostnameValidator:
 
     def __call__(self, value):
         """Check value."""
-        if len(value) > 255:
+        if not value or len(value) > 255:
             raise ValidationError(self.message, self.code)
         if value[-1] == ".":
             # strip exactly one dot from the right, if present.
             value = value[:-1]
-        if not self.regex.match(value):
+        # fullmatch (not match): an unanchored match would accept trailing
+        # garbage such as "good.com\nevil" or "good.com x".
+        if not self.regex.fullmatch(value):
             raise ValidationError(self.message, self.code)
 
 

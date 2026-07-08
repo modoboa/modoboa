@@ -120,7 +120,9 @@ def mailbox_deleted_handler(sender, **kwargs):
             "handle_mailboxes", raise_exception=False
         ):
             return
-        keepdir = request.POST.get("keepdir", "false") == "true"
+        keepdir = getattr(request, "_keepdir", None)
+        if keepdir is None:
+            keepdir = request.POST.get("keepdir", "false") == "true"
         if keepdir:
             return
         mb.delete_dir()

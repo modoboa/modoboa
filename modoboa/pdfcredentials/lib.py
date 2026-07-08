@@ -39,14 +39,28 @@ def init_storage_dir():
 
 
 def get_creds_filename(account):
-    """Return the full path of a document."""
-    storage_dir = param_tools.get_global_parameter("storage_dir")
-    return os.path.join(storage_dir, account.username + ".pdf")
+    """Return the full path of a document.
+
+    The username is user-controlled (quoted-string email addresses may
+    contain ``/`` or ``..``): reject any name whose resulting path would
+    escape the storage directory.
+    """
+    storage_dir = os.path.abspath(param_tools.get_global_parameter("storage_dir"))
+    fname = os.path.abspath(os.path.join(storage_dir, account.username + ".pdf"))
+    if os.path.dirname(fname) != storage_dir:
+        raise InternalError(
+            _("Invalid account name: %s") % account.username,
+        )
+    return fname
 
 
 def delete_credentials(account):
     """Try to delete a local file."""
-    fname = get_creds_filename(account)
+    try:
+        fname = get_creds_filename(account)
+    except InternalError:
+        # No document can exist for such an account: nothing to delete.
+        return
     if not os.path.exists(fname):
         return
     os.remove(fname)

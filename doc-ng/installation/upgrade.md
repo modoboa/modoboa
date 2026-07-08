@@ -167,6 +167,30 @@ credential document or IMAP migration is created: data encrypted with
 the previous key cannot be decrypted anymore once the key changes.
 :::
 
+### Optional: use the doveadm HTTP API instead of the doveadm binary
+
+Until now, Modoboa used the `doveadm` command line tool for some
+operations (mailbox location retrieval, scheduled messages handling),
+which required Dovecot to be installed on the same host.
+
+If Dovecot runs on a different host, you can now tell Modoboa to use
+the [doveadm HTTP API](https://doc.dovecot.org/admin_manual/doveadm_http_api/)
+instead by adding the following variables to `settings.py`:
+
+``` python
+DOVECOT_OPERATION_MODE = 'rest'
+DOVEADM_API_URL = 'https://<dovecot_host>:8080/doveadm/v1'
+DOVEADM_API_KEY = '<value of the doveadm_api_key Dovecot setting>'
+# Optional, request timeout in seconds (defaults to 10)
+DOVEADM_API_TIMEOUT = 10
+```
+
+The default mode (`'cmd'`, the local `doveadm` binary) remains unchanged:
+if you don't add anything, your installation will keep working as before.
+
+See the [Dovecot documentation page](/installation/dovecot#doveadm_http_api)
+for the required Dovecot configuration and the limitations of this mode.
+
 ## 2.9.0
 
 ### Required changes to `settings.py`

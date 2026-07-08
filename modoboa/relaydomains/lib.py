@@ -11,6 +11,25 @@ def import_relaydomain(user, row, formopts):
     """Specific code for relay domains import"""
     if len(row) != 7:
         raise BadRequest(_("Invalid line"))
+    try:
+        target_port = int(row[3].strip())
+    except ValueError:
+        raise BadRequest(_("Invalid port: {}").format(row[3].strip())) from None
+    settings = {
+        "relay_target_host": row[2].strip(),
+        "relay_target_port": target_port,
+        "relay_verify_recipients": (
+            row[6].strip().lower() in ["true", "1", "yes", "y"]
+        ),
+    }
+    backend = tr_backends.manager.get_backend("relay")
+    errors = backend.clean_fields(settings)
+    if errors:
+        raise BadRequest(
+            _("Invalid settings: {}").format(
+                ", ".join(fname for fname, error in errors)
+            )
+        )
     domain = admin_models.Domain(
         name=row[1].strip(),
         type="relaydomain",
@@ -18,15 +37,8 @@ def import_relaydomain(user, row, formopts):
         enabled=(row[5].strip().lower() in ["true", "1", "yes", "y"]),
     )
     domain.save(creator=user)
-    settings = {
-        "relay_target_host": row[2].strip(),
-        "relay_target_port": row[3].strip(),
-        "relay_verify_recipients": (
-            row[6].strip().lower() in ["true", "1", "yes", "y"]
-        ),
-    }
     transport = tr_models.Transport(
         pattern=domain.name, service="relay", _settings=settings
     )
-    tr_backends.manager.get_backend("relay").serialize(transport)
+    backend.serialize(transport)
     transport.save()
