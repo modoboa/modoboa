@@ -18,7 +18,7 @@ class ViewsTestCase(TestCase):
 
         resp = self.client.get(f"{url}?emailaddress=")
         self.assertEqual(resp.status_code, 200)
-        self.assertIn(b"%EMAILLOCALPART%@%EMAILDOMAIN%", resp.content)
+        self.assertIn(b"<username>%EMAILADDRESS%</username>", resp.content)
 
     def test_autoconfig_with_emailaddress(self):
         url = reverse("autoconfig:autoconfig")
