@@ -275,6 +275,29 @@ class SharedCalendarViewSetTestCase(TestDataMixin, ModoAPITestCase):
         self.assertEqual(response.status_code, 201)
 
     @mock.patch("caldav.DAVClient")
+    def test_create_calendar_rejects_unowned_domain(self, client_mock):
+        """A shared calendar cannot be created under an unmanaged domain.
+
+        admin@test.com only administers test.com, so it must not be able to
+        create a shared calendar under test2.com.
+        """
+        client_mock.return_value = mocks.DAVClientMock()
+        data = {"username": "admin@test.com", "password": "toto"}
+        self.client.post(reverse("core:login"), data)
+
+        data = {
+            "name": "Evil shared calendar",
+            "color": "#ffffff",
+            "domain": {"pk": self.domain2.pk, "name": "test2.com"},
+        }
+        url = reverse("api:shared-calendar-list")
+        response = self.client.post(url, data, format="json")
+        self.assertEqual(response.status_code, 400)
+        self.assertFalse(
+            models.SharedCalendar.objects.filter(name="Evil shared calendar").exists()
+        )
+
+    @mock.patch("caldav.DAVClient")
     @mock.patch("caldav.Calendar")
     def test_update_calendar(self, cal_mock, client_mock):
         """Update existing calendar."""

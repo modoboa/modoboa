@@ -32,4 +32,7 @@ export default {
   delete(accountId, data) {
     return repository.post(`${resource}/${accountId}/delete/`, data)
   },
+  bulkDelete(data) {
+    return repository.post(`${resource}/bulk_delete/`, data)
+  },
 }

@@ -175,6 +175,25 @@ class QuarantineViewSetTestCase(TestDataMixin, ModoAPITestCase):
         self.msgrcpt.refresh_from_db()
         self.assertEqual(self.msgrcpt.rs, "D")
 
+    def test_delete_selfservice_other_message_denied(self):
+        """Self-service can only target the message it authenticated for."""
+        self.client.logout()
+        self.set_global_parameter("self_service", True)
+        other_msgrcpt = factories.create_spam("user@test.com")
+        mail_id = smart_str(self.msgrcpt.mail.mail_id)
+        rcpt = smart_str(self.msgrcpt.rid.email)
+        url = reverse("v2:amavis-quarantine-delete", args=[mail_id])
+        # Authenticate with message 1's secret but target message 2
+        data = {
+            "mailid": smart_str(other_msgrcpt.mail.mail_id),
+            "rcpt": rcpt,
+            "secret_id": smart_str(self.msgrcpt.mail.secret_id),
+        }
+        response = self.client.post(url, data, format="json")
+        self.assertEqual(response.status_code, 404)
+        other_msgrcpt.refresh_from_db()
+        self.assertEqual(other_msgrcpt.rs, " ")
+
     def test_delete_selection(self):
         mail_id = smart_str(self.msgrcpt.mail.mail_id)
         url = reverse("v2:amavis-quarantine-delete-selection")

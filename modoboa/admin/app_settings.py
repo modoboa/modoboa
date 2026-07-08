@@ -8,6 +8,7 @@ from django.conf import settings
 from django.utils.encoding import force_str
 from django.utils.translation import gettext_lazy
 
+from modoboa.lib import dovecot
 from modoboa.lib.sysutils import exec_cmd
 
 
@@ -298,6 +299,10 @@ GLOBAL_PARAMETERS_STRUCT = collections.OrderedDict(
 
 def init_structure() -> dict:
     structure = copy.deepcopy(GLOBAL_PARAMETERS_STRUCT)
+    if dovecot.get_dovecot_operation_mode() != dovecot.DOVECOT_OPERATION_MODE_CMD:
+        # Dovecot is reached through its HTTP API: it doesn't need to be
+        # installed locally.
+        return structure
     hide_fields = False
     dpath = None
     code, output = exec_cmd(["which", "dovecot"])
