@@ -291,6 +291,50 @@ class AccountViewSetTestCase(ModoAPITestCase):
         super().setUpTestData()
         factories.populate_database()
 
+    def _set_quota_usage(self, username, megabytes):
+        """Set the used bytes of an account's mailbox quota."""
+        mb = models.Mailbox.objects.get(user__username=username)
+        models.Quota.objects.filter(username=mb.full_address).update(
+            bytes=megabytes * 1048576
+        )
+
+    def test_list_quota_usage_value(self):
+        """quota_usage is computed from the Quota table (mailbox quota is MB)."""
+        self._set_quota_usage("user@test.com", 5)  # mailbox quota is 10MB -> 50%
+        url = reverse("v2:account-list")
+        resp = self.client.get(url)
+        self.assertEqual(resp.status_code, 200)
+        entry = next(
+            a for a in resp.json()["results"] if a["username"] == "user@test.com"
+        )
+        self.assertEqual(entry["mailbox"]["quota_usage"], 50)
+
+    def test_list_ordering_by_quota_usage(self):
+        """Results can be ordered by the computed quota_usage field."""
+        self._set_quota_usage("user@test.com", 5)  # 50%
+        self._set_quota_usage("admin@test.com", 1)  # 10%
+        self._set_quota_usage("user@test2.com", 8)  # 80%
+        url = reverse("v2:account-list")
+
+        resp = self.client.get(url, {"ordering": "quota_usage"})
+        self.assertEqual(resp.status_code, 200)
+        usages = [
+            a["mailbox"]["quota_usage"]
+            for a in resp.json()["results"]
+            if a["mailbox"] is not None
+        ]
+        self.assertEqual(usages, sorted(usages))
+
+        resp = self.client.get(url, {"ordering": "-quota_usage"})
+        self.assertEqual(resp.status_code, 200)
+        usages = [
+            a["mailbox"]["quota_usage"]
+            for a in resp.json()["results"]
+            if a["mailbox"] is not None
+        ]
+        self.assertEqual(usages, sorted(usages, reverse=True))
+        self.assertEqual(usages[0], 80)
+
     def test_create(self):
         url = reverse("v2:account-list")
         username = "toto@test.com"

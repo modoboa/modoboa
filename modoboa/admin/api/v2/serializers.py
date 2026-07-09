@@ -502,6 +502,15 @@ class AccountSerializer(v1_serializers.AccountSerializer):
             return
         self.fields["resources"] = serializers.SerializerMethodField()
 
+    def to_representation(self, instance):
+        data = super().to_representation(instance)
+        # Reuse the quota_usage annotation set by AccountViewSet.get_queryset()
+        # to avoid a per-row Quota query in the account listing. Falls back to
+        # the SerializerMethodField (get_quota_in_percent) when unannotated.
+        if data.get("mailbox") is not None and hasattr(instance, "quota_usage"):
+            data["mailbox"]["quota_usage"] = int(instance.quota_usage or 0)
+        return data
+
     def get_possible_actions(self, identity) -> list[IdPossibleActionsSerializer]:
         actions = admin_signals.extra_account_identities_actions.send(
             self.__class__, account=identity
