@@ -5,6 +5,7 @@ import os
 
 from django.conf import settings
 from django.core.exceptions import ValidationError
+from django.core.exceptions import ObjectDoesNotExist
 from django.core import validators as dj_validators
 from django.shortcuts import get_object_or_404
 from django.utils.translation import gettext as _
@@ -415,6 +416,32 @@ class IdPossibleActionsSerializer(serializers.Serializer):
     filename = serializers.CharField(required=False)
 
 
+class IdentityMailboxSerializer(serializers.Serializer):
+    """Read-only mailbox summary for the identity list.
+
+    Mirrors the subset of Mailbox fields that the IdentitiesView
+    frontend renders in its Quota column.  Aliases have no mailbox,
+    so this serializer is only used for accounts.
+    """
+
+    quota = serializers.SerializerMethodField()
+    quota_usage = serializers.SerializerMethodField()
+    message_limit = serializers.SerializerMethodField()
+    sent_messages_in_percent = serializers.SerializerMethodField()
+
+    def get_quota(self, mb) -> str:
+        return str(mb.quota)
+
+    def get_quota_usage(self, mb) -> int:
+        return mb.get_quota_in_percent()
+
+    def get_message_limit(self, mb):
+        return mb.message_limit
+
+    def get_sent_messages_in_percent(self, mb):
+        return mb.sent_messages_in_percent
+
+
 class IdentitySerializer(serializers.Serializer):
     """Serializer used for identities."""
 
@@ -425,6 +452,8 @@ class IdentitySerializer(serializers.Serializer):
     tags = TagSerializer(many=True)
     enabled = serializers.BooleanField()
     possible_actions = serializers.SerializerMethodField()
+    mailbox = serializers.SerializerMethodField()
+    quota_usage = serializers.SerializerMethodField()
 
     def get_possible_actions(self, identity) -> list[IdPossibleActionsSerializer]:
         if not isinstance(identity, core_models.User):
@@ -442,6 +471,30 @@ class IdentitySerializer(serializers.Serializer):
             except (ValidationError, AttributeError):
                 continue
         return cleaned_actions
+
+    def get_mailbox(self, identity):
+        """Return mailbox summary or None for aliases."""
+        if not isinstance(identity, core_models.User):
+            return None
+        try:
+            mb = identity.mailbox
+            if mb is not None:
+                return IdentityMailboxSerializer(mb).data
+        except ObjectDoesNotExist:
+            pass
+        return None
+
+    def get_quota_usage(self, identity):
+        """Return quota usage percentage for sorting, or None for aliases."""
+        if not isinstance(identity, core_models.User):
+            return None
+        try:
+            mb = identity.mailbox
+            if mb is not None:
+                return mb.get_quota_in_percent()
+        except ObjectDoesNotExist:
+            pass
+        return None
 
 
 class AccountResourceSerializer(serializers.ModelSerializer):
