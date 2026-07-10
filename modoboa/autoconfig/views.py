@@ -1,6 +1,6 @@
 import plistlib
 import uuid
-import xml.etree.ElementTree as ET
+from defusedxml.ElementTree import ParseError, fromstring as ET_fromstring
 
 from django.conf import settings
 from django.http import Http404, HttpResponse
@@ -20,8 +20,10 @@ def _email_address_from_xml_body(body: bytes) -> str | None:
     </Autodiscover>
     """
     try:
-        root = ET.fromstring(body)
-    except ET.ParseError:
+        root = ET_fromstring(body)
+    except (ParseError, ValueError):
+        # ParseError covers malformed XML; ValueError covers defusedxml
+        # security exceptions (EntitiesForbidden, DTDForbidden, etc.).
         return None
     for elem in root.iter():
         tag = elem.tag.rsplit("}", 1)[-1]  # strip XML namespace, if any
