@@ -8,6 +8,7 @@ import email
 
 from charset_normalizer import detect as charset_detect
 
+from django.apps import apps
 from django.conf import settings
 from django.core.files.base import ContentFile
 from django.core.files.storage import default_storage
@@ -15,7 +16,6 @@ from django.utils.encoding import smart_str
 from django.utils.html import conditional_escape
 from django.utils.translation import gettext as _
 
-from modoboa.contacts import models as contacts_models
 from modoboa.lib import u2u_decode
 from modoboa.lib.email_utils import Email
 from modoboa.webmail import constants
@@ -73,6 +73,10 @@ class ImapEmail(Email):
                 self.headers += [{"name": label, "value": hdrvalue}]
             label = re.sub("-", "_", label)
             setattr(self, label, hdrvalue)
+        if not apps.is_installed("modoboa.contacts"):
+            return
+        from modoboa.contacts import models as contacts_models
+
         addressbook = self.request.user.addressbook_set.first()
         if not addressbook:
             return
