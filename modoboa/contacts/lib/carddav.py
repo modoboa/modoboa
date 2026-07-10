@@ -33,6 +33,15 @@ from caldav.elements import base as elements_base, dav as elements_dav
 import lxml.etree as ET
 import requests
 
+# Secure parser to protect against XML-based attacks (billion laughs, XXE, etc.).
+# See https://pypi.org/project/defusedxml/ for rationale.
+_SECURE_PARSER = ET.XMLParser(resolve_entities=False, no_network=True)
+
+
+def _safe_xml(xml):
+    """Parse XML with a hardened parser that disables entity resolution."""
+    return ET.XML(xml, parser=_SECURE_PARSER)
+
 
 class UploadFailed(Exception):
     """uploading the card failed"""
@@ -338,7 +347,7 @@ class PyCardDAV:
         """Parse REPORT query result and return a dict."""
         result = {"cards": []}
         ns = "{DAV:}"
-        element = ET.XML(xml)
+        element = _safe_xml(xml)
         for item in element.iterchildren():
             if item.tag != ns + "response":
                 result["token"] = item.text
@@ -379,7 +388,7 @@ class PyCardDAV:
         """
         namespace = "{DAV:}"
 
-        element = ET.XML(xml)
+        element = _safe_xml(xml)
         abook = dict()
         for response in element.iterchildren():
             if response.tag != namespace + "response":
