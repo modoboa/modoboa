@@ -908,6 +908,24 @@ class IdentityViewSetTestCase(ModoAPITestCase):
         self.assertEqual(resp.status_code, 200)
         self.assertEqual(len(resp.json()), 8)
 
+    def test_list_quota_fields(self):
+        """Accounts expose quota_usage and mailbox, aliases expose None."""
+        mb = models.Mailbox.objects.get(user__username="user@test.com")
+        models.Quota.objects.filter(username=mb.full_address).update(
+            bytes=5 * 1048576  # mailbox quota is 10MB -> 50%
+        )
+        url = reverse("v2:identities-list")
+        resp = self.client.get(url)
+        self.assertEqual(resp.status_code, 200)
+        identities = resp.json()
+        account = next(i for i in identities if i["identity"] == "user@test.com")
+        self.assertEqual(account["quota_usage"], 50)
+        self.assertEqual(account["mailbox"]["quota"], "10")
+        self.assertEqual(account["mailbox"]["quota_usage"], 50)
+        alias = next(i for i in identities if i["type"] != "account")
+        self.assertIsNone(alias["quota_usage"])
+        self.assertIsNone(alias["mailbox"])
+
     def test_import(self):
         f = ContentFile(
             """

@@ -13,7 +13,18 @@ from dns.name import IDNA_2008_UTS_46
 
 from django.core.exceptions import ValidationError
 from django.db import transaction
-from django.db.models import Q
+from django.db.models import (
+    Case,
+    ExpressionWrapper,
+    F,
+    FloatField,
+    OuterRef,
+    Q,
+    Subquery,
+    Value,
+    When,
+)
+from django.db.models.functions import Concat
 from django.utils.encoding import smart_str
 from django.utils.translation import gettext as _
 
@@ -28,7 +39,37 @@ from modoboa.lib.exceptions import Conflict, ModoboaException, PermDeniedExcepti
 from modoboa.parameters import tools as param_tools
 
 from . import signals
-from .models import Alias, Domain, DomainAlias
+from .models import Alias, Domain, DomainAlias, Quota
+
+
+def annotate_quota_usage(accounts):
+    """Annotate an account queryset with its quota usage (percent).
+
+    Mirrors Mailbox.get_quota_in_percent() at the DB level so results can
+    be ordered by quota usage and served without a per-row Quota query.
+    Quota has no FK to Mailbox: it is joined on
+    Quota.username == Mailbox.full_address (local part + "@" + domain).
+    """
+    quota_bytes = Subquery(
+        Quota.objects.filter(
+            username=Concat(
+                OuterRef("mailbox__address"),
+                Value("@"),
+                OuterRef("mailbox__domain__name"),
+            )
+        ).values("bytes")[:1]
+    )
+    return accounts.annotate(
+        quota_usage=Case(
+            When(mailbox__quota=0, then=Value(0.0)),
+            When(mailbox__quota__isnull=True, then=Value(0.0)),
+            default=ExpressionWrapper(
+                quota_bytes * 100.0 / (F("mailbox__quota") * 1048576),
+                output_field=FloatField(),
+            ),
+            output_field=FloatField(),
+        )
+    )
 
 
 def get_identities(
@@ -58,7 +99,11 @@ def get_identities(
                 q &= Q(is_superuser=True)
             else:
                 q &= Q(groups__name=grpfilter)
-        accounts = User.objects.filter(q).prefetch_related("groups")
+        accounts = annotate_quota_usage(
+            User.objects.filter(q)
+            .select_related("mailbox", "mailbox__domain")
+            .prefetch_related("groups")
+        )
 
     aliases = []
     if (

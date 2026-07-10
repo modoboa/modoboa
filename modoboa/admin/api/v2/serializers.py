@@ -424,7 +424,41 @@ class IdentitySerializer(serializers.Serializer):
     name_or_rcpt = serializers.CharField()
     tags = TagSerializer(many=True)
     enabled = serializers.BooleanField()
+    quota_usage = serializers.SerializerMethodField()
+    mailbox = serializers.SerializerMethodField()
     possible_actions = serializers.SerializerMethodField()
+
+    def _get_account_mailbox(self, identity):
+        """Return the account's mailbox, None for aliases or mailbox-less accounts."""
+        if not isinstance(identity, core_models.User):
+            return None
+        return getattr(identity, "mailbox", None)
+
+    def get_quota_usage(self, identity) -> int | None:
+        """Quota usage in percent, None for identities without a mailbox.
+
+        Exposed at the top level because the frontend Quota column sorts on
+        this key (aliases group together through the None value).
+        """
+        mailbox = self._get_account_mailbox(identity)
+        if mailbox is None:
+            return None
+        # Reuse the quota_usage annotation set by lib.get_identities() to
+        # avoid a per-row Quota query. Falls back to the model method when
+        # unannotated.
+        if hasattr(identity, "quota_usage"):
+            return int(identity.quota_usage or 0)
+        return mailbox.get_quota_in_percent()
+
+    def get_mailbox(self, identity) -> dict | None:
+        """Quota display data (types mirror MailboxSerializer: quota is a string)."""
+        mailbox = self._get_account_mailbox(identity)
+        if mailbox is None:
+            return None
+        return {
+            "quota": str(mailbox.quota),
+            "quota_usage": self.get_quota_usage(identity),
+        }
 
     def get_possible_actions(self, identity) -> list[IdPossibleActionsSerializer]:
         if not isinstance(identity, core_models.User):

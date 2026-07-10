@@ -3,17 +3,6 @@
 from django.utils.translation import gettext as _
 
 from django.contrib.contenttypes.models import ContentType
-from django.db.models import (
-    Case,
-    ExpressionWrapper,
-    F,
-    FloatField,
-    OuterRef,
-    Subquery,
-    Value,
-    When,
-)
-from django.db.models.functions import Concat
 
 from django_filters import rest_framework as dj_filters
 from drf_spectacular.utils import extend_schema, extend_schema_view
@@ -226,34 +215,10 @@ class AccountViewSet(v1_viewsets.AccountViewSet):
         ids = user.objectaccess_set.filter(
             content_type=ContentType.objects.get_for_model(user)
         ).values_list("object_id", flat=True)
-        # Quota has no FK to Mailbox: it is joined on
-        # Quota.username == Mailbox.full_address (local part + "@" + domain).
-        quota_bytes = Subquery(
-            models.Quota.objects.filter(
-                username=Concat(
-                    OuterRef("mailbox__address"),
-                    Value("@"),
-                    OuterRef("mailbox__domain__name"),
-                )
-            ).values("bytes")[:1]
-        )
-        # Mirror Mailbox.get_quota_in_percent() at the DB level so results can
-        # be ordered by quota usage and served without a per-row Quota query.
-        return (
+        return lib.annotate_quota_usage(
             core_models.User.objects.filter(pk__in=ids)
             .select_related("mailbox", "mailbox__domain")
             .prefetch_related("userobjectlimit_set")
-            .annotate(
-                quota_usage=Case(
-                    When(mailbox__quota=0, then=Value(0.0)),
-                    When(mailbox__quota__isnull=True, then=Value(0.0)),
-                    default=ExpressionWrapper(
-                        quota_bytes * 100.0 / (F("mailbox__quota") * 1048576),
-                        output_field=FloatField(),
-                    ),
-                    output_field=FloatField(),
-                )
-            )
         )
 
     @action(methods=["post"], detail=False)
