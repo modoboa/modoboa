@@ -83,3 +83,17 @@ class ViewsTestCase(TestCase):
 
         resp = self.client.get(f"{url}?emailaddress=test@test.com")
         self.assertEqual(resp.status_code, 200)
+
+    def test_autodiscover_xxe_entity_not_resolved(self):
+        """Ensure XXE entity expansion is blocked by defusedxml (#1556)."""
+        url = reverse("autoconfig:autodiscover")
+        body = (
+            b'<?xml version="1.0"?>'
+            b'<!DOCTYPE foo [<!ENTITY xxe "INJECTED">]>'
+            b"<Autodiscover><Request>"
+            b"<EMailAddress>&xxe;</EMailAddress>"
+            b"</Request></Autodiscover>"
+        )
+        resp = self.client.post(url, data=body, content_type="text/xml")
+        # Entity is not resolved, so EMailAddress is not a valid address → 404
+        self.assertEqual(resp.status_code, 404)
