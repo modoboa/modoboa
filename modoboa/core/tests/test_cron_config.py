@@ -3,8 +3,6 @@
 import importlib
 import sys
 
-from django.test import override_settings
-
 from modoboa.lib.tests import SimpleModoTestCase
 
 
@@ -29,20 +27,18 @@ class CronConfigTestCase(SimpleModoTestCase):
 
     def test_rq_version_not_pinned_below_2_10(self):
         """The rq dependency must not be pinned below 2.10.0."""
+        from packaging.version import parse
+
         import rq
 
-        # We allow rq >= 2.7.0 (including >= 2.10.0)
-        major, minor = int(rq.__version__.split(".")[0]), int(
-            rq.__version__.split(".")[1]
-        )
+        rq_ver = parse(rq.__version__)
         # If rq is 2.10+, django-rq must be >= 4.1.1 to accept webhooks
-        if major == 2 and minor >= 10:
+        if rq_ver >= parse("2.10.0"):
             import django_rq
 
-            dj_rq_parts = django_rq.__version__.split(".")
-            dj_rq_major, dj_rq_minor = int(dj_rq_parts[0]), int(dj_rq_parts[1])
+            dj_rq_ver = parse(django_rq.__version__)
             self.assertGreaterEqual(
-                (dj_rq_major, dj_rq_minor),
-                (4, 1),
+                dj_rq_ver,
+                parse("4.1.1"),
                 "django-rq>=4.1.1 is required when rq>=2.10.0 (issue #4088)",
             )
