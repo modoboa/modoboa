@@ -247,8 +247,11 @@ class AccountViewSet(v1_viewsets.AccountViewSet):
                 quota_usage=Case(
                     When(mailbox__quota=0, then=Value(0.0)),
                     When(mailbox__quota__isnull=True, then=Value(0.0)),
+                    # Multiply by a float so PostgreSQL does not compute
+                    # quota * 1048576 as integer * integer, which overflows
+                    # for quotas above 2047MB.
                     default=ExpressionWrapper(
-                        quota_bytes * 100.0 / (F("mailbox__quota") * 1048576),
+                        quota_bytes * 100.0 / (F("mailbox__quota") * 1048576.0),
                         output_field=FloatField(),
                     ),
                     output_field=FloatField(),

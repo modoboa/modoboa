@@ -309,6 +309,20 @@ class AccountViewSetTestCase(ModoAPITestCase):
         )
         self.assertEqual(entry["mailbox"]["quota_usage"], 50)
 
+    def test_list_quota_usage_large_quota(self):
+        """Quotas above 2047MB must not overflow (quota * 1048576 > 2^31)."""
+        mb = models.Mailbox.objects.get(user__username="user@test.com")
+        mb.quota = 5000
+        mb.save(update_fields=["quota"])
+        self._set_quota_usage("user@test.com", 2500)  # 50%
+        url = reverse("v2:account-list")
+        resp = self.client.get(url, {"ordering": "quota_usage"})
+        self.assertEqual(resp.status_code, 200)
+        entry = next(
+            a for a in resp.json()["results"] if a["username"] == "user@test.com"
+        )
+        self.assertEqual(entry["mailbox"]["quota_usage"], 50)
+
     def test_list_ordering_by_quota_usage(self):
         """Results can be ordered by the computed quota_usage field."""
         self._set_quota_usage("user@test.com", 5)  # 50%
