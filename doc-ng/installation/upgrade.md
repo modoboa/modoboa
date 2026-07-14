@@ -131,7 +131,7 @@ If you need to rebuild you virtualenv, you can check this [part of the documenta
 
 The section below containt specific migration steps to upgrade Modoboa instance.
 
-## 2.9.1
+## Version 2.9.1
 
 ### PDF credentials re-encryption
 
@@ -191,7 +191,7 @@ if you don't add anything, your installation will keep working as before.
 See the [Dovecot documentation page](/installation/dovecot#doveadm_http_api)
 for the required Dovecot configuration and the limitations of this mode.
 
-## 2.9.0
+## Version 2.9.0
 
 ### Required changes to `settings.py`
 
