@@ -424,7 +424,17 @@ class IdentitySerializer(serializers.Serializer):
     name_or_rcpt = serializers.CharField()
     tags = TagSerializer(many=True)
     enabled = serializers.BooleanField()
+    quota_usage = serializers.SerializerMethodField()
     possible_actions = serializers.SerializerMethodField()
+
+    def get_quota_usage(self, identity) -> int:
+        """Return mailbox quota usage for accounts, or zero for aliases."""
+        if not isinstance(identity, core_models.User):
+            return 0
+        mailbox = getattr(identity, "mailbox", None)
+        if mailbox is None:
+            return 0
+        return mailbox.get_quota_in_percent()
 
     def get_possible_actions(self, identity) -> list[IdPossibleActionsSerializer]:
         if not isinstance(identity, core_models.User):

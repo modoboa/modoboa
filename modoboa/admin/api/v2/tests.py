@@ -908,6 +908,17 @@ class IdentityViewSetTestCase(ModoAPITestCase):
         self.assertEqual(resp.status_code, 200)
         self.assertEqual(len(resp.json()), 8)
 
+    def test_list_quota_usage(self):
+        """Include account quota usage and a stable zero for aliases."""
+        models.Quota.objects.filter(username="user@test.com").update(
+            bytes=5 * 1048576
+        )
+        response = self.client.get(reverse("v2:identities-list"))
+        self.assertEqual(response.status_code, 200)
+        identities = {identity["identity"]: identity for identity in response.json()}
+        self.assertEqual(identities["user@test.com"]["quota_usage"], 50)
+        self.assertEqual(identities["alias@test.com"]["quota_usage"], 0)
+
     def test_import(self):
         f = ContentFile(
             """
