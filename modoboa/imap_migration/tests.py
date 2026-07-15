@@ -134,6 +134,19 @@ class ManagementCommandTestCase(DataMixin, ModoTestCase):
         conf.read(path)
         self.assertTrue(conf.has_section("Account user@test.com"))
 
+
+    def test_generate_offlineimap_config_norestrict(self):
+        """Test generate_offlineimap_config command with --no-restrict."""
+        # Read umask (never do this in multi-threaded code!)
+        umask = os.umask(0)  # Reads current umask, replacing it with 0
+        os.umask(umask)  # Restores umask
+
+        # Test that generated file has default umask restrictions
+        path = os.path.join(self.workdir, "offlineimap.conf")
+        call_command("generate_offlineimap_config", "--output", path, "--no-restrict")
+        self.assertTrue(os.path.exists(path))
+        self.assertEqual(stat.S_IMODE(os.stat(path).st_mode), (0o666 & ~umask))
+
     def test_password_escaping(self):
         """Check that passwords are escaped when needed."""
         self.migration.password = "%Test1234"
