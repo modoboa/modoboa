@@ -39,7 +39,8 @@ class Command(BaseCommand):
                 "provider", "mailbox__domain"
             ),
         }
-        with open(options["output"], "w") as fpo:
+        opener = lambda path, flags: \
+            os.open(path, flags, mode=(stat.S_IRUSR | stat.S_IWUSR))
+        with open(options["output"], "w", opener=opener) as fpo:
             content = render_to_string("imap_migration/offlineimap.conf", context)
             fpo.write(content)
-        os.chmod(options["output"], stat.S_IRUSR | stat.S_IWUSR)
