@@ -3,9 +3,9 @@
 from django.core.management import call_command
 
 
-def amnotify():
-    call_command("amnotify")
+def amnotify(*args, **options):
+    call_command("amnotify", *args, **options)
 
 
-def qcleanup():
-    call_command("qcleanup")
+def qcleanup(*args, **options):
+    call_command("qcleanup", *args, **options)
