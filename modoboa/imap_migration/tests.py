@@ -2,6 +2,7 @@
 
 import os
 import shutil
+import stat
 import tempfile
 from unittest import mock
 
@@ -128,6 +129,7 @@ class ManagementCommandTestCase(DataMixin, ModoTestCase):
         path = os.path.join(self.workdir, "offlineimap.conf")
         call_command("generate_offlineimap_config", "--output", path)
         self.assertTrue(os.path.exists(path))
+        self.assertEqual(stat.S_IMODE(os.stat(path).st_mode), stat.S_IRUSR | stat.S_IWUSR)
         conf = configparser.ConfigParser()
         conf.read(path)
         self.assertTrue(conf.has_section("Account user@test.com"))
