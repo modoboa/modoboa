@@ -8,7 +8,6 @@ from drf_spectacular.utils import extend_schema
 from rest_framework import filters, permissions, response, viewsets, mixins
 from rest_framework.authtoken.models import Token
 from rest_framework.decorators import action
-from rest_framework.exceptions import PermissionDenied
 
 from modoboa.admin.api.v1 import serializers as admin_v1_serializers
 from modoboa.admin.api.v2 import serializers as admin_v2_serializers
@@ -112,8 +111,6 @@ class AccountViewSet(core_v1_viewsets.AccountViewSet):
     )
     def manage_api_token(self, request):
         """Manage API token."""
-        if not request.user.is_superuser:
-            raise PermissionDenied("Only super administrators can have API tokens")
         if request.method == "DELETE":
             Token.objects.filter(user=request.user).delete()
             return response.Response(status=204)
