@@ -235,7 +235,10 @@ SPECTACULAR_SETTINGS = {
     'TITLE': 'Modoboa API',
     'VERSION': None,
     'SERVE_AUTHENTICATION': [], # [!code --]
-    'SERVE_AUTHENTICATION': ['rest_framework.permissions.AllowAny'], # [!code ++]
+    'SERVE_AUTHENTICATION': [ # [!code ++]
+        'rest_framework.authentication.BasicAuthentication', # [!code ++]
+        'rest_framework.authentication.SessionAuthentication', # [!code ++]
+    ], # [!code ++]
     'DEFAULT_FILTER_INSPECTORS': [
         'drf_spectacular.contrib.django_filters.DjangoFilterBackendInspector',
     ],
