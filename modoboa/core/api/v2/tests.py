@@ -935,3 +935,24 @@ class StatisticsAPIViewTestCase(ModoAPITestCase):
         self.assertEqual(stats["domain_count"], 2)
         self.assertEqual(stats["account_count"], 5)
         self.assertEqual(stats["alias_count"], 3)
+
+
+class SchemaDocumentationTestCase(ModoAPITestCase):
+    """Tests for the schema documentation endpoints."""
+
+    def test_swagger_view_does_not_crash(self):
+        """The swagger UI must render without an AttributeError.
+
+        Regression test for #4102: using a permission class
+        (AllowAny) in SERVE_AUTHENTICATION caused drf-spectacular to
+        call ``.authenticate()`` on an object that doesn't have it.
+        """
+        url = reverse("docs-index-v2")
+        resp = self.client.get(url)
+        self.assertEqual(resp.status_code, 200)
+
+    def test_schema_json_view(self):
+        """The JSON schema view must return a valid response."""
+        url = reverse("schema-v2")
+        resp = self.client.get(url)
+        self.assertEqual(resp.status_code, 200)
