@@ -49,3 +49,5 @@ test_project/media
 docker/collections
 docker/redis
 docker/mariadb
+
+*.djcache
