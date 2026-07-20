@@ -45,55 +45,32 @@
 </template>
 
 <script setup>
-import { ref, computed, watch } from 'vue'
+import { ref, computed } from 'vue'
 import { useGettext } from 'vue3-gettext'
 import { useDomainsStore } from '@/stores'
 import rules from '@/plugins/rules'
-import constants from '@/constants.json'
 
 const { $gettext } = useGettext()
-const emit = defineEmits(['update:modelValue'])
-const props = defineProps({ modelValue: { type: Object, default: null } })
+const form = defineModel({ type: Object })
 
 const domainsStore = useDomainsStore()
 
 const domains = computed(() => domainsStore.domains)
 
 const vFormRef = ref()
-const form = ref({
-  mailbox: {},
-})
 
-watch(
-  props.modelValue,
-  (value) => {
-    if (value) {
-      form.value = { ...value }
-      if (form.value.role === constants.USER) {
-        if (!form.value.mailbox) {
-          form.value.mailbox = {}
-        }
-        form.value.mailbox.full_address = form.value.username
-      }
-      if (form.value.mailbox.message_limit === '') {
-        form.value.mailbox.message_limit = null
-      }
-    } else {
-      form.value = {
-        mailbox: {},
-      }
-    }
-  },
-  { immediate: true }
-)
-
-watch(
-  form,
-  (value) => {
-    emit('update:modelValue', value)
-  },
-  { deep: true }
-)
+// Operate directly on the shared model (like the other sub-forms) instead of
+// keeping an internal copy synced through deep watchers. The previous approach
+// rebuilt a new object and re-emitted it on every change to the account,
+// including username edits, which churned the object identity bound to the
+// username field and made it impossible to type into it.
+if (!form.value.mailbox) {
+  form.value.mailbox = {}
+}
+form.value.mailbox.full_address = form.value.username
+if (form.value.mailbox.message_limit === '') {
+  form.value.mailbox.message_limit = null
+}
 
 const domainQuota = computed(() => {
   const email = form.value.mailbox.full_address
