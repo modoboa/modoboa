@@ -34,6 +34,20 @@
       </v-menu>
     </v-btn>
 
+    <v-btn
+      icon
+      class="mr-3"
+      variant="text"
+      size="small"
+      :aria-label="themeStore.currentTheme === 'modoboaDark' ? $gettext('Switch to Light theme') : $gettext('Switch to Dark theme')"
+      @click="themeStore.toggleTheme()"
+    >
+      <v-icon :icon="themeStore.currentTheme === 'modoboaDark' ? 'mdi-weather-sunny' : 'mdi-weather-night'" />
+      <v-tooltip activator="parent" location="bottom">
+        {{ themeStore.currentTheme === 'modoboaDark' ? $gettext('Light mode') : $gettext('Dark mode') }}
+      </v-tooltip>
+    </v-btn>
+
     <v-btn icon flat color="primary">
       {{ userInitials }}
       <v-menu activator="parent" location="bottom">
@@ -72,7 +86,7 @@
 import { computed, onMounted } from 'vue'
 import { getActivePinia } from 'pinia'
 import { useGettext } from 'vue3-gettext'
-import { useGlobalStore } from '@/stores'
+import { useGlobalStore, useThemeStore } from '@/stores'
 
 const props = defineProps({
   user: {
@@ -87,6 +101,7 @@ const props = defineProps({
 
 const { $gettext } = useGettext()
 const globalStore = useGlobalStore()
+const themeStore = useThemeStore()
 
 const applications = computed(() => globalStore.applications)
 const userInitials = computed(() => {
@@ -119,6 +134,11 @@ const userMenuItems = computed(() => {
       to: !props.remote ? { name: 'AccountSettings' } : null,
       href: props.remote ? 'https://localhost:3000/account' : '',
       click: () => null,
+    },
+    {
+      text: themeStore.currentTheme === 'modoboaDark' ? $gettext('Light mode') : $gettext('Dark mode'),
+      icon: themeStore.currentTheme === 'modoboaDark' ? 'mdi-weather-sunny' : 'mdi-weather-night',
+      click: () => themeStore.toggleTheme(),
     },
     {
       text: $gettext('Logout'),

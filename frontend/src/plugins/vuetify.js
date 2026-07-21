@@ -58,6 +58,12 @@ const mdiSvg = {
 // components actually used ship in the bundle (JS and CSS). Federated
 // plugin remotes must carry their own Vuetify imports (upstream plugin
 // builds use the same vite-plugin-vuetify setup).
+const savedTheme = typeof localStorage !== 'undefined' ? localStorage.getItem('modoboa_theme') : null
+const initialTheme = savedTheme && ['modoboaDark', 'light'].includes(savedTheme) ? savedTheme : 'modoboaDark'
+if (typeof document !== 'undefined') {
+  document.documentElement.setAttribute('data-theme', initialTheme)
+}
+
 export default createVuetify({
   icons: {
     defaultSet: 'mdi',
@@ -65,7 +71,7 @@ export default createVuetify({
     sets: { mdi: mdiSvg },
   },
   theme: {
-    defaultTheme: 'modoboaDark',
+    defaultTheme: initialTheme,
     themes: {
       // Editorial dark theme adapted from brunonyland.com. Appearance is
       // entirely frontend-driven (the backend theme API was removed), so
@@ -107,14 +113,38 @@ export default createVuetify({
           'focus-opacity': 0.16,
         },
       },
-      // Legacy light theme kept available for opt-in.
+      // Light theme option
       light: {
+        dark: false,
         colors: {
-          primary: '#046BF8',
-          'primary-lighten-1': '#3688F9',
-          'primary-darken-1': '#0350BA',
-          secondary: '#F18429',
-          label: '#616161',
+          background: '#f8f9fa',
+          surface: '#ffffff',
+          'surface-bright': '#ffffff',
+          'surface-light': '#f1f3f5',
+          'surface-variant': '#e9ecef',
+          'on-surface-variant': '#495057',
+          primary: '#7c5cff',
+          'primary-lighten-1': '#a594ff',
+          'primary-darken-1': '#5a3fd6',
+          secondary: '#7c5cff',
+          'secondary-darken-1': '#5a3fd6',
+          error: '#dc3545',
+          info: '#0dcaf0',
+          success: '#198754',
+          warning: '#fd7e14',
+          label: '#6c757d',
+          'on-background': '#1a1a1a',
+          'on-surface': '#1a1a1a',
+          'on-primary': '#ffffff',
+        },
+        variables: {
+          'border-color': '#1a1a1a',
+          'border-opacity': 0.12,
+          'high-emphasis-opacity': 0.87,
+          'medium-emphasis-opacity': 0.60,
+          'disabled-opacity': 0.38,
+          'hover-opacity': 0.08,
+          'focus-opacity': 0.12,
         },
       },
     },

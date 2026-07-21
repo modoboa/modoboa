@@ -85,6 +85,20 @@ $latin-ext: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0
   --pad: clamp(16px, 2.4vw, 36px);
 }
 
+[data-theme='light'],
+.v-theme--light {
+  --bg: #f8f9fa;
+  --bg-2: #ffffff;
+  --fg: #1a1a1a;
+  --fg-dim: #495057;
+  --fg-mute: #6c757d;
+  --line: #e9ecef;
+  --line-2: #dee2e6;
+  --accent: #7c5cff;
+  --accent-2: #5a3fd6;
+  --warn: #dc3545;
+}
+
 /* ============================================================
    BASE
    ============================================================ */

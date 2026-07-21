@@ -120,6 +120,8 @@ import {
   mdiUndo,
   mdiUpload,
   mdiViewDashboardOutline,
+  mdiWeatherNight,
+  mdiWeatherSunny,
 } from '@mdi/js'
 
 export const mdiIcons = {
@@ -241,4 +243,6 @@ export const mdiIcons = {
   'mdi-undo': mdiUndo,
   'mdi-upload': mdiUpload,
   'mdi-view-dashboard-outline': mdiViewDashboardOutline,
+  'mdi-weather-night': mdiWeatherNight,
+  'mdi-weather-sunny': mdiWeatherSunny,
 }
