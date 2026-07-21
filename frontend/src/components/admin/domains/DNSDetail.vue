@@ -63,26 +63,32 @@
       <template v-else>
         <v-row>
           <v-col>
-            <v-chip v-if="detail.autoconfig_record" color="success">
+            <v-chip
+              v-if="detail.autoconfig_record"
+              :color="statusColor(autoconfigEnabled, 'success')"
+            >
               {{
                 $gettext('autoconfig record (Mozilla): %{ value }', {
                   value: detail.autoconfig_record.value,
                 })
               }}
             </v-chip>
-            <v-chip v-else color="warning">
+            <v-chip v-else :color="statusColor(autoconfigEnabled, 'warning')">
               {{ $gettext('autoconfig record (Mozilla) not found') }}
             </v-chip>
           </v-col>
           <v-col>
-            <v-chip v-if="detail.autodiscover_record" color="success">
+            <v-chip
+              v-if="detail.autodiscover_record"
+              :color="statusColor(autoconfigEnabled, 'success')"
+            >
               {{
                 $gettext('autodiscover record (Microsoft): %{ value }', {
                   value: detail.autodiscover_record.value,
                 })
               }}
             </v-chip>
-            <v-chip v-else color="warning">
+            <v-chip v-else :color="statusColor(autoconfigEnabled, 'warning')">
               {{ $gettext('autodiscover record (Microsoft) not found') }}
             </v-chip>
           </v-col>
@@ -90,26 +96,35 @@
         <div class="mt-4 overline">{{ $gettext('Authentication') }}</div>
         <v-row>
           <v-col>
-            <v-chip v-if="detail.spf_record" color="success">
+            <v-chip
+              v-if="detail.spf_record"
+              :color="statusColor(spfEnabled, 'success')"
+            >
               {{ $gettext('SPF record found') }}
             </v-chip>
-            <v-chip v-else color="error">
+            <v-chip v-else :color="statusColor(spfEnabled, 'error')">
               {{ $gettext('SPF record not found') }}
             </v-chip>
           </v-col>
           <v-col>
-            <v-chip v-if="detail.dkim_record" color="success">
+            <v-chip
+              v-if="detail.dkim_record"
+              :color="statusColor(dkimEnabled, 'success')"
+            >
               {{ $gettext('DKIM record found') }}
             </v-chip>
-            <v-chip v-else color="error">
+            <v-chip v-else :color="statusColor(dkimEnabled, 'error')">
               {{ $gettext('DKIM record not found') }}
             </v-chip>
           </v-col>
           <v-col>
-            <v-chip v-if="detail.dmarc_record" color="success">
+            <v-chip
+              v-if="detail.dmarc_record"
+              :color="statusColor(dmarcEnabled, 'success')"
+            >
               {{ $gettext('DMARC record found') }}
             </v-chip>
-            <v-chip v-else color="error">
+            <v-chip v-else :color="statusColor(dmarcEnabled, 'error')">
               {{ $gettext('DMARC record not found') }}
             </v-chip>
           </v-col>
@@ -174,6 +189,7 @@
 import { useGettext } from 'vue3-gettext'
 import { useBusStore } from '@/stores'
 import domainsApi from '@/api/domains'
+import parametersApi from '@/api/parameters'
 import DomainDKIMKey from './DomainDKIMKey.vue'
 import DomainDNSConfig from './DomainDNSConfig.vue'
 import DNSBLSummary from './DNSBLSummary.vue'
@@ -187,8 +203,7 @@ const props = defineProps({
   modelValue: { type: Object, default: null },
 })
 
-const domain = computed(() => props.modelValue)
-
+const checksParams = ref({})
 const dialog = ref()
 const detail = ref({})
 const mxRecordHeaders = ref([
@@ -203,6 +218,24 @@ const selectedMXRecord = ref(null)
 const showConfigHelp = ref(false)
 const showDKIMKey = ref(false)
 const showDNSBLSummary = ref(false)
+
+const domain = computed(() => props.modelValue)
+const spfEnabled = computed(() => checksParams.value.enable_spf_checks)
+// DKIM is only checked when the global check is enabled AND signing is
+// activated for this domain (see backend DNSChecker).
+const dkimEnabled = computed(
+  () => checksParams.value.enable_dkim_checks && domain.value?.enable_dkim
+)
+const dmarcEnabled = computed(() => checksParams.value.enable_dmarc_checks)
+const autoconfigEnabled = computed(
+  () => checksParams.value.enable_autoconfig_checks
+)
+
+// Return the "normal" color when the related check is enabled, grey otherwise.
+function statusColor(enabled, normalColor) {
+  const DISABLED_COLOR = 'grey'
+  return enabled ? normalColor : DISABLED_COLOR
+}
 
 function copyPubKey() {
   navigator.clipboard.writeText(domain.value.dkim_public_key)
@@ -278,6 +311,10 @@ function openDNSBLSummary(mxrecord) {
   selectedMXRecord.value = mxrecord
   showDNSBLSummary.value = true
 }
+
+parametersApi.getGlobalApplication('admin').then((resp) => {
+  checksParams.value = resp.data.params
+})
 
 watch(
   domain,

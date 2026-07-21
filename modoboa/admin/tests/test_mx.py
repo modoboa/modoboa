@@ -327,3 +327,25 @@ class DNSChecksTestCase(ModoTestCase):
         self.assertIsNot(self.domain.dmarc_record, None)
         self.assertIsNot(self.domain.autoconfig_record, None)
         self.assertIsNot(self.domain.autodiscover_record, None)
+
+    @mock.patch("socket.gethostbyname")
+    @mock.patch("socket.getaddrinfo")
+    @mock.patch.object(dns.resolver.Resolver, "resolve")
+    def test_management_command_dkim_disabled(
+        self, mock_query, mock_getaddrinfo, mock_g_gethostbyname
+    ):
+        """Check that DKIM record is not checked when signing is disabled."""
+        mock_query.side_effect = utils.mock_dns_query_result
+        mock_getaddrinfo.side_effect = utils.mock_ip_query_result
+        mock_g_gethostbyname.return_value = "1.2.3.4"
+        self.set_global_parameter("enable_dnsbl_checks", False)
+
+        # A public key exists but DKIM signing is disabled.
+        self.domain.enable_dkim = False
+        self.domain.dkim_public_key = "XXXXX"
+        self.domain.save(update_fields=["enable_dkim", "dkim_public_key"])
+
+        with LogCapture("modoboa.dns"):
+            DNSChecker().run(self.domain, ttl=0)
+
+        self.assertIs(self.domain.dkim_record, None)

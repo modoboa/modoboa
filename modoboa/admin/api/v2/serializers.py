@@ -279,6 +279,7 @@ class AdminGlobalParametersSerializer(serializers.Serializer):
     enable_spf_checks = serializers.BooleanField(default=True)
     enable_dkim_checks = serializers.BooleanField(default=True)
     enable_dmarc_checks = serializers.BooleanField(default=True)
+    dmarc_check_is_critical = serializers.BooleanField(default=True)
     enable_autoconfig_checks = serializers.BooleanField(default=True)
     enable_dns_notifications = serializers.BooleanField(default=True)
     custom_dns_server = serializers.IPAddressField(allow_blank=True, allow_null=True)
