@@ -83,7 +83,7 @@ class FilterSetViewSetTestCase(PatcherMixin, ModoAPITestCase):
             data = {"name": name, "active": False}
             resp = self.client.post(url, data, format="json")
             self.assertEqual(resp.status_code, 400)
-            self.assertIn("name", resp.json())
+            self.assertIn("name", resp.json()["errors"])
 
     def test_update(self):
         self.authenticate()

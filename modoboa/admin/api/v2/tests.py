@@ -141,7 +141,7 @@ class DomainViewSetTestCase(ModoAPITestCase):
             format="json",
         )
         self.assertEqual(resp.status_code, 400)
-        self.assertIn("dkim_key_selector", resp.json())
+        self.assertIn("dkim_key_selector", resp.json()["errors"])
         domain.refresh_from_db()
         self.assertNotIn("\n", domain.dkim_key_selector)
 
