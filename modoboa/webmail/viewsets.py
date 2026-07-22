@@ -168,7 +168,7 @@ class UserEmailViewSet(viewsets.GenericViewSet):
             if not page:
                 serializer = self.get_serializer(
                     {
-                        "count": 0,
+                        "count": total,
                         "first_index": 0,
                         "last_index": 0,
                         "prev_page": None,

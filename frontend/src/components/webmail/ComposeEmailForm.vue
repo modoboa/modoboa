@@ -349,7 +349,10 @@ const contacts = ref([])
 // deletes the previous draft and pushes a new one, returning the NEW uid —
 // it must be threaded into every subsequent save or each save duplicates
 // the draft.
-const draftMailid = ref(route.query.mailid || null)
+const isDraftRoute =
+  route.query.mailbox === constants.DRAFTS_FOLDER ||
+  route.params.mailbox === constants.DRAFTS_FOLDER
+const draftMailid = ref(isDraftRoute ? route.query.mailid : null)
 const draftSavedAt = ref(null)
 const autosaving = ref(false)
 const editorMode = ref('plain')
@@ -573,7 +576,7 @@ const formHasContent = () =>
   )
 
 const persistDraft = async () => {
-  if (!route.query.uid) {
+  if (!route.query.uid || autosaving.value) {
     return
   }
   const snapshot = draftSnapshot()

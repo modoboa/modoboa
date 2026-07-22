@@ -75,7 +75,7 @@ def get_identities(
             q &= Q(address__icontains=searchquery) | Q(
                 domain__name__icontains=searchquery
             )
-        aliases = Alias.objects.select_related("domain").filter(q)
+        aliases = Alias.objects.select_related("domain").prefetch_related("aliasrecipient_set").filter(q)
         if idtfilter is not None and idtfilter:
             aliases = [al for al in aliases if al.type == idtfilter]
     return chain(accounts, aliases)

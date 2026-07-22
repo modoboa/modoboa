@@ -108,9 +108,9 @@ def mailbox_deleted_handler(sender, **kwargs):
 
     mb = kwargs["instance"]
     ungrant_access_to_object(mb)
-    for ralias in mb.aliasrecipient_set.select_related("alias"):
-        alias = ralias.alias
-        ralias.delete()
+    aliases = list({ralias.alias for ralias in mb.aliasrecipient_set.select_related("alias")})
+    mb.aliasrecipient_set.all().delete()
+    for alias in aliases:
         if not alias.aliasrecipient_set.exists():
             alias.delete()
     models.Quota.objects.filter(username=mb.full_address).delete()

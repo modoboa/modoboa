@@ -76,7 +76,12 @@ class DomainViewSet(
     def get_queryset(self):
         """Filter queryset based on current user."""
         if self.request.user and not self.request.user.is_anonymous:
-            return models.Domain.objects.get_for_admin(self.request.user)
+            qs = models.Domain.objects.get_for_admin(self.request.user)
+            if self.action in ["list", "retrieve"]:
+                qs = qs.prefetch_related(
+                    "dnsrecord_set", "mxrecord_set", "dnsblresult_set", "alarms", "transport"
+                )
+            return qs
         return models.Domain.objects.none()
 
     def get_serializer_class(self, *args, **kwargs):
@@ -136,13 +141,13 @@ class DomainViewSet(
     )
     def export(self, request, **kwargs):
         """Export domains and aliases to CSV."""
-        result = []
         # `to_csv_rows()` iterates `domain.domainalias_set.all()`; prefetch it
         # so the export stays O(1) queries instead of one per domain (N+1).
         queryset = self.get_queryset().prefetch_related("domainalias_set")
-        for domain in queryset:
-            result += domain.to_csv_rows()
-        return response.Response(result)
+        def generate_rows():
+            for domain in queryset:
+                yield from domain.to_csv_rows()
+        return response.Response(generate_rows())
 
     @extend_schema(request=serializers.CSVImportSerializer)
     @action(
@@ -211,8 +216,12 @@ class AccountViewSet(v1_viewsets.AccountViewSet):
         ids = user.objectaccess_set.filter(
             content_type=ContentType.objects.get_for_model(user)
         ).values_list("object_id", flat=True)
-        return core_models.User.objects.filter(pk__in=ids).prefetch_related(
-            "userobjectlimit_set"
+        return (
+            core_models.User.objects.filter(pk__in=ids)
+            .select_related("mailbox", "mailbox__domain")
+            .prefetch_related(
+                "groups", "mailbox__aliasrecipient_set__alias", "userobjectlimit_set"
+            )
         )
 
     @action(methods=["post"], detail=False)
@@ -282,11 +291,12 @@ class IdentityViewSet(GetThrottleViewsetMixin, viewsets.ViewSet):
     )
     def export(self, request, **kwargs):
         """Export accounts and aliases to CSV."""
-        result = []
         idtfilter = request.GET.get("type")
-        for idt in lib.get_identities(request.user, idtfilter=idtfilter):
-            result.append(idt.to_csv_row())
-        return response.Response(result)
+        identities = lib.get_identities(request.user, idtfilter=idtfilter)
+        def generate_rows():
+            for idt in identities:
+                yield idt.to_csv_row()
+        return response.Response(generate_rows())
 
     @extend_schema(request=serializers.CSVIdentityImportSerializer)
     @action(

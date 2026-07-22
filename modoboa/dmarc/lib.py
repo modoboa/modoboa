@@ -308,7 +308,7 @@ def get_aligment_stats(domain, period=None) -> dict:
         Q(report__start_date__gte=daterange[0], report__start_date__lte=daterange[1])
         | Q(report__end_date__gte=daterange[0], report__end_date__lte=daterange[1])
     ) & Q(header_from=domain)
-    all_records = models.Record.objects.filter(qargs)
+    all_records = list(models.Record.objects.filter(qargs))
     stats: dict = {"aligned": {}, "trusted": {}, "forwarded": {}, "failed": {}}
 
     dns_names = {}

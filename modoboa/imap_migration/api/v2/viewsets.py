@@ -47,11 +47,22 @@ class EmailProviderViewSet(GetThrottleViewsetMixin, viewsets.ModelViewSet):
     @action(methods=["post"], detail=False)
     def check_connection(self, request, **kwargs):
         """check that provided information allow connection to imap server."""
+        import ipaddress
+        import socket
+
         serializer = serializers.CheckProviderSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         secured = serializer.data["secured"]
         address = serializer.data["address"]
         port = serializer.data["port"]
+        try:
+            infos = socket.getaddrinfo(address, port, socket.AF_UNSPEC, socket.SOCK_STREAM)
+            for info in infos:
+                ip = ipaddress.ip_address(info[4][0])
+                if ip.is_private or ip.is_loopback or ip.is_link_local or ip.is_reserved or ip.is_multicast:
+                    return response.Response({"status": "failed"}, 400)
+        except Exception:
+            return response.Response({"status": "failed"}, 400)
         try:
             if secured:
                 imaplib.IMAP4_SSL(address, port)

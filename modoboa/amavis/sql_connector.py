@@ -154,7 +154,7 @@ class SQLconnector:
                 if order:
                     self.messages = self.messages.order_by(sign + order)
 
-            self._messages_count = len(self.messages)
+            self._messages_count = self.messages.count()
 
         return self._messages_count
 

@@ -672,7 +672,7 @@ const commitDelete = (entry) => {
   }
   pendingDeletes.value.splice(i, 1)
   clearTimeout(entry.timer)
-  api.deleteSelection(currentMailbox.value, [entry.imapid]).then(() => {
+  api.deleteSelection(entry.mailbox || currentMailbox.value, [entry.imapid]).then(() => {
     reloadMailboxCounters()
   })
 }
@@ -693,7 +693,7 @@ const swipeDelete = (email) => {
   if (index === -1) {
     return
   }
-  const entry = { imapid: email.imapid, row: email, index }
+  const entry = { mailbox: currentMailbox.value, imapid: email.imapid, row: email, index }
   store.removeEmails([email.imapid])
   entry.timer = setTimeout(() => commitDelete(entry), 5000)
   pendingDeletes.value.push(entry)
@@ -961,6 +961,8 @@ onUnmounted(() => {
 watch(
   () => props.mailbox,
   () => {
+    // Flush any pending swipe-deletes from previous mailbox before switching
+    pendingDeletes.value.slice().forEach(commitDelete)
     // Mailbox switch always starts fresh (also clears search + selection).
     search.value = ''
     reloadListing()
@@ -969,11 +971,9 @@ watch(
 watch(
   () => webmailStore.selection,
   () => {
-    if (!webmailStore.selection.length) {
-      selectAll.value = false
-    } else {
-      selectAll.value = true
-    }
+    selectAll.value =
+      store.emails.length > 0 &&
+      webmailStore.selection.length === store.emails.length
   }
 )
 watch(

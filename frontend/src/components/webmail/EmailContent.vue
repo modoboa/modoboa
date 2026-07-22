@@ -456,42 +456,58 @@ const downloadAttachment = (name, part) => {
 
 const deleteEmail = () => {
   working.value = true
-  api.deleteSelection(props.mailbox, [props.mailid]).then(() => {
-    working.value = false
-    displayNotification({ msg: $gettext('Message deleted') })
-    reloadMailboxCounters()
-    emit('deleted')
-  })
+  api
+    .deleteSelection(props.mailbox, [props.mailid])
+    .then(() => {
+      displayNotification({ msg: $gettext('Message deleted') })
+      reloadMailboxCounters()
+      emit('deleted')
+    })
+    .finally(() => {
+      working.value = false
+    })
 }
 
 const restoreEmail = () => {
   working.value = true
-  api.moveSelection(props.mailbox, 'INBOX', [props.mailid]).then(() => {
-    working.value = false
-    displayNotification({ msg: $gettext('Message restored to Inbox') })
-    reloadMailboxCounters()
-    emit('deleted')
-  })
+  api
+    .moveSelection(props.mailbox, 'INBOX', [props.mailid])
+    .then(() => {
+      displayNotification({ msg: $gettext('Message restored to Inbox') })
+      reloadMailboxCounters()
+      emit('deleted')
+    })
+    .finally(() => {
+      working.value = false
+    })
 }
 
 const markEmailAsJunk = () => {
   working.value = true
-  api.markSelectionAsJunk(props.mailbox, [props.mailid]).then(() => {
-    working.value = false
-    displayNotification({ msg: $gettext('Message marked as junk') })
-    reloadMailboxCounters()
-    emit('deleted')
-  })
+  api
+    .markSelectionAsJunk(props.mailbox, [props.mailid])
+    .then(() => {
+      displayNotification({ msg: $gettext('Message marked as junk') })
+      reloadMailboxCounters()
+      emit('deleted')
+    })
+    .finally(() => {
+      working.value = false
+    })
 }
 
 const markEmailAsNotJunk = () => {
   working.value = true
-  api.markSelectionAsNotJunk(props.mailbox, [props.mailid]).then(() => {
-    working.value = false
-    displayNotification({ msg: $gettext('Message marked as not junk') })
-    reloadMailboxCounters()
-    emit('deleted')
-  })
+  api
+    .markSelectionAsNotJunk(props.mailbox, [props.mailid])
+    .then(() => {
+      displayNotification({ msg: $gettext('Message marked as not junk') })
+      reloadMailboxCounters()
+      emit('deleted')
+    })
+    .finally(() => {
+      working.value = false
+    })
 }
 
 const openEmailSourceDialog = async () => {
