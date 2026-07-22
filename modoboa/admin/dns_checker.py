@@ -189,7 +189,11 @@ class DNSChecker:
 
         if self.config["enable_spf_checks"]:
             dns_models.DNSRecord.objects.get_or_create_for_domain(domain, "spf", ttl)
-        condition = self.config["enable_dkim_checks"] and domain.dkim_public_key
+        condition = (
+            self.config["enable_dkim_checks"]
+            and domain.enable_dkim
+            and domain.dkim_public_key
+        )
         if condition:
             dns_models.DNSRecord.objects.get_or_create_for_domain(domain, "dkim", ttl)
         if self.config["enable_dmarc_checks"]:
