@@ -166,13 +166,19 @@ class Domain(mixins.MessageLimitMixin, AdminObject):
             and self.dnsblresult_set.blacklisted().exists()
         ):
             errors.append("dnsbl")
-        if config["enable_spf_checks"]:
-            if self.spf_record is None or not self.spf_record.is_valid:
-                errors.append("spf")
+        if config["enable_spf_checks"] and (
+            self.spf_record is None or not self.spf_record.is_valid
+        ):
+            errors.append("spf")
+        if config["enable_dkim_checks"] and self.enable_dkim and self.dkim_public_key:
             if self.dkim_record is None or not self.dkim_record.is_valid:
                 errors.append("dkim")
-            if self.dmarc_record is None or not self.dmarc_record.is_valid:
-                errors.append("dmarc")
+        if (
+            config["enable_dmarc_checks"]
+            and config["dmarc_check_is_critical"]
+            and (self.dmarc_record is None or not self.dmarc_record.is_valid)
+        ):
+            errors.append("dmarc")
         if config["enable_autoconfig_checks"]:
             if self.autoconfig_record is None:
                 errors.append("autoconfig")
