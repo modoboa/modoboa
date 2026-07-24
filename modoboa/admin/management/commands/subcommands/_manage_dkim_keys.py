@@ -17,7 +17,7 @@ from ....constants import DKIM_WRITE_ERROR, ALARM_OPENED, DKIM_ERROR
 class ManageDKIMKeys(BaseCommand):
     """Command class."""
 
-    def create_new_dkim_key(self, domain):
+    def create_new_dkim_key(self, domain: str, *, restrict: bool) -> None:
         """Create a new DKIM key."""
         storage_dir = param_tools.get_global_parameter("dkim_keys_storage_dir")
         pkey_path = os.path.join(storage_dir, f"{domain.name}.pem")
@@ -74,6 +74,14 @@ class ManageDKIMKeys(BaseCommand):
                 title=_("Failed to generate DKIM private key"), internal_name=DKIM_ERROR
             )
             return
+
+        # `openssl` generates keys to be only user read- and writable by default
+        #
+        # So `restrict=True` is the default and restoring default permissions
+        # to what they would be according to `umask` requires a seperate step.
+        if not restrict:
+            os.chmod(pkey_path, 0o666 & ~sysutils.UMASK)
+
         domain.dkim_private_key_path = pkey_path
         code, output = sysutils.exec_cmd(
             ["openssl", "rsa", "-in", pkey_path, "-pubout"]
@@ -103,6 +111,12 @@ class ManageDKIMKeys(BaseCommand):
             default="",
             help="Domain target for keys generation.",
         )
+        parser.add_argument(
+            "--no-restrict",
+            dest="restrict",
+            action="store_false",
+            help="Do not restrict file permissions on generated DKIM key files",
+        )
 
     def handle(self, *args, **options):
         """Entry point."""
@@ -116,13 +130,13 @@ class ManageDKIMKeys(BaseCommand):
                 name=options["domain"], enable_dkim=True, dkim_private_key_path=""
             ).first()
             if domain:
-                self.create_new_dkim_key(domain)
+                self.create_new_dkim_key(domain, restrict=options["restrict"])
                 domains.append(domain)
         else:
             qset = models.Domain.objects.filter(
                 enable_dkim=True, dkim_private_key_path=""
             )
             for domain in qset:
-                self.create_new_dkim_key(domain)
+                self.create_new_dkim_key(domain, restrict=options["restrict"])
                 domains.append(domain)
         signals.dkim_keys_created.send(self, domains=domains)
