@@ -3,9 +3,9 @@
 from django.core.management import call_command
 
 
-def logparser():
-    call_command("logparser")
+def logparser(*args, **options):
+    call_command("logparser", *args, **options)
 
 
-def update_statistics():
-    call_command("update_statistics")
+def update_statistics(*args, **options):
+    call_command("update_statistics", *args, **options)
