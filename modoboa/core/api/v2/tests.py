@@ -946,6 +946,7 @@ class SchemaDocumentationTestCase(ModoAPITestCase):
         Regression test for #4102: using a permission class
         (AllowAny) in SERVE_AUTHENTICATION caused drf-spectacular to
         call ``.authenticate()`` on an object that doesn't have it.
+        Fix: use SERVE_PERMISSIONS instead of SERVE_AUTHENTICATION.
         """
         url = reverse("docs-index-v2")
         resp = self.client.get(url)
