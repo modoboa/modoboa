@@ -307,7 +307,7 @@ class FidoAuthenticationEndView(LoginViewMixin, APIView):
         serializer = serializers.FidoAuthenticationSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         fido2_auth.end_authentication(
-            user, fido_state, serializer.validated_data, request.localconfig.site.domain
+            user, fido_state, serializer.validated_data, request.get_host()
         )
         response = self.login(user, self.request.session.pop("rememberme", False))
         return JsonResponse({"next": response.url})
