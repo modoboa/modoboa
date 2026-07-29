@@ -28,6 +28,7 @@ npm-debug.log*
 /frontend/.npm/
 doc-ng/.vitepress/cache/
 doc-ng/.vitepress/dist/
+doc-ng/pnpm-lock.yaml
 
 # TOX stuff
 test_project/modoboa.db
