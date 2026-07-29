@@ -231,17 +231,6 @@ INSTANCE=<path to Modoboa instance>
 0     0  *  *  *  root  $PYTHON $INSTANCE/manage.py clearsessions
 ```
 
-::: tip TIPS
-
-**🥵 potential high load configuration**
-Please note that above crontab might not be ideal on high load systems.
-If you receive a fairly high amount of emails per day, you may want to
-run modoboas logparser tasks *once per night*.
-
-This has the down side that the statistic graph and message log within
-the UI are updated once per day only.
-:::
-
 ## Policy daemon {#policy_daemon}
 
 Modoboa comes with a built-in
@@ -348,6 +337,18 @@ Currently the following arguments are supported:
 Other arguments may exist, but unless they are documented they may disappear
 or completely change behaviour at any time. Please open an issue if you require
 another argument in your setup.
+
+::: tip TIPS
+
+**🥵 potential high load configuration**
+Please note that default `cron_config.py` might not be ideal on high load
+systems. If you receive a fairly high amount of emails per day, you may want
+to run modoboas logparser tasks *once per night*
+(ie: interval spec `30 3 * * *` to run at 03:30 in the morning).
+
+This has the down side that the statistic graph and message log within
+the UI are updated once per day only.
+:::
 
 ## Privileged worker
 ``` ini
