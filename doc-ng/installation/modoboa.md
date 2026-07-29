@@ -309,6 +309,46 @@ numprocs=1
 stopsignal=TERM
 ```
 
+The cron scheduler is *configurable*: During [deployment](#deployment) the file
+`<path to Modoboa instance>/instance/cron_config.py`
+is created containing all currently configured jobs in the form
+`register(<job name>, queue_name="<worker name>", cron="<interval spec>")`.
+
+Editing `cron_config.py` is an advanced feature but may be useful in some
+special cases:
+
+  * Jobs can be disabled by adding a `#` to the start of the line  
+    Generally, you should *never* disable a job – do not open issues about
+    some tasks not working unless you have verified the problem is not related
+    to having disabled the responsible job.
+  * `<worker name>` is the name of one of the workers created in the steps below  
+    On an LSB-compatible Linux distribution it should never be required to
+    change a job’s worker queue – like with disabling jobs, you must ensure
+    any encountered problems are not due to permission issues when running the
+    given job before opening an issue.
+  * `<interval spec>` is a Cron-compatible
+    [interval specification](https://en.wikipedia.org/wiki/Cron#Overview)
+    (only standard 4.4BSD/POSIX syntax is supported)  
+    In some setups it may be benifical to adjust scheduled jobs to manage
+    system load as long you ensure that jobs run “often enough” to not cause
+    issues.
+
+Some jobs may also accept arguments to adjust their operation, arguments may be
+specififed by adding keyword arguments of the form
+`, kwargs={"<name1>": <value1>, "<name2>": <value2>, <…>}` to the given job.  
+Currently the following arguments are supported:
+
+  * `maillog_jobs.logparser`:
+    * `post_cmd`: A Python command argument list containing an command to
+       execute after parsing Postfix log files  
+       This can be used to automatically rotate and remove the Postfix maillog
+       file after it has been parsed on systems where it is not used otherwise:
+       `kwargs={"post_cmd": ["/bin/sh", "-c", "\"$1\" logrotate && rm /var/log/mail.log.*", "-", "/usr/sbin/postfix"]}`
+
+Other arguments may exist, but unless they are documented they may disappear
+or completely change behaviour at any time. Please open an issue if you require
+another argument in your setup.
+
 ## Privileged worker
 ``` ini
 [program:modoboa-privileged-worker]
