@@ -48,7 +48,7 @@ dependencies = [
 	"bcrypt~=5.0", # Requires libffi-dev and python-dev
 	"asgiref",
 	"dnspython==2.8.0",
-	"feedparser==6.0.12",
+	"feedparser==6.0.13",
 	"fido2==2.2.1",
 	"progressbar33==2.4",
 	"python-dateutil",
