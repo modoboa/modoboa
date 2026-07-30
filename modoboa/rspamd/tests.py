@@ -4,7 +4,7 @@ import shutil
 from rq import SimpleWorker
 from testfixtures import LogCapture
 
-from django.test import modify_settings
+from django.test import modify_settings, tag
 from django.urls import reverse
 
 import django_rq
@@ -82,6 +82,7 @@ class ManagementCommandTestCase(ModoAPITestCase):
             content = fp.read()
         self.assertNotIn(domain.name, content)
 
+    @tag("redis")
     def test_signal_handler(self):
         self.set_global_parameter("dkim_keys_storage_dir", self.workdir, app="admin")
         self.configure()

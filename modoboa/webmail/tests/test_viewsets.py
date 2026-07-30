@@ -11,7 +11,7 @@ from freezegun import freeze_time
 from rq import SimpleWorker
 
 from django.core import mail
-from django.test import override_settings
+from django.test import override_settings, tag
 from django.urls import reverse
 from django.utils import timezone
 
@@ -315,6 +315,7 @@ class UserEmailViewSetTestCase(WebmailTestCase):
         )
 
 
+@tag("redis")
 class ComposeSessionViewSetTestCase(WebmailTestCase):
 
     def _create_compose_session(self):
