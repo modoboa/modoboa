@@ -28,6 +28,7 @@
     "filesize": "^10.1.6",
     "js-cookie": "^3.0.5",
     "luxon": "^3.4.4",
+    "minimatch": "^10.2.5",
     "oidc-client-ts": "^3.4.1",
     "pinia": "^3.0.4",
     "qrcode.vue": "^3.6.0",
@@ -37,12 +38,11 @@
     "vue-router": "^4.6.3",
     "vue3-apexcharts": "^1.10.0",
     "vue3-gettext": "^4.0.0-beta.1",
-    "minimatch": "^10.2.5",
     "vuetify": "^4.0.0"
   },
   "devDependencies": {
-    "@module-federation/runtime": "^2.4.0",
-    "@module-federation/vite": "^1.15.2",
+    "@module-federation/runtime": "^2.8.1",
+    "@module-federation/vite": "^1.20.1",
     "@vitejs/plugin-basic-ssl": "^1.1.0",
     "@vitejs/plugin-vue": "^5.0.5",
     "eslint": "^10.4.0",
