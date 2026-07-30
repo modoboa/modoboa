@@ -11,7 +11,7 @@ from PIL import Image
 
 from django.core.cache import cache
 from django.core.files.uploadedfile import SimpleUploadedFile
-from django.test import override_settings
+from django.test import override_settings, tag
 from django.urls import reverse
 
 from modoboa.admin import (
@@ -543,6 +543,7 @@ class NewsFeedAPIViewTestCase(ModoAPITestCase):
         super().setUpTestData()
         factories.populate_database()
 
+    @tag("network")
     def test_get(self):
         url = reverse("v2:news-feed")
         response = self.client.get(url)
@@ -556,6 +557,7 @@ class NewsFeedAPIViewTestCase(ModoAPITestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.json()), 0)
 
+    @tag("network")
     def test_custom_rss_feed(self):
         self.set_global_parameter(
             "rss_feed_url", "https://www.djangoproject.com/rss/weblog/"
