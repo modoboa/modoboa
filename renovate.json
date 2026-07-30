@@ -1,0 +1,74 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended",
+    ":dependencyDashboard",
+    ":automergeTypeAllNonMajor"
+  ],
+  "enabledManagers": ["npm", "yarn", "pip"],
+  "packageRules": [
+    {
+      "matchManagers": ["npm", "yarn"],
+      "matchPaths": ["frontend/package.json", "frontend/yarn.lock"],
+      "groupName": "frontend dependencies",
+      "groupSlug": "frontend",
+      "rangeStrategy": "bump"
+    },
+    {
+      "matchManagers": ["pip"],
+      "matchPaths": ["pyproject.toml"],
+      "groupName": "backend python dependencies",
+      "groupSlug": "backend-python",
+      "rangeStrategy": "bump"
+    },
+    {
+      "matchManagers": ["pip"],
+      "matchPaths": ["pyproject.toml"],
+      "matchDatabases": ["https://pypi.org/pypi"],
+      "matchPackagePrefixes": [
+        "django-debug-toolbar",
+        "pre-commit",
+        "black",
+        "ruff",
+        "django-extensions",
+        "Werkzeug",
+        "pyOpenSSL",
+        "argon2-cffi",
+        "factory-boy",
+        "httmock",
+        "testfixtures",
+        "freezegun",
+        "tox",
+        "django-auth-ldap"
+      ],
+      "groupName": "backend python dev dependencies",
+      "groupSlug": "backend-python-dev",
+      "rangeStrategy": "bump"
+    }
+  ],
+  "labels": ["dependencies"],
+  "schedule": ["after 10pm every weekday"],
+  "timezone": "Europe/Paris",
+  "rebaseWhen": "behind-base-branch",
+  "minimumReleaseAge": "7 days",
+  "prConcurrentLimit": 5,
+  "prHourlyLimit": 2,
+  "automerge": false,
+  "automergeType": "pr",
+  "platformAutomerge": false,
+  "branchTopic": "{{{depName}}}{{#if newValue}}@{{newValue}}{{/if}}",
+  "commitMessageTopic": "{{{branchTopic}}}",
+  "prTitle": "chore(deps): {{{branchTopic}}}",
+  "ignoreUnstable": true,
+  "major": {
+    "dependencyDashboardApproval": true
+  },
+  "dependencyDashboard": true,
+  "semanticCommits": "enabled",
+  "vulnerabilityAlerts": {
+    "enabled": true,
+    "labels": ["security"],
+    "assignees": []
+  },
+  "customManagers": []
+}

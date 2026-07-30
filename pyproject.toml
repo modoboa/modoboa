@@ -31,7 +31,7 @@ keywords = ["email"]
 license = {file = "LICENSE"}
 dependencies = [
 	"django==5.2.16",
-	"django-phonenumber-field[phonenumbers]==8.4.0",
+	"django-phonenumber-field[phonenumbers]==8.5.0",
 	"django-reversion==6.3.0",
 	"django-xforwardedfor-middleware==2.0",
 	"django-otp==1.7.0",
@@ -48,7 +48,7 @@ dependencies = [
 	"bcrypt~=5.0", # Requires libffi-dev and python-dev
 	"asgiref",
 	"dnspython==2.8.0",
-	"feedparser==6.0.12",
+	"feedparser==6.0.13",
 	"fido2==2.2.1",
 	"progressbar33==2.4",
 	"python-dateutil",

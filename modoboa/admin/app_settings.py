@@ -93,6 +93,17 @@ GLOBAL_PARAMETERS_STRUCT = collections.OrderedDict(
                             },
                         ),
                         (
+                            "dmarc_check_is_critical",
+                            {
+                                "label": gettext_lazy("DMARC check is critical"),
+                                "display": "enable_dmarc_checks=true",
+                                "help_text": gettext_lazy(
+                                    "Consider a missing or invalid DMARC record as "
+                                    "critical for the global DNS status of a domain"
+                                ),
+                            },
+                        ),
+                        (
                             "enable_autoconfig_checks",
                             {
                                 "label": gettext_lazy("Enable autoconfig checks"),
