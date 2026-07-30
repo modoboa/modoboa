@@ -3,6 +3,7 @@
 from unittest import mock
 
 from django.core.files.base import ContentFile
+from django.test import tag
 from django.urls import reverse
 from django.utils.encoding import force_str
 
@@ -729,6 +730,7 @@ class AccountViewSetTestCase(ModoAPITestCase):
             .exists()
         )
 
+    @tag("redis")
     def test_mailbox_options_update(self):
         account = core_models.User.objects.get(username="user@test.com")
         url = reverse("v2:account-detail", args=[account.pk])

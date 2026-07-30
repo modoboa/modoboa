@@ -13,7 +13,7 @@ import time
 
 from django import db
 from django.core.management import call_command
-from django.test import TransactionTestCase
+from django.test import tag, TransactionTestCase
 
 from modoboa.admin import factories as admin_factories
 from modoboa.admin import models as admin_models
@@ -121,6 +121,7 @@ class SocketActivationTestCase(TransactionTestCase):
 			process.join()
 
 
+@tag("redis")
 class PolicyDaemonTestCase(RedisTestCaseMixin, ParametersMixin, TransactionTestCase):
     """Test cases for policy daemon.
 
@@ -297,6 +298,7 @@ sasl_username=user@test.com
         self.assertEqual(self.rclient.hget(constants.REDIS_HASHNAME, account.email), 10)
 
 
+@tag("redis")
 class ModelsTestCase(RedisTestCaseMixin, ModoAPITestCase):
     """Admin models test cases."""
 
