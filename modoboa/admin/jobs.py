@@ -30,7 +30,7 @@ def rename_mailbox(operation):
         try:
             os.makedirs(dirname)
         except OSError as e:
-            reason = str(e).decode("utf-8")
+            reason = str(e)
             logger.critical(
                 f"renaming of {operation.argument} to {new_mail_home} failed (reason: {reason})"
             )
