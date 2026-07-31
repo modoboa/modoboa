@@ -30,5 +30,5 @@ def clean_logs():
     Maillog.objects.filter(date__lt=limit).delete()
 
 
-def communicate_with_public_api():
-    call_command("communicate_with_public_api")
+def communicate_with_public_api(*args, **options):
+    call_command("communicate_with_public_api", *args, **options)

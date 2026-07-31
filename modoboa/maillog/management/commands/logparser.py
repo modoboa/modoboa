@@ -31,6 +31,7 @@ from django.utils import timezone
 
 from modoboa.admin.models import Domain
 from modoboa.parameters import tools as param_tools
+from modoboa.lib import sysutils
 from modoboa.lib.email_utils import split_mailbox
 
 from ... import lib
@@ -599,6 +600,13 @@ class Command(BaseCommand):
             metavar="FILE",
         )
         parser.add_argument(
+            "--post-cmd",
+            default=None,
+            help="Argument list of command to execute after completing logfile parsing (for RQ usage)",
+            metavar="ARG",
+            nargs="+",
+        )
+        parser.add_argument(
             "--verbose",
             default=False,
             action="store_true",
@@ -639,3 +647,5 @@ class Command(BaseCommand):
             options, param_tools.get_global_parameter("rrd_rootdir"), None, greylist
         )
         p.process()
+        if options["post_cmd"] is not None:
+            sysutils.exec_cmd(options["post_cmd"])

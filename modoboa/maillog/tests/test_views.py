@@ -28,7 +28,7 @@ class RunCommandsMixin:
         if os.path.exists(pid_file):
             os.remove(pid_file)
 
-    def run_logparser(self):
+    def run_logparser(self, *args, **options):
         """Run logparser command."""
         path = os.path.join(os.path.dirname(__file__), "mail.log")
         with open(path) as fp:
@@ -37,7 +37,7 @@ class RunCommandsMixin:
         with open(path, "w") as fp:
             fp.write(content)
         self.set_global_parameter("logfile", path)
-        jobs.logparser()
+        jobs.logparser(*args, **options)
 
     def run_update_statistics(self, rebuild=False):
         """Run update_statistics command."""
@@ -86,3 +86,25 @@ class ManagementCommandsTestCase(RunCommandsMixin, SimpleModoTestCase):
         with self.assertRaises(SystemExit) as inst:
             self.run_logparser()
         self.assertEqual(inst.exception.code, 2)
+
+
+    def test_logparser_post_cmd(self):
+        """Test logparser command."""
+        path = os.path.join(os.path.dirname(__file__), ".post-cmd-has-run")
+
+        try:
+            # Structured options style
+            self.run_logparser(post_cmd=["touch", path])
+            self.assertTrue(os.path.exists(path))
+            os.remove(path)
+            os.remove(f"{settings.PID_FILE_STORAGE_PATH}/modoboa_logparser.pid")
+
+            # Command-line options style
+            self.run_logparser("--post-cmd", "touch", path)
+            self.assertTrue(os.path.exists(path))
+        finally:
+            os.remove(path)
+
+        for d in ["global", "test.com"]:
+            path = os.path.join(self.workdir, f"{d}.rrd")
+            self.assertTrue(os.path.exists(path))
