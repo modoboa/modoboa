@@ -2,6 +2,7 @@
 
 import os
 import shutil
+import stat
 import tempfile
 
 from rest_framework import serializers as drf_serializers
@@ -16,6 +17,7 @@ import django_rq
 from modoboa.admin import signals as admin_signals
 from modoboa.admin.api.v2 import serializers as admin_v2_serializers
 from modoboa.core.models import User
+from modoboa.lib import sysutils
 from modoboa.lib.tests import ModoAPITestCase, SETTINGS_SAMPLE
 
 from .. import constants
@@ -174,10 +176,31 @@ class DKIMTestCase(ModoAPITestCase):
         )
         key_path = os.path.join(self.workdir, "{}.pem".format(values["name"]))
         self.assertTrue(os.path.exists(key_path))
+        self.assertEqual(stat.S_IMODE(os.stat(key_path).st_mode), stat.S_IRUSR | stat.S_IWUSR)
+
+        domain.refresh_from_db()
+
+        # Generate with default process permissions
+        os.remove(key_path)
+        domain.dkim_private_key_path = ""
+        domain.save()
+
+        self.set_global_parameter("dkim_keys_storage_dir", self.workdir)
+        call_command("modo", "manage_dkim_keys", "--no-restrict")
+        self.assertEqual(
+            Alarm.objects.get(
+                domain=domain, internal_name=constants.DKIM_WRITE_ERROR
+            ).status,
+            constants.ALARM_CLOSED,
+        )
+        key_path = os.path.join(self.workdir, "{}.pem".format(values["name"]))
+        self.assertTrue(os.path.exists(key_path))
+        self.assertEqual(stat.S_IMODE(os.stat(key_path).st_mode), 0o666 & ~sysutils.UMASK)
 
         domain.refresh_from_db()
 
         # Try generating DKIM key for a targetted domain
+        os.remove(key_path)
         domain.dkim_private_key_path = ""
         domain.save()
 
@@ -198,6 +221,7 @@ class DKIMTestCase(ModoAPITestCase):
         )
         domain.refresh_from_db()
         self.assertEqual(domain.dkim_private_key_path, "")
+
 
     def test_dkim_key_path_traversal_refused(self):
         """A crafted domain name must not let the key escape storage_dir."""
