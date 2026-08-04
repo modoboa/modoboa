@@ -90,6 +90,17 @@ class DomainViewSetTestCase(ModoAPITestCase):
         resp = self.client.put(url, data, format="json")
         self.assertEqual(resp.status_code, 200)
 
+    def test_update_enable_dns_checks(self):
+        """The enable_dns_checks flag must be writable through the API."""
+        domain = models.Domain.objects.get(name="test.com")
+        domain.enable_dns_checks = True
+        domain.save()
+        url = reverse("v2:domain-detail", args=[domain.pk])
+        resp = self.client.patch(url, {"enable_dns_checks": False}, format="json")
+        self.assertEqual(resp.status_code, 200)
+        domain.refresh_from_db()
+        self.assertFalse(domain.enable_dns_checks)
+
     def test_update_resources(self):
         self.set_global_parameter("enable_domain_limits", True, app="limits")
         domain = models.Domain.objects.get(name="test2.com")
