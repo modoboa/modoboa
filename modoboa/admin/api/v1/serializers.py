@@ -85,7 +85,6 @@ class DomainSerializer(serializers.ModelSerializer):
             "mailbox_count",
             "mbalias_count",
             "domainalias_count",
-            "enable_dns_checks",
             "creation",
             "last_modification",
         )
