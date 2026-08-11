@@ -933,4 +933,4 @@ def get_imapconnector(request, **kwargs) -> IMAPconnector:
 
     :param request: a ``Request`` object
     """
-    return IMAPconnector(request.user.username, str(request.auth), **kwargs)
+    return IMAPconnector(request.user.username, request.auth, **kwargs)
