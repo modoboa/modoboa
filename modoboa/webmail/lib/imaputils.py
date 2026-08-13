@@ -933,4 +933,13 @@ def get_imapconnector(request, **kwargs) -> IMAPconnector:
 
     :param request: a ``Request`` object
     """
-    return IMAPconnector(request.user.username, str(request.auth), **kwargs)
+    # Extract the actual token string from the auth object
+    # instead of using str() which returns a useless repr
+    auth = request.auth
+    if hasattr(auth, "token"):
+        token = auth.token
+    elif hasattr(auth, "key"):
+        token = auth.key
+    else:
+        token = str(auth)
+    return IMAPconnector(request.user.username, token, **kwargs)
