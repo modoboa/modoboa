@@ -158,6 +158,40 @@ class UserMailboxViewSetTestCase(WebmailTestCase):
         response = self.client.post(url, body, format="json")
         self.assertEqual(response.status_code, 204)
 
+    def test_get_subscriptions(self):
+        self.authenticate()
+        url = reverse("v2:webmail-mailbox-subscriptions")
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        content = response.json()
+        names = {mb["name"]: mb for mb in content["mailboxes"]}
+        self.assertIn("INBOX", names)
+        self.assertTrue(names["INBOX"]["subscribed"])
+        self.assertIn("Test", names)
+        self.assertTrue(names["Test"]["subscribed"])
+        # Nested folders are exposed as a tree.
+        self.assertEqual(len(names["Test"]["sub"]), 1)
+        self.assertEqual(names["Test"]["sub"][0]["name"], "Test/Sub")
+        self.assertFalse(names["Test"]["sub"][0]["subscribed"])
+
+    def test_update_subscriptions(self):
+        self.authenticate()
+        url = reverse("v2:webmail-mailbox-subscriptions")
+        body = {
+            "changes": [
+                {"name": "Test/Sub", "subscribed": True},
+                {"name": "Test", "subscribed": False},
+            ]
+        }
+        response = self.client.post(url, body, format="json")
+        self.assertEqual(response.status_code, 204)
+
+    def test_update_subscriptions_invalid(self):
+        self.authenticate()
+        url = reverse("v2:webmail-mailbox-subscriptions")
+        response = self.client.post(url, {"changes": [{}]}, format="json")
+        self.assertEqual(response.status_code, 400)
+
 
 class UserEmailViewSetTestCase(WebmailTestCase):
 

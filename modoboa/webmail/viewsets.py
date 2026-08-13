@@ -52,12 +52,16 @@ class UserMailboxViewSet(viewsets.GenericViewSet):
             return serializers.UserMailboxInputSerializer
         if self.action == "rename":
             return serializers.UserMailboxUpdateSerializer
+        if self.action == "subscriptions":
+            if self.request.method == "POST":
+                return serializers.SubscriptionUpdateSerializer
+            return serializers.SubscriptionsSerializer
         return serializers.UserMailboxesSerializer
 
     def list(self, request):
         parent_mailbox = request.GET.get("mailbox")
         with lib.get_imapconnector(request) as imapc:
-            mboxes = imapc.getmboxes(request.user, parent_mailbox)
+            mboxes = imapc.getmboxes(request.user, parent_mailbox, subscribed_only=True)
         serializer = self.get_serializer(
             {"mailboxes": mboxes, "hdelimiter": imapc.hdelimiter}
         )
@@ -137,6 +141,27 @@ class UserMailboxViewSet(viewsets.GenericViewSet):
         serializer.is_valid(raise_exception=True)
         with lib.get_imapconnector(request) as imapc:
             imapc.delete_folder(serializer.validated_data["name"])
+        return response.Response(status=204)
+
+    @action(methods=["get", "post"], detail=False)
+    def subscriptions(self, request):
+        """List or update IMAP folder subscriptions for the current user."""
+        if request.method == "GET":
+            with lib.get_imapconnector(request) as imapc:
+                mboxes = imapc.get_subscription_tree()
+                serializer = self.get_serializer(
+                    {"mailboxes": mboxes, "hdelimiter": imapc.hdelimiter}
+                )
+            return response.Response(serializer.data)
+
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        with lib.get_imapconnector(request) as imapc:
+            for change in serializer.validated_data["changes"]:
+                if change["subscribed"]:
+                    imapc.subscribe_folder(change["name"])
+                else:
+                    imapc.unsubscribe_folder(change["name"])
         return response.Response(status=204)
 
 

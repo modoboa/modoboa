@@ -440,7 +440,36 @@ class IMAPconnector:
             sdescr["class"] = "subfolders"
         return True
 
-    def _listmboxes(self, topmailbox: str, mailboxes: list, until_mailbox=None) -> None:
+    def _parse_list_response(self, mb) -> tuple[list, str] | None:
+        """Parse a single ``LIST`` response line.
+
+        Handles both the literal form (name returned as a separate
+        ``{length}`` string, yielding a ``(header, name)`` tuple) and the
+        inline form. Returns the mailbox flags (as a list) and its decoded
+        name, or ``None`` for empty lines.
+        """
+        if not mb:
+            return None
+        if type(mb) in [list, tuple]:
+            flags, delimiter, namelen = self.list_response_pattern_literal.match(
+                mb[0].decode()
+            ).groups()
+            name = mb[1][0 : int(namelen)]
+        else:
+            flags, delimiter, name, childinfo = (
+                self.listextended_response_pattern.match(mb.decode()).groups()
+            )
+        flags = flags.split(" ")
+        name = bytearray(name, "utf-8").decode("imap4-utf-7")
+        return flags, name
+
+    def _listmboxes(
+        self,
+        topmailbox: str,
+        mailboxes: list,
+        until_mailbox=None,
+        subscribed_only: bool = False,
+    ) -> None:
         """Retrieve mailboxes list."""
         pattern = (
             f'"{topmailbox.encode("imap4-utf-7").decode()}{self.hdelimiter}%"'
@@ -448,24 +477,20 @@ class IMAPconnector:
             else "%"
         )
         resp = self._cmd(
-            "LIST", '""', pattern, "RETURN", "(CHILDREN STATUS (MESSAGES))"
+            "LIST", '""', pattern, "RETURN", "(SUBSCRIBED CHILDREN STATUS (MESSAGES))"
         )
         newmboxes = []
         for mb in resp:
-            if not mb:
+            parsed = self._parse_list_response(mb)
+            if parsed is None:
                 continue
-            if type(mb) in [list, tuple]:
-                flags, delimiter, namelen = self.list_response_pattern_literal.match(
-                    mb[0].decode()
-                ).groups()
-                name = mb[1][0 : int(namelen)]
-            else:
-                flags, delimiter, name, childinfo = (
-                    self.listextended_response_pattern.match(mb.decode()).groups()
-                )
-            flags = flags.split(" ")
-            name = bytearray(name, "utf-8")
-            name = name.decode("imap4-utf-7")
+            flags, name = parsed
+            has_children = "\\HasChildren" in flags
+            # When only subscribed mailboxes are requested, skip folders the
+            # user is not subscribed to. Unsubscribed folders that still have
+            # children are kept so subscribed descendants remain reachable.
+            if subscribed_only and "\\Subscribed" not in flags and not has_children:
+                continue
             mdm_found = False
             for idx, mdm in enumerate(mailboxes):
                 if mdm["name"] == name:
@@ -480,11 +505,11 @@ class IMAPconnector:
                 descr["send_status"] = True
             if r"\NonExistent" in flags:
                 descr["removed"] = True
-            if "\\HasChildren" in flags:
+            if has_children:
                 descr["path"] = name
                 descr["sub"] = []
                 if until_mailbox and until_mailbox.startswith(name):
-                    self._listmboxes(name, descr["sub"], until_mailbox)
+                    self._listmboxes(name, descr["sub"], until_mailbox, subscribed_only)
 
         from operator import itemgetter
 
@@ -496,6 +521,7 @@ class IMAPconnector:
         topmailbox: str = "",
         until_mailbox=None,
         unseen_messages: bool = True,
+        subscribed_only: bool = False,
     ) -> list:
         """Returns a list of mailboxes for a particular user.
 
@@ -507,6 +533,7 @@ class IMAPconnector:
         :param topmailbox: the mailbox where to start in the tree
         :param until_mailbox: the deepest needed mailbox
         :param unseen_messages: include unseen messages counters or not
+        :param subscribed_only: only return mailboxes the user is subscribed to
         :return: a list
         """
         if topmailbox:
@@ -549,7 +576,7 @@ class IMAPconnector:
             name, parent = separate_mailbox(until_mailbox, self.hdelimiter)
             if parent:
                 until_mailbox = parent
-        self._listmboxes(topmailbox, md_mailboxes, until_mailbox)
+        self._listmboxes(topmailbox, md_mailboxes, until_mailbox, subscribed_only)
 
         if unseen_messages:
             for mb in md_mailboxes:
@@ -694,6 +721,55 @@ class IMAPconnector:
         typ, data = self.m.delete(self._encode_mbox_name(name))
         if typ == "NO":
             raise WebmailInternalError(data[0])
+        return True
+
+    def get_subscription_tree(self) -> list:
+        """Return the full mailbox hierarchy with subscription status.
+
+        Contrary to :meth:`getmboxes`, every folder is returned (regardless
+        of subscription) as a nested tree. Each node is a dict with the
+        following keys: ``name`` (full path), ``label`` (last path
+        component), ``subscribed`` (bool) and ``sub`` (list of children).
+        """
+        resp = self._cmd("LIST", '""', '"*"', "RETURN", "(SUBSCRIBED)")
+        entries = []
+        for mb in resp or []:
+            parsed = self._parse_list_response(mb)
+            if parsed is None:
+                continue
+            flags, name = parsed
+            entries.append((name, "\\Subscribed" in flags))
+
+        tree: list = []
+        index: dict = {}
+        for name, subscribed in sorted(entries, key=lambda e: e[0]):
+            parts = name.split(self.hdelimiter)
+            label = parts[-1]
+            parent_path = self.hdelimiter.join(parts[:-1])
+            node = {
+                "name": name,
+                "label": label,
+                "subscribed": subscribed,
+                "sub": [],
+            }
+            index[name] = node
+            parent = index.get(parent_path)
+            if parent is not None:
+                parent["sub"].append(node)
+            else:
+                tree.append(node)
+        return tree
+
+    def subscribe_folder(self, name: str) -> bool:
+        typ, data = self.m.subscribe(self._encode_mbox_name(name))
+        if typ == "NO":
+            raise WebmailInternalError(str(data[0]))
+        return True
+
+    def unsubscribe_folder(self, name: str) -> bool:
+        typ, data = self.m.unsubscribe(self._encode_mbox_name(name))
+        if typ == "NO":
+            raise WebmailInternalError(str(data[0]))
         return True
 
     def getquota(self, mailbox: str) -> None:
