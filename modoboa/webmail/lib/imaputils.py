@@ -501,8 +501,12 @@ class IMAPconnector:
                 descr = {"name": name, "label": name, "type": "normal"}
                 newmboxes += [descr]
 
-            if "\\Marked" in flags or "\\UnMarked" not in flags:
-                descr["send_status"] = True
+            # A mailbox can hold unseen messages without being flagged
+            # \Marked (which only tracks messages *recently* added since the
+            # last SELECT). To display accurate counters we compute the unseen
+            # count for every selectable mailbox instead of relying on that
+            # heuristic. \Noselect mailboxes cannot be queried with STATUS.
+            descr["selectable"] = "\\Noselect" not in flags
             if r"\NonExistent" in flags:
                 descr["removed"] = True
             if has_children:
@@ -577,20 +581,25 @@ class IMAPconnector:
             if parent:
                 until_mailbox = parent
         self._listmboxes(topmailbox, md_mailboxes, until_mailbox, subscribed_only)
-
-        if unseen_messages:
-            for mb in md_mailboxes:
-                if "send_status" not in mb:
-                    continue
-                del mb["send_status"]
-                key = "path" if "path" in mb else "name"
-                if mb.get("removed", False):
-                    continue
-                count = self.unseen_messages(mb[key])
-                if count == 0:
-                    continue
-                mb["unseen"] = count
+        self._set_unseen_counters(md_mailboxes, unseen_messages)
         return md_mailboxes
+
+    def _set_unseen_counters(self, mailboxes: list, compute: bool = True) -> None:
+        """Compute the unseen messages counter of each selectable mailbox.
+
+        The ``selectable`` marker is an internal detail and is always
+        removed, whether or not the counters are actually computed.
+        """
+        for mb in mailboxes:
+            selectable = mb.pop("selectable", False)
+            if mb.get("sub"):
+                self._set_unseen_counters(mb["sub"], compute)
+            if not compute or not selectable or mb.get("removed", False):
+                continue
+            key = "path" if "path" in mb else "name"
+            count = self.unseen_messages(mb[key])
+            if count:
+                mb["unseen"] = count
 
     def _add_flag(self, mbox: str, msgset: list[str], flag: str) -> None:
         """Add flag to a messages set.

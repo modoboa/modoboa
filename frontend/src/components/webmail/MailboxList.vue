@@ -19,24 +19,12 @@
       >
         <v-icon :icon="iconByMailboxType[mailbox.type]" class="mr-4" />
         <template v-if="!props.rail">
-          <template v-if="mailbox.name === route.query.mailbox">
-            <span v-if="currentMailboxUnseen > 0" class="font-weight-bold">
-              {{ getMailboxLabel(mailbox) }} ({{
-                getCurrentMailboxUnseen(mailbox)
-              }})
-            </span>
-            <span v-else>
-              {{ getMailboxLabel(mailbox) }}
-            </span>
-          </template>
-          <template v-else>
-            <span v-if="mailbox.unseen > 0" class="font-weight-bold">
-              {{ getMailboxLabel(mailbox) }} ({{ mailbox.unseen }})
-            </span>
-            <span v-else>
-              {{ getMailboxLabel(mailbox) }}
-            </span>
-          </template>
+          <span v-if="mailbox.unseen > 0" class="font-weight-bold">
+            {{ getMailboxLabel(mailbox) }} ({{ mailbox.unseen }})
+          </span>
+          <span v-else>
+            {{ getMailboxLabel(mailbox) }}
+          </span>
           <v-spacer />
           <v-btn
             v-if="mailbox.sub"
@@ -61,7 +49,7 @@
 </template>
 
 <script setup>
-import { ref, watch } from 'vue'
+import { ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { useGettext } from 'vue3-gettext'
 import { useBusStore, useWebmailStore } from '@/stores'
@@ -111,19 +99,11 @@ const iconByMailboxType = {
   normal: 'mdi-folder-outline',
 }
 
-const currentMailboxUnseen = ref(null)
 const hoverStates = ref({})
 const mailboxStates = ref({})
 
 function getMailboxLabel(mailbox) {
   return mailbox.label.split('/').pop()
-}
-
-function getCurrentMailboxUnseen(mailbox) {
-  if (currentMailboxUnseen.value === null) {
-    currentMailboxUnseen.value = mailbox.unseen
-  }
-  return currentMailboxUnseen.value
 }
 
 function setHover(mailbox, value) {
@@ -184,15 +164,6 @@ async function onDrop(mailbox) {
     busStore.hideNotification()
   }
 }
-
-watch(
-  () => busStore.mbCounterKey,
-  () => {
-    api.getUserMailboxUnseen(route.query.mailbox).then((resp) => {
-      currentMailboxUnseen.value = resp.data.counter
-    })
-  }
-)
 </script>
 
 <style scoped lang="scss">

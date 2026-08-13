@@ -111,6 +111,50 @@ class UserMailboxViewSetTestCase(WebmailTestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json()["counter"], 10)
 
+    def test_list_unseen_counters(self):
+        """Unseen counters must be computed for every selectable mailbox.
+
+        Even a mailbox flagged \\UnMarked (no *recent* activity since the
+        last SELECT) can hold unseen messages and must expose its counter.
+        \\Noselect mailboxes cannot be queried with STATUS and must be
+        skipped.
+        """
+
+        class IMAP4MockWithFolders(IMAP4Mock):
+            def _simple_command(self, name, *args, **kwargs):
+                if name == "LIST":
+                    self.untagged_responses["LIST"] = [
+                        b'(\\Subscribed \\HasNoChildren) "." "INBOX"',
+                        b'(\\Subscribed \\UnMarked \\HasNoChildren) "." "Archive"',
+                        # Unsubscribed but kept because it has children; its
+                        # \\Noselect flag means it must not be queried.
+                        b'(\\Noselect \\HasChildren) "." "Parent"',
+                    ]
+                    return "OK", None
+                if name == "STATUS":
+                    target = args[0]
+                    if isinstance(target, bytes):
+                        target = target.decode()
+                    count = 10 if "INBOX" in target else 3
+                    self.untagged_responses["STATUS"] = [
+                        f"STATUS x (UNSEEN {count})".encode()
+                    ]
+                    return "OK", None
+                return super()._simple_command(name, *args, **kwargs)
+
+        self.mock_imap4.return_value = IMAP4MockWithFolders()
+        self.authenticate()
+        url = reverse("v2:webmail-mailbox-list")
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        mailboxes = {mb["name"]: mb for mb in response.json()["mailboxes"]}
+        # \\UnMarked mailbox with unseen messages: counter must be present
+        # (the previous heuristic skipped it).
+        self.assertEqual(mailboxes["Archive"]["unseen"], 3)
+        self.assertEqual(mailboxes["INBOX"]["unseen"], 10)
+        # \\Noselect mailbox: not queried, counter stays 0.
+        self.assertEqual(mailboxes["Parent"]["unseen"], 0)
+
     def test_create(self):
         self.authenticate()
         url = reverse("v2:webmail-mailbox-list")

@@ -369,6 +369,7 @@ const fetchEmails = () => {
 
 const autoRefreshContent = () => {
   fetchEmails()
+  reloadMailboxCounters()
 }
 
 const submitSearch = () => {
