@@ -74,6 +74,11 @@
                     prepend-icon="mdi-folder-zip-outline"
                     @click="compressMailbox"
                   />
+                  <v-list-item
+                    :title="$gettext('Subscriptions')"
+                    prepend-icon="mdi-checkbox-multiple-marked-outline"
+                    @click="showSubscriptions = true"
+                  />
                 </v-list>
               </v-menu>
             </v-btn>
@@ -98,6 +103,12 @@
       @close="closeMailboxForm()"
     />
   </v-dialog>
+  <v-dialog v-model="showSubscriptions" max-width="600">
+    <SubscriptionsDialog
+      @close="showSubscriptions = false"
+      @updated="fetchUserMailboxes"
+    />
+  </v-dialog>
   <ConfirmDialog ref="confirm" />
 </template>
 
@@ -111,6 +122,7 @@ import ConfirmDialog from '@/components/tools/ConfirmDialog.vue'
 import ConnectedLayout from '@/layouts/connected/ConnectedLayout.vue'
 import MailboxForm from '@/components/webmail/MailboxForm.vue'
 import MailboxList from '@/components/webmail/MailboxList.vue'
+import SubscriptionsDialog from '@/components/webmail/SubscriptionsDialog.vue'
 import api from '@/api/webmail'
 
 const { $gettext } = useGettext()
@@ -145,6 +157,7 @@ const hdelimiter = ref(null)
 const mailboxQuota = ref(null)
 const selectedMailbox = ref(route.query.mailbox || 'INBOX')
 const showMailboxForm = ref(false)
+const showSubscriptions = ref(false)
 const userMailboxes = ref([])
 
 const readOnlyMailbox = computed(() => {

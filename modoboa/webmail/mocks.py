@@ -17,7 +17,16 @@ class IMAP4Mock:
         if name == "CAPABILITY":
             self.untagged_responses["CAPABILITY"] = [b"QUOTA"]
         elif name == "LIST":
-            self.untagged_responses["LIST"] = [b'() "." "INBOX"']
+            if '"*"' in [str(a) for a in args]:
+                # Full recursive listing used to build the subscription tree.
+                self.untagged_responses["LIST"] = [
+                    b'(\\Subscribed) "/" "INBOX"',
+                    b'(\\Subscribed \\HasChildren) "/" "Test"',
+                    b'() "/" "Test/Sub"',
+                ]
+            else:
+                # Sidebar listing (only subscribed folders are kept).
+                self.untagged_responses["LIST"] = [b'(\\Subscribed) "/" "INBOX"']
         elif name == "NAMESPACE":
             self.untagged_responses["NAMESPACE"] = [b'(("" "/")) NIL NIL']
         elif name == "STATUS":
@@ -37,6 +46,12 @@ class IMAP4Mock:
         return "OK", [b'() "." "INBOX"']
 
     def rename(self, oldname, newname):
+        return "OK", None
+
+    def subscribe(self, name):
+        return "OK", None
+
+    def unsubscribe(self, name):
         return "OK", None
 
     def uid(self, command, *args):

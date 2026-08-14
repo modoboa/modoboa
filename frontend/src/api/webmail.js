@@ -28,6 +28,12 @@ export default {
   deleteUserMailbox(body) {
     return repository.post('/webmail/mailboxes/delete/', body)
   },
+  getSubscriptions() {
+    return repository.get('/webmail/mailboxes/subscriptions/')
+  },
+  updateSubscriptions(changes) {
+    return repository.post('/webmail/mailboxes/subscriptions/', { changes })
+  },
   emptyUserMailbox(mailbox) {
     const body = { name: mailbox }
     return repository.post('/webmail/mailboxes/empty/', body)

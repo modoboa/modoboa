@@ -70,6 +70,34 @@ class UserMailboxSerializer(serializers.Serializer):
         return None
 
 
+class SubscriptionNodeSerializer(serializers.Serializer):
+
+    name = serializers.CharField()
+    label = serializers.CharField()
+    subscribed = serializers.BooleanField()
+    sub = serializers.SerializerMethodField()
+
+    def get_sub(self, obj):
+        return SubscriptionNodeSerializer(obj.get("sub", []), many=True).data
+
+
+class SubscriptionsSerializer(serializers.Serializer):
+
+    mailboxes = SubscriptionNodeSerializer(many=True)
+    hdelimiter = serializers.CharField()
+
+
+class SubscriptionChangeSerializer(serializers.Serializer):
+
+    name = serializers.CharField()
+    subscribed = serializers.BooleanField()
+
+
+class SubscriptionUpdateSerializer(serializers.Serializer):
+
+    changes = SubscriptionChangeSerializer(many=True)
+
+
 class UserMailboxQuotaSerializer(serializers.Serializer):
 
     usage = serializers.IntegerField(source="quota_usage")
