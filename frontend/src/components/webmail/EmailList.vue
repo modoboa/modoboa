@@ -815,10 +815,11 @@ const initListing = () => {
 
 const autoRefreshContent = () => {
   // Don't yank the user's position: only refresh when the tab is visible and
-  // they're near the top of the list.
+  // they're near the top of the list. Counters are refreshed either way.
   if (document.visibilityState !== 'visible') {
     return
   }
+  reloadMailboxCounters()
   if (scroller.value && scroller.value.scrollTop > 200) {
     return
   }

@@ -565,8 +565,8 @@ class IMAPconnector:
             # The folder was returned by LIST, so it actually exists on the
             # server (used to decide whether to query its counters).
             descr["_exists"] = True
-            if "\\Marked" in flags or "\\UnMarked" not in flags:
-                descr["send_status"] = True
+            # \Noselect mailboxes cannot be selected to count messages.
+            descr["selectable"] = "\\Noselect" not in flags
             if r"\NonExistent" in flags:
                 descr["removed"] = True
             if "\\HasChildren" in flags:
@@ -639,25 +639,30 @@ class IMAPconnector:
             if parent:
                 until_mailbox = parent
         self._listmboxes(topmailbox, md_mailboxes, until_mailbox)
-
-        if unseen_messages:
-            for mb in md_mailboxes:
-                # ``send_status`` is an internal LIST flag; never expose it.
-                mb.pop("send_status", None)
-                exists = mb.pop("_exists", False)
-                # Only query counters for folders that actually exist (a
-                # hardcoded special folder may not have been created yet). This
-                # also avoids the previous bug where folders flagged
-                # ``\UnMarked`` (e.g. Sent/Junk with no recent activity) were
-                # skipped and reported a count of 0.
-                if not exists or mb.get("removed", False):
-                    continue
-                key = "path" if "path" in mb else "name"
-                total, unseen = self.folder_counters(mb[key])
-                mb["nbmessages"] = total
-                if unseen:
-                    mb["unseen"] = unseen
+        self._set_counters(md_mailboxes, unseen_messages)
         return md_mailboxes
+
+    def _set_counters(self, mailboxes: list, compute: bool = True) -> None:
+        """Compute the counters of each mailbox, subfolders included.
+
+        Only folders that actually exist (a hardcoded special folder may not
+        have been created yet) and can be selected are queried. Every folder
+        is counted, not only the ones flagged ``\\Marked``: that flag only
+        tracks *recent* activity, so folders with old unseen messages showed
+        no counter. The internal markers are always removed.
+        """
+        for mb in mailboxes:
+            exists = mb.pop("_exists", False)
+            selectable = mb.pop("selectable", True)
+            if mb.get("sub"):
+                self._set_counters(mb["sub"], compute)
+            if not compute or not exists or not selectable or mb.get("removed", False):
+                continue
+            key = "path" if "path" in mb else "name"
+            total, unseen = self.folder_counters(mb[key])
+            mb["nbmessages"] = total
+            if unseen:
+                mb["unseen"] = unseen
 
     def _add_flag(self, mbox: str, msgset: list[str], flag: str) -> None:
         """Add flag to a messages set.

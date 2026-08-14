@@ -235,6 +235,29 @@ const mailboxQuotaTitle = computed(() => {
 
 const dataKey = computed(() => busStore.dataKey)
 
+function updateMailboxUnseen(mailboxes, name, counter) {
+  for (const mailbox of mailboxes) {
+    if (mailbox.name === name) {
+      mailbox.unseen = counter
+      return true
+    }
+    if (
+      mailbox.sub &&
+      mailbox.sub.length &&
+      updateMailboxUnseen(mailbox.sub, name, counter)
+    ) {
+      return true
+    }
+  }
+  return false
+}
+
+function refreshMailboxUnseen(mailbox) {
+  api.getUserMailboxUnseen(mailbox).then((resp) => {
+    updateMailboxUnseen(userMailboxes.value, mailbox, resp.data.counter)
+  })
+}
+
 function openMailbox(mailbox) {
   router.push({
     name: 'MailboxView',
@@ -246,6 +269,9 @@ function openMailbox(mailbox) {
   if (mobile.value) {
     drawer.value = false
   }
+  // A message may have arrived since the tree was loaded: refresh the
+  // selected mailbox counter so it reflects the current unseen count.
+  refreshMailboxUnseen(mailbox)
 }
 
 const fetchUserMailboxes = async () => {
