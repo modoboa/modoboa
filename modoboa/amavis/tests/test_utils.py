@@ -17,3 +17,14 @@ class FixUTF8EncodingTests(SimpleTestCase):
         expected_output = "\xf0\x9f\x99"
         output = fix_utf8_encoding(value)
         self.assertEqual(output, expected_output)
+
+    def test_valid_unicode_is_unchanged(self):
+        value = "Łukasz Jabłoński"
+        output = fix_utf8_encoding(value)
+        self.assertEqual(output, value)
+
+    def test_latin1_mojibake_is_repaired(self):
+        value = "Å\x81ukasz JabÅ\x82oÅ\x84ski"
+        expected_output = "Łukasz Jabłoński"
+        output = fix_utf8_encoding(value)
+        self.assertEqual(output, expected_output)
