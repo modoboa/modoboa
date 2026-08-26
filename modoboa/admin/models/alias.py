@@ -230,6 +230,19 @@ class Alias(AdminObject):
                     kwargs["r_alias"] = rcpt
                 else:
                     kwargs["r_mailbox"] = rcpt
+            # An alias can only reference a given local target once
+            # (unique constraint on (alias, r_mailbox) / (alias, r_alias)).
+            # Address extensions (foo+bar) are stripped during resolution, so
+            # foo@dom and foo+bar@dom resolve to the same target: skip it here
+            # instead of hitting an IntegrityError.
+            if kwargs.get("r_mailbox") is not None and (
+                self.aliasrecipient_set.filter(r_mailbox=kwargs["r_mailbox"]).exists()
+            ):
+                continue
+            if kwargs.get("r_alias") is not None and (
+                self.aliasrecipient_set.filter(r_alias=kwargs["r_alias"]).exists()
+            ):
+                continue
             AliasRecipient(**kwargs).save()
 
     def remove_recipient_or_delete(self, recipient_to_delete: str):
