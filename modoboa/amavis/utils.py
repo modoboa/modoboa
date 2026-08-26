@@ -53,6 +53,10 @@ def fix_utf8_encoding(value: str) -> str:
         # short circuit for empty strings
         return ""
 
+    if any(ord(char) > 0xFF for char in value):
+        # Already-decoded Unicode must not be converted to literal escapes.
+        return value
+
     bytes_value = value.encode("raw_unicode_escape")
     try:
         value = bytes_value.decode("utf-8")
