@@ -1,5 +1,8 @@
-from rest_framework.throttling import SimpleRateThrottle, UserRateThrottle
+from django.shortcuts import render
 from django.urls import resolve
+from django.utils.translation import gettext as _
+
+from rest_framework.throttling import SimpleRateThrottle, UserRateThrottle
 
 
 class UserDdosPerView(SimpleRateThrottle):
@@ -47,18 +50,60 @@ class LoginThrottle(SimpleRateThrottle):
 
 
 class PasswordResetRequestThrottle(LoginThrottle):
-
     scope = "password_recovery_request"
 
 
 class PasswordResetTotpThrottle(LoginThrottle):
-
     scope = "password_recovery_totp_check"
 
 
 class PasswordResetApplyThrottle(LoginThrottle):
-
     scope = "password_recovery_apply"
+
+
+class ThrottleViewMixin:
+    """Apply DRF throttle classes to a plain Django class based view.
+
+    The throttle classes defined above only need ``request.META`` and the
+    cache, so they work as is with a regular ``HttpRequest``. Reusing them
+    here means the Django views and their API v2 counterparts share the same
+    scopes, rates and counters.
+    """
+
+    throttle_classes: list = []
+    throttled_methods: tuple = ("POST",)
+
+    def get_throttles(self):
+        """Instantiate throttles once per request."""
+        if not hasattr(self, "_throttles"):
+            self._throttles = [klass() for klass in self.throttle_classes]
+        return self._throttles
+
+    def dispatch(self, request, *args, **kwargs):
+        if request.method in self.throttled_methods:
+            for throttle in self.get_throttles():
+                if not throttle.allow_request(request, self):
+                    return self.throttled_response(request, throttle)
+        return super().dispatch(request, *args, **kwargs)
+
+    def throttled_response(self, request, throttle):
+        """Return the response sent once the rate limit is reached."""
+        response = render(
+            request,
+            "common/error.html",
+            {"error": _("Too many attempts, please try again later.")},
+            status=429,
+        )
+        wait = throttle.wait()
+        if wait:
+            response["Retry-After"] = str(int(wait))
+        return response
+
+    def reset_throttles(self, request):
+        """Clear counters, to call once a request legitimately succeeded."""
+        for throttle in self.get_throttles():
+            if hasattr(throttle, "reset_cache"):
+                throttle.reset_cache(request)
 
 
 class GetThrottleViewsetMixin:

@@ -1,6 +1,7 @@
 """Core views."""
 
 from .auth import (
+    PasswordResetConfirmView,
     PasswordResetView,
     LoginView,
     VerifySMSCodeView,
@@ -12,6 +13,7 @@ from .auth import (
 
 __all__ = [
     "LoginView",
+    "PasswordResetConfirmView",
     "PasswordResetView",
     "ResendSMSCodeView",
     "VerifySMSCodeView",

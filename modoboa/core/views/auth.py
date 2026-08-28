@@ -4,10 +4,9 @@ from functools import cached_property
 import logging
 import urllib.parse
 
-import oath
-
 from django.conf import settings
 from django.core.exceptions import PermissionDenied
+from django.db.models import Q
 from django.http import HttpResponseRedirect, Http404, JsonResponse
 from django.urls import reverse
 from django.utils import translation
@@ -28,6 +27,12 @@ from modoboa.core import constants, fido2_auth, forms, models
 from modoboa.core.api.v2 import serializers
 from modoboa.core.password_hashers import get_password_hasher
 from modoboa.lib import cryptutils
+from modoboa.lib.throttle import (
+    PasswordResetApplyThrottle,
+    PasswordResetRequestThrottle,
+    PasswordResetTotpThrottle,
+    ThrottleViewMixin,
+)
 from modoboa.parameters import tools as param_tools
 
 from .. import sms_backends
@@ -117,7 +122,7 @@ class LoginView(LoginViewMixin, auth_views.LoginView):
             user.save()
         if pwhash.needs_rehash(user.password):
             logging.info(
-                _("Password hash parameter missmatch. " "Updating %s password"),
+                _("Password hash parameter missmatch. Updating %s password"),
                 user.username,
             )
             user.set_password(form.cleaned_data["password"])
@@ -148,10 +153,11 @@ class LoginView(LoginViewMixin, auth_views.LoginView):
         return self.render_to_response(self.get_context_data(form=form), status=401)
 
 
-class PasswordResetView(auth_views.PasswordResetView):
+class PasswordResetView(ThrottleViewMixin, auth_views.PasswordResetView):
     """Custom view to override form."""
 
     form_class = forms.PasswordResetForm
+    throttle_classes = [PasswordResetRequestThrottle]
 
     def setup(self, request, *args, **kwargs):
         super().setup(request, *args, **kwargs)
@@ -172,15 +178,19 @@ class PasswordResetView(auth_views.PasswordResetView):
         )
         if not sms_password_recovery:
             return super().form_valid(form)
-        user = models.User._default_manager.filter(
-            email=form.cleaned_data["email"], phone_number__isnull=False
-        ).first()
+        user = (
+            models.User._default_manager.filter(
+                email__iexact=form.cleaned_data["email"], is_active=True
+            )
+            .exclude(Q(phone_number__isnull=True) | Q(phone_number=""))
+            .first()
+        )
         if not user:
             # Fallback to email
             return super().form_valid(form)
         backend = sms_backends.get_active_backend(self.request.localconfig.parameters)
         secret = cryptutils.random_hex_key(20)
-        code = oath.totp(secret)
+        code = sms_backends.generate_recovery_code(secret)
         text = _(
             "Please use the following code to recover your Modoboa password: {}".format(
                 code
@@ -193,11 +203,12 @@ class PasswordResetView(auth_views.PasswordResetView):
         return HttpResponseRedirect(reverse("password_reset_confirm_code"))
 
 
-class VerifySMSCodeView(generic.FormView):
+class VerifySMSCodeView(ThrottleViewMixin, generic.FormView):
     """View to verify a code received by SMS."""
 
     form_class = forms.VerifySMSCodeForm
     template_name = "registration/password_reset_confirm_code.html"
+    throttle_classes = [PasswordResetTotpThrottle]
 
     def get_form_kwargs(self):
         """Include totp secret in kwargs."""
@@ -210,6 +221,9 @@ class VerifySMSCodeView(generic.FormView):
 
     def form_valid(self, form):
         """Redirect to reset password form."""
+        # Only clear the counter once a code has genuinely been verified,
+        # otherwise wrong attempts would cost nothing to an attacker.
+        self.reset_throttles(self.request)
         user = models.User.objects.get(pk=self.request.session.pop("user_pk"))
         self.request.session.pop("totp_secret")
         token = default_token_generator.make_token(user)
@@ -218,8 +232,21 @@ class VerifySMSCodeView(generic.FormView):
         return HttpResponseRedirect(url)
 
 
-class ResendSMSCodeView(generic.View):
+class ResendSMSCodeView(ThrottleViewMixin, generic.View):
     """A view to resend validation code."""
+
+    # A resend sends a new SMS, so it must consume the same budget as an
+    # initial request instead of the (larger) code verification one.
+    throttle_classes = [PasswordResetRequestThrottle]
+    throttled_methods = ("GET",)
+
+    def throttled_response(self, request, throttle):
+        """Answer with JSON, as expected by the caller."""
+        response = JsonResponse({"status": "ko"}, status=429)
+        wait = throttle.wait()
+        if wait:
+            response["Retry-After"] = str(int(wait))
+        return response
 
     def get(self, request, *args, **kwargs):
         sms_password_recovery = self.request.localconfig.parameters.get_value(
@@ -233,16 +260,22 @@ class ResendSMSCodeView(generic.View):
             raise Http404 from None
         backend = sms_backends.get_active_backend(self.request.localconfig.parameters)
         secret = cryptutils.random_hex_key(20)
-        code = oath.totp(secret)
+        code = sms_backends.generate_recovery_code(secret)
         text = _(
             "Please use the following code to recover your Modoboa password: {}".format(
                 code
             )
         )
-        if not backend.send(text, [user.phone_number]):
+        if not backend.send(text, [str(user.phone_number)]):
             raise Http404 from None
         self.request.session["totp_secret"] = secret
         return JsonResponse({"status": "ok"})
+
+
+class PasswordResetConfirmView(ThrottleViewMixin, auth_views.PasswordResetConfirmView):
+    """Rate limited version of the builtin view."""
+
+    throttle_classes = [PasswordResetApplyThrottle]
 
 
 class TwoFactorCodeVerifyView(LoginViewMixin, generic.FormView):
