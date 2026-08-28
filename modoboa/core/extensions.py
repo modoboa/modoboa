@@ -1,10 +1,30 @@
 """Extension management."""
 
+import functools
+from importlib.metadata import PackageNotFoundError, packages_distributions, version
+
 from django.conf import settings
 from django.templatetags.static import static
 from django.urls import include
 from django.urls import re_path
 from django.utils.encoding import smart_str
+
+
+@functools.cache
+def get_installed_version(module_name: str) -> str | None:
+    """Return the version of the distribution providing the given module.
+
+    ``None`` is returned when the module does not belong to an installed
+    distribution (local extension, source checkout, etc.).
+    """
+    top_level = module_name.split(".")[0]
+    candidates = packages_distributions().get(top_level) or [top_level]
+    for dist_name in candidates:
+        try:
+            return version(dist_name)
+        except PackageNotFoundError:
+            continue
+    return None
 
 
 class ModoExtension:
@@ -31,6 +51,16 @@ class ModoExtension:
     def get_available_apps(self) -> list:
         return []
 
+    def get_version(self) -> str:
+        """Return the version of this extension.
+
+        The ``version`` attribute is declared by the extension itself and
+        can easily become out of sync with the installed package. When the
+        extension is provided by an installed distribution, its metadata is
+        used as the source of truth.
+        """
+        return get_installed_version(self.name) or self.version
+
     def get_url(self):
         """Return extension base url."""
         if self.url is None:
@@ -42,7 +72,7 @@ class ModoExtension:
         return {
             "name": self.name,
             "label": self.label,
-            "version": self.version,
+            "version": self.get_version(),
             "description": self.description,
             "url": self.get_url(),
             "topredirection_url": self.topredirection_url,

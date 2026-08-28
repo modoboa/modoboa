@@ -3,6 +3,7 @@
 import os
 import sys
 from io import StringIO
+from unittest import mock
 
 from testfixtures import compare
 
@@ -72,6 +73,14 @@ class ExtensionTestCase(TestCase):
             },
         )
 
+    def test_get_extension_infos_uses_installed_version(self):
+        """Version must come from package metadata when available."""
+        with mock.patch.object(
+            extensions, "get_installed_version", return_value="1.1.0"
+        ):
+            infos = self.pool.get_extension_infos("stupid_extension_1")
+        self.assertEqual(infos["version"], "1.1.0")
+
     def test_list_all(self):
         """Check list_all method."""
         result = self.pool.list_all()
@@ -104,6 +113,58 @@ class ExtensionTestCase(TestCase):
 
         urls = self.pool.get_urls(category="api")
         self.assertEqual(len(urls), 0)
+
+
+class ModoExtensionVersionTests(TestCase):
+    """Version resolution related tests."""
+
+    def _ext(self, **attrs):
+        defaults = {"name": "ext", "label": "Ext", "version": "1.0.0"}
+        defaults.update(attrs)
+        return type("_Ext", (extensions.ModoExtension,), defaults)()
+
+    def setUp(self):
+        extensions.get_installed_version.cache_clear()
+        self.addCleanup(extensions.get_installed_version.cache_clear)
+
+    def test_installed_version_wins_over_declared_one(self):
+        """A stale hardcoded version must not shadow the installed package."""
+        ext = self._ext(name="modoboa_pro")
+        with (
+            mock.patch.object(
+                extensions,
+                "packages_distributions",
+                return_value={"modoboa_pro": ["modoboa-pro"]},
+            ),
+            mock.patch.object(extensions, "version", return_value="1.1.0") as vmock,
+        ):
+            self.assertEqual(ext.get_version(), "1.1.0")
+        vmock.assert_called_once_with("modoboa-pro")
+
+    def test_fallback_to_declared_version(self):
+        """Extensions not provided by a distribution keep their attribute."""
+        ext = self._ext(name="local_extension")
+        with (
+            mock.patch.object(extensions, "packages_distributions", return_value={}),
+            mock.patch.object(
+                extensions, "version", side_effect=extensions.PackageNotFoundError
+            ),
+        ):
+            self.assertEqual(ext.get_version(), "1.0.0")
+
+    def test_submodule_extension(self):
+        """Extensions shipped inside a package use the top-level distribution."""
+        ext = self._ext(name="modoboa.rspamd")
+        with (
+            mock.patch.object(
+                extensions,
+                "packages_distributions",
+                return_value={"modoboa": ["modoboa"]},
+            ),
+            mock.patch.object(extensions, "version", return_value="2.5.0") as vmock,
+        ):
+            self.assertEqual(ext.get_version(), "2.5.0")
+        vmock.assert_called_once_with("modoboa")
 
 
 class ModoExtensionFrontendManifestTests(TestCase):
