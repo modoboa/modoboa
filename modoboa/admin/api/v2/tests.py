@@ -188,6 +188,103 @@ class DomainViewSetTestCase(ModoAPITestCase):
             core_models.User.objects.filter(username="admin@test2.com").exists()
         )
 
+    def test_bulk_delete(self):
+        url = reverse("v2:domain-bulk-delete")
+
+        # Invalid input
+        resp = self.client.post(url, {}, format="json")
+        self.assertEqual(resp.status_code, 400)
+        resp = self.client.post(url, {"ids": []}, format="json")
+        self.assertEqual(resp.status_code, 400)
+        resp = self.client.post(url, {"ids": ["toto"]}, format="json")
+        self.assertEqual(resp.status_code, 400)
+
+        # Unknown domain
+        resp = self.client.post(url, {"ids": [9999]}, format="json")
+        self.assertEqual(resp.status_code, 404)
+
+        # Valid request
+        domains = models.Domain.objects.filter(name__in=["test.com", "test2.com"])
+        ids = list(domains.values_list("pk", flat=True))
+        resp = self.client.post(url, {"ids": ids}, format="json")
+        self.assertEqual(resp.status_code, 204)
+        self.assertFalse(models.Domain.objects.filter(pk__in=ids).exists())
+        # Related mailboxes must have been removed too
+        self.assertFalse(models.Mailbox.objects.filter(domain__pk__in=ids).exists())
+
+    def test_bulk_delete_auto_account_removal(self):
+        self.set_global_parameter("auto_account_removal", True)
+        domain = models.Domain.objects.get(name="test2.com")
+        url = reverse("v2:domain-bulk-delete")
+        resp = self.client.post(url, {"ids": [domain.pk]}, format="json")
+        self.assertEqual(resp.status_code, 204)
+        with self.assertRaises(models.Domain.DoesNotExist):
+            domain.refresh_from_db()
+        self.assertFalse(
+            core_models.User.objects.filter(username="admin@test2.com").exists()
+        )
+
+    def test_bulk_delete_denied_for_domain_admin(self):
+        """A domain administrator has no delete_domain permission."""
+        self.client.credentials(HTTP_AUTHORIZATION="Token " + self.da_token.key)
+        domain = models.Domain.objects.get(name="test.com")
+        url = reverse("v2:domain-bulk-delete")
+        resp = self.client.post(url, {"ids": [domain.pk]}, format="json")
+        self.assertEqual(resp.status_code, 403)
+        self.assertTrue(models.Domain.objects.filter(pk=domain.pk).exists())
+
+    def test_bulk_delete_permissions(self):
+        """A reseller can only delete the domains it owns."""
+        self.set_global_parameter("enable_admin_limits", False, app="limits")
+        reseller = core_factories.UserFactory(
+            username="reseller", groups=("Resellers",)
+        )
+        owned = models.Domain.objects.get(name="test.com")
+        forbidden = models.Domain.objects.get(name="test2.com")
+        grant_access_to_object(reseller, owned, is_owner=True)
+        self.authenticate_user(reseller)
+        url = reverse("v2:domain-bulk-delete")
+
+        resp = self.client.post(url, {"ids": [owned.pk, forbidden.pk]}, format="json")
+        self.assertEqual(resp.status_code, 404)
+        # No domain must have been deleted
+        self.assertEqual(
+            models.Domain.objects.filter(pk__in=[owned.pk, forbidden.pk]).count(), 2
+        )
+
+        resp = self.client.post(url, {"ids": [owned.pk]}, format="json")
+        self.assertEqual(resp.status_code, 204)
+        self.assertFalse(models.Domain.objects.filter(pk=owned.pk).exists())
+
+    def test_bulk_delete_own_domain(self):
+        """A user must not delete the domain its own mailbox belongs to."""
+        self.set_global_parameter("enable_admin_limits", False, app="limits")
+        admin = core_models.User.objects.get(username="admin@test.com")
+        admin.role = "Resellers"
+        own_domain = admin.mailbox.domain
+        other = models.Domain.objects.get(name="test2.com")
+        grant_access_to_object(admin, other, is_owner=True)
+        self.client.credentials(HTTP_AUTHORIZATION="Token " + self.da_token.key)
+        url = reverse("v2:domain-bulk-delete")
+
+        resp = self.client.post(url, {"ids": [own_domain.pk, other.pk]}, format="json")
+        self.assertEqual(resp.status_code, 400)
+        # No domain must have been deleted
+        self.assertEqual(
+            models.Domain.objects.filter(pk__in=[own_domain.pk, other.pk]).count(), 2
+        )
+
+    def test_bulk_delete_keep_folder(self):
+        domain = models.Domain.objects.get(name="test2.com")
+        url = reverse("v2:domain-bulk-delete")
+        with mock.patch("modoboa.admin.models.domain.Domain.delete") as delete_mock:
+            resp = self.client.post(
+                url, {"ids": [domain.pk], "keep_folder": True}, format="json"
+            )
+        self.assertEqual(resp.status_code, 204)
+        delete_mock.assert_called_once()
+        self.assertTrue(delete_mock.call_args[0][1])
+
     def test_administrators(self):
         domain = models.Domain.objects.get(name="test.com")
         url = reverse("v2:domain-administrators", args=[domain.pk])
