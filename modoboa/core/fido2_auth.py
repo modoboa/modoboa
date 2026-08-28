@@ -29,7 +29,7 @@ def begin_registration(request):
     options, state = server.register_begin(
         PublicKeyCredentialUserEntity(
             id=request.user.pk,
-            name=request.user.username.encode("utf-8"),
+            name=request.user.username,
             display_name=request.user.username,
         ),
         list(get_creds_from_user(request.user.pk).values()),

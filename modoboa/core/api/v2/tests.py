@@ -364,9 +364,37 @@ class AuthenticatorData(bytes):
 class FIDOViewSetTestCase(ModoAPITestCase):
     @mock.patch("fido2.server.Fido2Server.register_complete")
     def test_registration(self, register_complete_mock):
+        self.maxDiff = None
+
         url = reverse("v2:fido-registration-begin")
         resp = self.client.post(url)
         self.assertEqual(resp.status_code, 200)
+        self.assertIn("publicKey", resp.json())
+        self.assertIn("challenge", resp.json()["publicKey"])
+        self.assertIn("pubKeyCredParams", resp.json()["publicKey"])
+        self.assertIn("user", resp.json()["publicKey"])
+        self.assertIn("id", resp.json()["publicKey"]["user"])
+        self.assertEqual(resp.json(), {
+            "publicKey": {
+                "authenticatorSelection": {
+                    "requireResidentKey": False,
+                    "residentKey": "discouraged",
+                     "userVerification": "discouraged",
+                },
+                "excludeCredentials": [],
+                "challenge": resp.json()["publicKey"]["challenge"],  # Random value
+                "pubKeyCredParams": resp.json()["publicKey"]["pubKeyCredParams"],  # Complex and subject to change
+                "rp": {
+                    "id": "testserver",
+                    "name": "Modoboa",
+                },
+                "user": {
+                    "id": resp.json()["publicKey"]["user"]["id"],  # Random value
+                    "name": "admin",
+                    "displayName": "admin",
+                }
+            },
+        })
 
         register_complete_mock.side_effect = [AuthenticatorData()]
         data = {
