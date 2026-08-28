@@ -113,6 +113,13 @@ SMS_BACKENDS = [
 if settings.DEBUG:
     SMS_BACKENDS.insert(1, ("dummy", gettext_lazy("Dummy")))
 
+# A password recovery code is sent by SMS: the message needs time to reach its
+# recipient and to be typed back, so the accepted window is widened instead of
+# relying on the default one (about 90 seconds). A code stays valid for at
+# least SMS_CODE_PERIOD * SMS_CODE_BACKWARD_DRIFT seconds.
+SMS_CODE_PERIOD = 30
+SMS_CODE_BACKWARD_DRIFT = 20
+
 TFA_DEVICE_TOKEN_KEY = "otp_device_id"
 TFA_PRE_VERIFY_USER_PK = "tfa_pre_verify_user_pk"
 TFA_PRE_VERIFY_USER_BACKEND = "tfa_pre_verify_user_backend"

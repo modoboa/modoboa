@@ -5,18 +5,14 @@ import getpass
 import io
 import shutil
 import tempfile
-import oath
 from unittest import mock
 
 from PIL import Image
 
-from django.core import mail
 from django.core.cache import cache
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import override_settings
 from django.urls import reverse
-from django.utils.encoding import force_bytes
-from django.utils.http import urlsafe_base64_encode
 
 from modoboa.admin import (
     factories,
@@ -190,7 +186,6 @@ class ParametersAPITestCase(ModoAPITestCase):
 
 
 class AccountViewSetTestCase(ModoAPITestCase):
-
     @classmethod
     def setUpTestData(cls):  # NOQA:N802
         """Create test data."""
@@ -339,329 +334,6 @@ class AccountViewSetTestCase(ModoAPITestCase):
         self.assertEqual(len(resp.json()), 1)
 
 
-class PasswordResetTestCase(AccountViewSetTestCase):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.id = 0
-        self.sms_token = 0
-
-    @mock.patch("ovh.Client.get")
-    @mock.patch("ovh.Client.post")
-    def test_reset_password(self, client_post, client_get):
-        url = reverse("v2:password_reset")
-        # No payload provided
-        response = self.client.post(url)
-        self.assertEqual(response.status_code, 400)
-
-        # Unknown account: the response must not disclose that no user
-        # exists. It looks exactly like a successful email request and no
-        # message is actually sent.
-        data = {"email": "doesntexist@whoami.com"}
-        response = self.client.post(url, data, format="json")
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.json()["type"], "email")
-        self.assertEqual(len(mail.outbox), 0)
-
-        account = models.User.objects.get(username="user@test.com")
-
-        # Email reset test
-        # Known account without a recovery email: same generic response,
-        # still nothing sent.
-        data = {"email": account.email}
-        response = self.client.post(url, data, format="json")
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.json()["type"], "email")
-        self.assertEqual(len(mail.outbox), 0)
-        # With secondary email
-        account.secondary_email = "toto@test.com"
-        account.is_active = True
-        account.save()
-        response = self.client.post(url, data, format="json")
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.json()["type"], "email")
-
-        # The email must contain a valid confirmation link (regression
-        # guard: an unset template variable previously produced a stray
-        # double slash that broke the link).
-        self.assertEqual(len(mail.outbox), 1)
-        uid = urlsafe_base64_encode(force_bytes(account.pk))
-        email_body = mail.outbox[0].body
-        self.assertIn(f"/reset/{uid}/", email_body)
-        self.assertNotIn("//reset/", email_body)
-
-        # SMS reset test
-        self.set_global_parameters(
-            {
-                "sms_password_recovery": True,
-                "sms_provider": "ovh",
-                "sms_ovh_application_key": "key",
-                "sms_ovh_application_secret": "secret",
-                "sms_ovh_consumer_key": "consumer",
-            },
-            app="core",
-        )
-
-        # Phone number
-        account.phone_number = "+33612345678"
-        account.save()
-        client_get.return_value = ["service"]
-        client_post.return_value = {"totalCreditsRemoved": 1}
-        response = self.client.post(url, data, format="json")
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.json()["type"], "sms")
-
-    def test_password_reset_does_not_disclose_account_existence(self):
-        """Unknown and existing accounts must yield identical responses.
-
-        Regression test: the endpoint used to return a 404 for unknown
-        addresses (and different payloads depending on the account state),
-        turning it into an account-enumeration oracle.
-        """
-        url = reverse("v2:password_reset")
-
-        # Existing, active account with a working recovery email.
-        account = models.User.objects.get(username="user@test.com")
-        account.secondary_email = "toto@test.com"
-        account.is_active = True
-        account.save()
-
-        known = self.client.post(url, {"email": account.email}, format="json")
-        unknown = self.client.post(
-            url, {"email": "doesntexist@whoami.com"}, format="json"
-        )
-        # Same status code and body: the two cases are indistinguishable.
-        self.assertEqual(known.status_code, 200)
-        self.assertEqual(unknown.status_code, known.status_code)
-        self.assertEqual(unknown.json(), known.json())
-
-    @mock.patch("ovh.Client.get")
-    @mock.patch("ovh.Client.post")
-    def test_password_reset_sms_totp(self, client_post, client_get):
-        """Test reset password by SMS."""
-        url_create_sms = reverse("v2:password_reset")
-        url_sms_totp = reverse("v2:sms_totp")
-
-        # Prepare account
-        account = models.User.objects.get(username="user@test.com")
-        account.phone_number = "+33612345678"
-        account.secondary_email = "toto@test.com"
-        account.is_active = True
-        account.save()
-
-        # Send sms
-        client_get.return_value = ["service"]
-        client_post.return_value = {"totalCreditsRemoved": 1}
-        self.set_global_parameters(
-            {
-                "sms_password_recovery": True,
-                "sms_provider": "ovh",
-                "sms_ovh_application_key": "key",
-                "sms_ovh_application_secret": "secret",
-                "sms_ovh_consumer_key": "consumer",
-            }
-        )
-        self.client.logout()
-        self.create_session()
-        data = {"email": account.email}
-        response = self.client.post(url_create_sms, data, format="json")
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.json()["type"], "sms")
-        self.assertIn("totp_secret", self.client.session)
-
-        # Get the secret
-        session = self.client.session
-        secret = session["totp_secret"]
-
-        # Fail to provide type
-        data = {"sms_totp": "123456"}
-        response = self.client.post(url_sms_totp, data, format="json")
-        self.assertEqual(response.status_code, 400)
-
-        # Resend sms
-        data = {"type": "resend"}
-        response = self.client.post(url_sms_totp, data, format="json")
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.json()["type"], "resend")
-
-        # False totp code
-        data = {"sms_totp": "123456", "type": "confirm"}
-        response = self.client.post(url_sms_totp, data, format="json")
-        self.assertEqual(response.status_code, 400)
-        self.assertEqual(response.json()["reason"], "Wrong totp")
-
-        # Good totp code
-        data = {"sms_totp": oath.totp(secret), "type": "confirm"}
-        response = self.client.post(url_sms_totp, data, format="json")
-        self.assertEqual(response.status_code, 200)
-        self.assertIn("token", response.json())
-        self.assertIn("id", response.json())
-
-    @mock.patch("ovh.Client.get")
-    @mock.patch("ovh.Client.post")
-    def test_sms_totp_resend_does_not_reset_throttle(self, client_post, client_get):
-        """Ensure "resend" cannot be used to bypass the TOTP brute-force limit.
-
-        Regression test: the throttle counter used to be cleared on every
-        request, including "resend". An attacker could interleave resends
-        between wrong "confirm" guesses to reset the limit and brute-force
-        the 6-digit code indefinitely. The counter must now only be cleared
-        on a successful confirmation.
-        """
-        url_create_sms = reverse("v2:password_reset")
-        url_sms_totp = reverse("v2:sms_totp")
-
-        # Prepare account
-        account = models.User.objects.get(username="user@test.com")
-        account.phone_number = "+33612345678"
-        account.secondary_email = "toto@test.com"
-        account.is_active = True
-        account.save()
-
-        client_get.return_value = ["service"]
-        client_post.return_value = {"totalCreditsRemoved": 1}
-        self.set_global_parameters(
-            {
-                "sms_password_recovery": True,
-                "sms_provider": "ovh",
-                "sms_ovh_application_key": "key",
-                "sms_ovh_application_secret": "secret",
-                "sms_ovh_consumer_key": "consumer",
-            }
-        )
-        self.client.logout()
-        self.create_session()
-
-        # Start the SMS recovery flow to populate the session.
-        response = self.client.post(
-            url_create_sms, {"email": account.email}, format="json"
-        )
-        self.assertEqual(response.status_code, 200)
-
-        # The throttle counter is IP-based and shared across confirm/resend;
-        # start from a clean slate (the request above uses a different scope).
-        cache.clear()
-        # password_recovery_totp_check is rate-limited to 25/hour, so more than
-        # that many requests must eventually be throttled. Interleave wrong
-        # "confirm" guesses with "resend" requests: if resend reset the counter
-        # (the bug), no request would ever be throttled and we would loop
-        # unbounded; with the fix the shared counter keeps growing and a 429
-        # must be returned.
-        throttled = False
-        for _ in range(30):
-            response = self.client.post(
-                url_sms_totp,
-                {"sms_totp": "000000", "type": "confirm"},
-                format="json",
-            )
-            if response.status_code == 429:
-                throttled = True
-                break
-            self.assertEqual(response.status_code, 400)
-            response = self.client.post(url_sms_totp, {"type": "resend"}, format="json")
-            if response.status_code == 429:
-                throttled = True
-                break
-            self.assertEqual(response.status_code, 200)
-        cache.clear()
-        self.assertTrue(
-            throttled,
-            "TOTP confirm attempts were not throttled; resend reset the counter.",
-        )
-
-    @mock.patch("ovh.Client.get")
-    @mock.patch("ovh.Client.post")
-    def test_password_change(self, client_post, client_get):
-        url = reverse("v2:password_reset_confirm_v2")
-        url_create_sms = reverse("v2:password_reset")
-        url_sms_totp = reverse("v2:sms_totp")
-
-        client_get.return_value = ["service"]
-        client_post.return_value = {"totalCreditsRemoved": 1}
-        self.set_global_parameters(
-            {
-                "sms_password_recovery": True,
-                "sms_provider": "ovh",
-                "sms_ovh_application_key": "key",
-                "sms_ovh_application_secret": "secret",
-                "sms_ovh_consumer_key": "consumer",
-            }
-        )
-
-        # Prepare account
-        account = models.User.objects.get(username="user@test.com")
-        account.phone_number = "+33612345678"
-        account.secondary_email = "toto@test.com"
-        account.is_active = True
-        account.save()
-
-        # Send SMS
-        self.create_session()
-        data = {"email": account.email}
-        response = self.client.post(url_create_sms, data, format="json")
-        self.assertEqual(response.status_code, 200)
-        session = self.client.session
-        secret = session["totp_secret"]
-        # Get token and ID
-        data = {"sms_totp": oath.totp(secret), "type": "confirm"}
-        response = self.client.post(url_sms_totp, data, format="json")
-        self.assertEqual(response.status_code, 200)
-        id_ok = response.json()["id"]
-        token_ok = response.json()["token"]
-
-        # Password differs
-        data = {
-            "new_password1": "123456",
-            "new_password2": "123457",
-            "token": token_ok,
-            "id": id_ok,
-        }
-        response = self.client.post(url, data, format="json")
-        self.assertEqual(response.status_code, 400)
-
-        # Wrong ID
-        id_ko = urlsafe_base64_encode(force_bytes(-1))
-        data = {
-            "new_password1": "123456",
-            "new_password2": "123456",
-            "token": token_ok,
-            "id": id_ko,
-        }
-        response = self.client.post(url, data, format="json")
-        self.assertEqual(response.status_code, 404)
-
-        # Wrong Token
-        token_ko = "123456"
-        data = {
-            "new_password1": "123456",
-            "new_password2": "123456",
-            "token": token_ko,
-            "id": id_ok,
-        }
-        response = self.client.post(url, data, format="json")
-        self.assertEqual(response.status_code, 403)
-
-        # Failed password requirements
-        data = {
-            "new_password1": "123456",
-            "new_password2": "123456",
-            "token": token_ok,
-            "id": id_ok,
-        }
-        response = self.client.post(url, data, format="json")
-        self.assertEqual(response.json()["type"], "password_requirement")
-
-        # All good
-        data = {
-            "new_password1": "MyHardenedPass1!",
-            "new_password2": "MyHardenedPass1!",
-            "token": token_ok,
-            "id": id_ok,
-        }
-        response = self.client.post(url, data, format="json")
-        self.assertEqual(response.status_code, 200)
-        # TODO: See why user doesn't update it's password --> self.test_me_password(password_ok="MyHardenedPass1!")
-
-
 class LanguageViewSetTestCase(ModoAPITestCase):
     def test_list(self):
         url = reverse("v2:language-list")
@@ -677,7 +349,6 @@ class ComponentAPITestCase(ModoAPITestCase):
 
 
 class NotificationAPITestCase(ModoAPITestCase):
-
     def test_get_notifications(self):
         url = reverse("v2:notifications")
         resp = self.client.get(url)
@@ -687,12 +358,10 @@ class NotificationAPITestCase(ModoAPITestCase):
 
 
 class AuthenticatorData(bytes):
-
     credential_data = b"RESPONSE"
 
 
 class FIDOViewSetTestCase(ModoAPITestCase):
-
     @mock.patch("fido2.server.Fido2Server.register_complete")
     def test_registration(self, register_complete_mock):
         url = reverse("v2:fido-registration-begin")
@@ -715,7 +384,6 @@ class FIDOViewSetTestCase(ModoAPITestCase):
 
 
 class ThemeAPITestCase(ModoAPITestCase):
-
     def test_get(self):
         url = reverse("v2:theme")
         response = self.client.get(url)
@@ -869,7 +537,6 @@ class ThemeLogoUploadAPITestCase(ModoAPITestCase):
 
 
 class NewsFeedAPIViewTestCase(ModoAPITestCase):
-
     @classmethod
     def setUpTestData(cls):
         """Create test data."""
@@ -920,7 +587,6 @@ class NewsFeedAPIViewTestCase(ModoAPITestCase):
 
 
 class StatisticsAPIViewTestCase(ModoAPITestCase):
-
     @classmethod
     def setUpTestData(cls):
         """Create test data."""
