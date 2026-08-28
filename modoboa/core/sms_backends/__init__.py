@@ -2,7 +2,24 @@
 
 from importlib import import_module
 
+import oath
+
 from .. import constants
+
+
+def generate_recovery_code(secret) -> str:
+    """Return the password recovery code to send for given secret."""
+    return oath.totp(secret, period=constants.SMS_CODE_PERIOD)
+
+
+def check_recovery_code(secret, code) -> bool:
+    """Tell if given password recovery code is still valid."""
+    return oath.accept_totp(
+        secret,
+        code,
+        period=constants.SMS_CODE_PERIOD,
+        backward_drift=constants.SMS_CODE_BACKWARD_DRIFT,
+    )[0]
 
 
 class SMSBackend:

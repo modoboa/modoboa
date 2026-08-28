@@ -1,7 +1,5 @@
 """Core forms."""
 
-import oath
-
 from django import forms
 from django.contrib.auth import forms as auth_forms, get_user_model
 from django.db.models import Q
@@ -9,12 +7,11 @@ from django.utils.translation import gettext as _, gettext_lazy
 
 import django_otp
 
-from modoboa.core import signals
+from modoboa.core import signals, sms_backends
 from modoboa.lib.form_utils import UserKwargModelFormMixin
 
 
 class AuthenticationForm(auth_forms.AuthenticationForm):
-
     rememberme = forms.BooleanField(initial=False, required=False)
 
     def confirm_login_allowed(self, user):
@@ -69,7 +66,7 @@ class VerifySMSCodeForm(forms.Form):
 
     def clean_code(self):
         code = self.cleaned_data["code"]
-        if not oath.accept_totp(self.totp_secret, code)[0]:
+        if not sms_backends.check_recovery_code(self.totp_secret, code):
             raise forms.ValidationError(_("Invalid code"))
         return code
 

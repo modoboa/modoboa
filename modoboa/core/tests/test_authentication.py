@@ -2,9 +2,11 @@
 
 import os
 import smtplib
+import time
 from unittest import mock, skipIf, skipUnless
 
 from django.core import mail
+from django.core.cache import cache
 from django.test import override_settings
 from django.urls import reverse
 
@@ -15,10 +17,13 @@ except ImportError:
 
 from django.template import Context, Template
 
-from modoboa.core import constants, signals as core_signals
+import oath
+
+from modoboa.core import constants, signals as core_signals, sms_backends
 from modoboa.core.context_processors import theme
 from modoboa.core.password_hashers import get_password_hasher
 from modoboa.core.password_hashers.utils import get_dovecot_schemes
+from modoboa.lib import cryptutils
 from modoboa.lib.tests import NO_SMTP, ModoTestCase
 from .. import factories, models
 
@@ -26,7 +31,6 @@ DOVEADM_TEST_PATH = f"{os.path.dirname(__file__)}/doveadm"
 
 
 class MockedAttestedCredentialData:
-
     def __init__(self, _):
         pass
 
@@ -306,6 +310,12 @@ class PasswordResetTestCase(ModoTestCase):
             username="user2@test.com", groups=("SimpleUsers",)
         )
 
+    def setUp(self):
+        super().setUp()
+        # Throttle counters live in a persistent cache and are shared with the
+        # API v2 tests, so they must not leak from one test to the next.
+        cache.clear()
+
     def test_reset_password(self):
         """Validate simple case."""
         self.client.logout()
@@ -400,6 +410,170 @@ class PasswordResetTestCase(ModoTestCase):
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
         self.assertIn("totp_secret", self.client.session)
+
+    def test_reset_password_is_rate_limited(self):
+        """Requests are capped, to protect the SMS budget."""
+        self.client.logout()
+        url = reverse("password_reset")
+        data = {"email": self.account_ok.email}
+        # password_recovery_request is rate limited to 12/hour
+        for _ in range(12):
+            response = self.client.post(url, data)
+            self.assertEqual(response.status_code, 302)
+        response = self.client.post(url, data)
+        self.assertEqual(response.status_code, 429)
+        self.assertIn("Retry-After", response)
+
+    @mock.patch("oath.accept_totp")
+    def test_verify_sms_code_is_rate_limited(self, accept_totp):
+        """Wrong codes are capped and a good one clears the counter."""
+        accept_totp.return_value = (False, "")
+        self.client.logout()
+        session = self.client.session
+        session["user_pk"] = self.account_ok.pk
+        session["totp_secret"] = "secret"
+        session.save()
+        url = reverse("password_reset_confirm_code")
+        data = {"code": "123456"}
+        # password_recovery_totp_check is rate limited to 25/hour
+        for _ in range(25):
+            response = self.client.post(url, data)
+            self.assertEqual(response.status_code, 200)
+        response = self.client.post(url, data)
+        self.assertEqual(response.status_code, 429)
+
+        # A successful verification clears the counter
+        cache.clear()
+        accept_totp.return_value = (True, "")
+        response = self.client.post(url, data)
+        self.assertEqual(response.status_code, 302)
+        session = self.client.session
+        session["user_pk"] = self.account_ok.pk
+        session["totp_secret"] = "secret"
+        session.save()
+        accept_totp.return_value = (False, "")
+        response = self.client.post(url, data)
+        self.assertEqual(response.status_code, 200)
+
+    @mock.patch("ovh.Client.get")
+    @mock.patch("ovh.Client.post")
+    def test_resend_reset_code_is_rate_limited(self, client_post, client_get):
+        """A resend consumes the same budget as an initial request."""
+        self.set_global_parameters(
+            {
+                "sms_password_recovery": True,
+                "sms_provider": "ovh",
+                "sms_ovh_application_key": "key",
+                "sms_ovh_application_secret": "secret",
+                "sms_ovh_consumer_key": "consumer",
+            },
+            app="core",
+        )
+        client_get.return_value = ["service"]
+        client_post.return_value = {"totalCreditsRemoved": 1}
+        session = self.client.session
+        session["user_pk"] = self.account_ok.pk
+        session.save()
+        url = reverse("password_reset_resend_code")
+        for _ in range(12):
+            response = self.client.get(url)
+            self.assertEqual(response.status_code, 200)
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 429)
+        self.assertEqual(response.json()["status"], "ko")
+
+    def test_reset_confirm_is_rate_limited(self):
+        """Applying a new password is capped too."""
+        self.client.logout()
+        url = reverse("password_reset_confirm", args=["invalid", "set-password"])
+        data = {"new_password1": "Toto1234", "new_password2": "Toto1234"}
+        # password_recovery_apply is rate limited to 25/hour
+        for _ in range(25):
+            response = self.client.post(url, data)
+            self.assertEqual(response.status_code, 200)
+        response = self.client.post(url, data)
+        self.assertEqual(response.status_code, 429)
+
+    SMS_PARAMETERS = {
+        "sms_password_recovery": True,
+        "sms_provider": "ovh",
+        "sms_ovh_application_key": "key",
+        "sms_ovh_application_secret": "secret",
+        "sms_ovh_consumer_key": "consumer",
+    }
+
+    def test_recovery_code_validity_window(self):
+        """A code must survive the SMS delivery and typing delay."""
+        secret = cryptutils.random_hex_key(20)
+        self.assertTrue(
+            sms_backends.check_recovery_code(
+                secret, sms_backends.generate_recovery_code(secret)
+            )
+        )
+        now = int(time.time())
+        # Still valid after a bit more than 9 minutes...
+        code = oath.totp(secret, period=constants.SMS_CODE_PERIOD, t=now - 570)
+        self.assertTrue(sms_backends.check_recovery_code(secret, code))
+        # ... but not after 20
+        code = oath.totp(secret, period=constants.SMS_CODE_PERIOD, t=now - 1200)
+        self.assertFalse(sms_backends.check_recovery_code(secret, code))
+
+    @mock.patch("ovh.Client.get")
+    @mock.patch("ovh.Client.post")
+    def test_reset_password_sms_email_is_case_insensitive(
+        self, client_post, client_get
+    ):
+        """The SMS branch must match the email like the email one does."""
+        client_get.return_value = ["service"]
+        client_post.return_value = {"totalCreditsRemoved": 1}
+        self.set_global_parameters(self.SMS_PARAMETERS)
+        self.client.logout()
+        response = self.client.post(
+            reverse("password_reset"), {"email": self.account_ok.email.upper()}
+        )
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, reverse("password_reset_confirm_code"))
+
+    @mock.patch("ovh.Client.get")
+    @mock.patch("ovh.Client.post")
+    def test_reset_password_sms_empty_phone_number(self, client_post, client_get):
+        """An empty phone number must fall back to the email branch."""
+        client_get.return_value = ["service"]
+        client_post.return_value = {"totalCreditsRemoved": 1}
+        self.set_global_parameters(self.SMS_PARAMETERS)
+        account = factories.UserFactory(
+            username="empty@test.com",
+            secondary_email="empty@ext.com",
+            phone_number="",
+            groups=("SimpleUsers",),
+        )
+        self.client.logout()
+        response = self.client.post(reverse("password_reset"), {"email": account.email})
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, reverse("password_reset_done"))
+        client_post.assert_not_called()
+
+    @mock.patch("ovh.Client.get")
+    @mock.patch("ovh.Client.post")
+    def test_reset_password_sms_inactive_account(self, client_post, client_get):
+        """A disabled account must not receive a recovery SMS."""
+        client_get.return_value = ["service"]
+        client_post.return_value = {"totalCreditsRemoved": 1}
+        self.set_global_parameters(self.SMS_PARAMETERS)
+        self.account_ok.is_active = False
+        self.account_ok.save(update_fields=["is_active"])
+        self.addCleanup(
+            lambda: models.User.objects.filter(pk=self.account_ok.pk).update(
+                is_active=True
+            )
+        )
+        self.client.logout()
+        response = self.client.post(
+            reverse("password_reset"), {"email": self.account_ok.email}
+        )
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, reverse("password_reset_done"))
+        client_post.assert_not_called()
 
 
 class ThemeContextProcessorTestCase(ModoTestCase):
