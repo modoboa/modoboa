@@ -260,7 +260,7 @@ class UserEmailViewSet(viewsets.GenericViewSet):
     )
     def mark_as_junk(self, request):
         count = self.move_selection(
-            request, request.user.parameters.get_value("trash_folder")
+            request, request.user.parameters.get_value("junk_folder")
         )
         return response.Response({"count": count})
 
