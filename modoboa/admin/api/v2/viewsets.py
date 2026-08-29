@@ -31,6 +31,7 @@ from rest_framework.exceptions import PermissionDenied
 
 from modoboa.admin.api.v1 import viewsets as v1_viewsets
 from modoboa.core import constants as core_constants, models as core_models
+from modoboa.lib import permissions as lib_permissions
 from modoboa.lib import pagination
 from modoboa.lib import renderers as lib_renderers
 from modoboa.lib import signals as lib_signals
@@ -90,9 +91,21 @@ class DomainViewSet(
             return models.Domain.objects.get_for_admin(self.request.user)
         return models.Domain.objects.none()
 
+    def get_permissions(self):
+        if self.action == "bulk_delete":
+            # DjangoModelPermissions maps POST to the "add" permission, which
+            # is not what a deletion endpoint must require.
+            return [
+                permissions.IsAuthenticated(),
+                lib_permissions.CanDeleteDomain(),
+            ]
+        return super().get_permissions()
+
     def get_serializer_class(self, *args, **kwargs):
         if self.action == "delete":
             return serializers.DeleteDomainSerializer
+        if self.action == "bulk_delete":
+            return serializers.DomainBulkDeleteSerializer
         if self.action == "administrators":
             return serializers.DomainAdminSerializer
         if self.action in ["add_administrator", "remove_administrator"]:
@@ -111,6 +124,26 @@ class DomainViewSet(
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         domain.delete(request.user, serializer.validated_data["keep_folder"])
+        return response.Response(status=status.HTTP_204_NO_CONTENT)
+
+    @action(methods=["post"], detail=False)
+    def bulk_delete(self, request, **kwargs):
+        """Delete multiple domains at the same time."""
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        ids = serializer.validated_data["ids"]
+        domains = self.get_queryset().filter(pk__in=ids)
+        if domains.count() != len(set(ids)):
+            return response.Response(status=status.HTTP_404_NOT_FOUND)
+        mb = getattr(request.user, "mailbox", None)
+        if mb and mb.domain_id in ids:
+            return response.Response(
+                {"ids": [_("You can't delete your own domain")]},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+        keep_folder = serializer.validated_data["keep_folder"]
+        for domain in domains:
+            domain.delete(request.user, keep_folder)
         return response.Response(status=status.HTTP_204_NO_CONTENT)
 
     @action(methods=["get"], detail=True)
@@ -349,7 +382,6 @@ class IdentityViewSet(GetThrottleViewsetMixin, viewsets.ViewSet):
 
 
 class AliasFilter(dj_filters.FilterSet):
-
     domain = dj_filters.ModelChoiceFilter(
         queryset=lambda request: models.Domain.objects.get_for_admin(request.user),
         to_field_name="name",

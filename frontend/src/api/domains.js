@@ -53,6 +53,9 @@ export default {
   deleteDomain(domainId, data) {
     return repository.post(`/${domainResource}/${domainId}/delete/`, data)
   },
+  bulkDeleteDomains(data) {
+    return repository.post(`/${domainResource}/bulk_delete/`, data)
+  },
   createDomainAlias(data) {
     return repository.post(`/${domainAliasResource}/`, data)
   },

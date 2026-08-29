@@ -29,7 +29,10 @@
             class="flex-grow-0 w-33 mr-4"
           ></v-text-field>
           <slot name="extraActions" />
-          <v-menu location="bottom">
+          <v-menu
+            v-if="canDeleteDomain && selected.length > 1"
+            location="bottom"
+          >
             <template #activator="{ props }">
               <v-btn
                 variant="flat"
@@ -40,7 +43,9 @@
                 {{ $gettext('Actions') }}
               </v-btn>
             </template>
-            <v-list density="compact"> </v-list>
+            <v-list density="compact">
+              <MenuItems :items="getActionMenuItems()" />
+            </v-list>
           </v-menu>
           <v-btn
             variant="text"
@@ -204,7 +209,7 @@ import { ref, onMounted } from 'vue'
 const { $gettext } = useGettext()
 const router = useRouter()
 
-const { canSetRole } = usePermissions()
+const { canSetRole, canDeleteDomain } = usePermissions()
 const busStore = useBusStore()
 
 const domainHeaders = [
@@ -320,6 +325,45 @@ async function deleteDomain(domain) {
   } finally {
     loading.value = false
   }
+}
+
+async function deleteDomains() {
+  const result = await confirm.value.open(
+    $gettext('Warning'),
+    $gettext('Do you really want to delete the selected domains?'),
+    {
+      color: 'error',
+      cancelLabel: $gettext('No'),
+      agreeLabel: $gettext('Yes'),
+    }
+  )
+  if (!result) {
+    return
+  }
+  loading.value = true
+  try {
+    await domainsApi.bulkDeleteDomains({
+      ids: selected.value,
+      keep_folder: keepDomainFolder.value,
+    })
+    selected.value = []
+    keepDomainFolder.value = false
+    reloadDomains()
+    busStore.displayNotification({ msg: $gettext('Domains deleted') })
+  } finally {
+    loading.value = false
+  }
+}
+
+function getActionMenuItems() {
+  return [
+    {
+      label: $gettext('Delete'),
+      icon: 'mdi-delete-outline',
+      onClick: deleteDomains,
+      color: 'red',
+    },
+  ]
 }
 
 function editDomain(domain) {

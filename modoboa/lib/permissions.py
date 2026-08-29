@@ -194,3 +194,10 @@ class CanViewDomain(permissions.BasePermission):
 
     def has_permission(self, request, view):
         return request.user.has_perm("admin.view_domain")
+
+
+class CanDeleteDomain(permissions.BasePermission):
+    """Permissions class to allow users with delete_domain right."""
+
+    def has_permission(self, request, view):
+        return request.user.has_perm("admin.delete_domain")

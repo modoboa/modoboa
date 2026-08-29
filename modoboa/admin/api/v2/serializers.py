@@ -268,6 +268,13 @@ class DeleteDomainSerializer(serializers.Serializer):
     keep_folder = serializers.BooleanField(default=False)
 
 
+class DomainBulkDeleteSerializer(serializers.Serializer):
+    """Serializer used with bulk delete operation."""
+
+    ids = serializers.ListField(child=serializers.IntegerField(), allow_empty=False)
+    keep_folder = serializers.BooleanField(default=False)
+
+
 class AdminGlobalParametersSerializer(serializers.Serializer):
     """A serializer for global parameters."""
 
@@ -882,7 +889,6 @@ class AlarmSerializer(serializers.ModelSerializer):
 
 
 class AlarmBulkDeleteSerializer(serializers.Serializer):
-
     ids = serializers.ListField(child=serializers.IntegerField())
 
 

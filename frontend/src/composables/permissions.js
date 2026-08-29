@@ -17,6 +17,12 @@ export function usePermissions() {
     )
   })
 
+  const canDeleteDomain = computed(() => {
+    return [constants.RESELLER, constants.SUPER_ADMIN].includes(
+      authStore.authUser.role
+    )
+  })
+
   const canViewDomain = computed(() => {
     return [
       constants.DOMAIN_ADMIN,
@@ -28,6 +34,7 @@ export function usePermissions() {
   return {
     canSetRole,
     canAddDomain,
+    canDeleteDomain,
     canViewDomain,
   }
 }
