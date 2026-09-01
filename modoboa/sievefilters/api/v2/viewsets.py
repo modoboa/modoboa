@@ -53,7 +53,7 @@ class FilterSetViewSet(viewsets.ViewSet):
                 raise DRFValidationError({key: _("Name contains forbidden characters")})
 
     def get_sieve_client(self, request):
-        return SieveClient(user=request.user.username, password=str(request.auth))
+        return SieveClient(user=request.user.username, password=request.auth.token)
 
     def list(self, request):
         """Retrieve list of available filter sets."""

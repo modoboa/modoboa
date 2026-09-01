@@ -88,7 +88,7 @@ class ARmessage(models.Model):
                 )
 
     def manage_sieve_rule(self, request):
-        client = SieveClient(user=request.user.username, password=str(request.auth))
+        client = SieveClient(user=request.user.username, password=request.auth.token)
         active_script, scripts = client.listscripts()
         if not active_script:
             active_script = "DefaultScript"

@@ -44,7 +44,9 @@ class AddressBookViewSet(viewsets.GenericViewSet):
             return response.Response()
         if request.user.parameters.get_value("enable_carddav_sync", app="contacts"):
             queue = django_rq.get_queue("modoboa")
-            queue.enqueue(tasks.sync_addressbook_from_cdav, abook.pk, str(request.auth))
+            queue.enqueue(
+                tasks.sync_addressbook_from_cdav, abook.pk, request.auth.token
+            )
         return response.Response({})
 
 
