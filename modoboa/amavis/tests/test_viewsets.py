@@ -4,7 +4,7 @@ from unittest import mock
 from rq import SimpleWorker
 
 from django.core import mail
-from django.test import override_settings
+from django.test import override_settings, tag
 from django.urls import reverse
 
 import django_rq
@@ -374,6 +374,7 @@ class QuarantineViewSetTestCase(TestDataMixin, ModoAPITestCase):
         self.msgrcpt.refresh_from_db()
         self.assertEqual(self.msgrcpt.rs, status)
 
+    @tag("redis")
     def test_mark_as_ham(self):
         """Test mark_as_ham view."""
         self._test_mark_selection("ham", "H")
@@ -400,10 +401,12 @@ class QuarantineViewSetTestCase(TestDataMixin, ModoAPITestCase):
         response = self.client.post(url, data, format="json")
         self.assertEqual(response.status_code, 204)
 
+    @tag("redis")
     def test_mark_as_spam(self):
         """Test mark_as_spam view."""
         self._test_mark_selection("spam", "S")
 
+    @tag("redis")
     def test_manual_learning_as_user(self):
         """Test learning when connected as a simple user."""
         user = core_models.User.objects.get(username="user@test.com")
