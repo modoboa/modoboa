@@ -343,4 +343,10 @@ class FidoAuthenticationEndView(LoginViewMixin, APIView):
             user, fido_state, serializer.validated_data, request.get_host()
         )
         response = self.login(user, self.request.session.pop("rememberme", False))
-        return JsonResponse({"next": response.url})
+        return JsonResponse({
+            "next": response.url,
+            "user": {
+                "name": user.username,
+                "displayName": user.get_full_name(),
+            },
+        })
