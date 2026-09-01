@@ -72,11 +72,11 @@ dependencies = [
 	"python-magic>=0.4.24",
 	# RQ
 	# rq>=2.11 passes a `name` kwarg to CronScheduler.register() that
-	# django-rq's DjangoCronScheduler.register() does not yet accept,
-	# breaking `manage.py rqcron` (see rq/django-rq#818). Cap until a
-	# django-rq release picks up the fix.
-	"rq>=2.7.0,<2.11",
-	"django-rq>=4.1.1",
+	# django-rq's DjangoCronScheduler.register() did not accept before
+	# 4.2, breaking `manage.py rqcron` (see rq/django-rq#818). Require
+	# the fixed django-rq release instead of capping rq.
+	"rq>=2.7.0",
+	"django-rq>=4.2",
 	# Sieve
 	"sievelib>=1.4.1",
 	# User
