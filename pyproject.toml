@@ -42,7 +42,7 @@ dependencies = [
 	"djangorestframework>=3.16,<3.19",
 	"drf-spectacular",
 	"uritemplate",
-	"django-oauth-toolkit",
+	"django-oauth-toolkit>=3.4.0",
 	"django-cors-headers",
 	"libpass>=1.9.3",
 	"bcrypt~=5.0", # Requires libffi-dev and python-dev

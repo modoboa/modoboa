@@ -199,7 +199,9 @@ class AccountARMessageViewSetTestCase(PatcherMixin, ModoAPITestCase):
 
     def test_set_armessage(self):
         self.client.logout()
-        self.client.force_authenticate(self.account)
+        # A real access token is required here because it is forwarded to
+        # the ManageSieve server.
+        self.authenticate_user_with_oauth(self.account)
         url = reverse("api:account_armessage-armessage")
         fromdate = timezone.now()
         todate = fromdate + relativedelta(days=4)
