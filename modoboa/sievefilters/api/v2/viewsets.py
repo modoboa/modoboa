@@ -14,6 +14,7 @@ from rest_framework import permissions, response, viewsets
 from rest_framework.decorators import action
 from rest_framework.exceptions import ValidationError as DRFValidationError
 
+from modoboa.lib.oauth2 import get_access_token
 from modoboa.lib.viewsets import HasMailbox
 from modoboa.sievefilters import constants
 from modoboa.sievefilters.lib import (
@@ -53,7 +54,9 @@ class FilterSetViewSet(viewsets.ViewSet):
                 raise DRFValidationError({key: _("Name contains forbidden characters")})
 
     def get_sieve_client(self, request):
-        return SieveClient(user=request.user.username, password=request.auth.token)
+        return SieveClient(
+            user=request.user.username, password=get_access_token(request)
+        )
 
     def list(self, request):
         """Retrieve list of available filter sets."""

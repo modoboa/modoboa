@@ -7,6 +7,7 @@ from rest_framework import filters, response, viewsets
 from rest_framework.permissions import IsAuthenticated
 
 from modoboa.lib import pagination
+from modoboa.lib.oauth2 import get_access_token
 
 from . import models
 from . import serializers
@@ -45,7 +46,7 @@ class AddressBookViewSet(viewsets.GenericViewSet):
         if request.user.parameters.get_value("enable_carddav_sync", app="contacts"):
             queue = django_rq.get_queue("modoboa")
             queue.enqueue(
-                tasks.sync_addressbook_from_cdav, abook.pk, request.auth.token
+                tasks.sync_addressbook_from_cdav, abook.pk, get_access_token(request)
             )
         return response.Response({})
 
