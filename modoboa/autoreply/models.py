@@ -6,6 +6,7 @@ from django.utils.formats import localize
 from django.utils.translation import gettext_lazy as _
 
 from modoboa.admin.models import Mailbox
+from modoboa.lib.oauth2 import get_access_token
 from modoboa.sievefilters.lib import SieveClient
 
 
@@ -88,7 +89,9 @@ class ARmessage(models.Model):
                 )
 
     def manage_sieve_rule(self, request):
-        client = SieveClient(user=request.user.username, password=str(request.auth))
+        client = SieveClient(
+            user=request.user.username, password=get_access_token(request)
+        )
         active_script, scripts = client.listscripts()
         if not active_script:
             active_script = "DefaultScript"

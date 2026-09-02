@@ -5,6 +5,8 @@ from django.utils.translation import gettext as _
 
 from rest_framework import serializers
 
+from modoboa.lib.oauth2 import get_access_token
+
 from . import models
 from . import tasks
 
@@ -243,7 +245,7 @@ class UserPreferencesSerializer(serializers.Serializer):
             return
         if abook.last_sync:
             return
-        tasks.create_cdav_addressbook(abook, request.auth)
+        tasks.create_cdav_addressbook(abook, get_access_token(request))
         if not abook.contact_set.exists():
             abook.last_sync = timezone.now()
             abook.save(update_fields=["last_sync"])

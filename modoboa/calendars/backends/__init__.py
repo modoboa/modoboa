@@ -2,6 +2,8 @@
 
 from importlib import import_module
 
+from modoboa.lib.oauth2 import get_access_token
+
 
 class CalendarBackend:
     """Base backend class."""
@@ -35,4 +37,6 @@ def get_backend(name, *args, **kwargs):
 
 def get_backend_from_request(name, request, calendar=None):
     """Return a backend instance from a request."""
-    return get_backend(name, request.user.email, request.auth, calendar=calendar)
+    return get_backend(
+        name, request.user.email, get_access_token(request), calendar=calendar
+    )

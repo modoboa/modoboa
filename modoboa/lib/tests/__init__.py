@@ -1,14 +1,17 @@
 """Testing utilities."""
 
+import datetime
 import socket
 import tempfile
 
 from django.conf import settings
 from django.core import management
 from django.test import TestCase
+from django.utils import timezone
 
 from importlib import import_module
 
+from oauth2_provider.models import get_access_token_model, get_application_model
 from rest_framework.authtoken.models import Token
 from rest_framework.test import APITestCase
 
@@ -258,6 +261,31 @@ class ModoAPITestCase(ParametersMixin, APITestCase):
         token = self._tokens[user]
         self.client.credentials(HTTP_AUTHORIZATION=f"Token {token.key}")
         return token
+
+    def authenticate_user_with_oauth(self, user: core_models.User):
+        """Authenticate user with an OAuth2 access token.
+
+        Some features (webmail, sieve filters, ...) require a real access
+        token because it is forwarded to external services.
+        """
+        Application = get_application_model()
+        AccessToken = get_access_token_model()
+        application = Application.objects.create(
+            name=f"Test application for {user.username}",
+            redirect_uris="http://localhost",
+            user=user,
+            client_type=Application.CLIENT_PUBLIC,
+            authorization_grant_type=Application.GRANT_AUTHORIZATION_CODE,
+        )
+        access_token = AccessToken.objects.create(
+            user=user,
+            scope="read write",
+            expires=timezone.now() + datetime.timedelta(seconds=300),
+            token=f"access-token-for-{user.pk}",
+            application=application,
+        )
+        self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {access_token.token}")
+        return access_token
 
     def create_session(self):
         """Enable session storage across requests."""
