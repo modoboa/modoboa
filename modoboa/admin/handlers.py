@@ -1,6 +1,7 @@
 """Django signal handlers for admin."""
 
 from django.contrib.contenttypes.models import ContentType
+from django.db import transaction
 from django.db.models import signals
 from django.dispatch import receiver
 from django.utils.translation import gettext as _
@@ -267,10 +268,13 @@ def grant_access_to_all_objects(sender, account, role, **kwargs):
         models.Mailbox.objects.all(),
         models.Alias.objects.filter(internal=False),
     ]
-    for queryset in querysets:
-        permissions.grant_access_to_objects(
-            account, queryset, ContentType.objects.get_for_model(queryset.model)
-        )
+    # All or nothing: a partially promoted super admin would silently
+    # lack access to some objects.
+    with transaction.atomic():
+        for queryset in querysets:
+            permissions.grant_access_to_objects(
+                account, queryset, ContentType.objects.get_for_model(queryset.model)
+            )
 
 
 @receiver(admin_signals.import_object)

@@ -2,6 +2,7 @@
 
 from django.contrib.auth.models import Group, Permission
 from django.contrib.contenttypes.models import ContentType
+from django.db.models import QuerySet
 from django.utils.translation import gettext as _
 
 from rest_framework import permissions, serializers
@@ -102,11 +103,29 @@ def grant_access_to_objects(user, objects, ct):
     applies to all objects).
 
     :param user: a ``User`` object
-    :param objects: a list of objects
+    :param objects: a list of objects or a ``QuerySet``
     :param ct: the content type
     """
-    for obj in objects:
-        ObjectAccess.objects.get_or_create(user=user, content_type=ct, object_id=obj.id)
+    if isinstance(objects, QuerySet):
+        # Only primary keys are needed: don't build model instances, some
+        # of them query the database on their own to initialize.
+        object_ids = objects.values_list("pk", flat=True)
+    else:
+        object_ids = (obj.id for obj in objects)
+    granted = set(
+        ObjectAccess.objects.filter(user=user, content_type=ct).values_list(
+            "object_id", flat=True
+        )
+    )
+    ObjectAccess.objects.bulk_create(
+        [
+            ObjectAccess(user=user, content_type=ct, object_id=object_id)
+            for object_id in object_ids
+            if object_id not in granted
+        ],
+        batch_size=1000,
+        ignore_conflicts=True,
+    )
 
 
 def ungrant_access_to_object(obj, user=None):
