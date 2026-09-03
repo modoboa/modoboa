@@ -89,8 +89,8 @@ def update_permissions(sender, instance, **kwargs):
     """Permissions cleanup."""
     request = get_request()
     # request migth be None (management command context)
-    if request:
-        from_user = request.user
+    from_user = request.user if request else None
+    if from_user is not None:
         if from_user == instance:
             raise exceptions.PermDeniedException(_("You can't delete your own account"))
 
@@ -99,15 +99,14 @@ def update_permissions(sender, instance, **kwargs):
 
     # We send an additional signal before permissions are removed
     core_signals.account_deleted.send(sender="update_permissions", user=instance)
-    owner = permissions.get_object_owner(instance)
-    if owner == instance:
-        # The default admin is being removed...
-        owner = from_user
     # Change ownership of existing objects
-    for ooentry in instance.objectaccess_set.filter(is_owner=True):
-        if ooentry.content_object is not None:
-            permissions.grant_access_to_object(owner, ooentry.content_object, True)
-            permissions.ungrant_access_to_object(ooentry.content_object, instance)
+    owner = permissions.get_object_owner(instance)
+    if owner is None or owner == instance:
+        # The default admin owns itself: fall back on the user asking for
+        # the removal, then (inside transfer_ownership) on any other
+        # active super admin.
+        owner = from_user
+    permissions.transfer_ownership(instance, owner)
     # Remove existing permissions on this user
     permissions.ungrant_access_to_object(instance)
 
