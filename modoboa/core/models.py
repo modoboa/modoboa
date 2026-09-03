@@ -473,6 +473,11 @@ class ObjectAccess(models.Model):
 
     class Meta:
         unique_together = (("user", "content_type", "object_id"),)
+        indexes = [
+            # Most lookups target an object and ignore the user, so they
+            # can't use the unique index above (user is its first column).
+            models.Index(fields=["content_type", "object_id"]),
+        ]
 
     def __str__(self):
         return f"{self.user} => {self.content_object} ({self.content_type})"

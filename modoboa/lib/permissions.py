@@ -56,7 +56,7 @@ def get_account_roles(user, account=None):
     return sorted(result, key=lambda role: role[1])
 
 
-def grant_access_to_object(user, obj, is_owner=False):
+def grant_access_to_object(user, obj, is_owner=False, superusers=None):
     """Grant access to an object for a given user
 
     There are two different cases where we want to grant access to an
@@ -71,19 +71,28 @@ def grant_access_to_object(user, obj, is_owner=False):
     :param user: a ``User`` object
     :param obj: an admin. object (Domain, Mailbox, ...)
     :param is_owner: the user is the unique object's owner
+    :param superusers: pre-fetched super users, to avoid querying them
+                       again on each call when granting access in bulk
     """
     ct = ContentType.objects.get_for_model(obj)
     entry, created = ObjectAccess.objects.get_or_create(
-        user=user, content_type=ct, object_id=obj.id
+        user=user, content_type=ct, object_id=obj.id, defaults={"is_owner": is_owner}
     )
-    entry.is_owner = is_owner
-    entry.save()
+    if entry.is_owner != is_owner:
+        entry.is_owner = is_owner
+        entry.save(update_fields=["is_owner"])
     if not created or not is_owner:
         return
-    for su in User.objects.filter(is_superuser=True):
-        if su == user:
-            continue
-        ObjectAccess.objects.get_or_create(user=su, content_type=ct, object_id=obj.id)
+    if superusers is None:
+        superusers = User.objects.filter(is_superuser=True)
+    ObjectAccess.objects.bulk_create(
+        [
+            ObjectAccess(user=su, content_type=ct, object_id=obj.id)
+            for su in superusers
+            if su != user
+        ],
+        ignore_conflicts=True,
+    )
 
 
 def grant_access_to_objects(user, objects, ct):

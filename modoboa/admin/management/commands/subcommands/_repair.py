@@ -1,13 +1,16 @@
 """Management command to check and fix known problems."""
 
 from django.conf import settings
+from django.contrib.contenttypes.models import ContentType
 from django.core.management.base import BaseCommand
+from django.db import transaction
+from django.db.models import Exists, OuterRef
 from django.utils.encoding import smart_str
 
 
 from modoboa.admin import models
-from modoboa.core.models import User
-from modoboa.lib.permissions import get_object_owner, grant_access_to_object
+from modoboa.core.models import ObjectAccess, User
+from modoboa.lib.permissions import grant_access_to_object
 
 known_problems = []
 
@@ -23,18 +26,36 @@ def log(message, quiet=False, **options):
         print(message)
 
 
+def orphan_objects(qs):
+    """Restrict qs to objects without owner.
+
+    The lookup is pushed down to the database so that a single query is
+    needed, whatever the number of objects in qs.
+    """
+    ct = ContentType.objects.get_for_model(qs.model)
+    owner = ObjectAccess.objects.filter(
+        content_type=ct, object_id=OuterRef("pk"), is_owner=True
+    )
+    return qs.filter(~Exists(owner))
+
+
 def fix_owner(qs, dry_run=False, **options):
     """Fix ownership for orphan objects."""
     model = qs.model
-    for obj in qs:
+    superusers = None
+    default_admin = None
+    for obj in orphan_objects(qs):
         kw = {"cls": model.__name__, "obj": obj}
-        if get_object_owner(obj) is not None:
-            continue
         if dry_run:
             log("  {cls} {obj} has no owner".format(**kw), **options)
             continue
+        if superusers is None:
+            # Fetched once for the whole queryset instead of once per
+            # object, and reused by grant_access_to_object().
+            superusers = list(User.objects.filter(is_superuser=True).order_by("pk"))
+            default_admin = next((su for su in superusers if su.is_active), None)
         if isinstance(obj, User):
-            admin = User.objects.filter(is_superuser=True, is_active=True).first()
+            admin = default_admin
         elif isinstance(obj, models.Domain):
             admin = obj.admins.first()
         elif isinstance(obj, models.DomainAlias):
@@ -43,8 +64,8 @@ def fix_owner(qs, dry_run=False, **options):
             admin = obj.domain.admins.first()
         if not admin:
             # Fallback: use the first superuser found
-            admin = User.objects.filter(is_superuser=True, is_active=True).first()
-        grant_access_to_object(admin, obj, is_owner=True)
+            admin = default_admin
+        grant_access_to_object(admin, obj, is_owner=True, superusers=superusers)
         kw["admin"] = admin
         log("  {cls} {obj} is now owned by {admin}".format(**kw), **options)
 
@@ -55,9 +76,11 @@ def sometimes_objects_have_no_owner(**options):
     owned_models = (
         User.objects.all(),
         models.Domain.objects.all(),
-        models.DomainAlias.objects.all(),
-        models.Alias.objects.filter(internal=False, domain__isnull=False),
-        models.Mailbox.objects.filter(domain__isnull=False),
+        models.DomainAlias.objects.select_related("target"),
+        models.Alias.objects.select_related("domain").filter(
+            internal=False, domain__isnull=False
+        ),
+        models.Mailbox.objects.select_related("domain").filter(domain__isnull=False),
     )
     for qs in owned_models:
         fix_owner(qs, **options)
@@ -68,17 +91,38 @@ def sometimes_mailbox_have_no_alias(**options):
     """Sometime mailboxes have no alias."""
     alias_created = 0
     recipient_created = 0
-    for instance in models.Mailbox.objects.select_related("domain").all():
-        alias, created = models.Alias.objects.get_or_create(
-            address=instance.full_address, domain=instance.domain, internal=True
-        )
-        if created:
+    # Load what already exists first: the vast majority of mailboxes have
+    # nothing to fix and we don't want to query the database for each of them.
+    known_aliases = {
+        (address, domain_id): pk
+        for pk, address, domain_id in models.Alias.objects.filter(
+            internal=True
+        ).values_list("pk", "address", "domain_id")
+    }
+    known_recipients = set(
+        models.AliasRecipient.objects.filter(
+            alias__internal=True, r_mailbox__isnull=False
+        ).values_list("alias_id", "r_mailbox_id")
+    )
+    mailboxes = models.Mailbox.objects.values_list(
+        "pk", "address", "domain_id", "domain__name"
+    )
+    for mb_id, local_part, domain_id, domain_name in mailboxes.iterator():
+        full_address = f"{local_part}@{domain_name}"
+        alias_id = known_aliases.get((full_address, domain_id))
+        if alias_id is None:
+            alias = models.Alias.objects.create(
+                address=full_address, domain_id=domain_id, internal=True
+            )
+            alias_id = alias.pk
+            known_aliases[(full_address, domain_id)] = alias_id
             alias_created += 1
             log(f"Alias {alias} created", **options)
-        recipient, created = models.AliasRecipient.objects.get_or_create(
-            alias=alias, address=instance.full_address, r_mailbox=instance
-        )
-        if created:
+        if (alias_id, mb_id) not in known_recipients:
+            recipient = models.AliasRecipient.objects.create(
+                alias_id=alias_id, address=full_address, r_mailbox_id=mb_id
+            )
+            known_recipients.add((alias_id, mb_id))
             recipient_created += 1
             log(f"AliasRecipient {recipient} created", **options)
     if alias_created or recipient_created:
@@ -117,4 +161,8 @@ class Repair(BaseCommand):
             title = func.__doc__.strip()
             log("", **options)
             log(f"Checking for... {title}...", **options)
-            func(**options)
+            # A single transaction per check: the database commits once
+            # instead of once per fixed object, and a failing check leaves
+            # nothing half repaired behind.
+            with transaction.atomic():
+                func(**options)
