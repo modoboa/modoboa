@@ -1,3 +1,4 @@
+import copy
 import plistlib
 import uuid
 from defusedxml.ElementTree import ParseError, fromstring as ET_fromstring
@@ -9,6 +10,19 @@ from django.views import generic
 from django.views.decorators.csrf import csrf_exempt
 
 from modoboa.lib.email_utils import split_address
+
+
+def gen_subst_conn_settings(emailaddress: str, local_part: str, domain: str):
+    conn_settings = copy.deepcopy(settings.EMAIL_CLIENT_CONNECTION_SETTINGS)
+    for proto, proto_settings in conn_settings.items():
+        for name, value in proto_settings.items():
+            if isinstance(value, str):
+                value = value.replace("%EMAILADDRESS%", emailaddress)
+                value = value.replace("%EMAILLOCALPART%", local_part)
+                value = value.replace("%EMAILDOMAIN%", domain)
+                # %REALNAME% is skipped since it useless and hard cross-protocol
+                proto_settings[name] = value
+    return conn_settings
 
 
 def _email_address_from_xml_body(body: bytes) -> str | None:
@@ -36,7 +50,7 @@ class ConfigBaseMixin:
 
     content_type = "application/xml"
 
-    def get_common_context(self, emailaddress: str) -> dict:
+    def get_common_context(self, emailaddress: str, *, do_subst: bool = False) -> dict:
         local_part, domain = split_address(emailaddress)
 
         if domain is None:
@@ -46,7 +60,8 @@ class ConfigBaseMixin:
         return {
             "emailaddress": emailaddress,
             "domain": domain,
-            "connection_settings": settings.EMAIL_CLIENT_CONNECTION_SETTINGS,
+            "connection_settings": gen_subst_conn_settings(emailaddress, local_part, domain)
+            if do_subst else settings.EMAIL_CLIENT_CONNECTION_SETTINGS,
         }
 
 
@@ -55,6 +70,9 @@ class AutoConfigView(ConfigBaseMixin, generic.TemplateView):
     Format documentation:
     https://wiki.mozilla.org/Thunderbird:Autoconfiguration:ConfigFileFormat
     """
+
+    # Format documentation:
+    # https://wiki.mozilla.org/Thunderbird:Autoconfiguration:ConfigFileFormat
 
     http_method_names = ["get"]
     template_name = "autoconfig/autoconfig.xml"
@@ -83,7 +101,10 @@ class AutoDiscoverView(ConfigBaseMixin, generic.TemplateView):
         if not emailaddress:
             raise Http404
         context = super().get_context_data(**kwargs)
-        context.update(self.get_common_context(emailaddress))
+        # Perform server-side placeholder substition, since
+        # AutoDiscover clients will not understand
+        # Thunderbird placeholders
+        context.update(self.get_common_context(emailaddress, do_subst=True))
         return context
 
     def post(self, request, *args, **kwargs):
@@ -100,11 +121,13 @@ class MobileConfigView(generic.View):
         if not emailaddress:
             raise Http404
         local_part, domain = split_address(emailaddress)
+        # Perform server-side placeholder substition, since
+        # MobileConfig clients will not understand
+        # Thunderbird placeholders
+        conn_settings = gen_subst_conn_settings(emailaddress, local_part, domain)
         parts = domain.split(".")
         parts.reverse()
         reverse_domain = ".".join(parts)
-        imap_settings = settings.EMAIL_CLIENT_CONNECTION_SETTINGS["imap"]
-        smtp_settings = settings.EMAIL_CLIENT_CONNECTION_SETTINGS["smtp"]
         profile = {
             "PayloadType": "Configuration",
             "PayloadVersion": 1,
@@ -124,16 +147,16 @@ class MobileConfigView(generic.View):
                     "EmailAddress": emailaddress,
                     # incoming
                     "IncomingMailServerAuthentication": "EmailAuthPassword",
-                    "IncomingMailServerHostName": imap_settings["HOSTNAME"],
-                    "IncomingMailServerPortNumber": imap_settings["PORT"],
-                    "IncomingMailServerUseSSL": imap_settings["SOCKET_TYPE"].upper()
+                    "IncomingMailServerHostName": conn_settings["imap"]["HOSTNAME"],
+                    "IncomingMailServerPortNumber": conn_settings["imap"]["PORT"],
+                    "IncomingMailServerUseSSL": conn_settings["imap"]["SOCKET_TYPE"].upper()
                     == "SSL",  # `false` means StartTLS
                     "IncomingMailServerUsername": emailaddress,
                     # outgoing
                     "OutgoingMailServerAuthentication": "EmailAuthPassword",
-                    "OutgoingMailServerHostName": smtp_settings["HOSTNAME"],
-                    "OutgoingMailServerPortNumber": smtp_settings["PORT"],
-                    "OutgoingMailServerUseSSL": smtp_settings["SOCKET_TYPE"].upper()
+                    "OutgoingMailServerHostName": conn_settings["smtp"]["HOSTNAME"],
+                    "OutgoingMailServerPortNumber": conn_settings["smtp"]["PORT"],
+                    "OutgoingMailServerUseSSL": conn_settings["smtp"]["SOCKET_TYPE"].upper()
                     == "SSL",  # `false` means StartTLS,
                     "OutgoingMailServerUsername": emailaddress,
                     "OutgoingPasswordSameAsIncomingPassword": True,
