@@ -296,6 +296,12 @@ class User(AbstractUser):
             self.is_superuser = True
         else:
             if self.is_superuser or role == "SimpleUsers":
+                from modoboa.lib.permissions import transfer_ownership
+
+                # The account is about to lose every access it has, so
+                # the objects it owns must be given to somebody else
+                # first, otherwise they end up without any owner.
+                transfer_ownership(self)
                 ObjectAccess.objects.filter(user=self).delete()
             self.is_superuser = False
             try:

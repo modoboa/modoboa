@@ -1,5 +1,7 @@
 """Object level permissions."""
 
+from collections import defaultdict
+
 from django.contrib.auth.models import Group, Permission
 from django.contrib.contenttypes.models import ContentType
 from django.db.models import QuerySet
@@ -126,6 +128,64 @@ def grant_access_to_objects(user, objects, ct):
         batch_size=1000,
         ignore_conflicts=True,
     )
+
+
+def transfer_ownership(user, new_owner=None):
+    """Give the objects owned by an account to another one.
+
+    Must be called before an account loses its permissions (deletion,
+    role downgrade): its ``ObjectAccess`` entries are then removed, and
+    without this every object it owned would be left without any owner.
+
+    :param user: the current owner
+    :param new_owner: the account to transfer ownership to. Defaults to
+                      the owner of ``user``, then to the first active
+                      super admin.
+    :return: the new owner, or ``None`` if no candidate was found
+    """
+    if new_owner is None or new_owner == user:
+        new_owner = get_object_owner(user)
+    if new_owner is None or new_owner == user:
+        new_owner = (
+            User.objects.filter(is_superuser=True, is_active=True)
+            .exclude(pk=user.pk)
+            .first()
+        )
+    if new_owner is None:
+        return None
+    owned = defaultdict(set)
+    for content_type_id, object_id in user.objectaccess_set.filter(
+        is_owner=True
+    ).values_list("content_type_id", "object_id"):
+        owned[content_type_id].add(object_id)
+    for content_type_id, object_ids in owned.items():
+        # The new owner may already have a non owner access to some of
+        # those objects: update the existing entries, create the others.
+        existing = set(
+            ObjectAccess.objects.filter(
+                user=new_owner,
+                content_type_id=content_type_id,
+                object_id__in=object_ids,
+            ).values_list("object_id", flat=True)
+        )
+        if existing:
+            ObjectAccess.objects.filter(
+                user=new_owner, content_type_id=content_type_id, object_id__in=existing
+            ).update(is_owner=True)
+        ObjectAccess.objects.bulk_create(
+            [
+                ObjectAccess(
+                    user=new_owner,
+                    content_type_id=content_type_id,
+                    object_id=object_id,
+                    is_owner=True,
+                )
+                for object_id in object_ids - existing
+            ],
+            batch_size=1000,
+            ignore_conflicts=True,
+        )
+    return new_owner
 
 
 def ungrant_access_to_object(obj, user=None):
