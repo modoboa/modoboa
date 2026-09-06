@@ -14,6 +14,7 @@
       elevation="0"
       show-select
       :sort-by="sortByR"
+      :row-props="getRowProps"
       @update:options="updatedOptions"
     >
       <template #top>
@@ -43,6 +44,7 @@
                 v-bind="props"
                 size="small"
                 variant="flat"
+                :disabled="deletingIds.length > 0"
               >
                 {{ $gettext('Actions') }}
               </v-btn>
@@ -173,26 +175,40 @@
         </template>
       </template>
       <template #[`item.actions`]="{ item }">
-        <template
-          v-if="
-            item.possible_actions !== undefined &&
-            item.possible_actions.length !== 0
-          "
+        <div
+          v-if="isDeleting(item)"
+          class="d-inline-flex align-center text-error"
         >
-          <v-icon size="large" color="blue">mdi-circle-small</v-icon>
-        </template>
-        <v-menu location="bottom">
-          <template #activator="{ props }">
-            <v-btn
-              v-bind="props"
-              size="small"
-              icon="mdi-dots-horizontal"
-              variant="text"
-            >
-            </v-btn>
+          <span class="text-caption mr-2">{{ $gettext('Deleting...') }}</span>
+          <v-progress-circular
+            color="error"
+            indeterminate
+            size="18"
+            width="2"
+          />
+        </div>
+        <template v-else>
+          <template
+            v-if="
+              item.possible_actions !== undefined &&
+              item.possible_actions.length !== 0
+            "
+          >
+            <v-icon size="large" color="blue">mdi-circle-small</v-icon>
           </template>
-          <MenuItems :items="getMenuItems(item)" :obj="item" />
-        </v-menu>
+          <v-menu location="bottom">
+            <template #activator="{ props }">
+              <v-btn
+                v-bind="props"
+                size="small"
+                icon="mdi-dots-horizontal"
+                variant="text"
+              >
+              </v-btn>
+            </template>
+            <MenuItems :items="getMenuItems(item)" :obj="item" />
+          </v-menu>
+        </template>
       </template>
     </v-data-table-server>
     <ConfirmDialog ref="confirmAlias" />
@@ -337,6 +353,7 @@ const itemsPerPageR = ref(10)
 const sortByR = ref([])
 const columns = ref(defaultAccountsColumns)
 const showColumnsForm = ref(false)
+const deletingIds = ref([])
 
 const headers = computed(() => {
   const result = columns.value
@@ -418,6 +435,32 @@ function updateDisplayedColumns(selection) {
   showColumnsForm.value = false
 }
 
+function isDeleting(item) {
+  return deletingIds.value.includes(item.pk)
+}
+
+function getRowProps({ item }) {
+  return isDeleting(item) ? { class: 'deleting-row' } : {}
+}
+
+function startDeletion(pks) {
+  deletingIds.value = deletingIds.value.concat(pks)
+}
+
+/**
+ * Remove deleted identities from the current page so that the user gets an
+ * immediate feedback, the list is refreshed just after anyway.
+ */
+function endDeletion(pks, deleted) {
+  deletingIds.value = deletingIds.value.filter((pk) => !pks.includes(pk))
+  if (!deleted) {
+    return
+  }
+  identities.value = identities.value.filter((item) => !pks.includes(item.pk))
+  selected.value = selected.value.filter((pk) => !pks.includes(pk))
+  totalIdentities.value -= pks.length
+}
+
 function getMenuItems(item) {
   const result = []
   if (identityType.value === 'account') {
@@ -491,13 +534,15 @@ async function deleteAccount(account) {
     return
   }
 
-  loading.value = false
+  let deleted = false
+  startDeletion([account.pk])
   try {
     await accountsApi.delete(account.pk, { keepdir: keepAccountFolder.value })
-    fetchIdentities()
+    deleted = true
     displayNotification({ msg: $gettext('Account deleted') })
   } finally {
-    loading.value = false
+    endDeletion([account.pk], deleted)
+    fetchIdentities()
   }
 }
 
@@ -528,16 +573,19 @@ async function deleteIdentities() {
   if (!result) {
     return
   }
-  loading.value = true
+  const pks = [...selected.value]
+  let deleted = false
+  startDeletion(pks)
   try {
     await accountsApi.bulkDelete({
-      ids: selected.value,
+      ids: pks,
       keepdir: keepAccountFolder.value,
     })
+    deleted = true
     displayNotification({ msg: $gettext('Accounts deleted') })
-    fetchIdentities()
   } finally {
-    loading.value = false
+    endDeletion(pks, deleted)
+    fetchIdentities()
   }
 }
 
@@ -554,13 +602,15 @@ async function deleteAlias(alias) {
   if (!result) {
     return
   }
-  loading.value = false
+  let deleted = false
+  startDeletion([alias.pk])
   try {
     await aliasesApi.delete(alias.pk)
-    fetchIdentities()
+    deleted = true
     displayNotification({ msg: $gettext('Alias deleted') })
   } finally {
-    loading.value = false
+    endDeletion([alias.pk], deleted)
+    fetchIdentities()
   }
 }
 
@@ -584,6 +634,11 @@ fetchIdentities = debounce(fetchIdentities, 500)
 </script>
 
 <style scoped lang="scss">
+:deep(tr.deleting-row) {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
 a {
   text-decoration: none;
   color: rgb(var(--v-theme-primary));
