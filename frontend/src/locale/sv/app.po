@@ -54,12 +54,14 @@ msgstr "API token skapat"
 
 #: src/components/account/APISetupForm.vue:94
 #: src/components/account/FidoAuthForm.vue:189
-#: src/components/admin/domains/DNSDetail.vue:265
-#: src/components/admin/domains/DomainList.vue:300
-#: src/components/admin/identities/IdentityList.vue:482
-#: src/components/admin/identities/IdentityList.vue:522
+#: src/components/admin/domains/DNSDetail.vue:298
+#: src/components/admin/domains/DomainList.vue:305
+#: src/components/admin/domains/DomainList.vue:332
+#: src/components/admin/identities/IdentityList.vue:525
+#: src/components/admin/identities/IdentityList.vue:565
+#: src/components/admin/identities/IdentityList.vue:594
 #: src/components/tools/CreationForm.vue:135
-#: src/layouts/webmail/WebmailLayout.vue:221
+#: src/layouts/webmail/WebmailLayout.vue:260
 #: src/views/calendars/CalendarView.vue:535
 msgid "Warning"
 msgstr "Varning"
@@ -78,6 +80,7 @@ msgstr "Du håller på att radera din API-åtkomsttoken"
 #: src/components/admin/identities/AliasEditForm.vue:69
 #: src/components/admin/imap_migration/ProviderForm.vue:58
 #: src/components/tools/ConfirmDialog.vue:55
+#: src/components/webmail/SubscriptionsDialog.vue:32
 msgid "Cancel"
 msgstr "Avbryt"
 
@@ -91,7 +94,7 @@ msgstr "API token raderat"
 
 #: src/components/account/AutoReplyForm.vue:7
 #: src/components/admin/domains/DomainCreationForm.vue:226
-#: src/components/admin/domains/DomainList.vue:212
+#: src/components/admin/domains/DomainList.vue:217
 #: src/components/admin/domains/DomainSummary.vue:68
 #: src/components/admin/domains/form_steps/DomainGeneralForm.vue:20
 #: src/components/admin/identities/AccountCreationForm.vue:112
@@ -101,8 +104,8 @@ msgstr "API token raderat"
 #: src/components/admin/identities/AliasSummary.vue:16
 #: src/components/admin/identities/form_steps/AccountGeneralForm.vue:46
 #: src/components/admin/identities/form_steps/AliasGeneralForm.vue:53
-#: src/components/admin/identities/IdentityList.vue:235
-#: src/components/admin/identities/IdentityList.vue:274
+#: src/components/admin/identities/IdentityList.vue:251
+#: src/components/admin/identities/IdentityList.vue:290
 msgid "Enabled"
 msgstr "Aktiverad"
 
@@ -224,13 +227,13 @@ msgstr "namn"
 #: src/components/account/FidoAuthForm.vue:130
 #: src/components/account/FilterForm.vue:7
 #: src/components/account/FilterSetForm.vue:9
-#: src/components/admin/domains/DNSDetail.vue:195
+#: src/components/admin/domains/DNSDetail.vue:210
 #: src/components/admin/domains/DomainAdminList.vue:112
 #: src/components/admin/domains/DomainAliasForm.vue:8
 #: src/components/admin/domains/DomainCreationForm.vue:223
-#: src/components/admin/domains/DomainList.vue:211
+#: src/components/admin/domains/DomainList.vue:216
 #: src/components/admin/domains/form_steps/DomainOptionsForm.vue:11
-#: src/components/admin/identities/IdentityList.vue:265
+#: src/components/admin/identities/IdentityList.vue:281
 #: src/components/admin/imap_migration/ProviderCreationForm.vue:53
 #: src/components/admin/imap_migration/ProvidersList.vue:114
 #: src/components/calendars/CalendarForm.vue:15
@@ -257,10 +260,10 @@ msgstr "Använd antal"
 #: src/components/account/FilterForm.vue:76
 #: src/components/admin/alarms/AlarmList.vue:33
 #: src/components/admin/alarms/AlarmList.vue:108
-#: src/components/admin/domains/DomainList.vue:40
-#: src/components/admin/domains/DomainList.vue:235
-#: src/components/admin/identities/IdentityList.vue:47
-#: src/components/admin/identities/IdentityList.vue:345
+#: src/components/admin/domains/DomainList.vue:43
+#: src/components/admin/domains/DomainList.vue:240
+#: src/components/admin/identities/IdentityList.vue:49
+#: src/components/admin/identities/IdentityList.vue:362
 #: src/components/admin/imap_migration/MigrationsList.vue:34
 #: src/components/admin/imap_migration/MigrationsList.vue:90
 #: src/components/admin/imap_migration/ProvidersList.vue:36
@@ -279,24 +282,28 @@ msgid "Do you really want to delete this WebAuthn device?"
 msgstr "Vill du verkligen ta bort den här WebAuthn-enheten?"
 
 #: src/components/account/FidoAuthForm.vue:193
-#: src/components/admin/domains/DNSDetail.vue:251
-#: src/components/admin/domains/DNSDetail.vue:271
-#: src/components/admin/domains/DomainList.vue:306
-#: src/components/admin/identities/IdentityList.vue:487
-#: src/components/admin/identities/IdentityList.vue:527
+#: src/components/admin/domains/DNSDetail.vue:284
+#: src/components/admin/domains/DNSDetail.vue:304
+#: src/components/admin/domains/DomainList.vue:311
+#: src/components/admin/domains/DomainList.vue:336
+#: src/components/admin/identities/IdentityList.vue:530
+#: src/components/admin/identities/IdentityList.vue:570
+#: src/components/admin/identities/IdentityList.vue:599
 #: src/components/tools/CreationForm.vue:142
-#: src/layouts/webmail/WebmailLayout.vue:226
+#: src/layouts/webmail/WebmailLayout.vue:265
 msgid "No"
 msgstr "Nej"
 
 #: src/components/account/FidoAuthForm.vue:194
-#: src/components/admin/domains/DNSDetail.vue:252
-#: src/components/admin/domains/DNSDetail.vue:272
-#: src/components/admin/domains/DomainList.vue:307
-#: src/components/admin/identities/IdentityList.vue:486
-#: src/components/admin/identities/IdentityList.vue:526
+#: src/components/admin/domains/DNSDetail.vue:285
+#: src/components/admin/domains/DNSDetail.vue:305
+#: src/components/admin/domains/DomainList.vue:312
+#: src/components/admin/domains/DomainList.vue:337
+#: src/components/admin/identities/IdentityList.vue:529
+#: src/components/admin/identities/IdentityList.vue:569
+#: src/components/admin/identities/IdentityList.vue:598
 #: src/components/tools/CreationForm.vue:141
-#: src/layouts/webmail/WebmailLayout.vue:225
+#: src/layouts/webmail/WebmailLayout.vue:264
 msgid "Yes"
 msgstr "Ja"
 
@@ -440,7 +447,7 @@ msgstr "Allmänna inställningar"
 #: src/components/account/ProfileForm.vue:9
 #: src/components/admin/identities/AccountCreationForm.vue:101
 #: src/components/admin/identities/form_steps/AccountGeneralForm.vue:18
-#: src/components/admin/identities/IdentityList.vue:267
+#: src/components/admin/identities/IdentityList.vue:283
 #: src/components/contacts/ContactForm.vue:12
 #: src/components/contacts/ContactList.vue:219
 msgid "First name"
@@ -457,7 +464,7 @@ msgstr "Efternamn"
 #: src/components/account/ProfileForm.vue:22
 #: src/components/admin/identities/AccountSummary.vue:27
 #: src/components/admin/identities/form_steps/AccountProfileForm.vue:3
-#: src/components/admin/identities/IdentityList.vue:281
+#: src/components/admin/identities/IdentityList.vue:297
 msgid "Language"
 msgstr "Språk"
 
@@ -477,7 +484,7 @@ msgstr "där"
 #: src/components/account/ProfileForm.vue:50
 #: src/components/admin/identities/AccountSummary.vue:37
 #: src/components/admin/identities/form_steps/AccountProfileForm.vue:13
-#: src/components/admin/identities/IdentityList.vue:283
+#: src/components/admin/identities/IdentityList.vue:299
 #: src/components/contacts/PhoneNumberField.vue:5
 msgid "Phone number"
 msgstr "Telefonnummer"
@@ -485,7 +492,7 @@ msgstr "Telefonnummer"
 #: src/components/account/ProfileForm.vue:54
 #: src/components/admin/identities/AccountSummary.vue:33
 #: src/components/admin/identities/form_steps/AccountProfileForm.vue:19
-#: src/components/admin/identities/IdentityList.vue:287
+#: src/components/admin/identities/IdentityList.vue:303
 msgid "Secondary email"
 msgstr "Sekundär e-post"
 
@@ -497,15 +504,15 @@ msgstr "Uppdatera inställningar"
 msgid "Update Password"
 msgstr "Uppdatera lösenord"
 
-#: src/components/account/ProfileForm.vue:130
+#: src/components/account/ProfileForm.vue:129
 msgid "Profile updated"
 msgstr "Profil uppdaterad"
 
-#: src/components/account/ProfileForm.vue:132
+#: src/components/account/ProfileForm.vue:131
 msgid "Language does no exist"
 msgstr "Språket existerar inte"
 
-#: src/components/account/ProfileForm.vue:149
+#: src/components/account/ProfileForm.vue:148
 msgid "Password updated"
 msgstr "Lösenord uppdaterat"
 
@@ -609,7 +616,7 @@ msgstr "Registrera autentiseringsverktyg"
 
 #: src/components/admin/alarms/AlarmList.vue:22
 #: src/components/admin/domains/DomainList.vue:24
-#: src/components/admin/identities/IdentityList.vue:24
+#: src/components/admin/identities/IdentityList.vue:25
 #: src/components/admin/imap_migration/ProvidersList.vue:20
 #: src/components/admin/logs/AuditTrailList.vue:17
 #: src/components/admin/logs/MessageList.vue:17
@@ -657,10 +664,11 @@ msgstr "Meddelande"
 #: src/components/admin/alarms/AlarmList.vue:125
 #: src/components/admin/alarms/AlarmList.vue:142
 #: src/components/admin/domains/DomainAliasForm.vue:41
-#: src/components/admin/domains/DomainList.vue:362
-#: src/components/admin/identities/IdentityList.vue:442
-#: src/components/admin/identities/IdentityList.vue:454
-#: src/components/admin/identities/IdentityList.vue:467
+#: src/components/admin/domains/DomainList.vue:361
+#: src/components/admin/domains/DomainList.vue:406
+#: src/components/admin/identities/IdentityList.vue:485
+#: src/components/admin/identities/IdentityList.vue:497
+#: src/components/admin/identities/IdentityList.vue:510
 #: src/components/admin/imap_migration/MigrationsList.vue:130
 #: src/components/admin/imap_migration/ProvidersList.vue:146
 #: src/components/calendars/EventForm.vue:90
@@ -830,101 +838,101 @@ msgstr "Väntande"
 msgid "Auto configuration"
 msgstr "Automatisk konfiguration"
 
-#: src/components/admin/domains/DNSDetail.vue:68
+#: src/components/admin/domains/DNSDetail.vue:71
 msgid "autoconfig record (Mozilla): %{ value }"
 msgstr "\"autoconfig-post (Mozilla): %{ value }\""
 
-#: src/components/admin/domains/DNSDetail.vue:74
+#: src/components/admin/domains/DNSDetail.vue:77
 msgid "autoconfig record (Mozilla) not found"
 msgstr "autoconfig-posten (Mozilla) hittades inte"
 
-#: src/components/admin/domains/DNSDetail.vue:80
+#: src/components/admin/domains/DNSDetail.vue:86
 msgid "autodiscover record (Microsoft): %{ value }"
 msgstr "autodiscover-post (Microsoft): %{ value }"
 
-#: src/components/admin/domains/DNSDetail.vue:86
+#: src/components/admin/domains/DNSDetail.vue:92
 msgid "autodiscover record (Microsoft) not found"
 msgstr "autodiscover-post (Microsoft) hittades inte"
 
-#: src/components/admin/domains/DNSDetail.vue:90
+#: src/components/admin/domains/DNSDetail.vue:96
 msgid "Authentication"
 msgstr "Autentisering"
 
-#: src/components/admin/domains/DNSDetail.vue:94
+#: src/components/admin/domains/DNSDetail.vue:103
 msgid "SPF record found"
 msgstr "SPF post hittad"
 
-#: src/components/admin/domains/DNSDetail.vue:97
+#: src/components/admin/domains/DNSDetail.vue:106
 msgid "SPF record not found"
 msgstr "SPF post saknas"
 
-#: src/components/admin/domains/DNSDetail.vue:102
+#: src/components/admin/domains/DNSDetail.vue:114
 msgid "DKIM record found"
 msgstr "DKIM-post hittades"
 
-#: src/components/admin/domains/DNSDetail.vue:105
+#: src/components/admin/domains/DNSDetail.vue:117
 msgid "DKIM record not found"
 msgstr "DKIM-posten hittades inte"
 
-#: src/components/admin/domains/DNSDetail.vue:110
+#: src/components/admin/domains/DNSDetail.vue:125
 msgid "DMARC record found"
 msgstr "DMARC post hittad"
 
-#: src/components/admin/domains/DNSDetail.vue:113
+#: src/components/admin/domains/DNSDetail.vue:128
 msgid "DMARC record not found"
 msgstr "DMARC post ej hittad"
 
-#: src/components/admin/domains/DNSDetail.vue:121
+#: src/components/admin/domains/DNSDetail.vue:136
 msgid "DKIM key"
 msgstr "DKIM nyckel"
 
-#: src/components/admin/domains/DNSDetail.vue:126
+#: src/components/admin/domains/DNSDetail.vue:141
 msgid "Show key"
 msgstr "Visa nyckel"
 
-#: src/components/admin/domains/DNSDetail.vue:132
+#: src/components/admin/domains/DNSDetail.vue:147
 msgid "Copy key to clipboard"
 msgstr "Kopiera nyckel till urklipp"
 
-#: src/components/admin/domains/DNSDetail.vue:137
+#: src/components/admin/domains/DNSDetail.vue:152
 msgid "Generate a new DKIM key"
 msgstr "Generera en ny DKIM nyckel"
 
-#: src/components/admin/domains/DNSDetail.vue:144
+#: src/components/admin/domains/DNSDetail.vue:159
 msgid "Not generated"
 msgstr "Ej genererad"
 
-#: src/components/admin/domains/DNSDetail.vue:196
+#: src/components/admin/domains/DNSDetail.vue:211
 #: src/components/admin/identities/AccountSenderAddresses.vue:73
 #: src/components/admin/identities/AliasCreationForm.vue:60
 #: src/components/admin/identities/AliasEditForm.vue:16
-#: src/components/admin/identities/IdentityList.vue:234
+#: src/components/admin/identities/IdentityList.vue:250
 #: src/components/admin/imap_migration/ProviderCreationForm.vue:54
 #: src/components/admin/imap_migration/ProvidersList.vue:115
 #: src/components/contacts/ContactForm.vue:85
 msgid "Address"
 msgstr "Adress"
 
-#: src/components/admin/domains/DNSDetail.vue:197
+#: src/components/admin/domains/DNSDetail.vue:212
 msgid "Updated"
 msgstr "Uppdaterad"
 
-#: src/components/admin/domains/DNSDetail.vue:210
+#: src/components/admin/domains/DNSDetail.vue:243
 msgid "DKIM key copied to clipboard"
 msgstr "DKIM-nyckel kopierad till urklipp"
 
-#: src/components/admin/domains/DNSDetail.vue:223
+#: src/components/admin/domains/DNSDetail.vue:256
 msgid ""
 "A new key will be generated soon. Refresh the page in a moment to see it."
 msgstr ""
 "En ny nyckel kommer snart att skapas. Ladda om sidan om en stund för att se "
 "den."
 
-#: src/components/admin/domains/DNSDetail.vue:245
+#: src/components/admin/domains/DNSDetail.vue:278
 msgid "warning"
 msgstr "varning"
 
-#: src/components/admin/domains/DNSDetail.vue:246
+#: src/components/admin/domains/DNSDetail.vue:279
 msgid ""
 "DKIM key does not seem to be generated yet or has failed. Do you want to "
 "requeue the job?"
@@ -932,7 +940,7 @@ msgstr ""
 "DKIM-nyckeln verkar inte ha genererats ännu eller har misslyckats. Vill du "
 "köa jobbet?"
 
-#: src/components/admin/domains/DNSDetail.vue:266
+#: src/components/admin/domains/DNSDetail.vue:299
 msgid "DKIM keys already exist for this domain. Do you want to overwrite them?"
 msgstr "DKIM-nycklar finns redan för den här domänen. Vill du skriva över dem?"
 
@@ -957,7 +965,7 @@ msgid "Administrators of"
 msgstr "Administratörer för"
 
 #: src/components/admin/domains/DomainAdminList.vue:9
-#: src/components/admin/domains/DomainList.vue:352
+#: src/components/admin/domains/DomainList.vue:396
 msgid "Administrators"
 msgstr "Administratörer"
 
@@ -1085,13 +1093,13 @@ msgid "Enable DKIM signing"
 msgstr "Aktivera DKIM signering"
 
 #: src/components/admin/domains/DomainCreationForm.vue:250
-#: src/components/admin/domains/DomainList.vue:221
+#: src/components/admin/domains/DomainList.vue:226
 #: src/components/admin/domains/DomainSummary.vue:16
 #: src/components/admin/domains/form_steps/DomainLimitationsForm.vue:5
 #: src/components/admin/identities/AccountCreationForm.vue:129
 #: src/components/admin/identities/AccountSummary.vue:52
 #: src/components/admin/identities/form_steps/AccountMailboxForm.vue:3
-#: src/components/admin/identities/IdentityList.vue:276
+#: src/components/admin/identities/IdentityList.vue:292
 msgid "Quota"
 msgstr "Kvota"
 
@@ -1229,27 +1237,27 @@ msgstr "Service:"
 msgid "Resources"
 msgstr "Resurser"
 
-#: src/components/admin/domains/DomainList.vue:67
+#: src/components/admin/domains/DomainList.vue:72
 msgid "Relay"
 msgstr "Relä"
 
-#: src/components/admin/domains/DomainList.vue:107
-#: src/components/admin/domains/DomainList.vue:118
+#: src/components/admin/domains/DomainList.vue:112
+#: src/components/admin/domains/DomainList.vue:123
 #: src/components/admin/domains/DomainSummary.vue:18
 #: src/components/admin/domains/DomainSummary.vue:25
 #: src/components/admin/domains/DomainSummary.vue:56
 #: src/components/admin/identities/AccountSummary.vue:54
-#: src/components/admin/identities/IdentityList.vue:139
-#: src/components/admin/identities/IdentityList.vue:168
+#: src/components/admin/identities/IdentityList.vue:141
+#: src/components/admin/identities/IdentityList.vue:170
 #: src/components/tools/ResourcesView.vue:9
 msgid "Unlimited"
 msgstr "Obegränsat"
 
-#: src/components/admin/domains/DomainList.vue:168
+#: src/components/admin/domains/DomainList.vue:173
 msgid "Do not delete domain folder"
 msgstr "Ta inte bort domänmappen"
 
-#: src/components/admin/domains/DomainList.vue:213
+#: src/components/admin/domains/DomainList.vue:218
 #: src/components/admin/domains/DomainSummary.vue:64
 #: src/components/admin/identities/AccountAliases.vue:4
 #: src/components/admin/identities/AccountCreationForm.vue:146
@@ -1258,25 +1266,35 @@ msgstr "Ta inte bort domänmappen"
 msgid "Aliases"
 msgstr "Alias"
 
-#: src/components/admin/domains/DomainList.vue:215
+#: src/components/admin/domains/DomainList.vue:220
 msgid "DNS status"
 msgstr "DNS status"
 
-#: src/components/admin/domains/DomainList.vue:219
+#: src/components/admin/domains/DomainList.vue:224
 msgid "Sending limit"
 msgstr "Sändningsgräns"
 
-#: src/components/admin/domains/DomainList.vue:301
+#: src/components/admin/domains/DomainList.vue:306
 msgid "Do you really want to delete the domain %{ domain }?"
 msgstr "Vill du verkligen ta bort domänen %{ domain }?"
 
-#: src/components/admin/domains/DomainList.vue:318
+#: src/components/admin/domains/DomainList.vue:323
 msgid "Domain deleted"
 msgstr "Domän raderad"
 
-#: src/components/admin/domains/DomainList.vue:357
-#: src/components/admin/identities/IdentityList.vue:437
-#: src/components/admin/identities/IdentityList.vue:449
+#: src/components/admin/domains/DomainList.vue:333
+#, fuzzy
+msgid "Do you really want to delete the selected domains?"
+msgstr "Vill du verkligen ta bort domänen %{ domain }?"
+
+#: src/components/admin/domains/DomainList.vue:352
+#, fuzzy
+msgid "Domains deleted"
+msgstr "Domän raderad"
+
+#: src/components/admin/domains/DomainList.vue:401
+#: src/components/admin/identities/IdentityList.vue:480
+#: src/components/admin/identities/IdentityList.vue:492
 #: src/components/admin/imap_migration/ProvidersList.vue:152
 #: src/components/contacts/ContactList.vue:232
 #: src/views/account/FiltersView.vue:346
@@ -1284,7 +1302,7 @@ msgstr "Domän raderad"
 msgid "Edit"
 msgstr "Redigera"
 
-#: src/components/admin/domains/DomainList.vue:370
+#: src/components/admin/domains/DomainList.vue:414
 #: src/layouts/admin/AdminLayout.vue:66
 msgid "Alarms"
 msgstr "Larm"
@@ -1376,6 +1394,7 @@ msgstr ""
 #: src/components/admin/domains/DomainPolicyForm.vue:96
 #: src/components/tools/ChooseColumnsForm.vue:19
 #: src/components/tools/TimeSerieChart.vue:22
+#: src/components/webmail/SubscriptionsDialog.vue:38
 msgid "Apply"
 msgstr "Tillämpa"
 
@@ -1388,8 +1407,8 @@ msgstr "Allmänn information"
 #: src/components/admin/domains/DomainSummary.vue:8
 #: src/components/admin/identities/AccountSummary.vue:8
 #: src/components/admin/identities/AliasSummary.vue:8
-#: src/components/admin/identities/IdentityList.vue:249
-#: src/components/admin/identities/IdentityList.vue:303
+#: src/components/admin/identities/IdentityList.vue:265
+#: src/components/admin/identities/IdentityList.vue:319
 msgid "Creation date"
 msgstr "Datum skapad"
 
@@ -1409,7 +1428,7 @@ msgstr "Daglig sändningsgräns"
 
 #: src/components/admin/domains/DomainSummary.vue:38
 #: src/components/admin/identities/AccountSummary.vue:79
-#: src/components/admin/identities/IdentityList.vue:164
+#: src/components/admin/identities/IdentityList.vue:166
 #, fuzzy
 msgid "Sending forbidden"
 msgstr "Sändningsgräns"
@@ -1486,7 +1505,7 @@ msgstr "Nytt konto"
 #: src/components/admin/identities/AccountCreationForm.vue:165
 #: src/components/admin/identities/AccountEditForm.vue:9
 #: src/components/admin/identities/AccountSummary.vue:23
-#: src/components/admin/identities/IdentityList.vue:275
+#: src/components/admin/identities/IdentityList.vue:291
 msgid "Role"
 msgstr "Roll"
 
@@ -1544,7 +1563,7 @@ msgid "Send only"
 msgstr "Skicka endast"
 
 #: src/components/admin/identities/AccountEditForm.vue:145
-#: src/components/admin/identities/IdentityList.vue:75
+#: src/components/admin/identities/IdentityList.vue:77
 #: src/views/admin/domains/DomainsView.vue:26
 #: src/views/admin/identities/AliasView.vue:5
 #: src/views/admin/identities/IdentitiesView.vue:26
@@ -1601,7 +1620,7 @@ msgid "Last login date"
 msgstr "Senaste inloggning"
 
 #: src/components/admin/identities/AccountSummary.vue:16
-#: src/components/admin/identities/IdentityList.vue:123
+#: src/components/admin/identities/IdentityList.vue:125
 msgid "Never logged-in"
 msgstr "Aldrig inloggad"
 
@@ -1621,14 +1640,14 @@ msgstr "Slumpmässig adress"
 #: src/components/admin/identities/AliasCreationForm.vue:66
 #: src/components/admin/identities/AliasSummary.vue:26
 #: src/components/admin/identities/form_steps/AliasGeneralForm.vue:56
-#: src/components/admin/identities/IdentityList.vue:241
+#: src/components/admin/identities/IdentityList.vue:257
 msgid "Expire at"
 msgstr "Utgår kl"
 
 #: src/components/admin/identities/AliasCreationForm.vue:72
 #: src/components/admin/identities/AliasSummary.vue:30
 #: src/components/admin/identities/form_steps/AliasGeneralForm.vue:58
-#: src/components/admin/identities/IdentityList.vue:245
+#: src/components/admin/identities/IdentityList.vue:261
 #: src/components/calendars/EventForm.vue:74
 #: src/views/admin/InformationView.vue:148
 msgid "Description"
@@ -1639,7 +1658,7 @@ msgstr "Beskrivning"
 #: src/components/admin/identities/AliasCreationForm.vue:97
 #: src/components/admin/identities/AliasEditForm.vue:41
 #: src/components/admin/identities/AliasRecipientsSummary.vue:4
-#: src/components/admin/identities/IdentityList.vue:237
+#: src/components/admin/identities/IdentityList.vue:253
 msgid "Recipients"
 msgstr "Mottagare"
 
@@ -1732,11 +1751,11 @@ msgstr ""
 "Antal meddelanden som denna brevlåda kan skicka per dag. Lämna tomt för "
 "ingen begränsning."
 
-#: src/components/admin/identities/form_steps/AccountMailboxForm.vue:112
+#: src/components/admin/identities/form_steps/AccountMailboxForm.vue:89
 msgid "Use domain default value"
 msgstr "Använd domänens standardvärde"
 
-#: src/components/admin/identities/form_steps/AccountMailboxForm.vue:115
+#: src/components/admin/identities/form_steps/AccountMailboxForm.vue:92
 msgid "unlimited"
 msgstr "obegränsat"
 
@@ -1816,74 +1835,88 @@ msgstr "Genererad adress"
 msgid "Please add at least one recipient."
 msgstr "Lägg till minst en mottagare."
 
-#: src/components/admin/identities/IdentityList.vue:36
+#: src/components/admin/identities/IdentityList.vue:37
 msgid "Customize displayed columns"
 msgstr ""
 
-#: src/components/admin/identities/IdentityList.vue:70
+#: src/components/admin/identities/IdentityList.vue:72
 #, fuzzy
 msgid "Accounts"
 msgstr "Konto"
 
-#: src/components/admin/identities/IdentityList.vue:143
-#: src/components/admin/identities/IdentityList.vue:172
+#: src/components/admin/identities/IdentityList.vue:145
+#: src/components/admin/identities/IdentityList.vue:174
 #, fuzzy
 msgid "No mailbox"
 msgstr "Redigera brevlåda"
 
-#: src/components/admin/identities/IdentityList.vue:202
+#: src/components/admin/identities/IdentityList.vue:182
+msgid "Deleting..."
+msgstr ""
+
+#: src/components/admin/identities/IdentityList.vue:218
 msgid "Do not delete account folder"
 msgstr "Ta inte bort kontomappen"
 
-#: src/components/admin/identities/IdentityList.vue:253
+#: src/components/admin/identities/IdentityList.vue:269
 #, fuzzy
 msgid "Last modification"
 msgstr "Senaste ändrad datum"
 
-#: src/components/admin/identities/IdentityList.vue:271
+#: src/components/admin/identities/IdentityList.vue:287
 #, fuzzy
 msgid "Last Name"
 msgstr "Efternamn"
 
-#: src/components/admin/identities/IdentityList.vue:278
+#: src/components/admin/identities/IdentityList.vue:294
 #, fuzzy
 msgid "Message limit"
 msgstr "Begränsning för meddelandesändning"
 
-#: src/components/admin/identities/IdentityList.vue:291
+#: src/components/admin/identities/IdentityList.vue:307
 #, fuzzy
 msgid "TFA enabled"
 msgstr "Filter aktiverat"
 
-#: src/components/admin/identities/IdentityList.vue:295
+#: src/components/admin/identities/IdentityList.vue:311
 #, fuzzy
 msgid "TOTP enabled"
 msgstr "Aktiverad"
 
-#: src/components/admin/identities/IdentityList.vue:299
+#: src/components/admin/identities/IdentityList.vue:315
 #, fuzzy
 msgid "WebAutn enabled"
 msgstr "Filter aktiverat"
 
-#: src/components/admin/identities/IdentityList.vue:307
+#: src/components/admin/identities/IdentityList.vue:323
 #, fuzzy
 msgid "Last login"
 msgstr "Senaste inloggning"
 
-#: src/components/admin/identities/IdentityList.vue:483
+#: src/components/admin/identities/IdentityList.vue:526
 msgid "Are you sure you want to delete this identity ?"
 msgstr "Är du säker på att du vill ta bort den här identiteten?"
 
-#: src/components/admin/identities/IdentityList.vue:498
+#: src/components/admin/identities/IdentityList.vue:542
 #, fuzzy
 msgid "Account deleted"
 msgstr "Konto skapat"
 
-#: src/components/admin/identities/IdentityList.vue:523
+#: src/components/admin/identities/IdentityList.vue:566
+#, fuzzy
+msgid "Are you sure you want to delete the selected accounts?"
+msgstr "Är du säker på att du vill ta bort detta alias?"
+
+#: src/components/admin/identities/IdentityList.vue:585
+#, fuzzy
+msgid "Accounts deleted"
+msgstr "Konto skapat"
+
+#: src/components/admin/identities/IdentityList.vue:595
 msgid "Are you sure you want to delete this alias?"
 msgstr "Är du säker på att du vill ta bort detta alias?"
 
-#: src/components/admin/identities/IdentityList.vue:537
+#: src/components/admin/identities/IdentityList.vue:610
 #, fuzzy
 msgid "Alias deleted"
 msgstr "Larm raderade"
@@ -2510,11 +2543,11 @@ msgstr "Månad"
 msgid "Year"
 msgstr "År"
 
-#: src/components/tools/YesNoDefaultField.vue:3 src/plugins/filters.js:10
+#: src/components/tools/YesNoDefaultField.vue:3 src/plugins/filters.js:11
 msgid "yes"
 msgstr "ja"
 
-#: src/components/tools/YesNoDefaultField.vue:4 src/plugins/filters.js:10
+#: src/components/tools/YesNoDefaultField.vue:4 src/plugins/filters.js:11
 msgid "no"
 msgstr "nej"
 
@@ -2636,23 +2669,23 @@ msgstr "Konto skapat"
 msgid "Scheduled canceled and message moved to trash folder"
 msgstr ""
 
-#: src/components/webmail/EmailList.vue:393
+#: src/components/webmail/EmailList.vue:394
 msgid "Message(s) deleted"
 msgstr "Meddelande(n) raderade"
 
-#: src/components/webmail/EmailList.vue:408
+#: src/components/webmail/EmailList.vue:409
 msgid "Message(s) marked as junk"
 msgstr "Meddelande(n) markerade som skräp"
 
-#: src/components/webmail/EmailList.vue:422
+#: src/components/webmail/EmailList.vue:423
 msgid "Message(s) marked as not junk"
 msgstr "Meddelande(n) markerade som inte skräp"
 
-#: src/components/webmail/EmailList.vue:437
+#: src/components/webmail/EmailList.vue:438
 msgid "Message(s) flagged"
 msgstr "Meddelande(n) flaggade"
 
-#: src/components/webmail/EmailList.vue:464
+#: src/components/webmail/EmailList.vue:465
 #, fuzzy
 msgid "%{count} message"
 msgid_plural "%{count} messages"
@@ -2696,9 +2729,26 @@ msgstr "Brevlåda omdöpt"
 msgid "Mailbox created"
 msgstr "Brevlåda skapad"
 
-#: src/components/webmail/MailboxList.vue:172
+#: src/components/webmail/MailboxList.vue:152
 msgid "Moving selection..."
 msgstr ""
+
+#: src/components/webmail/SubscriptionsDialog.vue:2
+#: src/layouts/webmail/WebmailLayout.vue:78
+#, fuzzy
+msgid "Subscriptions"
+msgstr "Beskrivning"
+
+#: src/components/webmail/SubscriptionsDialog.vue:6
+msgid ""
+"Check the folders you want to subscribe to. Only subscribed folders are "
+"displayed in the webmail."
+msgstr ""
+
+#: src/components/webmail/SubscriptionsDialog.vue:94
+#, fuzzy
+msgid "Subscriptions updated"
+msgstr "Konto skapat"
 
 #: src/composables/amavis.js:33
 msgid "Global database"
@@ -2787,15 +2837,15 @@ msgstr "Ta bort den här brevlådan"
 msgid "Compress this mailbox"
 msgstr "Komprimera denna brevlåda"
 
-#: src/layouts/webmail/WebmailLayout.vue:216
+#: src/layouts/webmail/WebmailLayout.vue:255
 msgid "Mailbox compressed"
 msgstr "Brevlåda komprimerad"
 
-#: src/layouts/webmail/WebmailLayout.vue:222
+#: src/layouts/webmail/WebmailLayout.vue:261
 msgid "Delete this mailbox?"
 msgstr "Ta bort den här brevlådan?"
 
-#: src/layouts/webmail/WebmailLayout.vue:233
+#: src/layouts/webmail/WebmailLayout.vue:272
 msgid "Mailbox deleted"
 msgstr "Brevlåda raderad"
 

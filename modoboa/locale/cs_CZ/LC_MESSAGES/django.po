@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-27 15:08+0200\n"
+"POT-Creation-Date: 2026-09-06 11:25+0200\n"
 "PO-Revision-Date: 2020-05-06 11:16+0000\n"
 "Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
 "Language-Team: Czech (Czech Republic) (http://www.transifex.com/tonio/"
@@ -23,7 +23,7 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n == 1 && n % 1 == 0) ? 0 : (n >= 2 && n "
 "<= 4 && n % 1 == 0) ? 1: (n % 1 != 0 ) ? 2 : 3;\n"
 
-#: admin/api/v1/serializers.py:39
+#: admin/api/v1/serializers.py:41
 msgid ""
 "Quota shared between mailboxes. Can be expressed in KB, MB (default) or GB. "
 "A value of 0 means no quota."
@@ -31,72 +31,84 @@ msgstr ""
 "Kvóta sdílená mezi poštovními schránkami. Lze vyjádřit v KB, MB (výchozí) "
 "nebo GB. Hodnota 0 znamená žádnou kvótu."
 
-#: admin/api/v1/serializers.py:46
+#: admin/api/v1/serializers.py:48
 msgid "Default quota in MB applied to mailboxes. A value of 0 means no quota."
 msgstr "Výchozí kvóta v MB pro schránky. Hodnota 0 = žádná kvóta."
 
-#: admin/api/v1/serializers.py:94
+#: admin/api/v1/serializers.py:98 lib/validators.py:13
+msgid "Enter a valid domain name"
+msgstr "Vložte platné doménové jméno"
+
+#: admin/api/v1/serializers.py:101
 #, fuzzy
 msgid "domain alias with this name already exists"
 msgstr "Alias s tímto názvem již existuje"
 
-#: admin/api/v1/serializers.py:104
+#: admin/api/v1/serializers.py:110
 msgid "No authorized MX record found for this domain"
 msgstr "Nebyly nalezeny žádné autorizované MX záznamy pro tuto doménu"
 
 #: admin/api/v1/serializers.py:122
+#, fuzzy
+#| msgid "Enter a valid email address."
+msgid "Enter a valid DKIM selector"
+msgstr "Vložte platnou emailovou adresu."
+
+#: admin/api/v1/serializers.py:139
 msgid "Cannot be greater than domain quota"
 msgstr "Nemůže být vyšší než kvóta domény"
 
-#: admin/api/v1/serializers.py:168 admin/api/v1/serializers.py:364
-#: admin/api/v2/serializers.py:628 admin/models/alias.py:45
+#: admin/api/v1/serializers.py:185 admin/api/v1/serializers.py:381
+#: admin/api/v1/serializers.py:428 admin/api/v2/serializers.py:402
+#: admin/api/v2/serializers.py:652 admin/api/v2/serializers.py:705
+#: admin/models/alias.py:45 calendars/serializers.py:102
 msgid "Permission denied."
 msgstr "Přístup zamítnut."
 
-#: admin/api/v1/serializers.py:231 admin/api/v2/serializers.py:118
-#: admin/api/v2/serializers.py:549 amavis/serializers.py:39
-#: core/api/v2/serializers.py:257 core/api/v2/serializers.py:259
-#: core/api/v2/serializers.py:268 transport/backends.py:40
+#: admin/api/v1/serializers.py:248 admin/api/v2/serializers.py:118
+#: admin/api/v2/serializers.py:573 amavis/serializers.py:39
+#: core/api/v2/serializers.py:218 core/api/v2/serializers.py:220
+#: core/api/v2/serializers.py:229 transport/backends.py:40
 msgid "This field is required"
 msgstr "Toto pole je vyžadováno"
 
-#: admin/api/v1/serializers.py:243
+#: admin/api/v1/serializers.py:260
 msgid ""
 "List of administered domains (resellers and domain administrators only)."
 msgstr "Zobrazit spravované domény (jenom distributori a správci domén)"
 
-#: admin/api/v1/serializers.py:337 admin/api/v2/serializers.py:610
+#: admin/api/v1/serializers.py:354 admin/api/v2/serializers.py:634
 msgid "Not allowed for this role."
 msgstr "Není povoleno pro tuto roli."
 
-#: admin/api/v1/serializers.py:355
+#: admin/api/v1/serializers.py:372
 msgid "Must be equal to mailbox full_address"
 msgstr "Musí být rovno hodnote schránky celá_adresa"
 
-#: admin/api/v1/serializers.py:397 admin/api/v2/serializers.py:662
-#: calendars/serializers.py:183 pdfcredentials/api/v2/serializers.py:91
+#: admin/api/v1/serializers.py:414 admin/api/v2/serializers.py:686
+#: calendars/serializers.py:203 pdfcredentials/api/v2/serializers.py:91
 msgid "This field is required."
 msgstr "Toto pole je vyžadováno."
 
-#: admin/api/v1/serializers.py:409 admin/api/v2/serializers.py:679
+#: admin/api/v1/serializers.py:425 admin/api/v2/serializers.py:702
 msgid "Local domain {} does not exist"
 msgstr "Lokální doména {} neexistuje"
 
-#: admin/api/v1/serializers.py:499
+#: admin/api/v1/serializers.py:518
 msgid "A list of recipient"
 msgstr "Seznam příjemců"
 
-#: admin/api/v1/serializers.py:515 admin/api/v2/viewsets.py:313
+#: admin/api/v1/serializers.py:534 admin/api/v2/viewsets.py:418
 #, fuzzy
 #| msgid "User '%s' already exists"
 msgid "This alias already exists"
 msgstr "Uživatel '%s' již existuje"
 
-#: admin/api/v1/serializers.py:551
+#: admin/api/v1/serializers.py:570
 msgid "You don't have access to this domain."
 msgstr "K této doméně nemáte přístup."
 
-#: admin/api/v1/serializers.py:560
+#: admin/api/v1/serializers.py:579
 msgid "You don't have access to this mailbox."
 msgstr "K této schránce nemáte přístup."
 
@@ -121,71 +133,75 @@ msgstr "Neomezená kvóta nelze definovat."
 msgid "User '%s' already exists"
 msgstr "Uživatel '%s' již existuje"
 
-#: admin/api/v2/serializers.py:313 admin/api/v2/serializers.py:319
+#: admin/api/v2/serializers.py:321 admin/api/v2/serializers.py:327
 msgid "Must be a positive integer"
 msgstr "Musí se jednat o kladné číslo"
 
-#: admin/api/v2/serializers.py:328
+#: admin/api/v2/serializers.py:336
 msgid "openssl not found, please make sure it is installed."
 msgstr "openssl nenalezeno, prosím ujistěte se, že je nainstalováno."
 
-#: admin/api/v2/serializers.py:331 pdfcredentials/api/v2/serializers.py:84
+#: admin/api/v2/serializers.py:339 pdfcredentials/api/v2/serializers.py:84
 msgid "Directory not found."
 msgstr "Složka nenalezena."
 
-#: admin/api/v2/serializers.py:342
+#: admin/api/v2/serializers.py:350
 msgid "This field only allows valid IP addresses (or networks)"
 msgstr ""
 
-#: admin/api/v2/serializers.py:355
+#: admin/api/v2/serializers.py:363
 msgid "Please disable imap migration before disabling this option."
 msgstr ""
 
-#: admin/api/v2/serializers.py:368
+#: admin/api/v2/serializers.py:376
 msgid "Define at least one authorized network / address"
 msgstr "Definujte alespoň jednu autorizovanou síť / adresu"
 
-#: admin/api/v2/serializers.py:645
+#: admin/api/v2/serializers.py:669
 msgid "The left part of an email address can't be more than 64 characters."
 msgstr ""
 
-#: admin/api/v2/serializers.py:667
+#: admin/api/v2/serializers.py:691
 #, fuzzy
 #| msgid "A mailbox is required"
 msgid "A mailbox is required to create aliases."
 msgstr "Schránka je vyžadována"
 
-#: admin/api/v2/serializers.py:840
+#: admin/api/v2/serializers.py:902
 #, fuzzy
 #| msgid "Unknown"
 msgid "Unknown status"
 msgstr "Neznámý"
 
-#: admin/api/v2/viewsets.py:95
+#: admin/api/v2/viewsets.py:120
 msgid "You don't have access to this domain"
 msgstr "Nemáte oprávnění k přístupu k této doméně"
 
-#: admin/api/v2/viewsets.py:98
+#: admin/api/v2/viewsets.py:123 admin/api/v2/viewsets.py:141
 msgid "You can't delete your own domain"
 msgstr "Nemůžete smazat vlastní doménu"
 
-#: admin/app_settings.py:19 limits/app_settings.py:38 limits/constants.py:13
+#: admin/api/v2/viewsets.py:333 core/handlers.py:95
+msgid "You can't delete your own account"
+msgstr "Nemůžete smazat vlastní účet"
+
+#: admin/app_settings.py:20 limits/app_settings.py:38 limits/constants.py:13
 msgid "Domains"
 msgstr "Domény"
 
-#: admin/app_settings.py:25
+#: admin/app_settings.py:26
 msgid "Enable MX checks"
 msgstr "Povolit MX kontroly"
 
-#: admin/app_settings.py:27
+#: admin/app_settings.py:28
 msgid "Check that every domain has a valid MX record"
 msgstr "Ověřit, zda má každá doména platný MX záznam"
 
-#: admin/app_settings.py:34
+#: admin/app_settings.py:35
 msgid "Valid MXs"
 msgstr "Platné MX záznamy"
 
-#: admin/app_settings.py:37
+#: admin/app_settings.py:38
 msgid ""
 "A list of IP or network address every MX record should match. A warning will "
 "be sent if a record does not respect it."
@@ -193,11 +209,11 @@ msgstr ""
 "Seznam IP nebo síťových adres, které by každý MX záznam měl obsahovat. Pokud "
 "toto záznam nerespektuje, bude odesláno varování."
 
-#: admin/app_settings.py:47
+#: admin/app_settings.py:48
 msgid "New domains must use authorized MX(s)"
 msgstr "Nové domény musí používat autorizovaný/é MX záznam(y)"
 
-#: admin/app_settings.py:51
+#: admin/app_settings.py:52
 msgid ""
 "Prevent the creation of a new domain if its MX record does not use one of "
 "the defined addresses."
@@ -205,95 +221,105 @@ msgstr ""
 "Zamezit vytvoření nové domény, pokud její MX záznamy neodpovídají jedné ze "
 "zadaných adres."
 
-#: admin/app_settings.py:59
+#: admin/app_settings.py:60
 #, fuzzy
 #| msgid "Enable DNS checks"
 msgid "Enable IPV6 checks"
 msgstr "Zapnout kontrolu DNS"
 
-#: admin/app_settings.py:62
+#: admin/app_settings.py:63
 msgid "Check if MX setup for ipv6 is valid"
 msgstr ""
 
-#: admin/app_settings.py:69
+#: admin/app_settings.py:70
 #, fuzzy
 #| msgid "Enable DNS checks"
 msgid "Enable SPF checks"
 msgstr "Zapnout kontrolu DNS"
 
-#: admin/app_settings.py:71
+#: admin/app_settings.py:72
 #, fuzzy
 #| msgid "Check that every domain has a valid MX record"
 msgid "Check if every domain has a valid SPF record"
 msgstr "Ověřit, zda má každá doména platný MX záznam"
 
-#: admin/app_settings.py:78
+#: admin/app_settings.py:79
 #, fuzzy
 #| msgid "Enable MX checks"
 msgid "Enable DKIM checks"
 msgstr "Povolit MX kontroly"
 
-#: admin/app_settings.py:80
+#: admin/app_settings.py:81
 #, fuzzy
 #| msgid "Check that every domain has a valid MX record"
 msgid "Check if every domain with DKIM signin enabled has a valid DNS record"
 msgstr "Ověřit, zda má každá doména platný MX záznam"
 
-#: admin/app_settings.py:88
+#: admin/app_settings.py:89
 #, fuzzy
 #| msgid "Enable MX checks"
 msgid "Enable DMARC checks"
 msgstr "Povolit MX kontroly"
 
-#: admin/app_settings.py:90
+#: admin/app_settings.py:91
 #, fuzzy
 #| msgid "Check that every domain has a valid MX record"
 msgid "Check if every domain has a valid DMARC record"
 msgstr "Ověřit, zda má každá doména platný MX záznam"
 
-#: admin/app_settings.py:97
+#: admin/app_settings.py:98
+msgid "DMARC check is critical"
+msgstr ""
+
+#: admin/app_settings.py:101
+msgid ""
+"Consider a missing or invalid DMARC record as critical for the global DNS "
+"status of a domain"
+msgstr ""
+
+#: admin/app_settings.py:109
 #, fuzzy
 #| msgid "Enable MX checks"
 msgid "Enable autoconfig checks"
 msgstr "Povolit MX kontroly"
 
-#: admin/app_settings.py:99
+#: admin/app_settings.py:111
 #, fuzzy
 #| msgid "Check that every domain has a valid MX record"
 msgid "Check if every domain has a valid records for autoconfiguration"
 msgstr "Ověřit, zda má každá doména platný MX záznam"
 
-#: admin/app_settings.py:107
+#: admin/app_settings.py:119
 msgid "Enable DNSBL checks"
 msgstr "Povolit DNSBL kontroly"
 
-#: admin/app_settings.py:109
+#: admin/app_settings.py:121
 msgid "Check every domain against major DNSBL providers"
 msgstr "Ověřit každou doménu vůči hlavním DNSBL providerům"
 
-#: admin/app_settings.py:117
+#: admin/app_settings.py:129
 msgid "Notify domain admins about DNS issues"
 msgstr ""
 
-#: admin/app_settings.py:120
+#: admin/app_settings.py:132
 msgid ""
 "Send a notification by email to domain administrators when DNS issues are "
 "encountered"
 msgstr ""
 
-#: admin/app_settings.py:128
+#: admin/app_settings.py:140
 msgid "Custom DNS server"
 msgstr "Vlastní DNS server"
 
-#: admin/app_settings.py:130
+#: admin/app_settings.py:142
 msgid "Use a custom DNS server instead of local server configuration"
 msgstr "Místo konfigurace lokálního serveru použijte vlastní server DNS"
 
-#: admin/app_settings.py:138
+#: admin/app_settings.py:150
 msgid "DKIM keys storage directory"
 msgstr "Složka pro uložení DKIM klíčů"
 
-#: admin/app_settings.py:140
+#: admin/app_settings.py:152
 msgid ""
 "Absolute path of the directory where DKIM private keys will be stored. Make "
 "sure this directory belongs to root user and is not readable by the outside "
@@ -303,19 +329,19 @@ msgstr ""
 "se, že vytvořená složka patří uživateli root a není možné z ní číst okolním "
 "světem."
 
-#: admin/app_settings.py:149
+#: admin/app_settings.py:161
 msgid "Default DKIM key length"
 msgstr "Výchozí délka DKIM klíče"
 
-#: admin/app_settings.py:151
+#: admin/app_settings.py:163
 msgid "Default length in bits for newly generated DKIM keys."
 msgstr "Výchozí délka v bitech pro nově vygenerované DKIM klíče."
 
-#: admin/app_settings.py:158
+#: admin/app_settings.py:170
 msgid "Default domain quota"
 msgstr "Výchozí kvóta domény"
 
-#: admin/app_settings.py:160
+#: admin/app_settings.py:172
 msgid ""
 "Default quota (in MB) applied to freshly created domains with no value "
 "specified. A value of 0 means no quota."
@@ -323,28 +349,28 @@ msgstr ""
 "Výchozí kvóta (v MB), které se použije u nově vytvořených domén bez uvedené "
 "hodnoty kvóty. Hodnota 0 znamená, že se kvóta nepoužívá."
 
-#: admin/app_settings.py:168
+#: admin/app_settings.py:180
 #, fuzzy
 #| msgid "Default domain quota"
 msgid "Default domain sending limit"
 msgstr "Výchozí kvóta domény"
 
-#: admin/app_settings.py:171
+#: admin/app_settings.py:183
 msgid ""
 "Number of messages freshly created domains will be allowed to send per day. "
 "Leave empty for no limit."
 msgstr ""
 
-#: admin/app_settings.py:183 limits/app_settings.py:61
+#: admin/app_settings.py:195 limits/app_settings.py:61
 #: limits/app_settings.py:135 limits/constants.py:31 limits/constants.py:84
 msgid "Mailboxes"
 msgstr "Schránky"
 
-#: admin/app_settings.py:189
+#: admin/app_settings.py:201
 msgid "Handle mailboxes on filesystem"
 msgstr "Spravovat schránky v souborovém systému"
 
-#: admin/app_settings.py:191
+#: admin/app_settings.py:203
 msgid ""
 "Rename or remove mailboxes on the filesystem when they get renamed or "
 "removed within Modoboa"
@@ -352,11 +378,11 @@ msgstr ""
 "Přejmenovat nebo odstranit schránky v souborovém systému, pokud jsou "
 "přejmenovány nebo odstraněny v Modoboa"
 
-#: admin/app_settings.py:199 admin/models/domain.py:39
+#: admin/app_settings.py:211 admin/models/domain.py:41
 msgid "Default mailbox quota"
 msgstr "Výchozí kvóta schránky"
 
-#: admin/app_settings.py:201
+#: admin/app_settings.py:213
 #, fuzzy
 #| msgid ""
 #| "Default mailbox quota (in MB) applied to freshly created domains with no "
@@ -369,75 +395,75 @@ msgstr ""
 "které nemají specifikovanou vlastní hodnotu. Hodnota 0 znamená neomezenou "
 "kvótu."
 
-#: admin/app_settings.py:210
+#: admin/app_settings.py:222
 #, fuzzy
 #| msgid "Default mailbox quota"
 msgid "Default mailbox sending limit"
 msgstr "Výchozí kvóta schránky"
 
-#: admin/app_settings.py:213
+#: admin/app_settings.py:225
 msgid ""
 "Number of messages freshly created mailboxes will be allowed to send per "
 "day. Leave empty for no limit."
 msgstr ""
 
-#: admin/app_settings.py:221
+#: admin/app_settings.py:233
 msgid "Automatic account removal"
 msgstr "Automatické odstranění účtu"
 
-#: admin/app_settings.py:223
+#: admin/app_settings.py:235
 msgid "When a mailbox is removed, also remove the associated account"
 msgstr "Když je schránka odstraněná, odstranit také přiřazený účet uživatele"
 
-#: admin/app_settings.py:232
+#: admin/app_settings.py:244
 msgid "Automatic domain/mailbox creation"
 msgstr "Automatické vytvoření domény/schránky"
 
-#: admin/app_settings.py:235
+#: admin/app_settings.py:247
 msgid "Create a domain and a mailbox when an account is automatically created."
 msgstr "Při založení účtu automaticky vytvořit doménu a schránku."
 
-#: admin/app_settings.py:244
+#: admin/app_settings.py:256
 msgid "Create an alias when a mailbox is renamed"
 msgstr "Vytvořit alias, pokud je mailová schránka přejmenována"
 
-#: admin/app_settings.py:247
+#: admin/app_settings.py:259
 msgid "Create an alias using the old address when a mailbox is renamed."
 msgstr ""
 "Vytvořit alias použitím původní adresy, pokud je mailová schránka "
 "přejmenována."
 
-#: admin/app_settings.py:259
+#: admin/app_settings.py:271
 #, fuzzy
 #| msgid "alias"
 msgid "Aliases"
 msgstr "alias"
 
-#: admin/app_settings.py:265
+#: admin/app_settings.py:277
 msgid "Alias can target any domain"
 msgstr ""
 
-#: admin/app_settings.py:267
+#: admin/app_settings.py:279
 msgid "Allow aliases to target any domain, not just the local domains."
 msgstr ""
 
-#: admin/app_settings.py:274
+#: admin/app_settings.py:286
 msgid "Alias target block list"
 msgstr ""
 
-#: admin/app_settings.py:276
+#: admin/app_settings.py:288
 msgid "A list of domains that aliases cannot target (comma separated)."
 msgstr ""
 
-#: admin/app_settings.py:284
+#: admin/app_settings.py:296
 msgid "Alias target allow list"
 msgstr ""
 
-#: admin/app_settings.py:286
+#: admin/app_settings.py:298
 msgid "A list of domains that aliases can target (comma separated)."
 msgstr ""
 
-#: admin/app_settings.py:340 core/api/v2/viewsets.py:174
+#: admin/app_settings.py:356 core/api/v2/viewsets.py:174
 msgid "Administration"
 msgstr "Správa"
 
@@ -488,20 +514,20 @@ msgstr "MX záznam pro doménu {0} je neplatný: {1}"
 msgid "[modoboa] MX issue(s) for domain {}"
 msgstr "[modoboa] MX problém(y) pro doménu {}"
 
-#: admin/dns_checker.py:224
+#: admin/dns_checker.py:228
 msgid "[modoboa] DNSBL issue(s) for domain {}"
 msgstr "[modoboa] DNSBL problém(y) pro doménu {}"
 
-#: admin/handlers.py:168
+#: admin/handlers.py:171
 msgid "domain alias"
 msgstr "doménový alias"
 
-#: admin/handlers.py:216
+#: admin/handlers.py:219
 #, python-format
 msgid "Account import failed (%s): domain does not exist"
 msgstr "Import účtu nebyl úspěšný (%s): doména neexistuje"
 
-#: admin/handlers.py:235
+#: admin/handlers.py:238
 #, python-format
 msgid "Account import failed (%s): wrong quota value"
 msgstr "Import účtu selhal (%s): chybná hodnota kvóty"
@@ -569,17 +595,18 @@ msgstr "Čtu CSV soubor pomocí %(encoding)s kódování"
 msgid "Unable to decode CSV file using %(encoding)s encoding"
 msgstr "Soubor CSV nelze dekódovat pomocí %(encoding)s kódování"
 
-#: admin/management/commands/subcommands/_manage_dkim_keys.py:30
+#: admin/management/commands/subcommands/_manage_dkim_keys.py:39
+#: admin/management/commands/subcommands/_manage_dkim_keys.py:74
+msgid "Failed to generate DKIM private key"
+msgstr ""
+
+#: admin/management/commands/subcommands/_manage_dkim_keys.py:49
 msgid ""
 "DKIM path non-writable (either a permission issue or the directory does not "
 "exist)"
 msgstr ""
 
-#: admin/management/commands/subcommands/_manage_dkim_keys.py:55
-msgid "Failed to generate DKIM private key"
-msgstr ""
-
-#: admin/management/commands/subcommands/_manage_dkim_keys.py:67
+#: admin/management/commands/subcommands/_manage_dkim_keys.py:94
 #, fuzzy
 #| msgid "Enable communication with Modoboa public API"
 msgid "Failed to generate DKIM public key"
@@ -597,8 +624,8 @@ msgstr "adresa"
 msgid "The alias address."
 msgstr "Adresa aliasu."
 
-#: admin/models/alias.py:123 admin/models/domain.py:48
-#: admin/models/domain_alias.py:45 autoreply/models.py:25
+#: admin/models/alias.py:123 admin/models/domain.py:50
+#: admin/models/domain_alias.py:45 autoreply/models.py:37
 msgid "enabled"
 msgstr "povoleno"
 
@@ -632,78 +659,90 @@ msgstr "Doménové jméno"
 msgid "Local recipient {}@{} not found"
 msgstr "Lokální příjemce {}@{} nebyl nalezen"
 
-#: admin/models/alias.py:273
+#: admin/models/alias.py:286
 #, fuzzy
 #| msgid "Invalid line: %s"
 msgid "Invalid line: {}"
 msgstr "Neplatný řádek: %s"
 
-#: admin/models/domain.py:30 admin/models/domain_alias.py:33
+#: admin/models/domain.py:32 admin/models/domain_alias.py:33
 msgid "name"
 msgstr "název"
 
-#: admin/models/domain.py:33
+#: admin/models/domain.py:35
 msgid "The domain name"
 msgstr "Doménové jméno"
 
-#: admin/models/domain.py:42 admin/models/mailbox.py:92
+#: admin/models/domain.py:44 admin/models/mailbox.py:92
 msgid "Message sending limit"
 msgstr ""
 
-#: admin/models/domain.py:45
+#: admin/models/domain.py:47
 msgid "Number of messages this domain can send per day"
 msgstr ""
 
-#: admin/models/domain.py:49
+#: admin/models/domain.py:51
 msgid "Check to activate this domain"
 msgstr "Zatrhněte pole pro povolení této domény"
 
-#: admin/models/domain.py:54
+#: admin/models/domain.py:56
 msgid "Enable DNS checks"
 msgstr "Zapnout kontrolu DNS"
 
-#: admin/models/domain.py:56
+#: admin/models/domain.py:58
 msgid "Check to enable DNS checks for this domain"
 msgstr "Zaškrtněte pro zapnutí kontroly DNS pro tuto doménu"
 
-#: admin/models/domain.py:65
+#: admin/models/domain.py:67
 msgid "Enable DKIM signing"
 msgstr "Povolit DKIM podepisování"
 
-#: admin/models/domain.py:67
+#: admin/models/domain.py:69
 msgid ""
 "If you activate this feature, a DKIM key will be generated for this domain."
 msgstr ""
 "Pokud povolíte tuto možnost, bude vygenerován DKIM klíč pro tuto doménu."
 
-#: admin/models/domain.py:74
+#: admin/models/domain.py:76
 msgid "Key length"
 msgstr "Délka klíče"
 
-#: admin/models/domain.py:330 admin/models/domain_alias.py:70
-#: core/models.py:352 relaydomains/lib.py:13
+#: admin/models/domain.py:338 admin/models/domain_alias.py:70
+#: core/models.py:358 relaydomains/lib.py:13
 msgid "Invalid line"
 msgstr "Neplatný řádek"
 
-#: admin/models/domain.py:340
+#: admin/models/domain.py:343
+#, fuzzy
+#| msgid "Enter a valid domain name"
+msgid "Invalid domain name"
+msgstr "Vložte platné doménové jméno"
+
+#: admin/models/domain.py:347
+#, fuzzy
+#| msgid "Enter a valid domain name"
+msgid "{}: invalid domain name"
+msgstr "Vložte platné doménové jméno"
+
+#: admin/models/domain.py:356
 #, fuzzy
 #| msgid "No authorized MX record found for domain {}"
 msgid "{}: no authorized MX record found for domain"
 msgstr "Nenalezeny žádný autorizovaný MX záznam pro doménu {}"
 
-#: admin/models/domain.py:346
+#: admin/models/domain.py:362
 #, fuzzy
 #| msgid "Invalid quota value for domain '{}'"
 msgid "{}: invalid quota value for domain"
 msgstr "Neplatná hodnota kvóty pro doménu '{}'"
 
-#: admin/models/domain.py:352
+#: admin/models/domain.py:368
 #, fuzzy
 #| msgid "Invalid default mailbox quota value for domain '{}'"
 msgid "{}: invalid default mailbox quota value for domain"
 msgstr "Neplatná výchozí hodnota kvóty schránky pro doménu '{}'"
 
-#: admin/models/domain.py:359
+#: admin/models/domain.py:375
 #, fuzzy
 #| msgid "Default mailbox quota cannot be greater than domain quota"
 msgid "{}: default mailbox quota cannot be greater than domain quota"
@@ -734,26 +773,26 @@ msgstr "Adresa schránky (bez části @doména.tld)"
 msgid "Number of messages this mailbox can send per day"
 msgstr ""
 
-#: admin/models/mailbox.py:153
+#: admin/models/mailbox.py:156
 #, python-format
 msgid "Failed to retrieve mailbox location (%s)"
 msgstr "Nebylo možné zjistit umístění schránky (%s)"
 
-#: admin/models/mailbox.py:249
+#: admin/models/mailbox.py:257
 msgid "A quota is required"
 msgstr "Kvóta je vyžadována"
 
-#: admin/models/mailbox.py:256
+#: admin/models/mailbox.py:264
 #, fuzzy
 #| msgid "Domain quota exceeded"
 msgid "{}: domain quota exceeded"
 msgstr "Kvóta domény byla překročena"
 
-#: admin/models/mailbox.py:310
+#: admin/models/mailbox.py:318
 msgid "Domain does not exist"
 msgstr "Doména neexistuje"
 
-#: admin/models/mailbox.py:342
+#: admin/models/mailbox.py:354
 msgid "Mailbox {} already exists"
 msgstr "Schránka {} již existuje"
 
@@ -1164,7 +1203,7 @@ msgstr "odeslané zprávy"
 msgid "Please visit %(listingurl)s for a full listing."
 msgstr ""
 
-#: amavis/viewsets.py:157
+#: amavis/viewsets.py:174
 #, fuzzy
 #| msgid "Invalid address"
 msgid "Invalid request"
@@ -1232,25 +1271,25 @@ msgstr ""
 msgid "Automatic replies"
 msgstr "Automatické odpovědi"
 
-#: autoreply/models.py:17
+#: autoreply/models.py:29
 #, fuzzy
 #| msgid "Subject"
 msgid "subject"
 msgstr "předmět"
 
-#: autoreply/models.py:19
+#: autoreply/models.py:31
 msgid "The subject that will appear in sent emails"
 msgstr "Předmět, který se vloží do odesílaných emailů"
 
-#: autoreply/models.py:22
+#: autoreply/models.py:34
 msgid "content"
 msgstr "obsah"
 
-#: autoreply/models.py:22
+#: autoreply/models.py:34
 msgid "The content that will appear in sent emails"
 msgstr "Obsah, který se vloží do odesílaných emailů"
 
-#: autoreply/models.py:25
+#: autoreply/models.py:37
 msgid "Activate/Deactivate your auto reply"
 msgstr "Aktivovat/Deaktivovat automatickou odpověď"
 
@@ -1313,11 +1352,15 @@ msgstr ""
 msgid "Calendars"
 msgstr ""
 
-#: calendars/models.py:48 calendars/models.py:65 contacts/models.py:39
+#: calendars/models.py:23
+msgid "Calendar name contains invalid characters."
+msgstr ""
+
+#: calendars/models.py:58 calendars/models.py:75 contacts/models.py:39
 msgid "Server location is not set, please fix it."
 msgstr ""
 
-#: calendars/serializers.py:216
+#: calendars/serializers.py:246
 #, fuzzy
 #| msgid "Domain not found."
 msgid "Mailbox not found"
@@ -1383,13 +1426,13 @@ msgstr ""
 msgid "Pager"
 msgstr ""
 
-#: contacts/serializers.py:101
+#: contacts/serializers.py:103
 #, fuzzy
 #| msgid "Number of displayed items per page"
 msgid "Name or display name required"
 msgstr "Počet zobrazených položek na stránce"
 
-#: contacts/serializers.py:233
+#: contacts/serializers.py:235
 msgid "Minimum allowed value is 60s"
 msgstr ""
 
@@ -1408,7 +1451,7 @@ msgstr ""
 msgid "Failed TFA settings editing attempt from '%(addr)s' as user '%(user)s'"
 msgstr ""
 
-#: core/api/v1/serializers.py:93 core/api/v2/serializers.py:447
+#: core/api/v1/serializers.py:93 core/api/v2/serializers.py:408
 #, fuzzy
 #| msgid "Old password"
 msgid "Invalid password"
@@ -1418,25 +1461,21 @@ msgstr "Původní heslo"
 msgid "2FA is not enabled"
 msgstr ""
 
-#: core/api/v2/serializers.py:69
+#: core/api/v2/serializers.py:30
 msgid "Local"
 msgstr "Lokální"
 
-#: core/api/v2/serializers.py:215 core/api/v2/serializers.py:223
-#: core/api/v2/serializers.py:230
+#: core/api/v2/serializers.py:176 core/api/v2/serializers.py:184
+#: core/api/v2/serializers.py:191
 msgid "Invalid syntax"
 msgstr "Neplatná syntaxe"
 
-#: core/api/v2/serializers.py:235
+#: core/api/v2/serializers.py:196
 msgid "Invalid rounds number"
 msgstr "Neplatný počet cyklů"
 
-#: core/api/v2/serializers.py:435 core/forms.py:87
+#: core/api/v2/serializers.py:396 core/forms.py:84
 msgid "This code is invalid"
-msgstr ""
-
-#: core/api/v2/serializers.py:505 core/views/auth.py:185 core/views/auth.py:238
-msgid "Please use the following code to recover your Modoboa password: {}"
 msgstr ""
 
 #: core/api/v2/viewsets.py:176
@@ -1974,7 +2013,7 @@ msgstr ""
 msgid "Send an email to notify admins about new versions"
 msgstr ""
 
-#: core/app_settings.py:689 sievefilters/constants.py:25
+#: core/app_settings.py:689 sievefilters/constants.py:30
 msgid "Recipient"
 msgstr "Příjemce"
 
@@ -2129,11 +2168,11 @@ msgstr ""
 msgid "Dummy"
 msgstr ""
 
-#: core/forms.py:62
+#: core/forms.py:59
 msgid "Verification code"
 msgstr ""
 
-#: core/forms.py:73
+#: core/forms.py:70
 msgid "Invalid code"
 msgstr ""
 
@@ -2167,15 +2206,11 @@ msgstr "uživatel {}"
 msgid "management command"
 msgstr "příkaz managementu"
 
-#: core/handlers.py:95
-msgid "You can't delete your own account"
-msgstr "Nemůžete smazat vlastní účet"
-
-#: core/handlers.py:127
+#: core/handlers.py:126
 msgid "One or more updates are available"
 msgstr "K dispozici je jedna, nebo více, aktualizací"
 
-#: core/handlers.py:140
+#: core/handlers.py:139
 #, python-format
 msgid "You are still using a deprecated password scheme (%s)"
 msgstr ""
@@ -2224,21 +2259,21 @@ msgstr "Nebylo možné změnit heslo: LDAP modul není instalován"
 msgid "account"
 msgstr "účet"
 
-#: core/models.py:317
+#: core/models.py:323
 msgid "Unknown"
 msgstr "Neznámý"
 
-#: core/models.py:360
+#: core/models.py:366
 msgid "You can't import an account with a role greater than yours"
 msgstr "Nemůžete importvat účet s vyšším oprávněním, než máte vy sám"
 
-#: core/models.py:375
+#: core/models.py:381
 #, fuzzy
 #| msgid "The simple user '%s' must have a valid email address"
 msgid "The simple user '{}' must have a valid email address"
 msgstr "Běžný uživatel '%s' musí mít nastavenou platnou emailovou adresu"
 
-#: core/models.py:383
+#: core/models.py:389
 #, fuzzy
 #| msgid "username and email fields must not differ for '%s'"
 msgid "username and email fields must not differ for '{}'"
@@ -2348,19 +2383,23 @@ msgstr[3] ""
 msgid "The core part of Modoboa"
 msgstr "Hlavní část Modoboa"
 
-#: core/views/auth.py:64
+#: core/views/auth.py:69
 #, python-format
 msgid "User '%s' successfully logged in"
 msgstr "Uživatel '%s' se úspěšně přihlásil"
 
-#: core/views/auth.py:113
+#: core/views/auth.py:118
 #, python-format
 msgid "Password scheme mismatch. Updating %s password"
 msgstr "Chyba v typu hesla. Aktualizace %s hesla"
 
-#: core/views/auth.py:120
+#: core/views/auth.py:125
 #, python-format
 msgid "Password hash parameter missmatch. Updating %s password"
+msgstr ""
+
+#: core/views/auth.py:195 core/views/auth.py:265
+msgid "Please use the following code to recover your Modoboa password: {}"
 msgstr ""
 
 #: dmarc/forms.py:15
@@ -2381,7 +2420,7 @@ msgstr ""
 msgid "DMARC"
 msgstr "DMARC nástroje"
 
-#: dmarc/lib.py:298
+#: dmarc/lib.py:344
 msgid "Not resolved"
 msgstr ""
 
@@ -2514,12 +2553,22 @@ msgstr ""
 msgid "Public key mismatchs"
 msgstr ""
 
-#: imap_migration/api/v2/serializers.py:66
+#: imap_migration/api/v2/serializers.py:25
+msgid "Quotes, backslashes and newlines are not allowed."
+msgstr ""
+
+#: imap_migration/api/v2/serializers.py:53
+#, fuzzy
+#| msgid "Invalid address"
+msgid "Invalid regular expression."
+msgstr "Neplatná adresa"
+
+#: imap_migration/api/v2/serializers.py:96
 #, fuzzy
 msgid "Migrated domain with name {} already exists"
 msgstr "Alias s tímto názvem již existuje"
 
-#: imap_migration/api/v2/serializers.py:130
+#: imap_migration/api/v2/serializers.py:160
 #, fuzzy
 #| msgid "Access updated"
 msgid "Access denied"
@@ -2603,20 +2652,32 @@ msgid ""
 "Go to the online parameters panel (admin tab) and activate this feature."
 msgstr ""
 
-#: ldapsync/lib.py:82
+#: ldapsync/lib.py:86
 msgid "Failed to create LDAP account: {}"
 msgstr ""
 
-#: ldapsync/lib.py:121
+#: ldapsync/lib.py:134
 msgid "Failed to update LDAP account: {}"
 msgstr ""
 
-#: ldapsync/lib.py:135
+#: ldapsync/lib.py:148
 msgid "Failed to delete LDAP account: {}"
 msgstr ""
 
-#: ldapsync/lib.py:144
+#: ldapsync/lib.py:157
 msgid "Failed to disable LDAP account: {}"
+msgstr ""
+
+#: ldapsync/lib.py:261
+msgid "LDAP parameter {} contains forbidden characters"
+msgstr ""
+
+#: ldapsync/lib.py:271
+msgid "ldap_dovecot_conf_file must be an absolute path ending with '.conf'"
+msgstr ""
+
+#: ldapsync/lib.py:298
+msgid "LDAP bind DN and password cannot contain quote characters"
 msgstr ""
 
 #: lib/api_client.py:35 lib/api_client.py:67 lib/api_client.py:81
@@ -2648,15 +2709,15 @@ msgstr "Vložte platnou emailovou adresu."
 msgid "Failed to update password: {}"
 msgstr "Nebylo možné změnit heslo: {}"
 
-#: lib/permissions.py:24 lib/permissions.py:29
+#: lib/permissions.py:27 lib/permissions.py:32
 #, fuzzy
 #| msgid "You don't have access to this mailbox."
 msgid "You don't have ownership on this mailbox"
 msgstr "K této schránce nemáte přístup."
 
-#: lib/validators.py:13
-msgid "Enter a valid domain name"
-msgstr "Vložte platné doménové jméno"
+#: lib/throttle.py:94
+msgid "Too many attempts, please try again later."
+msgstr ""
 
 #: limits/app_settings.py:13
 #, fuzzy
@@ -3184,18 +3245,24 @@ msgstr ""
 msgid "Download PDF credentials"
 msgstr "PDF přístupové údaje"
 
-#: pdfcredentials/lib.py:29
+#: pdfcredentials/lib.py:30
 #, fuzzy
 #| msgid "Failed to create the directory that will contain PDF documents (%s)"
 msgid "Can't write to selected directory to store PDF documents"
 msgstr "Vytváření adresáře pro uložení PDF dokumentů (%s) selhalo "
 
-#: pdfcredentials/lib.py:35
+#: pdfcredentials/lib.py:36
 #, python-format
 msgid "Failed to create the directory that will contain PDF documents (%s)"
 msgstr "Vytváření adresáře pro uložení PDF dokumentů (%s) selhalo "
 
-#: pdfcredentials/lib.py:82
+#: pdfcredentials/lib.py:52
+#, fuzzy, python-format
+#| msgid "Invalid rounds number"
+msgid "Invalid account name: %s"
+msgstr "Neplatný počet cyklů"
+
+#: pdfcredentials/lib.py:99
 msgid ""
 "Failed to create PDF_credentials file. Please check the permissions or the "
 "path."
@@ -3225,6 +3292,18 @@ msgstr ""
 #: relaydomains/api/v1/serializers.py:24
 msgid "Unsupported service"
 msgstr ""
+
+#: relaydomains/lib.py:17
+#, fuzzy
+#| msgid "MX records of {}"
+msgid "Invalid port: {}"
+msgstr "MX záznamy pro {}"
+
+#: relaydomains/lib.py:29
+#, fuzzy
+#| msgid "Invalid line: %s"
+msgid "Invalid settings: {}"
+msgstr "Neplatný řádek: %s"
 
 #: relaydomains/transport.py:16
 #, fuzzy
@@ -3297,7 +3376,7 @@ msgstr ""
 msgid "Rspamd"
 msgstr ""
 
-#: sievefilters/api/v2/viewsets.py:56
+#: sievefilters/api/v2/serializers.py:35 sievefilters/api/v2/viewsets.py:54
 msgid "Name contains forbidden characters"
 msgstr ""
 
@@ -3357,91 +3436,91 @@ msgstr "Port, na kterém naslouchá váš IMAP server"
 msgid "Sieve filters"
 msgstr "Sieve filtry"
 
-#: sievefilters/constants.py:10
+#: sievefilters/constants.py:15
 msgid "All of the following"
 msgstr "Všechna pravidla"
 
-#: sievefilters/constants.py:11
+#: sievefilters/constants.py:16
 msgid "Any of the following"
 msgstr "Alespoň jedno z pravidel"
 
-#: sievefilters/constants.py:12
+#: sievefilters/constants.py:17
 #, fuzzy
 #| msgid "sent messages"
 msgid "All messages"
 msgstr "Všechny zprávy"
 
-#: sievefilters/constants.py:16
+#: sievefilters/constants.py:21
 #, fuzzy
 #| msgid "Domains"
 msgid "contains"
 msgstr "obsahuje"
 
-#: sievefilters/constants.py:17
+#: sievefilters/constants.py:22
 msgid "does not contain"
 msgstr "neobsahuje"
 
-#: sievefilters/constants.py:18
+#: sievefilters/constants.py:23
 msgid "is"
 msgstr "je"
 
-#: sievefilters/constants.py:19
+#: sievefilters/constants.py:24
 msgid "is not"
 msgstr "není"
 
-#: sievefilters/constants.py:23 webmail/lib/imapemail.py:315
+#: sievefilters/constants.py:28 webmail/lib/imapemail.py:320
 msgid "Subject"
 msgstr "Předmět"
 
-#: sievefilters/constants.py:24
+#: sievefilters/constants.py:29
 #, fuzzy
 #| msgid "Sender address"
 msgid "Sender"
 msgstr "Odesílatel"
 
-#: sievefilters/constants.py:26
+#: sievefilters/constants.py:31
 msgid "Cc"
 msgstr "Kopie"
 
-#: sievefilters/constants.py:29
+#: sievefilters/constants.py:34
 msgid "Size"
 msgstr "Velikost"
 
-#: sievefilters/constants.py:31
+#: sievefilters/constants.py:36
 #, fuzzy
 #| msgid "Cannot be greater than domain quota"
 msgid "is greater than"
 msgstr "Je větší než"
 
-#: sievefilters/constants.py:32
+#: sievefilters/constants.py:37
 msgid "is less than"
 msgstr "Je menší než"
 
-#: sievefilters/constants.py:40
+#: sievefilters/constants.py:45
 #, fuzzy
 #| msgid "bounced messages"
 msgid "Move message to"
 msgstr "Přesunout zprávu do"
 
-#: sievefilters/constants.py:46 sievefilters/constants.py:60
+#: sievefilters/constants.py:51 sievefilters/constants.py:65
 #, fuzzy
 #| msgid "Keep local copies"
 msgid "Keep local copy"
 msgstr "Ponechat místní kopii"
 
-#: sievefilters/constants.py:54
+#: sievefilters/constants.py:59
 #, fuzzy
 #| msgid "rejected messages"
 msgid "Redirect message to"
 msgstr "Přesměrovat zprávu na"
 
-#: sievefilters/constants.py:68
+#: sievefilters/constants.py:73
 #, fuzzy
 #| msgid "rejected messages"
 msgid "Reject message"
 msgstr "Odmítnout zprávu"
 
-#: sievefilters/constants.py:71
+#: sievefilters/constants.py:76
 msgid "Stop processing"
 msgstr "Ukončit zpracování"
 
@@ -3798,63 +3877,83 @@ msgstr "Adresa serveru"
 msgid "Failed to remove attachment: "
 msgstr "Nebylo možné odstranit přílohu:"
 
-#: webmail/lib/imapemail.py:283
+#: webmail/lib/imapemail.py:288
 msgid "wrote:"
 msgstr ""
 
-#: webmail/lib/imapemail.py:317
+#: webmail/lib/imapemail.py:322
 msgid "Date"
 msgstr "Datum"
 
-#: webmail/lib/imapemail.py:333 webmail/lib/imapemail.py:336
+#: webmail/lib/imapemail.py:338 webmail/lib/imapemail.py:341
 #, fuzzy
 #| msgid "sent messages"
 msgid "Original message"
 msgstr "Všechny zprávy"
 
-#: webmail/lib/imaputils.py:222
+#: webmail/lib/imaputils.py:43 webmail/viewsets.py:24
+msgid "Invalid message identifier"
+msgstr ""
+
+#: webmail/lib/imaputils.py:50 webmail/viewsets.py:31
+#, fuzzy
+#| msgid "Invalid rounds number"
+msgid "Invalid part number"
+msgstr "Neplatný počet cyklů"
+
+#: webmail/lib/imaputils.py:63 webmail/viewsets.py:38
+msgid "Invalid search pattern"
+msgstr ""
+
+#: webmail/lib/imaputils.py:259
 msgid "Failed to retrieve hierarchy delimiter"
 msgstr "Nebylo možné zjistit hierarchický oddělovač"
 
-#: webmail/lib/imaputils.py:478
+#: webmail/lib/imaputils.py:547
 msgid "Inbox"
 msgstr "Doručená pošta"
 
-#: webmail/lib/imaputils.py:482
+#: webmail/lib/imaputils.py:551
 #, fuzzy
 #| msgid "Drafts folder"
 msgid "Drafts"
 msgstr "Koncepty"
 
-#: webmail/lib/imaputils.py:487
+#: webmail/lib/imaputils.py:556
 msgid "Junk"
 msgstr "Nevyžádaná pošta"
 
-#: webmail/lib/imaputils.py:492
+#: webmail/lib/imaputils.py:561
 msgid "Sent"
 msgstr "Odeslaná pošta"
 
-#: webmail/lib/imaputils.py:500
+#: webmail/lib/imaputils.py:569
 msgid "Scheduled"
 msgstr ""
 
-#: webmail/lib/imaputils.py:507
+#: webmail/lib/imaputils.py:576
 msgid "Trash"
 msgstr "Koš"
 
-#: webmail/serializers.py:219
+#: webmail/serializers.py:249
 msgid "Moving scheduled messages is forbidden"
 msgstr ""
 
-#: webmail/serializers.py:252
+#: webmail/serializers.py:282
 msgid "Only datetime in the future is allowed"
 msgstr ""
 
-#: webmail/serializers.py:257
+#: webmail/serializers.py:287
 msgid "Provived datetime must be one minute in the future at least"
 msgstr ""
 
-#: webmail/viewsets.py:392
+#: webmail/serializers.py:315
+#, fuzzy
+#| msgid "You are not allowed to import domain aliases."
+msgid "You are not allowed to send from this address"
+msgstr "Nemáte oprávnění pri import doménových aliasů"
+
+#: webmail/viewsets.py:443
 #, python-format
 msgid "Attachment is too big (limit: %s)"
 msgstr "Příloha je příliš velká (omezení: %s)"
