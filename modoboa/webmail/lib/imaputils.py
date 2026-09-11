@@ -64,6 +64,20 @@ def escape_search_pattern(pattern: str) -> str:
     return pattern.replace("\\", "\\\\").replace('"', '\\"')
 
 
+def quote_mailbox_name(name: str) -> bytes:
+    """Encode a mailbox name to imap4-utf-7 and return it as a quoted string.
+
+    Double quotes and backslashes are left untouched by the imap4-utf-7
+    codec, so they must be backslash-escaped, otherwise a crafted name
+    could break out of the quoted string and inject extra command
+    arguments. Control characters are rejected.
+    """
+    if any(ord(c) < 0x20 or ord(c) == 0x7F for c in name):
+        raise ImapError(_("Invalid mailbox name"))
+    encoded = name.encode("imap4-utf-7")
+    return b'"' + encoded.replace(b"\\", b"\\\\").replace(b'"', b'\\"') + b'"'
+
+
 class BodyStructure:
     """
     BODYSTRUCTURE response parser.
@@ -422,7 +436,7 @@ class IMAPconnector:
         """Encode folder name (str) to imap4-utf-7 and quote it."""
         if not folder:
             return "INBOX"
-        return b'"' + folder.encode("imap4-utf-7") + b'"'
+        return quote_mailbox_name(folder)
 
     def _parse_mailbox_name(self, descr, prefix, delimiter, parts):
         if not len(parts):
@@ -472,9 +486,7 @@ class IMAPconnector:
     ) -> None:
         """Retrieve mailboxes list."""
         pattern = (
-            f'"{topmailbox.encode("imap4-utf-7").decode()}{self.hdelimiter}%"'
-            if topmailbox
-            else "%"
+            quote_mailbox_name(f"{topmailbox}{self.hdelimiter}%") if topmailbox else "%"
         )
         resp = self._cmd(
             "LIST", '""', pattern, "RETURN", "(SUBSCRIBED CHILDREN STATUS (MESSAGES))"
