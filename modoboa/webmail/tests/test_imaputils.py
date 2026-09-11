@@ -50,3 +50,27 @@ class EscapeSearchPatternTestCase(SimpleTestCase):
         for value in ["a\r\nb", "a\tb", "a\x00b", "a\x7fb"]:
             with self.assertRaises(ImapError):
                 imaputils.escape_search_pattern(value)
+
+
+class QuoteMailboxNameTestCase(SimpleTestCase):
+    """Tests for quote_mailbox_name."""
+
+    def test_plain_name(self):
+        self.assertEqual(imaputils.quote_mailbox_name("Sent"), b'"Sent"')
+        self.assertEqual(imaputils.quote_mailbox_name("A/B"), b'"A/B"')
+
+    def test_non_ascii_name(self):
+        self.assertEqual(imaputils.quote_mailbox_name("Envoyés"), b'"Envoy&AOk-s"')
+
+    def test_quote_and_backslash_escaped(self):
+        # A double quote would otherwise break out of the quoted string.
+        self.assertEqual(
+            imaputils.quote_mailbox_name('INBOX" (MESSAGES'),
+            b'"INBOX\\" (MESSAGES"',
+        )
+        self.assertEqual(imaputils.quote_mailbox_name("a\\b"), b'"a\\\\b"')
+
+    def test_control_characters_rejected(self):
+        for value in ["INBOX\r\nA1 DELETE Trash", "a\x00b", "a\tb", "a\x7fb"]:
+            with self.assertRaises(ImapError):
+                imaputils.quote_mailbox_name(value)
