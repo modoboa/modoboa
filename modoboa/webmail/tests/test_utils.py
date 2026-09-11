@@ -155,3 +155,16 @@ class Html2PlainTextTestCase(SimpleTestCase):
         self.assertEqual(utils.html2plaintext(""), "")
         self.assertEqual(utils.html2plaintext("   "), "")
         self.assertEqual(utils.html2plaintext("<!-- c -->"), "")
+
+
+class ParseBccTestCase(SimpleTestCase):
+    """A reopened draft exposes its Bcc header as a list of addresses."""
+
+    def test_parse_bcc(self):
+        from modoboa.webmail.lib import imapheader
+
+        result = imapheader.parse_bcc("Hidden <hidden@example.test>, other@example.test")
+        self.assertEqual(
+            [rcpt["address"] for rcpt in result],
+            ["hidden@example.test", "other@example.test"],
+        )
