@@ -336,10 +336,30 @@ class SendEmailSerializer(ScheduledDatetimeMixin, BaseEmailSerializer):
     request_mdn = serializers.BooleanField(required=False, default=False)
     # UID of the draft this message comes from (deleted once sent)
     mailid = serializers.IntegerField(required=False)
+    # Message this one replies to or forwards (flagged once sent)
+    original_mailbox = serializers.CharField(required=False)
+    original_mailid = serializers.IntegerField(required=False, min_value=1)
+    original_action = serializers.ChoiceField(
+        choices=["reply", "forward"], required=False
+    )
+
+    ORIGINAL_MESSAGE_FIELDS = ("original_mailbox", "original_mailid", "original_action")
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields["to"].required = True
+
+    def validate(self, data):
+        data = super().validate(data)
+        provided = [name for name in self.ORIGINAL_MESSAGE_FIELDS if name in data]
+        if provided and len(provided) != len(self.ORIGINAL_MESSAGE_FIELDS):
+            raise serializers.ValidationError(
+                _(
+                    "original_mailbox, original_mailid and original_action "
+                    "must be provided together"
+                )
+            )
+        return data
 
 
 class SaveEmailSerializer(BaseEmailSerializer):
