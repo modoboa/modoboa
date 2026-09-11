@@ -154,7 +154,18 @@
       {{ $gettext('Message scheduled at:') }}
       {{ $date(email.scheduled_datetime) }}
     </v-alert>
-    <iframe class="email-frame" />
+    <!--
+      The message body is untrusted: render it in a sandboxed iframe
+      (no scripts, opaque origin) so it can never reach the application
+      context, even if the server-side HTML cleaner is bypassed.
+    -->
+    <iframe
+      ref="emailFrame"
+      class="email-frame"
+      sandbox="allow-popups allow-popups-to-escape-sandbox"
+      referrerpolicy="no-referrer"
+      :srcdoc="emailDocument"
+    />
   </div>
   <v-dialog v-model="showEmailSource" max-width="1200">
     <v-card :title="$gettext('Message source')">
@@ -173,7 +184,7 @@
 </template>
 
 <script setup>
-import { nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
+import { computed, nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useGettext } from 'vue3-gettext'
 import { useBusStore } from '@/stores'
@@ -188,6 +199,7 @@ const router = useRouter()
 
 const enableLinks = ref(false)
 const email = ref(null)
+const emailFrame = ref(null)
 const emailSource = ref(null)
 const headers = ref(null)
 const loaded = ref(false)
@@ -215,8 +227,35 @@ const close = () => {
   })
 }
 
+const emailDocument = computed(() => {
+  if (!email.value?.body) {
+    return ''
+  }
+  // Remote content (images, fonts, etc.) is only allowed when links are
+  // enabled, which also prevents tracking pixels from loading by default.
+  const remoteSrc = enableLinks.value ? ' https: http:' : ''
+  const csp = [
+    "default-src 'none'",
+    `img-src data:${remoteSrc}`,
+    `media-src data:${remoteSrc}`,
+    `font-src data:${remoteSrc}`,
+    "style-src 'unsafe-inline'",
+    "form-action 'none'",
+  ].join('; ')
+  return (
+    '<!DOCTYPE html><html><head><meta charset="utf-8">' +
+    `<meta http-equiv="Content-Security-Policy" content="${csp}">` +
+    '<base target="_blank"></head><body>' +
+    email.value.body +
+    '</body></html>'
+  )
+})
+
 const resizeEmailIframe = () => {
-  const iframe = document.querySelector('iframe')
+  const iframe = emailFrame.value
+  if (!iframe || !headers.value) {
+    return
+  }
   let rect
   if (schedulingInfo.value) {
     rect = schedulingInfo.value.$el.getBoundingClientRect()
@@ -238,18 +277,8 @@ const fetchMailContent = () => {
     .then((resp) => {
       reloadMailboxCounters()
       email.value = resp.data
-      nextTick(() => {
-        const iframe = document.createElement('iframe')
-        iframe.classList.add('email-frame')
-        document.querySelector('iframe').replaceWith(iframe)
-        if (email.value.body) {
-          const iframeDoc = iframe.contentDocument
-          iframeDoc.write(email.value.body)
-          iframeDoc.close()
-        }
-        loaded.value = true
-        nextTick(resizeEmailIframe)
-      })
+      loaded.value = true
+      nextTick(resizeEmailIframe)
     })
 }
 

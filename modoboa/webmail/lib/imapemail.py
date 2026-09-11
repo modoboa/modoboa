@@ -2,16 +2,14 @@
 Set of classes to manipulate/display emails inside the webmail.
 """
 
-import os
+import base64
 import re
 import email
+from urllib.parse import unquote
 
 from charset_normalizer import detect as charset_detect
 
 from django.apps import apps
-from django.conf import settings
-from django.core.files.base import ContentFile
-from django.core.files.storage import default_storage
 from django.utils.encoding import smart_str
 from django.utils.html import conditional_escape
 from django.utils.translation import gettext as _
@@ -21,7 +19,6 @@ from modoboa.lib.email_utils import Email
 from modoboa.webmail import constants
 
 from . import imapheader
-from .attachments import get_storage_path
 from .imaputils import get_imapconnector, validate_imap_uid, BodyStructure
 from .utils import decode_payload
 
@@ -219,27 +216,34 @@ class ImapEmail(Email):
             self.attachments[att["pnum"]] = smart_str(attname)
 
     def _fetch_inlines(self):
-        """Store inline images on filesystem to display them."""
-        for cid, params in list(self.bs.inlines.items()):
-            if re.search(r"\.\.", cid):
+        """Embed inline images into the body as data: URIs.
+
+        Images are never written to disk: storing them in a shared,
+        publicly served directory leaked them to other users (message
+        UIDs are only unique per mailbox).
+        """
+        if not self.links:
+            # cid: references are only rewritten when links are enabled
+            return
+        for params in self.bs.inlines.values():
+            content_type = params.get("Content-Type", "")
+            encoding = (params.get("encoding") or "").lower()
+            if content_type not in constants.INLINE_IMAGE_MIME_TYPES:
                 continue
-            fname = f"{self.mailid}_{cid}"
-            path = os.path.relpath(get_storage_path(fname), settings.MEDIA_ROOT)
-            params["fname"] = os.path.join(
-                settings.MEDIA_URL, os.path.basename(get_storage_path("")), fname
-            )
-            if default_storage.exists(path):
+            if encoding not in ("base64", "quoted-printable"):
                 continue
             pdef, content = self.imapc.fetchpart(self.mailid, self.mbox, params["pnum"])
-            default_storage.save(
-                path, ContentFile(decode_payload(params["encoding"], content))
+            payload = decode_payload(encoding, content)
+            params["data_uri"] = (
+                f"data:{content_type};base64,{base64.b64encode(payload).decode()}"
             )
 
     def _map_cid(self, url):
-        m = re.match(".*cid:(.+)", url)
-        if m:
-            if m.group(1) in self.bs.inlines:
-                return self.bs.inlines[m.group(1)]["fname"]
+        if url[:4].lower() != "cid:":
+            return url
+        params = self.bs.inlines.get(unquote(url[4:]))
+        if params and "data_uri" in params:
+            return params["data_uri"]
         return url
 
     def fetch_attachment(self, pnum):

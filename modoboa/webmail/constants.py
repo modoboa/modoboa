@@ -12,6 +12,16 @@ MAILBOX_NAME_SCHEDULED = "Scheduled"
 CUSTOM_HEADER_SCHEDULED_ID = "X-Scheduled-ID"
 CUSTOM_HEADER_SCHEDULED_DATETIME = "X-Scheduled-Datetime"
 
+# Inline images embedded as data: URIs when displaying a message
+# (SVG is excluded on purpose: it can carry active content).
+INLINE_IMAGE_MIME_TYPES = (
+    "image/bmp",
+    "image/gif",
+    "image/jpeg",
+    "image/png",
+    "image/webp",
+)
+
 
 class SchedulingState(Enum):
     SCHEDULED = "scheduled"
