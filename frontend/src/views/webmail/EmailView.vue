@@ -242,13 +242,13 @@ const emailDocument = computed(() => {
     "style-src 'unsafe-inline'",
     "form-action 'none'",
   ].join('; ')
-  return (
-    '<!DOCTYPE html><html><head><meta charset="utf-8">' +
-    `<meta http-equiv="Content-Security-Policy" content="${csp}">` +
-    '<base target="_blank"></head><body>' +
-    email.value.body +
-    '</body></html>'
-  )
+  return `
+    <!DOCTYPE html><html><head><meta charset="utf-8">
+    <meta http-equiv="Content-Security-Policy" content="${csp}">
+    <base target="_blank"></head><body>
+    ${email.value.body}
+    </body></html>
+  `
 })
 
 const resizeEmailIframe = () => {
