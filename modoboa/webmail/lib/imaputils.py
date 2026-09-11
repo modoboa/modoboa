@@ -15,7 +15,12 @@ from modoboa.lib.exceptions import InternalError
 from modoboa.parameters import tools as param_tools
 from modoboa.webmail import constants
 
-from ..exceptions import ImapError, WebmailInternalError
+from ..exceptions import (
+    ImapError,
+    InvalidImapArgument,
+    MailboxOperationError,
+    WebmailInternalError,
+)
 from .fetch_parser import FetchResponseParser
 
 # imaplib.Debug = 4
@@ -25,6 +30,10 @@ from .fetch_parser import FetchResponseParser
 MAXLINE = 1000000
 if hasattr(imaplib, "_MAXLINE") and imaplib._MAXLINE < MAXLINE:
     imaplib._MAXLINE = MAXLINE
+
+# Keep a reference to the real exception class: tests replace
+# imaplib.IMAP4 with a mock, which would also replace IMAP4.error.
+IMAP4Error = imaplib.IMAP4.error
 
 # A message UID set: one or more positive integers separated by commas.
 UID_RE = re.compile(r"^[0-9]+(?:,[0-9]+)*$")
@@ -40,14 +49,14 @@ def validate_imap_uid(value):
     reaching a command must be strictly validated first.
     """
     if value is None or not UID_RE.match(str(value)):
-        raise ImapError(_("Invalid message identifier"))
+        raise InvalidImapArgument(_("Invalid message identifier"))
     return str(value)
 
 
 def validate_imap_partnum(value):
     """Ensure a MIME part number is safe to pass to imaplib."""
     if value is None or not PARTNUM_RE.match(str(value)):
-        raise ImapError(_("Invalid part number"))
+        raise InvalidImapArgument(_("Invalid part number"))
     return str(value)
 
 
@@ -60,7 +69,7 @@ def escape_search_pattern(pattern: str) -> str:
     required by RFC 3501.
     """
     if any(ord(c) < 0x20 or ord(c) == 0x7F for c in pattern):
-        raise ImapError(_("Invalid search pattern"))
+        raise InvalidImapArgument(_("Invalid search pattern"))
     return pattern.replace("\\", "\\\\").replace('"', '\\"')
 
 
@@ -73,7 +82,7 @@ def quote_mailbox_name(name: str) -> bytes:
     arguments. Control characters are rejected.
     """
     if any(ord(c) < 0x20 or ord(c) == 0x7F for c in name):
-        raise ImapError(_("Invalid mailbox name"))
+        raise InvalidImapArgument(_("Invalid mailbox name"))
     encoded = name.encode("imap4-utf-7")
     return b'"' + encoded.replace(b"\\", b"\\\\").replace(b'"', b'\\"') + b'"'
 
@@ -239,7 +248,7 @@ class IMAPconnector:
         if name in ["FETCH", "SORT", "STORE", "COPY", "SEARCH"]:
             try:
                 typ, data = self.m.uid(name, *args)
-            except imaplib.IMAP4.error as e:
+            except IMAP4Error as e:
                 raise ImapError(e) from None
             if typ == "NO":
                 raise ImapError(data)
@@ -249,7 +258,7 @@ class IMAPconnector:
 
         try:
             typ, data = self.m._simple_command(name, *args)
-        except imaplib.IMAP4.error as e:
+        except IMAP4Error as e:
             raise ImapError(e) from None
         if typ == "NO":
             raise ImapError(data)
@@ -289,7 +298,7 @@ class IMAPconnector:
                 self.m = imaplib.IMAP4_SSL(self.address, self.port)
             else:
                 self.m = imaplib.IMAP4(self.address, self.port)
-        except (OSError, imaplib.IMAP4.error, ssl.SSLError) as error:
+        except (OSError, IMAP4Error, ssl.SSLError) as error:
             raise ImapError(_(f"Connection to IMAP server failed: {error}")) from None
 
         dev_mode = getattr(settings, "WEBMAIL_DEV_MODE", False)
@@ -726,26 +735,33 @@ class IMAPconnector:
         self.select_mailbox(mbox, False)
         self._cmd("EXPUNGE")
 
+    def _mailbox_command(self, command: str, *args) -> None:
+        """Run a mailbox management command (create, rename, delete...).
+
+        The server refusing the operation (NO response) is reported with
+        its message; imaplib raises an exception on BAD responses.
+        """
+        try:
+            typ, data = getattr(self.m, command)(*args)
+        except IMAP4Error as error:
+            raise MailboxOperationError(str(error)) from None
+        if typ == "NO":
+            raise MailboxOperationError(data[0])
+
     def create_folder(self, name: str, parent: str | None = None) -> bool:
         if parent is not None:
             name = f"{parent}{self.hdelimiter}{name}"
-        typ, data = self.m.create(self._encode_mbox_name(name))
-        if typ == "NO":
-            raise WebmailInternalError(str(data[0]))
+        self._mailbox_command("create", self._encode_mbox_name(name))
         return True
 
     def rename_folder(self, oldname: str, newname: str) -> bool:
-        typ, data = self.m.rename(
-            self._encode_mbox_name(oldname), self._encode_mbox_name(newname)
+        self._mailbox_command(
+            "rename", self._encode_mbox_name(oldname), self._encode_mbox_name(newname)
         )
-        if typ == "NO":
-            raise WebmailInternalError(data[0], ajax=True)
         return True
 
     def delete_folder(self, name: str) -> bool:
-        typ, data = self.m.delete(self._encode_mbox_name(name))
-        if typ == "NO":
-            raise WebmailInternalError(data[0])
+        self._mailbox_command("delete", self._encode_mbox_name(name))
         return True
 
     def get_subscription_tree(self) -> list:
@@ -786,15 +802,11 @@ class IMAPconnector:
         return tree
 
     def subscribe_folder(self, name: str) -> bool:
-        typ, data = self.m.subscribe(self._encode_mbox_name(name))
-        if typ == "NO":
-            raise WebmailInternalError(str(data[0]))
+        self._mailbox_command("subscribe", self._encode_mbox_name(name))
         return True
 
     def unsubscribe_folder(self, name: str) -> bool:
-        typ, data = self.m.unsubscribe(self._encode_mbox_name(name))
-        if typ == "NO":
-            raise WebmailInternalError(str(data[0]))
+        self._mailbox_command("unsubscribe", self._encode_mbox_name(name))
         return True
 
     def getquota(self, mailbox: str) -> None:
