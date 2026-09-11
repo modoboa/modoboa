@@ -13,7 +13,10 @@ from django.conf import settings
 from django.core.mail import EmailMessage, EmailMultiAlternatives
 
 from modoboa.core import models as core_models
-from modoboa.webmail.lib.attachments import create_mail_attachment
+from modoboa.webmail.lib.attachments import (
+    create_mail_attachment,
+    get_attachments_dir,
+)
 
 
 def html2plaintext(content: str) -> str:
@@ -73,6 +76,12 @@ def make_body_images_inline(body: str) -> tuple[str, list]:
     html = lxml.html.fromstring(body)
     parts = []
     root = Path(settings.BASE_DIR).resolve()
+    # Never embed private files: attachments of any user, and the legacy
+    # webmail media directory (inline images and uploads of other users).
+    private_dirs = [
+        Path(get_attachments_dir()).resolve(),
+        (Path(settings.MEDIA_ROOT) / "webmail").resolve(),
+    ]
     for tag in html.iter("img"):
         src = tag.get("src")
         if src is None:
@@ -88,6 +97,8 @@ def make_body_images_inline(body: str) -> tuple[str, list]:
         try:
             candidate.relative_to(root)
         except ValueError:
+            continue
+        if any(candidate.is_relative_to(private) for private in private_dirs):
             continue
         if not candidate.is_file():
             continue

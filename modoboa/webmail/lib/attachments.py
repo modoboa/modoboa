@@ -1,15 +1,19 @@
+from datetime import timedelta
 from email import encoders
 from email.mime.base import MIMEBase
 import json
 import os
 from tempfile import NamedTemporaryFile
+import time
 from typing import TypedDict
 import uuid
 
 
 from django.conf import settings
+from django.core.files.storage import FileSystemStorage
 from django.core.files.uploadhandler import FileUploadHandler, SkipFile
 from django.http import Http404
+from django.utils.deconstruct import deconstructible
 from django.utils.translation import gettext as _
 
 from modoboa.lib.exceptions import InternalError
@@ -19,52 +23,113 @@ from modoboa.parameters import tools as param_tools
 
 from .rfc6266 import build_header
 
-
 Attachment = TypedDict(
     "Attachment", {"fname": str, "content-type": str, "size": int, "tmpname": str}
 )
 
+# Compose sessions expire after this delay without activity
+COMPOSE_SESSION_TTL = timedelta(days=1)
+# Files younger than this are never considered orphans (upload in progress)
+ORPHAN_GRACE_PERIOD = timedelta(hours=1)
+
+COMPOSE_SESSION_KEY_PREFIX = "webmail:compose"
+
 
 class ComposeSessionManager:
+    """Compose sessions, stored in Redis with an expiration delay.
+
+    A session keeps track of the attachments uploaded for a message being
+    written. Each session has its own key so that abandoned sessions
+    expire instead of piling up.
+    """
 
     def __init__(self, username: str):
-        self.hash = f"webmail-{username}"
+        self.username = username
         self.rclient = get_redis_connection(bytes)
+
+    def _key(self, uid: str) -> str:
+        return f"{COMPOSE_SESSION_KEY_PREFIX}:{self.username}:{uid}"
 
     def create(self) -> str:
         """
         Initialize a new "compose" session.
 
-        It is used to keep track of attachments defined with a new
-        message. Each new message will be associated with a unique ID (in
-        order to avoid conflicts between users).
+        Each new message will be associated with a unique ID (in order to
+        avoid conflicts between users).
         """
-        randid = str(uuid.uuid4()).replace("-", "")
-        self.rclient.hset(self.hash, randid, json.dumps({"attachments": []}))
+        randid = uuid.uuid4().hex
+        self.set_content(randid, {"attachments": []})
         return randid
 
     def delete(self, uid: str) -> None:
-        self.rclient.hdel(self.hash, uid)
+        self.rclient.delete(self._key(uid))
 
     def exists(self, uid: str) -> bool:
-        return self.rclient.hexists(self.hash, uid)
+        return bool(self.rclient.exists(self._key(uid)))
 
     def get_content(self, uid: str) -> dict:
-        if not self.exists(uid):
+        content = self.rclient.get(self._key(uid))
+        if content is None:
             raise Http404
-        content = self.rclient.hget(self.hash, uid)
+        # Keep a session in use alive
+        self.rclient.expire(self._key(uid), COMPOSE_SESSION_TTL)
         return json.loads(content.decode())
 
     def set_content(self, uid: str, content: dict):
-        return self.rclient.hset(self.hash, uid, json.dumps(content))
+        return self.rclient.set(
+            self._key(uid), json.dumps(content), ex=COMPOSE_SESSION_TTL
+        )
+
+
+def get_attachments_dir() -> str:
+    """Return the directory holding webmail attachments.
+
+    It contains the files of messages being written and the attachments
+    of scheduled messages: it must never be served by the web server, so
+    it defaults to a directory next to MEDIA_ROOT, not inside it.
+    """
+    return getattr(settings, "WEBMAIL_ATTACHMENTS_ROOT", None) or os.path.join(
+        settings.BASE_DIR, "webmail_attachments"
+    )
 
 
 def get_storage_path(filename):
-    """Return a path to store a file."""
-    storage_dir = os.path.join(settings.MEDIA_ROOT, "webmail")
+    """Return the path of an attachment file.
+
+    Only the file name is kept: a stored name can never point outside
+    the attachments directory.
+    """
+    storage_dir = get_attachments_dir()
     if not filename:
         return storage_dir
-    return os.path.join(storage_dir, filename)
+    return os.path.join(storage_dir, os.path.basename(filename))
+
+
+@deconstructible(path="modoboa.webmail.lib.attachments.WebmailAttachmentStorage")
+class WebmailAttachmentStorage(FileSystemStorage):
+    """Private storage for webmail attachments: files have no URL."""
+
+    @property
+    def base_location(self):
+        return get_attachments_dir()
+
+    @property
+    def location(self):
+        return os.path.abspath(self.base_location)
+
+    @property
+    def base_url(self):
+        return None
+
+
+def _create_attachment_file():
+    """Create a new file with a random name in the attachments directory."""
+    storage_dir = get_attachments_dir()
+    try:
+        os.makedirs(storage_dir, mode=0o700, exist_ok=True)
+        return NamedTemporaryFile(dir=storage_dir, delete=False)
+    except OSError as e:
+        raise InternalError(str(e)) from None
 
 
 def save_attachment_from_upload(request, session_uid: str, f) -> Attachment:
@@ -80,10 +145,7 @@ def save_attachment_from_upload(request, session_uid: str, f) -> Attachment:
     manager = ComposeSessionManager(request.user.username)
     if not manager.exists(session_uid):
         raise Http404
-    try:
-        fp = NamedTemporaryFile(dir=get_storage_path(""), delete=False)
-    except Exception as e:
-        raise InternalError(str(e)) from None
+    fp = _create_attachment_file()
     for chunk in f.chunks():
         fp.write(chunk)
     fp.close()
@@ -113,10 +175,7 @@ def save_attachment(
     manager = ComposeSessionManager(request.user.username)
     if not manager.exists(session_uid):
         raise Http404
-    try:
-        fp = NamedTemporaryFile(dir=get_storage_path(""), delete=False)
-    except Exception as e:
-        raise InternalError(str(e)) from None
+    fp = _create_attachment_file()
     if isinstance(content, str):
         content = content.encode("utf-8")
     fp.write(content)
@@ -140,7 +199,7 @@ def remove_attachment(request, session_uid: str, name: str) -> str | None:
     for att in session["attachments"]:
         if att["tmpname"] == name:
             session["attachments"].remove(att)
-            fullpath = os.path.join(settings.MEDIA_ROOT, "webmail", att["tmpname"])
+            fullpath = get_storage_path(att["tmpname"])
             try:
                 os.remove(fullpath)
             except OSError as e:
@@ -161,6 +220,46 @@ def remove_attachments_and_session(
         except OSError:
             pass
     manager.delete(session_uid)
+
+
+def cleanup_orphan_attachments() -> int:
+    """Delete attachment files no longer used by anything.
+
+    A file is kept while a compose session or a scheduled message refers
+    to it. Others come from abandoned or expired sessions and are removed,
+    except very recent ones (the session may not reference them yet).
+
+    :return: the number of removed files
+    """
+    from modoboa.webmail.models import MessageAttachment
+
+    storage_dir = get_attachments_dir()
+    if not os.path.isdir(storage_dir):
+        return 0
+    used = {
+        os.path.basename(name)
+        for name in MessageAttachment.objects.values_list("file", flat=True)
+    }
+    rclient = get_redis_connection(bytes)
+    for key in rclient.scan_iter(match=f"{COMPOSE_SESSION_KEY_PREFIX}:*"):
+        content = rclient.get(key)
+        if content is None:
+            continue
+        for att in json.loads(content.decode()).get("attachments", []):
+            used.add(att["tmpname"])
+    limit = time.time() - ORPHAN_GRACE_PERIOD.total_seconds()
+    removed = 0
+    for entry in os.scandir(storage_dir):
+        if not entry.is_file() or entry.name in used:
+            continue
+        if entry.stat().st_mtime > limit:
+            continue
+        try:
+            os.remove(entry.path)
+        except OSError:
+            continue
+        removed += 1
+    return removed
 
 
 def create_mail_attachment(attdef, payload=None):

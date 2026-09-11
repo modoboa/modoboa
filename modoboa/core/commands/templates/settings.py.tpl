@@ -211,6 +211,10 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'sitestatic')
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
+# Webmail attachments (messages being written, scheduled messages): this
+# directory must NOT be served by the web server.
+WEBMAIL_ATTACHMENTS_ROOT = os.path.join(BASE_DIR, 'webmail_attachments')
+
 # oAuth2 settings
 
 OAUTH2_PROVIDER = {
