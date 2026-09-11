@@ -391,22 +391,26 @@ const initForm = () => {
   }
   if (props.originalEmail) {
     if (!props.forward) {
-      // Reply: address the original sender (recipients make no sense when
-      // forwarding — the whole point is picking new ones).
-      form.value.to = props.originalEmail.reply_to
-        ? [props.originalEmail.reply_to]
+      // Reply: address every Reply-To address if any, the sender otherwise
+      // (recipients make no sense when forwarding — the whole point is
+      // picking new ones).
+      form.value.to = props.originalEmail.reply_to?.length
+        ? props.originalEmail.reply_to.map((rcpt) => rcpt.address)
         : [props.originalEmail.from_address.address]
       if (props.replyAll) {
-        let addresses = props.originalEmail.to
-          .filter((rcpt) => rcpt.address !== authStore.authUser.username)
-          .map((rcpt) => rcpt.fulladdress)
-        if (props.originalEmail.cc && props.originalEmail.cc.length) {
-          addresses = addresses.concat(
-            props.originalEmail.cc.map((rcpt) => rcpt.fulladdress)
-          )
-        }
-        form.value.cc = addresses
-        showCcField.value = true
+        // Bare addresses only: the API rejects "Name <address>" values
+        const excluded = new Set([
+          authStore.authUser.username,
+          ...(form.value.to || []),
+        ])
+        const addresses = [
+          ...props.originalEmail.to,
+          ...(props.originalEmail.cc || []),
+        ]
+          .map((rcpt) => rcpt.address)
+          .filter((address) => !excluded.has(address))
+        form.value.cc = [...new Set(addresses)]
+        showCcField.value = form.value.cc.length > 0
       }
       if (props.originalEmail.message_id) {
         form.value.in_reply_to = props.originalEmail.message_id
