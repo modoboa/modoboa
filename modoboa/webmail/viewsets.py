@@ -470,6 +470,9 @@ class ComposeSessionViewSet(viewsets.GenericViewSet):
                 serializer.validated_data,
                 manager.get_content(pk)["attachments"],
             )
+            # The files now belong to the scheduled message: only drop the
+            # compose session.
+            manager.delete(pk)
             self._delete_draft(request, draft_mailid)
             return response.Response(status=204)
 

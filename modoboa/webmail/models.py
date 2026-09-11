@@ -2,11 +2,16 @@
 Webmail related models.
 """
 
+import os
+
 from django.core.mail import EmailMessage
 from django.db import models
+from django.db.models.signals import post_delete
+from django.dispatch import receiver
 
 from modoboa.lib import dovecot
 from modoboa.webmail import constants
+from modoboa.webmail.lib.attachments import WebmailAttachmentStorage, get_storage_path
 from modoboa.webmail.lib.utils import create_message
 
 
@@ -96,7 +101,8 @@ class MessageAttachment(models.Model):
     message = models.ForeignKey(
         ScheduledMessage, on_delete=models.CASCADE, related_name="attachments"
     )
-    file = models.FileField()
+    # Private storage: never inside MEDIA_ROOT, which may be served
+    file = models.FileField(storage=WebmailAttachmentStorage())
     content_type = models.CharField(max_length=150)
     filename = models.CharField(max_length=255)
 
@@ -109,3 +115,18 @@ class MessageAttachment(models.Model):
             "tmpname": self.file.name,
             "fname": self.filename,
         }
+
+
+@receiver(post_delete, sender=MessageAttachment)
+def remove_attachment_file(sender, instance, **kwargs):
+    """Delete the file of an attachment along with its record.
+
+    Also triggered when the scheduled message is deleted (once sent or
+    cancelled), through the cascade.
+    """
+    if not instance.file.name:
+        return
+    try:
+        os.remove(get_storage_path(instance.file.name))
+    except FileNotFoundError:
+        pass
