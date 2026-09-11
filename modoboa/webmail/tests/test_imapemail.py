@@ -21,7 +21,8 @@ def _make_email(inlines, links=True):
     email.mailid = "3"
     email.mbox = "INBOX"
     email.bs = mock.Mock(inlines=inlines)
-    email.imapc = mock.Mock()
+    # MagicMock: ImapEmail.__del__ calls imapc.__exit__()
+    email.imapc = mock.MagicMock()
     email.imapc.fetchpart.return_value = (
         None,
         base64.b64encode(PNG_BYTES).decode(),
