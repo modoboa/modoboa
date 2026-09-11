@@ -247,6 +247,11 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  // Forwarding: recipients must be chosen by the user
+  forward: {
+    type: Boolean,
+    default: false,
+  },
 })
 const emit = defineEmits(['onToggleHtmlMode'])
 
@@ -281,20 +286,26 @@ const initForm = () => {
     request_mdn: false,
   }
   if (props.originalEmail) {
-    form.value.to = props.originalEmail.reply_to
-      ? [props.originalEmail.reply_to]
-      : [props.originalEmail.from_address.address]
+    if (!props.forward) {
+      // Reply to every Reply-To address if any, to the sender otherwise
+      form.value.to = props.originalEmail.reply_to?.length
+        ? props.originalEmail.reply_to.map((rcpt) => rcpt.address)
+        : [props.originalEmail.from_address.address]
+    }
     if (props.replyAll) {
-      let addresses = props.originalEmail.to
-        .filter((rcpt) => rcpt.address !== authStore.authUser.username)
-        .map((rcpt) => rcpt.fulladdress)
-      if (props.originalEmail.cc && props.originalEmail.cc.length) {
-        addresses = addresses.concat(
-          props.originalEmail.cc.map((rcpt) => rcpt.fulladdress)
-        )
-      }
-      form.value.cc = addresses
-      showCcField.value = true
+      // Bare addresses only: the API rejects "Name <address>" values
+      const excluded = new Set([
+        authStore.authUser.username,
+        ...(form.value.to || []),
+      ])
+      const addresses = [
+        ...props.originalEmail.to,
+        ...(props.originalEmail.cc || []),
+      ]
+        .map((rcpt) => rcpt.address)
+        .filter((address) => !excluded.has(address))
+      form.value.cc = [...new Set(addresses)]
+      showCcField.value = form.value.cc.length > 0
     }
     form.value.subject = props.originalEmail.subject
     form.value.body = props.originalEmail.body

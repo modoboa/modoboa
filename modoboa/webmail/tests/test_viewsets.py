@@ -381,6 +381,19 @@ class UserEmailViewSetTestCase(WebmailTestCase):
         self.assertEqual(response.status_code, 200)
         self.assertIn("scheduled_datetime", response.json())
 
+    def test_content_reply_to(self):
+        """Every Reply-To address is returned as a structured address."""
+        self.authenticate()
+        url = reverse("v2:webmail-email-content")
+        response = self.client.get(f"{url}?mailbox=INBOX&mailid=46933&context=reply")
+        self.assertEqual(response.status_code, 200)
+        reply_to = response.json()["reply_to"]
+        self.assertEqual(
+            [rcpt["address"] for rcpt in reply_to],
+            ["support@example.test", "other@example.test"],
+        )
+        self.assertEqual(reply_to[0]["name"], "Support")
+
     def test_attachment(self):
         self.authenticate()
         url = reverse("v2:webmail-email-attachment")

@@ -1,5 +1,5 @@
 <template>
-  <ComposeEmailForm :original-email="email" />
+  <ComposeEmailForm :original-email="email" forward />
 </template>
 
 <script setup>
