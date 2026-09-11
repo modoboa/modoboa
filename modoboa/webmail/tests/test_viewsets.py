@@ -74,6 +74,11 @@ class WebmailTestCase(ModoAPITestCase):
         self.set_global_parameter("imap_port", 1435)
         self.workdir = tempfile.mkdtemp()
         os.mkdir(f"{self.workdir}/webmail")
+        attachments_root = self.settings(
+            WEBMAIL_ATTACHMENTS_ROOT=f"{self.workdir}/attachments"
+        )
+        attachments_root.enable()
+        self.addCleanup(attachments_root.disable)
         self.set_global_parameter("update_scheme", False, app="core")
 
     def tearDown(self):
@@ -451,7 +456,7 @@ class ComposeSessionViewSetTestCase(WebmailTestCase):
         content = manager.get_content(uid)
         self.assertEqual(len(content["attachments"]), 1)
         name = content["attachments"][0]["tmpname"]
-        path = f"{self.workdir}/webmail/{name}"
+        path = f"{self.workdir}/attachments/{name}"
         self.assertTrue(os.path.exists(path))
 
         url = reverse("v2:webmail-compose-session-delete-attachment", args=[uid, name])
