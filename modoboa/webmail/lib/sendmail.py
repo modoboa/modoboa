@@ -1,3 +1,4 @@
+import logging
 import smtplib
 
 from django.conf import settings
@@ -6,10 +7,31 @@ from django.core import mail
 from modoboa.lib.oauth2 import get_access_token
 from modoboa.parameters import tools as param_tools
 from modoboa.webmail import constants, models
-from modoboa.webmail.exceptions import WebmailInternalError
+from modoboa.webmail.exceptions import ImapError, WebmailInternalError
 from modoboa.webmail.lib.utils import create_message
 
 from . import get_imapconnector
+
+logger = logging.getLogger("modoboa.webmail")
+
+
+def get_smtp_error_message(error: OSError) -> str:
+    """Return a readable message for an SMTP or network error.
+
+    smtplib errors are ``OSError`` subclasses, like the network errors
+    (connection refused, timeout, TLS failure...) raised while talking
+    to the server.
+    """
+    if isinstance(error, smtplib.SMTPRecipientsRefused):
+        return ", ".join(
+            [f"{rcpt}: {reason}" for rcpt, reason in error.recipients.items()]
+        )
+    if isinstance(error, smtplib.SMTPResponseException):
+        smtp_error = error.smtp_error
+        if isinstance(smtp_error, bytes):
+            smtp_error = smtp_error.decode(errors="replace")
+        return str(smtp_error)
+    return str(error) or error.__class__.__name__
 
 
 def send_mail(request, attributes: dict, attachments: list) -> tuple[bool, str | None]:
@@ -61,18 +83,18 @@ def send_mail(request, attributes: dict, attachments: list) -> tuple[bool, str |
             else:
                 msg.connection = connection
                 msg.send()
-    except smtplib.SMTPResponseException as inst:
-        return False, str(inst.smtp_error)
-    except smtplib.SMTPRecipientsRefused as inst:
-        error = ", ".join(
-            [f"{rcpt}: {error}" for rcpt, error in inst.recipients.items()]
-        )
-        return False, error
+    except OSError as error:
+        return False, get_smtp_error_message(error)
 
     # Copy message to sent folder
     sentfolder = request.user.parameters.get_value("sent_folder")
-    with get_imapconnector(request) as imapc:
-        imapc.push_mail(sentfolder, msg.message())
+    try:
+        with get_imapconnector(request) as imapc:
+            imapc.push_mail(sentfolder, msg.message())
+    except (ImapError, WebmailInternalError):
+        # The message is sent: reporting a failure would make the user
+        # send it again.
+        logger.exception("Failed to store a copy of the sent message")
     return True, None
 
 
@@ -161,15 +183,10 @@ def send_scheduled_message(sched_msg: models.ScheduledMessage) -> bool:
             else:
                 msg.connection = connection
                 msg.send()
-    except (smtplib.SMTPResponseException, smtplib.SMTPRecipientsRefused) as inst:
-        if isinstance(inst, smtplib.SMTPRecipientsRefused):
-            error = ", ".join(
-                [f"{rcpt}: {error}" for rcpt, error in inst.recipients.items()]
-            )
-        else:
-            error = str(inst.smtp_error)
+    except OSError as error:
+        max_length = models.ScheduledMessage._meta.get_field("error").max_length
         sched_msg.status = constants.SchedulingState.SEND_ERROR.value
-        sched_msg.error = error
+        sched_msg.error = get_smtp_error_message(error)[:max_length]
         sched_msg.save()
         return False
 

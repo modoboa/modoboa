@@ -1,9 +1,9 @@
 """Webmail constants."""
 
+from datetime import timedelta
 from enum import Enum
 
 from django.utils.translation import gettext_lazy as _
-
 
 MAILBOX_TYPES = ["inbox", "draft", "sent", "scheduled", "junk", "trash", "normal"]
 
@@ -29,6 +29,10 @@ class SchedulingState(Enum):
     SEND_ERROR = "send_error"
     MOVE_ERROR = "move_error"
 
+
+# A scheduled message still in the SENDING state after this delay is
+# considered lost by the queue and flagged as failed.
+SCHEDULED_SENDING_TIMEOUT = timedelta(hours=1)
 
 EMAIL_SCHEDULING_STATES = (
     (SchedulingState.SCHEDULED.value, "scheduled"),

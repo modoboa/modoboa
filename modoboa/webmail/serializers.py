@@ -398,6 +398,10 @@ class ScheduledMessageSerializer(ScheduledDatetimeMixin, serializers.ModelSerial
         read_only_fields = ["error"]
 
     def update(self, instance, validated_data):
+        if instance.status == constants.SchedulingState.SEND_ERROR.value:
+            # Rescheduling a failed message gives it another try
+            instance.status = constants.SchedulingState.SCHEDULED.value
+            instance.error = None
         instance = super().update(instance, validated_data)
         message = instance.to_email_message()
         with get_imapconnector(self.context["request"]) as imapc:
