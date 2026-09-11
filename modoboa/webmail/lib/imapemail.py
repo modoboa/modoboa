@@ -51,14 +51,20 @@ class ImapEmail(Email):
 
     def fetch_headers(self, raw_addresses: bool = False) -> None:
         """Fetch message headers from server."""
-        requested_headers = self.headernames
+        # Copy the class attribute: extending it in place would make it
+        # grow on every request.
+        requested_headers = list(self.headernames)
         if self.mbox == constants.MAILBOX_NAME_SCHEDULED:
             requested_headers += [(constants.CUSTOM_HEADER_SCHEDULED_DATETIME, True)]
         header_names = [header[0].upper() for header in requested_headers]
         msg = self.imapc.fetchmail(
             self.mbox, self.mailid, readonly=False, what=" ".join(header_names)
         )
-        headers = msg[f"BODY[HEADER.FIELDS ({' '.join(header_names)})]"]
+        # Servers may return the requested fields in a different order,
+        # so don't rely on the exact data item name.
+        headers = next(
+            value for key, value in msg.items() if key.startswith("BODY[HEADER.FIELDS")
+        )
         self.fetch_body_structure(msg)
         msg = email.message_from_string(headers)
         for hdr in requested_headers:
@@ -126,7 +132,9 @@ class ImapEmail(Email):
                 {
                     "filename": filename,
                     "content_type": attdef["Content-Type"],
-                    "content": content,
+                    # Store the decoded payload: it is encoded again when
+                    # the message is built.
+                    "content": decode_payload(attdef["encoding"], content),
                 }
             )
         return result
@@ -355,3 +363,23 @@ class ForwardModifier(Modifier):
 
     def _header_end_html(self):
         return ""
+
+
+class EditModifier(ImapEmail):
+    """Load a draft message so it can be edited.
+
+    The body is returned as raw content for the editor: plain text is
+    neither escaped nor wrapped in a <pre> block.
+    """
+
+    headernames = ImapEmail.headernames + [("Bcc", True)]
+
+    def __init__(self, request, *args, **kwargs):
+        super().__init__(request, *args, **kwargs)
+        self.fetch_headers()
+
+    def _post_process_plain(self, content):
+        return content.strip()
+
+    def viewmail_plain(self, contents=None, **kwargs):
+        return contents

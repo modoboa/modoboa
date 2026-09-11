@@ -3,7 +3,7 @@ from .attachments import (
     save_attachment,
     AttachmentUploadHandler,
 )
-from .imapemail import ImapEmail, ReplyModifier, ForwardModifier
+from .imapemail import ImapEmail, EditModifier, ReplyModifier, ForwardModifier
 from .imaputils import BodyStructure, IMAPconnector, get_imapconnector, separate_mailbox
 from .signature import EmailSignature
 from .utils import decode_payload
@@ -12,6 +12,7 @@ from .utils import decode_payload
 __all__ = [
     "AttachmentUploadHandler",
     "BodyStructure",
+    "EditModifier",
     "EmailSignature",
     "ForwardModifier",
     "IMAPconnector",
