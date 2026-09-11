@@ -19,6 +19,7 @@ __all__ = [
     "parse_date",
     "parse_reply_to",
     "parse_cc",
+    "parse_bcc",
     "parse_subject",
 ]
 
@@ -99,6 +100,11 @@ def parse_to(value):
 
 def parse_cc(value):
     """Parse a Cc: header."""
+    return parse_address_list(value)
+
+
+def parse_bcc(value):
+    """Parse a Bcc: header."""
     return parse_address_list(value)
 
 

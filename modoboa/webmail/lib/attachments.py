@@ -101,7 +101,7 @@ def save_attachment_from_upload(request, session_uid: str, f) -> Attachment:
 
 
 def save_attachment(
-    request, session_uid: str, filename: str, content_type: str, content: str
+    request, session_uid: str, filename: str, content_type: str, content: str | bytes
 ) -> Attachment:
     """
     Save a new attachment to the filesystem
@@ -117,7 +117,9 @@ def save_attachment(
         fp = NamedTemporaryFile(dir=get_storage_path(""), delete=False)
     except Exception as e:
         raise InternalError(str(e)) from None
-    fp.write(content.encode("utf-8"))
+    if isinstance(content, str):
+        content = content.encode("utf-8")
+    fp.write(content)
     fp.close()
 
     session = manager.get_content(session_uid)
