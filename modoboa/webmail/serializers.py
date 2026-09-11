@@ -221,7 +221,8 @@ class EmailSerializer(serializers.Serializer):
     body = serializers.CharField()
     date = serializers.CharField(source="Date")
     message_id = serializers.CharField(source="Message_ID", required=False)
-    reply_to = serializers.EmailField(source="Reply_To", required=False)
+    # Reply-To may contain several addresses (parsed as a list)
+    reply_to = EmailAddressSerializer(source="Reply_To", many=True, required=False)
     attachments = serializers.SerializerMethodField()
 
     scheduled_datetime = serializers.DateTimeField(

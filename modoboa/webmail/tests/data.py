@@ -48,6 +48,34 @@ BODY_PLAIN_4 = [
     b")",
 ]
 
+# Message with a multi-address Reply-To header (UID 46933)
+_REPLY_TO_HEADERS = (
+    b"From: Sender <sender@example.test>\r\n"
+    b"To: <user@test.com>\r\n"
+    b"Subject: Reply-To test\r\n"
+    b"Date: Wed, 28 Dec 2011 13:29:17 +0100\r\n"
+    b"Reply-To: Support <support@example.test>, other@example.test\r\n"
+    b"Message-ID: <reply-to-test@example.test>\r\n\r\n"
+)
+
+BODYSTRUCTURE_SAMPLE_REPLY_TO = [
+    (
+        b"855 (UID 46933 "
+        + BODYSTRUCTURE_4
+        + b" BODY[HEADER.FIELDS (FROM TO CC DATE SUBJECT REPLY-TO MESSAGE-ID)] {%d}"
+        % len(_REPLY_TO_HEADERS),
+        _REPLY_TO_HEADERS,
+    ),
+    b")",
+]
+
+BODYSTRUCTURE_ONLY_REPLY_TO = [(b"855 (UID 46933 " + BODYSTRUCTURE_4), ")"]
+
+BODY_PLAIN_REPLY_TO = [
+    (b"855 (UID 46933 BODY[1.1] {25}", b"This is a test message.\r\n"),
+    b")",
+]
+
 BODYSTRUCTURE_SAMPLE_5 = [
     (
         b'856 (UID 46936 BODYSTRUCTURE (("text" "plain" ("charset" "ISO-8859-1") NIL NIL "quoted-printable" 724 22 NIL NIL NIL NIL)("text" "html" ("charset" "ISO-8859-1") NIL NIL "quoted-printable" 2662 48 NIL NIL NIL NIL) "alternative" ("boundary" "----=_Part_1326887_254624357.1325083973970") NIL NIL NIL) BODY[HEADER.FIELDS (DATE FROM TO CC SUBJECT)] {258}',
