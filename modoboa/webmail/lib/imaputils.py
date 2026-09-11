@@ -143,6 +143,7 @@ class BodyStructure:
                 self.contents[subtype].append(params)
             return
         elif multisubtype in ["related"]:
+            params["Content-Type"] = ftype
             self.inlines[params["cid"].strip("<>")] = params
             return
 
@@ -297,7 +298,10 @@ class IMAPconnector:
             data = self._cmd("AUTHENTICATE", b"OAUTHBEARER", token)
         else:
             user = bytes(settings.WEBMAIL_DEV_USERNAME, "utf-8")
-            passwd = bytes(self.m._quote(settings.WEBMAIL_DEV_PASSWORD), "utf-8")
+            passwd = self.m._quote(settings.WEBMAIL_DEV_PASSWORD)
+            # Starting with Python 3.13, _quote() returns bytes
+            if not isinstance(passwd, bytes):
+                passwd = bytes(passwd, "utf-8")
             data = self._cmd("LOGIN", user, passwd)
         self.m.state = "AUTH"
         if "CAPABILITY" in self.m.untagged_responses:
@@ -389,7 +393,7 @@ class IMAPconnector:
         cmdname = "SORT"
         data = self._cmd(
             cmdname,
-            bytearray(f"({criterion})", "utf-8"),
+            f"({criterion})",
             b"UTF-8",
             b"(NOT DELETED)",
             *self.criterions,
