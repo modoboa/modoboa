@@ -352,6 +352,12 @@ const prepareMessage = () => {
   if (draftMailid.value) {
     result.mailid = draftMailid.value
   }
+  if (props.originalEmail && route.query.mailbox && route.query.mailid) {
+    // Let the server flag the original message (\Answered, $Forwarded)
+    result.original_mailbox = route.query.mailbox
+    result.original_mailid = route.query.mailid
+    result.original_action = props.forward ? 'forward' : 'reply'
+  }
   return result
 }
 

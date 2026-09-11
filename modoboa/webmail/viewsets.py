@@ -13,7 +13,7 @@ from modoboa.lib import exceptions
 from modoboa.lib.paginator import Paginator
 from modoboa.lib.viewsets import HasMailbox
 from modoboa.webmail import lib, models, serializers
-from modoboa.webmail.exceptions import ImapError
+from modoboa.webmail.exceptions import ImapError, WebmailInternalError
 from modoboa.webmail.lib import attachments
 from modoboa.webmail.lib.imaputils import UID_RE, PARTNUM_RE
 from modoboa.webmail.lib.sendmail import send_mail, schedule_email
@@ -481,8 +481,24 @@ class ComposeSessionViewSet(viewsets.GenericViewSet):
         if status:
             attachments.remove_attachments_and_session(manager, pk)
             self._delete_draft(request, draft_mailid)
+            self._flag_original_message(request, serializer.validated_data)
             return response.Response(status=204)
         return response.Response({"error": error}, status=400)
+
+    def _flag_original_message(self, request, data: dict) -> None:
+        """Flag the message this one replies to or forwards, once sent."""
+        if "original_mailid" not in data:
+            return
+        try:
+            with lib.get_imapconnector(request) as imapc:
+                if data["original_action"] == "reply":
+                    flag_message = imapc.msg_answered
+                else:
+                    flag_message = imapc.msg_forwarded
+                flag_message(data["original_mailbox"], str(data["original_mailid"]))
+        except (ImapError, WebmailInternalError):
+            # The message is already sent: a missing flag is not an error
+            pass
 
     def _delete_draft(self, request, mailid: int | None) -> None:
         """Remove the draft a message was composed from, once sent."""

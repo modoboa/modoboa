@@ -679,11 +679,14 @@ class IMAPconnector:
         self._remove_flag(mbox, msgset, r"(\Flagged)")
 
     def msg_forwarded(self, mailbox: str, mailid: str) -> None:
-        self._add_flag(mailbox, mailid, "($Forwarded)")
+        """Add the $Forwarded flag to this email."""
+        # _add_flag expects a list: joining a plain string would flag
+        # the messages 1, 2, 3 for UID "123".
+        self._add_flag(mailbox, [validate_imap_uid(mailid)], "($Forwarded)")
 
     def msg_answered(self, mailbox: str, mailid: str) -> None:
-        """Add the \Answered flag to this email."""
-        self._add_flag(mailbox, mailid, r"(\Answered)")
+        """Add the \\Answered flag to this email."""
+        self._add_flag(mailbox, [validate_imap_uid(mailid)], r"(\Answered)")
 
     def move(self, msgset, oldmailbox: str, newmailbox: str) -> None:
         """Move messages between mailboxes."""
