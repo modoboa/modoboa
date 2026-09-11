@@ -22,6 +22,9 @@ from . import imapheader
 from .imaputils import get_imapconnector, validate_imap_uid, BodyStructure
 from .utils import decode_payload
 
+# Headers holding addresses, parsed from their raw value
+ADDRESS_HEADERS = ("From", "To", "Cc", "Bcc", "Reply-To")
+
 
 class ImapEmail(Email):
     """
@@ -104,6 +107,10 @@ class ImapEmail(Email):
             setattr(self, f"original_{header.replace('-', '')}", hdrvalue)
         if not hdrvalue:
             return ""
+        if header in ADDRESS_HEADERS:
+            # Parse the raw value: decoding encoded-words first could turn
+            # an encoded comma of a display name into an address separator.
+            hdrvalue = str(msg[header])
         try:
             key = re.sub("-", "_", header).lower()
             hdrvalue = getattr(imapheader, f"parse_{key}")(hdrvalue)
