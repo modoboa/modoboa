@@ -76,6 +76,35 @@ BODY_PLAIN_REPLY_TO = [
     b")",
 ]
 
+# Message whose sender name contains HTML (UID 46934)
+_HTML_SENDER_HEADERS = (
+    b'From: "<img src=x onerror=alert(1)>" <evil@example.test>\r\n'
+    b"To: <user@test.com>\r\n"
+    b"Subject: HTML sender test\r\n"
+    b"Date: Wed, 28 Dec 2011 13:29:17 +0100\r\n"
+    b"Message-ID: <html-sender-test@example.test>\r\n\r\n"
+)
+
+BODYSTRUCTURE_SAMPLE_HTML_SENDER = [
+    (
+        b"855 (UID 46934 "
+        + BODYSTRUCTURE_4
+        + b" BODY[HEADER.FIELDS (FROM TO CC DATE SUBJECT REPLY-TO MESSAGE-ID)] {%d}"
+        % len(_HTML_SENDER_HEADERS),
+        _HTML_SENDER_HEADERS,
+    ),
+    b")",
+]
+
+BODYSTRUCTURE_ONLY_HTML_SENDER = [(b"855 (UID 46934 " + BODYSTRUCTURE_4), ")"]
+
+_HTML_SENDER_BODY = b"<p>Hello</p>"
+
+BODY_HTML_HTML_SENDER = [
+    (b"855 (UID 46934 BODY[1.2] {%d}" % len(_HTML_SENDER_BODY), _HTML_SENDER_BODY),
+    b")",
+]
+
 BODYSTRUCTURE_SAMPLE_5 = [
     (
         b'856 (UID 46936 BODYSTRUCTURE (("text" "plain" ("charset" "ISO-8859-1") NIL NIL "quoted-printable" 724 22 NIL NIL NIL NIL)("text" "html" ("charset" "ISO-8859-1") NIL NIL "quoted-printable" 2662 48 NIL NIL NIL NIL) "alternative" ("boundary" "----=_Part_1326887_254624357.1325083973970") NIL NIL NIL) BODY[HEADER.FIELDS (DATE FROM TO CC SUBJECT)] {258}',

@@ -299,7 +299,9 @@ class ReplyModifier(Modifier):
         sender = self.From.get("name", self.From["address"])
         textheader = f"{sender} {_('wrote:')}"
         if self.dformat == "html":
-            textheader = f"<p>{textheader}</p>"
+            # The sender name comes from the message: escape it before
+            # injecting it into HTML content.
+            textheader = f"<p>{conditional_escape(textheader)}</p>"
         else:
             textheader = f"{textheader}\n"
         self.body = textheader + self.body

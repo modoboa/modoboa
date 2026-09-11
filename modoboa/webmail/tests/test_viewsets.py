@@ -393,6 +393,19 @@ class UserEmailViewSetTestCase(WebmailTestCase):
             ["support@example.test", "other@example.test"],
         )
         self.assertEqual(reply_to[0]["name"], "Support")
+
+    def test_content_reply_escapes_sender_name(self):
+        """A sender name containing HTML must not be injected as markup."""
+        self.authenticate()
+        url = reverse("v2:webmail-email-content")
+        response = self.client.get(
+            f"{url}?mailbox=INBOX&mailid=46934&context=reply&dformat=html"
+        )
+        self.assertEqual(response.status_code, 200)
+        body = response.json()["body"]
+        self.assertIn("&lt;img src=x onerror=alert(1)&gt;", body)
+        self.assertNotIn("<img", body)
+
     def test_content_edit_context(self):
         """Drafts are returned with a raw body, ready for the editor."""
         self.authenticate()
