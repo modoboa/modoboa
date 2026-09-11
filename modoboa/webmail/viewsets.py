@@ -13,6 +13,7 @@ from modoboa.lib import exceptions
 from modoboa.lib.paginator import Paginator
 from modoboa.lib.viewsets import HasMailbox
 from modoboa.webmail import lib, models, serializers
+from modoboa.webmail.exceptions import ImapError
 from modoboa.webmail.lib import attachments
 from modoboa.webmail.lib.imaputils import UID_RE, PARTNUM_RE
 from modoboa.webmail.lib.sendmail import send_mail, schedule_email
@@ -299,7 +300,7 @@ class UserEmailViewSet(viewsets.GenericViewSet):
         if "dformat" in request.GET:
             dformat = request.GET.get("dformat")
         context = self.request.GET.get("context")
-        if context and context in ["reply", "forward"]:
+        if context and context in ["reply", "forward", "edit"]:
             modclass = getattr(lib, f"{context.capitalize()}Modifier")
             email = modclass(
                 request,
@@ -462,12 +463,14 @@ class ComposeSessionViewSet(viewsets.GenericViewSet):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         manager = attachments.ComposeSessionManager(request.user.username)
+        draft_mailid = serializer.validated_data.get("mailid")
         if serializer.validated_data.get("scheduled_datetime"):
             schedule_email(
                 request,
                 serializer.validated_data,
                 manager.get_content(pk)["attachments"],
             )
+            self._delete_draft(request, draft_mailid)
             return response.Response(status=204)
 
         status, error = send_mail(
@@ -477,8 +480,21 @@ class ComposeSessionViewSet(viewsets.GenericViewSet):
         )
         if status:
             attachments.remove_attachments_and_session(manager, pk)
+            self._delete_draft(request, draft_mailid)
             return response.Response(status=204)
         return response.Response({"error": error}, status=400)
+
+    def _delete_draft(self, request, mailid: int | None) -> None:
+        """Remove the draft a message was composed from, once sent."""
+        if mailid is None:
+            return
+        drafts_folder = request.user.parameters.get_value("drafts_folder")
+        try:
+            with lib.get_imapconnector(request) as imapc:
+                imapc.delete_mail(drafts_folder, mailid)
+        except ImapError:
+            # The message is already sent: a leftover draft is not an error
+            pass
 
 
 class ScheduledMessageViewSet(

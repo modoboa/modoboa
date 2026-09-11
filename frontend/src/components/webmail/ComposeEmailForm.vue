@@ -261,7 +261,17 @@ const { $gettext } = useGettext()
 const { displayNotification, reloadData } = useBusStore()
 const authStore = useAuthStore()
 
+// Only the compose view opened from the drafts folder edits a draft: in
+// reply/forward views, route.query.mailid is the original message UID.
+const isEditingDraft =
+  route.name === 'ComposeEmailView' &&
+  route.query.mailbox === constants.DRAFTS_FOLDER &&
+  !!route.query.mailid
+
 const allowedSenders = ref([])
+// UID of the draft being edited, updated on each save so the previous
+// version gets replaced instead of duplicated.
+const draftMailid = ref(isEditingDraft ? route.query.mailid : null)
 const attachmentCount = ref(0)
 const contacts = ref([])
 const editorMode = ref('plain')
@@ -339,8 +349,8 @@ const prepareMessage = () => {
     }
     result.bcc = bcc
   }
-  if (route.query.mailid) {
-    result.mailid = route.query.mailid
+  if (draftMailid.value) {
+    result.mailid = draftMailid.value
   }
   return result
 }
@@ -397,11 +407,12 @@ const lookForContacts = debounce(async (search) => {
 }, 500)
 
 const initialize = async (body) => {
-  if (route.params.mailbox === constants.DRAFTS_FOLDER && route.query.mailid) {
-    // Load draft
+  if (isEditingDraft) {
+    // Load draft (raw body, ready for the editor)
     const draft = await api.getEmailContent(
-      constants.DRAFTS_FOLDER,
-      route.query.mailid
+      route.query.mailbox,
+      route.query.mailid,
+      { context: 'edit', dformat: body.editor_format }
     )
     form.value.sender = draft.data.from_address.address
     if (draft.data.to?.length) {
@@ -450,7 +461,9 @@ const saveDraft = async () => {
   working.value = true
   const body = prepareMessage()
   try {
-    await api.saveComposeSession(route.query.uid, body)
+    const resp = await api.saveComposeSession(route.query.uid, body)
+    draftMailid.value = resp.data.mailid
+    displayNotification({ msg: $gettext('Draft saved') })
   } catch (error) {
     console.log(error)
   } finally {
@@ -474,8 +487,7 @@ watch(
 )
 
 if (!route.query.uid) {
-  const args =
-    route.query.mailbox === constants.DRAFTS_FOLDER ? [route.query.mailid] : []
+  const args = isEditingDraft ? [route.query.mailid] : []
   api.createComposeSession(...args).then((resp) => {
     const query = { ...route.query, uid: resp.data.uid }
     attachmentCount.value = resp.data.attachments?.length || 0

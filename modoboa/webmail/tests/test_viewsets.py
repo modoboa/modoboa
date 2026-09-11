@@ -393,6 +393,17 @@ class UserEmailViewSetTestCase(WebmailTestCase):
             ["support@example.test", "other@example.test"],
         )
         self.assertEqual(reply_to[0]["name"], "Support")
+    def test_content_edit_context(self):
+        """Drafts are returned with a raw body, ready for the editor."""
+        self.authenticate()
+        url = reverse("v2:webmail-email-content")
+        response = self.client.get(
+            f"{url}?mailbox=Drafts&mailid=46931&context=edit&dformat=plain"
+        )
+        self.assertEqual(response.status_code, 200)
+        body = response.json()["body"]
+        self.assertNotIn("<pre>", body)
+        self.assertEqual(body, "This is a test message.")
 
     def test_attachment(self):
         self.authenticate()
@@ -430,6 +441,10 @@ class ComposeSessionViewSetTestCase(WebmailTestCase):
         manager = ComposeSessionManager(self.user.username)
         content = manager.get_content(uid)
         self.assertEqual(len(content["attachments"]), 1)
+        # The attachment must be stored decoded, not as base64 text
+        tmpname = content["attachments"][0]["tmpname"]
+        with open(f"{self.workdir}/webmail/{tmpname}", "rb") as fp:
+            self.assertTrue(fp.read().startswith(b"%PDF-1.4"))
 
     def test_get(self):
         self.authenticate()
@@ -542,6 +557,52 @@ class ComposeSessionViewSetTestCase(WebmailTestCase):
             format="json",
         )
         self.assertEqual(response.status_code, 200)
+
+    def test_save_keeps_bcc(self):
+        self.authenticate()
+        uid = self._create_compose_session()
+        url = reverse("v2:webmail-compose-session-save", args=[uid])
+        with mock.patch(
+            "modoboa.webmail.lib.imaputils.IMAPconnector.push_mail", return_value=12
+        ) as push_mail:
+            response = self.client.post(
+                url,
+                {
+                    "sender": self.user.email,
+                    "to": ["test@example.test"],
+                    "bcc": ["hidden@example.test"],
+                    "subject": "test",
+                    "body": "Test",
+                },
+                format="json",
+            )
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json()["mailid"], 12)
+        self.assertEqual(push_mail.call_args.args[1]["Bcc"], "hidden@example.test")
+
+    def test_send_deletes_draft(self):
+        self.authenticate()
+        data = {
+            "sender": self.user.email,
+            "to": ["test@example.test"],
+            "subject": "test",
+            "body": "Test",
+        }
+        with mock.patch(
+            "modoboa.webmail.lib.imaputils.IMAPconnector.delete_mail"
+        ) as delete_mail:
+            # Not composed from a draft: nothing to delete
+            uid = self._create_compose_session()
+            url = reverse("v2:webmail-compose-session-send", args=[uid])
+            response = self.client.post(url, data, format="json")
+            self.assertEqual(response.status_code, 204)
+            delete_mail.assert_not_called()
+
+            uid = self._create_compose_session()
+            url = reverse("v2:webmail-compose-session-send", args=[uid])
+            response = self.client.post(url, {**data, "mailid": 11}, format="json")
+            self.assertEqual(response.status_code, 204)
+            delete_mail.assert_called_once_with("Drafts", 11)
 
     def test_send(self):
         self.authenticate()

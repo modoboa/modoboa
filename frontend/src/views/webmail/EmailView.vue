@@ -361,7 +361,7 @@ const forwardEmail = () => {
 const editDraft = () => {
   router.push({
     name: 'ComposeEmailView',
-    query: { mailid: route.query.mailid },
+    query: { mailbox: route.query.mailbox, mailid: route.query.mailid },
   })
 }
 </script>

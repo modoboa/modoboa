@@ -217,6 +217,7 @@ class EmailSerializer(serializers.Serializer):
     from_address = EmailAddressSerializer(source="From")
     to = EmailAddressSerializer(source="To", many=True)
     cc = EmailAddressSerializer(source="Cc", many=True, required=False)
+    bcc = EmailAddressSerializer(source="Bcc", many=True, required=False)
     body = serializers.CharField()
     date = serializers.CharField(source="Date")
     message_id = serializers.CharField(source="Message_ID", required=False)
@@ -333,6 +334,8 @@ class SendEmailSerializer(ScheduledDatetimeMixin, BaseEmailSerializer):
     scheduled_datetime = serializers.DateTimeField(required=False)
     request_dsn = serializers.BooleanField(required=False, default=False)
     request_mdn = serializers.BooleanField(required=False, default=False)
+    # UID of the draft this message comes from (deleted once sent)
+    mailid = serializers.IntegerField(required=False)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -350,10 +353,15 @@ class SaveEmailSerializer(BaseEmailSerializer):
         drafts_folder = self.context["request"].user.parameters.get_value(
             "drafts_folder"
         )
+        mime_message = message.message()
+        if validated_data.get("bcc"):
+            # Django never writes Bcc into the MIME message: keep it in
+            # the draft so it is not lost when the draft is reopened.
+            mime_message["Bcc"] = ", ".join(validated_data["bcc"])
         with get_imapconnector(self.context["request"]) as imapc:
             if "mailid" in validated_data:
                 imapc.delete_mail(drafts_folder, validated_data["mailid"])
-            mailid = imapc.push_mail(drafts_folder, message.message())
+            mailid = imapc.push_mail(drafts_folder, mime_message)
             imapc.mark_messages_unread(drafts_folder, [str(mailid)])
             return mailid
 
