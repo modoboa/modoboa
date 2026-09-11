@@ -11,7 +11,6 @@ from django.utils.formats import date_format
 from modoboa.lib.email_utils import EmailAddress
 from modoboa.lib.signals import get_request
 
-
 __all__ = [
     "parse_from",
     "parse_to",
@@ -80,11 +79,17 @@ def parse_address(value: str) -> dict:
 
 
 def parse_address_list(values: str) -> list[dict]:
-    """Parse a list of email addresses."""
-    lst = values.split(",")
+    """Parse a list of email addresses.
+
+    Display names may contain commas (``"Doe, John" <john@example.com>``,
+    common with Outlook): the list is split according to the address
+    syntax, not on every comma.
+    """
     result = []
-    for addr in lst:
-        result.append(parse_address(addr))
+    for name, address in email.utils.getaddresses([values]):
+        if not name and not address:
+            continue
+        result.append(parse_address(email.utils.formataddr((name, address))))
     return result
 
 
