@@ -207,6 +207,11 @@ class IMAPconnector:
         list_base_pattern + r"\s*(?P<childinfo>.*)"
     )
     unseen_pattern = re.compile(r"[^\(]+\(UNSEEN (\d+)\)")
+    # STATUS response sent along a LIST reply: '"Archive" (MESSAGES 3 UNSEEN 1)'
+    status_response_pattern = re.compile(
+        r'^(?:STATUS\s+)?"?(?P<name>[^"(]*?)"?\s*\((?P<items>[^)]*)\)\s*$'
+    )
+    status_unseen_pattern = re.compile(r"UNSEEN (\d+)")
 
     def __init__(self, user: str, password: str, with_namespaces: bool = True) -> None:
         self.__hdelimiter: str | None = None
@@ -221,6 +226,8 @@ class IMAPconnector:
         self.user = user
         self.password = password
         self.with_namespaces = with_namespaces
+        # Unseen counters collected from the last LIST reply
+        self._unseen_counters: dict[str, int] = {}
         # Number of opened "with" blocks using this connector
         self._usage_count = 0
         # True when the connection lifetime is tied to a request
@@ -513,6 +520,32 @@ class IMAPconnector:
         name = bytearray(name, "utf-8").decode("imap4-utf-7")
         return flags, name
 
+    @property
+    def has_list_status(self) -> bool:
+        """Does the server return counters along a LIST reply (RFC 5819)?"""
+        return "LIST-STATUS" in getattr(self, "capabilities", [])
+
+    def _collect_unseen_counters(self) -> None:
+        """Read the STATUS responses sent along with a LIST reply.
+
+        With the LIST-STATUS extension, one LIST command brings the
+        counters of every mailbox back, instead of one STATUS command per
+        mailbox.
+        """
+        for item in self.m.untagged_responses.pop("STATUS", []):
+            if isinstance(item, (list, tuple)):
+                item = b" ".join(part for part in item if isinstance(part, bytes))
+            if isinstance(item, bytes):
+                item = item.decode()
+            match = self.status_response_pattern.match(item.strip())
+            if match is None:
+                continue
+            unseen = self.status_unseen_pattern.search(match.group("items"))
+            if unseen is None:
+                continue
+            name = bytearray(match.group("name"), "utf-8").decode("imap4-utf-7")
+            self._unseen_counters[name] = int(unseen.group(1))
+
     def _listmboxes(
         self,
         topmailbox: str,
@@ -524,9 +557,12 @@ class IMAPconnector:
         pattern = (
             quote_mailbox_name(f"{topmailbox}{self.hdelimiter}%") if topmailbox else "%"
         )
-        resp = self._cmd(
-            "LIST", '""', pattern, "RETURN", "(SUBSCRIBED CHILDREN STATUS (MESSAGES))"
-        )
+        returns = ["SUBSCRIBED", "CHILDREN"]
+        if self.has_list_status:
+            returns.append("STATUS (MESSAGES UNSEEN)")
+        resp = self._cmd("LIST", '""', pattern, "RETURN", f"({' '.join(returns)})")
+        if self.has_list_status:
+            self._collect_unseen_counters()
         newmboxes = []
         for mb in resp:
             parsed = self._parse_list_response(mb)
@@ -624,6 +660,7 @@ class IMAPconnector:
                     "label": _("Trash"),
                 },
             ]
+        self._unseen_counters = {}
         if until_mailbox:
             name, parent = separate_mailbox(until_mailbox, self.hdelimiter)
             if parent:
@@ -645,7 +682,10 @@ class IMAPconnector:
             if not compute or not selectable or mb.get("removed", False):
                 continue
             key = "path" if "path" in mb else "name"
-            count = self.unseen_messages(mb[key])
+            count = self._unseen_counters.get(mb[key])
+            if count is None:
+                # Server without LIST-STATUS: ask for this mailbox only
+                count = self.unseen_messages(mb[key])
             if count:
                 mb["unseen"] = count
 
