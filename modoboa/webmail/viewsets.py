@@ -40,7 +40,21 @@ def _validate_search(value):
     return value
 
 
-class UserMailboxViewSet(viewsets.GenericViewSet):
+class ImapConnectionMixin:
+    """Close the IMAP connection of the request once it is over.
+
+    Every operation of a request shares one connection (see
+    ``get_imapconnector``); it is closed here, even if the view raised.
+    """
+
+    def dispatch(self, request, *args, **kwargs):
+        try:
+            return super().dispatch(request, *args, **kwargs)
+        finally:
+            lib.close_imapconnector(request)
+
+
+class UserMailboxViewSet(ImapConnectionMixin, viewsets.GenericViewSet):
 
     permission_classes = (IsAuthenticated, HasMailbox)
 
@@ -166,7 +180,7 @@ class UserMailboxViewSet(viewsets.GenericViewSet):
         return response.Response(status=204)
 
 
-class UserEmailViewSet(viewsets.GenericViewSet):
+class UserEmailViewSet(ImapConnectionMixin, viewsets.GenericViewSet):
 
     permission_classes = (IsAuthenticated, HasMailbox)
 
@@ -352,7 +366,7 @@ class UserEmailViewSet(viewsets.GenericViewSet):
         return resp
 
 
-class ComposeSessionViewSet(viewsets.GenericViewSet):
+class ComposeSessionViewSet(ImapConnectionMixin, viewsets.GenericViewSet):
 
     permission_classes = (IsAuthenticated, HasMailbox)
 
@@ -517,6 +531,7 @@ class ComposeSessionViewSet(viewsets.GenericViewSet):
 
 
 class ScheduledMessageViewSet(
+    ImapConnectionMixin,
     mixins.RetrieveModelMixin,
     mixins.UpdateModelMixin,
     mixins.DestroyModelMixin,

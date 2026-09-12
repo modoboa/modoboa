@@ -50,7 +50,11 @@ class ImapEmail(Email):
         self.To: list = []
 
     def __del__(self):
-        self.imapc.__exit__()
+        # The connector may not exist yet if __init__ failed, and it is
+        # closed with the request anyway.
+        imapc = getattr(self, "imapc", None)
+        if imapc is not None:
+            imapc.__exit__()
 
     def fetch_headers(self, raw_addresses: bool = False) -> None:
         """Fetch message headers from server."""
@@ -121,6 +125,9 @@ class ImapEmail(Email):
     def fetch_body_structure(self, msg=None):
         """Fetch BODYSTRUCTURE for email."""
         if msg is None:
+            if getattr(self, "bs", None) is not None:
+                # Already loaded with the headers: no need to ask again
+                return
             msg = self.imapc.fetchmail(self.mbox, self.mailid, readonly=False)
         self.bs = BodyStructure(msg["BODYSTRUCTURE"])
         self._find_attachments()

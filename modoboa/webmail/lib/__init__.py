@@ -4,10 +4,15 @@ from .attachments import (
     AttachmentUploadHandler,
 )
 from .imapemail import ImapEmail, EditModifier, ReplyModifier, ForwardModifier
-from .imaputils import BodyStructure, IMAPconnector, get_imapconnector, separate_mailbox
+from .imaputils import (
+    BodyStructure,
+    IMAPconnector,
+    close_imapconnector,
+    get_imapconnector,
+    separate_mailbox,
+)
 from .signature import EmailSignature
 from .utils import decode_payload
-
 
 __all__ = [
     "AttachmentUploadHandler",
@@ -18,6 +23,7 @@ __all__ = [
     "IMAPconnector",
     "ImapEmail",
     "ReplyModifier",
+    "close_imapconnector",
     "create_mail_attachment",
     "decode_payload",
     "get_imapconnector",
