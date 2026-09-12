@@ -221,15 +221,35 @@ class IMAPconnector:
         self.user = user
         self.password = password
         self.with_namespaces = with_namespaces
+        # Number of opened "with" blocks using this connector
+        self._usage_count = 0
+        # True when the connection lifetime is tied to a request
+        self.managed = False
 
     def __enter__(self):
-        self.login(self.user, self.password)
-        if self.load_namespaces:
-            self.load_namespaces()
+        """Open the connection, or join the one already opened.
+
+        Blocks can be nested (a viewset using a connector while building
+        an ImapEmail, for example): only the outermost one authenticates.
+        """
+        self._usage_count += 1
+        # A request-scoped connector stays open between blocks: only
+        # authenticate when there is no connection yet.
+        if self._usage_count == 1 and not self.connected:
+            self.login(self.user, self.password)
+            if self.with_namespaces:
+                self.load_namespaces()
         return self
 
     def __exit__(self, *args):
-        self.logout()
+        self._usage_count = max(self._usage_count - 1, 0)
+        # A request-scoped connector is closed once the request is over
+        if self._usage_count == 0 and not self.managed:
+            self.logout()
+
+    @property
+    def connected(self) -> bool:
+        return getattr(self, "m", None) is not None
 
     def _cmd(self, name: str, *args, **kwargs) -> list | None:
         """IMAP command wrapper.
@@ -323,6 +343,9 @@ class IMAPconnector:
 
     def logout(self) -> None:
         """Logout from server."""
+        if not self.connected:
+            return
+        self._usage_count = 0
         try:
             self._cmd("CHECK")
         except ImapError:
@@ -959,11 +982,52 @@ def separate_mailbox(fullname: str, sep: str = ".") -> tuple[str, str | None]:
     return fullname, None
 
 
+CONNECTOR_ATTRIBUTE = "_webmail_imapconnector"
+
+
+def _connection_store(request):
+    """Return the object holding the connector of a request.
+
+    DRF wraps the Django request: always use the underlying one so that
+    every caller shares the same connector.
+    """
+    return getattr(request, "_request", request)
+
+
 def get_imapconnector(request, **kwargs) -> IMAPconnector:
-    """Shortcut to create an IMAP connector.
+    """Return the IMAP connector of the given request.
+
+    A single connection is opened per request (and closed by
+    :func:`close_imapconnector`) instead of one per operation: each one
+    costs a TCP connection, a TLS handshake and an authentication.
 
     :param request: a ``Request`` object
     """
-    return IMAPconnector(
-        request.user.username, oauth2.get_access_token(request), **kwargs
-    )
+    if kwargs:
+        # Specific settings: not shareable
+        return IMAPconnector(
+            request.user.username, oauth2.get_access_token(request), **kwargs
+        )
+    store = _connection_store(request)
+    connector = getattr(store, CONNECTOR_ATTRIBUTE, None)
+    if connector is None:
+        connector = IMAPconnector(
+            request.user.username, oauth2.get_access_token(request)
+        )
+        connector.managed = True
+        setattr(store, CONNECTOR_ATTRIBUTE, connector)
+    return connector
+
+
+def close_imapconnector(request) -> None:
+    """Close the connector of a request, if one was opened."""
+    store = _connection_store(request)
+    connector = getattr(store, CONNECTOR_ATTRIBUTE, None)
+    if connector is None:
+        return
+    delattr(store, CONNECTOR_ATTRIBUTE)
+    try:
+        connector.logout()
+    except (ImapError, OSError):
+        # The connection is being dropped anyway
+        pass
