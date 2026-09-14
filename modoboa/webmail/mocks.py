@@ -108,5 +108,5 @@ class IMAP4Mock:
             elif uid == 133872:
                 data = tests_data.COMPLETE_MAIL
             return "OK", data
-        elif command in ["COPY", "STORE"]:
+        elif command in ["COPY", "STORE", "MOVE", "EXPUNGE"]:
             return "OK", []
