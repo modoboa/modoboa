@@ -1,17 +1,21 @@
 """Tests for the private attachments storage and resources cleanup."""
 
 import importlib
+from io import StringIO
 import os
 import time
+from unittest import mock
 
 from dateutil.relativedelta import relativedelta
+from redis.exceptions import ConnectionError as RedisConnectionError
 
 from django.apps import apps
+from django.core.management import call_command
 from django.test import override_settings
 from django.urls import reverse
 from django.utils import timezone
 
-from modoboa.webmail import factories, models
+from modoboa.webmail import checks, factories, models
 from modoboa.webmail.lib import attachments
 from modoboa.webmail.lib.utils import make_body_images_inline
 from modoboa.webmail.tests.test_viewsets import WebmailTestCase, get_gif
@@ -185,3 +189,113 @@ class ResourcesCleanupTestCase(WebmailTestCase):
         self.assertFalse(os.path.exists(orphan))
         for path in (recent, scheduled, in_session):
             self.assertTrue(os.path.exists(path), path)
+
+
+class LegacyDataPurgeTestCase(WebmailTestCase):
+    """Data stored by previous versions is purged on existing installations."""
+
+    def setUp(self):
+        super().setUp()
+        self.attachments_dir = f"{self.workdir}/attachments"
+        self.media_root = f"{self.workdir}/media"
+        self.legacy_dir = f"{self.media_root}/webmail"
+        media_root = self.settings(MEDIA_ROOT=self.media_root)
+        media_root.enable()
+        self.addCleanup(media_root.disable)
+        self.rclient = attachments.get_redis_connection(bytes)
+
+    def _schedule_attachment(self, name: str) -> None:
+        message = factories.ScheduledMessageFactory(
+            account=self.user, scheduled_datetime=timezone.now()
+        )
+        models.MessageAttachment.objects.create(
+            message=message, file=name, content_type="text/plain", filename="a.txt"
+        )
+
+    def _purge(self) -> str:
+        out = StringIO()
+        call_command("purge_webmail_legacy_data", stdout=out)
+        return out.getvalue()
+
+    def test_purge_legacy_attachments(self):
+        orphan = _write_file(f"{self.legacy_dir}/tmporphan")
+        _write_file(f"{self.legacy_dir}/tmpnotmoved", b"scheduled")
+        self._schedule_attachment("tmpnotmoved")
+
+        self.assertIn("1 file(s) removed from the legacy directory", self._purge())
+        self.assertFalse(os.path.exists(orphan))
+        with open(f"{self.attachments_dir}/tmpnotmoved", "rb") as fp:
+            self.assertEqual(fp.read(), b"scheduled")
+        self.assertFalse(os.path.exists(self.legacy_dir))
+        # Nothing left to do
+        self.assertIn("0 file(s) removed from the legacy directory", self._purge())
+
+    def test_purge_keeps_already_moved_files(self):
+        _write_file(f"{self.legacy_dir}/tmpscheduled", b"copy")
+        _write_file(f"{self.attachments_dir}/tmpscheduled", b"moved")
+        self._schedule_attachment("tmpscheduled")
+
+        self.assertIn("1 file(s) removed from the legacy directory", self._purge())
+        with open(f"{self.attachments_dir}/tmpscheduled", "rb") as fp:
+            self.assertEqual(fp.read(), b"moved")
+
+    def test_purge_legacy_compose_sessions(self):
+        legacy_key = "webmail-legacy@test.com"
+        other_key = "webmail-not-a-session"
+        self.rclient.hset(legacy_key, "uid", '{"attachments": []}')
+        self.rclient.set(other_key, "value")
+        self.addCleanup(self.rclient.delete, legacy_key, other_key)
+        manager = attachments.ComposeSessionManager(self.user.username)
+        uid = manager.create()
+        self.addCleanup(manager.delete, uid)
+
+        self._purge()
+        self.assertFalse(self.rclient.exists(legacy_key))
+        self.assertTrue(self.rclient.exists(other_key))
+        self.assertTrue(manager.exists(uid))
+
+    def test_purge_orphan_attachments(self):
+        orphan = _write_file(f"{self.attachments_dir}/tmporphan", age=7200)
+
+        self.assertIn("1 orphan attachment(s) removed", self._purge())
+        self.assertFalse(os.path.exists(orphan))
+
+
+class DeploymentChecksTestCase(WebmailTestCase):
+    """Deployment checks point at unfinished upgrade steps."""
+
+    def _scheduler(self, *func_names):
+        scheduler = mock.Mock()
+        scheduler.get_jobs.return_value = [
+            mock.Mock(func_name=func_name) for func_name in func_names
+        ]
+        return scheduler
+
+    @mock.patch("modoboa.webmail.checks.CronScheduler.all")
+    def test_cleanup_job_not_registered(self, all_schedulers):
+        all_schedulers.return_value = [
+            self._scheduler("modoboa.webmail.jobs.send_scheduled_messages")
+        ]
+        self.assertEqual(checks.check_cleanup_job_is_registered(None), [checks.W001])
+
+    @mock.patch("modoboa.webmail.checks.CronScheduler.all")
+    def test_cleanup_job_registered(self, all_schedulers):
+        all_schedulers.return_value = [
+            self._scheduler("modoboa.webmail.jobs.send_scheduled_messages"),
+            self._scheduler(checks.CLEANUP_JOB),
+        ]
+        self.assertEqual(checks.check_cleanup_job_is_registered(None), [])
+
+    @mock.patch("modoboa.webmail.checks.CronScheduler.all")
+    def test_no_scheduler_or_redis(self, all_schedulers):
+        all_schedulers.return_value = []
+        self.assertEqual(checks.check_cleanup_job_is_registered(None), [])
+        all_schedulers.side_effect = RedisConnectionError
+        self.assertEqual(checks.check_cleanup_job_is_registered(None), [])
+
+    def test_legacy_attachments_dir(self):
+        media_root = f"{self.workdir}/media"
+        with override_settings(MEDIA_ROOT=media_root):
+            self.assertEqual(checks.check_legacy_attachments_dir(None), [])
+            os.makedirs(f"{media_root}/webmail")
+            self.assertEqual(checks.check_legacy_attachments_dir(None), [checks.W002])
