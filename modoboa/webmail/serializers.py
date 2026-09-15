@@ -223,6 +223,8 @@ class EmailSerializer(serializers.Serializer):
     body_format = serializers.CharField(source="mformat", required=False)
     date = serializers.CharField(source="Date")
     message_id = serializers.CharField(source="Message_ID", required=False)
+    in_reply_to = serializers.CharField(source="In_Reply_To", required=False)
+    references = serializers.CharField(source="References", required=False)
     # Reply-To may contain several addresses (parsed as a list)
     reply_to = EmailAddressSerializer(source="Reply_To", many=True, required=False)
     attachments = serializers.SerializerMethodField()
@@ -301,6 +303,10 @@ class BaseEmailSerializer(serializers.Serializer):
     to = serializers.ListField(child=serializers.EmailField(), required=False)
     cc = serializers.ListField(child=serializers.EmailField(), required=False)
     bcc = serializers.ListField(child=serializers.EmailField(), required=False)
+    # Message this one replies to, kept in drafts
+    in_reply_to = serializers.CharField(required=False)
+    # References of the message this one replies to
+    references = serializers.CharField(required=False)
     # Format chosen in the editor; the "editor" preference applies otherwise
     body_format = serializers.ChoiceField(
         choices=constants.DISPLAY_MODES, required=False
@@ -336,7 +342,6 @@ class BaseEmailSerializer(serializers.Serializer):
 
 class SendEmailSerializer(ScheduledDatetimeMixin, BaseEmailSerializer):
 
-    in_reply_to = serializers.CharField(required=False)
     scheduled_datetime = serializers.DateTimeField(required=False)
     request_dsn = serializers.BooleanField(required=False, default=False)
     request_mdn = serializers.BooleanField(required=False, default=False)
@@ -357,6 +362,8 @@ class SendEmailSerializer(ScheduledDatetimeMixin, BaseEmailSerializer):
 
     def validate(self, data):
         data = super().validate(data)
+        if data.get("scheduled_datetime"):
+            self.validate_scheduled_message_lengths(data)
         provided = [name for name in self.ORIGINAL_MESSAGE_FIELDS if name in data]
         if provided and len(provided) != len(self.ORIGINAL_MESSAGE_FIELDS):
             raise serializers.ValidationError(
@@ -366,6 +373,23 @@ class SendEmailSerializer(ScheduledDatetimeMixin, BaseEmailSerializer):
                 )
             )
         return data
+
+    def validate_scheduled_message_lengths(self, data):
+        """Ensure a scheduled message fits in the database columns.
+
+        A message sent right away has no such limit, but a scheduled one is
+        stored first: a too long value would make the database fail.
+        """
+        errors = {}
+        for name in ("subject", "in_reply_to"):
+            max_length = models.ScheduledMessage._meta.get_field(name).max_length
+            if len(data.get(name) or "") > max_length:
+                errors[name] = _(
+                    "Ensure this field has no more than %(max_length)s "
+                    "characters to schedule the message"
+                ) % {"max_length": max_length}
+        if errors:
+            raise serializers.ValidationError(errors)
 
 
 class SaveEmailSerializer(BaseEmailSerializer):
@@ -408,7 +432,26 @@ class ComposeSessionSerializer(serializers.Serializer):
 
 class CreateSessionSerializer(serializers.Serializer):
 
+    # Draft being edited: its attachments are copied into the session
     from_draft_message = serializers.IntegerField(required=False)
+    # Message being forwarded: its attachments are copied too
+    forward_mailbox = serializers.CharField(required=False)
+    forward_mailid = serializers.IntegerField(required=False, min_value=1)
+
+    def validate(self, data):
+        data = super().validate(data)
+        forward_fields = [
+            name for name in ("forward_mailbox", "forward_mailid") if name in data
+        ]
+        if len(forward_fields) == 1:
+            raise serializers.ValidationError(
+                _("forward_mailbox and forward_mailid must be provided together")
+            )
+        if forward_fields and "from_draft_message" in data:
+            raise serializers.ValidationError(
+                _("A session can't start from a draft and a forwarded message")
+            )
+        return data
 
 
 class AllowedSenderSerializer(serializers.Serializer):

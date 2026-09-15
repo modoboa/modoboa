@@ -24,6 +24,7 @@ class ScheduledMessage(models.Model):
     cc = models.TextField(blank=True, null=True)
     bcc = models.TextField(blank=True, null=True)
     in_reply_to = models.CharField(max_length=200, blank=True, null=True)
+    references = models.TextField(blank=True, default="")
     scheduled_datetime = models.DateTimeField()
     imap_uid = models.IntegerField(blank=True, null=True)
     status = models.CharField(
@@ -42,11 +43,12 @@ class ScheduledMessage(models.Model):
     )
 
     def __str__(self):
-        return f"{self.subject} - {self.sender.username} - {self.scheduled_datetime}"
+        return f"{self.subject} - {self.sender} - {self.scheduled_datetime}"
 
     def to_dict(self) -> dict:
         result = {
             "in_reply_to": self.in_reply_to,
+            "references": self.references,
             "sender": self.sender,
             "to": self.to.split(","),
             "request_dsn": self.request_dsn,

@@ -154,6 +154,19 @@ def format_sender_address(user: core_models.User, address: str) -> str:
     return address
 
 
+def build_references(references: str, in_reply_to: str) -> str:
+    """Build the References header of a reply.
+
+    It holds the References of the parent message followed by the parent
+    Message-ID (RFC 5322, section 3.6.4), so that clients can rebuild the
+    whole thread.
+    """
+    result = references.split()
+    if not result or result[-1] != in_reply_to:
+        result.append(in_reply_to)
+    return " ".join(result)
+
+
 def create_message(
     user: core_models.User, attributes: dict, attachments: list
 ) -> EmailMessage:
@@ -163,10 +176,16 @@ def create_message(
         extra_headers["Disposition-Notification-To"] = format_sender_address(
             user, attributes["sender"]
         )
-    headers = {}
     origmsgid = attributes.get("in_reply_to")
     if origmsgid:
-        headers.update({"References": origmsgid, "In-Reply-To": origmsgid})
+        extra_headers.update(
+            {
+                "References": build_references(
+                    attributes.get("references", ""), origmsgid
+                ),
+                "In-Reply-To": origmsgid,
+            }
+        )
     # The format chosen while writing wins over the preference
     mode = attributes.get("body_format") or user.parameters.get_value("editor")
     sender = format_sender_address(user, attributes["sender"])
@@ -176,7 +195,6 @@ def create_message(
         msg = plain_msg(attributes.get("body", ""))
     msg.from_email = sender
     msg.to = attributes.get("to", [])
-    msg.headers = headers
     msg.extra_headers = extra_headers
     for hdr in ["subject", "cc", "bcc"]:
         if hdr in attributes:

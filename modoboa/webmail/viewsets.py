@@ -26,6 +26,13 @@ def _validate_mailid(value):
     return value
 
 
+def _validate_page(value: str) -> int:
+    """Return a page number, rejecting values that aren't one."""
+    if not value.isdigit():
+        raise exceptions.BadRequest(_("Invalid page number"))
+    return int(value)
+
+
 def _validate_partnum(value):
     """Reject MIME part numbers that could inject IMAP commands."""
     if not value or not PARTNUM_RE.match(value):
@@ -233,8 +240,8 @@ class UserEmailViewSet(ImapConnectionMixin, viewsets.GenericViewSet):
             total = imapc.messages_count(mbox=mailbox)
             messages_per_page = request.user.parameters.get_value("messages_per_page")
             paginator = Paginator(total, messages_per_page)
-            page_num = int(request.GET.get("page", 1))
-            page = paginator.getpage(int(request.GET.get("page", 1)))
+            page_num = _validate_page(request.GET.get("page", "1"))
+            page = paginator.getpage(page_num)
             if not page:
                 serializer = self.get_serializer(
                     {
@@ -391,12 +398,15 @@ class UserEmailViewSet(ImapConnectionMixin, viewsets.GenericViewSet):
         _validate_partnum(partnum)
         with lib.get_imapconnector(request) as imapc:
             partdef, payload = imapc.fetchpart(mailid, mailbox, partnum)
-        resp = HttpResponse(lib.decode_payload(partdef["encoding"], payload))
+        if partdef is None:
+            # The part exists but is not an attachment
+            raise Http404
+        content = lib.decode_payload(partdef["encoding"], payload)
+        resp = HttpResponse(content)
         resp["Content-Type"] = partdef["Content-Type"]
-        resp["Content-Transfer-Encoding"] = partdef["encoding"]
         resp["Content-Disposition"] = lib.rfc6266.build_header("attachment")
-        if int(partdef["size"]) < 200:
-            resp["Content-Length"] = partdef["size"]
+        # The size given by the server is the one of the encoded part
+        resp["Content-Length"] = len(resp.content)
         return resp
 
 
@@ -435,14 +445,19 @@ class ComposeSessionViewSet(ImapConnectionMixin, viewsets.GenericViewSet):
         serializer.is_valid(raise_exception=True)
         manager = attachments.ComposeSessionManager(request.user.username)
         uid = manager.create()
-        from_draft_message = serializer.validated_data.get("from_draft_message")
+        data = serializer.validated_data
         response_attrs = {"uid": uid}
-        if from_draft_message:
-            mailbox = request.user.parameters.get_value("drafts_folder")
-            email = lib.ImapEmail(
-                request,
-                f"{mailbox}:{from_draft_message}",
-            )
+        # The attachments of a draft being edited, or of a forwarded
+        # message, are copied into the session
+        source = None
+        if data.get("from_draft_message"):
+            drafts_folder = request.user.parameters.get_value("drafts_folder")
+            source = (drafts_folder, data["from_draft_message"])
+        elif data.get("forward_mailid"):
+            source = (data["forward_mailbox"], data["forward_mailid"])
+        if source:
+            mailbox, mailid = source
+            email = lib.ImapEmail(request, f"{mailbox}:{mailid}")
             email.fetch_body_structure()
             for attachment in email.fetch_attachments():
                 attachments.save_attachment(request, uid, **attachment)

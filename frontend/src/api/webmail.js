@@ -114,11 +114,9 @@ export default {
   getComposeSession(uid) {
     return repository.get(`/webmail/compose-sessions/${uid}/`)
   },
-  createComposeSession(fromDraftMessageUid) {
-    const data = {}
-    if (fromDraftMessageUid) {
-      data.from_draft_message = fromDraftMessageUid
-    }
+  // data: from_draft_message, or forward_mailbox and forward_mailid, to
+  // start the session with the attachments of that message
+  createComposeSession(data = {}) {
     return repository.post('/webmail/compose-sessions/', data)
   },
   getAllowedSenders() {

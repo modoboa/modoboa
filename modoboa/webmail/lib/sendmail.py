@@ -113,6 +113,7 @@ def schedule_email(
         subject=attributes.get("subject", ""),
         body=attributes.get("body", ""),
         in_reply_to=attributes.get("in_reply_to", ""),
+        references=attributes.get("references", ""),
         request_dsn=attributes.get("request_dsn", False),
         request_mdn=attributes.get("request_mdn", False),
         body_format=attributes.get("body_format", ""),
