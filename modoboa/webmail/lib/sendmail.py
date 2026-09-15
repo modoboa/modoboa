@@ -128,6 +128,7 @@ def schedule_email(
         in_reply_to=attributes.get("in_reply_to", ""),
         request_dsn=attributes.get("request_dsn", False),
         request_mdn=attributes.get("request_mdn", False),
+        body_format=attributes.get("body_format", ""),
     )
     for attr in ["cc", "bcc"]:
         if attr in attributes:

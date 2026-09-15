@@ -362,6 +362,7 @@ const draftMailid = ref(isEditingDraft ? route.query.mailid : null)
 const draftSavedAt = ref(null)
 const autosaving = ref(false)
 const editorMode = ref('plain')
+// Mode actually used in the editor: it decides the format of the message
 const htmlMode = ref(false)
 const form = ref({})
 const formRef = ref()
@@ -451,6 +452,7 @@ const prepareMessage = () => {
     }
     result.bcc = bcc
   }
+  result.body_format = htmlMode.value ? 'html' : 'plain'
   if (draftMailid.value) {
     result.mailid = draftMailid.value
   }
