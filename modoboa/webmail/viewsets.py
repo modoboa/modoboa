@@ -432,14 +432,19 @@ class ComposeSessionViewSet(ImapConnectionMixin, viewsets.GenericViewSet):
         serializer.is_valid(raise_exception=True)
         manager = attachments.ComposeSessionManager(request.user.username)
         uid = manager.create()
-        from_draft_message = serializer.validated_data.get("from_draft_message")
+        data = serializer.validated_data
         response_attrs = {"uid": uid}
-        if from_draft_message:
-            mailbox = request.user.parameters.get_value("drafts_folder")
-            email = lib.ImapEmail(
-                request,
-                f"{mailbox}:{from_draft_message}",
-            )
+        # The attachments of a draft being edited, or of a forwarded
+        # message, are copied into the session
+        source = None
+        if data.get("from_draft_message"):
+            drafts_folder = request.user.parameters.get_value("drafts_folder")
+            source = (drafts_folder, data["from_draft_message"])
+        elif data.get("forward_mailid"):
+            source = (data["forward_mailbox"], data["forward_mailid"])
+        if source:
+            mailbox, mailid = source
+            email = lib.ImapEmail(request, f"{mailbox}:{mailid}")
             email.fetch_body_structure()
             for attachment in email.fetch_attachments():
                 attachments.save_attachment(request, uid, **attachment)
