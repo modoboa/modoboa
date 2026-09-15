@@ -167,7 +167,8 @@ def create_message(
     origmsgid = attributes.get("in_reply_to")
     if origmsgid:
         headers.update({"References": origmsgid, "In-Reply-To": origmsgid})
-    mode = user.parameters.get_value("editor")
+    # The format chosen while writing wins over the preference
+    mode = attributes.get("body_format") or user.parameters.get_value("editor")
     sender = format_sender_address(user, attributes["sender"])
     if mode == "html":
         msg = html_msg(attributes.get("body", ""))

@@ -205,7 +205,7 @@
         <BodyEditor
           v-model="form.body"
           :editor-mode="editorMode"
-          @on-toggle-html-mode="(value) => emit('onToggleHtmlMode', value)"
+          @on-toggle-html-mode="onToggleHtmlMode"
         />
       </v-form>
     </div>
@@ -276,6 +276,8 @@ const draftMailid = ref(isEditingDraft ? route.query.mailid : null)
 const attachmentCount = ref(0)
 const contacts = ref([])
 const editorMode = ref('plain')
+// Mode actually used in the editor: it decides the format of the message
+const htmlMode = ref(false)
 const form = ref({})
 const formRef = ref()
 const showAttachmentsDialog = ref(false)
@@ -326,6 +328,17 @@ const initForm = () => {
   }
 }
 
+// The editor starts in the mode of the compose session...
+watch(editorMode, (value) => {
+  htmlMode.value = value === 'html'
+})
+
+// ...and the user can switch it while writing
+const onToggleHtmlMode = (value) => {
+  htmlMode.value = value
+  emit('onToggleHtmlMode', value)
+}
+
 const prepareMessage = () => {
   const result = { ...form.value }
 
@@ -350,6 +363,7 @@ const prepareMessage = () => {
     }
     result.bcc = bcc
   }
+  result.body_format = htmlMode.value ? 'html' : 'plain'
   if (draftMailid.value) {
     result.mailid = draftMailid.value
   }
