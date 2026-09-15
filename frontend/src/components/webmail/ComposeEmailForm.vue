@@ -355,7 +355,9 @@ const contacts = ref([])
 // deletes the previous draft and pushes a new one, returning the NEW uid —
 // it must be threaded into every subsequent save or each save duplicates
 // the draft.
-const draftMailid = ref(isEditingDraft ? route.query.mailid : null)
+const draftMailid = ref(
+  route.query.draft || (isEditingDraft ? route.query.mailid : null)
+)
 const draftSavedAt = ref(null)
 const autosaving = ref(false)
 const editorMode = ref('plain')
@@ -660,6 +662,14 @@ const writeDraft = async (snapshot) => {
     // draft server-side.
     if (resp?.data?.mailid) {
       draftMailid.value = resp.data.mailid
+      // Kept in the URL ("draft" parameter) so that reloading the page
+      // doesn't lose it and create a duplicate.
+      const query = { ...route.query, draft: resp.data.mailid }
+      if (isEditingDraft) {
+        // The previous version is gone: reloading must open the new one
+        query.mailid = resp.data.mailid
+      }
+      router.replace({ name: route.name, query })
     }
     lastSavedSnapshot = snapshot
     draftSavedAt.value = new Date().toLocaleTimeString([], {
