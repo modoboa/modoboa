@@ -35,6 +35,11 @@ class ScheduledMessage(models.Model):
     error = models.CharField(max_length=255, null=True, blank=True)
     request_dsn = models.BooleanField(default=False)
     request_mdn = models.BooleanField(default=False)
+    # Format chosen in the editor, reused when the message is sent. Empty for
+    # messages scheduled before it was recorded: the preference applies.
+    body_format = models.CharField(
+        max_length=5, choices=constants.DISPLAY_MODES, blank=True, default=""
+    )
 
     def __str__(self):
         return f"{self.subject} - {self.sender.username} - {self.scheduled_datetime}"
@@ -51,6 +56,8 @@ class ScheduledMessage(models.Model):
             result["subject"] = self.subject
         if self.body:
             result["body"] = self.body
+        if self.body_format:
+            result["body_format"] = self.body_format
         for hdr in ["cc", "bcc"]:
             if getattr(self, hdr):
                 result[hdr] = getattr(self, hdr).split(",")

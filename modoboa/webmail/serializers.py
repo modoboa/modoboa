@@ -299,6 +299,10 @@ class BaseEmailSerializer(serializers.Serializer):
     to = serializers.ListField(child=serializers.EmailField(), required=False)
     cc = serializers.ListField(child=serializers.EmailField(), required=False)
     bcc = serializers.ListField(child=serializers.EmailField(), required=False)
+    # Format chosen in the editor; the "editor" preference applies otherwise
+    body_format = serializers.ChoiceField(
+        choices=constants.DISPLAY_MODES, required=False
+    )
 
     def validate_sender(self, value):
         """Ensure the sender is an address the user is allowed to use.
