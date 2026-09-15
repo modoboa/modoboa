@@ -229,7 +229,7 @@ import { ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useGettext } from 'vue3-gettext'
 import { useAuthStore, useBusStore } from '@/stores'
-import constants from '@/constants.json'
+import { useSpecialFolders } from '@/composables/webmail'
 import debounce from 'debounce'
 import AttachmentsDialog from '@/components/webmail/AttachmentsDialog'
 import BodyEditor from '@/components/webmail/BodyEditor'
@@ -257,6 +257,7 @@ const emit = defineEmits(['onToggleHtmlMode'])
 
 const route = useRoute()
 const router = useRouter()
+const { isDraftsFolder } = useSpecialFolders(() => route.query.mailbox)
 const { $gettext } = useGettext()
 const { displayNotification, reloadData } = useBusStore()
 const authStore = useAuthStore()
@@ -265,7 +266,7 @@ const authStore = useAuthStore()
 // reply/forward views, route.query.mailid is the original message UID.
 const isEditingDraft =
   route.name === 'ComposeEmailView' &&
-  route.query.mailbox === constants.DRAFTS_FOLDER &&
+  isDraftsFolder.value &&
   !!route.query.mailid
 
 const allowedSenders = ref([])
