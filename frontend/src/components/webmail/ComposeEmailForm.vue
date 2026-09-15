@@ -271,8 +271,11 @@ const isEditingDraft =
 
 const allowedSenders = ref([])
 // UID of the draft being edited, updated on each save so the previous
-// version gets replaced instead of duplicated.
-const draftMailid = ref(isEditingDraft ? route.query.mailid : null)
+// version gets replaced instead of duplicated. It is kept in the URL
+// ("draft" parameter) so that reloading the page doesn't lose it.
+const draftMailid = ref(
+  route.query.draft || (isEditingDraft ? route.query.mailid : null)
+)
 const attachmentCount = ref(0)
 const contacts = ref([])
 const editorMode = ref('plain')
@@ -495,6 +498,12 @@ const saveDraft = async () => {
   try {
     const resp = await api.saveComposeSession(route.query.uid, body)
     draftMailid.value = resp.data.mailid
+    const query = { ...route.query, draft: resp.data.mailid }
+    if (isEditingDraft) {
+      // The previous version is gone: reloading must open the new one
+      query.mailid = resp.data.mailid
+    }
+    router.replace({ name: route.name, query })
     displayNotification({ msg: $gettext('Draft saved') })
   } catch {
     // Already displayed to the user by the API client
