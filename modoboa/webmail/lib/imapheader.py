@@ -123,12 +123,12 @@ def parse_date(value, **kwargs):
     tmp = email.utils.parsedate_tz(value)
     if not tmp:
         return value
-    ndate = datetime.datetime.fromtimestamp(email.utils.mktime_tz(tmp))
-    if ndate.tzinfo is not None:
-        tz = timezone.get_current_timezone()
-        ndate = datetime.datetime.fromtimestamp(ndate).replace(tzinfo=tz)
+    # Display the date in the current time zone, whatever the sender's one
+    ndate = datetime.datetime.fromtimestamp(
+        email.utils.mktime_tz(tmp), tz=timezone.get_current_timezone()
+    )
     current_language = get_request().user.language
-    if datetime.datetime.now() - ndate > datetime.timedelta(7):
+    if timezone.now() - ndate > datetime.timedelta(7):
         fmt = "LONG"
     else:
         fmt = "SHORT"
@@ -139,8 +139,11 @@ def parse_date(value, **kwargs):
 
 def parse_scheduled_datetime(value: str, **kwargs) -> str:
     result = datetime.datetime.fromisoformat(value)
+    if timezone.is_naive(result):
+        result = timezone.make_aware(result)
+    result = timezone.localtime(result)
     current_language = get_request().user.language
-    if timezone.now().date().day != result.date().day:
+    if timezone.localdate() != result.date():
         fmt = "LONG"
     else:
         fmt = "TIME"
