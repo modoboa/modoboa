@@ -272,7 +272,7 @@ class IMAPconnector:
         :param name: the command's name
         :return: the command's result
         """
-        if name in ["FETCH", "SORT", "STORE", "COPY", "SEARCH"]:
+        if name in ["FETCH", "SORT", "STORE", "COPY", "SEARCH", "MOVE"]:
             try:
                 typ, data = self.m.uid(name, *args)
             except IMAP4Error as e:
@@ -751,11 +751,46 @@ class IMAPconnector:
         """Add the \\Answered flag to this email."""
         self._add_flag(mailbox, [validate_imap_uid(mailid)], r"(\Answered)")
 
+    @property
+    def has_move(self) -> bool:
+        """Does the server support the MOVE extension (RFC 6851)?"""
+        return "MOVE" in getattr(self, "capabilities", [])
+
+    @property
+    def has_uidplus(self) -> bool:
+        """Does the server support the UIDPLUS extension (RFC 4315)?"""
+        return "UIDPLUS" in getattr(self, "capabilities", [])
+
+    def _uid_expunge(self, msgset) -> None:
+        """Expunge the given messages, and only them (RFC 4315).
+
+        A plain EXPUNGE would also remove every other message flagged as
+        deleted in the mailbox, including those another client of the
+        user flagged without wanting to erase them yet.
+        """
+        try:
+            typ, data = self.m.uid("EXPUNGE", msgset)
+        except IMAP4Error as e:
+            raise ImapError(e) from None
+        if typ == "NO":
+            raise ImapError(data)
+
     def move(self, msgset, oldmailbox: str, newmailbox: str) -> None:
-        """Move messages between mailboxes."""
+        """Move messages between mailboxes.
+
+        MOVE does it with a single atomic command. Without it, messages
+        are copied, flagged as deleted, then expunged by UID: leaving
+        them behind would keep them visible in other mail clients and
+        counted in the user quota.
+        """
         self.select_mailbox(oldmailbox, False)
+        if self.has_move:
+            self._cmd("MOVE", msgset, self._encode_mbox_name(newmailbox))
+            return
         self._cmd("COPY", msgset, self._encode_mbox_name(newmailbox))
         self._cmd("STORE", msgset, "+FLAGS", r"(\Deleted \Seen)")
+        if self.has_uidplus:
+            self._uid_expunge(msgset)
 
     def push_mail(self, mbox: str, msg) -> int:
         """
@@ -778,9 +813,13 @@ class IMAPconnector:
 
         Do not use directly.
         """
+        uid = validate_imap_uid(uid)
         self.select_mailbox(mbox, False)
-        self._cmd("STORE", f"{uid}".encode(), "+FLAGS", r"(\Deleted)")
-        self._cmd("EXPUNGE")
+        self._cmd("STORE", uid.encode(), "+FLAGS", r"(\Deleted)")
+        if self.has_uidplus:
+            self._uid_expunge(uid)
+        else:
+            self._cmd("EXPUNGE")
 
     def empty(self, mbox: str):
         self.select_mailbox(mbox, False)

@@ -425,7 +425,10 @@ class ScheduledMessageSerializer(ScheduledDatetimeMixin, serializers.ModelSerial
         instance = super().update(instance, validated_data)
         message = instance.to_email_message()
         with get_imapconnector(self.context["request"]) as imapc:
-            imapc.delete_mail(constants.MAILBOX_NAME_SCHEDULED, instance.imap_uid)
+            if instance.imap_uid:
+                # No IMAP copy (it failed, or the folder was cleaned up):
+                # rescheduling must still work.
+                imapc.delete_mail(constants.MAILBOX_NAME_SCHEDULED, instance.imap_uid)
             instance.imap_uid = imapc.push_mail(
                 constants.MAILBOX_NAME_SCHEDULED, message.message()
             )
