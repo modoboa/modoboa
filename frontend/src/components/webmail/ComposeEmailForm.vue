@@ -421,6 +421,10 @@ const initForm = () => {
       }
       if (props.originalEmail.message_id) {
         form.value.in_reply_to = props.originalEmail.message_id
+        // Keep the whole thread, not only the parent message
+        if (props.originalEmail.references) {
+          form.value.references = props.originalEmail.references
+        }
       }
     }
     form.value.subject = props.originalEmail.subject
@@ -547,6 +551,13 @@ const initialize = async (body) => {
     }
     if (draft.data.body) {
       form.value.body = draft.data.body
+    }
+    // A reply saved as draft stays in its thread
+    if (draft.data.in_reply_to) {
+      form.value.in_reply_to = draft.data.in_reply_to
+    }
+    if (draft.data.references) {
+      form.value.references = draft.data.references
     }
   } else if (body.signature) {
     if (form.value.body) {

@@ -89,7 +89,11 @@ class ImapEmail(Email):
         msg = self.imapc.fetchmail(
             self.mbox, self.mailid, readonly=False, what=" ".join(header_names)
         )
-        headers = msg[f"BODY[HEADER.FIELDS ({' '.join(header_names)})]"]
+        # Servers may return the requested fields in a different order,
+        # so don't rely on the exact data item name.
+        headers = next(
+            value for key, value in msg.items() if key.startswith("BODY[HEADER.FIELDS")
+        )
         self.fetch_body_structure(msg)
         msg = email.message_from_string(headers)
         for hdr in requested_headers:
@@ -161,7 +165,9 @@ class ImapEmail(Email):
                 {
                     "filename": filename,
                     "content_type": attdef["Content-Type"],
-                    "content": content,
+                    # Store the decoded payload: it is encoded again when
+                    # the message is built.
+                    "content": decode_payload(attdef["encoding"], content),
                 }
             )
         return result
@@ -310,7 +316,11 @@ class Modifier(ImapEmail):
 class ReplyModifier(Modifier):
     """Modify a message to reply to it."""
 
-    headernames = ImapEmail.headernames + [("Reply-To", True), ("Message-ID", False)]
+    headernames = ImapEmail.headernames + [
+        ("Reply-To", True),
+        ("Message-ID", False),
+        ("References", False),
+    ]
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

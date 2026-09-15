@@ -788,8 +788,8 @@ class ComposeSessionViewSetTestCase(WebmailTestCase):
         }
         response = self.client.post(url, data, format="json")
         self.assertEqual(response.status_code, 400)
-        self.assertIn("subject", response.json())
-        self.assertIn("in_reply_to", response.json())
+        self.assertIn("subject", response.json()["errors"])
+        self.assertIn("in_reply_to", response.json()["errors"])
         self.assertEqual(models.ScheduledMessage.objects.count(), 0)
 
         # Sent right away, the message has no such limit
