@@ -295,9 +295,36 @@ const close = () => {
   })
 }
 
+// Is this one of the addresses the user can send from (aliases included)?
+const isUserAddress = (address) => {
+  const value = address.toLowerCase()
+  return (
+    value === authStore.authUser.username.toLowerCase() ||
+    allowedSenders.value.some((item) => item.address.toLowerCase() === value)
+  )
+}
+
+// Reply from the address the original message was sent to, when it is one
+// of the user's addresses; from the main address otherwise.
+const getDefaultSender = () => {
+  const recipients = [
+    ...(props.originalEmail?.to || []),
+    ...(props.originalEmail?.cc || []),
+  ]
+  const sender = allowedSenders.value.find((item) =>
+    recipients.some(
+      (rcpt) => rcpt.address.toLowerCase() === item.address.toLowerCase()
+    )
+  )
+  if (sender) {
+    return sender.address
+  }
+  return allowedSenders.value[0]?.address || authStore.authUser.username
+}
+
 const initForm = () => {
   form.value = {
-    sender: authStore.authUser.username,
+    sender: getDefaultSender(),
     request_dsn: false,
     request_mdn: false,
   }
@@ -310,16 +337,13 @@ const initForm = () => {
     }
     if (props.replyAll) {
       // Bare addresses only: the API rejects "Name <address>" values
-      const excluded = new Set([
-        authStore.authUser.username,
-        ...(form.value.to || []),
-      ])
+      const excluded = new Set(form.value.to || [])
       const addresses = [
         ...props.originalEmail.to,
         ...(props.originalEmail.cc || []),
       ]
         .map((rcpt) => rcpt.address)
-        .filter((address) => !excluded.has(address))
+        .filter((address) => !excluded.has(address) && !isUserAddress(address))
       form.value.cc = [...new Set(addresses)]
       showCcField.value = form.value.cc.length > 0
     }
@@ -551,5 +575,16 @@ if (!route.query.uid) {
 
 api.getAllowedSenders().then((resp) => {
   allowedSenders.value = resp.data
+  // The form may have been initialized before the addresses were known (the
+  // sender can't have been changed yet: the list was empty)
+  if (!isEditingDraft) {
+    form.value.sender = getDefaultSender()
+  }
+  if (props.replyAll && form.value.cc?.length) {
+    form.value.cc = form.value.cc.filter(
+      (address) => typeof address !== 'string' || !isUserAddress(address)
+    )
+    showCcField.value = form.value.cc.length > 0
+  }
 })
 </script>
