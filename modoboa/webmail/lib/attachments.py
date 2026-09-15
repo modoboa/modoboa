@@ -262,6 +262,11 @@ def cleanup_orphan_attachments() -> int:
     return removed
 
 
+def get_legacy_attachments_dir() -> str:
+    """Return the directory where previous versions stored attachments."""
+    return os.path.join(settings.MEDIA_ROOT, "webmail")
+
+
 def create_mail_attachment(attdef, payload=None):
     """Create the MIME part corresponding to the given attachment.
 
