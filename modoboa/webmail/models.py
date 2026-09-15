@@ -37,7 +37,7 @@ class ScheduledMessage(models.Model):
     request_mdn = models.BooleanField(default=False)
 
     def __str__(self):
-        return f"{self.subject} - {self.sender.username} - {self.scheduled_datetime}"
+        return f"{self.subject} - {self.sender} - {self.scheduled_datetime}"
 
     def to_dict(self) -> dict:
         result = {
