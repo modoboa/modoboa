@@ -161,9 +161,18 @@ const showMailboxForm = ref(false)
 const showSubscriptions = ref(false)
 const userMailboxes = ref([])
 
+// The webmail relies on INBOX and on special folders (drafts, sent, junk,
+// trash...): they can't be renamed nor deleted. Their names are user
+// preferences, so they are recognized by the type the API gives them in the
+// mailboxes list.
 const readOnlyMailbox = computed(() => {
-  const mailboxes = ['INBOX']
-  return mailboxes.includes(route.query.mailbox || 'INBOX')
+  const name = route.query.mailbox || 'INBOX'
+  return (
+    name.toUpperCase() === 'INBOX' ||
+    userMailboxes.value.some(
+      (mailbox) => mailbox.name === name && mailbox.type !== 'normal'
+    )
+  )
 })
 
 const quotaColor = computed(() => {

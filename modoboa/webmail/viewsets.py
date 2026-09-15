@@ -12,7 +12,7 @@ from rest_framework.permissions import IsAuthenticated
 from modoboa.lib import exceptions
 from modoboa.lib.paginator import Paginator
 from modoboa.lib.viewsets import HasMailbox
-from modoboa.webmail import lib, models, serializers
+from modoboa.webmail import constants, lib, models, serializers
 from modoboa.webmail.exceptions import ImapError, WebmailInternalError
 from modoboa.webmail.lib import attachments
 from modoboa.webmail.lib.imaputils import UID_RE, PARTNUM_RE
@@ -38,6 +38,27 @@ def _validate_search(value):
     if value and any(ord(c) < 0x20 or ord(c) == 0x7F for c in value):
         raise exceptions.BadRequest(_("Invalid search pattern"))
     return value
+
+
+SPECIAL_MAILBOX_PARAMETERS = (
+    "drafts_folder",
+    "sent_folder",
+    "junk_folder",
+    "trash_folder",
+)
+
+
+def is_special_mailbox(user, name: str) -> bool:
+    """Is the given mailbox one the webmail relies on?
+
+    INBOX (case-insensitive, as defined by RFC 3501), the folder holding
+    scheduled messages and the folders chosen in the user preferences.
+    """
+    if name.upper() == "INBOX" or name == constants.MAILBOX_NAME_SCHEDULED:
+        return True
+    return name in {
+        user.parameters.get_value(parameter) for parameter in SPECIAL_MAILBOX_PARAMETERS
+    }
 
 
 class ImapConnectionMixin:
@@ -118,6 +139,11 @@ class UserMailboxViewSet(ImapConnectionMixin, viewsets.GenericViewSet):
     def rename(self, request):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
+        # Moving a mailbox under another parent is a rename too
+        if is_special_mailbox(request.user, serializer.validated_data["oldname"]):
+            raise exceptions.BadRequest(
+                _("This mailbox is used by the webmail and can't be renamed")
+            )
         with lib.get_imapconnector(request) as imapc:
             oldname, oldparent = lib.separate_mailbox(
                 serializer.validated_data["oldname"], sep=imapc.hdelimiter
@@ -154,8 +180,13 @@ class UserMailboxViewSet(ImapConnectionMixin, viewsets.GenericViewSet):
     def delete(self, request):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
+        name = serializer.validated_data["name"]
+        if is_special_mailbox(request.user, name):
+            raise exceptions.BadRequest(
+                _("This mailbox is used by the webmail and can't be deleted")
+            )
         with lib.get_imapconnector(request) as imapc:
-            imapc.delete_folder(serializer.validated_data["name"])
+            imapc.delete_folder(name)
         return response.Response(status=204)
 
     @action(methods=["get", "post"], detail=False)
