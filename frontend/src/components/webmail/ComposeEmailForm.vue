@@ -481,8 +481,8 @@ const submit = async (reload) => {
       reloadData()
     }
     displayNotification({ msg })
-  } catch (error) {
-    console.log(error)
+  } catch {
+    // Already displayed to the user by the API client
   } finally {
     working.value = false
   }
@@ -624,8 +624,8 @@ const writeDraft = async (snapshot) => {
       hour: '2-digit',
       minute: '2-digit',
     })
-  } catch (error) {
-    console.log(error)
+  } catch {
+    // Already displayed to the user by the API client
   } finally {
     autosaving.value = false
   }

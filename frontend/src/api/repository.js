@@ -1,7 +1,11 @@
 import axios from 'axios'
 import Cookies from 'js-cookie'
 import router from '@/router'
+import gettext from '@/plugins/gettext'
 import { useAuthStore, useBusStore, useProgressStore } from '@/stores'
+import { getErrorMessage } from '@/api/errors'
+
+const { $gettext } = gettext
 
 const _axios = axios.create()
 
@@ -35,8 +39,18 @@ _axios.interceptors.response.use(
     // Settle the loading counter on every error path below.
     useProgressStore().stopLoading()
     if (!error.response) {
-      console.log(error)
-      return
+      // No answer at all: server unreachable, network down, timeout...
+      // The promise must still be rejected, or callers would go on with
+      // an undefined response.
+      if (!axios.isCancel(error) && !error.config?.ignoreErrors) {
+        useBusStore().displayNotification({
+          msg: $gettext(
+            'Unable to reach the server, please check your connection'
+          ),
+          type: 'error',
+        })
+      }
+      return Promise.reject(error)
     }
     if (error.response.status === 418) {
       router.push({ name: 'TwoFA' })
@@ -52,11 +66,11 @@ _axios.interceptors.response.use(
         !error.config.ignoreErrors
       ) {
         const busStore = useBusStore()
-        // Standardized error envelope: { detail, errors }. `detail` is always
-        // a single human-readable string; fall back to legacy shapes just in
-        // case a non-API response slips through.
-        const data = error.response.data
-        const msg = data?.detail || data?.error || data
+        const msg =
+          getErrorMessage(error.response.data) ||
+          $gettext('An unexpected error occurred (code %{ status })', {
+            status: error.response.status,
+          })
         busStore.displayNotification({
           msg,
           type: 'error',
@@ -92,7 +106,8 @@ _axios.interceptors.response.use(
         })
       })
       .catch((error) => {
-        Promise.reject(error)
+        // Without "return", a failed refresh would resolve with undefined
+        return Promise.reject(error)
       })
   }
 )
