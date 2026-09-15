@@ -221,6 +221,8 @@ class EmailSerializer(serializers.Serializer):
     body = serializers.CharField()
     date = serializers.CharField(source="Date")
     message_id = serializers.CharField(source="Message_ID", required=False)
+    in_reply_to = serializers.CharField(source="In_Reply_To", required=False)
+    references = serializers.CharField(source="References", required=False)
     # Reply-To may contain several addresses (parsed as a list)
     reply_to = EmailAddressSerializer(source="Reply_To", many=True, required=False)
     attachments = serializers.SerializerMethodField()
@@ -299,6 +301,10 @@ class BaseEmailSerializer(serializers.Serializer):
     to = serializers.ListField(child=serializers.EmailField(), required=False)
     cc = serializers.ListField(child=serializers.EmailField(), required=False)
     bcc = serializers.ListField(child=serializers.EmailField(), required=False)
+    # Message this one replies to, kept in drafts
+    in_reply_to = serializers.CharField(required=False)
+    # References of the message this one replies to
+    references = serializers.CharField(required=False)
     # Format chosen in the editor; the "editor" preference applies otherwise
     body_format = serializers.ChoiceField(
         choices=constants.DISPLAY_MODES, required=False
@@ -334,7 +340,6 @@ class BaseEmailSerializer(serializers.Serializer):
 
 class SendEmailSerializer(ScheduledDatetimeMixin, BaseEmailSerializer):
 
-    in_reply_to = serializers.CharField(required=False)
     scheduled_datetime = serializers.DateTimeField(required=False)
     request_dsn = serializers.BooleanField(required=False, default=False)
     request_mdn = serializers.BooleanField(required=False, default=False)
