@@ -15,7 +15,7 @@
         @dragover.prevent
         @dragenter="setHover(mailbox, true)"
         @dragleave="setHover(mailbox, false)"
-        @drop="onDrop(mailbox)"
+        @drop.prevent="onDrop(mailbox)"
       >
         <v-icon :icon="iconByMailboxType[mailbox.type]" class="mr-4" />
         <template v-if="!props.rail">
