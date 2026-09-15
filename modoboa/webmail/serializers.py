@@ -406,7 +406,26 @@ class ComposeSessionSerializer(serializers.Serializer):
 
 class CreateSessionSerializer(serializers.Serializer):
 
+    # Draft being edited: its attachments are copied into the session
     from_draft_message = serializers.IntegerField(required=False)
+    # Message being forwarded: its attachments are copied too
+    forward_mailbox = serializers.CharField(required=False)
+    forward_mailid = serializers.IntegerField(required=False, min_value=1)
+
+    def validate(self, data):
+        data = super().validate(data)
+        forward_fields = [
+            name for name in ("forward_mailbox", "forward_mailid") if name in data
+        ]
+        if len(forward_fields) == 1:
+            raise serializers.ValidationError(
+                _("forward_mailbox and forward_mailid must be provided together")
+            )
+        if forward_fields and "from_draft_message" in data:
+            raise serializers.ValidationError(
+                _("A session can't start from a draft and a forwarded message")
+            )
+        return data
 
 
 class AllowedSenderSerializer(serializers.Serializer):

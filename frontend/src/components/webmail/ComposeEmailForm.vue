@@ -508,8 +508,15 @@ watch(
 )
 
 if (!route.query.uid) {
-  const args = isEditingDraft ? [route.query.mailid] : []
-  api.createComposeSession(...args).then((resp) => {
+  const data = {}
+  if (isEditingDraft) {
+    data.from_draft_message = route.query.mailid
+  } else if (props.forward && route.query.mailbox && route.query.mailid) {
+    // The attachments of the forwarded message go along
+    data.forward_mailbox = route.query.mailbox
+    data.forward_mailid = route.query.mailid
+  }
+  api.createComposeSession(data).then((resp) => {
     const query = { ...route.query, uid: resp.data.uid }
     attachmentCount.value = resp.data.attachments?.length || 0
     router.push({ name: route.name, query })
