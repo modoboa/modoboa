@@ -378,8 +378,8 @@ const submit = async (reload) => {
       reloadData()
     }
     displayNotification({ msg })
-  } catch (error) {
-    console.log(error)
+  } catch {
+    // Already displayed to the user by the API client
   } finally {
     working.value = false
   }
@@ -470,8 +470,8 @@ const saveDraft = async () => {
     const resp = await api.saveComposeSession(route.query.uid, body)
     draftMailid.value = resp.data.mailid
     displayNotification({ msg: $gettext('Draft saved') })
-  } catch (error) {
-    console.log(error)
+  } catch {
+    // Already displayed to the user by the API client
   } finally {
     working.value = false
   }
