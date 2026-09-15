@@ -300,8 +300,8 @@ import { computed, onUnmounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useDisplay } from 'vuetify'
 import { useGettext } from 'vue3-gettext'
-import { useAuthStore, useBusStore } from '@/stores'
-import constants from '@/constants.json'
+import { useAuthStore, useBusStore, useWebmailStore } from '@/stores'
+import { useSpecialFolders } from '@/composables/webmail'
 import debounce from 'debounce'
 import AttachmentsDialog from '@/components/webmail/AttachmentsDialog'
 import BodyEditor from '@/components/webmail/BodyEditor'
@@ -335,12 +335,21 @@ const router = useRouter()
 // Send, overflow kebab). Keying the collapse on `mobile` shrank the toolbar
 // on any half-width desktop window — way too early.
 const { mobile, xs: compact } = useDisplay()
+const { isDraftsFolder } = useSpecialFolders(() => route.query.mailbox)
 const { $gettext } = useGettext()
 const { displayNotification, reloadData } = useBusStore()
 const authStore = useAuthStore()
+const webmailStore = useWebmailStore()
 
 // 44px touch targets on mobile (WCAG 2.5.8), compact 36px on desktop.
 const btnSize = computed(() => (mobile.value ? 44 : 36))
+
+// Only the compose view opened from the drafts folder edits a draft: in
+// reply/forward views, route.query.mailid is the original message UID.
+const isEditingDraft =
+  route.name === 'ComposeEmailView' &&
+  isDraftsFolder.value &&
+  !!route.query.mailid
 
 const allowedSenders = ref([])
 const attachmentCount = ref(0)
@@ -349,10 +358,7 @@ const contacts = ref([])
 // deletes the previous draft and pushes a new one, returning the NEW uid —
 // it must be threaded into every subsequent save or each save duplicates
 // the draft.
-const isDraftRoute =
-  route.query.mailbox === constants.DRAFTS_FOLDER ||
-  route.params.mailbox === constants.DRAFTS_FOLDER
-const draftMailid = ref(isDraftRoute ? route.query.mailid : null)
+const draftMailid = ref(isEditingDraft ? route.query.mailid : null)
 const draftSavedAt = ref(null)
 const autosaving = ref(false)
 const editorMode = ref('plain')
@@ -470,7 +476,7 @@ const submit = async (reload) => {
     // saved), otherwise every sent email leaves a stale copy in Drafts.
     if (draftMailid.value) {
       api
-        .deleteSelection(constants.DRAFTS_FOLDER, [draftMailid.value])
+        .deleteSelection(webmailStore.specialFolders.draft, [draftMailid.value])
         .catch(() => {})
     }
     router.push({ name: 'MailboxView' })
@@ -516,10 +522,10 @@ const lookForContacts = debounce(async (search) => {
 }, 500)
 
 const initialize = async (body) => {
-  if (route.params.mailbox === constants.DRAFTS_FOLDER && route.query.mailid) {
+  if (isEditingDraft) {
     // Load draft
     const draft = await api.getEmailContent(
-      constants.DRAFTS_FOLDER,
+      route.query.mailbox,
       route.query.mailid
     )
     form.value.sender = draft.data.from_address.address
@@ -673,8 +679,7 @@ watch(
 )
 
 if (!route.query.uid) {
-  const args =
-    route.query.mailbox === constants.DRAFTS_FOLDER ? [route.query.mailid] : []
+  const args = isEditingDraft ? [route.query.mailid] : []
   api.createComposeSession(...args).then((resp) => {
     const query = { ...route.query, uid: resp.data.uid }
     attachmentCount.value = resp.data.attachments?.length || 0

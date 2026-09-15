@@ -75,7 +75,7 @@
         <div class="d-flex align-center flex-shrink-0">
           <template v-if="mailbox !== 'Scheduled'">
             <v-btn
-              v-if="mailbox === constants.DRAFTS_FOLDER"
+              v-if="isDraftsFolder"
               class="ml-1 tb-quiet"
               variant="text"
               icon="mdi-pencil"
@@ -86,7 +86,7 @@
             >
             </v-btn>
             <v-btn
-              v-if="mailbox === 'Trash'"
+              v-if="isTrashFolder"
               class="ml-1 tb-quiet"
               variant="text"
               icon="mdi-backup-restore"
@@ -98,7 +98,7 @@
             >
             </v-btn>
             <v-btn
-              v-else-if="mailbox === 'Junk'"
+              v-else-if="isJunkFolder"
               class="ml-1 tb-quiet"
               variant="text"
               icon="mdi-thumb-up"
@@ -276,7 +276,7 @@ import { useRouter } from 'vue-router'
 import { useDisplay } from 'vuetify'
 import { useGettext } from 'vue3-gettext'
 import { useBusStore, useProgressStore } from '@/stores'
-import constants from '@/constants.json'
+import { useSpecialFolders } from '@/composables/webmail'
 import api from '@/api/webmail'
 import ContactCard from '@/components/webmail/ContactCard.vue'
 import { SCROLL_MESSAGE, buildEmailDocument } from './emailFrame'
@@ -294,6 +294,9 @@ const { mobile, xs } = useDisplay()
 const { displayNotification, reloadMailboxCounters } = useBusStore()
 const progress = useProgressStore()
 const router = useRouter()
+const { isDraftsFolder, isJunkFolder, isTrashFolder } = useSpecialFolders(
+  () => props.mailbox
+)
 
 const enableLinks = ref(false)
 const email = ref(null)
@@ -542,7 +545,7 @@ const forwardEmail = () => {
 const editDraft = () => {
   router.push({
     name: 'ComposeEmailView',
-    query: { mailid: props.mailid },
+    query: { mailbox: props.mailbox, mailid: props.mailid },
   })
 }
 </script>

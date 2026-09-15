@@ -107,7 +107,7 @@ import { computed, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useGettext } from 'vue3-gettext'
 import { filesize } from 'filesize'
-import { useBusStore } from '@/stores'
+import { useBusStore, useWebmailStore } from '@/stores'
 import { localeToBCP47 } from '@/utils'
 import gettext from '@/plugins/gettext'
 import ConnectedLayout from '@/layouts/connected/ConnectedLayout.vue'
@@ -119,6 +119,7 @@ const { $gettext } = useGettext()
 const route = useRoute()
 const router = useRouter()
 const busStore = useBusStore()
+const webmailStore = useWebmailStore()
 
 const { mobile } = useDisplay()
 const drawer = ref(!mobile.value)
@@ -277,6 +278,8 @@ function openMailbox(mailbox) {
 const fetchUserMailboxes = async () => {
   const resp = await api.getUserMailboxes()
   userMailboxes.value = resp.data.mailboxes
+  // Let child views recognize special folders whatever their names
+  webmailStore.setMailboxes(resp.data.mailboxes)
   hdelimiter.value = resp.data.hdelimiter
 }
 
