@@ -131,6 +131,64 @@ If you need to rebuild you virtualenv, you can check this [part of the documenta
 
 The section below containt specific migration steps to upgrade Modoboa instance.
 
+## Version 2.10.1
+
+### Webmail attachments moved out of `MEDIA_ROOT`
+
+The webmail used to store attachments (messages being written and
+scheduled messages) inside `<MEDIA_ROOT>/webmail`, a directory the web
+server may serve publicly. They now live in a private directory,
+`<modoboa_instance_dir>/webmail_attachments` by default.
+
+You can choose another location by adding the following variable to
+`settings.py` (the directory must **not** be served by the web server):
+
+``` python
+WEBMAIL_ATTACHMENTS_ROOT = os.path.join(BASE_DIR, 'webmail_attachments')
+```
+
+The `migrate` command moves the files of existing scheduled messages.
+Once it has run, remove the data left by the previous version (the
+remaining files of `<MEDIA_ROOT>/webmail` and the compose sessions
+stored in Redis):
+
+``` shell
+$ python manage.py purge_webmail_legacy_data
+```
+
+The command can safely be run several times.
+
+::: warning
+HTML messages referencing images stored in `<MEDIA_ROOT>/webmail` will
+no longer display them. Such images were not embedded into sent messages
+anymore anyway.
+:::
+
+### New job in `cron_config.py`
+
+Unused attachment files are now removed by an hourly job. Add it to
+`<modoboa_instance_dir>/instance/cron_config.py`:
+
+``` python
+from modoboa.webmail import jobs as webmail_jobs
+from modoboa.webmail.lib import attachments as webmail_attachments # [!code ++]
+
+...
+
+register(webmail_jobs.send_scheduled_messages, queue_name="modoboa", cron="* * * * *")
+register( # [!code ++]
+    webmail_attachments.cleanup_orphan_attachments, # [!code ++]
+    queue_name="modoboa", # [!code ++]
+    cron="17 * * * *", # [!code ++]
+) # [!code ++]
+```
+
+Then restart the RQ cron scheduler (`rq-scheduler` supervisor program).
+
+`python manage.py check --deploy` reports a warning while the job is
+not registered in the running scheduler or while the legacy directory
+still exists.
+
 ## Version 2.9.1
 
 ### PDF credentials re-encryption

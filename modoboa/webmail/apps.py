@@ -13,3 +13,6 @@ class WebmailConfig(AppConfig):
         from modoboa.webmail.app_settings import load_settings
 
         load_settings()
+
+        # Import these to force registration of checks
+        from . import checks  # NOQA:F401
