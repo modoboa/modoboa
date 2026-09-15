@@ -11,6 +11,12 @@ MAILBOX_NAME_SCHEDULED = "Scheduled"
 
 CUSTOM_HEADER_SCHEDULED_ID = "X-Scheduled-ID"
 CUSTOM_HEADER_SCHEDULED_DATETIME = "X-Scheduled-Datetime"
+# Kept in drafts only: "<action> <uid> <mailbox>" of the message replied to
+# or forwarded, flagged once the message is sent
+CUSTOM_HEADER_ORIGINAL_MESSAGE = "X-Modoboa-Original-Message"
+
+# Flag added to the original message, by action
+ORIGINAL_MESSAGE_FLAGS = {"reply": "\\Answered", "forward": "$Forwarded"}
 
 # Inline images embedded as data: URIs when displaying a message
 # (SVG is excluded on purpose: it can carry active content).

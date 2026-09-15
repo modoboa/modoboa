@@ -223,6 +223,8 @@ class EmailSerializer(serializers.Serializer):
     message_id = serializers.CharField(source="Message_ID", required=False)
     in_reply_to = serializers.CharField(source="In_Reply_To", required=False)
     references = serializers.CharField(source="References", required=False)
+    # Message a draft replies to or forwards
+    original_message = serializers.SerializerMethodField()
     # Reply-To may contain several addresses (parsed as a list)
     reply_to = EmailAddressSerializer(source="Reply_To", many=True, required=False)
     attachments = serializers.SerializerMethodField()
@@ -231,6 +233,22 @@ class EmailSerializer(serializers.Serializer):
         source=constants.CUSTOM_HEADER_SCHEDULED_DATETIME.replace("-", "_"),
         required=False,
     )
+
+    def get_original_message(self, email) -> dict | None:
+        value = getattr(
+            email, constants.CUSTOM_HEADER_ORIGINAL_MESSAGE.replace("-", "_"), ""
+        )
+        try:
+            action, mailid, mailbox = value.split(" ", 2)
+        except ValueError:
+            return None
+        if action not in constants.ORIGINAL_MESSAGE_FLAGS or not mailid.isdigit():
+            return None
+        return {
+            "original_action": action,
+            "original_mailid": int(mailid),
+            "original_mailbox": mailbox,
+        }
 
     def get_attachments(self, email):
         result = []
@@ -305,10 +323,18 @@ class BaseEmailSerializer(serializers.Serializer):
     in_reply_to = serializers.CharField(required=False)
     # References of the message this one replies to
     references = serializers.CharField(required=False)
+    # Message this one replies to or forwards (flagged once sent)
+    original_mailbox = serializers.CharField(required=False, max_length=255)
+    original_mailid = serializers.IntegerField(required=False, min_value=1)
+    original_action = serializers.ChoiceField(
+        choices=list(constants.ORIGINAL_MESSAGE_FLAGS), required=False
+    )
     # Format chosen in the editor; the "editor" preference applies otherwise
     body_format = serializers.ChoiceField(
         choices=constants.DISPLAY_MODES, required=False
     )
+
+    ORIGINAL_MESSAGE_FIELDS = ("original_mailbox", "original_mailid", "original_action")
 
     def validate_sender(self, value):
         """Ensure the sender is an address the user is allowed to use.
@@ -337,27 +363,6 @@ class BaseEmailSerializer(serializers.Serializer):
     def validate_bcc(self, value):
         return email_utils.prepare_addresses(value, "envelope")
 
-
-class SendEmailSerializer(ScheduledDatetimeMixin, BaseEmailSerializer):
-
-    scheduled_datetime = serializers.DateTimeField(required=False)
-    request_dsn = serializers.BooleanField(required=False, default=False)
-    request_mdn = serializers.BooleanField(required=False, default=False)
-    # UID of the draft this message comes from (deleted once sent)
-    mailid = serializers.IntegerField(required=False)
-    # Message this one replies to or forwards (flagged once sent)
-    original_mailbox = serializers.CharField(required=False)
-    original_mailid = serializers.IntegerField(required=False, min_value=1)
-    original_action = serializers.ChoiceField(
-        choices=["reply", "forward"], required=False
-    )
-
-    ORIGINAL_MESSAGE_FIELDS = ("original_mailbox", "original_mailid", "original_action")
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields["to"].required = True
-
     def validate(self, data):
         data = super().validate(data)
         provided = [name for name in self.ORIGINAL_MESSAGE_FIELDS if name in data]
@@ -369,6 +374,19 @@ class SendEmailSerializer(ScheduledDatetimeMixin, BaseEmailSerializer):
                 )
             )
         return data
+
+
+class SendEmailSerializer(ScheduledDatetimeMixin, BaseEmailSerializer):
+
+    scheduled_datetime = serializers.DateTimeField(required=False)
+    request_dsn = serializers.BooleanField(required=False, default=False)
+    request_mdn = serializers.BooleanField(required=False, default=False)
+    # UID of the draft this message comes from (deleted once sent)
+    mailid = serializers.IntegerField(required=False)
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["to"].required = True
 
 
 class SaveEmailSerializer(BaseEmailSerializer):
@@ -387,6 +405,16 @@ class SaveEmailSerializer(BaseEmailSerializer):
             # Django never writes Bcc into the MIME message: keep it in
             # the draft so it is not lost when the draft is reopened.
             mime_message["Bcc"] = ", ".join(validated_data["bcc"])
+        if "original_mailid" in validated_data:
+            # Remember the message this draft replies to or forwards, so it
+            # can be flagged when the draft is finally sent.
+            mime_message[constants.CUSTOM_HEADER_ORIGINAL_MESSAGE] = " ".join(
+                [
+                    validated_data["original_action"],
+                    str(validated_data["original_mailid"]),
+                    validated_data["original_mailbox"],
+                ]
+            )
         with get_imapconnector(self.context["request"]) as imapc:
             if "mailid" in validated_data:
                 imapc.delete_mail(drafts_folder, validated_data["mailid"])

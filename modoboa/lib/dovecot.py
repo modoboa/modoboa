@@ -78,6 +78,29 @@ class DoveadmCmdBackend:
         if code:
             raise DoveadmError(force_str(output))
 
+    def add_message_flags(
+        self, user: str, mailbox: str, uid: int, flags: list[str]
+    ) -> None:
+        """Add flags to the message with the given UID."""
+        try:
+            code, output = doveadm_cmd(
+                [
+                    "flags",
+                    "add",
+                    "-u",
+                    user,
+                    " ".join(flags),
+                    "mailbox",
+                    mailbox,
+                    "uid",
+                    str(uid),
+                ]
+            )
+        except OSError as err:
+            raise DoveadmError(str(err)) from err
+        if code:
+            raise DoveadmError(force_str(output))
+
     def delete_mailbox_if_empty(self, user: str, mailbox: str) -> None:
         """Delete the given mailbox if it is empty. Best effort."""
         try:
@@ -180,6 +203,18 @@ class DoveadmHTTPBackend:
                     header_name,
                     header_value,
                 ],
+            },
+        )
+
+    def add_message_flags(
+        self, user: str, mailbox: str, uid: int, flags: list[str]
+    ) -> None:
+        self._run_command(
+            "flagsAdd",
+            {
+                "user": user,
+                "flag": flags,
+                "query": ["mailbox", mailbox, "uid", str(uid)],
             },
         )
 

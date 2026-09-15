@@ -25,6 +25,10 @@ class ScheduledMessage(models.Model):
     bcc = models.TextField(blank=True, null=True)
     in_reply_to = models.CharField(max_length=200, blank=True, null=True)
     references = models.TextField(blank=True, default="")
+    # Message replied to or forwarded, flagged once this one is sent
+    original_mailbox = models.CharField(max_length=255, blank=True, default="")
+    original_mailid = models.PositiveIntegerField(blank=True, null=True)
+    original_action = models.CharField(max_length=10, blank=True, default="")
     scheduled_datetime = models.DateTimeField()
     imap_uid = models.IntegerField(blank=True, null=True)
     status = models.CharField(

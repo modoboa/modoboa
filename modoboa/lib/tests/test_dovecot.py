@@ -84,6 +84,27 @@ class DoveadmCmdBackendTestCase(SimpleTestCase):
             self.backend.move_message("user@domain", "Sent", "Scheduled", "X-Hdr", "12")
 
     @mock.patch("modoboa.lib.dovecot.doveadm_cmd")
+    def test_add_message_flags(self, doveadm_cmd_mock):
+        doveadm_cmd_mock.return_value = (0, b"")
+        self.backend.add_message_flags("user@domain", "INBOX", 12, ["\\Answered"])
+        doveadm_cmd_mock.assert_called_with(
+            [
+                "flags",
+                "add",
+                "-u",
+                "user@domain",
+                "\\Answered",
+                "mailbox",
+                "INBOX",
+                "uid",
+                "12",
+            ]
+        )
+        doveadm_cmd_mock.return_value = (68, b"error")
+        with self.assertRaises(dovecot.DoveadmError):
+            self.backend.add_message_flags("user@domain", "INBOX", 12, ["\\Answered"])
+
+    @mock.patch("modoboa.lib.dovecot.doveadm_cmd")
     def test_delete_mailbox_if_empty(self, doveadm_cmd_mock):
         doveadm_cmd_mock.return_value = (0, b"")
         self.backend.delete_mailbox_if_empty("user@domain", "Scheduled")
@@ -152,6 +173,26 @@ class DoveadmHTTPBackendTestCase(SimpleTestCase):
         backend = dovecot.DoveadmHTTPBackend()
         with self.assertRaises(dovecot.DoveadmError):
             backend.get_user_home("user@domain")
+
+    @mock.patch("modoboa.lib.dovecot.requests.post")
+    def test_add_message_flags(self, post_mock):
+        post_mock.return_value = http_response([["doveadmResponse", [], "c1"]])
+        backend = dovecot.DoveadmHTTPBackend()
+        backend.add_message_flags("user@domain", "INBOX", 12, ["$Forwarded"])
+        self.assertEqual(
+            post_mock.call_args[1]["json"],
+            [
+                [
+                    "flagsAdd",
+                    {
+                        "user": "user@domain",
+                        "flag": ["$Forwarded"],
+                        "query": ["mailbox", "INBOX", "uid", "12"],
+                    },
+                    "c1",
+                ]
+            ],
+        )
 
     @mock.patch("modoboa.lib.dovecot.requests.post")
     def test_move_message(self, post_mock):

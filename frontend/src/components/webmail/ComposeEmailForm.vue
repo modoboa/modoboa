@@ -273,6 +273,8 @@ const allowedSenders = ref([])
 // UID of the draft being edited, updated on each save so the previous
 // version gets replaced instead of duplicated.
 const draftMailid = ref(isEditingDraft ? route.query.mailid : null)
+// Message replied to or forwarded by the draft being edited
+const draftOriginalMessage = ref(null)
 const attachmentCount = ref(0)
 const contacts = ref([])
 const editorMode = ref('plain')
@@ -376,6 +378,9 @@ const prepareMessage = () => {
     result.original_mailbox = route.query.mailbox
     result.original_mailid = route.query.mailid
     result.original_action = props.forward ? 'forward' : 'reply'
+  } else if (draftOriginalMessage.value) {
+    // Same thing for a reply or a forward saved as draft
+    Object.assign(result, draftOriginalMessage.value)
   }
   return result
 }
@@ -464,6 +469,7 @@ const initialize = async (body) => {
     if (draft.data.references) {
       form.value.references = draft.data.references
     }
+    draftOriginalMessage.value = draft.data.original_message
   } else if (body.signature) {
     if (form.value.body) {
       form.value.body += body.signature

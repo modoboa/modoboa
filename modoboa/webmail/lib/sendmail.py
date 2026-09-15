@@ -4,6 +4,7 @@ import smtplib
 from django.conf import settings
 from django.core import mail
 
+from modoboa.lib import dovecot
 from modoboa.lib.oauth2 import get_access_token
 from modoboa.parameters import tools as param_tools
 from modoboa.webmail import constants, models
@@ -114,6 +115,9 @@ def schedule_email(
         body=attributes.get("body", ""),
         in_reply_to=attributes.get("in_reply_to", ""),
         references=attributes.get("references", ""),
+        original_mailbox=attributes.get("original_mailbox", ""),
+        original_mailid=attributes.get("original_mailid"),
+        original_action=attributes.get("original_action", ""),
         request_dsn=attributes.get("request_dsn", False),
         request_mdn=attributes.get("request_mdn", False),
         body_format=attributes.get("body_format", ""),
@@ -192,4 +196,29 @@ def send_scheduled_message(sched_msg: models.ScheduledMessage) -> bool:
         sched_msg.save()
         return False
 
+    flag_original_message(sched_msg)
     return sched_msg.delete_imap_copy()
+
+
+def flag_original_message(sched_msg: models.ScheduledMessage) -> None:
+    """Flag the message a scheduled one replies to or forwards, once sent.
+
+    The sending job has no IMAP session for the user: doveadm is used.
+    """
+    flag = constants.ORIGINAL_MESSAGE_FLAGS.get(sched_msg.original_action)
+    if not flag or not sched_msg.original_mailid:
+        return
+    try:
+        dovecot.get_dovecot_backend().add_message_flags(
+            sched_msg.account.email,
+            sched_msg.original_mailbox,
+            sched_msg.original_mailid,
+            [flag],
+        )
+    except dovecot.DoveadmError:
+        # The message is already sent: a missing flag is not an error
+        logger.warning(
+            "Failed to flag the original message of scheduled message %s",
+            sched_msg.id,
+            exc_info=True,
+        )

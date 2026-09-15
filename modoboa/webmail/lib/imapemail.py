@@ -396,6 +396,7 @@ class EditModifier(ImapEmail):
         ("Bcc", True),
         ("In-Reply-To", False),
         ("References", False),
+        (constants.CUSTOM_HEADER_ORIGINAL_MESSAGE, False),
     ]
 
     def __init__(self, request, *args, **kwargs):
