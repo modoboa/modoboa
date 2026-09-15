@@ -81,11 +81,7 @@
         />
       </div>
     </div>
-    <EmailList
-      v-else
-      :mailbox="currentMailbox"
-      @open-email="onOpenEmail"
-    />
+    <EmailList v-else :mailbox="currentMailbox" @open-email="onOpenEmail" />
 
     <v-dialog
       v-model="showMailboxForm"
@@ -184,7 +180,10 @@ const shortcuts = useKeyboardShortcuts(
         if (openedMailid.value) {
           router.push({
             name: 'ReplyEmailView',
-            query: { mailbox: currentMailbox.value, mailid: openedMailid.value },
+            query: {
+              mailbox: currentMailbox.value,
+              mailid: openedMailid.value,
+            },
           })
         }
       },
@@ -202,9 +201,7 @@ const shortcuts = useKeyboardShortcuts(
 
 // ----- reading pane width (desktop), persisted -----
 const LIST_WIDTH_KEY = 'webmail.listPaneWidth'
-const listPaneWidth = ref(
-  Number(localStorage.getItem(LIST_WIDTH_KEY)) || 420
-)
+const listPaneWidth = ref(Number(localStorage.getItem(LIST_WIDTH_KEY)) || 420)
 
 const paneResizing = ref(false)
 const splitRef = ref(null)
@@ -324,12 +321,26 @@ watch(
   { immediate: true }
 )
 
-const readOnlyMailbox = computed(() => ['INBOX', 'Sent', 'Drafts', 'Trash', 'Junk'].includes(currentMailbox.value))
+// The webmail relies on INBOX and on special folders (drafts, sent, junk,
+// trash...): they can't be renamed nor deleted (the API refuses it too).
+// Their names are user preferences, so they are recognized by the type the
+// API gives them in the mailboxes list, not by a fixed list of English names.
+const readOnlyMailbox = computed(() => {
+  const name = currentMailbox.value || 'INBOX'
+  return (
+    name.toUpperCase() === 'INBOX' ||
+    userMailboxes.value.some(
+      (mailbox) => mailbox.name === name && mailbox.type !== 'normal'
+    )
+  )
+})
 
 // Name of the currently open folder. Prefer the (already translated) label
 // from the backend; fall back to the last path segment for nested mailboxes.
 const currentFolderLabel = computed(() => {
-  const found = userMailboxes.value.find((mb) => mb.name === currentMailbox.value)
+  const found = userMailboxes.value.find(
+    (mb) => mb.name === currentMailbox.value
+  )
   if (found) {
     return found.label.split('/').pop()
   }
