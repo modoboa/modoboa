@@ -219,6 +219,8 @@ class EmailSerializer(serializers.Serializer):
     cc = EmailAddressSerializer(source="Cc", many=True, required=False)
     bcc = EmailAddressSerializer(source="Bcc", many=True, required=False)
     body = serializers.CharField()
+    # Format of the returned body (plain or html)
+    body_format = serializers.CharField(source="mformat", required=False)
     date = serializers.CharField(source="Date")
     message_id = serializers.CharField(source="Message_ID", required=False)
     # Reply-To may contain several addresses (parsed as a list)

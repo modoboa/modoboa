@@ -390,9 +390,19 @@ class EditModifier(ImapEmail):
 
     headernames = ImapEmail.headernames + [("Bcc", True)]
 
-    def __init__(self, request, *args, **kwargs):
-        super().__init__(request, *args, **kwargs)
+    def __init__(self, request, *args, dformat=None, **kwargs):
+        # Without an explicit format, the draft is loaded in the format it
+        # was written in, whatever the user preferences.
+        self.detect_format = dformat is None
+        super().__init__(request, *args, dformat=dformat or "plain", **kwargs)
         self.fetch_headers()
+
+    def fetch_body_structure(self, msg=None):
+        super().fetch_body_structure(msg)
+        if self.detect_format:
+            self.dformat = self.mformat = (
+                "html" if "html" in self.bs.contents else "plain"
+            )
 
     def _post_process_plain(self, content):
         return content.strip()
