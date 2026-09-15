@@ -15,6 +15,8 @@ __all__ = [
     "parse_from",
     "parse_to",
     "parse_message_id",
+    "parse_in_reply_to",
+    "parse_references",
     "parse_date",
     "parse_reply_to",
     "parse_cc",
@@ -155,6 +157,16 @@ def parse_scheduled_datetime(value: str, **kwargs) -> str:
 def parse_message_id(value, **kwargs):
     """Parse a Message-ID: header."""
     return value.strip("\n")
+
+
+def parse_in_reply_to(value, **kwargs):
+    """Parse an In-Reply-To: header."""
+    return value.strip()
+
+
+def parse_references(value, **kwargs):
+    """Parse a References: header, unfolding its lines."""
+    return " ".join(value.split())
 
 
 def parse_subject(value, **kwargs):
