@@ -140,7 +140,7 @@
           density="compact"
           class="mb-2 mx-1"
           draggable="true"
-          @dragstart="onDragStart(email)"
+          @dragstart="onDragStart($event, email)"
         >
           <v-card-text
             class="d-flex align-center"
@@ -459,7 +459,8 @@ const toggleFollowState = async (email) => {
   email.flagged = flag === 'flagged'
 }
 
-const onDragStart = (email) => {
+// The event is passed explicitly: window.event doesn't exist in Firefox
+const onDragStart = (event, email) => {
   if (!webmailStore.selection.includes(email.imapid)) {
     webmailStore.selection = [email.imapid]
   }
@@ -474,6 +475,9 @@ const onDragStart = (email) => {
     </div>
   `
   document.body.appendChild(ghost)
+  // Firefox doesn't start dragging when no data is set
+  event.dataTransfer.setData('text/plain', webmailStore.selection.join(','))
+  event.dataTransfer.effectAllowed = 'move'
   event.dataTransfer.setDragImage(ghost, -10, -10)
   setTimeout(() => ghost.remove(), 0)
 }
