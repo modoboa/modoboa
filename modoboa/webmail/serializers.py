@@ -355,6 +355,8 @@ class SendEmailSerializer(ScheduledDatetimeMixin, BaseEmailSerializer):
 
     def validate(self, data):
         data = super().validate(data)
+        if data.get("scheduled_datetime"):
+            self.validate_scheduled_message_lengths(data)
         provided = [name for name in self.ORIGINAL_MESSAGE_FIELDS if name in data]
         if provided and len(provided) != len(self.ORIGINAL_MESSAGE_FIELDS):
             raise serializers.ValidationError(
@@ -364,6 +366,23 @@ class SendEmailSerializer(ScheduledDatetimeMixin, BaseEmailSerializer):
                 )
             )
         return data
+
+    def validate_scheduled_message_lengths(self, data):
+        """Ensure a scheduled message fits in the database columns.
+
+        A message sent right away has no such limit, but a scheduled one is
+        stored first: a too long value would make the database fail.
+        """
+        errors = {}
+        for name in ("subject", "in_reply_to"):
+            max_length = models.ScheduledMessage._meta.get_field(name).max_length
+            if len(data.get(name) or "") > max_length:
+                errors[name] = _(
+                    "Ensure this field has no more than %(max_length)s "
+                    "characters to schedule the message"
+                ) % {"max_length": max_length}
+        if errors:
+            raise serializers.ValidationError(errors)
 
 
 class SaveEmailSerializer(BaseEmailSerializer):
