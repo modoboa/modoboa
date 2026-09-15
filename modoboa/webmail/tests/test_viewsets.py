@@ -816,6 +816,30 @@ class ComposeSessionViewSetTestCase(WebmailTestCase):
             self.assertEqual(models.ScheduledMessage.objects.count(), 0)
             self.assertEqual(models.MessageAttachment.objects.count(), 0)
 
+    def test_schedule_with_too_long_values(self):
+        self.authenticate()
+        uid = self._create_compose_session()
+        url = reverse("v2:webmail-compose-session-send", args=[uid])
+        data = {
+            "sender": self.user.email,
+            "to": ["test@example.test"],
+            "subject": "s" * 256,
+            "in_reply_to": f"<{'i' * 199}@example.test>",
+            "body": "Test",
+            "scheduled_datetime": (timezone.now() + relativedelta(hours=1)).isoformat(),
+        }
+        response = self.client.post(url, data, format="json")
+        self.assertEqual(response.status_code, 400)
+        self.assertIn("subject", response.json())
+        self.assertIn("in_reply_to", response.json())
+        self.assertEqual(models.ScheduledMessage.objects.count(), 0)
+
+        # Sent right away, the message has no such limit
+        del data["scheduled_datetime"]
+        response = self.client.post(url, data, format="json")
+        self.assertEqual(response.status_code, 204)
+        self.assertEqual(len(mail.outbox), 1)
+
     @override_settings(
         DOVEADM_LOOKUP_PATH=[DOVEADM_TEST_PATH], DOVECOT_USER=DOVECOT_USER
     )
