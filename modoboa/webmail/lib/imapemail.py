@@ -294,7 +294,11 @@ class Modifier(ImapEmail):
 class ReplyModifier(Modifier):
     """Modify a message to reply to it."""
 
-    headernames = ImapEmail.headernames + [("Reply-To", True), ("Message-ID", False)]
+    headernames = ImapEmail.headernames + [
+        ("Reply-To", True),
+        ("Message-ID", False),
+        ("References", False),
+    ]
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -388,7 +392,11 @@ class EditModifier(ImapEmail):
     neither escaped nor wrapped in a <pre> block.
     """
 
-    headernames = ImapEmail.headernames + [("Bcc", True)]
+    headernames = ImapEmail.headernames + [
+        ("Bcc", True),
+        ("In-Reply-To", False),
+        ("References", False),
+    ]
 
     def __init__(self, request, *args, **kwargs):
         super().__init__(request, *args, **kwargs)
