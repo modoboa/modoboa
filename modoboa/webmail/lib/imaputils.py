@@ -2,6 +2,7 @@
 
 import email
 import imaplib
+import logging
 import re
 import ssl
 import time
@@ -22,6 +23,8 @@ from ..exceptions import (
     WebmailInternalError,
 )
 from .fetch_parser import FetchResponseParser
+
+logger = logging.getLogger("modoboa.webmail")
 
 # imaplib.Debug = 4
 
@@ -919,8 +922,9 @@ class IMAPconnector:
 
         We also compute the current usage.
         """
+        self.quota_limit = self.quota_current = None
+        self.quota_usage = -1
         if "QUOTA" not in self.capabilities:
-            self.quota_limit = self.quota_current = None
             return
         try:
             data = self._cmd(
@@ -932,22 +936,18 @@ class IMAPconnector:
             data = None
 
         if data is None:
-            self.quota_limit = self.quota_current = None
             return
 
         quotadef = data[1][0].decode()
-        m = re.search(r"\(STORAGE (\d+) (\d+)\)", quotadef)
+        # A quota root may define other resources (MESSAGE...) along STORAGE
+        m = re.search(r"\bSTORAGE (\d+) (\d+)", quotadef)
         if not m:
-            print("Problem while parsing quota def")
+            logger.warning("Failed to parse quota definition: %s", quotadef)
             return
         self.quota_limit = int(m.group(2))
         self.quota_current = int(m.group(1))
-        try:
-            self.quota_usage = int(
-                float(self.quota_current) / float(self.quota_limit) * 100
-            )
-        except TypeError:
-            self.quota_usage = -1
+        if self.quota_limit:
+            self.quota_usage = int(self.quota_current / self.quota_limit * 100)
 
     def fetchpart(self, uid: str, mbox: str, partnum):
         """Retrieve a specific message part.
