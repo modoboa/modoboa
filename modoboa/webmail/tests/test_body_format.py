@@ -9,6 +9,7 @@ from django.urls import reverse
 from django.utils import timezone
 
 from modoboa.webmail import models
+from modoboa.webmail.mocks import IMAP4Mock
 from modoboa.webmail.tests.test_viewsets import WebmailTestCase
 
 PUSH_MAIL = "modoboa.webmail.lib.imaputils.IMAPconnector.push_mail"
@@ -98,3 +99,88 @@ class BodyFormatTestCase(WebmailTestCase):
         self.assertEqual(
             push_mail.call_args.args[1].get_content_type(), "multipart/alternative"
         )
+
+
+DRAFT_HEADERS = (
+    b"From: user@test.com\r\n"
+    b"To: test@example.test\r\n"
+    b"Subject: Draft\r\n"
+    b"Date: Tue, 15 Sep 2026 10:00:00 +0200\r\n\r\n"
+)
+HTML_DRAFT = 60
+PLAIN_DRAFT = 61
+DRAFT_BODYSTRUCTURES = {
+    HTML_DRAFT: b'BODYSTRUCTURE (("text" "plain" ("charset" "utf-8") NIL NIL "7bit" 5 1'
+    b' NIL NIL NIL NIL)("text" "html" ("charset" "utf-8") NIL NIL "7bit" 12 1 NIL'
+    b' NIL NIL NIL) "alternative" ("boundary" "b") NIL NIL NIL)',
+    PLAIN_DRAFT: b'BODYSTRUCTURE ("text" "plain" ("charset" "utf-8") NIL NIL "7bit" 5 1'
+    b" NIL NIL NIL NIL)",
+}
+DRAFT_PARTS = {
+    (HTML_DRAFT, "1"): b"Hello",
+    (HTML_DRAFT, "2"): b"<p>Hello</p>",
+    (PLAIN_DRAFT, "1"): b"Hello",
+}
+
+
+class DraftsMock(IMAP4Mock):
+    """Server holding a draft written in HTML and another in plain text."""
+
+    def uid(self, command, *args):
+        if command != "FETCH" or int(args[0]) not in DRAFT_BODYSTRUCTURES:
+            return super().uid(command, *args)
+        uid = int(args[0])
+        prefix = f"1 (UID {uid} ".encode()
+        if "HEADER.FIELDS" in args[1]:
+            fields = args[1][args[1].index("(", 1) : args[1].index(")") + 1]
+            item = f" BODY[HEADER.FIELDS {fields}] {{{len(DRAFT_HEADERS)}}}"
+            return "OK", [
+                (prefix + DRAFT_BODYSTRUCTURES[uid] + item.encode(), DRAFT_HEADERS),
+                b")",
+            ]
+        if args[1] == "(BODYSTRUCTURE)":
+            return "OK", [prefix + DRAFT_BODYSTRUCTURES[uid], b")"]
+        pnum = args[1].split("[")[1].split("]")[0]
+        content = DRAFT_PARTS[(uid, pnum)]
+        return "OK", [
+            (prefix + f"BODY[{pnum}] {{{len(content)}}}".encode(), content),
+            b")",
+        ]
+
+
+class DraftFormatTestCase(WebmailTestCase):
+    """A draft is reopened in the format it was written in."""
+
+    def setUp(self):
+        super().setUp()
+        self.mock_imap4.return_value = DraftsMock()
+        self.authenticate()
+
+    def _edit(self, mailid, **params):
+        url = reverse("v2:webmail-email-content")
+        response = self.client.get(
+            url, {"mailbox": "Drafts", "mailid": mailid, "context": "edit", **params}
+        )
+        self.assertEqual(response.status_code, 200)
+        return response.json()
+
+    def test_html_draft_with_plain_preference(self):
+        self.user.parameters.set_value("editor", "plain")
+        self.user.parameters.set_value("displaymode", "plain")
+        self.user.save()
+        draft = self._edit(HTML_DRAFT)
+        self.assertEqual(draft["body_format"], "html")
+        self.assertIn("<p>Hello</p>", draft["body"])
+
+    def test_plain_draft_with_html_preference(self):
+        self.user.parameters.set_value("editor", "html")
+        self.user.parameters.set_value("displaymode", "html")
+        self.user.save()
+        draft = self._edit(PLAIN_DRAFT)
+        self.assertEqual(draft["body_format"], "plain")
+        self.assertEqual(draft["body"], "Hello")
+
+    def test_requested_format_still_applies(self):
+        draft = self._edit(HTML_DRAFT, dformat="plain")
+        self.assertEqual(draft["body_format"], "plain")
+        self.assertEqual(draft["body"], "Hello")

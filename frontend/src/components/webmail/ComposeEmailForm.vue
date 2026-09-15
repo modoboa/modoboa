@@ -552,11 +552,14 @@ const lookForContacts = debounce(async (search) => {
 }, 500)
 
 const initialize = async (body) => {
+  let mode = body.editor_format
   if (isEditingDraft) {
-    // Load draft
+    // Load draft (raw body, ready for the editor) in the format it was
+    // written in
     const draft = await api.getEmailContent(
       route.query.mailbox,
-      route.query.mailid
+      route.query.mailid,
+      { context: 'edit' }
     )
     form.value.sender = draft.data.from_address.address
     if (draft.data.to?.length) {
@@ -583,6 +586,7 @@ const initialize = async (body) => {
     if (draft.data.references) {
       form.value.references = draft.data.references
     }
+    mode = draft.data.body_format || mode
   } else if (body.signature) {
     if (form.value.body) {
       form.value.body += body.signature
@@ -590,7 +594,7 @@ const initialize = async (body) => {
       form.value.body = body.signature
     }
   }
-  editorMode.value = body.editor_format
+  editorMode.value = mode
   // Baseline for autosave: whatever the form holds after initial population
   // (loaded draft, reply quote, signature) is "already saved" — only real
   // user edits from here on trigger a save.

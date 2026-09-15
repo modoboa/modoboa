@@ -191,6 +191,8 @@ class EmailSerializer(serializers.Serializer):
     to = EmailAddressSerializer(source="To", many=True)
     cc = EmailAddressSerializer(source="Cc", many=True, required=False)
     body = serializers.CharField()
+    # Format of the returned body (plain or html)
+    body_format = serializers.CharField(source="mformat", required=False)
     date = serializers.CharField(source="Date")
     message_id = serializers.CharField(source="Message_ID", required=False)
     in_reply_to = serializers.CharField(source="In_Reply_To", required=False)

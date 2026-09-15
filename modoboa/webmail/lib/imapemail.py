@@ -405,3 +405,37 @@ class ForwardModifier(Modifier):
 
     def _header_end_html(self):
         return ""
+
+
+class EditModifier(ImapEmail):
+    """Load a draft message so it can be edited.
+
+    The body is returned as raw content for the editor: plain text is
+    neither escaped nor wrapped in a <pre> block.
+    """
+
+    headernames = ImapEmail.headernames + [
+        ("Bcc", True),
+        ("In-Reply-To", False),
+        ("References", False),
+    ]
+
+    def __init__(self, request, *args, dformat=None, **kwargs):
+        # Without an explicit format, the draft is loaded in the format it
+        # was written in, whatever the user preferences.
+        self.detect_format = dformat is None
+        super().__init__(request, *args, dformat=dformat or "plain", **kwargs)
+        self.fetch_headers()
+
+    def fetch_body_structure(self, msg=None):
+        super().fetch_body_structure(msg)
+        if self.detect_format:
+            self.dformat = self.mformat = (
+                "html" if "html" in self.bs.contents else "plain"
+            )
+
+    def _post_process_plain(self, content):
+        return content.strip()
+
+    def viewmail_plain(self, contents=None, **kwargs):
+        return contents

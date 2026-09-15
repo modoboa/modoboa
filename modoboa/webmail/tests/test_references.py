@@ -120,3 +120,13 @@ class ReferencesTestCase(WebmailTestCase):
         draft = push_mail.call_args.args[1]
         self.assertEqual(draft["In-Reply-To"], "<3@example.test>")
         self.assertIn("<2@example.test> <3@example.test>", draft["References"])
+
+    def test_reopened_draft_exposes_thread(self):
+        self.mock_imap4.return_value = ThreadMock()
+        url = reverse("v2:webmail-email-content")
+        response = self.client.get(f"{url}?mailbox=Drafts&mailid=46933&context=edit")
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json()["in_reply_to"], "<2@example.test>")
+        self.assertEqual(
+            response.json()["references"], "<1@example.test> <2@example.test>"
+        )
