@@ -32,7 +32,7 @@
         >
         </v-btn>
         <v-btn
-          v-if="route.params.mailbox !== 'Junk'"
+          v-if="!isJunkFolder"
           class="ml-2"
           color="warning"
           variant="tonal"
@@ -54,7 +54,7 @@
         >
         </v-btn>
         <v-btn
-          v-if="route.query.mailbox === constants.DRAFTS_FOLDER"
+          v-if="isDraftsFolder"
           class="ml-2"
           variant="tonal"
           icon="mdi-pencil"
@@ -188,7 +188,7 @@ import { computed, nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useGettext } from 'vue3-gettext'
 import { useBusStore } from '@/stores'
-import constants from '@/constants.json'
+import { useSpecialFolders } from '@/composables/webmail'
 import api from '@/api/webmail'
 import ContactCard from '@/components/webmail/ContactCard.vue'
 
@@ -196,6 +196,9 @@ const { $gettext } = useGettext()
 const { displayNotification, reloadMailboxCounters } = useBusStore()
 const route = useRoute()
 const router = useRouter()
+const { isJunkFolder, isDraftsFolder } = useSpecialFolders(
+  () => route.query.mailbox
+)
 
 const enableLinks = ref(false)
 const email = ref(null)

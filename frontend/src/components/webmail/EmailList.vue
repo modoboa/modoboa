@@ -36,7 +36,7 @@
       </v-btn>
       <template v-if="!inScheduledView">
         <v-btn
-          v-if="$route.params.mailbox !== 'Junk'"
+          v-if="!isJunkFolder"
           class="ml-2"
           color="warning"
           variant="tonal"
@@ -83,7 +83,7 @@
               @click="() => flagSelection('unflagged')"
             />
             <v-list-item
-              v-if="$route.query.mailbox === 'Trash'"
+              v-if="isTrashFolder"
               :title="$gettext('Empty mailbox')"
               prepend-icon="mdi-trash-can"
               @click="emptyMailbox"
@@ -237,6 +237,7 @@ import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useGettext } from 'vue3-gettext'
 import { useBusStore, useWebmailStore } from '@/stores'
+import { useSpecialFolders } from '@/composables/webmail'
 import { DateTime } from 'luxon'
 import EmailAddressList from './EmailAddressList.vue'
 import EmailSchedulingForm from './EmailSchedulingForm.vue'
@@ -274,6 +275,8 @@ const currentMailbox = computed(() => {
 })
 
 const inScheduledView = computed(() => props.mailbox === 'Scheduled')
+
+const { isJunkFolder, isTrashFolder } = useSpecialFolders(currentMailbox)
 
 const getScheduledMessageActions = () => {
   return [
