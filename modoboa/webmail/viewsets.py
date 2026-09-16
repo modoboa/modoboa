@@ -12,6 +12,7 @@ from rest_framework.permissions import IsAuthenticated
 from modoboa.lib import exceptions
 from modoboa.lib.paginator import Paginator
 from modoboa.lib.viewsets import HasMailbox
+from modoboa.parameters import tools as param_tools
 from modoboa.webmail import constants, lib, models, serializers
 from modoboa.webmail.exceptions import ImapError, WebmailInternalError
 from modoboa.webmail.lib import attachments
@@ -424,9 +425,19 @@ class ComposeSessionViewSet(ImapConnectionMixin, viewsets.GenericViewSet):
     def initialize_request(self, request, *args, **kwargs):
         response = super().initialize_request(request, *args, **kwargs)
         if self.action == "attachments":
-            uploader = attachments.AttachmentUploadHandler()
+            # The size already used is resolved when the first file is
+            # received: the request is not authenticated yet here.
+            uploader = attachments.AttachmentUploadHandler(
+                used_size=lambda: self._uploaded_size(response, kwargs.get("pk"))
+            )
             request.upload_handlers.insert(0, uploader)
         return response
+
+    @staticmethod
+    def _uploaded_size(request, session_uid) -> int:
+        """Total size of the attachments already saved in a session."""
+        manager = attachments.ComposeSessionManager(request.user.username)
+        return attachments.attachments_size(manager.get_content(session_uid))
 
     def get_serializer_class(self):
         if self.action == "create":
@@ -506,13 +517,32 @@ class ComposeSessionViewSet(ImapConnectionMixin, viewsets.GenericViewSet):
 
     @action(methods=["post"], detail=True, parser_classes=(parsers.MultiPartParser,))
     def attachments(self, request, pk):
+        manager = attachments.ComposeSessionManager(request.user.username)
+        session = manager.get_content(pk)
+        max_count = param_tools.get_global_parameter("max_attachments_count")
+        if len(session["attachments"]) >= max_count:
+            return response.Response(
+                {
+                    "attachment": [
+                        _("A message cannot carry more than %s attachments") % max_count
+                    ]
+                },
+                status=400,
+            )
+        # Accessing request.FILES runs the upload handlers
         serializer = serializers.AttachmentUploadSerializer(data=request.FILES)
         if not serializer.is_valid():
             errors = serializer.errors
-            if request.upload_handlers[0].toobig:
+            handler = request.upload_handlers[0]
+            if handler.toobig:
                 errors["attachment"] = [
-                    _("Attachment is too big (limit: %s)")
-                    % request.upload_handlers[0].maxsize
+                    _("Attachment is too big (limit: %s)") % handler.maxsize
+                ]
+                return response.Response(errors, status=400)
+            if handler.total_toobig:
+                errors["attachment"] = [
+                    _("Attachments are too big (limit: %s for the whole message)")
+                    % handler.max_total_size
                 ]
                 return response.Response(errors, status=400)
         result = attachments.save_attachment_from_upload(

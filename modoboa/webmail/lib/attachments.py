@@ -132,6 +132,11 @@ def _create_attachment_file():
         raise InternalError(str(e)) from None
 
 
+def attachments_size(session: dict) -> int:
+    """Return the total size of the attachments of a compose session."""
+    return sum(att.get("size", 0) for att in session.get("attachments", []))
+
+
 def save_attachment_from_upload(request, session_uid: str, f) -> Attachment:
     """
     Save a new attachment to the filesystem, directly from a Django upload.
@@ -301,22 +306,45 @@ def create_mail_attachment(attdef, payload=None):
 
 class AttachmentUploadHandler(FileUploadHandler):
     """
-    Simple upload handler to limit the size of the attachments users
-    can upload.
+    Upload handler limiting both the size of a single attachment and the
+    total size of the attachments already uploaded for a message.
+
+    Both limits are checked while the file is received so that an
+    oversized upload is interrupted instead of being read entirely.
     """
 
-    def __init__(self, request=None):
+    def __init__(self, request=None, used_size=0):
         super().__init__(request)
         self.total_upload = 0
         self.toobig = False
+        self.total_toobig = False
+        # May be a callable: the size already used is only known once the
+        # request is authenticated, which happens after this handler is
+        # installed.
+        self._used_size = used_size
+        self.used_size = 0
         self.maxsize = size2integer(
             param_tools.get_global_parameter("max_attachment_size")
         )
+        self.max_total_size = size2integer(
+            param_tools.get_global_parameter("max_attachments_total_size")
+        )
+
+    def new_file(self, *args, **kwargs):
+        super().new_file(*args, **kwargs)
+        self.total_upload = 0
+        used_size = self._used_size
+        self.used_size = used_size() if callable(used_size) else used_size
 
     def receive_data_chunk(self, raw_data, start):
         self.total_upload += len(raw_data)
         if self.total_upload >= self.maxsize:
             self.toobig = True
+            raise SkipFile()
+        if self.max_total_size and (
+            self.used_size + self.total_upload > self.max_total_size
+        ):
+            self.total_toobig = True
             raise SkipFile()
         return raw_data
 
