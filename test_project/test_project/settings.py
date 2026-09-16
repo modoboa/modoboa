@@ -315,6 +315,10 @@ REDIS_PORT = os.environ.get("REDIS_PORT", 6379)
 REDIS_QUOTA_DB = 0
 REDIS_URL = f"redis://{REDIS_HOST}:{REDIS_PORT}/{REDIS_QUOTA_DB}"
 
+# Database the test suite uses instead, so that it never shares queues
+# with a running development stack (see modoboa.lib.test_runners)
+REDIS_TEST_DB = int(os.environ.get("REDIS_TEST_DB", 15))
+
 # RQ
 
 RQ = {
@@ -449,7 +453,7 @@ DMARC_MAX_ZIP_MEMBERS = 20  # number of files allowed inside a zip archive
 # Amavis
 
 MIGRATION_MODULES = {"amavis": None}
-TEST_RUNNER = "modoboa.lib.test_runners.UnManagedModelTestRunner"
+TEST_RUNNER = "modoboa.lib.test_runners.CustomTestRunner"
 
 # We force sqlite backend for tests because the generated database is
 # not the same as the one provided by amavis...
