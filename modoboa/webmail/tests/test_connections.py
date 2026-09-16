@@ -5,7 +5,7 @@ from unittest import mock
 from django.test import SimpleTestCase
 from django.urls import reverse
 
-from modoboa.webmail.lib import imaputils
+from modoboa.webmail.lib import imapemail, imaputils
 from modoboa.webmail.mocks import IMAP4Mock
 from modoboa.webmail.tests.test_viewsets import WebmailTestCase
 
@@ -53,6 +53,47 @@ class ConnectorReuseTestCase(SimpleTestCase):
         connector.login.assert_called_once()
         # Closed with the request, not at the end of the block
         connector.logout.assert_not_called()
+
+
+class QuietLogoutTestCase(SimpleTestCase):
+    """Closing a connection the server already dropped stays silent."""
+
+    def _connector(self, imap):
+        connector = imaputils.IMAPconnector.__new__(imaputils.IMAPconnector)
+        connector._usage_count = 1
+        connector.managed = False
+        connector.m = imap
+        return connector
+
+    def test_logout_on_a_broken_connection(self):
+        imap = mock.Mock()
+        imap._simple_command.side_effect = OSError("connection reset")
+        connector = self._connector(imap)
+
+        connector.logout()
+
+        self.assertFalse(connector.connected)
+        imap.shutdown.assert_called_once()
+
+    def test_logout_closes_the_socket_even_if_shutdown_fails(self):
+        imap = mock.Mock()
+        imap._simple_command.return_value = ("OK", None)
+        imap.untagged_responses = {}
+        imap.shutdown.side_effect = OSError("already closed")
+        connector = self._connector(imap)
+
+        connector.logout()
+
+        self.assertFalse(connector.connected)
+
+    def test_del_never_raises(self):
+        email = imapemail.ImapEmail.__new__(imapemail.ImapEmail)
+        email.imapc = mock.Mock()
+        email.imapc.__exit__ = mock.Mock(side_effect=imaputils.ImapError("boom"))
+
+        # __del__ is called by the garbage collector, which would only
+        # print the exception: call it directly to catch a regression.
+        email.__del__()
 
 
 class RequestConnectionTestCase(WebmailTestCase):
