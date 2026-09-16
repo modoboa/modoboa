@@ -56,7 +56,9 @@ class Email:
         "image/jpeg",
     )
 
-    def __init__(self, mailid, mformat="plain", dformat="plain", links=False):
+    def __init__(
+        self, mailid, mformat="plain", dformat="plain", links=False, images=None
+    ):
         self.contents = {"html": "", "plain": ""}
         self.mailid = mailid
         self.mformat = mformat
@@ -72,6 +74,10 @@ class Email:
             raise TypeError('links == "0" is not valid, did you mean True or ' "False?")
         else:
             raise TypeError("links should be a boolean value")
+
+        # Images (inline and remote) are controlled separately: displaying
+        # them should not require enabling the links of the message.
+        self.images = self.links if images is None else bool(images)
 
         self._msg = None
         self._headers = None
@@ -229,12 +235,20 @@ class Email:
     def _post_process_html(self, content):
         html = lxml.html.fromstring(content)
         if self.links:
-            html.rewrite_links(self._map_cid)
-
-            for link in html.iterlinks():
-                link[0].set("target", "_blank")
+            for anchor in html.iter("a"):
+                anchor.set("target", "_blank")
         else:
+            for anchor in html.iter("a"):
+                anchor.attrib.pop("href", None)
+        if self.images:
+            html.rewrite_links(self._map_cid)
+        else:
+            # rewrite_links() gives no element context: set the links of
+            # the message aside while every other URL is dropped.
+            anchors = [(a, a.get("href")) for a in html.iter("a") if a.get("href")]
             html.rewrite_links(lambda x: None)
+            for anchor, href in anchors:
+                anchor.set("href", href)
         safe_attrs = list(defs.safe_attrs) + ["class", "style"]
         cleaner = Cleaner(
             scripts=True,
