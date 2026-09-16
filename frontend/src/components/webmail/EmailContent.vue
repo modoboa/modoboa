@@ -155,6 +155,16 @@
                   @click="enableLinks = false"
                 />
                 <v-list-item
+                  v-if="!enableImages"
+                  :title="$gettext('Display images')"
+                  @click="enableImages = true"
+                />
+                <v-list-item
+                  v-else
+                  :title="$gettext('Hide images')"
+                  @click="enableImages = false"
+                />
+                <v-list-item
                   :title="$gettext('Display source')"
                   @click="openEmailSourceDialog"
                 />
@@ -301,6 +311,9 @@ const { isDraftsFolder, isJunkFolder, isTrashFolder } = useSpecialFolders(
 )
 
 const enableLinks = ref(false)
+// Images (embedded and remote) are a separate choice: reading the links
+// must not load tracking pixels.
+const enableImages = ref(false)
 const email = ref(null)
 const emailSource = ref(null)
 const emailFrame = ref(null)
@@ -312,20 +325,22 @@ onMounted(() => {
   fetchMailContent()
 })
 
-watch(enableLinks, () => {
+watch([enableLinks, enableImages], () => {
   fetchMailContent()
 })
 
 // The same instance is reused when the opened message changes (split pane,
-// j/k navigation): refetch and drop per-message state. Turning enableLinks
-// off already refetches through its own watcher, so avoid a double fetch.
+// j/k navigation): refetch and drop per-message state. Turning the links or
+// the images off already refetches through their watcher, so avoid a double
+// fetch.
 watch(
   () => props.mailid,
   () => {
     emailSource.value = null
     showEmailSource.value = false
-    if (enableLinks.value) {
+    if (enableLinks.value || enableImages.value) {
       enableLinks.value = false
+      enableImages.value = false
     } else {
       fetchMailContent()
     }
@@ -336,6 +351,7 @@ const fetchMailContent = () => {
   const options = {
     dformat: 'html',
     links: enableLinks.value ? '1' : '0',
+    images: enableImages.value ? '1' : '0',
   }
   api.getEmailContent(props.mailbox, props.mailid, options).then((resp) => {
     reloadMailboxCounters()
@@ -429,7 +445,7 @@ const FRAME_STYLE = `
 
 const emailDocument = computed(() =>
   buildEmailDocument(email.value?.body, {
-    enableLinks: enableLinks.value,
+    enableImages: enableImages.value,
     style: FRAME_STYLE,
   })
 )
