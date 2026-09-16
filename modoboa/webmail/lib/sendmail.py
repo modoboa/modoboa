@@ -8,7 +8,7 @@ from modoboa.lib.oauth2 import get_access_token
 from modoboa.parameters import tools as param_tools
 from modoboa.webmail import constants, models
 from modoboa.webmail.exceptions import ImapError, WebmailInternalError
-from modoboa.webmail.lib.utils import create_message
+from modoboa.webmail.lib.utils import check_sender_address, create_message
 
 from . import get_imapconnector
 
@@ -32,6 +32,14 @@ def get_smtp_error_message(error: OSError) -> str:
             smtp_error = smtp_error.decode(errors="replace")
         return str(smtp_error)
     return str(error) or error.__class__.__name__
+
+
+def set_send_error(sched_msg: models.ScheduledMessage, error: str) -> None:
+    """Flag a scheduled message as failed, so the user can reschedule it."""
+    max_length = models.ScheduledMessage._meta.get_field("error").max_length
+    sched_msg.status = constants.SchedulingState.SEND_ERROR.value
+    sched_msg.error = error[:max_length]
+    sched_msg.save()
 
 
 def send_mail(request, attributes: dict, attachments: list) -> tuple[bool, str | None]:
@@ -157,6 +165,19 @@ def schedule_email(
 
 def send_scheduled_message(sched_msg: models.ScheduledMessage) -> bool:
     """Send a scheduled message using configured SMTP server."""
+    # The sender was checked when the message was scheduled, but rights may
+    # have changed since, and the relay used here does not authenticate.
+    error = check_sender_address(sched_msg.account, sched_msg.sender)
+    if error is not None:
+        logger.warning(
+            "Refusing to send scheduled message %s from %s: %s",
+            sched_msg.pk,
+            sched_msg.sender,
+            error,
+        )
+        set_send_error(sched_msg, error)
+        return False
+
     msg = sched_msg.to_email_message()
     conf = dict(param_tools.get_global_parameters("webmail"))
     options = {
@@ -186,10 +207,7 @@ def send_scheduled_message(sched_msg: models.ScheduledMessage) -> bool:
                 msg.connection = connection
                 msg.send()
     except OSError as error:
-        max_length = models.ScheduledMessage._meta.get_field("error").max_length
-        sched_msg.status = constants.SchedulingState.SEND_ERROR.value
-        sched_msg.error = get_smtp_error_message(error)[:max_length]
-        sched_msg.save()
+        set_send_error(sched_msg, get_smtp_error_message(error))
         return False
 
     return sched_msg.delete_imap_copy()

@@ -11,6 +11,7 @@ import lxml
 
 from django.conf import settings
 from django.core.mail import EmailMessage, EmailMultiAlternatives
+from django.utils.translation import gettext as _
 
 from modoboa.core import models as core_models
 from modoboa.webmail.lib.attachments import (
@@ -152,6 +153,36 @@ def format_sender_address(user: core_models.User, address: str) -> str:
     if user.first_name != "" or user.last_name != "":
         return f'"{Header(user.fullname, "utf8")}" <{address}>'
     return address
+
+
+def allowed_sender_addresses(user: core_models.User) -> set[str]:
+    """Return the addresses the user may send from, lowercased."""
+    allowed = {user.email}
+    mailbox = getattr(user, "mailbox", None)
+    if mailbox is not None:
+        allowed.update(mailbox.alias_addresses)
+        allowed.update(mailbox.senderaddress_set.values_list("address", flat=True))
+    return {address.lower() for address in allowed if address}
+
+
+def check_sender_address(user: core_models.User, address: str) -> str | None:
+    """Tell why the user may not send from this address, None if they may.
+
+    Rights change between the moment a message is scheduled and the moment
+    it leaves: the account or its domain can be disabled, the mailbox or an
+    alias can be removed. The relay used for scheduled sendings does not
+    authenticate, so nothing else would notice.
+    """
+    if not user.is_active:
+        return _("The account has been disabled")
+    mailbox = getattr(user, "mailbox", None)
+    if mailbox is None:
+        return _("The mailbox no longer exists")
+    if not mailbox.domain.enabled:
+        return _("The domain has been disabled")
+    if address.lower() not in allowed_sender_addresses(user):
+        return _("This address is no longer allowed for this account")
+    return None
 
 
 def build_references(references: str, in_reply_to: str) -> str:
