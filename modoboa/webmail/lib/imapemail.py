@@ -174,9 +174,12 @@ class ImapEmail(Email):
                 data = self.imapc._cmd("FETCH", self.mailid, f"(BODY.PEEK[{pnum}])")
                 if not data or int(self.mailid) not in data:
                     continue
-                content = decode_payload(
-                    part["encoding"], data[int(self.mailid)][f"BODY[{pnum}]"]
-                )
+                raw = data[int(self.mailid)].get(f"BODY[{pnum}]")
+                if raw is None:
+                    # The server answered with another part than the one
+                    # we asked for: skip it instead of failing.
+                    continue
+                content = decode_payload(part["encoding"], raw)
                 if not isinstance(content, str):
                     charset = self._find_content_charset(part)
                     if charset is not None:

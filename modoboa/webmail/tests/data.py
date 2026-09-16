@@ -76,6 +76,13 @@ BODY_PLAIN_REPLY_TO = [
     b")",
 ]
 
+_HTML_REPLY_TO_BODY = b"<p>This is a test message.</p>"
+
+BODY_HTML_REPLY_TO = [
+    (b"855 (UID 46933 BODY[1.2] {%d}" % len(_HTML_REPLY_TO_BODY), _HTML_REPLY_TO_BODY),
+    b")",
+]
+
 # Message whose sender name contains HTML (UID 46934)
 _HTML_SENDER_HEADERS = (
     b'From: "<img src=x onerror=alert(1)>" <evil@example.test>\r\n'
