@@ -134,7 +134,7 @@ def _create_attachment_file():
 
 def attachments_size(session: dict) -> int:
     """Return the total size of the attachments of a compose session."""
-    return sum(att.get("size") or 0 for att in session.get("attachments", []))
+    return sum(att.get("size", 0) for att in session.get("attachments", []))
 
 
 def save_attachment_from_upload(request, session_uid: str, f) -> Attachment:
