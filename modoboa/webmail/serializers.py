@@ -14,6 +14,8 @@ from modoboa.webmail.lib.utils import create_message
 
 class GlobalParametersSerializer(serializers.Serializer):
     max_attachment_size = serializers.CharField(default="2048")
+    max_attachments_total_size = serializers.CharField(default="10M")
+    max_attachments_count = serializers.IntegerField(default=10, min_value=1)
 
     imap_server = serializers.CharField(default="127.0.0.1")
     imap_secured = serializers.BooleanField(default=False)

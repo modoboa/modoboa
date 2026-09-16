@@ -19,7 +19,28 @@ GLOBAL_PARAMETERS_STRUCT = collections.OrderedDict(
                                     "Maximum attachment size in bytes (or KB, MB, GB if specified)"
                                 ),
                             },
-                        )
+                        ),
+                        (
+                            "max_attachments_total_size",
+                            {
+                                "label": gettext_lazy(
+                                    "Maximum total size of attachments"
+                                ),
+                                "help_text": gettext_lazy(
+                                    "Maximum size of all the attachments of a message, "
+                                    "in bytes (or KB, MB, GB if specified)"
+                                ),
+                            },
+                        ),
+                        (
+                            "max_attachments_count",
+                            {
+                                "label": gettext_lazy("Maximum number of attachments"),
+                                "help_text": gettext_lazy(
+                                    "Maximum number of files a message can carry"
+                                ),
+                            },
+                        ),
                     ]
                 ),
             },
