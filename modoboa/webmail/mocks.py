@@ -7,6 +7,8 @@ from modoboa.webmail.tests import data as tests_data
 class IMAP4Mock:
     """Fake IMAP4 client."""
 
+    capabilities = (b"QUOTA", b"SORT")
+
     def __init__(self, *args, **kwargs):
         self.untagged_responses = {}
 
@@ -15,7 +17,7 @@ class IMAP4Mock:
 
     def _simple_command(self, name, *args, **kwargs):
         if name == "CAPABILITY":
-            self.untagged_responses["CAPABILITY"] = [b"QUOTA"]
+            self.untagged_responses["CAPABILITY"] = [b" ".join(self.capabilities)]
         elif name == "LIST":
             if '"*"' in [str(a) for a in args]:
                 # Full recursive listing used to build the subscription tree.
