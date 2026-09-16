@@ -352,19 +352,29 @@ class IMAPconnector:
             self.capabilities = data[0].decode().split()
 
     def logout(self) -> None:
-        """Logout from server."""
+        """Logout from server.
+
+        The connection may already be gone (server timeout or restart):
+        the commands below then fail for no useful reason, since the
+        connection is dropped anyway. The socket is always closed, even
+        when the server never answered our LOGOUT.
+        """
         if not self.connected:
             return
         self._usage_count = 0
         try:
             self._cmd("CHECK")
-        except ImapError:
+            self._cmd("LOGOUT")
+        except (ImapError, OSError):
             pass
-        self._cmd("LOGOUT")
-        del self.m
-        self.m = None
-        if hasattr(self, "current_mailbox"):
-            del self.current_mailbox
+        finally:
+            try:
+                self.m.shutdown()
+            except (IMAP4Error, OSError):
+                pass
+            self.m = None
+            if hasattr(self, "current_mailbox"):
+                del self.current_mailbox
 
     def load_namespaces(self) -> None:
         """Load available namespaces."""

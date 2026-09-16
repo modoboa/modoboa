@@ -53,8 +53,14 @@ class ImapEmail(Email):
         # The connector may not exist yet if __init__ failed, and it is
         # closed with the request anyway.
         imapc = getattr(self, "imapc", None)
-        if imapc is not None:
+        if imapc is None:
+            return
+        try:
             imapc.__exit__()
+        except Exception:
+            # Raising here only produces an "Exception ignored" traceback
+            # on stderr: the message is gone and there is nothing to do.
+            pass
 
     def fetch_headers(self, raw_addresses: bool = False) -> None:
         """Fetch message headers from server."""

@@ -33,6 +33,9 @@ class IMAP4Mock:
             self.untagged_responses["STATUS"] = [b"STATUS INBOX (UNSEEN 10)"]
         return "OK", None
 
+    def shutdown(self):
+        return None
+
     def append(self, *args, **kwargs):
         return "OK", [b"[APPENDUID 1234 11] ..."]  # noqa
 
