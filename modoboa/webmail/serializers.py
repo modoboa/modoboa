@@ -9,7 +9,7 @@ from modoboa.lib import email_utils
 from modoboa.webmail import constants, models
 from modoboa.webmail.lib import imapheader, signature
 from modoboa.webmail.lib.imaputils import get_imapconnector
-from modoboa.webmail.lib.utils import create_message
+from modoboa.webmail.lib.utils import allowed_sender_addresses, create_message
 
 
 class GlobalParametersSerializer(serializers.Serializer):
@@ -321,12 +321,7 @@ class BaseEmailSerializer(serializers.Serializer):
         (identity spoofing).
         """
         user = self.context["request"].user
-        allowed = {user.email}
-        mailbox = getattr(user, "mailbox", None)
-        if mailbox is not None:
-            allowed.update(mailbox.alias_addresses)
-            allowed.update(mailbox.senderaddress_set.values_list("address", flat=True))
-        if value.lower() not in {address.lower() for address in allowed if address}:
+        if value.lower() not in allowed_sender_addresses(user):
             raise serializers.ValidationError(
                 _("You are not allowed to send from this address")
             )
