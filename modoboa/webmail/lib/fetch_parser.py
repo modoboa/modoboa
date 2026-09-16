@@ -6,9 +6,30 @@ messages (we don't want to overload the server), a parser is required.
 
 This module is Python 3 only; chunks may be ``str`` or ``bytes``.
 """
+
 import re
 
 from charset_normalizer import detect as charset_detect
+
+
+# A flag is either a system flag/extension ("\" atom), the "\*"
+# wildcard (PERMANENTFLAGS) or a keyword (atom), as defined by RFC 9051
+# (section 9):
+#
+#   atom            = 1*ATOM-CHAR
+#   ATOM-CHAR       = <any CHAR except atom-specials>
+#   atom-specials   = "(" / ")" / "{" / SP / CTL / list-wildcards /
+#                     quoted-specials / resp-specials
+#   list-wildcards  = "%" / "*"
+#   quoted-specials = DQUOTE / "\"
+#   resp-specials   = "]"
+#
+# In other words, almost every printable character is allowed inside a
+# keyword: "!", "+", ".", "/", ":", "é", etc. Servers also happily
+# accept non-ASCII (UTF-8) keywords, so we don't restrict ourselves to
+# ASCII here: clients must accept whatever the server sends back.
+ATOM_CHAR = r"[^\x00-\x20()%*\"\\\]{\x7f]"
+FLAG_PATTERN = rf"\\\*|\\?{ATOM_CHAR}+"
 
 
 class ParseError(Exception):
@@ -24,16 +45,26 @@ class Lexer:
     to be detected. Patterns are provided using a list of 2-uple. Each
     2-uple consists of a token name and an associated pattern.
 
-    Example: [("left_bracket", r'\['),]
+    Example: [("left_bracket", r'\\['),]
+
+    Several rule sets (*modes*) can be registered. The active one is
+    given by the ``mode`` attribute, which can be changed by the
+    parser while a scan is in progress (the rule set is looked up
+    before each token).
     """
 
-    def __init__(self, definitions):
+    def __init__(self, definitions, modes=None):
         self.definitions = definitions
-        parts = []
-        for name, part in definitions:
-            parts.append(rf"(?P<{name}>{part})")
-        self.regexpString = "|".join(parts)
-        self.regexp = re.compile(self.regexpString, re.MULTILINE)
+        all_modes = {"default": definitions}
+        all_modes.update(modes or {})
+        self.regexps = {
+            name: re.compile(
+                "|".join(rf"(?P<{tname}>{part})" for tname, part in rules),
+                re.MULTILINE,
+            )
+            for name, rules in all_modes.items()
+        }
+        self.mode = "default"
         self.wsregexp = re.compile(r"\s+", re.M)
 
     def curlineno(self):
@@ -58,7 +89,7 @@ class Lexer:
                 self.pos = m.end()
                 continue
 
-            m = self.regexp.match(text, self.pos)
+            m = self.regexps[self.mode].match(text, self.pos)
             if m is None:
                 raise ParseError(f"unknown token {text[self.pos :]}")
 
@@ -86,16 +117,28 @@ class FetchResponseParser:
         ),
         ("number", r"[0-9]+"),
         ("literal_marker", r"{\d+}"),
-        ("flag", r"(\\|\$)?[a-zA-Z0-9\-_]+"),
+        ("flag", FLAG_PATTERN),
+    ]
+
+    # Inside a flag list, anything but a parenthesis is a flag: using a
+    # dedicated rule set prevents keywords from being tokenized as
+    # something else (a keyword like "JUNK" would match the data_item
+    # rule, "TODO!" would even be split into two tokens).
+    flags_rules = [
+        ("left_parenthesis", r"\("),
+        ("right_parenthesis", r"\)"),
+        ("string", r'"([^"\\]|\\.)*"'),
+        ("flag", FLAG_PATTERN),
     ]
 
     def __init__(self):
         """Constructor."""
-        self.lexer = Lexer(self.rules)
+        self.lexer = Lexer(self.rules, {"flags": self.flags_rules})
         self.__reset_parser()
 
     def __reset_parser(self):
         """Reset parser states."""
+        self.lexer.mode = "default"
         self.result = {}
         self.__current_message = {}
         self.__next_literal_len = 0
@@ -119,10 +162,15 @@ class FetchResponseParser:
         if ttype == "left_parenthesis":
             self.__current_message[self.__cur_data_item] = []
             self.__depth += 1
-        elif ttype == "flag":
+        elif ttype in ("flag", "string"):
+            if ttype == "string":
+                # Not RFC compliant but some servers quote keywords
+                # containing special characters.
+                tvalue = re.sub(r"\\(.)", r"\1", tvalue[1:-1])
             self.__current_message[self.__cur_data_item].append(tvalue)
-            self.set_expected("flag", "right_parenthesis")
+            self.set_expected("flag", "string", "right_parenthesis")
         elif ttype == "right_parenthesis":
+            self.lexer.mode = "default"
             self.__args_parsing_func = None
             self.__depth -= 1
         else:
@@ -189,8 +237,9 @@ class FetchResponseParser:
             if tvalue == "BODYSTRUCTURE":
                 self.set_expected("left_parenthesis")
                 self.__args_parsing_func = self.__bstruct_args_parser
-            elif tvalue == "FLAGS":
+            elif tvalue in ("FLAGS", "PERMANENTFLAGS"):
                 self.set_expected("left_parenthesis")
+                self.lexer.mode = "flags"
                 self.__args_parsing_func = self.__flags_args_parser
             else:
                 self.__args_parsing_func = self.__default_args_parser

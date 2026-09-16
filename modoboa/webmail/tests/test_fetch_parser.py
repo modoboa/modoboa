@@ -110,3 +110,43 @@ class FetchParserTestCase(unittest.TestCase):
 """,
         )
         self._test_bodystructure_output(data.BODYSTRUCTURE_SAMPLE_8, "text/html\n")
+
+    def _parse_flags(self, response):
+        """Parse a FETCH response and return the flags of its message."""
+        result = self.parser.parse([response])
+        return result[36]["FLAGS"]
+
+    def test_parse_simple_flags(self):
+        """Test the parsing of standard flags."""
+        self.assertEqual(
+            self._parse_flags(rb"36 (UID 36 FLAGS (\Seen \Answered $Forwarded))"),
+            ["\\Seen", "\\Answered", "$Forwarded"],
+        )
+        self.assertEqual(self._parse_flags(b"36 (UID 36 FLAGS ())"), [])
+
+    def test_parse_special_flags(self):
+        """Test the parsing of keywords containing special characters.
+
+        Almost every printable character is allowed inside a keyword
+        (see RFC 9051, section 9), including non-ASCII ones.
+        """
+        self.assertEqual(
+            self._parse_flags(
+                "36 (UID 36 FLAGS (\\Seen Café JUNK Important! Perso/Travail "
+                "$X-ME.Label))".encode()
+            ),
+            ["\\Seen", "Café", "JUNK", "Important!", "Perso/Travail", "$X-ME.Label"],
+        )
+
+    def test_parse_quoted_flags(self):
+        """Test the parsing of quoted keywords (not RFC compliant)."""
+        self.assertEqual(
+            self._parse_flags(rb'36 (UID 36 FLAGS (\Seen "a \"tag\" with spaces"))'),
+            ["\\Seen", 'a "tag" with spaces'],
+        )
+
+    def test_parse_flags_and_other_items(self):
+        """Make sure data items following a flag list are still parsed."""
+        result = self.parser.parse([rb"36 (UID 36 FLAGS (JUNK) RFC822.SIZE 4242)"])
+        self.assertEqual(result[36]["FLAGS"], ["JUNK"])
+        self.assertEqual(result[36]["RFC822.SIZE"], "4242")
