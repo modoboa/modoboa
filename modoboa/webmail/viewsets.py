@@ -236,7 +236,9 @@ class UserEmailViewSet(ImapConnectionMixin, viewsets.GenericViewSet):
         search = _validate_search(request.GET.get("search"))
         with lib.get_imapconnector(request) as imapc:
             if search:
-                imapc.parse_search_parameters("both", search)
+                # The single search field of the interface looks for the
+                # pattern in the headers and in the body
+                imapc.parse_search_parameters("all", search)
             total = imapc.messages_count(mbox=mailbox)
             messages_per_page = request.user.parameters.get_value("messages_per_page")
             paginator = Paginator(total, messages_per_page)
