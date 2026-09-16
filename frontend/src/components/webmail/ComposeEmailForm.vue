@@ -459,12 +459,14 @@ const lookForContacts = debounce(async (search) => {
 }, 500)
 
 const initialize = async (body) => {
+  let mode = body.editor_format
   if (isEditingDraft) {
-    // Load draft (raw body, ready for the editor)
+    // Load draft (raw body, ready for the editor) in the format it was
+    // written in
     const draft = await api.getEmailContent(
       route.query.mailbox,
       route.query.mailid,
-      { context: 'edit', dformat: body.editor_format }
+      { context: 'edit' }
     )
     form.value.sender = draft.data.from_address.address
     if (draft.data.to?.length) {
@@ -484,6 +486,7 @@ const initialize = async (body) => {
     if (draft.data.body) {
       form.value.body = draft.data.body
     }
+    mode = draft.data.body_format || mode
     // A reply saved as draft stays in its thread
     if (draft.data.in_reply_to) {
       form.value.in_reply_to = draft.data.in_reply_to
@@ -498,7 +501,7 @@ const initialize = async (body) => {
       form.value.body = body.signature
     }
   }
-  editorMode.value = body.editor_format
+  editorMode.value = mode
 }
 
 const openSchedulingForm = () => {

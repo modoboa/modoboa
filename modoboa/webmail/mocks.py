@@ -89,6 +89,8 @@ class IMAP4Mock:
                     data = tests_data.BODYSTRUCTURE_ONLY_REPLY_TO
                 elif "HEADER.FIELDS" in args[1]:
                     data = tests_data.BODYSTRUCTURE_SAMPLE_REPLY_TO
+                elif "[1.2]" in args[1]:
+                    data = tests_data.BODY_HTML_REPLY_TO
                 else:
                     data = tests_data.BODY_PLAIN_REPLY_TO
             elif uid == 33:

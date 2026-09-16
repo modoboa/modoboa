@@ -352,6 +352,9 @@ class UserEmailViewSet(ImapConnectionMixin, viewsets.GenericViewSet):
         if "dformat" in request.GET:
             dformat = request.GET.get("dformat")
         context = self.request.GET.get("context")
+        if context == "edit":
+            # A draft is loaded in its own format unless one is requested
+            dformat = request.GET.get("dformat")
         if context and context in ["reply", "forward", "edit"]:
             modclass = getattr(lib, f"{context.capitalize()}Modifier")
             email = modclass(

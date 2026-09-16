@@ -174,9 +174,12 @@ class ImapEmail(Email):
                 data = self.imapc._cmd("FETCH", self.mailid, f"(BODY.PEEK[{pnum}])")
                 if not data or int(self.mailid) not in data:
                     continue
-                content = decode_payload(
-                    part["encoding"], data[int(self.mailid)][f"BODY[{pnum}]"]
-                )
+                raw = data[int(self.mailid)].get(f"BODY[{pnum}]")
+                if raw is None:
+                    # The server answered with another part than the one
+                    # we asked for: skip it instead of failing.
+                    continue
+                content = decode_payload(part["encoding"], raw)
                 if not isinstance(content, str):
                     charset = self._find_content_charset(part)
                     if charset is not None:
@@ -398,9 +401,19 @@ class EditModifier(ImapEmail):
         ("References", False),
     ]
 
-    def __init__(self, request, *args, **kwargs):
-        super().__init__(request, *args, **kwargs)
+    def __init__(self, request, *args, dformat=None, **kwargs):
+        # Without an explicit format, the draft is loaded in the format it
+        # was written in, whatever the user preferences.
+        self.detect_format = dformat is None
+        super().__init__(request, *args, dformat=dformat or "plain", **kwargs)
         self.fetch_headers()
+
+    def fetch_body_structure(self, msg=None):
+        super().fetch_body_structure(msg)
+        if self.detect_format:
+            self.dformat = self.mformat = (
+                "html" if "html" in self.bs.contents else "plain"
+            )
 
     def _post_process_plain(self, content):
         return content.strip()
