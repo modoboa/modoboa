@@ -52,7 +52,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-06 11:25+0200\n"
+"POT-Creation-Date: 2026-09-16 19:34+0200\n"
 "PO-Revision-Date: 2011-07-01 08:15+0000\n"
 "Last-Translator: Gerhard Adler <ge.adler@gmail.com>, 2025\n"
 "Language-Team: German (http://app.transifex.com/tonio/modoboa/language/de/)\n"
@@ -1046,11 +1046,11 @@ msgid ""
 "database)"
 msgstr ""
 
-#: amavis/app_settings.py:236 webmail/app_settings.py:155
+#: amavis/app_settings.py:236 webmail/app_settings.py:176
 msgid "Display"
 msgstr "Darstellung"
 
-#: amavis/app_settings.py:243 webmail/app_settings.py:181
+#: amavis/app_settings.py:243 webmail/app_settings.py:202
 msgid "Number of displayed emails per page"
 msgstr "Anzahl dargestellter Nachrichten pro Seite"
 
@@ -1495,7 +1495,7 @@ msgid "Calendar"
 msgstr "Kalender"
 
 #: core/api/v2/viewsets.py:215 core/api/v2/viewsets.py:217
-#: webmail/app_settings.py:286 webmail/app_settings.py:293
+#: webmail/app_settings.py:307 webmail/app_settings.py:314
 msgid "Webmail"
 msgstr "Webmail"
 
@@ -1612,8 +1612,8 @@ msgid "LDAP"
 msgstr "LDAP"
 
 #: core/app_settings.py:157 sievefilters/app_settings.py:18
-#: sievefilters/app_settings.py:51 webmail/app_settings.py:36
-#: webmail/app_settings.py:73 webmail/app_settings.py:119
+#: sievefilters/app_settings.py:51 webmail/app_settings.py:57
+#: webmail/app_settings.py:94 webmail/app_settings.py:140
 msgid "Server address"
 msgstr "Server-Adresse"
 
@@ -1622,8 +1622,8 @@ msgid "The IP address or the DNS name of the LDAP server"
 msgstr "IP-Adresse oder Hostname des LDAP-Servers"
 
 #: core/app_settings.py:166 sievefilters/app_settings.py:25
-#: sievefilters/app_settings.py:67 webmail/app_settings.py:54
-#: webmail/app_settings.py:91 webmail/app_settings.py:137
+#: sievefilters/app_settings.py:67 webmail/app_settings.py:75
+#: webmail/app_settings.py:112 webmail/app_settings.py:158
 msgid "Server port"
 msgstr "Server-Port"
 
@@ -1659,7 +1659,7 @@ msgid "The TCP port number used by the LDAP secondary server"
 msgstr "Der TCP Port des sekundären LDAP-Servers"
 
 #: core/app_settings.py:207 sievefilters/app_settings.py:58
-#: webmail/app_settings.py:45
+#: webmail/app_settings.py:66
 msgid "Use a secured connection"
 msgstr "Benutze eine sichere Verbindung"
 
@@ -2430,7 +2430,7 @@ msgid "Not resolved"
 msgstr "Nicht aufgelöst"
 
 #: dmarc/models.py:10 dmarc/models.py:16 pdfcredentials/constants.py:7
-#: webmail/constants.py:38
+#: webmail/constants.py:52
 msgid "None"
 msgstr "Nichts"
 
@@ -2690,7 +2690,7 @@ msgstr ""
 msgid "Failed to communicate with public API: %s"
 msgstr "Die Kommunikation mit der öffentlichen API ist fehlgeschlagen: %s"
 
-#: lib/email_utils.py:140 lib/email_utils.py:351
+#: lib/email_utils.py:146 lib/email_utils.py:365
 msgid "unable to determine encoding of string"
 msgstr "Kodierung der Zeichenkette konnte nicht bestimmt werden"
 
@@ -3380,19 +3380,19 @@ msgstr "STARTTLS für Verbindungsaufbau nutzen"
 msgid "Use the STARTTLS extension"
 msgstr "STARTTLS benutzen"
 
-#: sievefilters/app_settings.py:45 webmail/app_settings.py:30
+#: sievefilters/app_settings.py:45 webmail/app_settings.py:51
 msgid "IMAP settings"
 msgstr "IMAP-Einstellungen"
 
-#: sievefilters/app_settings.py:52 webmail/app_settings.py:38
+#: sievefilters/app_settings.py:52 webmail/app_settings.py:59
 msgid "Address of your IMAP server"
 msgstr "Adresse Ihres IMAP-Servers"
 
-#: sievefilters/app_settings.py:60 webmail/app_settings.py:47
+#: sievefilters/app_settings.py:60 webmail/app_settings.py:68
 msgid "Use a secured connection to access IMAP server"
 msgstr "Benutze eine gesicherte Verbindung zum Zugriff auf den IMAP Server"
 
-#: sievefilters/app_settings.py:68 webmail/app_settings.py:56
+#: sievefilters/app_settings.py:68 webmail/app_settings.py:77
 msgid "Listening port of your IMAP server"
 msgstr "TCPIP Port Ihres IMAP Servers"
 
@@ -3428,7 +3428,7 @@ msgstr "ist"
 msgid "is not"
 msgstr "ist nicht"
 
-#: sievefilters/constants.py:28 webmail/lib/imapemail.py:320
+#: sievefilters/constants.py:28 webmail/lib/imapemail.py:361
 msgid "Subject"
 msgstr "Betreff"
 
@@ -3665,210 +3665,340 @@ msgstr "Maximale Größe für Anhänge"
 msgid "Maximum attachment size in bytes (or KB, MB, GB if specified)"
 msgstr "Maximale Größe für Anhänge in Bytes (oder KB, MB, GB wenn angegeben)"
 
-#: webmail/app_settings.py:67
+#: webmail/app_settings.py:27
+#, fuzzy
+#| msgid "Maximum attachment size"
+msgid "Maximum total size of attachments"
+msgstr "Maximale Größe für Anhänge"
+
+#: webmail/app_settings.py:30
+#, fuzzy
+#| msgid "Maximum attachment size in bytes (or KB, MB, GB if specified)"
+msgid ""
+"Maximum size of all the attachments of a message, in bytes (or KB, MB, GB if "
+"specified)"
+msgstr "Maximale Größe für Anhänge in Bytes (oder KB, MB, GB wenn angegeben)"
+
+#: webmail/app_settings.py:38
+#, fuzzy
+#| msgid "Maximum attachment size"
+msgid "Maximum number of attachments"
+msgstr "Maximale Größe für Anhänge"
+
+#: webmail/app_settings.py:40
+#, fuzzy
+#| msgid "Maximum number of mailboxes this user can create"
+msgid "Maximum number of files a message can carry"
+msgstr "Maximale Anzahl Mailboxen, die dieser Benutzer erstellen darf"
+
+#: webmail/app_settings.py:88
 msgid "SMTP settings"
 msgstr "SMTP-Einstellungen"
 
-#: webmail/app_settings.py:75 webmail/app_settings.py:121
+#: webmail/app_settings.py:96 webmail/app_settings.py:142
 msgid "Address of your SMTP server"
 msgstr "Adresse Ihres SMTP-Servers"
 
-#: webmail/app_settings.py:82 webmail/app_settings.py:128
+#: webmail/app_settings.py:103 webmail/app_settings.py:149
 msgid "Secured connection mode"
 msgstr "Gesicherter Verbindungsaufbau"
 
-#: webmail/app_settings.py:84 webmail/app_settings.py:130
+#: webmail/app_settings.py:105 webmail/app_settings.py:151
 msgid "Use a secured connection to access SMTP server"
 msgstr "Gesicherte Verbindung für Zugriff auf SMTP-Server verwenden"
 
-#: webmail/app_settings.py:93 webmail/app_settings.py:139
+#: webmail/app_settings.py:114 webmail/app_settings.py:160
 msgid "Listening port of your SMTP server"
 msgstr "Port auf dem der SMTP-Server lauscht"
 
-#: webmail/app_settings.py:100
+#: webmail/app_settings.py:121
 msgid "Authentication required"
 msgstr "Anmeldung erforderlich"
 
-#: webmail/app_settings.py:102
+#: webmail/app_settings.py:123
 msgid "Server needs authentication"
 msgstr "Server erfordert Authentifizierung"
 
-#: webmail/app_settings.py:113
+#: webmail/app_settings.py:134
 #, fuzzy
 #| msgid "Server settings"
 msgid "Scheduling settings"
 msgstr "Server Einstellungen"
 
-#: webmail/app_settings.py:161
+#: webmail/app_settings.py:182
 msgid "Default message display mode"
 msgstr "Standard-Betrachtungsmodus für Nachrichten"
 
-#: webmail/app_settings.py:163
+#: webmail/app_settings.py:184
 msgid "The default mode used when displaying a message"
 msgstr "Der Standard-Modus zum Betrachten einer Nachricht"
 
-#: webmail/app_settings.py:170
+#: webmail/app_settings.py:191
 msgid "Enable HTML links display"
 msgstr "Aktiviere Darstellung von HTML-Links"
 
-#: webmail/app_settings.py:173
+#: webmail/app_settings.py:194
 msgid "Enable/Disable HTML links display"
 msgstr "Aktiviere/Deaktiviere Darstellung von HTML-Links"
 
-#: webmail/app_settings.py:184
+#: webmail/app_settings.py:205
 msgid "Sets the maximum number of messages displayed in a page"
 msgstr ""
 "Legt die maximale Anzahl von Nachrichten fest, die auf einer Seite "
 "dargestellt werden"
 
-#: webmail/app_settings.py:191
+#: webmail/app_settings.py:212
 msgid "Listing refresh rate"
 msgstr "Aktualisierungsintervall für Liste"
 
-#: webmail/app_settings.py:193
+#: webmail/app_settings.py:214
 msgid "Automatic listing refresh rate (in secconds)"
 msgstr "AutoAktualisier Rate der Auflistung (in Sekunden)"
 
-#: webmail/app_settings.py:204
+#: webmail/app_settings.py:225
 msgid "Folders"
 msgstr "Verzeichnisse"
 
-#: webmail/app_settings.py:210
+#: webmail/app_settings.py:231
 msgid "Trash folder"
 msgstr "Papierkorb"
 
-#: webmail/app_settings.py:212
+#: webmail/app_settings.py:233
 msgid "Folder where deleted messages go"
 msgstr "Ordner, in dem gelöschte Nachrichten abgelegt werden"
 
-#: webmail/app_settings.py:219
+#: webmail/app_settings.py:240
 msgid "Sent folder"
 msgstr "Gesendete Nachrichten"
 
-#: webmail/app_settings.py:221
+#: webmail/app_settings.py:242
 msgid "Folder where copies of sent messages go"
 msgstr "Ordner, in den Kopien gesendeter Nachrichten gehen"
 
-#: webmail/app_settings.py:228
+#: webmail/app_settings.py:249
 msgid "Drafts folder"
 msgstr "Entwürfe"
 
-#: webmail/app_settings.py:229
+#: webmail/app_settings.py:250
 msgid "Folder where drafts go"
 msgstr "Ordner für Entwürfe"
 
-#: webmail/app_settings.py:235
+#: webmail/app_settings.py:256
 msgid "Junk folder"
 msgstr "Junk Ordner"
 
-#: webmail/app_settings.py:237
+#: webmail/app_settings.py:258
 msgid "Folder where junk messages should go"
 msgstr "Ordner, in den Junk-Nachrichten gehen sollten"
 
-#: webmail/app_settings.py:248
+#: webmail/app_settings.py:269
 msgid "Composing messages"
 msgstr "Nachrichten erstellen"
 
-#: webmail/app_settings.py:254
+#: webmail/app_settings.py:275
 msgid "Default editor"
 msgstr "Standard-Editor"
 
-#: webmail/app_settings.py:256
+#: webmail/app_settings.py:277
 msgid "The default editor to use when composing a message"
 msgstr "Der Standard-Editor zum Erstellen einer Nachricht"
 
-#: webmail/app_settings.py:263
+#: webmail/app_settings.py:284
 msgid "Signature text"
 msgstr "Signatur"
 
-#: webmail/app_settings.py:265
+#: webmail/app_settings.py:286
 msgid "User defined email signature"
 msgstr "Benutzerdefinierte E-Mail-Signatur"
 
-#: webmail/exceptions.py:18
+#: webmail/checks.py:18
+msgid ""
+"The webmail attachments cleanup job is not registered: unused attachment "
+"files will never be removed."
+msgstr ""
+
+#: webmail/checks.py:22
+msgid ""
+"Add the cleanup_orphan_attachments job to your cron_config.py file (see the "
+"upgrade instructions), then restart the RQ cron scheduler."
+msgstr ""
+
+#: webmail/checks.py:30
+msgid ""
+"The legacy webmail attachments directory still exists inside MEDIA_ROOT, "
+"which may be served by the web server."
+msgstr ""
+
+#: webmail/checks.py:33
+msgid "Run the purge_webmail_legacy_data management command."
+msgstr ""
+
+#: webmail/exceptions.py:23
 msgid "Server response"
 msgstr "Server-Antwort"
 
-#: webmail/lib/attachments.py:145
+#: webmail/jobs.py:30
+msgid "Unexpected error while sending the message"
+msgstr ""
+
+#: webmail/jobs.py:47
+msgid "Sending was interrupted, please reschedule the message"
+msgstr ""
+
+#: webmail/lib/attachments.py:211
 msgid "Failed to remove attachment: "
 msgstr "Konnte Anhang nicht entfernen:"
 
-#: webmail/lib/imapemail.py:288
+#: webmail/lib/imapemail.py:327
 msgid "wrote:"
 msgstr "schrieb:"
 
-#: webmail/lib/imapemail.py:322
+#: webmail/lib/imapemail.py:363
 msgid "Date"
 msgstr "Datum"
 
-#: webmail/lib/imapemail.py:338 webmail/lib/imapemail.py:341
+#: webmail/lib/imapemail.py:379 webmail/lib/imapemail.py:382
 msgid "Original message"
 msgstr "Ursprüngliche Nachricht"
 
-#: webmail/lib/imaputils.py:43 webmail/viewsets.py:24
+#: webmail/lib/imaputils.py:55 webmail/viewsets.py:26
 msgid "Invalid message identifier"
 msgstr ""
 
-#: webmail/lib/imaputils.py:50 webmail/viewsets.py:31
+#: webmail/lib/imaputils.py:62 webmail/viewsets.py:40
 #, fuzzy
 #| msgid "Invalid rounds number"
 msgid "Invalid part number"
 msgstr "Ungültige Zahl für Runden"
 
-#: webmail/lib/imaputils.py:63 webmail/viewsets.py:38
+#: webmail/lib/imaputils.py:75 webmail/viewsets.py:47
 msgid "Invalid search pattern"
 msgstr ""
 
-#: webmail/lib/imaputils.py:259
+#: webmail/lib/imaputils.py:88
+#, fuzzy
+#| msgid "Enter a valid domain name"
+msgid "Invalid mailbox name"
+msgstr "Geben Sie einen gültigen Domain-Namen an"
+
+#: webmail/lib/imaputils.py:331
 msgid "Failed to retrieve hierarchy delimiter"
 msgstr "Hierarchietrennzeichen konnte nicht abgerufen werden"
 
-#: webmail/lib/imaputils.py:547
+#: webmail/lib/imaputils.py:690
 msgid "Inbox"
 msgstr "Posteingang"
 
-#: webmail/lib/imaputils.py:551
+#: webmail/lib/imaputils.py:694
 msgid "Drafts"
 msgstr "Entwürfe"
 
-#: webmail/lib/imaputils.py:556
+#: webmail/lib/imaputils.py:699
 msgid "Junk"
 msgstr "SPAM"
 
-#: webmail/lib/imaputils.py:561
+#: webmail/lib/imaputils.py:704
 msgid "Sent"
 msgstr "Gesendet"
 
-#: webmail/lib/imaputils.py:569
+#: webmail/lib/imaputils.py:712
 msgid "Scheduled"
 msgstr ""
 
-#: webmail/lib/imaputils.py:576
+#: webmail/lib/imaputils.py:719
 msgid "Trash"
 msgstr "Papierkorb"
 
-#: webmail/serializers.py:249
+#: webmail/lib/utils.py:177
+#, fuzzy
+#| msgid "The code has been sent again"
+msgid "The account has been disabled"
+msgstr "Der Code wurde erneut gesendet"
+
+#: webmail/lib/utils.py:180
+#, fuzzy
+#| msgid "Mailbox {} already exists"
+msgid "The mailbox no longer exists"
+msgstr "Postfach {} existiert bereits"
+
+#: webmail/lib/utils.py:182
+#, fuzzy
+#| msgid "The domain name"
+msgid "The domain has been disabled"
+msgstr "Name der Domain"
+
+#: webmail/lib/utils.py:184
+msgid "This address is no longer allowed for this account"
+msgstr ""
+
+#: webmail/serializers.py:257
 msgid "Moving scheduled messages is forbidden"
 msgstr ""
 
-#: webmail/serializers.py:282
+#: webmail/serializers.py:290
 msgid "Only datetime in the future is allowed"
 msgstr ""
 
-#: webmail/serializers.py:287
+#: webmail/serializers.py:295
 msgid "Provived datetime must be one minute in the future at least"
 msgstr ""
 
-#: webmail/serializers.py:315
+#: webmail/serializers.py:326
 #, fuzzy
 #| msgid "You are not allowed to import domain aliases."
 msgid "You are not allowed to send from this address"
 msgstr ""
 "Sie verfügen nicht über ausreichend Rechte, um Domain Aliase zu importieren."
 
-#: webmail/viewsets.py:443
+#: webmail/serializers.py:368
+msgid ""
+"original_mailbox, original_mailid and original_action must be provided "
+"together"
+msgstr ""
+
+#: webmail/serializers.py:385
+#, python-format
+msgid ""
+"Ensure this field has no more than %(max_length)s characters to schedule the "
+"message"
+msgstr ""
+
+#: webmail/serializers.py:445
+msgid "forward_mailbox and forward_mailid must be provided together"
+msgstr ""
+
+#: webmail/serializers.py:449
+msgid "A session can't start from a draft and a forwarded message"
+msgstr ""
+
+#: webmail/viewsets.py:33
+#, fuzzy
+#| msgid "Invalid rounds number"
+msgid "Invalid page number"
+msgstr "Ungültige Zahl für Runden"
+
+#: webmail/viewsets.py:153
+msgid "This mailbox is used by the webmail and can't be renamed"
+msgstr ""
+
+#: webmail/viewsets.py:194
+msgid "This mailbox is used by the webmail and can't be deleted"
+msgstr ""
+
+#: webmail/viewsets.py:527
+#, python-format
+msgid "A message cannot carry more than %s attachments"
+msgstr ""
+
+#: webmail/viewsets.py:539
 #, python-format
 msgid "Attachment is too big (limit: %s)"
+msgstr "Anhang ist zu groß (Limit: %s)"
+
+#: webmail/viewsets.py:544
+#, fuzzy, python-format
+#| msgid "Attachment is too big (limit: %s)"
+msgid "Attachments are too big (limit: %s for the whole message)"
 msgstr "Anhang ist zu groß (Limit: %s)"
 
 #~ msgid "User '{}' successfully logged out"

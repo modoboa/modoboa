@@ -21,6 +21,14 @@ msgstr ""
 "n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || "
 "(n%100>=11 && n%100<=14)? 2 : 3);\n"
 
+#: src/api/repository.js:43
+msgid "Unable to reach the server, please check your connection"
+msgstr ""
+
+#: src/api/repository.js:67
+msgid "An unexpected error occurred (code %{ status })"
+msgstr ""
+
 #: src/components/account/APISetupForm.vue:4
 msgid "Your API token has not been generated yet."
 msgstr "Ваш API-токен ещё не сгенерирован."
@@ -67,7 +75,7 @@ msgstr "Токен API создан"
 #: src/components/admin/identities/IdentityList.vue:565
 #: src/components/admin/identities/IdentityList.vue:594
 #: src/components/tools/CreationForm.vue:135
-#: src/layouts/webmail/WebmailLayout.vue:260
+#: src/layouts/webmail/WebmailLayout.vue:272
 #: src/views/calendars/CalendarView.vue:535
 msgid "Warning"
 msgstr "Внимание"
@@ -297,7 +305,7 @@ msgstr "Вы действительно хотите удалить это ус�
 #: src/components/admin/identities/IdentityList.vue:570
 #: src/components/admin/identities/IdentityList.vue:599
 #: src/components/tools/CreationForm.vue:142
-#: src/layouts/webmail/WebmailLayout.vue:265
+#: src/layouts/webmail/WebmailLayout.vue:277
 msgid "No"
 msgstr "Нет"
 
@@ -310,7 +318,7 @@ msgstr "Нет"
 #: src/components/admin/identities/IdentityList.vue:569
 #: src/components/admin/identities/IdentityList.vue:598
 #: src/components/tools/CreationForm.vue:141
-#: src/layouts/webmail/WebmailLayout.vue:264
+#: src/layouts/webmail/WebmailLayout.vue:276
 msgid "Yes"
 msgstr "Да"
 
@@ -560,7 +568,7 @@ msgstr ""
 #: src/components/webmail/EmailSchedulingForm.vue:28
 #: src/components/webmail/MailboxForm.vue:29
 #: src/layouts/connected/ConnectedLayout.vue:19
-#: src/views/webmail/EmailView.vue:167
+#: src/views/webmail/EmailView.vue:188
 msgid "Close"
 msgstr "Закрыть"
 
@@ -680,7 +688,7 @@ msgstr "Письмо"
 #: src/components/calendars/EventForm.vue:90
 #: src/components/contacts/CategoryForm.vue:18
 #: src/components/contacts/ContactList.vue:237
-#: src/components/webmail/EmailList.vue:286
+#: src/components/webmail/EmailList.vue:293
 #: src/views/account/FiltersView.vue:351
 #: src/views/calendars/CalendarView.vue:209
 msgid "Delete"
@@ -2024,7 +2032,7 @@ msgstr "ID очереди"
 #: src/components/quarantine/QuarantineList.vue:233
 #: src/components/tools/TimeSerieChart.vue:20
 #: src/components/webmail/ComposeEmailForm.vue:100
-#: src/views/webmail/EmailView.vue:112
+#: src/views/webmail/EmailView.vue:122
 msgid "To"
 msgstr "Кому"
 
@@ -2543,17 +2551,21 @@ msgstr "Копия"
 msgid "Bcc"
 msgstr "Скрытая копия"
 
-#: src/components/webmail/ComposeEmailForm.vue:348
+#: src/components/webmail/ComposeEmailForm.vue:421
 msgid "Email scheduled"
 msgstr "Отправка электронной почты запланирована"
 
-#: src/components/webmail/ComposeEmailForm.vue:349
+#: src/components/webmail/ComposeEmailForm.vue:422
 msgid "Email sent"
 msgstr "Письмо отправлено"
 
-#: src/components/webmail/ComposeEmailForm.vue:426
+#: src/components/webmail/ComposeEmailForm.vue:510
 msgid "You must provide one recipient at least"
 msgstr "Необходимо указать хотя бы одного получателя"
+
+#: src/components/webmail/ComposeEmailForm.vue:534
+msgid "Draft saved"
+msgstr ""
 
 #: src/components/webmail/ContactCard.vue:15
 msgid "Add to contacts"
@@ -2607,36 +2619,36 @@ msgstr "В этом ящике пока нет писем"
 msgid "Sending failure"
 msgstr "Ошибка отправки"
 
-#: src/components/webmail/EmailList.vue:281
+#: src/components/webmail/EmailList.vue:288
 msgid "Reschedule"
 msgstr "Перенести"
 
-#: src/components/webmail/EmailList.vue:328
+#: src/components/webmail/EmailList.vue:335
 msgid "Scheduling updated"
 msgstr "Расписание обновлено"
 
-#: src/components/webmail/EmailList.vue:339
+#: src/components/webmail/EmailList.vue:346
 msgid "Scheduled canceled and message moved to trash folder"
 msgstr ""
 "Отправка по расписанию отменена, сообщение перемещено в папку «Корзина»"
 
-#: src/components/webmail/EmailList.vue:394
+#: src/components/webmail/EmailList.vue:401
 msgid "Message(s) deleted"
 msgstr "Письмо(а) удалены"
 
-#: src/components/webmail/EmailList.vue:409
+#: src/components/webmail/EmailList.vue:416
 msgid "Message(s) marked as junk"
 msgstr "Письмо(а) помечено как спам"
 
-#: src/components/webmail/EmailList.vue:423
+#: src/components/webmail/EmailList.vue:430
 msgid "Message(s) marked as not junk"
 msgstr "Письмо(а) помечено как НЕ спам"
 
-#: src/components/webmail/EmailList.vue:438
+#: src/components/webmail/EmailList.vue:445
 msgid "Message(s) flagged"
 msgstr "Письмо(а) помечено как важные"
 
-#: src/components/webmail/EmailList.vue:465
+#: src/components/webmail/EmailList.vue:473
 msgid "%{count} message"
 msgid_plural "%{count} messages"
 msgstr[0] "%{count} сообщение"
@@ -2787,15 +2799,15 @@ msgstr "Удалить этот ящик"
 msgid "Compress this mailbox"
 msgstr "Сжать этот ящик"
 
-#: src/layouts/webmail/WebmailLayout.vue:255
+#: src/layouts/webmail/WebmailLayout.vue:267
 msgid "Mailbox compressed"
 msgstr "Почтовый ящик сжат"
 
-#: src/layouts/webmail/WebmailLayout.vue:261
+#: src/layouts/webmail/WebmailLayout.vue:273
 msgid "Delete this mailbox?"
 msgstr "Удалить этот почтовый ящик?"
 
-#: src/layouts/webmail/WebmailLayout.vue:272
+#: src/layouts/webmail/WebmailLayout.vue:284
 msgid "Mailbox deleted"
 msgstr "Почтовый ящик удалён"
 
@@ -3180,7 +3192,7 @@ msgstr "Показать все заголовки"
 msgid "Hide full headers"
 msgstr "Скрыть все заголовки"
 
-#: src/views/quarantine/MessageView.vue:201 src/views/webmail/EmailView.vue:277
+#: src/views/quarantine/MessageView.vue:201 src/views/webmail/EmailView.vue:322
 msgid "Message deleted"
 msgstr "Письмо удалено"
 
@@ -3208,23 +3220,33 @@ msgstr "Включить ссылки"
 msgid "Disable links"
 msgstr "Отключить ссылки"
 
-#: src/views/webmail/EmailView.vue:81
+#: src/views/webmail/EmailView.vue:82
+#, fuzzy
+msgid "Display images"
+msgstr "Отображаемое имя"
+
+#: src/views/webmail/EmailView.vue:87
+#, fuzzy
+msgid "Hide images"
+msgstr "Удалить изображение"
+
+#: src/views/webmail/EmailView.vue:91
 msgid "Display source"
 msgstr "Показать источник"
 
-#: src/views/webmail/EmailView.vue:154
+#: src/views/webmail/EmailView.vue:164
 msgid "Message scheduled at:"
 msgstr "Отправка сообщения запланирована на:"
 
-#: src/views/webmail/EmailView.vue:160
+#: src/views/webmail/EmailView.vue:181
 msgid "Message source"
 msgstr "Исходный текст письма"
 
-#: src/views/webmail/EmailView.vue:291
+#: src/views/webmail/EmailView.vue:336
 msgid "Message marked as junk"
 msgstr "Письмо помечено как спам"
 
-#: src/views/webmail/EmailView.vue:305
+#: src/views/webmail/EmailView.vue:350
 msgid "Message marked as not junk"
 msgstr "Письмо помечено как НЕ спам"
 

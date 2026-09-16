@@ -15,6 +15,14 @@ msgstr ""
 "Generated-By: easygettext\n"
 "X-Generator: Poedit 3.2.2\n"
 
+#: src/api/repository.js:43
+msgid "Unable to reach the server, please check your connection"
+msgstr ""
+
+#: src/api/repository.js:67
+msgid "An unexpected error occurred (code %{ status })"
+msgstr ""
+
 #: src/components/account/APISetupForm.vue:4
 msgid "Your API token has not been generated yet."
 msgstr "API-pääsytunnistetta ei ole vielä luotu."
@@ -61,7 +69,7 @@ msgstr "API-tunniste luotu"
 #: src/components/admin/identities/IdentityList.vue:565
 #: src/components/admin/identities/IdentityList.vue:594
 #: src/components/tools/CreationForm.vue:135
-#: src/layouts/webmail/WebmailLayout.vue:260
+#: src/layouts/webmail/WebmailLayout.vue:272
 #: src/views/calendars/CalendarView.vue:535
 msgid "Warning"
 msgstr "Varoitus"
@@ -292,7 +300,7 @@ msgstr "Haluatko todella poistaa aliaksen %{ alias }?"
 #: src/components/admin/identities/IdentityList.vue:570
 #: src/components/admin/identities/IdentityList.vue:599
 #: src/components/tools/CreationForm.vue:142
-#: src/layouts/webmail/WebmailLayout.vue:265
+#: src/layouts/webmail/WebmailLayout.vue:277
 msgid "No"
 msgstr "Ei"
 
@@ -305,7 +313,7 @@ msgstr "Ei"
 #: src/components/admin/identities/IdentityList.vue:569
 #: src/components/admin/identities/IdentityList.vue:598
 #: src/components/tools/CreationForm.vue:141
-#: src/layouts/webmail/WebmailLayout.vue:264
+#: src/layouts/webmail/WebmailLayout.vue:276
 msgid "Yes"
 msgstr "Kyllä"
 
@@ -573,7 +581,7 @@ msgstr ""
 #: src/components/webmail/EmailSchedulingForm.vue:28
 #: src/components/webmail/MailboxForm.vue:29
 #: src/layouts/connected/ConnectedLayout.vue:19
-#: src/views/webmail/EmailView.vue:167
+#: src/views/webmail/EmailView.vue:188
 msgid "Close"
 msgstr "Sulje"
 
@@ -696,7 +704,7 @@ msgstr "Viesti"
 #: src/components/calendars/EventForm.vue:90
 #: src/components/contacts/CategoryForm.vue:18
 #: src/components/contacts/ContactList.vue:237
-#: src/components/webmail/EmailList.vue:286
+#: src/components/webmail/EmailList.vue:293
 #: src/views/account/FiltersView.vue:351
 #: src/views/calendars/CalendarView.vue:209
 msgid "Delete"
@@ -2119,7 +2127,7 @@ msgstr "Jonon ID"
 #: src/components/quarantine/QuarantineList.vue:233
 #: src/components/tools/TimeSerieChart.vue:20
 #: src/components/webmail/ComposeEmailForm.vue:100
-#: src/views/webmail/EmailView.vue:112
+#: src/views/webmail/EmailView.vue:122
 msgid "To"
 msgstr "Vastaanottaja"
 
@@ -2668,18 +2676,22 @@ msgstr ""
 msgid "Bcc"
 msgstr ""
 
-#: src/components/webmail/ComposeEmailForm.vue:348
+#: src/components/webmail/ComposeEmailForm.vue:421
 #, fuzzy
 msgid "Email scheduled"
 msgstr "Sähköposti"
 
-#: src/components/webmail/ComposeEmailForm.vue:349
+#: src/components/webmail/ComposeEmailForm.vue:422
 #, fuzzy
 msgid "Email sent"
 msgstr "Sähköposti"
 
-#: src/components/webmail/ComposeEmailForm.vue:426
+#: src/components/webmail/ComposeEmailForm.vue:510
 msgid "You must provide one recipient at least"
+msgstr ""
+
+#: src/components/webmail/ComposeEmailForm.vue:534
+msgid "Draft saved"
 msgstr ""
 
 #: src/components/webmail/ContactCard.vue:15
@@ -2736,38 +2748,38 @@ msgstr ""
 msgid "Sending failure"
 msgstr "Lähetysraja"
 
-#: src/components/webmail/EmailList.vue:281
+#: src/components/webmail/EmailList.vue:288
 msgid "Reschedule"
 msgstr ""
 
-#: src/components/webmail/EmailList.vue:328
+#: src/components/webmail/EmailList.vue:335
 #, fuzzy
 msgid "Scheduling updated"
 msgstr "Tili luotu"
 
-#: src/components/webmail/EmailList.vue:339
+#: src/components/webmail/EmailList.vue:346
 msgid "Scheduled canceled and message moved to trash folder"
 msgstr ""
 
-#: src/components/webmail/EmailList.vue:394
+#: src/components/webmail/EmailList.vue:401
 #, fuzzy
 msgid "Message(s) deleted"
 msgstr "Viestien historia"
 
-#: src/components/webmail/EmailList.vue:409
+#: src/components/webmail/EmailList.vue:416
 msgid "Message(s) marked as junk"
 msgstr ""
 
-#: src/components/webmail/EmailList.vue:423
+#: src/components/webmail/EmailList.vue:430
 msgid "Message(s) marked as not junk"
 msgstr ""
 
-#: src/components/webmail/EmailList.vue:438
+#: src/components/webmail/EmailList.vue:445
 #, fuzzy
 msgid "Message(s) flagged"
 msgstr "Viestien historia"
 
-#: src/components/webmail/EmailList.vue:465
+#: src/components/webmail/EmailList.vue:473
 #, fuzzy
 msgid "%{count} message"
 msgid_plural "%{count} messages"
@@ -2932,17 +2944,17 @@ msgstr "Postilaatikolla"
 msgid "Compress this mailbox"
 msgstr "Postilaatikolla"
 
-#: src/layouts/webmail/WebmailLayout.vue:255
+#: src/layouts/webmail/WebmailLayout.vue:267
 #, fuzzy
 msgid "Mailbox compressed"
 msgstr "Postilaatikot"
 
-#: src/layouts/webmail/WebmailLayout.vue:261
+#: src/layouts/webmail/WebmailLayout.vue:273
 #, fuzzy
 msgid "Delete this mailbox?"
 msgstr "Postilaatikolla"
 
-#: src/layouts/webmail/WebmailLayout.vue:272
+#: src/layouts/webmail/WebmailLayout.vue:284
 #, fuzzy
 msgid "Mailbox deleted"
 msgstr "Luontipäivä"
@@ -3349,7 +3361,7 @@ msgstr ""
 msgid "Hide full headers"
 msgstr ""
 
-#: src/views/quarantine/MessageView.vue:201 src/views/webmail/EmailView.vue:277
+#: src/views/quarantine/MessageView.vue:201 src/views/webmail/EmailView.vue:322
 #, fuzzy
 msgid "Message deleted"
 msgstr "Viestien historia"
@@ -3380,26 +3392,36 @@ msgstr "Käytössä"
 msgid "Disable links"
 msgstr "Pois käytöstä"
 
-#: src/views/webmail/EmailView.vue:81
+#: src/views/webmail/EmailView.vue:82
+#, fuzzy
+msgid "Display images"
+msgstr "Etunimi"
+
+#: src/views/webmail/EmailView.vue:87
+#, fuzzy
+msgid "Hide images"
+msgstr "Poista tämä osoite"
+
+#: src/views/webmail/EmailView.vue:91
 #, fuzzy
 msgid "Display source"
 msgstr "Etunimi"
 
-#: src/views/webmail/EmailView.vue:154
+#: src/views/webmail/EmailView.vue:164
 #, fuzzy
 msgid "Message scheduled at:"
 msgstr "Viestien historia"
 
-#: src/views/webmail/EmailView.vue:160
+#: src/views/webmail/EmailView.vue:181
 #, fuzzy
 msgid "Message source"
 msgstr "Viestien historia"
 
-#: src/views/webmail/EmailView.vue:291
+#: src/views/webmail/EmailView.vue:336
 msgid "Message marked as junk"
 msgstr ""
 
-#: src/views/webmail/EmailView.vue:305
+#: src/views/webmail/EmailView.vue:350
 msgid "Message marked as not junk"
 msgstr ""
 

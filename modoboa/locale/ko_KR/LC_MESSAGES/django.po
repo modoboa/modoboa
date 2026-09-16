@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-06 11:25+0200\n"
+"POT-Creation-Date: 2026-09-16 19:34+0200\n"
 "PO-Revision-Date: 2011-07-01 08:15+0000\n"
 "Last-Translator: 미나리나물, 2026\n"
 "Language-Team: Korean (Korea) (http://app.transifex.com/tonio/modoboa/"
@@ -947,11 +947,11 @@ msgstr ""
 "일반 사용자가 전용 데이터베이스 내에서 개인적으로 Spamassassin을 학습시킬 수 "
 "있도록 허용합니다."
 
-#: amavis/app_settings.py:236 webmail/app_settings.py:155
+#: amavis/app_settings.py:236 webmail/app_settings.py:176
 msgid "Display"
 msgstr "표시 설정"
 
-#: amavis/app_settings.py:243 webmail/app_settings.py:181
+#: amavis/app_settings.py:243 webmail/app_settings.py:202
 msgid "Number of displayed emails per page"
 msgstr "페이지당 표시될 이메일 수"
 
@@ -1370,7 +1370,7 @@ msgid "Calendar"
 msgstr "캘린더"
 
 #: core/api/v2/viewsets.py:215 core/api/v2/viewsets.py:217
-#: webmail/app_settings.py:286 webmail/app_settings.py:293
+#: webmail/app_settings.py:307 webmail/app_settings.py:314
 msgid "Webmail"
 msgstr "웹메일"
 
@@ -1480,8 +1480,8 @@ msgid "LDAP"
 msgstr "LDAP"
 
 #: core/app_settings.py:157 sievefilters/app_settings.py:18
-#: sievefilters/app_settings.py:51 webmail/app_settings.py:36
-#: webmail/app_settings.py:73 webmail/app_settings.py:119
+#: sievefilters/app_settings.py:51 webmail/app_settings.py:57
+#: webmail/app_settings.py:94 webmail/app_settings.py:140
 msgid "Server address"
 msgstr "서버 주소"
 
@@ -1490,8 +1490,8 @@ msgid "The IP address or the DNS name of the LDAP server"
 msgstr "LDAP 서버의 IP 주소 또는 DNS 이름입니다."
 
 #: core/app_settings.py:166 sievefilters/app_settings.py:25
-#: sievefilters/app_settings.py:67 webmail/app_settings.py:54
-#: webmail/app_settings.py:91 webmail/app_settings.py:137
+#: sievefilters/app_settings.py:67 webmail/app_settings.py:75
+#: webmail/app_settings.py:112 webmail/app_settings.py:158
 msgid "Server port"
 msgstr "서버 포트"
 
@@ -1525,7 +1525,7 @@ msgid "The TCP port number used by the LDAP secondary server"
 msgstr "보조 LDAP 서버에서 사용하는 TCP 포트 번호입니다."
 
 #: core/app_settings.py:207 sievefilters/app_settings.py:58
-#: webmail/app_settings.py:45
+#: webmail/app_settings.py:66
 msgid "Use a secured connection"
 msgstr "보안 연결 사용"
 
@@ -2269,7 +2269,7 @@ msgid "Not resolved"
 msgstr "해결되지 않음"
 
 #: dmarc/models.py:10 dmarc/models.py:16 pdfcredentials/constants.py:7
-#: webmail/constants.py:38
+#: webmail/constants.py:52
 msgid "None"
 msgstr "없음"
 
@@ -2521,7 +2521,7 @@ msgstr ""
 msgid "Failed to communicate with public API: %s"
 msgstr "공개 API와의 통신 실패: %s"
 
-#: lib/email_utils.py:140 lib/email_utils.py:351
+#: lib/email_utils.py:146 lib/email_utils.py:365
 msgid "unable to determine encoding of string"
 msgstr "문자열의 인코딩을 확인할 수 없습니다."
 
@@ -3189,19 +3189,19 @@ msgstr "STARTTLS를 사용하여 연결"
 msgid "Use the STARTTLS extension"
 msgstr "STARTTLS 확장을 사용합니다."
 
-#: sievefilters/app_settings.py:45 webmail/app_settings.py:30
+#: sievefilters/app_settings.py:45 webmail/app_settings.py:51
 msgid "IMAP settings"
 msgstr "IMAP 설정"
 
-#: sievefilters/app_settings.py:52 webmail/app_settings.py:38
+#: sievefilters/app_settings.py:52 webmail/app_settings.py:59
 msgid "Address of your IMAP server"
 msgstr "IMAP 서버 주소"
 
-#: sievefilters/app_settings.py:60 webmail/app_settings.py:47
+#: sievefilters/app_settings.py:60 webmail/app_settings.py:68
 msgid "Use a secured connection to access IMAP server"
 msgstr "IMAP 서버에 액세스할 때 보안 연결을 사용합니다."
 
-#: sievefilters/app_settings.py:68 webmail/app_settings.py:56
+#: sievefilters/app_settings.py:68 webmail/app_settings.py:77
 msgid "Listening port of your IMAP server"
 msgstr "IMAP 서버의 대기 포트"
 
@@ -3237,7 +3237,7 @@ msgstr "일치함"
 msgid "is not"
 msgstr "일치하지 않음"
 
-#: sievefilters/constants.py:28 webmail/lib/imapemail.py:320
+#: sievefilters/constants.py:28 webmail/lib/imapemail.py:361
 msgid "Subject"
 msgstr "제목"
 
@@ -3469,205 +3469,335 @@ msgstr "최대 첨부 파일 크기"
 msgid "Maximum attachment size in bytes (or KB, MB, GB if specified)"
 msgstr "최대 첨부 파일 크기 (바이트 단위, 또는 KB, MB, GB 지정 가능)"
 
-#: webmail/app_settings.py:67
+#: webmail/app_settings.py:27
+#, fuzzy
+#| msgid "Maximum attachment size"
+msgid "Maximum total size of attachments"
+msgstr "최대 첨부 파일 크기"
+
+#: webmail/app_settings.py:30
+#, fuzzy
+#| msgid "Maximum attachment size in bytes (or KB, MB, GB if specified)"
+msgid ""
+"Maximum size of all the attachments of a message, in bytes (or KB, MB, GB if "
+"specified)"
+msgstr "최대 첨부 파일 크기 (바이트 단위, 또는 KB, MB, GB 지정 가능)"
+
+#: webmail/app_settings.py:38
+#, fuzzy
+#| msgid "Maximum attachment size"
+msgid "Maximum number of attachments"
+msgstr "최대 첨부 파일 크기"
+
+#: webmail/app_settings.py:40
+#, fuzzy
+#| msgid "Maximum number of mailboxes this user can create"
+msgid "Maximum number of files a message can carry"
+msgstr "이 사용자가 생성할 수 있는 최대 사서함 수"
+
+#: webmail/app_settings.py:88
 msgid "SMTP settings"
 msgstr "SMTP 설정"
 
-#: webmail/app_settings.py:75 webmail/app_settings.py:121
+#: webmail/app_settings.py:96 webmail/app_settings.py:142
 msgid "Address of your SMTP server"
 msgstr "SMTP 서버 주소"
 
-#: webmail/app_settings.py:82 webmail/app_settings.py:128
+#: webmail/app_settings.py:103 webmail/app_settings.py:149
 msgid "Secured connection mode"
 msgstr "보안 연결 모드"
 
-#: webmail/app_settings.py:84 webmail/app_settings.py:130
+#: webmail/app_settings.py:105 webmail/app_settings.py:151
 msgid "Use a secured connection to access SMTP server"
 msgstr "SMTP 서버에 액세스할 때 보안 연결을 사용합니다."
 
-#: webmail/app_settings.py:93 webmail/app_settings.py:139
+#: webmail/app_settings.py:114 webmail/app_settings.py:160
 msgid "Listening port of your SMTP server"
 msgstr "SMTP 서버의 대기 포트"
 
-#: webmail/app_settings.py:100
+#: webmail/app_settings.py:121
 msgid "Authentication required"
 msgstr "인증 필요"
 
-#: webmail/app_settings.py:102
+#: webmail/app_settings.py:123
 msgid "Server needs authentication"
 msgstr "서버 인증이 필요합니다."
 
-#: webmail/app_settings.py:113
+#: webmail/app_settings.py:134
 msgid "Scheduling settings"
 msgstr "예약 설정"
 
-#: webmail/app_settings.py:161
+#: webmail/app_settings.py:182
 msgid "Default message display mode"
 msgstr "기본 메시지 표시 모드"
 
-#: webmail/app_settings.py:163
+#: webmail/app_settings.py:184
 msgid "The default mode used when displaying a message"
 msgstr "메시지를 표시할 때 사용되는 기본 모드"
 
-#: webmail/app_settings.py:170
+#: webmail/app_settings.py:191
 msgid "Enable HTML links display"
 msgstr "HTML 링크 표시 활성화"
 
-#: webmail/app_settings.py:173
+#: webmail/app_settings.py:194
 msgid "Enable/Disable HTML links display"
 msgstr "HTML 링크 표시 활성화/비활성화"
 
-#: webmail/app_settings.py:184
+#: webmail/app_settings.py:205
 msgid "Sets the maximum number of messages displayed in a page"
 msgstr "한 페이지에 표시되는 최대 메시지 수 설정"
 
-#: webmail/app_settings.py:191
+#: webmail/app_settings.py:212
 msgid "Listing refresh rate"
 msgstr "목록 새로고침 빈도"
 
-#: webmail/app_settings.py:193
+#: webmail/app_settings.py:214
 msgid "Automatic listing refresh rate (in secconds)"
 msgstr "자동 목록 새로고침 빈도 (초 단위)"
 
-#: webmail/app_settings.py:204
+#: webmail/app_settings.py:225
 msgid "Folders"
 msgstr "폴더"
 
-#: webmail/app_settings.py:210
+#: webmail/app_settings.py:231
 msgid "Trash folder"
 msgstr "휴지통 폴더"
 
-#: webmail/app_settings.py:212
+#: webmail/app_settings.py:233
 msgid "Folder where deleted messages go"
 msgstr "삭제된 메시지가 이동하는 폴더"
 
-#: webmail/app_settings.py:219
+#: webmail/app_settings.py:240
 msgid "Sent folder"
 msgstr "보낸 편지함 폴더"
 
-#: webmail/app_settings.py:221
+#: webmail/app_settings.py:242
 msgid "Folder where copies of sent messages go"
 msgstr "보낸 메시지의 복사본이 이동하는 폴더"
 
-#: webmail/app_settings.py:228
+#: webmail/app_settings.py:249
 msgid "Drafts folder"
 msgstr "임시 보관함 폴더"
 
-#: webmail/app_settings.py:229
+#: webmail/app_settings.py:250
 msgid "Folder where drafts go"
 msgstr "임시 저장이 보관되는 폴더"
 
-#: webmail/app_settings.py:235
+#: webmail/app_settings.py:256
 msgid "Junk folder"
 msgstr "스팸 메일함"
 
-#: webmail/app_settings.py:237
+#: webmail/app_settings.py:258
 msgid "Folder where junk messages should go"
 msgstr "스팸 메시지가 이동해야 하는 폴더"
 
-#: webmail/app_settings.py:248
+#: webmail/app_settings.py:269
 msgid "Composing messages"
 msgstr "메시지 작성"
 
-#: webmail/app_settings.py:254
+#: webmail/app_settings.py:275
 msgid "Default editor"
 msgstr "기본 편집기"
 
-#: webmail/app_settings.py:256
+#: webmail/app_settings.py:277
 msgid "The default editor to use when composing a message"
 msgstr "메시지를 작성할 때 사용할 기본 편집기"
 
-#: webmail/app_settings.py:263
+#: webmail/app_settings.py:284
 msgid "Signature text"
 msgstr "서명 텍스트"
 
-#: webmail/app_settings.py:265
+#: webmail/app_settings.py:286
 msgid "User defined email signature"
 msgstr "사용자 정의 이메일 서명"
 
-#: webmail/exceptions.py:18
+#: webmail/checks.py:18
+msgid ""
+"The webmail attachments cleanup job is not registered: unused attachment "
+"files will never be removed."
+msgstr ""
+
+#: webmail/checks.py:22
+msgid ""
+"Add the cleanup_orphan_attachments job to your cron_config.py file (see the "
+"upgrade instructions), then restart the RQ cron scheduler."
+msgstr ""
+
+#: webmail/checks.py:30
+msgid ""
+"The legacy webmail attachments directory still exists inside MEDIA_ROOT, "
+"which may be served by the web server."
+msgstr ""
+
+#: webmail/checks.py:33
+msgid "Run the purge_webmail_legacy_data management command."
+msgstr ""
+
+#: webmail/exceptions.py:23
 msgid "Server response"
 msgstr "서버 응답"
 
-#: webmail/lib/attachments.py:145
+#: webmail/jobs.py:30
+msgid "Unexpected error while sending the message"
+msgstr ""
+
+#: webmail/jobs.py:47
+msgid "Sending was interrupted, please reschedule the message"
+msgstr ""
+
+#: webmail/lib/attachments.py:211
 msgid "Failed to remove attachment: "
 msgstr "첨부 파일 삭제 실패: "
 
-#: webmail/lib/imapemail.py:288
+#: webmail/lib/imapemail.py:327
 msgid "wrote:"
 msgstr "씀:"
 
-#: webmail/lib/imapemail.py:322
+#: webmail/lib/imapemail.py:363
 msgid "Date"
 msgstr "날짜"
 
-#: webmail/lib/imapemail.py:338 webmail/lib/imapemail.py:341
+#: webmail/lib/imapemail.py:379 webmail/lib/imapemail.py:382
 msgid "Original message"
 msgstr "원본 메시지"
 
-#: webmail/lib/imaputils.py:43 webmail/viewsets.py:24
+#: webmail/lib/imaputils.py:55 webmail/viewsets.py:26
 msgid "Invalid message identifier"
 msgstr ""
 
-#: webmail/lib/imaputils.py:50 webmail/viewsets.py:31
+#: webmail/lib/imaputils.py:62 webmail/viewsets.py:40
 #, fuzzy
 #| msgid "Invalid rounds number"
 msgid "Invalid part number"
 msgstr "유효하지 않은 라운드(Rounds) 횟수입니다."
 
-#: webmail/lib/imaputils.py:63 webmail/viewsets.py:38
+#: webmail/lib/imaputils.py:75 webmail/viewsets.py:47
 msgid "Invalid search pattern"
 msgstr ""
 
-#: webmail/lib/imaputils.py:259
+#: webmail/lib/imaputils.py:88
+#, fuzzy
+#| msgid "Enter a valid domain name"
+msgid "Invalid mailbox name"
+msgstr "유효한 도메인 이름을 입력하세요."
+
+#: webmail/lib/imaputils.py:331
 msgid "Failed to retrieve hierarchy delimiter"
 msgstr "계층 구조 구분 기호를 가져오지 못했습니다."
 
-#: webmail/lib/imaputils.py:547
+#: webmail/lib/imaputils.py:690
 msgid "Inbox"
 msgstr "받은 편지함"
 
-#: webmail/lib/imaputils.py:551
+#: webmail/lib/imaputils.py:694
 msgid "Drafts"
 msgstr "임시 보관함"
 
-#: webmail/lib/imaputils.py:556
+#: webmail/lib/imaputils.py:699
 msgid "Junk"
 msgstr "스팸 메일함"
 
-#: webmail/lib/imaputils.py:561
+#: webmail/lib/imaputils.py:704
 msgid "Sent"
 msgstr "보낸 편지함"
 
-#: webmail/lib/imaputils.py:569
+#: webmail/lib/imaputils.py:712
 msgid "Scheduled"
 msgstr "예약됨"
 
-#: webmail/lib/imaputils.py:576
+#: webmail/lib/imaputils.py:719
 msgid "Trash"
 msgstr "휴지통"
 
-#: webmail/serializers.py:249
+#: webmail/lib/utils.py:177
+#, fuzzy
+#| msgid "The code has been sent again"
+msgid "The account has been disabled"
+msgstr "코드가 다시 전송되었습니다."
+
+#: webmail/lib/utils.py:180
+#, fuzzy
+#| msgid "Mailbox {} already exists"
+msgid "The mailbox no longer exists"
+msgstr "사서함 {}이(가) 이미 존재합니다."
+
+#: webmail/lib/utils.py:182
+#, fuzzy
+#| msgid "The domain name"
+msgid "The domain has been disabled"
+msgstr "도메인 이름"
+
+#: webmail/lib/utils.py:184
+msgid "This address is no longer allowed for this account"
+msgstr ""
+
+#: webmail/serializers.py:257
 msgid "Moving scheduled messages is forbidden"
 msgstr "예약된 메시지를 이동하는 것은 금지되어 있습니다."
 
-#: webmail/serializers.py:282
+#: webmail/serializers.py:290
 msgid "Only datetime in the future is allowed"
 msgstr "미래의 날짜와 시간만 허용됩니다."
 
-#: webmail/serializers.py:287
+#: webmail/serializers.py:295
 msgid "Provived datetime must be one minute in the future at least"
 msgstr "제공된 시간은 최소 1분 뒤의 미래여야 합니다."
 
-#: webmail/serializers.py:315
+#: webmail/serializers.py:326
 #, fuzzy
 #| msgid "You are not allowed to import domain aliases."
 msgid "You are not allowed to send from this address"
 msgstr "도메인 별칭을 가져올 권한이 없습니다."
 
-#: webmail/viewsets.py:443
+#: webmail/serializers.py:368
+msgid ""
+"original_mailbox, original_mailid and original_action must be provided "
+"together"
+msgstr ""
+
+#: webmail/serializers.py:385
+#, python-format
+msgid ""
+"Ensure this field has no more than %(max_length)s characters to schedule the "
+"message"
+msgstr ""
+
+#: webmail/serializers.py:445
+msgid "forward_mailbox and forward_mailid must be provided together"
+msgstr ""
+
+#: webmail/serializers.py:449
+msgid "A session can't start from a draft and a forwarded message"
+msgstr ""
+
+#: webmail/viewsets.py:33
+#, fuzzy
+#| msgid "Invalid rounds number"
+msgid "Invalid page number"
+msgstr "유효하지 않은 라운드(Rounds) 횟수입니다."
+
+#: webmail/viewsets.py:153
+msgid "This mailbox is used by the webmail and can't be renamed"
+msgstr ""
+
+#: webmail/viewsets.py:194
+msgid "This mailbox is used by the webmail and can't be deleted"
+msgstr ""
+
+#: webmail/viewsets.py:527
+#, python-format
+msgid "A message cannot carry more than %s attachments"
+msgstr ""
+
+#: webmail/viewsets.py:539
 #, python-format
 msgid "Attachment is too big (limit: %s)"
+msgstr "첨부 파일이 너무 큽니다 (제한: %s)"
+
+#: webmail/viewsets.py:544
+#, fuzzy, python-format
+#| msgid "Attachment is too big (limit: %s)"
+msgid "Attachments are too big (limit: %s for the whole message)"
 msgstr "첨부 파일이 너무 큽니다 (제한: %s)"
 
 #~ msgid "User '{}' successfully logged out"
