@@ -197,6 +197,24 @@ class BodyStructure:
         return None
 
 
+# Search criteria understood by parse_search_parameters, mapped to their
+# IMAP key
+SEARCH_KEYS = {
+    "from_addr": "FROM",
+    "to": "TO",
+    "cc": "CC",
+    "subject": "SUBJECT",
+    "body": "BODY",
+}
+
+SEARCH_CRITERION_ALIASES = {
+    # Kept for compatibility
+    "both": "from_addr,subject",
+    # What the single search field of the interface looks for
+    "all": "from_addr,to,cc,subject,body",
+}
+
+
 class IMAPconnector:
     """The IMAPv4 connector."""
 
@@ -410,8 +428,7 @@ class IMAPconnector:
                 return c
             return f"OR {old} {c}"
 
-        if criterion == "both":
-            criterion = "from_addr,subject"
+        criterion = SEARCH_CRITERION_ALIASES.get(criterion, criterion)
 
         if not pattern:
             criterions = "ALL"
@@ -419,15 +436,21 @@ class IMAPconnector:
             pattern = escape_search_pattern(pattern)
             criterions = ""
             for c in criterion.split(","):
-                if c == "from_addr":
-                    key = "FROM"
-                elif c == "subject":
-                    key = "SUBJECT"
-                else:
+                key = SEARCH_KEYS.get(c.strip())
+                if key is None:
                     continue
                 criterions = or_criterion(criterions, f'({key} "{pattern}")')
+            if criterions == "":
+                # None of the given criteria is known: search everywhere
+                # rather than sending an empty, invalid command.
+                criterions = f'(TEXT "{pattern}")'
 
         self.criterions = [bytearray(criterions, "utf8")]
+
+    @property
+    def has_sort(self) -> bool:
+        """Does the server support the SORT extension (RFC 5256)?"""
+        return "SORT" in getattr(self, "capabilities", [])
 
     def messages_count(self, **kwargs) -> int:
         """An enhanced version of messages_count.
@@ -453,17 +476,40 @@ class IMAPconnector:
         # mailbox state. It works now that select_mailbox resets the untagged
         # responses correctly (was forced to SELECT before — see git history).
         self.select_mailbox(mbox, readonly=True)
-        cmdname = "SORT"
+        if self.has_sort:
+            data = self._cmd(
+                "SORT",
+                f"({criterion})",
+                b"UTF-8",
+                b"(NOT DELETED)",
+                *self.criterions,
+            )
+            self.messages = data[0].decode().split()
+        else:
+            self.messages = self._search_messages(
+                reverse=criterion.startswith("REVERSE")
+            )
+        self.getquota(mbox)
+        return len(self.messages)
+
+    def _search_messages(self, reverse: bool = True) -> list:
+        """List the messages of the selected mailbox without SORT.
+
+        SORT is an extension: servers that lack it only answer SEARCH,
+        which returns UIDs in ascending order. Messages are then ordered
+        by arrival instead of by their Date header, which is the closest
+        approximation we can give without fetching every date.
+        """
         data = self._cmd(
-            cmdname,
-            f"({criterion})",
+            "SEARCH",
+            b"CHARSET",
             b"UTF-8",
             b"(NOT DELETED)",
             *self.criterions,
         )
-        self.messages = data[0].decode().split()
-        self.getquota(mbox)
-        return len(self.messages)
+        messages = data[0].decode().split()
+        messages.sort(key=int, reverse=reverse)
+        return messages
 
     def select_mailbox(
         self, name: str, readonly: bool = True, force: bool = False
