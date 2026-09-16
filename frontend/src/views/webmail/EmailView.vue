@@ -78,6 +78,16 @@
               @click="enableLinks = false"
             />
             <v-list-item
+              v-if="!enableImages"
+              :title="$gettext('Display images')"
+              @click="enableImages = true"
+            />
+            <v-list-item
+              v-else
+              :title="$gettext('Hide images')"
+              @click="enableImages = false"
+            />
+            <v-list-item
               :title="$gettext('Display source')"
               @click="openEmailSourceDialog"
             />
@@ -201,6 +211,7 @@ const { isJunkFolder, isDraftsFolder } = useSpecialFolders(
 )
 
 const enableLinks = ref(false)
+const enableImages = ref(false)
 const email = ref(null)
 const emailFrame = ref(null)
 const emailSource = ref(null)
@@ -219,7 +230,7 @@ onUnmounted(() => {
   window.removeEventListener('resize', resizeEmailIframe)
 })
 
-watch(enableLinks, () => {
+watch([enableLinks, enableImages], () => {
   fetchMailContent()
 })
 
@@ -234,9 +245,10 @@ const emailDocument = computed(() => {
   if (!email.value?.body) {
     return ''
   }
-  // Remote content (images, fonts, etc.) is only allowed when links are
-  // enabled, which also prevents tracking pixels from loading by default.
-  const remoteSrc = enableLinks.value ? ' https: http:' : ''
+  // Remote content (images, fonts, etc.) is only allowed once the reader
+  // asks for the images, which keeps tracking pixels from loading by
+  // default, whatever the links are set to.
+  const remoteSrc = enableImages.value ? ' https: http:' : ''
   const csp = [
     "default-src 'none'",
     `img-src data:${remoteSrc}`,
@@ -274,6 +286,7 @@ const fetchMailContent = () => {
   const options = {
     dformat: 'html',
     links: enableLinks.value ? '1' : '0',
+    images: enableImages.value ? '1' : '0',
   }
   api
     .getEmailContent(route.query.mailbox, route.query.mailid, options)

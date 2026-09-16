@@ -15,9 +15,10 @@ from modoboa.webmail.tests import data as tests_data
 PNG_BYTES = b"\x89PNG\r\n\x1a\nfake"
 
 
-def _make_email(inlines, links=True):
+def _make_email(inlines, links=True, images=None):
     email = ImapEmail.__new__(ImapEmail)
     email.links = links
+    email.images = links if images is None else images
     email.mailid = "3"
     email.mbox = "INBOX"
     email.bs = mock.Mock(inlines=inlines)
@@ -81,7 +82,22 @@ class InlineImagesTestCase(SimpleTestCase):
         self.assertEqual(email._map_cid("cid:svg@x"), "cid:svg@x")
         self.assertEqual(email._map_cid("cid:html@x"), "cid:html@x")
 
-    def test_inlines_not_fetched_without_links(self):
+    def test_inlines_not_fetched_without_images(self):
+        email = _make_email(
+            {
+                "img@x": {
+                    "pnum": "2",
+                    "encoding": "base64",
+                    "Content-Type": "image/png",
+                }
+            },
+            images=False,
+        )
+        email._fetch_inlines()
+        email.imapc.fetchpart.assert_not_called()
+
+    def test_inlines_fetched_without_links(self):
+        """Images are displayed even when the links stay disabled."""
         email = _make_email(
             {
                 "img@x": {
@@ -91,9 +107,10 @@ class InlineImagesTestCase(SimpleTestCase):
                 }
             },
             links=False,
+            images=True,
         )
         email._fetch_inlines()
-        email.imapc.fetchpart.assert_not_called()
+        email.imapc.fetchpart.assert_called_once()
 
     def test_other_urls_untouched(self):
         email = _make_email({})
