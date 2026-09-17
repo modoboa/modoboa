@@ -7,7 +7,7 @@ from modoboa.webmail.tests import data as tests_data
 class IMAP4Mock:
     """Fake IMAP4 client."""
 
-    capabilities = (b"QUOTA", b"SORT", b"THREAD=REFERENCES")
+    capabilities = (b"QUOTA", b"SORT", b"THREAD=REFERENCES", b"THREAD=REFS")
 
     def __init__(self, *args, **kwargs):
         self.untagged_responses = {}
