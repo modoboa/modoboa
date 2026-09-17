@@ -161,14 +161,14 @@
           <span class="spacer-accent" />
           <span class="spacer-check" />
           <span class="spacer-icon" />
-          <span v-if="threadedMode" class="spacer-expand" />
+          <span v-if="displayThreads" class="spacer-expand" />
           <span class="cell-sender">
             {{ inScheduledView ? $gettext('Recipients') : $gettext('Sender') }}
           </span>
           <span class="cell-subject">{{ $gettext('Subject') }}</span>
           <span class="cell-date">{{ $gettext('Date') }}</span>
         </div>
-        <template v-if="threadedMode">
+        <template v-if="displayThreads">
           <ThreadListItem
             v-for="thread in emails.results"
             :key="thread.root"
@@ -265,6 +265,8 @@ const showSchedulingForm = ref(false)
 const working = ref(false)
 // null until the server tells whether it supports the THREAD extension
 const threadingSupported = ref(null)
+// Whether the results currently held by `emails` are threads
+const displayThreads = ref(false)
 const userPreferences = ref(null)
 
 let intervalId = null
@@ -383,13 +385,13 @@ const fetchEmails = () => {
   emails.value = {}
   loading.value = true
   const options = { page: page.value, search: search.value }
-  lastFetchWasThreaded = threadedMode.value
-  const request = threadedMode.value
+  const threaded = threadedMode.value
+  lastFetchWasThreaded = threaded
+  const request = threaded
     ? api.getMailboxThreads(props.mailbox, options)
     : api.getMailboxEmails(props.mailbox, options)
   request
     .then((resp) => {
-      emails.value = resp.data
       if (resp.data.threading_supported !== undefined) {
         threadingSupported.value = resp.data.threading_supported
         if (!resp.data.threading_supported) {
@@ -398,6 +400,11 @@ const fetchEmails = () => {
           return
         }
       }
+      // What is displayed follows the results, never the preference:
+      // the mode can change before the matching request comes back,
+      // and threads and messages don't carry the same fields
+      displayThreads.value = threaded
+      emails.value = resp.data
       loading.value = false
     })
     .catch(() => {
@@ -417,7 +424,7 @@ const submitSearch = () => {
 const toggleAllSelection = (value) => {
   if (!value) {
     webmailStore.selection = []
-  } else if (threadedMode.value) {
+  } else if (displayThreads.value) {
     webmailStore.selection = emails.value.results.flatMap(
       (thread) => thread.uids
     )
@@ -546,12 +553,15 @@ const loadPreferences = async () => {
 }
 
 onMounted(async () => {
+  if (webmailStore.listingModeLoaded) {
+    // The mode is known from a previous listing: don't wait
+    fetchEmails()
+  }
   const interval = await loadPreferences()
   if (unmounted) {
     return
   }
   if (threadedMode.value !== lastFetchWasThreaded) {
-    // The first listing was fetched before the preference was known
     fetchEmails()
   }
   intervalId = setInterval(autoRefreshContent, interval * 1000)
@@ -566,8 +576,7 @@ watch(
   () => props.mailbox,
   () => {
     fetchEmails()
-  },
-  { immediate: true }
+  }
 )
 watch(
   () => webmailStore.selection,
