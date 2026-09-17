@@ -161,6 +161,7 @@
           <span class="spacer-accent" />
           <span class="spacer-check" />
           <span class="spacer-icon" />
+          <span v-if="threadedMode" class="spacer-expand" />
           <span class="cell-sender">
             {{ inScheduledView ? $gettext('Recipients') : $gettext('Sender') }}
           </span>

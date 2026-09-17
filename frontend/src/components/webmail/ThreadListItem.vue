@@ -27,13 +27,25 @@
     <span class="cell-sender" :title="participantsTitle">
       {{ participantsLabel }}
     </span>
-    <span
-      v-if="thread.count > 1"
-      class="cell-count"
-      :title="$gettext('Show the messages of this conversation')"
-      @click="toggleExpanded"
-    >
-      {{ expanded ? '▾' : '▸' }}{{ thread.count }}
+    <span class="cell-expand">
+      <button
+        v-if="thread.count > 1"
+        type="button"
+        class="thread-toggle"
+        :title="
+          expanded
+            ? $gettext('Hide the messages of this conversation')
+            : $gettext('Show the messages of this conversation')
+        "
+        :aria-expanded="expanded"
+        @click="toggleExpanded"
+      >
+        <v-icon
+          :icon="expanded ? 'mdi-menu-down' : 'mdi-menu-right'"
+          size="small"
+        />
+        {{ thread.count }}
+      </button>
     </span>
     <span class="cell-subject" @click="$emit('openThread', thread.root)">
       {{ thread.subject || $gettext('(no subject)') }}
