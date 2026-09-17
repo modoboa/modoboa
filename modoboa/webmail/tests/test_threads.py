@@ -62,7 +62,12 @@ class ThreadOrderTestCase(SimpleTestCase):
 
     def _connector(self, sort_result, thread_result, capabilities=None):
         class Mock(IMAP4Mock):
+            def __init__(self, *args, **kwargs):
+                super().__init__(*args, **kwargs)
+                self.commands = []
+
             def uid(self, command, *args):
+                self.commands.append((command, args))
                 if command == "SORT":
                     return "OK", [sort_result]
                 if command == "THREAD":
@@ -71,7 +76,7 @@ class ThreadOrderTestCase(SimpleTestCase):
 
         connector = imaputils.IMAPconnector.__new__(imaputils.IMAPconnector)
         connector.m = Mock()
-        connector.capabilities = capabilities or ["SORT", "THREAD=REFERENCES"]
+        connector.capabilities = capabilities or ["SORT", "THREAD=REFS"]
         connector.criterions = []
         connector.select_mailbox = lambda *args, **kwargs: None
         connector.getquota = lambda *args, **kwargs: None
@@ -101,6 +106,40 @@ class ThreadOrderTestCase(SimpleTestCase):
 
         self.assertEqual(total, 2)
         self.assertEqual(connector.threads, [["19"], ["18"]])
+
+    def _thread_argument(self, connector) -> bytes:
+        args = next(args for name, args in connector.m.commands if name == "THREAD")
+        return args[0]
+
+    def test_refs_is_preferred_over_references(self):
+        """REFERENCES also merges threads sharing a base subject.
+
+        That last step of RFC 5256 puts unrelated messages in the same
+        conversation; REFS is the same algorithm without it, and matches
+        what mail clients display.
+        """
+        connector = self._connector(
+            b"19", b"(19)", capabilities=["THREAD=REFERENCES", "THREAD=REFS"]
+        )
+
+        connector.threads_count(mbox="INBOX")
+
+        self.assertEqual(connector.thread_algorithm, "REFS")
+        self.assertEqual(self._thread_argument(connector), b"REFS")
+
+    def test_references_is_used_when_refs_is_missing(self):
+        connector = self._connector(b"19", b"(19)", capabilities=["THREAD=REFERENCES"])
+
+        connector.threads_count(mbox="INBOX")
+
+        self.assertEqual(connector.thread_algorithm, "REFERENCES")
+        self.assertEqual(self._thread_argument(connector), b"REFERENCES")
+
+    def test_no_algorithm_without_the_extension(self):
+        connector = self._connector(b"19", b"(19)", capabilities=["SORT"])
+
+        self.assertIsNone(connector.thread_algorithm)
+        self.assertFalse(connector.has_thread)
 
 
 class ThreadListTestCase(WebmailTestCase):

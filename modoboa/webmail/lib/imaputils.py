@@ -495,9 +495,27 @@ class IMAPconnector:
         return "SORT" in getattr(self, "capabilities", [])
 
     @property
+    def thread_algorithm(self) -> str | None:
+        """The threading algorithm to ask the server for.
+
+        REFS is preferred over REFERENCES. Both follow the reply chain
+        (References, In-Reply-To), but REFERENCES adds the last step of
+        RFC 5256: root messages sharing the same base subject are merged
+        into a single thread. Two unrelated messages called "Invoice"
+        then end up in the same conversation, which is not what mail
+        clients (Thunderbird among them) display. REFS is the same
+        algorithm without that step.
+        """
+        capabilities = getattr(self, "capabilities", [])
+        for algorithm in ("REFS", "REFERENCES"):
+            if f"THREAD={algorithm}" in capabilities:
+                return algorithm
+        return None
+
+    @property
     def has_thread(self) -> bool:
         """Does the server support the THREAD extension (RFC 5256)?"""
-        return "THREAD=REFERENCES" in getattr(self, "capabilities", [])
+        return self.thread_algorithm is not None
 
     def messages_count(self, **kwargs) -> int:
         """An enhanced version of messages_count.
@@ -579,7 +597,7 @@ class IMAPconnector:
             return len(self.threads)
         data = self._cmd(
             "THREAD",
-            b"REFERENCES",
+            self.thread_algorithm.encode(),
             b"UTF-8",
             b"(NOT DELETED)",
             *self.criterions,
