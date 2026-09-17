@@ -86,11 +86,29 @@ h6 {
     color: rgb(var(--v-theme-on-surface));
   }
 
-  .cell-count {
-    flex: 0 0 auto;
+  .thread-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 1px;
+    height: 22px;
+    padding: 0 6px 0 2px;
+    border: 0;
+    border-radius: 11px;
+    background-color: rgba(var(--v-theme-primary), 0.12);
     color: rgb(var(--v-theme-primary));
-    font-weight: 600;
     font-size: 0.75rem;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    cursor: pointer;
+
+    &:hover {
+      background-color: rgba(var(--v-theme-primary), 0.24);
+    }
+
+    &:focus-visible {
+      outline: 2px solid rgb(var(--v-theme-primary));
+      outline-offset: 1px;
+    }
   }
 
   .cell-subject {
@@ -111,18 +129,28 @@ h6 {
   }
 
   .cell-date {
-    flex: 0 0 76px;
+    flex: 0 0 104px;
     text-align: right;
+    white-space: nowrap;
     font-variant-numeric: tabular-nums;
     color: rgba(var(--v-theme-on-surface), 0.6);
     font-size: 0.8125rem;
+  }
+
+  /* Always there, even for a single message thread, so that subjects
+     line up whatever the number of messages */
+  .cell-expand {
+    flex: 0 0 48px;
+    display: flex;
+    align-items: center;
   }
 }
 
 /* A message shown inside an expanded conversation */
 .mail-row.mail-row-child {
   height: 34px;
-  padding-left: 56px;
+  /* 3 + 40 + 32 + 48 of columns, plus the four 8px gaps */
+  padding-left: 155px;
   background-color: rgba(var(--v-theme-on-surface), 0.02);
   font-size: 0.8125rem;
 }
@@ -150,6 +178,9 @@ h6 {
   .spacer-icon {
     flex: 0 0 32px;
   }
+  .spacer-expand {
+    flex: 0 0 48px;
+  }
   .cell-sender {
     flex: 0 0 200px;
   }
@@ -158,7 +189,7 @@ h6 {
     min-width: 0;
   }
   .cell-date {
-    flex: 0 0 76px;
+    flex: 0 0 104px;
     text-align: right;
   }
 }
