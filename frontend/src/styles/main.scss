@@ -5,7 +5,160 @@
  */
 
 // Restore heading margin reset removed in Vuetify 4's reduced CSS reset
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   margin-block-start: 0;
   margin-block-end: 0;
+}
+
+/**
+ * Messages listing
+ *
+ * One row per message or per conversation, in a single flat list: fixed
+ * columns so that senders and dates line up from one row to the next,
+ * and a coloured bar on the left edge for what hasn't been read.
+ */
+.mail-list {
+  background-color: rgb(var(--v-theme-surface));
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.mail-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 40px;
+  padding-right: 12px;
+  border-bottom: 1px solid rgba(var(--v-border-color), 0.12);
+  font-size: 0.875rem;
+  cursor: default;
+
+  &:last-child {
+    border-bottom: 0;
+  }
+
+  &:hover {
+    background-color: rgba(var(--v-theme-primary), 0.04);
+  }
+
+  &.selected {
+    background-color: rgba(var(--v-theme-primary), 0.08);
+  }
+
+  .accent {
+    flex: 0 0 3px;
+    align-self: stretch;
+    background-color: transparent;
+  }
+
+  &.unread {
+    .accent {
+      background-color: rgb(var(--v-theme-primary));
+    }
+    .cell-sender,
+    .cell-subject {
+      font-weight: 600;
+      color: rgb(var(--v-theme-on-surface));
+    }
+  }
+
+  .cell-check {
+    flex: 0 0 40px;
+    .v-selection-control {
+      min-height: 28px;
+    }
+  }
+
+  .cell-icon {
+    flex: 0 0 32px;
+  }
+
+  .cell-sender {
+    flex: 0 0 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: rgb(var(--v-theme-on-surface));
+  }
+
+  .cell-count {
+    flex: 0 0 auto;
+    color: rgb(var(--v-theme-primary));
+    font-weight: 600;
+    font-size: 0.75rem;
+  }
+
+  .cell-subject {
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: rgba(var(--v-theme-on-surface), 0.75);
+    cursor: pointer;
+  }
+
+  .cell-flags {
+    flex: 0 0 auto;
+    display: flex;
+    gap: 2px;
+    color: rgba(var(--v-theme-on-surface), 0.55);
+  }
+
+  .cell-date {
+    flex: 0 0 76px;
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+    color: rgba(var(--v-theme-on-surface), 0.6);
+    font-size: 0.8125rem;
+  }
+}
+
+/* A message shown inside an expanded conversation */
+.mail-row.mail-row-child {
+  height: 34px;
+  padding-left: 56px;
+  background-color: rgba(var(--v-theme-on-surface), 0.02);
+  font-size: 0.8125rem;
+}
+
+/* Column titles above the list */
+.mail-list-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 32px;
+  padding-right: 12px;
+  border-bottom: 1px solid rgba(var(--v-border-color), 0.2);
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: rgba(var(--v-theme-on-surface), 0.5);
+
+  /* Same widths as the rows below, so the titles sit on their column */
+  .spacer-accent {
+    flex: 0 0 3px;
+  }
+  .spacer-check {
+    flex: 0 0 40px;
+  }
+  .spacer-icon {
+    flex: 0 0 32px;
+  }
+  .cell-sender {
+    flex: 0 0 200px;
+  }
+  .cell-subject {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+  .cell-date {
+    flex: 0 0 76px;
+    text-align: right;
+  }
 }

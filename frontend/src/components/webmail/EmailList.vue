@@ -156,7 +156,17 @@
       class="emails position-absolute bottom-0 w-100 overflow-y-auto"
       :class="{ 'top-0': !inScheduledView, 'scheduling-top': inScheduledView }"
     >
-      <template v-if="emails.results?.length">
+      <div v-if="emails.results?.length" class="mail-list mx-1">
+        <div class="mail-list-header">
+          <span class="spacer-accent" />
+          <span class="spacer-check" />
+          <span class="spacer-icon" />
+          <span class="cell-sender">
+            {{ inScheduledView ? $gettext('Recipients') : $gettext('Sender') }}
+          </span>
+          <span class="cell-subject">{{ $gettext('Subject') }}</span>
+          <span class="cell-date">{{ $gettext('Date') }}</span>
+        </div>
         <template v-if="threadedMode">
           <ThreadListItem
             v-for="thread in emails.results"
@@ -183,7 +193,7 @@
             @dragstart="onDragStart"
           />
         </template>
-      </template>
+      </div>
       <v-alert
         v-else
         class="mt-4"
@@ -580,14 +590,8 @@ watch(page, () => {
 </script>
 
 <style lang="scss" scoped>
-.v-card-text {
-  padding: 0;
-}
 .emails {
   margin-top: 150px;
-}
-.clickable {
-  cursor: pointer;
 }
 .scheduling-top {
   top: 45px;
