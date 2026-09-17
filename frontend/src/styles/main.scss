@@ -224,6 +224,15 @@ h6 {
     gap: 2px;
   }
 
+  /* Shown in place of the search field while messages are selected */
+  .mail-selection-count {
+    margin: 0 12px 0 4px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: rgb(var(--v-theme-primary));
+    white-space: nowrap;
+  }
+
   .mail-toolbar-separator {
     width: 1px;
     height: 24px;
