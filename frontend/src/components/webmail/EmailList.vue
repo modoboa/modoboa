@@ -91,6 +91,29 @@
           </v-list>
         </v-menu>
       </v-btn>
+      <v-btn-toggle
+        v-if="!inScheduledView"
+        :model-value="listingMode"
+        class="ml-2"
+        density="compact"
+        divided
+        mandatory
+        @update:model-value="changeListingMode"
+      >
+        <v-btn
+          value="flat"
+          icon="mdi-format-list-bulleted"
+          size="small"
+          :title="$gettext('Display messages one by one')"
+        />
+        <v-btn
+          value="threaded"
+          icon="mdi-forum-outline"
+          size="small"
+          :disabled="!threadingAvailable"
+          :title="threadingButtonTitle"
+        />
+      </v-btn-toggle>
       <v-spacer />
       <div v-if="emails.results" class="d-flex align-center">
         <div class="text-body-small mr-2">
@@ -134,70 +157,31 @@
       :class="{ 'top-0': !inScheduledView, 'scheduling-top': inScheduledView }"
     >
       <template v-if="emails.results?.length">
-        <v-card
-          v-for="email in emails.results"
-          :key="email.imapid"
-          density="compact"
-          class="mb-2 mx-1"
-          draggable="true"
-          @dragstart="onDragStart($event, email)"
-        >
-          <v-card-text
-            class="d-flex align-center"
-            :class="{ 'font-weight-bold': email.style === 'unseen' }"
-          >
-            <v-checkbox
-              v-model="webmailStore.selection"
-              :value="email.imapid"
-              color="primary"
-              hide-details
-            />
-            <v-btn
-              :icon="email.flagged ? 'mdi-star' : 'mdi-star-outline'"
-              variant="flat"
-              @click="toggleFollowState(email)"
-            />
-            <v-menu v-if="inScheduledView" location="bottom">
-              <template #activator="{ props }">
-                <v-btn
-                  icon="mdi-dots-vertical"
-                  v-bind="props"
-                  size="small"
-                  variant="text"
-                >
-                </v-btn>
-              </template>
-              <MenuItems :items="getScheduledMessageActions()" :obj="email" />
-            </v-menu>
-
-            <div class="ml-4 clickable" @click="openEmail(email.imapid)">
-              <div>{{ email.subject }}</div>
-              <div class="mt-1 text-grey">
-                <EmailAddressList :addresses="getEmailAddresses(email)" />
-              </div>
-            </div>
-            <v-spacer />
-            <div class="text-right">
-              <div v-if="!isScheduledDateOver(email)">
-                {{ getEmailDate(email) }}
-              </div>
-              <div
-                v-else
-                class="text-error font-weight-bold"
-                style="cursor: pointer"
-                @click="displaySchedulingError(email)"
-              >
-                {{ getEmailDate(email) }}
-              </div>
-              <div class="mt-1">
-                <v-icon v-if="email.answered" icon="mdi-reply-outline" />
-                <v-icon v-if="email.forwarded" icon="mdi-share-outline" />
-                <v-icon v-if="email.attachments" icon="mdi-paperclip" />
-                <span class="text-grey">{{ $filesize(email.size) }}</span>
-              </div>
-            </div>
-          </v-card-text>
-        </v-card>
+        <template v-if="threadedMode">
+          <ThreadListItem
+            v-for="thread in emails.results"
+            :key="thread.root"
+            :thread="thread"
+            :mailbox="props.mailbox"
+            @open="openEmail"
+            @toggle-follow="toggleFollowState"
+            @dragstart="onDragStart"
+          />
+        </template>
+        <template v-else>
+          <EmailListItem
+            v-for="email in emails.results"
+            :key="email.imapid"
+            :email="email"
+            :scheduled="inScheduledView"
+            @open="openEmail"
+            @toggle-follow="toggleFollowState"
+            @reschedule="reScheduleMessage"
+            @delete-scheduled="deleteScheduledMessage"
+            @scheduling-error="displaySchedulingError"
+            @dragstart="onDragStart"
+          />
+        </template>
       </template>
       <v-alert
         v-else
@@ -238,10 +222,9 @@ import { useRouter, useRoute } from 'vue-router'
 import { useGettext } from 'vue3-gettext'
 import { useBusStore, useWebmailStore } from '@/stores'
 import { useSpecialFolders } from '@/composables/webmail'
-import { DateTime } from 'luxon'
-import EmailAddressList from './EmailAddressList.vue'
+import EmailListItem from './EmailListItem.vue'
 import EmailSchedulingForm from './EmailSchedulingForm.vue'
-import MenuItems from '@/components/tools/MenuItems.vue'
+import ThreadListItem from './ThreadListItem.vue'
 import api from '@/api/webmail'
 import parametersApi from '@/api/parameters'
 
@@ -268,9 +251,14 @@ const selectAll = ref(false)
 const showSchedulingError = ref(false)
 const showSchedulingForm = ref(false)
 const working = ref(false)
+// null until the server tells whether it supports the THREAD extension
+const threadingSupported = ref(null)
+const userPreferences = ref(null)
 
 let intervalId = null
 let unmounted = false
+// Which listing the last request asked for, to avoid fetching twice
+let lastFetchWasThreaded = null
 // Used when the refresh_interval preference can't be read
 const DEFAULT_REFRESH_INTERVAL = 300
 
@@ -280,42 +268,54 @@ const currentMailbox = computed(() => {
 
 const inScheduledView = computed(() => props.mailbox === 'Scheduled')
 
-const { isJunkFolder, isTrashFolder } = useSpecialFolders(currentMailbox)
+const { isDraftsFolder, isJunkFolder, isTrashFolder } =
+  useSpecialFolders(currentMailbox)
 
-const getScheduledMessageActions = () => {
-  return [
-    {
-      label: $gettext('Reschedule'),
-      icon: 'mdi-send-clock-outline',
-      onClick: reScheduleMessage,
-    },
-    {
-      label: $gettext('Delete'),
-      icon: 'mdi-delete-outline',
-      onClick: deleteScheduledMessage,
-      color: 'red',
-    },
-  ]
-}
+const listingMode = computed(() => webmailStore.listingMode)
 
-const getEmailAddresses = (email) => {
-  if (inScheduledView.value) {
-    return email.recipients
+// Conversations make no sense where messages have no reply chain, and
+// the server may simply not support them
+const threadingAvailable = computed(
+  () =>
+    !inScheduledView.value &&
+    !isDraftsFolder.value &&
+    threadingSupported.value !== false
+)
+
+const threadedMode = computed(
+  () => listingMode.value === 'threaded' && threadingAvailable.value
+)
+
+const threadingButtonTitle = computed(() =>
+  threadingAvailable.value
+    ? $gettext('Group messages into conversations')
+    : $gettext('Conversations are not available in this folder')
+)
+
+const changeListingMode = (mode) => {
+  if (mode === listingMode.value) {
+    return
   }
-  return [email.from_address]
+  webmailStore.setListingMode(mode)
+  webmailStore.selection = []
+  page.value = 1
+  fetchEmails()
+  saveListingMode(mode)
 }
 
-const getEmailDate = (email) => {
-  if (inScheduledView.value) {
-    return email.scheduled_datetime
+const saveListingMode = async (mode) => {
+  if (!userPreferences.value) {
+    return
   }
-  return email.date
-}
-
-const isScheduledDateOver = (email) => {
-  if (!inScheduledView.value || !email.scheduled_datetime_raw) return false
-  const date = DateTime.fromISO(email.scheduled_datetime_raw)
-  return date < DateTime.now()
+  try {
+    await parametersApi.saveUserApplication('webmail', {
+      ...userPreferences.value,
+      listing_mode: mode,
+    })
+    userPreferences.value.listing_mode = mode
+  } catch {
+    // The mode still applies to this session
+  }
 }
 
 const reScheduleMessage = (email) => {
@@ -363,10 +363,22 @@ const openEmail = (emailid) => {
 const fetchEmails = () => {
   emails.value = {}
   loading.value = true
-  api
-    .getMailboxEmails(props.mailbox, { page: page.value, search: search.value })
+  const options = { page: page.value, search: search.value }
+  lastFetchWasThreaded = threadedMode.value
+  const request = threadedMode.value
+    ? api.getMailboxThreads(props.mailbox, options)
+    : api.getMailboxEmails(props.mailbox, options)
+  request
     .then((resp) => {
       emails.value = resp.data
+      if (resp.data.threading_supported !== undefined) {
+        threadingSupported.value = resp.data.threading_supported
+        if (!resp.data.threading_supported) {
+          // The server can't thread: fall back to the flat listing
+          fetchEmails()
+          return
+        }
+      }
       loading.value = false
     })
     .catch(() => {
@@ -386,6 +398,10 @@ const submitSearch = () => {
 const toggleAllSelection = (value) => {
   if (!value) {
     webmailStore.selection = []
+  } else if (threadedMode.value) {
+    webmailStore.selection = emails.value.results.flatMap(
+      (thread) => thread.uids
+    )
   } else {
     webmailStore.selection = emails.value.results.map((email) => email.imapid)
   }
@@ -463,10 +479,11 @@ const toggleFollowState = async (email) => {
   email.flagged = flag === 'flagged'
 }
 
-// The event is passed explicitly: window.event doesn't exist in Firefox
-const onDragStart = (event, email) => {
-  if (!webmailStore.selection.includes(email.imapid)) {
-    webmailStore.selection = [email.imapid]
+// The event is passed explicitly: window.event doesn't exist in Firefox.
+// ``ids`` holds one message, or every message of a conversation.
+const onDragStart = (event, ids) => {
+  if (!ids.some((id) => webmailStore.selection.includes(id))) {
+    webmailStore.selection = [...ids]
   }
   const ghost = document.createElement('div')
   const count = webmailStore.selection.length || 0
@@ -486,10 +503,20 @@ const onDragStart = (event, email) => {
   setTimeout(() => ghost.remove(), 0)
 }
 
-const getRefreshInterval = async () => {
+// Read the preferences the listing depends on: the refresh rate and the
+// listing mode. Unset values are returned as null but refused on save,
+// so they are dropped before keeping the payload for later updates.
+const loadPreferences = async () => {
   try {
     const resp = await parametersApi.getUserApplication('webmail')
-    const value = Number(resp.data.params?.refresh_interval)
+    const params = resp.data.params || {}
+    userPreferences.value = Object.fromEntries(
+      Object.entries(params).filter(([, value]) => value !== null)
+    )
+    if (!webmailStore.listingModeLoaded) {
+      webmailStore.setListingMode(params.listing_mode)
+    }
+    const value = Number(params.refresh_interval)
     if (Number.isInteger(value) && value > 0) {
       return value
     }
@@ -500,10 +527,15 @@ const getRefreshInterval = async () => {
 }
 
 onMounted(async () => {
-  const interval = await getRefreshInterval()
-  if (!unmounted) {
-    intervalId = setInterval(autoRefreshContent, interval * 1000)
+  const interval = await loadPreferences()
+  if (unmounted) {
+    return
   }
+  if (threadedMode.value !== lastFetchWasThreaded) {
+    // The first listing was fetched before the preference was known
+    fetchEmails()
+  }
+  intervalId = setInterval(autoRefreshContent, interval * 1000)
 })
 
 onUnmounted(() => {
