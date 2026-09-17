@@ -7,7 +7,7 @@ from modoboa.webmail.tests import data as tests_data
 class IMAP4Mock:
     """Fake IMAP4 client."""
 
-    capabilities = (b"QUOTA", b"SORT")
+    capabilities = (b"QUOTA", b"SORT", b"THREAD=REFERENCES")
 
     def __init__(self, *args, **kwargs):
         self.untagged_responses = {}
@@ -62,6 +62,8 @@ class IMAP4Mock:
     def uid(self, command, *args):
         if command in ["SEARCH", "SORT"]:
             return "OK", [b"19"]
+        elif command == "THREAD":
+            return "OK", [b"(19)"]
         elif command == "FETCH":
             uid = int(args[0])
             if constants.CUSTOM_HEADER_SCHEDULED_ID.upper() in args[1]:

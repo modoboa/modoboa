@@ -22,6 +22,7 @@ from ..exceptions import (
     MailboxOperationError,
     WebmailInternalError,
 )
+from . import imapheader
 from .fetch_parser import FetchResponseParser
 
 logger = logging.getLogger("modoboa.webmail")
@@ -42,6 +43,10 @@ IMAP4Error = imaplib.IMAP4.error
 UID_RE = re.compile(r"^[0-9]+(?:,[0-9]+)*$")
 # A MIME part number: dot-separated positive integers (e.g. "1", "2.1").
 PARTNUM_RE = re.compile(r"^[0-9]+(?:\.[0-9]+)*$")
+
+# A THREAD response only contains UIDs, parenthesis and spaces.
+THREAD_RESPONSE_RE = re.compile(r"^[0-9() ]*$")
+THREAD_TOKEN_RE = re.compile(r"[()]|[0-9]+")
 
 
 def validate_imap_uid(value):
@@ -88,6 +93,54 @@ def quote_mailbox_name(name: str) -> bytes:
         raise InvalidImapArgument(_("Invalid mailbox name"))
     encoded = name.encode("imap4-utf-7")
     return b'"' + encoded.replace(b"\\", b"\\\\").replace(b'"', b'\\"') + b'"'
+
+
+def parse_thread_response(data: list | None) -> list[list[str]]:
+    """Turn a THREAD response into a flat list of threads.
+
+    The server answers with nested groups (RFC 5256), for instance
+    ``(2)(3 6 (4 23)(44 7 96))``: every UID of a top level group belongs
+    to the same conversation, whatever its depth. Only that grouping is
+    kept here, in the order given by the server, which is the order of
+    the conversation itself.
+
+    An unexpected reply (unbalanced parenthesis, unknown token) is
+    logged and ignored rather than raising: a broken thread listing must
+    not break the mailbox.
+    """
+    if not data:
+        return []
+    raw = b" ".join(part for part in data if part).decode("ascii", "replace").strip()
+    if raw.upper().startswith("THREAD"):
+        raw = raw[len("THREAD") :]
+    if not THREAD_RESPONSE_RE.match(raw):
+        logger.warning("Unexpected THREAD response: %s", raw[:200])
+        return []
+    threads: list[list[str]] = []
+    current: list[str] | None = None
+    depth = 0
+    for token in THREAD_TOKEN_RE.findall(raw):
+        if token == "(":
+            depth += 1
+            if depth == 1:
+                current = []
+        elif token == ")":
+            depth -= 1
+            if depth < 0:
+                logger.warning("Unbalanced THREAD response: %s", raw[:200])
+                return []
+            if depth == 0 and current:
+                threads.append(current)
+                current = None
+        elif current is not None:
+            current.append(token)
+        else:
+            # A bare UID outside of any group is a thread of its own
+            threads.append([token])
+    if depth:
+        logger.warning("Unbalanced THREAD response: %s", raw[:200])
+        return []
+    return threads
 
 
 class BodyStructure:
@@ -293,7 +346,7 @@ class IMAPconnector:
         :param name: the command's name
         :return: the command's result
         """
-        if name in ["FETCH", "SORT", "STORE", "COPY", "SEARCH", "MOVE"]:
+        if name in ["FETCH", "SORT", "STORE", "COPY", "SEARCH", "MOVE", "THREAD"]:
             try:
                 typ, data = self.m.uid(name, *args)
             except IMAP4Error as e:
@@ -441,6 +494,11 @@ class IMAPconnector:
         """Does the server support the SORT extension (RFC 5256)?"""
         return "SORT" in getattr(self, "capabilities", [])
 
+    @property
+    def has_thread(self) -> bool:
+        """Does the server support the THREAD extension (RFC 5256)?"""
+        return "THREAD=REFERENCES" in getattr(self, "capabilities", [])
+
     def messages_count(self, **kwargs) -> int:
         """An enhanced version of messages_count.
 
@@ -499,6 +557,42 @@ class IMAPconnector:
         messages = data[0].decode().split()
         messages.sort(key=int, reverse=reverse)
         return messages
+
+    def threads_count(self, **kwargs) -> int:
+        """Group the messages of a mailbox into conversations.
+
+        ``messages_count`` is called first: it selects the mailbox and
+        gives the order of the messages, with SORT when the server
+        offers it and by arrival otherwise. That order then ranks the
+        threads, so that a conversation which receives a new message
+        comes back to the top of the listing.
+
+        The result is stored in ``self.threads``, as a list of UID
+        lists. Inside a thread, UIDs keep the order given by the server,
+        which is the order of the conversation.
+        """
+        self.messages_count(**kwargs)
+        rank = {uid: pos for pos, uid in enumerate(self.messages)}
+        if not self.has_thread:
+            # Without the extension, every message is its own thread
+            self.threads = [[uid] for uid in self.messages]
+            return len(self.threads)
+        data = self._cmd(
+            "THREAD",
+            b"REFERENCES",
+            b"UTF-8",
+            b"(NOT DELETED)",
+            *self.criterions,
+        )
+        threads = []
+        for thread in parse_thread_response(data):
+            # A message deleted between the two commands is dropped
+            uids = [uid for uid in thread if uid in rank]
+            if uids:
+                threads.append(uids)
+        threads.sort(key=lambda uids: min(rank[uid] for uid in uids))
+        self.threads = threads
+        return len(self.threads)
 
     def select_mailbox(
         self, name: str, readonly: bool = True, force: bool = False
@@ -1036,13 +1130,25 @@ class IMAPconnector:
         :param stop: index of the last message (optionnal)
         :param mbox: the mailbox that contains the messages
         """
-        self.select_mailbox(mbox, False)
         if start and stop:
             submessages = self.messages[start - 1 : stop]
-            mrange = ",".join(submessages)
         else:
             submessages = [start]
-            mrange = str(start)
+        return self.fetch_uids(submessages, mbox)
+
+    def fetch_uids(self, uids: list, mbox: str | None = None) -> list:
+        """Retrieve the headers of the given messages.
+
+        One FETCH command is issued for the whole list. Messages the
+        server does not return (deleted in the meantime) are skipped.
+
+        :param uids: the UIDs to retrieve
+        :param mbox: the mailbox that contains the messages
+        """
+        if not uids:
+            return []
+        self.select_mailbox(mbox, False)
+        mrange = ",".join(str(uid) for uid in uids)
         headers = "DATE FROM TO CC SUBJECT"
         if mbox == constants.MAILBOX_NAME_SCHEDULED:
             headers += " X-SCHEDULED-ID X-SCHEDULED-DATETIME"
@@ -1051,8 +1157,11 @@ class IMAPconnector:
         )
         data = self._cmd("FETCH", mrange, query)
         result = []
-        for uid in submessages:
-            msg_data = data[int(uid)]
+        for uid in uids:
+            msg_data = data.get(int(uid))
+            if msg_data is None:
+                logger.debug("Message %s is missing from the FETCH reply", uid)
+                continue
             msg = email.message_from_string(
                 msg_data[f"BODY[HEADER.FIELDS ({headers})]"]
             )
@@ -1070,6 +1179,58 @@ class IMAPconnector:
             if bstruct.has_attachments():
                 msg["attachments"] = True
             result += [msg]
+        return result
+
+    def fetch_threads(
+        self, start: int, stop: int | None = None, mbox: str | None = None
+    ) -> list[dict]:
+        """Build a summary of the threads of the given page.
+
+        All the messages of the page are retrieved with a single FETCH,
+        through the same code path as the flat listing, so that flags
+        and body structures are parsed only once and in one place.
+
+        :param start: index of the first thread
+        :param stop: index of the last thread
+        :param mbox: the mailbox that contains the messages
+        """
+        subthreads = self.threads[start - 1 : stop] if start and stop else []
+        messages = {
+            str(msg["imapid"]): msg
+            for msg in self.fetch_uids(
+                [uid for thread in subthreads for uid in thread], mbox
+            )
+        }
+        rank = {uid: pos for pos, uid in enumerate(self.messages)}
+        result = []
+        for thread in subthreads:
+            msgs = [messages[uid] for uid in thread if uid in messages]
+            if not msgs:
+                continue
+            # self.messages is ordered from the most recent message to
+            # the oldest one, so the latest message has the lowest rank
+            latest = min(msgs, key=lambda msg: rank.get(str(msg["imapid"]), 0))
+            participants = {}
+            for msg in msgs:
+                if "From" in msg:
+                    address = imapheader.parse_address(msg["From"])
+                    participants.setdefault(address["address"], address)
+            result.append(
+                {
+                    "root": str(msgs[0]["imapid"]),
+                    # Serializers expect a mapping, not an email.Message
+                    "latest": dict(latest),
+                    "subject": msgs[0]["Subject"] if "Subject" in msgs[0] else "",
+                    "count": len(msgs),
+                    "unseen_count": sum(
+                        1 for msg in msgs if msg.get("style") == "unseen"
+                    ),
+                    "flagged": any(msg.get("flagged") for msg in msgs),
+                    "attachments": any(msg.get("attachments") for msg in msgs),
+                    "participants": list(participants.values()),
+                    "uids": [str(msg["imapid"]) for msg in msgs],
+                }
+            )
         return result
 
     def fetchmail(

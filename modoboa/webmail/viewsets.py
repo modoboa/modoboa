@@ -84,7 +84,6 @@ class ImapConnectionMixin:
 
 
 class UserMailboxViewSet(ImapConnectionMixin, viewsets.GenericViewSet):
-
     permission_classes = (IsAuthenticated, HasMailbox)
 
     def get_serializer_class(self):
@@ -220,12 +219,15 @@ class UserMailboxViewSet(ImapConnectionMixin, viewsets.GenericViewSet):
 
 
 class UserEmailViewSet(ImapConnectionMixin, viewsets.GenericViewSet):
-
     permission_classes = (IsAuthenticated, HasMailbox)
 
     def get_serializer_class(self):
         if self.action == "list":
             return serializers.PaginatedEmailListSerializer
+        if self.action == "threads":
+            return serializers.PaginatedThreadListSerializer
+        if self.action == "thread":
+            return serializers.ThreadSerializer
         if self.action in ["move", "delete", "mark_as_junk", "mark_as_not_junk"]:
             return serializers.MoveSelectionSerializer
         if self.action == "flag":
@@ -270,6 +272,82 @@ class UserEmailViewSet(ImapConnectionMixin, viewsets.GenericViewSet):
                 "next_page": page.next_page_number if page.has_next else None,
                 "results": content,
             }
+        )
+        return response.Response(serializer.data)
+
+    @action(methods=["get"], detail=False)
+    def threads(self, request):
+        """List the conversations of a mailbox, page by page.
+
+        The pagination applies to the threads, not to the messages: a
+        page holds ``messages_per_page`` conversations.
+        """
+        mailbox = request.GET.get("mailbox", "INBOX")
+        search = _validate_search(request.GET.get("search"))
+        page_num = _validate_page(request.GET.get("page", "1"))
+        messages_per_page = request.user.parameters.get_value("messages_per_page")
+        with lib.get_imapconnector(request) as imapc:
+            if not imapc.has_thread:
+                # The server can't thread: the client stays in flat mode
+                return response.Response(self._empty_thread_page(False))
+            if search:
+                # The single search field of the interface looks for the
+                # pattern in the headers and in the body
+                imapc.parse_search_parameters("all", search)
+            total = imapc.threads_count(mbox=mailbox)
+            paginator = Paginator(total, messages_per_page)
+            page = paginator.getpage(page_num)
+            if not page:
+                return response.Response(self._empty_thread_page(True))
+
+            content = imapc.fetch_threads(page.id_start, page.id_stop, mbox=mailbox)
+        first_index = (page_num - 1) * messages_per_page + 1
+        serializer = self.get_serializer(
+            {
+                "count": total,
+                "first_index": first_index,
+                "last_index": first_index + len(content) - 1,
+                "prev_page": page.previous_page_number if page.has_previous else None,
+                "next_page": page.next_page_number if page.has_next else None,
+                "threading_supported": True,
+                "results": content,
+            }
+        )
+        return response.Response(serializer.data)
+
+    def _empty_thread_page(self, threading_supported: bool) -> dict:
+        serializer = self.get_serializer(
+            {
+                "count": 0,
+                "first_index": 0,
+                "last_index": 0,
+                "prev_page": None,
+                "next_page": None,
+                "threading_supported": threading_supported,
+                "results": [],
+            }
+        )
+        return serializer.data
+
+    @action(methods=["get"], detail=False)
+    def thread(self, request):
+        """Return the messages of the conversation holding a message."""
+        mailbox = request.GET.get("mailbox", "INBOX")
+        mailid = _validate_mailid(request.GET.get("mailid"))
+        with lib.get_imapconnector(request) as imapc:
+            if not imapc.has_thread:
+                serializer = self.get_serializer(
+                    {"threading_supported": False, "results": []}
+                )
+                return response.Response(serializer.data)
+            imapc.threads_count(mbox=mailbox)
+            uids = next(
+                (thread for thread in imapc.threads if mailid in thread), [mailid]
+            )
+            content = imapc.fetch_uids(uids, mailbox)
+        content = [dict(msg) for msg in content]
+        serializer = self.get_serializer(
+            {"threading_supported": True, "results": content}
         )
         return response.Response(serializer.data)
 
@@ -419,7 +497,6 @@ class UserEmailViewSet(ImapConnectionMixin, viewsets.GenericViewSet):
 
 
 class ComposeSessionViewSet(ImapConnectionMixin, viewsets.GenericViewSet):
-
     permission_classes = (IsAuthenticated, HasMailbox)
 
     def initialize_request(self, request, *args, **kwargs):
@@ -623,7 +700,6 @@ class ScheduledMessageViewSet(
     mixins.DestroyModelMixin,
     viewsets.GenericViewSet,
 ):
-
     permission_classes = (IsAuthenticated, HasMailbox)
     serializer_class = serializers.ScheduledMessageSerializer
 
