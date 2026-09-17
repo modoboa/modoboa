@@ -3,7 +3,7 @@
     class="mail-row"
     :class="{ unread: thread.unseen_count > 0, selected: isSelected }"
     draggable="true"
-    @dragstart="$emit('dragstart', $event, thread.uids)"
+    @dragstart="$emit('dragstart', $event, uids)"
   >
     <span class="accent" />
     <v-checkbox
@@ -103,6 +103,10 @@ const webmailStore = useWebmailStore()
 const expanded = ref(false)
 const messages = ref([])
 
+// A summary always carries its message list, but a listing must not
+// break on a reply that doesn't
+const uids = computed(() => props.thread.uids || [])
+
 const senderName = (message) =>
   message.from_address?.name || message.from_address?.address || ''
 
@@ -123,26 +127,27 @@ const participantsTitle = computed(() =>
 )
 
 const isSelected = computed(() =>
-  props.thread.uids.some((uid) => webmailStore.selection.includes(uid))
+  uids.value.some((uid) => webmailStore.selection.includes(uid))
 )
 
 // Selecting a conversation selects all its messages, so that the
 // existing bulk actions apply to the whole thread
 const selected = computed({
   get() {
-    return props.thread.uids.every((uid) =>
-      webmailStore.selection.includes(uid)
+    return (
+      uids.value.length > 0 &&
+      uids.value.every((uid) => webmailStore.selection.includes(uid))
     )
   },
   set(value) {
     if (value) {
-      const missing = props.thread.uids.filter(
+      const missing = uids.value.filter(
         (uid) => !webmailStore.selection.includes(uid)
       )
       webmailStore.selection = [...webmailStore.selection, ...missing]
     } else {
       webmailStore.selection = webmailStore.selection.filter(
-        (uid) => !props.thread.uids.includes(uid)
+        (uid) => !uids.value.includes(uid)
       )
     }
   },
