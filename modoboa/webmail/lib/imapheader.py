@@ -28,19 +28,19 @@ __all__ = [
 # according to https://en.wikipedia.org/wiki/Date_format_by_country
 # and https://en.wikipedia.org/wiki/Date_and_time_representation_by_country
 DATETIME_FORMATS = {
-    "cs": {"SHORT": "l, H:i", "LONG": "d. N Y H:i", "TIME": "H:i"},
-    "de": {"SHORT": "l, H:i", "LONG": "d. N Y H:i", "TIME": "H:i"},
-    "en": {"SHORT": "l, P", "LONG": "N j, Y P", "TIME": "H:i"},
-    "es": {"SHORT": "l, H:i", "LONG": "d. N Y H:i", "TIME": "H:i"},
-    "fr": {"SHORT": "l, H:i", "LONG": "d. N Y H:i", "TIME": "H:i"},
-    "it": {"SHORT": "l, H:i", "LONG": "d. N Y H:i", "TIME": "H:i"},
-    "ja_JP": {"SHORT": "l, P", "LONG": "N j, Y P", "TIME": "H:i"},
-    "nl": {"SHORT": "l, H:i", "LONG": "d. N Y H:i", "TIME": "H:i"},
-    "pl_PL": {"SHORT": "l, H:i", "LONG": "d. N Y H:i", "TIME": "H:i"},
-    "pt_PT": {"SHORT": "l, H:i", "LONG": "d. N Y H:i", "TIME": "H:i"},
-    "pt_BR": {"SHORT": "l, H:i", "LONG": "d. N Y H:i", "TIME": "H:i"},
-    "ru": {"SHORT": "l, H:i", "LONG": "d. N Y H:i", "TIME": "H:i"},
-    "sv": {"SHORT": "l, H:i", "LONG": "d. N Y H:i", "TIME": "H:i"},
+    "cs": {"SHORT": "l, H:i", "LONG": "d. N Y H:i", "TIME": "H:i", "CLOCK": "H:i"},
+    "de": {"SHORT": "l, H:i", "LONG": "d. N Y H:i", "TIME": "H:i", "CLOCK": "H:i"},
+    "en": {"SHORT": "l, P", "LONG": "N j, Y P", "TIME": "H:i", "CLOCK": "P"},
+    "es": {"SHORT": "l, H:i", "LONG": "d. N Y H:i", "TIME": "H:i", "CLOCK": "H:i"},
+    "fr": {"SHORT": "l, H:i", "LONG": "d. N Y H:i", "TIME": "H:i", "CLOCK": "H:i"},
+    "it": {"SHORT": "l, H:i", "LONG": "d. N Y H:i", "TIME": "H:i", "CLOCK": "H:i"},
+    "ja_JP": {"SHORT": "l, P", "LONG": "N j, Y P", "TIME": "H:i", "CLOCK": "P"},
+    "nl": {"SHORT": "l, H:i", "LONG": "d. N Y H:i", "TIME": "H:i", "CLOCK": "H:i"},
+    "pl_PL": {"SHORT": "l, H:i", "LONG": "d. N Y H:i", "TIME": "H:i", "CLOCK": "H:i"},
+    "pt_PT": {"SHORT": "l, H:i", "LONG": "d. N Y H:i", "TIME": "H:i", "CLOCK": "H:i"},
+    "pt_BR": {"SHORT": "l, H:i", "LONG": "d. N Y H:i", "TIME": "H:i", "CLOCK": "H:i"},
+    "ru": {"SHORT": "l, H:i", "LONG": "d. N Y H:i", "TIME": "H:i", "CLOCK": "H:i"},
+    "sv": {"SHORT": "l, H:i", "LONG": "d. N Y H:i", "TIME": "H:i", "CLOCK": "H:i"},
 }
 
 
@@ -120,6 +120,25 @@ def parse_reply_to(value):
     return parse_address_list(value)
 
 
+def compact_date_format(ndate, language: str) -> str:
+    """Pick the shortest format that still identifies a message date.
+
+    The listing shows one date per row in a narrow column, so it only
+    carries what tells messages apart: the time for today, the weekday
+    and the time for the last week, then the day and the month, and the
+    year only when it is not the current one.
+    """
+    formats = DATETIME_FORMATS.get(language, DATETIME_FORMATS["en"])
+    now = timezone.localtime()
+    if ndate.date() == now.date():
+        return formats["CLOCK"]
+    if now - ndate < datetime.timedelta(days=7):
+        return f"D {formats['CLOCK']}"
+    if ndate.year == now.year:
+        return "j M"
+    return "j M Y"
+
+
 def parse_date(value, **kwargs):
     """Parse a Date: header."""
     tmp = email.utils.parsedate_tz(value)
@@ -129,14 +148,7 @@ def parse_date(value, **kwargs):
     ndate = datetime.datetime.fromtimestamp(
         email.utils.mktime_tz(tmp), tz=timezone.get_current_timezone()
     )
-    current_language = get_request().user.language
-    if timezone.now() - ndate > datetime.timedelta(7):
-        fmt = "LONG"
-    else:
-        fmt = "SHORT"
-    return date_format(
-        ndate, DATETIME_FORMATS.get(current_language, DATETIME_FORMATS.get("en"))[fmt]
-    )
+    return date_format(ndate, compact_date_format(ndate, get_request().user.language))
 
 
 def parse_scheduled_datetime(value: str, **kwargs) -> str:
