@@ -26,7 +26,7 @@
       />
       <div v-else class="expand-placeholder" />
 
-      <div class="ml-4 clickable" @click="$emit('open', thread.latest.imapid)">
+      <div class="ml-4 clickable" @click="$emit('openThread', thread.root)">
         <div>
           {{ thread.subject }}
           <v-chip v-if="thread.count > 1" size="x-small" class="ml-2">
@@ -94,7 +94,7 @@ const props = defineProps({
   },
 })
 
-defineEmits(['open', 'toggleFollow', 'dragstart'])
+defineEmits(['open', 'openThread', 'toggleFollow', 'dragstart'])
 
 const { $gettext } = useGettext()
 const webmailStore = useWebmailStore()

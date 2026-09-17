@@ -164,6 +164,7 @@
             :thread="thread"
             :mailbox="props.mailbox"
             @open="openEmail"
+            @open-thread="openThread"
             @toggle-follow="toggleFollowState"
             @dragstart="onDragStart"
           />
@@ -357,6 +358,13 @@ const openEmail = (emailid) => {
   router.push({
     name: 'EmailView',
     query: { mailbox: props.mailbox, mailid: emailid },
+  })
+}
+
+const openThread = (mailid) => {
+  router.push({
+    name: 'ThreadView',
+    query: { mailbox: props.mailbox, mailid },
   })
 }
 

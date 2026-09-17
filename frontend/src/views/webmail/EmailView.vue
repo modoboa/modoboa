@@ -1,5 +1,5 @@
 <template>
-  <div v-show="loaded" class="bg-white rounded-lg pa-4 position-relative h-100">
+  <div v-show="loaded" class="bg-white rounded-lg pa-4 h-100 overflow-y-auto">
     <v-toolbar color="white">
       <v-btn icon="mdi-arrow-left" size="small" variant="flat" @click="close" />
 
@@ -96,7 +96,7 @@
       </v-btn>
     </v-toolbar>
 
-    <div v-if="email" ref="headers" class="bg-white pa-4">
+    <div v-if="email" class="bg-white pa-4">
       <h2>{{ email.subject }}</h2>
       <div class="d-flex mt-2">
         <v-menu key="sender">
@@ -155,7 +155,6 @@
     </div>
     <v-alert
       v-if="email?.scheduled_datetime"
-      ref="schedulingInfo"
       type="info"
       variant="tonal"
       density="compact"
@@ -164,18 +163,7 @@
       {{ $gettext('Message scheduled at:') }}
       {{ $date(email.scheduled_datetime) }}
     </v-alert>
-    <!--
-      The message body is untrusted: render it in a sandboxed iframe
-      (no scripts, opaque origin) so it can never reach the application
-      context, even if the server-side HTML cleaner is bypassed.
-    -->
-    <iframe
-      ref="emailFrame"
-      class="email-frame"
-      sandbox="allow-popups allow-popups-to-escape-sandbox"
-      referrerpolicy="no-referrer"
-      :srcdoc="emailDocument"
-    />
+    <EmailMessageBody :body="email?.body" :enable-images="enableImages" />
   </div>
   <v-dialog v-model="showEmailSource" max-width="1200">
     <v-card :title="$gettext('Message source')">
@@ -194,13 +182,14 @@
 </template>
 
 <script setup>
-import { computed, nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useGettext } from 'vue3-gettext'
 import { useBusStore } from '@/stores'
 import { useSpecialFolders } from '@/composables/webmail'
 import api from '@/api/webmail'
 import ContactCard from '@/components/webmail/ContactCard.vue'
+import EmailMessageBody from '@/components/webmail/EmailMessageBody.vue'
 
 const { $gettext } = useGettext()
 const { displayNotification, reloadMailboxCounters } = useBusStore()
@@ -213,21 +202,13 @@ const { isJunkFolder, isDraftsFolder } = useSpecialFolders(
 const enableLinks = ref(false)
 const enableImages = ref(false)
 const email = ref(null)
-const emailFrame = ref(null)
 const emailSource = ref(null)
-const headers = ref(null)
 const loaded = ref(false)
-const schedulingInfo = ref()
 const showEmailSource = ref(false)
 const working = ref(false)
 
 onMounted(() => {
-  window.addEventListener('resize', resizeEmailIframe)
   fetchMailContent()
-})
-
-onUnmounted(() => {
-  window.removeEventListener('resize', resizeEmailIframe)
 })
 
 watch([enableLinks, enableImages], () => {
@@ -239,47 +220,6 @@ const close = () => {
     name: 'MailboxView',
     query: { mailbox: route.query.mailbox },
   })
-}
-
-const emailDocument = computed(() => {
-  if (!email.value?.body) {
-    return ''
-  }
-  // Remote content (images, fonts, etc.) is only allowed once the reader
-  // asks for the images, which keeps tracking pixels from loading by
-  // default, whatever the links are set to.
-  const remoteSrc = enableImages.value ? ' https: http:' : ''
-  const csp = [
-    "default-src 'none'",
-    `img-src data:${remoteSrc}`,
-    `media-src data:${remoteSrc}`,
-    `font-src data:${remoteSrc}`,
-    "style-src 'unsafe-inline'",
-    "form-action 'none'",
-  ].join('; ')
-  return `
-    <!DOCTYPE html><html><head><meta charset="utf-8">
-    <meta http-equiv="Content-Security-Policy" content="${csp}">
-    <base target="_blank"></head><body>
-    ${email.value.body}
-    </body></html>
-  `
-})
-
-const resizeEmailIframe = () => {
-  const iframe = emailFrame.value
-  if (!iframe || !headers.value) {
-    return
-  }
-  let rect
-  if (schedulingInfo.value) {
-    rect = schedulingInfo.value.$el.getBoundingClientRect()
-  } else {
-    rect = headers.value.getBoundingClientRect()
-  }
-  iframe.style.top = `${rect.bottom}px`
-  iframe.style.width = `${rect.width - 24}px`
-  iframe.style.height = `${window.innerHeight - rect.bottom - 32}px`
 }
 
 const fetchMailContent = () => {
@@ -294,7 +234,6 @@ const fetchMailContent = () => {
       reloadMailboxCounters()
       email.value = resp.data
       loaded.value = true
-      nextTick(resizeEmailIframe)
     })
 }
 
@@ -381,13 +320,3 @@ const editDraft = () => {
   })
 }
 </script>
-
-<style>
-.email-frame {
-  position: absolute !important;
-  left: 24px;
-  overflow-y: auto;
-  border: none;
-  background-color: #fff;
-}
-</style>
