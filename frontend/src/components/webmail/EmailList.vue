@@ -6,11 +6,87 @@
       color="primary"
       density="compact"
       hide-details
-      :title="$gettext('Select every message of the page')"
+      :indeterminate="partialSelection"
+      :title="
+        hasSelection
+          ? $gettext('Clear the selection')
+          : $gettext('Select every message of the page')
+      "
       @update:model-value="toggleAllSelection"
     />
 
+    <template v-if="hasSelection">
+      <span class="mail-selection-count">{{ selectionLabel }}</span>
+      <div class="mail-toolbar-group">
+        <v-btn
+          v-if="!inScheduledView"
+          icon="mdi-trash-can-outline"
+          color="error"
+          variant="text"
+          size="small"
+          :loading="working"
+          :title="$gettext('Delete')"
+          @click="deleteSelection"
+        />
+        <template v-if="!inScheduledView">
+          <v-btn
+            v-if="!isJunkFolder"
+            icon="mdi-fire"
+            color="warning"
+            variant="text"
+            size="small"
+            :loading="working"
+            :title="$gettext('Mark as junk')"
+            @click="markSelectionAsJunk"
+          />
+          <v-btn
+            v-else
+            icon="mdi-thumb-up-outline"
+            color="success"
+            variant="text"
+            size="small"
+            :loading="working"
+            :title="$gettext('Mark as not junk')"
+            @click="markSelectionAsNotJunk"
+          />
+        </template>
+        <v-btn
+          icon
+          variant="text"
+          size="small"
+          :title="$gettext('More actions')"
+        >
+          <v-icon icon="mdi-dots-horizontal" />
+          <v-menu activator="parent">
+            <v-list density="compact">
+              <v-list-item
+                :title="$gettext('Mark as read')"
+                prepend-icon="mdi-eye"
+                @click="() => flagSelection('read')"
+              />
+              <v-list-item
+                :title="$gettext('Mark as unread')"
+                prepend-icon="mdi-eye-outline"
+                @click="() => flagSelection('unread')"
+              />
+              <v-list-item
+                :title="$gettext('Mark as followed')"
+                prepend-icon="mdi-star"
+                @click="() => flagSelection('flagged')"
+              />
+              <v-list-item
+                :title="$gettext('Mark as unfollowed')"
+                prepend-icon="mdi-star-outline"
+                @click="() => flagSelection('unflagged')"
+              />
+            </v-list>
+          </v-menu>
+        </v-btn>
+      </div>
+    </template>
+
     <v-text-field
+      v-else
       v-model="search"
       prepend-inner-icon="mdi-magnify"
       :placeholder="$gettext('Search in messages')"
@@ -25,73 +101,17 @@
       @keyup.enter="submitSearch"
     ></v-text-field>
 
-    <div class="mail-toolbar-group">
-      <v-btn
-        v-if="!inScheduledView"
-        icon="mdi-trash-can-outline"
-        color="error"
-        variant="text"
-        size="small"
-        :loading="working"
-        :title="$gettext('Delete')"
-        @click="deleteSelection"
-      />
-      <template v-if="!inScheduledView">
-        <v-btn
-          v-if="!isJunkFolder"
-          icon="mdi-fire"
-          color="warning"
-          variant="text"
-          size="small"
-          :loading="working"
-          :title="$gettext('Mark as junk')"
-          @click="markSelectionAsJunk"
-        />
-        <v-btn
-          v-else
-          icon="mdi-thumb-up-outline"
-          color="success"
-          variant="text"
-          size="small"
-          :loading="working"
-          :title="$gettext('Mark as not junk')"
-          @click="markSelectionAsNotJunk"
-        />
-      </template>
-      <v-btn icon variant="text" size="small" :title="$gettext('More actions')">
-        <v-icon icon="mdi-dots-horizontal" />
-        <v-menu activator="parent">
-          <v-list density="compact">
-            <v-list-item
-              :title="$gettext('Mark as read')"
-              prepend-icon="mdi-eye"
-              @click="() => flagSelection('read')"
-            />
-            <v-list-item
-              :title="$gettext('Mark as unread')"
-              prepend-icon="mdi-eye-outline"
-              @click="() => flagSelection('unread')"
-            />
-            <v-list-item
-              :title="$gettext('Mark as followed')"
-              prepend-icon="mdi-star"
-              @click="() => flagSelection('flagged')"
-            />
-            <v-list-item
-              :title="$gettext('Mark as unfollowed')"
-              prepend-icon="mdi-star-outline"
-              @click="() => flagSelection('unflagged')"
-            />
-            <v-list-item
-              v-if="isTrashFolder"
-              :title="$gettext('Empty mailbox')"
-              prepend-icon="mdi-trash-can"
-              @click="emptyMailbox"
-            />
-          </v-list>
-        </v-menu>
-      </v-btn>
-    </div>
+    <div class="mail-toolbar-spacer" />
+
+    <!-- Emptying a mailbox acts on the folder, not on a selection -->
+    <v-btn
+      v-if="isTrashFolder"
+      icon="mdi-delete-sweep-outline"
+      variant="text"
+      size="small"
+      :title="$gettext('Empty mailbox')"
+      @click="emptyMailbox"
+    />
 
     <template v-if="!inScheduledView">
       <span class="mail-toolbar-separator" />
@@ -118,8 +138,6 @@
         />
       </v-btn-toggle>
     </template>
-
-    <div class="mail-toolbar-spacer" />
 
     <div v-if="emails.results" class="mail-pagination">
       <span class="mail-range">
@@ -294,6 +312,32 @@ const { isDraftsFolder, isJunkFolder, isTrashFolder } =
 
 const listingMode = computed(() => webmailStore.listingMode)
 
+// Every message of the page, one entry per message even in conversation
+// mode: that is what the bulk actions are given
+const pageIds = computed(() => {
+  const results = emails.value.results || []
+  return displayThreads.value
+    ? results.flatMap((thread) => thread.uids || [])
+    : results.map((email) => email.imapid)
+})
+
+const hasSelection = computed(() => webmailStore.selection.length > 0)
+
+const partialSelection = computed(
+  () =>
+    hasSelection.value && webmailStore.selection.length < pageIds.value.length
+)
+
+const selectionLabel = computed(() => {
+  const count = webmailStore.selection.length
+  return $ngettext(
+    '%{count} message selected',
+    '%{count} messages selected',
+    count,
+    { count }
+  )
+})
+
 // Conversations make no sense where messages have no reply chain, and
 // the server may simply not support them
 const threadingAvailable = computed(
@@ -429,15 +473,7 @@ const submitSearch = () => {
 }
 
 const toggleAllSelection = (value) => {
-  if (!value) {
-    webmailStore.selection = []
-  } else if (displayThreads.value) {
-    webmailStore.selection = emails.value.results.flatMap(
-      (thread) => thread.uids
-    )
-  } else {
-    webmailStore.selection = emails.value.results.map((email) => email.imapid)
-  }
+  webmailStore.selection = value ? [...pageIds.value] : []
 }
 
 const deleteSelection = () => {
@@ -582,6 +618,7 @@ onUnmounted(() => {
 watch(
   () => props.mailbox,
   () => {
+    webmailStore.selection = []
     fetchEmails()
   }
 )
@@ -602,6 +639,8 @@ watch(
   }
 )
 watch(page, () => {
+  // The actions would otherwise apply to messages of another page
+  webmailStore.selection = []
   fetchEmails()
 })
 </script>
