@@ -3,6 +3,7 @@
 from django.test import SimpleTestCase
 from django.urls import reverse
 
+from modoboa.core import models as core_models
 from modoboa.webmail.lib import imaputils
 from modoboa.webmail.mocks import IMAP4Mock
 from modoboa.webmail.tests.test_viewsets import WebmailTestCase
@@ -178,3 +179,50 @@ class NoThreadSupportTestCase(WebmailTestCase):
         url = reverse("v2:webmail-email-list")
         response = self.client.get(f"{url}?mailbox=INBOX")
         self.assertEqual(response.status_code, 200)
+
+
+class ListingModePreferenceTestCase(WebmailTestCase):
+    """The listing mode is a user preference."""
+
+    def setUp(self):
+        super().setUp()
+        self.authenticate()
+
+    def _parameters(self) -> dict:
+        user = core_models.User.objects.get(pk=self.user.pk)
+        return user.parameters
+
+    def _listing_mode(self) -> str:
+        return self._parameters().get_value("listing_mode")
+
+    def _current_values(self, url) -> dict:
+        """The preferences, as the interface sends them back on save.
+
+        Unset values are returned as null but refused on save, so they
+        are dropped, the way an empty form field would be.
+        """
+        params = self.client.get(url).json()["params"]
+        return {key: value for key, value in params.items() if value is not None}
+
+    def test_default_is_the_flat_listing(self):
+        self.assertEqual(self._listing_mode(), "flat")
+
+    def test_switch_to_conversations(self):
+        url = reverse("v2:parameter-user-detail", args=["webmail"])
+        data = self._current_values(url)
+        data["listing_mode"] = "threaded"
+        response = self.client.put(url, data, format="json")
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(self._listing_mode(), "threaded")
+        # The other preferences are left alone
+        self.assertEqual(
+            self._parameters().get_value("messages_per_page"),
+            data["messages_per_page"],
+        )
+
+    def test_unknown_mode_is_rejected(self):
+        url = reverse("v2:parameter-user-detail", args=["webmail"])
+        data = self._current_values(url)
+        data["listing_mode"] = "nonsense"
+        response = self.client.put(url, data, format="json")
+        self.assertEqual(response.status_code, 400)

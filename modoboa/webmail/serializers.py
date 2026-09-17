@@ -42,6 +42,9 @@ class UserPreferencesSerializer(serializers.Serializer):
         default=constants.DisplayMode.PLAIN.value, choices=constants.DISPLAY_MODES
     )
     enable_links = serializers.BooleanField(default=False)
+    listing_mode = serializers.ChoiceField(
+        default=constants.ListingMode.FLAT.value, choices=constants.LISTING_MODES
+    )
     messages_per_page = serializers.IntegerField(default=40)
     refresh_interval = serializers.IntegerField(default=300)
     trash_folder = serializers.CharField(default="Trash")
