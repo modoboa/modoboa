@@ -213,7 +213,11 @@ h6 {
   border-radius: 8px;
 
   .mail-search {
-    flex: 0 1 280px;
+    /* Takes the room the bulk actions no longer occupy, up to a width
+       past which a search field stops being readable */
+    flex: 1 1 auto;
+    min-width: 180px;
+    max-width: 480px;
     margin-right: 8px;
     font-size: 0.875rem;
   }
