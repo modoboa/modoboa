@@ -1,65 +1,65 @@
 <template>
-  <v-card class="mt-6 mb-2 mx-1">
-    <v-toolbar color="white" flat>
-      <v-checkbox
-        v-model="selectAll"
-        class="mr-4"
-        hide-details
-        color="primary"
-        @update:model-value="toggleAllSelection"
-      />
+  <div class="mail-toolbar mt-6 mb-2 mx-1">
+    <v-checkbox
+      v-model="selectAll"
+      class="cell-check"
+      color="primary"
+      density="compact"
+      hide-details
+      :title="$gettext('Select every message of the page')"
+      @update:model-value="toggleAllSelection"
+    />
 
-      <v-text-field
-        v-model="search"
-        prepend-inner-icon="mdi-magnify"
-        :placeholder="$gettext('Search in messages')"
-        variant="outlined"
-        single-line
-        flat
-        hide-details
-        density="compact"
-        class="flex-grow-0 w-33 mr-4"
-        clearable
-        @click:clear="fetchEmails"
-        @keyup.enter="submitSearch"
-      ></v-text-field>
+    <v-text-field
+      v-model="search"
+      prepend-inner-icon="mdi-magnify"
+      :placeholder="$gettext('Search in messages')"
+      class="mail-search"
+      variant="solo-filled"
+      single-line
+      flat
+      hide-details
+      density="compact"
+      clearable
+      @click:clear="fetchEmails"
+      @keyup.enter="submitSearch"
+    ></v-text-field>
+
+    <div class="mail-toolbar-group">
       <v-btn
         v-if="!inScheduledView"
-        class="ml-2"
+        icon="mdi-trash-can-outline"
         color="error"
-        variant="tonal"
-        icon="mdi-trash-can"
+        variant="text"
         size="small"
         :loading="working"
+        :title="$gettext('Delete')"
         @click="deleteSelection"
-      >
-      </v-btn>
+      />
       <template v-if="!inScheduledView">
         <v-btn
           v-if="!isJunkFolder"
-          class="ml-2"
-          color="warning"
-          variant="tonal"
           icon="mdi-fire"
+          color="warning"
+          variant="text"
           size="small"
           :loading="working"
+          :title="$gettext('Mark as junk')"
           @click="markSelectionAsJunk"
-        >
-        </v-btn>
+        />
         <v-btn
           v-else
-          class="ml-2"
+          icon="mdi-thumb-up-outline"
           color="success"
-          variant="tonal"
-          icon="mdi-thumb-up"
+          variant="text"
           size="small"
           :loading="working"
+          :title="$gettext('Mark as not junk')"
           @click="markSelectionAsNotJunk"
-        >
-        </v-btn>
+        />
       </template>
-      <v-btn class="ml-2" variant="tonal" icon size="small">
-        <v-icon icon="mdi-cog" />
+      <v-btn icon variant="text" size="small" :title="$gettext('More actions')">
+        <v-icon icon="mdi-dots-horizontal" />
         <v-menu activator="parent">
           <v-list density="compact">
             <v-list-item
@@ -91,12 +91,15 @@
           </v-list>
         </v-menu>
       </v-btn>
+    </div>
+
+    <template v-if="!inScheduledView">
+      <span class="mail-toolbar-separator" />
       <v-btn-toggle
-        v-if="!inScheduledView"
         :model-value="listingMode"
-        class="ml-2"
+        class="mail-mode"
         density="compact"
-        divided
+        variant="text"
         mandatory
         @update:model-value="changeListingMode"
       >
@@ -114,29 +117,33 @@
           :title="threadingButtonTitle"
         />
       </v-btn-toggle>
-      <v-spacer />
-      <div v-if="emails.results" class="d-flex align-center">
-        <div class="text-body-small mr-2">
-          {{ emails.first_index }}-{{ emails.last_index }} {{ $gettext('on') }}
-          {{ emails.count }}
-        </div>
-        <div>
-          <v-btn
-            icon="mdi-chevron-left"
-            size="x-small"
-            :disabled="emails.prev_page === null"
-            @click="page = emails.prev_page"
-          />
-          <v-btn
-            icon="mdi-chevron-right"
-            size="x-small"
-            :disabled="emails.next_page === null"
-            @click="page = emails.next_page"
-          />
-        </div>
-      </div>
-    </v-toolbar>
-  </v-card>
+    </template>
+
+    <div class="mail-toolbar-spacer" />
+
+    <div v-if="emails.results" class="mail-pagination">
+      <span class="mail-range">
+        {{ emails.first_index }}-{{ emails.last_index }} {{ $gettext('on') }}
+        {{ emails.count }}
+      </span>
+      <v-btn
+        icon="mdi-chevron-left"
+        variant="text"
+        size="small"
+        :disabled="emails.prev_page === null"
+        :title="$gettext('Previous page')"
+        @click="page = emails.prev_page"
+      />
+      <v-btn
+        icon="mdi-chevron-right"
+        variant="text"
+        size="small"
+        :disabled="emails.next_page === null"
+        :title="$gettext('Next page')"
+        @click="page = emails.next_page"
+      />
+    </div>
+  </div>
   <v-skeleton-loader v-if="loading" type="card@2"></v-skeleton-loader>
   <template v-else>
     <v-alert

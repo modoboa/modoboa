@@ -193,3 +193,68 @@ h6 {
     text-align: right;
   }
 }
+
+/**
+ * Messages listing toolbar
+ *
+ * Same flat surface as the list below it, and the selection checkbox
+ * sits on the column of the rows' own checkboxes.
+ */
+.mail-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  height: 48px;
+  /* 3px of accent bar and the 8px gap of a row, so that this checkbox
+     lands exactly above theirs */
+  padding: 0 12px 0 11px;
+  background-color: rgb(var(--v-theme-surface));
+  border: 1px solid rgba(var(--v-border-color), 0.12);
+  border-radius: 8px;
+
+  .mail-search {
+    flex: 0 1 280px;
+    margin-right: 8px;
+    font-size: 0.875rem;
+  }
+
+  .mail-toolbar-group {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+  }
+
+  .mail-toolbar-separator {
+    width: 1px;
+    height: 24px;
+    margin: 0 8px;
+    background-color: rgba(var(--v-border-color), 0.16);
+  }
+
+  .mail-toolbar-spacer {
+    flex: 1 1 auto;
+  }
+
+  .mail-mode {
+    height: 32px;
+
+    .v-btn--active {
+      color: rgb(var(--v-theme-primary));
+      background-color: rgba(var(--v-theme-primary), 0.12);
+    }
+  }
+
+  .mail-pagination {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+  }
+
+  .mail-range {
+    margin-right: 6px;
+    font-size: 0.8125rem;
+    font-variant-numeric: tabular-nums;
+    color: rgba(var(--v-theme-on-surface), 0.6);
+    white-space: nowrap;
+  }
+}
