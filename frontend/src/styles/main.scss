@@ -338,6 +338,30 @@ h6 {
     white-space: nowrap;
   }
 
+  /* The first file of a collapsed message, with a count for the rest */
+  .thread-attachment {
+    flex: 0 1 auto;
+    min-width: 0;
+    max-width: 220px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.8125rem;
+    color: rgba(var(--v-theme-on-surface), 0.6);
+  }
+
+  .thread-attachment-name {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .thread-attachment-count {
+    flex: 0 0 auto;
+    font-variant-numeric: tabular-nums;
+  }
+
   .thread-flags {
     flex: 0 0 52px;
     display: flex;
@@ -407,5 +431,93 @@ h6 {
     height: 20px;
     margin: 0 8px;
     background-color: rgba(var(--v-border-color), 0.16);
+  }
+}
+
+/**
+ * Attachments of a message
+ *
+ * A row of cards rather than a comma separated list of links: each one
+ * shows what kind of file it is, its name over two lines at most and
+ * its approximate size, and the whole card downloads it.
+ */
+.mail-attachments {
+  margin-top: 12px;
+
+  .mail-attachments-title {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-bottom: 6px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: rgba(var(--v-theme-on-surface), 0.5);
+  }
+
+  .mail-attachments-items {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .mail-attachment {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 260px;
+    max-width: 100%;
+    padding: 8px 10px;
+    border: 1px solid rgba(var(--v-border-color), 0.12);
+    border-radius: 8px;
+    background-color: rgb(var(--v-theme-surface));
+    text-align: start;
+    cursor: pointer;
+
+    &:hover {
+      border-color: rgba(var(--v-theme-primary), 0.5);
+      background-color: rgba(var(--v-theme-primary), 0.04);
+    }
+
+    &:focus-visible {
+      outline: 2px solid rgb(var(--v-theme-primary));
+      outline-offset: 1px;
+    }
+  }
+
+  .mail-attachment-icon {
+    flex: 0 0 auto;
+    color: rgba(var(--v-theme-on-surface), 0.55);
+  }
+
+  .mail-attachment-text {
+    flex: 1 1 auto;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .mail-attachment-name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 0.875rem;
+    color: rgb(var(--v-theme-on-surface));
+  }
+
+  .mail-attachment-meta {
+    font-size: 0.75rem;
+    font-variant-numeric: tabular-nums;
+    color: rgba(var(--v-theme-on-surface), 0.6);
+  }
+
+  .mail-attachment-action {
+    flex: 0 0 auto;
+    color: rgba(var(--v-theme-on-surface), 0.4);
+  }
+
+  .mail-attachment:hover .mail-attachment-action {
+    color: rgb(var(--v-theme-primary));
   }
 }
