@@ -23,6 +23,9 @@ class LinksAndImagesTestCase(SimpleTestCase):
         content = self._render(links=False, images=False)
         self.assertNotIn("https://example.test/page", content)
         self.assertNotIn("tracker.gif", content)
+        # The inline image travels with the message: it tells no one
+        # the message was read
+        self.assertIn("data:image/png;base64,AAA=", content)
 
     def test_images_only(self):
         content = self._render(links=False, images=True)
@@ -36,7 +39,7 @@ class LinksAndImagesTestCase(SimpleTestCase):
         content = self._render(links=True, images=False)
         self.assertIn("https://example.test/page", content)
         self.assertNotIn("tracker.gif", content)
-        self.assertNotIn("data:image/png;base64,AAA=", content)
+        self.assertIn("data:image/png;base64,AAA=", content)
 
     def test_everything_enabled(self):
         content = self._render(links=True, images=True)
