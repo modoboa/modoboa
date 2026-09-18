@@ -97,14 +97,21 @@ Replace `<driver>` by the name of the database you use, and `Restart Postfix`.
 If you want to enable the built-in policy daemon, add the following
 content to the `/etc/postfix/main.cf` file:
 
-```txt{3}
+```txt{3,6}
     smtpd_recipient_restrictions =
         # ...
         check_policy_service inet:localhost:9999
         # ...
+
+    smtpd_end_of_data_restrictions = check_policy_service inet:localhost:9999
 ```
 
 And `reload postfix`.
+
+The daemon is queried twice per message: at the `RCPT` stage, it
+checks that sending limits are not reached yet, and at the end of the
+message, it decrements the counters by the number of recipients. Both
+entries are required for sending limits to work.
 
 ::: warning
 The `check_policy_service` line must be placed before the
