@@ -156,14 +156,16 @@
                 {{ $gettext('Open') }}
               </v-btn>
             </div>
-            <AttachmentList
-              :attachments="contents[message.imapid]?.attachments || []"
-              @download="
-                (attachment) => downloadAttachment(message.imapid, attachment)
-              "
-            />
             <v-progress-linear v-if="!contents[message.imapid]" indeterminate />
             <template v-else>
+              <MessageHeader
+                :message="contents[message.imapid]"
+                :show-sender="false"
+                class="mb-3"
+                @download="
+                  (attachment) => downloadAttachment(message.imapid, attachment)
+                "
+              />
               <RemoteContentBanner
                 v-if="
                   contents[message.imapid].remote_content_blocked &&
@@ -191,8 +193,8 @@ import { useBusStore } from '@/stores'
 import { useSpecialFolders } from '@/composables/webmail'
 import api from '@/api/webmail'
 import { downloadBlob } from '@/utils'
-import AttachmentList from '@/components/webmail/AttachmentList.vue'
 import EmailMessageBody from '@/components/webmail/EmailMessageBody.vue'
+import MessageHeader from '@/components/webmail/MessageHeader.vue'
 import RemoteContentBanner from '@/components/webmail/RemoteContentBanner.vue'
 
 const { $gettext, $ngettext } = useGettext()
