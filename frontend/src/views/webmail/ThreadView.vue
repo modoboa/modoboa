@@ -70,7 +70,6 @@
           v-for="message in messages"
           :key="message.imapid"
           :value="message.imapid"
-          @group:selected="onPanelToggle(message, $event)"
         >
           <v-expansion-panel-title>
             <div class="d-flex align-center w-100">
@@ -164,7 +163,7 @@
 </template>
 
 <script setup>
-import { computed, onMounted, ref } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useGettext } from 'vue3-gettext'
 import { useBusStore } from '@/stores'
@@ -225,17 +224,14 @@ const fetchThread = async () => {
       return
     }
     messages.value = results
-    // Unread messages and the last one are expanded right away
+    // Unread messages and the last one are expanded right away; the
+    // watcher below loads what they need
     openedPanels.value = messages.value
       .filter(
         (message, index) =>
           message.style === 'unseen' || index === messages.value.length - 1
       )
       .map((message) => message.imapid)
-    openedPanels.value.forEach((imapid) => {
-      const message = messages.value.find((item) => item.imapid === imapid)
-      loadContent(message)
-    })
   } finally {
     // Keep the skeleton until the message view takes over
     if (!redirecting) {
@@ -258,12 +254,6 @@ const loadContent = async (message) => {
   contents.value[message.imapid] = resp.data
   message.style = undefined
   reloadMailboxCounters()
-}
-
-const onPanelToggle = (message, { value }) => {
-  if (value) {
-    loadContent(message)
-  }
 }
 
 const downloadAttachment = async (mailid, name, part) => {
@@ -324,6 +314,15 @@ const markThreadAsNotJunk = () =>
     api.markSelectionAsNotJunk,
     $gettext('Conversation marked as not junk')
   )
+
+// The bodies to load follow the panels that are open, which is the
+// model of the accordion itself: one source of truth, whether a panel
+// was opened by the reader or expanded on arrival
+watch(openedPanels, (imapids) => {
+  imapids.forEach((imapid) =>
+    loadContent(messages.value.find((message) => message.imapid === imapid))
+  )
+})
 
 onMounted(fetchThread)
 </script>
