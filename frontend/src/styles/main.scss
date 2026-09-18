@@ -197,20 +197,18 @@ h6 {
 /**
  * Messages listing toolbar
  *
- * Same flat surface as the list below it, and the selection checkbox
- * sits on the column of the rows' own checkboxes.
+ * A v-toolbar, like the headers of the message and conversation views:
+ * the component carries the surface, the height, the hairline border
+ * and the radius. What is left here is the layout of its content, and
+ * a selection checkbox padded to land on the column of the rows below.
  */
 .mail-toolbar {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  height: 48px;
-  /* 3px of accent bar and the 8px gap of a row, so that this checkbox
-     lands exactly above theirs */
-  padding: 0 12px 0 11px;
-  background-color: rgb(var(--v-theme-surface));
-  border: 1px solid rgba(var(--v-border-color), 0.12);
-  border-radius: 8px;
+  .v-toolbar__content {
+    gap: 4px;
+    /* 3px of accent bar and the 8px gap of a row, so that this checkbox
+       lands exactly above theirs */
+    padding: 0 12px 0 11px;
+  }
 
   .mail-search {
     /* Takes the room the bulk actions no longer occupy, up to a width
