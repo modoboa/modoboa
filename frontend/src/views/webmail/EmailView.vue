@@ -176,6 +176,10 @@
       {{ $gettext('Message scheduled at:') }}
       {{ $date(email.scheduled_datetime) }}
     </v-alert>
+    <RemoteContentBanner
+      v-if="email?.remote_content_blocked && !enableImages"
+      @show="enableImages = true"
+    />
     <EmailMessageBody :body="email?.body" :enable-images="enableImages" />
   </div>
   <v-dialog v-model="showEmailSource" max-width="1200">
@@ -205,6 +209,7 @@ import { downloadBlob } from '@/utils'
 import AttachmentList from '@/components/webmail/AttachmentList.vue'
 import ContactCard from '@/components/webmail/ContactCard.vue'
 import EmailMessageBody from '@/components/webmail/EmailMessageBody.vue'
+import RemoteContentBanner from '@/components/webmail/RemoteContentBanner.vue'
 
 const { $gettext } = useGettext()
 const { displayNotification, reloadMailboxCounters } = useBusStore()

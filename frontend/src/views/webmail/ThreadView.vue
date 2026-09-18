@@ -163,11 +163,19 @@
               "
             />
             <v-progress-linear v-if="!contents[message.imapid]" indeterminate />
-            <EmailMessageBody
-              v-else
-              :body="contents[message.imapid].body"
-              :enable-images="enableImages"
-            />
+            <template v-else>
+              <RemoteContentBanner
+                v-if="
+                  contents[message.imapid].remote_content_blocked &&
+                  !imagesEnabled[message.imapid]
+                "
+                @show="showImages(message)"
+              />
+              <EmailMessageBody
+                :body="contents[message.imapid].body"
+                :enable-images="!!imagesEnabled[message.imapid]"
+              />
+            </template>
           </v-expansion-panel-text>
         </v-expansion-panel>
       </v-expansion-panels>
@@ -185,6 +193,7 @@ import api from '@/api/webmail'
 import { downloadBlob } from '@/utils'
 import AttachmentList from '@/components/webmail/AttachmentList.vue'
 import EmailMessageBody from '@/components/webmail/EmailMessageBody.vue'
+import RemoteContentBanner from '@/components/webmail/RemoteContentBanner.vue'
 
 const { $gettext, $ngettext } = useGettext()
 const { displayNotification, reloadMailboxCounters } = useBusStore()
@@ -192,7 +201,8 @@ const route = useRoute()
 const router = useRouter()
 const { isJunkFolder } = useSpecialFolders(() => route.query.mailbox)
 
-const enableImages = ref(false)
+// Messages whose remote images the reader asked for, by IMAP id
+const imagesEnabled = ref({})
 const loading = ref(true)
 const messages = ref([])
 const contents = ref({})
@@ -270,19 +280,26 @@ const fetchThread = async () => {
 }
 
 // Bodies are loaded when a message is expanded, which also marks it as read
-const loadContent = async (message) => {
-  if (!message || contents.value[message.imapid]) {
+const loadContent = async (message, reload = false) => {
+  if (!message || (contents.value[message.imapid] && !reload)) {
     return
   }
   const options = {
     dformat: 'html',
     links: '0',
-    images: enableImages.value ? '1' : '0',
+    images: imagesEnabled.value[message.imapid] ? '1' : '0',
   }
   const resp = await api.getEmailContent(mailbox.value, message.imapid, options)
   contents.value[message.imapid] = resp.data
   message.style = undefined
   reloadMailboxCounters()
+}
+
+// The body is loaded again: the server only keeps the remote images
+// when asked to
+const showImages = (message) => {
+  imagesEnabled.value[message.imapid] = true
+  loadContent(message, true)
 }
 
 const downloadAttachment = async (mailid, attachment) => {
