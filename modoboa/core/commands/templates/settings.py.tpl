@@ -402,12 +402,14 @@ LOGGING = {
         'syslog-mail': {
             'class': 'logging.handlers.SysLogHandler',
             'facility': SysLogHandler.LOG_MAIL,
-            'formatter': 'syslog'
+            'formatter': 'syslog',
+            'address': '/dev/log'
         },
         'syslog': {
             'class': 'logging.handlers.SysLogHandler',
             'facility': SysLogHandler.LOG_SYSLOG,
-            'formatter': 'syslog'
+            'formatter': 'syslog',
+            'address': '/dev/log'
         },
         'modoboa': {
             'class': 'modoboa.core.loggers.SQLHandler',
