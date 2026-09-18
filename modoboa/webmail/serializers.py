@@ -3,6 +3,7 @@
 from django.utils.translation import gettext as _
 from django.utils import timezone
 
+from drf_spectacular.utils import extend_schema_field
 from rest_framework import serializers
 
 from modoboa.lib import email_utils
@@ -134,6 +135,9 @@ class EmailAddressSerializer(serializers.Serializer):
 class AttachmentSerializer(serializers.Serializer):
     name = serializers.CharField()
     partnum = serializers.CharField()
+    # Encoded size in octets, as announced by the body structure
+    size = serializers.IntegerField(required=False)
+    content_type = serializers.CharField(required=False)
 
 
 class AttachmentUploadSerializer(serializers.Serializer):
@@ -156,6 +160,9 @@ class EmailHeadersSerializer(serializers.Serializer):
     attachments = serializers.BooleanField(default=False)
     forwarded = serializers.BooleanField(default=False)
     flagged = serializers.BooleanField(default=False)
+    # Described from the body structure the listing already fetches, so
+    # a message can name its files without its body being loaded
+    attachment_list = AttachmentSerializer(many=True, required=False)
     style = serializers.CharField(required=False)
 
     scheduled_id = serializers.IntegerField(
@@ -259,12 +266,12 @@ class EmailSerializer(serializers.Serializer):
         required=False,
     )
 
+    @extend_schema_field(AttachmentSerializer(many=True))
     def get_attachments(self, email):
         result = []
         if email.attachments:
-            for partnum, name in email.attachments.items():
-                data = {"name": name, "partnum": partnum}
-                result.append(data)
+            for partnum, attachment in email.attachments.items():
+                result.append({"partnum": partnum, **attachment})
         return result
 
 

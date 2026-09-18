@@ -10,11 +10,9 @@ from urllib.parse import unquote
 from charset_normalizer import detect as charset_detect
 
 from django.apps import apps
-from django.utils.encoding import smart_str
 from django.utils.html import conditional_escape
 from django.utils.translation import gettext as _
 
-from modoboa.lib import u2u_decode
 from modoboa.lib.email_utils import Email
 from modoboa.webmail import constants
 
@@ -46,7 +44,8 @@ class ImapEmail(Email):
         self.imapc = self.imapc.__enter__()
         self.mbox, self.mailid = self.mailid.split(":")
         self.mailid = validate_imap_uid(self.mailid)
-        self.attachments: dict[str, str] = {}
+        # Part number -> {name, size, content_type}
+        self.attachments: dict[str, dict] = {}
         self.To: list = []
 
     def __del__(self):
@@ -146,11 +145,11 @@ class ImapEmail(Email):
 
     def fetch_attachments(self):
         result = []
-        for partnum, filename in self.attachments.items():
+        for partnum, attachment in self.attachments.items():
             attdef, content = self.imapc.fetchpart(self.mailid, self.mbox, partnum)
             result.append(
                 {
-                    "filename": filename,
+                    "filename": attachment["name"],
                     "content_type": attdef["Content-Type"],
                     # Store the decoded payload: it is encoded again when
                     # the message is built.
@@ -221,30 +220,9 @@ class ImapEmail(Email):
         return None
 
     def _find_attachments(self) -> None:
-        """Retrieve attachments from the parsed body structure.
-
-        We try to find and decode a file name for each attachment. If
-        we failed, a generic name will be used (ie. part_1, part_2, ...).
-        """
-        for att in self.bs.attachments:
-            attname = "part_{}".format(att["pnum"])
-            if "params" in att and att["params"] != "NIL":
-                for pos, value in enumerate(att["params"]):
-                    if not value.startswith("name"):
-                        continue
-                    attname = u2u_decode.u2u_decode(att["params"][pos + 1]).strip(
-                        "\r\t\n"
-                    )
-                    break
-            if "disposition" in att and len(att["disposition"]) > 1:
-                for pos, value in enumerate(att["disposition"][1]):
-                    if not value.startswith("filename"):
-                        continue
-                    attname = u2u_decode.u2u_decode(
-                        att["disposition"][1][pos + 1]
-                    ).strip("\r\t\n")
-                    break
-            self.attachments[att["pnum"]] = smart_str(attname)
+        """Retrieve attachments from the parsed body structure."""
+        for attachment in self.bs.list_attachments():
+            self.attachments[attachment.pop("partnum")] = attachment
 
     def _fetch_inlines(self):
         """Embed inline images into the body as data: URIs.
