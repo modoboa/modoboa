@@ -131,6 +131,82 @@ If you need to rebuild you virtualenv, you can check this [part of the documenta
 
 The section below containt specific migration steps to upgrade Modoboa instance.
 
+## Version 2.10.2
+
+### Required changes to Postfix configuration
+
+::: warning
+This step is required if you use sending limits (daily message limits
+on domains or accounts). If you skip it, counters will never be
+decremented and **limits will not be enforced anymore**.
+:::
+
+The policy daemon used to decrement sending counters as soon as a
+recipient was submitted, so messages rejected later during the SMTP
+transaction were counted too. Counters are now decremented once the
+message has been accepted, by the number of recipients of the message:
+
+* at the `RCPT` stage, the daemon only checks that limits are not
+  reached yet
+* at the end of the message, it decrements the counters. If a counter
+  is lower than the number of recipients, the whole message is deferred
+
+Postfix must therefore query the policy daemon at the end of data
+stage too. Edit `/etc/postfix/main.cf`, keep the existing
+`check_policy_service` entry in `smtpd_recipient_restrictions` and add
+the same entry to `smtpd_end_of_data_restrictions`:
+
+```txt
+smtpd_recipient_restrictions =
+    # ...
+    check_policy_service inet:localhost:9999
+    # ...
+
+smtpd_end_of_data_restrictions = check_policy_service inet:localhost:9999 # [!code ++]
+```
+
+Use the same address as in `smtpd_recipient_restrictions` (for example
+a unix socket if you started the daemon with `--socket`). If
+`smtpd_end_of_data_restrictions` is already defined, add the entry to
+the existing list.
+
+Then check the configuration and reload Postfix:
+
+``` shell
+$ sudo postfix check
+$ sudo systemctl reload postfix
+```
+
+Finally, restart the policy daemon (`policyd` supervisor program by
+default):
+
+``` shell
+$ sudo supervisorctl restart policyd
+```
+
+### Recommended changes to `settings.py`
+
+The `syslog` and `syslog-mail` logging handlers did not define any
+address. In this case, Python sends log records over UDP to
+`localhost:514`, which most syslog daemons don't listen to by default,
+so messages (from the policy daemon for example) were silently lost.
+Add the `address` key to both handlers in the `LOGGING` variable:
+
+``` python
+'syslog-mail': {
+    'class': 'logging.handlers.SysLogHandler',
+    'facility': SysLogHandler.LOG_MAIL,
+    'formatter': 'syslog',
+    'address': '/dev/log' # [!code ++]
+},
+'syslog': {
+    'class': 'logging.handlers.SysLogHandler',
+    'facility': SysLogHandler.LOG_SYSLOG,
+    'formatter': 'syslog',
+    'address': '/dev/log' # [!code ++]
+},
+```
+
 ## Version 2.10.1
 
 ### Webmail attachments moved out of `MEDIA_ROOT`
