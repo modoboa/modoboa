@@ -47,7 +47,7 @@
         {{ thread.count }}
       </button>
     </span>
-    <span class="cell-subject" @click="$emit('openThread', thread.root)">
+    <span class="cell-subject" @click="openThread">
       {{ thread.subject || $gettext('(no subject)') }}
     </span>
     <span class="cell-flags">
@@ -95,7 +95,7 @@ const props = defineProps({
   },
 })
 
-defineEmits(['open', 'openThread', 'toggleFollow', 'dragstart'])
+const emit = defineEmits(['open', 'openThread', 'toggleFollow', 'dragstart'])
 
 const { $gettext } = useGettext()
 const webmailStore = useWebmailStore()
@@ -106,6 +106,16 @@ const messages = ref([])
 // A summary always carries its message list, but a listing must not
 // break on a reply that doesn't
 const uids = computed(() => props.thread.uids || [])
+
+// A conversation of one message is just a message: the message view
+// says more about it than a thread of a single panel would
+const openThread = () => {
+  if (props.thread.count > 1) {
+    emit('openThread', props.thread.root)
+  } else {
+    emit('open', props.thread.latest.imapid)
+  }
+}
 
 const senderName = (message) =>
   message.from_address?.name || message.from_address?.address || ''
