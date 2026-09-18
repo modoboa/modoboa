@@ -260,6 +260,9 @@ class EmailSerializer(serializers.Serializer):
     # Reply-To may contain several addresses (parsed as a list)
     reply_to = EmailAddressSerializer(source="Reply_To", many=True, required=False)
     attachments = serializers.SerializerMethodField()
+    # Remote images and other resources were dropped from the body: the
+    # reader can ask for them
+    remote_content_blocked = serializers.BooleanField(read_only=True)
 
     scheduled_datetime = serializers.DateTimeField(
         source=constants.CUSTOM_HEADER_SCHEDULED_DATETIME.replace("-", "_"),

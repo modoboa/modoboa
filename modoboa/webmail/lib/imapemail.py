@@ -32,6 +32,11 @@ class ImapEmail(Email):
     A class to represent an email fetched from an IMAP server.
     """
 
+    # Embedded images are displayed even when the remote ones are not:
+    # they travel with the message and loading them tells no one it was
+    # read.
+    embed_inlines = True
+
     headernames = [
         ("From", True),
         ("To", True),
@@ -250,8 +255,7 @@ class ImapEmail(Email):
         publicly served directory leaked them to other users (message
         UIDs are only unique per mailbox).
         """
-        if not self.images:
-            # cid: references are only rewritten when images are displayed
+        if not (self.embed_inlines or self.images):
             return
         for params in self.bs.inlines.values():
             content_type = params.get("Content-Type", "")
@@ -281,6 +285,10 @@ class ImapEmail(Email):
 
 class Modifier(ImapEmail):
     """Message modifier."""
+
+    # A reply or a forward would carry them as data: URIs, that
+    # many clients refuse to display
+    embed_inlines = False
 
     def __init__(self, request, *args, **kwargs):
         super().__init__(request, *args, **kwargs)
@@ -397,6 +405,8 @@ class EditModifier(ImapEmail):
     The body is returned as raw content for the editor: plain text is
     neither escaped nor wrapped in a <pre> block.
     """
+
+    embed_inlines = False
 
     headernames = ImapEmail.headernames + [
         ("Bcc", True),
