@@ -161,21 +161,10 @@
           </v-menu>
         </template>
       </div>
-      <div v-if="email.attachments.length" class="mt-2">
-        <v-icon icon="mdi-paperclip" />
-        <template
-          v-for="(attachment, index) in email.attachments"
-          :key="attachment.name"
-        >
-          <template v-if="index > 0">, </template>
-          <a
-            href="#"
-            @click="downloadAttachment(attachment.name, attachment.partnum)"
-          >
-            {{ attachment.name }}
-          </a>
-        </template>
-      </div>
+      <AttachmentList
+        :attachments="email.attachments"
+        @download="downloadAttachment"
+      />
     </div>
     <v-alert
       v-if="email?.scheduled_datetime"
@@ -212,6 +201,8 @@ import { useGettext } from 'vue3-gettext'
 import { useBusStore } from '@/stores'
 import { useSpecialFolders } from '@/composables/webmail'
 import api from '@/api/webmail'
+import { downloadBlob } from '@/utils'
+import AttachmentList from '@/components/webmail/AttachmentList.vue'
 import ContactCard from '@/components/webmail/ContactCard.vue'
 import EmailMessageBody from '@/components/webmail/EmailMessageBody.vue'
 
@@ -261,17 +252,18 @@ const fetchMailContent = () => {
     })
 }
 
-const downloadAttachment = (name, part) => {
-  api
-    .getEmailAttachment(route.query.mailbox, route.query.mailid, part)
-    .then((resp) => {
-      const blob = new Blob([resp.data], { type: resp.headers['Content-Type'] })
-      const link = document.createElement('a')
-      link.href = URL.createObjectURL(blob)
-      link.download = name
-      link.click()
-      URL.revokeObjectURL(link.href)
-    })
+const downloadAttachment = async (attachment) => {
+  const resp = await api.getEmailAttachment(
+    route.query.mailbox,
+    route.query.mailid,
+    attachment.partnum
+  )
+  // Axios lowercases header names
+  const type =
+    resp.headers['content-type'] ||
+    attachment.content_type ||
+    'application/octet-stream'
+  downloadBlob(new Blob([resp.data], { type }), attachment.name)
 }
 
 const deleteEmail = () => {

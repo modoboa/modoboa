@@ -96,15 +96,26 @@
             >
               {{ senderName(message) }}
             </span>
+            <span
+              v-if="message.attachments"
+              class="thread-attachment"
+              :title="attachmentTitle(message)"
+            >
+              <v-icon icon="mdi-paperclip" size="small" />
+              <span class="thread-attachment-name">
+                {{ attachmentFirstName(message) }}
+              </span>
+              <span
+                v-if="attachmentOthers(message)"
+                class="thread-attachment-count"
+              >
+                +{{ attachmentOthers(message) }}
+              </span>
+            </span>
             <span class="thread-flags">
               <v-icon
                 v-if="message.answered"
                 icon="mdi-reply-outline"
-                size="small"
-              />
-              <v-icon
-                v-if="message.attachments"
-                icon="mdi-paperclip"
                 size="small"
               />
             </span>
@@ -145,31 +156,12 @@
                 {{ $gettext('Open') }}
               </v-btn>
             </div>
-            <div
-              v-if="contents[message.imapid]?.attachments?.length"
-              class="mb-2"
-            >
-              <v-icon icon="mdi-paperclip" />
-              <template
-                v-for="(attachment, index) in contents[message.imapid]
-                  .attachments"
-                :key="attachment.name"
-              >
-                <template v-if="index > 0">, </template>
-                <a
-                  href="#"
-                  @click="
-                    downloadAttachment(
-                      message.imapid,
-                      attachment.name,
-                      attachment.partnum
-                    )
-                  "
-                >
-                  {{ attachment.name }}
-                </a>
-              </template>
-            </div>
+            <AttachmentList
+              :attachments="contents[message.imapid]?.attachments || []"
+              @download="
+                (attachment) => downloadAttachment(message.imapid, attachment)
+              "
+            />
             <v-progress-linear v-if="!contents[message.imapid]" indeterminate />
             <EmailMessageBody
               v-else
@@ -190,6 +182,8 @@ import { useGettext } from 'vue3-gettext'
 import { useBusStore } from '@/stores'
 import { useSpecialFolders } from '@/composables/webmail'
 import api from '@/api/webmail'
+import { downloadBlob } from '@/utils'
+import AttachmentList from '@/components/webmail/AttachmentList.vue'
 import EmailMessageBody from '@/components/webmail/EmailMessageBody.vue'
 
 const { $gettext, $ngettext } = useGettext()
@@ -206,6 +200,18 @@ const openedPanels = ref([])
 const working = ref(false)
 
 const mailbox = computed(() => route.query.mailbox)
+
+// A collapsed message names its first file and counts the others:
+// enough to find what one came for without opening every message. The
+// count is kept out of the truncated name, so it never disappears.
+const attachmentFirstName = (message) =>
+  (message.attachment_list || [])[0]?.name || ''
+
+const attachmentOthers = (message) =>
+  Math.max((message.attachment_list || []).length - 1, 0)
+
+const attachmentTitle = (message) =>
+  (message.attachment_list || []).map((file) => file.name).join(', ')
 
 const senderName = (message) =>
   message.from_address?.name || message.from_address?.address || ''
@@ -279,14 +285,18 @@ const loadContent = async (message) => {
   reloadMailboxCounters()
 }
 
-const downloadAttachment = async (mailid, name, part) => {
-  const resp = await api.getEmailAttachment(mailbox.value, mailid, part)
-  const blob = new Blob([resp.data], { type: resp.headers['Content-Type'] })
-  const link = document.createElement('a')
-  link.href = URL.createObjectURL(blob)
-  link.download = name
-  link.click()
-  URL.revokeObjectURL(link.href)
+const downloadAttachment = async (mailid, attachment) => {
+  const resp = await api.getEmailAttachment(
+    mailbox.value,
+    mailid,
+    attachment.partnum
+  )
+  // Axios lowercases header names
+  const type =
+    resp.headers['content-type'] ||
+    attachment.content_type ||
+    'application/octet-stream'
+  downloadBlob(new Blob([resp.data], { type }), attachment.name)
 }
 
 const openMessage = (message) => {

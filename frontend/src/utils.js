@@ -65,4 +65,30 @@ function languageHasCoverage(translations, code, sourceLanguage) {
   return !!messages && Object.keys(messages).length > 0
 }
 
-export { getAbsoluteUrl, localeToBCP47, toGettextLocale, languageHasCoverage }
+/**
+ * Hand a blob to the browser as a file to save.
+ *
+ * Two details decide whether the download happens at all: the link has
+ * to be in the document, Firefox ignores a click on a detached one, and
+ * the object URL must outlive the click, revoking it right away cancels
+ * a download that hasn't started reading the blob yet.
+ */
+function downloadBlob(blob, filename) {
+  const url = URL.createObjectURL(blob)
+  const link = document.createElement('a')
+  link.href = url
+  link.download = filename
+  link.rel = 'noopener'
+  document.body.appendChild(link)
+  link.click()
+  link.remove()
+  setTimeout(() => URL.revokeObjectURL(url), 60000)
+}
+
+export {
+  getAbsoluteUrl,
+  localeToBCP47,
+  toGettextLocale,
+  languageHasCoverage,
+  downloadBlob,
+}
