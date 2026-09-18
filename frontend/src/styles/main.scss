@@ -146,13 +146,22 @@ h6 {
   }
 }
 
-/* A message shown inside an expanded conversation */
+/* A message shown inside an expanded conversation.
+
+   It starts under the control that revealed it (3 + 40 + 32 of columns
+   plus their three 8px gaps), rather than under the sender of its
+   thread, which pushed the names much too far to the right. The sender
+   cell takes back the difference, so subjects and dates stay on the
+   columns of the rows above. */
 .mail-row.mail-row-child {
   height: 34px;
-  /* 3 + 40 + 32 + 48 of columns, plus the four 8px gaps */
-  padding-left: 155px;
+  padding-left: 99px;
   background-color: rgba(var(--v-theme-on-surface), 0.02);
   font-size: 0.8125rem;
+
+  .cell-sender {
+    flex: 0 0 256px;
+  }
 }
 
 /* Column titles above the list */
