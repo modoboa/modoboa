@@ -144,6 +144,7 @@
           :title="threadingButtonTitle"
         />
       </v-btn-toggle>
+      <span class="mail-toolbar-separator" />
     </template>
 
     <div v-if="emails.results" class="mail-pagination">
