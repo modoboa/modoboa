@@ -139,16 +139,30 @@ def compact_date_format(ndate, language: str) -> str:
     return "j M Y"
 
 
-def parse_date(value, **kwargs):
-    """Parse a Date: header."""
+def _local_date(value) -> datetime.datetime | None:
+    """Read a Date: header in the current time zone, whatever the sender's one."""
     tmp = email.utils.parsedate_tz(value)
     if not tmp:
-        return value
-    # Display the date in the current time zone, whatever the sender's one
-    ndate = datetime.datetime.fromtimestamp(
+        return None
+    return datetime.datetime.fromtimestamp(
         email.utils.mktime_tz(tmp), tz=timezone.get_current_timezone()
     )
+
+
+def parse_date(value, **kwargs):
+    """Parse a Date: header."""
+    ndate = _local_date(value)
+    if ndate is None:
+        return value
     return date_format(ndate, compact_date_format(ndate, get_request().user.language))
+
+
+def format_full_date(value) -> str:
+    """Format a Date: header in full, the compact form leaving parts out."""
+    ndate = _local_date(value)
+    if ndate is None:
+        return value
+    return date_format(ndate, "DATETIME_FORMAT")
 
 
 def parse_scheduled_datetime(value: str, **kwargs) -> str:
