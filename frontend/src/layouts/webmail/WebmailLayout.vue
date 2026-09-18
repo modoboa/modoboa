@@ -93,6 +93,14 @@
         </template>
       </v-navigation-drawer>
     </template>
+    <!-- Every view of the webmail starts under the same title, which
+         keeps them clear of the top menu and in the same place from
+         the listing to a message -->
+    <template #header>
+      <div class="text-headline-medium ml-4 mb-4 flex-0-0">
+        {{ $gettext('Webmail') }}
+      </div>
+    </template>
   </ConnectedLayout>
   <v-dialog v-model="showMailboxForm" max-width="800">
     <MailboxForm
