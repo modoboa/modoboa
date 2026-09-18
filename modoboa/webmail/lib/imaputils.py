@@ -1,17 +1,21 @@
 """Extra IMAPv4 utilities."""
 
 import email
+import email.utils
 import imaplib
 import logging
 import re
 import ssl
 import time
+import urllib.parse
 
 from django.conf import settings
+from django.utils.encoding import smart_str
 from django.utils.translation import gettext as _
 
 from modoboa.lib import imap_utf7  # noqa
 from modoboa.lib import oauth2
+from modoboa.lib import u2u_decode
 from modoboa.lib.exceptions import InternalError
 from modoboa.parameters import tools as param_tools
 from modoboa.webmail import constants
@@ -143,6 +147,66 @@ def parse_thread_response(data: list | None) -> list[list[str]]:
     return threads
 
 
+# A MIME parameter name, possibly split into sections and possibly
+# carrying its own charset (RFC 2231): name, name*, name*0, name*0*...
+MIME_PARAMETER_RE = re.compile(
+    r"^(?P<name>[^*]+)(?:\*(?P<section>\d+))?(?P<encoded>\*)?$", re.I
+)
+
+
+def decode_mime_parameters(definition) -> dict[str, str]:
+    """Decode the parameters of a MIME part into {name: value}.
+
+    A file name reaches us in one of three shapes:
+
+    * plain ASCII, or encoded as an RFC 2047 word (``=?utf-8?Q?...?=``),
+      which is what the message headers use;
+    * RFC 2231 extended, ``filename*`` holding ``charset\'lang\'text``
+      with the text percent-encoded, used as soon as the name has an
+      accent;
+    * RFC 2231 split over numbered sections, ``filename*0*``,
+      ``filename*1*``..., used when the name is long. Each section says
+      for itself whether it is encoded, and only the first one carries
+      the charset.
+    """
+    if not definition or definition == "NIL":
+        return {}
+    sections: dict[str, dict[int, tuple[str, bool]]] = {}
+    plain: dict[str, str] = {}
+    for pos in range(0, len(definition) - 1, 2):
+        key, value = definition[pos], definition[pos + 1]
+        if not isinstance(key, str) or not isinstance(value, str):
+            continue
+        match = MIME_PARAMETER_RE.match(key)
+        if not match:
+            continue
+        name = match.group("name").lower()
+        if match.group("section") is None and not match.group("encoded"):
+            plain[name] = u2u_decode.u2u_decode(value)
+            continue
+        section = int(match.group("section") or 0)
+        sections.setdefault(name, {})[section] = (value, bool(match.group("encoded")))
+
+    result = dict(plain)
+    for name, parts in sections.items():
+        charset = None
+        decoded = []
+        for _section, (value, encoded) in sorted(parts.items()):
+            if not encoded:
+                decoded.append(value)
+                continue
+            part_charset, _lang, text = email.utils.decode_rfc2231(value)
+            # Only the first section announces the charset
+            charset = part_charset or charset
+            decoded.append(
+                urllib.parse.unquote(
+                    text, encoding=charset or "us-ascii", errors="replace"
+                )
+            )
+        result[name] = "".join(decoded)
+    return {name: value.strip("\r\t\n") for name, value in result.items()}
+
+
 class BodyStructure:
     """
     BODYSTRUCTURE response parser.
@@ -241,6 +305,36 @@ class BodyStructure:
 
     def has_attachments(self) -> int:
         return len(self.attachments)
+
+    def list_attachments(self) -> list[dict]:
+        """Describe every attachment of the message.
+
+        Name, size and content type all come from the body structure,
+        which the listing already fetches: describing an attachment
+        never costs an extra request. A part whose name can't be
+        decoded gets a generic one (part_1, part_2, ...).
+        """
+        result = []
+        for att in self.attachments:
+            # Content-Disposition wins over Content-Type: it is the one
+            # that names a file, the other names the body part
+            disposition = att.get("disposition")
+            name = (
+                decode_mime_parameters(
+                    disposition[1] if disposition and len(disposition) > 1 else None
+                ).get("filename")
+                or decode_mime_parameters(att.get("params")).get("name")
+                or f"part_{att['pnum']}"
+            )
+            result.append(
+                {
+                    "name": smart_str(name),
+                    "partnum": att["pnum"],
+                    "size": att.get("size"),
+                    "content_type": att.get("Content-Type"),
+                }
+            )
+        return result
 
     def find_attachment(self, pnum: str) -> dict | None:
         for att in self.attachments:
@@ -1196,6 +1290,9 @@ class IMAPconnector:
             bstruct = BodyStructure(msg_data["BODYSTRUCTURE"])
             if bstruct.has_attachments():
                 msg["attachments"] = True
+                # Described here rather than on demand: the body
+                # structure is already parsed, naming its parts is free
+                msg["attachment_list"] = bstruct.list_attachments()
             result += [msg]
         return result
 
