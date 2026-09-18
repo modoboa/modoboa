@@ -207,9 +207,24 @@ const close = backToMailbox
 
 const fetchThread = async () => {
   loading.value = true
+  let redirecting = false
   try {
     const resp = await api.getThread(mailbox.value, route.query.mailid)
-    messages.value = resp.data.results
+    const results = resp.data.results
+    if (results.length <= 1) {
+      // The thread lost its other messages, or never had any: show the
+      // message itself rather than a conversation of one
+      redirecting = true
+      router.replace({
+        name: 'EmailView',
+        query: {
+          mailbox: mailbox.value,
+          mailid: results[0]?.imapid || route.query.mailid,
+        },
+      })
+      return
+    }
+    messages.value = results
     // Unread messages and the last one are expanded right away
     openedPanels.value = messages.value
       .filter(
@@ -222,7 +237,10 @@ const fetchThread = async () => {
       loadContent(message)
     })
   } finally {
-    loading.value = false
+    // Keep the skeleton until the message view takes over
+    if (!redirecting) {
+      loading.value = false
+    }
   }
 }
 
