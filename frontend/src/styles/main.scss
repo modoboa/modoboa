@@ -435,6 +435,124 @@ h6 {
 }
 
 /**
+ * Sender, recipients and attachments of a message
+ *
+ * Built from what the rest of the webmail already uses: the tonal
+ * primary of the conversation counter for the avatar, text buttons
+ * like the actions of the header for the addresses, and the small
+ * uppercase titles of the listing columns for the labels. A hairline
+ * tells the block from the body.
+ */
+.message-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 0 12px 12px;
+  border-bottom: 1px solid rgba(var(--v-border-color), 0.12);
+
+  &.message-header-compact {
+    padding: 0 0 12px;
+  }
+
+  .message-avatar {
+    flex: 0 0 auto;
+    font-size: 0.8125rem;
+    font-weight: 600;
+  }
+
+  .message-header-main {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  /* As tall as the avatar, so the sender sits on its middle */
+  .message-sender-line {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 36px;
+  }
+
+  /* Every address is the same text v-btn: the sender only has a
+     heavier weight. The negative margin puts the text of the first one,
+     not its padding, on the column. */
+  .address-button {
+    max-width: 100%;
+    padding: 0 6px;
+    font-size: 0.875rem;
+    font-weight: 400;
+    letter-spacing: normal;
+    text-transform: none;
+
+    .v-btn__content {
+      min-width: 0;
+    }
+  }
+
+  .address-button-label {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .address-button-strong {
+    font-weight: 600;
+  }
+
+  .message-sender-line > .address-button:first-child,
+  .message-recipients-list {
+    margin-left: -6px;
+  }
+
+  .message-sender-address,
+  .message-date {
+    font-size: 0.8125rem;
+    color: rgba(var(--v-theme-on-surface), 0.6);
+  }
+
+  .message-sender-address {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .message-date {
+    flex: 0 0 auto;
+    margin-left: auto;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+
+  .message-recipients {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  /* The titles of the listing columns; wide enough for the longest
+     label, so the chips of every row start on the same column */
+  .message-recipients-label {
+    flex: 0 0 72px;
+    font-size: 0.75rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: rgba(var(--v-theme-on-surface), 0.5);
+  }
+
+  .message-recipients-list {
+    flex: 1 1 auto;
+    min-width: 0;
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .mail-attachments {
+    margin-top: 12px;
+  }
+}
+
+/**
  * Attachments of a message
  *
  * A row of cards rather than a comma separated list of links: each one
@@ -462,27 +580,29 @@ h6 {
     gap: 8px;
   }
 
+  /* A v-btn laid out as a card: hover, focus and ripple are its own,
+     only the content is set on the left and allowed to shrink */
   .mail-attachment {
-    display: flex;
-    align-items: center;
-    gap: 8px;
     width: 260px;
     max-width: 100%;
     padding: 8px 10px;
-    border: 1px solid rgba(var(--v-border-color), 0.12);
-    border-radius: 8px;
-    background-color: rgb(var(--v-theme-surface));
-    text-align: start;
-    cursor: pointer;
+    font-weight: 400;
+    letter-spacing: normal;
+    text-transform: none;
 
-    &:hover {
-      border-color: rgba(var(--v-theme-primary), 0.5);
-      background-color: rgba(var(--v-theme-primary), 0.04);
+    .v-btn__content {
+      flex: 1 1 auto;
+      min-width: 0;
+      justify-content: flex-start;
+      text-align: start;
     }
 
-    &:focus-visible {
-      outline: 2px solid rgb(var(--v-theme-primary));
-      outline-offset: 1px;
+    .v-btn__prepend {
+      margin-inline-end: 8px;
+    }
+
+    .v-btn__append {
+      margin-inline-start: 8px;
     }
   }
 

@@ -17,7 +17,6 @@
       <h2 class="mail-subject" :title="email?.subject">
         {{ email?.subject }}
       </h2>
-      <span v-if="email" class="mail-header-meta">{{ email.date }}</span>
       <template #extension>
         <v-btn
           variant="text"
@@ -123,55 +122,18 @@
       </template>
     </v-toolbar>
 
-    <div v-if="email" class="bg-white pb-4">
-      <div class="d-flex">
-        <v-menu key="sender">
-          <template #activator="{ props }">
-            <h3 v-bind="props">
-              <template v-if="email.from_address.name">
-                {{ email.from_address.name }}
-                <span class="text-grey text-body-medium">
-                  &lt;{{ email.from_address.address }}&gt;
-                </span>
-              </template>
-              <template v-else>
-                {{ email.from_address.address }}
-              </template>
-            </h3>
-          </template>
-          <ContactCard v-model="email.from_address" />
-        </v-menu>
-      </div>
-      <div v-if="email.to.length" class="mt-2 text-grey">
-        {{ $gettext('To') }}
-        <v-menu v-for="(rcpt, index) in email.to" :key="`to-${index}`">
-          <template #activator="{ props }">
-            <span v-if="index > 0">, </span>
-            <span v-bind="props">{{ rcpt.name || rcpt.address }}</span>
-          </template>
-          <ContactCard v-model="email.to[index]" />
-        </v-menu>
-        <template v-if="email.cc?.length">
-          <v-menu v-for="(rcpt, index) in email.cc" :key="`cc-${index}`">
-            <template #activator="{ props }">
-              <span>, </span>
-              <span v-bind="props">{{ rcpt.name || rcpt.address }}</span>
-            </template>
-            <ContactCard v-model="email.cc[index]" />
-          </v-menu>
-        </template>
-      </div>
-      <AttachmentList
-        :attachments="email.attachments"
-        @download="downloadAttachment"
-      />
-    </div>
+    <MessageHeader
+      v-if="email"
+      :message="email"
+      class="mb-3"
+      @download="downloadAttachment"
+    />
     <v-alert
       v-if="email?.scheduled_datetime"
       type="info"
       variant="tonal"
       density="compact"
-      class="mx-1"
+      class="mb-2"
     >
       {{ $gettext('Message scheduled at:') }}
       {{ $date(email.scheduled_datetime) }}
@@ -206,9 +168,8 @@ import { useBusStore } from '@/stores'
 import { useSpecialFolders } from '@/composables/webmail'
 import api from '@/api/webmail'
 import { downloadBlob } from '@/utils'
-import AttachmentList from '@/components/webmail/AttachmentList.vue'
-import ContactCard from '@/components/webmail/ContactCard.vue'
 import EmailMessageBody from '@/components/webmail/EmailMessageBody.vue'
+import MessageHeader from '@/components/webmail/MessageHeader.vue'
 import RemoteContentBanner from '@/components/webmail/RemoteContentBanner.vue'
 
 const { $gettext } = useGettext()

@@ -5,29 +5,36 @@
       {{ title }}
     </div>
     <div class="mail-attachments-items">
-      <button
+      <v-btn
         v-for="attachment in attachments"
         :key="attachment.partnum"
-        type="button"
         class="mail-attachment"
+        variant="text"
+        height="auto"
+        rounded="lg"
+        border
         :title="$gettext('Download %{name}', { name: attachment.name })"
         @click="$emit('download', attachment)"
       >
-        <v-icon
-          :icon="icon(attachment)"
-          size="large"
-          class="mail-attachment-icon"
-        />
+        <template #prepend>
+          <v-icon
+            :icon="icon(attachment)"
+            size="large"
+            class="mail-attachment-icon"
+          />
+        </template>
         <span class="mail-attachment-text">
           <span class="mail-attachment-name">{{ attachment.name }}</span>
           <span class="mail-attachment-meta">{{ meta(attachment) }}</span>
         </span>
-        <v-icon
-          icon="mdi-download"
-          size="small"
-          class="mail-attachment-action"
-        />
-      </button>
+        <template #append>
+          <v-icon
+            icon="mdi-download"
+            size="small"
+            class="mail-attachment-action"
+          />
+        </template>
+      </v-btn>
     </div>
   </div>
 </template>
