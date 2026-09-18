@@ -41,6 +41,9 @@ class ImapEmail(Email):
         ("From", True),
         ("To", True),
         ("Cc", True),
+        # Only found in the copies of sent messages and in drafts
+        ("Bcc", True),
+        ("Reply-To", True),
         ("Date", True),
         ("Subject", True),
     ]
@@ -124,6 +127,9 @@ class ImapEmail(Email):
             setattr(self, f"original_{header.replace('-', '')}", hdrvalue)
         if not hdrvalue:
             return ""
+        if header == "Date":
+            # The parsed value is compact, like in the listing
+            self.Date_full = imapheader.format_full_date(hdrvalue)
         if header in ADDRESS_HEADERS:
             # Parse the raw value: decoding encoded-words first could turn
             # an encoded comma of a display name into an address separator.
@@ -309,7 +315,6 @@ class ReplyModifier(Modifier):
     """Modify a message to reply to it."""
 
     headernames = ImapEmail.headernames + [
-        ("Reply-To", True),
         ("Message-ID", False),
         ("References", False),
     ]
@@ -409,7 +414,6 @@ class EditModifier(ImapEmail):
     embed_inlines = False
 
     headernames = ImapEmail.headernames + [
-        ("Bcc", True),
         ("In-Reply-To", False),
         ("References", False),
     ]

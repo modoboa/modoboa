@@ -254,6 +254,8 @@ class EmailSerializer(serializers.Serializer):
     # Format of the returned body (plain or html)
     body_format = serializers.CharField(source="mformat", required=False)
     date = serializers.CharField(source="Date")
+    # The date in full, where the compact one above leaves parts out
+    date_full = serializers.CharField(source="Date_full", required=False)
     message_id = serializers.CharField(source="Message_ID", required=False)
     in_reply_to = serializers.CharField(source="In_Reply_To", required=False)
     references = serializers.CharField(source="References", required=False)

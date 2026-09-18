@@ -4,7 +4,7 @@ import datetime
 from unittest import mock
 
 from django.test import SimpleTestCase, override_settings
-from django.utils import timezone
+from django.utils import timezone, translation
 
 from modoboa.webmail.lib import imapheader
 
@@ -69,3 +69,12 @@ class DatesTestCase(SimpleTestCase):
         result = imapheader.parse_scheduled_datetime("2026-10-16T08:00:00+00:00")
         self.assertIn("2026", result)
         self.assertIn("10:00", result)
+
+    def test_full_date(self, get_request, now):
+        self._setup_request(get_request)
+        with translation.override("fr"):
+            result = imapheader.format_full_date("Tue, 1 Sep 2026 10:00:00 +0000")
+        self.assertEqual(result, "1 septembre 2026 12:00")
+
+    def test_full_date_not_a_date(self, get_request, now):
+        self.assertEqual(imapheader.format_full_date("not a date"), "not a date")

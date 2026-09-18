@@ -399,6 +399,19 @@ class UserEmailViewSetTestCase(WebmailTestCase):
         )
         self.assertEqual(reply_to[0]["name"], "Support")
 
+    def test_content_headers(self):
+        """The message view gets every header its header block displays."""
+        self.authenticate()
+        url = reverse("v2:webmail-email-content")
+        response = self.client.get(f"{url}?mailbox=INBOX&mailid=46933")
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
+        self.assertEqual(
+            [rcpt["address"] for rcpt in data["reply_to"]],
+            ["support@example.test", "other@example.test"],
+        )
+        self.assertTrue(data["date_full"])
+
     def test_content_reply_escapes_sender_name(self):
         """A sender name containing HTML must not be injected as markup."""
         self.authenticate()
