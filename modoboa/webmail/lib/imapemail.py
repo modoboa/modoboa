@@ -23,6 +23,9 @@ from .utils import decode_payload
 # Headers holding addresses, parsed from their raw value
 ADDRESS_HEADERS = ("From", "To", "Cc", "Bcc", "Reply-To")
 
+# A cid: URL inside an HTML content (RFC 2392)
+CID_URL_RE = re.compile(r"""cid:([^\s"'<>()]+)""", re.I)
+
 
 class ImapEmail(Email):
     """
@@ -195,6 +198,7 @@ class ImapEmail(Email):
                             content = content.decode(result["encoding"])
                 bodyc += content
             self._fetch_inlines()
+            self._find_unreferenced_inlines(bodyc)
             if len(bodyc) != 0:
                 bodyc = getattr(self, f"_post_process_{self.mformat}")(bodyc)
                 self._body = getattr(self, f"viewmail_{self.mformat}")(
@@ -222,6 +226,21 @@ class ImapEmail(Email):
     def _find_attachments(self) -> None:
         """Retrieve attachments from the parsed body structure."""
         for attachment in self.bs.list_attachments():
+            self.attachments[attachment.pop("partnum")] = attachment
+
+    def _find_unreferenced_inlines(self, content: str) -> None:
+        """List the inlines the displayed content doesn't show.
+
+        They can't be seen otherwise: an image the HTML doesn't
+        reference, or any image when the plain text is displayed.
+        """
+        referenced = set()
+        if self.mformat == "html":
+            referenced = {unquote(cid) for cid in CID_URL_RE.findall(content)}
+        for cid, params in self.bs.inlines.items():
+            if cid in referenced or params["pnum"] in self.attachments:
+                continue
+            attachment = self.bs.describe_part(params)
             self.attachments[attachment.pop("partnum")] = attachment
 
     def _fetch_inlines(self):

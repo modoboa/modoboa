@@ -226,56 +226,49 @@ class BodyStructure:
         if definition is not None:
             self.load_from_definition(definition)
 
-    def __store_part(self, definition: list, pnum: str, multisubtype: str) -> None:
+    def __store_part(
+        self, definition: list, pnum: str, multisubtype: str | None
+    ) -> None:
         """Store the given message part in the appropriate category.
 
-        This method sort parts in two categories:
+        This method sort parts in three categories:
 
         * contents (what is going to be displayed)
+        * inlines (images embedded into the HTML content)
         * attachments
 
         As there is no official definition about what is a content and
         what is an attachment, the following rules are applied:
 
-        * If the MIME type is text/plain or text/html:
+        * A text/plain or text/html part is a content, unless its
+          disposition says it is an attachment
 
-         * If no previous part of this type has already been seen,
-           it's a content
-         * Otherwise it's an attachment
+        * An image that can be displayed and carries a Content-ID is an
+          inline, unless it is outside a multipart/related and its
+          disposition says it is an attachment. Whether the HTML
+          content really references it is only known once the content
+          is loaded: see ImapEmail.
 
-        * Else, if the multipart subtype is related, we consider this
-          part as content because it is certainly an embedded image
-
-        * Any other MIME type is considered as an attachment (for now)
+        * Anything else is an attachment
 
         :param definition: a part definition (list)
         :param pnum: the part's number
-        :param multisubtype: the multipart subtype
+        :param multisubtype: the subtype of the enclosing multipart
 
         """
         pnum = "1" if pnum is None else pnum
+        cid = definition[3]
         params = {
             "pnum": pnum,
             "params": definition[2],
-            "cid": definition[3],
+            "cid": cid if isinstance(cid, str) and cid != "NIL" else None,
             "description": definition[4],
             "encoding": definition[5],
             "size": definition[6],
         }
         mtype = definition[0].lower()
         subtype = definition[1].lower()
-        ftype = f"{definition[0].lower()}/{subtype}"
-        if ftype in ("text/plain", "text/html"):
-            if subtype not in self.contents:
-                self.contents[subtype] = [params]
-            else:
-                self.contents[subtype].append(params)
-            return
-        elif multisubtype in ["related"]:
-            params["Content-Type"] = ftype
-            self.inlines[params["cid"].strip("<>")] = params
-            return
-
+        ftype = f"{mtype}/{subtype}"
         params["Content-Type"] = ftype
         if len(definition) > 7:
             extensions = ["md5", "disposition", "language", "location"]
@@ -283,9 +276,28 @@ class BodyStructure:
                 extensions = ["textlines"] + extensions
             elif ftype == "message/rfc822":
                 extensions = ["envelopestruct", "bodystruct", "textlines"] + extensions
-            for idx, value in enumerate(definition[7:]):
+            for idx, value in enumerate(definition[7 : len(extensions) + 7]):
                 params[extensions[idx]] = value
+        disposition = params.get("disposition")
+        disposition = (
+            disposition[0].lower()
+            if isinstance(disposition, list)
+            and disposition
+            and isinstance(disposition[0], str)
+            else None
+        )
+        in_related = (multisubtype or "").lower() == "related"
 
+        if ftype in ("text/plain", "text/html") and disposition != "attachment":
+            self.contents.setdefault(subtype, []).append(params)
+            return
+        if (
+            ftype in constants.INLINE_IMAGE_MIME_TYPES
+            and params["cid"]
+            and (in_related or disposition != "attachment")
+        ):
+            self.inlines[params["cid"].strip("<>")] = params
+            return
         self.attachments += [params]
 
     def load_from_definition(
@@ -296,7 +308,8 @@ class BodyStructure:
                 if isinstance(mp[0], list):
                     self.load_from_definition(mp, mp[1])
                 else:
-                    self.load_from_definition(mp)
+                    # The parts of the multipart being loaded
+                    self.load_from_definition(mp, multisubtype)
             elif isinstance(mp, dict):
                 if isinstance(mp["struct"][0], list):
                     self.load_from_definition(mp["struct"][0], mp["struct"][1])
@@ -311,33 +324,43 @@ class BodyStructure:
 
         Name, size and content type all come from the body structure,
         which the listing already fetches: describing an attachment
-        never costs an extra request. A part whose name can't be
-        decoded gets a generic one (part_1, part_2, ...).
+        never costs an extra request.
         """
-        result = []
-        for att in self.attachments:
-            # Content-Disposition wins over Content-Type: it is the one
-            # that names a file, the other names the body part
-            disposition = att.get("disposition")
-            name = (
-                decode_mime_parameters(
-                    disposition[1] if disposition and len(disposition) > 1 else None
-                ).get("filename")
-                or decode_mime_parameters(att.get("params")).get("name")
-                or f"part_{att['pnum']}"
-            )
-            result.append(
-                {
-                    "name": smart_str(name),
-                    "partnum": att["pnum"],
-                    "size": att.get("size"),
-                    "content_type": att.get("Content-Type"),
-                }
-            )
-        return result
+        return [self.describe_part(att) for att in self.attachments]
+
+    @staticmethod
+    def describe_part(part: dict) -> dict:
+        """Describe a part the way the interface lists attachments.
+
+        A part whose name can't be decoded gets a generic one (part_1,
+        part_2, ...).
+        """
+        # Content-Disposition wins over Content-Type: it is the one
+        # that names a file, the other names the body part
+        disposition = part.get("disposition")
+        name = (
+            decode_mime_parameters(
+                disposition[1]
+                if isinstance(disposition, list) and len(disposition) > 1
+                else None
+            ).get("filename")
+            or decode_mime_parameters(part.get("params")).get("name")
+            or f"part_{part['pnum']}"
+        )
+        return {
+            "name": smart_str(name),
+            "partnum": part["pnum"],
+            "size": part.get("size"),
+            "content_type": part.get("Content-Type"),
+        }
 
     def find_attachment(self, pnum: str) -> dict | None:
-        for att in self.attachments:
+        """Find a part that can be downloaded.
+
+        Inlines are included: the ones the content doesn't reference
+        are listed as attachments.
+        """
+        for att in self.attachments + list(self.inlines.values()):
             if pnum == att["pnum"]:
                 return att
         return None
