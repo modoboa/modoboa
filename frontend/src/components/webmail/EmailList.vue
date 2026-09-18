@@ -1,5 +1,12 @@
 <template>
-  <div class="mail-toolbar mt-6 mb-2 mx-1">
+  <v-toolbar
+    class="mail-toolbar mt-4 mb-2 mx-1 flex-0-0"
+    color="surface"
+    flat
+    border
+    rounded="lg"
+    :height="48"
+  >
     <v-checkbox
       v-model="selectAll"
       class="cell-check"
@@ -161,15 +168,15 @@
         @click="page = emails.next_page"
       />
     </div>
-  </div>
-  <v-skeleton-loader v-if="loading" type="card@2"></v-skeleton-loader>
+  </v-toolbar>
+  <v-skeleton-loader v-if="loading" class="mx-1" type="card@2" />
   <template v-else>
     <v-alert
       v-if="inScheduledView"
       type="info"
       variant="tonal"
       density="compact"
-      class="mx-1"
+      class="mx-1 mb-2 flex-0-0"
     >
       {{
         $gettext(
@@ -177,10 +184,7 @@
         )
       }}
     </v-alert>
-    <div
-      class="emails position-absolute bottom-0 w-100 overflow-y-auto"
-      :class="{ 'top-0': !inScheduledView, 'scheduling-top': inScheduledView }"
-    >
+    <div class="emails overflow-y-auto">
       <div v-if="emails.results?.length" class="mail-list mx-1">
         <div class="mail-list-header">
           <span class="spacer-accent" />
@@ -646,10 +650,11 @@ watch(page, () => {
 </script>
 
 <style lang="scss" scoped>
+/* The listing fills what the toolbar leaves, and scrolls on its own.
+   It used to be positioned absolutely under a hardcoded 150px offset,
+   which had to be kept in step with the height of everything above. */
 .emails {
-  margin-top: 150px;
-}
-.scheduling-top {
-  top: 45px;
+  flex: 1 1 auto;
+  min-height: 0;
 }
 </style>
