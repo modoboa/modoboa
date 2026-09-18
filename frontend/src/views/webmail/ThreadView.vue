@@ -1,106 +1,119 @@
 <template>
   <div class="bg-white rounded-lg pa-4 h-100 overflow-y-auto">
-    <v-toolbar color="white">
-      <v-btn icon="mdi-arrow-left" size="small" variant="flat" @click="close" />
-
-      <v-btn-group color="primary" rounded="lg" density="compact" divided>
-        <v-btn prepend-icon="mdi-reply" @click="() => replyToLatest()">
+    <v-toolbar
+      class="mail-header"
+      color="surface"
+      flat
+      :height="48"
+      :extension-height="40"
+    >
+      <v-btn
+        icon="mdi-arrow-left"
+        variant="text"
+        size="small"
+        :title="$gettext('Back to the mailbox')"
+        @click="close"
+      />
+      <h2 class="mail-subject" :title="subject">{{ subject }}</h2>
+      <span class="mail-header-meta">{{ messageCountLabel }}</span>
+      <template #extension>
+        <v-btn
+          variant="text"
+          size="small"
+          prepend-icon="mdi-reply"
+          @click="() => replyToLatest()"
+        >
           {{ $gettext('Reply') }}
         </v-btn>
-        <v-btn size="small" icon>
-          <v-icon icon="mdi-chevron-down" />
-          <v-menu activator="parent">
-            <v-list>
-              <v-list-item
-                :title="$gettext('Reply all')"
-                @click="() => replyToLatest(true)"
-              />
-              <v-list-item
-                :title="$gettext('Forward')"
-                @click="forwardLatest"
-              />
-            </v-list>
-          </v-menu>
+        <v-btn
+          variant="text"
+          size="small"
+          prepend-icon="mdi-reply-all"
+          @click="() => replyToLatest(true)"
+        >
+          {{ $gettext('Reply all') }}
         </v-btn>
-      </v-btn-group>
-      <v-btn
-        class="ml-2"
-        color="error"
-        variant="tonal"
-        icon="mdi-trash-can"
-        size="small"
-        :loading="working"
-        :title="$gettext('Delete the whole conversation')"
-        @click="deleteThread"
-      >
-      </v-btn>
-      <v-btn
-        v-if="!isJunkFolder"
-        class="ml-2"
-        color="warning"
-        variant="tonal"
-        icon="mdi-fire"
-        size="small"
-        :loading="working"
-        @click="markThreadAsJunk"
-      >
-      </v-btn>
-      <v-btn
-        v-else
-        class="ml-2"
-        color="success"
-        variant="tonal"
-        icon="mdi-thumb-up"
-        size="small"
-        :loading="working"
-        @click="markThreadAsNotJunk"
-      >
-      </v-btn>
-      <v-spacer />
-      <span class="text-grey text-body-small">
-        {{ messageCountLabel }}
-      </span>
+        <v-btn
+          variant="text"
+          size="small"
+          prepend-icon="mdi-share-outline"
+          @click="forwardLatest"
+        >
+          {{ $gettext('Forward') }}
+        </v-btn>
+        <span class="mail-header-separator" />
+        <v-btn
+          icon="mdi-trash-can-outline"
+          color="error"
+          variant="text"
+          size="small"
+          :loading="working"
+          :title="$gettext('Delete the whole conversation')"
+          @click="deleteThread"
+        />
+        <v-btn
+          v-if="!isJunkFolder"
+          icon="mdi-fire"
+          color="warning"
+          variant="text"
+          size="small"
+          :loading="working"
+          :title="$gettext('Mark the conversation as junk')"
+          @click="markThreadAsJunk"
+        />
+        <v-btn
+          v-else
+          icon="mdi-thumb-up-outline"
+          color="success"
+          variant="text"
+          size="small"
+          :loading="working"
+          :title="$gettext('Mark the conversation as not junk')"
+          @click="markThreadAsNotJunk"
+        />
+      </template>
     </v-toolbar>
 
     <v-skeleton-loader v-if="loading" type="article@2" />
     <template v-else>
-      <h2 class="mt-2 mb-4">{{ subject }}</h2>
-      <v-expansion-panels v-model="openedPanels" multiple variant="accordion">
+      <v-expansion-panels
+        v-model="openedPanels"
+        class="thread-panels"
+        multiple
+        variant="accordion"
+        elevation="0"
+      >
         <v-expansion-panel
           v-for="message in messages"
           :key="message.imapid"
           :value="message.imapid"
         >
           <v-expansion-panel-title>
-            <div class="d-flex align-center w-100">
-              <div
-                class="text-truncate"
-                :class="{ 'font-weight-bold': message.style === 'unseen' }"
-              >
-                <EmailAddressList :addresses="[message.from_address]" />
-              </div>
-              <v-spacer />
+            <span
+              class="thread-sender"
+              :class="{ 'font-weight-bold': message.style === 'unseen' }"
+              :title="message.from_address?.fulladdress"
+            >
+              {{ senderName(message) }}
+            </span>
+            <span class="thread-flags">
               <v-icon
                 v-if="message.answered"
                 icon="mdi-reply-outline"
                 size="small"
-                class="mr-1"
               />
               <v-icon
                 v-if="message.attachments"
                 icon="mdi-paperclip"
                 size="small"
-                class="mr-1"
               />
-              <span class="text-grey text-body-small mr-2">
-                {{ message.date }}
-              </span>
-            </div>
+            </span>
+            <span class="thread-date">{{ message.date }}</span>
           </v-expansion-panel-title>
           <v-expansion-panel-text>
-            <div class="d-flex align-center mb-2">
+            <div class="thread-message-actions">
               <v-btn
-                size="x-small"
+                size="small"
                 variant="text"
                 prepend-icon="mdi-reply"
                 @click="replyTo(message)"
@@ -108,7 +121,15 @@
                 {{ $gettext('Reply') }}
               </v-btn>
               <v-btn
-                size="x-small"
+                size="small"
+                variant="text"
+                prepend-icon="mdi-reply-all"
+                @click="replyTo(message, true)"
+              >
+                {{ $gettext('Reply all') }}
+              </v-btn>
+              <v-btn
+                size="small"
                 variant="text"
                 prepend-icon="mdi-share-outline"
                 @click="forward(message)"
@@ -116,7 +137,7 @@
                 {{ $gettext('Forward') }}
               </v-btn>
               <v-btn
-                size="x-small"
+                size="small"
                 variant="text"
                 prepend-icon="mdi-open-in-new"
                 @click="openMessage(message)"
@@ -169,7 +190,6 @@ import { useGettext } from 'vue3-gettext'
 import { useBusStore } from '@/stores'
 import { useSpecialFolders } from '@/composables/webmail'
 import api from '@/api/webmail'
-import EmailAddressList from '@/components/webmail/EmailAddressList.vue'
 import EmailMessageBody from '@/components/webmail/EmailMessageBody.vue'
 
 const { $gettext, $ngettext } = useGettext()
@@ -186,6 +206,9 @@ const openedPanels = ref([])
 const working = ref(false)
 
 const mailbox = computed(() => route.query.mailbox)
+
+const senderName = (message) =>
+  message.from_address?.name || message.from_address?.address || ''
 
 const subject = computed(() => messages.value[0]?.subject || '')
 

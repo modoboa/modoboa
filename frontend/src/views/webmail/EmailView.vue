@@ -1,104 +1,130 @@
 <template>
   <div v-show="loaded" class="bg-white rounded-lg pa-4 h-100 overflow-y-auto">
-    <v-toolbar color="white">
-      <v-btn icon="mdi-arrow-left" size="small" variant="flat" @click="close" />
-
-      <v-btn-group color="primary" rounded="lg" density="compact" divided>
-        <v-btn prepend-icon="mdi-reply" @click="() => replyToEmail()">
+    <v-toolbar
+      class="mail-header"
+      color="surface"
+      flat
+      :height="48"
+      :extension-height="40"
+    >
+      <v-btn
+        icon="mdi-arrow-left"
+        variant="text"
+        size="small"
+        :title="$gettext('Back to the mailbox')"
+        @click="close"
+      />
+      <h2 class="mail-subject" :title="email?.subject">
+        {{ email?.subject }}
+      </h2>
+      <span v-if="email" class="mail-header-meta">{{ email.date }}</span>
+      <template #extension>
+        <v-btn
+          variant="text"
+          size="small"
+          prepend-icon="mdi-reply"
+          @click="() => replyToEmail()"
+        >
           {{ $gettext('Reply') }}
         </v-btn>
-        <v-btn size="small" icon>
-          <v-icon icon="mdi-chevron-down" />
+        <v-btn
+          variant="text"
+          size="small"
+          prepend-icon="mdi-reply-all"
+          @click="() => replyToEmail(true)"
+        >
+          {{ $gettext('Reply all') }}
+        </v-btn>
+        <v-btn
+          variant="text"
+          size="small"
+          prepend-icon="mdi-share-outline"
+          @click="forwardEmail"
+        >
+          {{ $gettext('Forward') }}
+        </v-btn>
+        <template v-if="$route.query.mailbox !== 'Scheduled'">
+          <v-btn
+            v-if="isDraftsFolder"
+            variant="text"
+            size="small"
+            prepend-icon="mdi-pencil"
+            @click="editDraft"
+          >
+            {{ $gettext('Edit') }}
+          </v-btn>
+          <span class="mail-header-separator" />
+          <v-btn
+            icon="mdi-trash-can-outline"
+            color="error"
+            variant="text"
+            size="small"
+            :loading="working"
+            :title="$gettext('Delete')"
+            @click="deleteEmail"
+          />
+          <v-btn
+            v-if="!isJunkFolder"
+            icon="mdi-fire"
+            color="warning"
+            variant="text"
+            size="small"
+            :loading="working"
+            :title="$gettext('Mark as junk')"
+            @click="markEmailAsJunk"
+          />
+          <v-btn
+            v-else
+            icon="mdi-thumb-up-outline"
+            color="success"
+            variant="text"
+            size="small"
+            :loading="working"
+            :title="$gettext('Mark as not junk')"
+            @click="markEmailAsNotJunk"
+          />
+        </template>
+        <v-btn
+          icon
+          variant="text"
+          size="small"
+          :title="$gettext('Display options')"
+        >
+          <v-icon icon="mdi-cog-outline" />
           <v-menu activator="parent">
-            <v-list>
+            <v-list density="compact">
               <v-list-item
-                :title="$gettext('Reply all')"
-                @click="() => replyToEmail(true)"
+                v-if="!enableLinks"
+                :title="$gettext('Enable links')"
+                @click="enableLinks = true"
               />
-              <v-list-item :title="$gettext('Forward')" @click="forwardEmail" />
+              <v-list-item
+                v-else
+                :title="$gettext('Disable links')"
+                @click="enableLinks = false"
+              />
+              <v-list-item
+                v-if="!enableImages"
+                :title="$gettext('Display images')"
+                @click="enableImages = true"
+              />
+              <v-list-item
+                v-else
+                :title="$gettext('Hide images')"
+                @click="enableImages = false"
+              />
+              <v-list-item
+                :title="$gettext('Display source')"
+                @click="openEmailSourceDialog"
+              />
             </v-list>
           </v-menu>
         </v-btn>
-      </v-btn-group>
-      <template v-if="$route.query.mailbox !== 'Scheduled'">
-        <v-btn
-          class="ml-2"
-          color="error"
-          variant="tonal"
-          icon="mdi-trash-can"
-          size="small"
-          :loading="working"
-          @click="deleteEmail"
-        >
-        </v-btn>
-        <v-btn
-          v-if="!isJunkFolder"
-          class="ml-2"
-          color="warning"
-          variant="tonal"
-          icon="mdi-fire"
-          size="small"
-          :loading="working"
-          @click="markEmailAsJunk"
-        >
-        </v-btn>
-        <v-btn
-          v-else
-          class="ml-2"
-          color="success"
-          variant="tonal"
-          icon="mdi-thumb-up"
-          size="small"
-          :loading="working"
-          @click="markEmailAsNotJunk"
-        >
-        </v-btn>
-        <v-btn
-          v-if="isDraftsFolder"
-          class="ml-2"
-          variant="tonal"
-          icon="mdi-pencil"
-          size="small"
-          @click="editDraft"
-        >
-        </v-btn>
       </template>
-      <v-btn class="ml-2" variant="tonal" icon size="small">
-        <v-icon icon="mdi-cog" />
-        <v-menu activator="parent">
-          <v-list density="compact">
-            <v-list-item
-              v-if="!enableLinks"
-              :title="$gettext('Enable links')"
-              @click="enableLinks = true"
-            />
-            <v-list-item
-              v-else
-              :title="$gettext('Disable links')"
-              @click="enableLinks = false"
-            />
-            <v-list-item
-              v-if="!enableImages"
-              :title="$gettext('Display images')"
-              @click="enableImages = true"
-            />
-            <v-list-item
-              v-else
-              :title="$gettext('Hide images')"
-              @click="enableImages = false"
-            />
-            <v-list-item
-              :title="$gettext('Display source')"
-              @click="openEmailSourceDialog"
-            />
-          </v-list>
-        </v-menu>
-      </v-btn>
     </v-toolbar>
 
-    <div v-if="email" class="bg-white pa-4">
-      <h2>{{ email.subject }}</h2>
-      <div class="d-flex mt-2">
+    <div v-if="email" class="bg-white pb-4">
+      <div class="d-flex">
         <v-menu key="sender">
           <template #activator="{ props }">
             <h3 v-bind="props">
@@ -115,8 +141,6 @@
           </template>
           <ContactCard v-model="email.from_address" />
         </v-menu>
-        <v-spacer />
-        <span class="text-grey">{{ email.date }}</span>
       </div>
       <div v-if="email.to.length" class="mt-2 text-grey">
         {{ $gettext('To') }}
