@@ -1,6 +1,6 @@
 <template>
   <v-toolbar
-    class="mail-toolbar mt-4 mb-2 mx-1 flex-0-0"
+    class="mail-toolbar mb-2 mx-1 flex-0-0"
     color="surface"
     flat
     border

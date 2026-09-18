@@ -6,7 +6,11 @@
     <slot name="topbar">
       <TopMenu :user="authUser" />
     </slot>
-    <ConnectedView />
+    <ConnectedView>
+      <template v-if="$slots.header" #header>
+        <slot name="header" />
+      </template>
+    </ConnectedView>
     <v-snackbar
       v-model="snackbar"
       :color="notificationColor"
