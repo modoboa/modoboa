@@ -1,17 +1,21 @@
 """Extra IMAPv4 utilities."""
 
 import email
+import email.utils
 import imaplib
 import logging
 import re
 import ssl
 import time
+import urllib.parse
 
 from django.conf import settings
+from django.utils.encoding import smart_str
 from django.utils.translation import gettext as _
 
 from modoboa.lib import imap_utf7  # noqa
 from modoboa.lib import oauth2
+from modoboa.lib import u2u_decode
 from modoboa.lib.exceptions import InternalError
 from modoboa.parameters import tools as param_tools
 from modoboa.webmail import constants
@@ -22,6 +26,7 @@ from ..exceptions import (
     MailboxOperationError,
     WebmailInternalError,
 )
+from . import imapheader
 from .fetch_parser import FetchResponseParser
 
 logger = logging.getLogger("modoboa.webmail")
@@ -42,6 +47,10 @@ IMAP4Error = imaplib.IMAP4.error
 UID_RE = re.compile(r"^[0-9]+(?:,[0-9]+)*$")
 # A MIME part number: dot-separated positive integers (e.g. "1", "2.1").
 PARTNUM_RE = re.compile(r"^[0-9]+(?:\.[0-9]+)*$")
+
+# A THREAD response only contains UIDs, parenthesis and spaces.
+THREAD_RESPONSE_RE = re.compile(r"^[0-9() ]*$")
+THREAD_TOKEN_RE = re.compile(r"[()]|[0-9]+")
 
 
 def validate_imap_uid(value):
@@ -90,6 +99,114 @@ def quote_mailbox_name(name: str) -> bytes:
     return b'"' + encoded.replace(b"\\", b"\\\\").replace(b'"', b'\\"') + b'"'
 
 
+def parse_thread_response(data: list | None) -> list[list[str]]:
+    """Turn a THREAD response into a flat list of threads.
+
+    The server answers with nested groups (RFC 5256), for instance
+    ``(2)(3 6 (4 23)(44 7 96))``: every UID of a top level group belongs
+    to the same conversation, whatever its depth. Only that grouping is
+    kept here, in the order given by the server, which is the order of
+    the conversation itself.
+
+    An unexpected reply (unbalanced parenthesis, unknown token) is
+    logged and ignored rather than raising: a broken thread listing must
+    not break the mailbox.
+    """
+    if not data:
+        return []
+    raw = b" ".join(part for part in data if part).decode("ascii", "replace").strip()
+    if raw.upper().startswith("THREAD"):
+        raw = raw[len("THREAD") :]
+    if not THREAD_RESPONSE_RE.match(raw):
+        logger.warning("Unexpected THREAD response: %s", raw[:200])
+        return []
+    threads: list[list[str]] = []
+    current: list[str] | None = None
+    depth = 0
+    for token in THREAD_TOKEN_RE.findall(raw):
+        if token == "(":
+            depth += 1
+            if depth == 1:
+                current = []
+        elif token == ")":
+            depth -= 1
+            if depth < 0:
+                logger.warning("Unbalanced THREAD response: %s", raw[:200])
+                return []
+            if depth == 0 and current:
+                threads.append(current)
+                current = None
+        elif current is not None:
+            current.append(token)
+        else:
+            # A bare UID outside of any group is a thread of its own
+            threads.append([token])
+    if depth:
+        logger.warning("Unbalanced THREAD response: %s", raw[:200])
+        return []
+    return threads
+
+
+# A MIME parameter name, possibly split into sections and possibly
+# carrying its own charset (RFC 2231): name, name*, name*0, name*0*...
+MIME_PARAMETER_RE = re.compile(
+    r"^(?P<name>[^*]+)(?:\*(?P<section>\d+))?(?P<encoded>\*)?$", re.I
+)
+
+
+def decode_mime_parameters(definition) -> dict[str, str]:
+    """Decode the parameters of a MIME part into {name: value}.
+
+    A file name reaches us in one of three shapes:
+
+    * plain ASCII, or encoded as an RFC 2047 word (``=?utf-8?Q?...?=``),
+      which is what the message headers use;
+    * RFC 2231 extended, ``filename*`` holding ``charset\'lang\'text``
+      with the text percent-encoded, used as soon as the name has an
+      accent;
+    * RFC 2231 split over numbered sections, ``filename*0*``,
+      ``filename*1*``..., used when the name is long. Each section says
+      for itself whether it is encoded, and only the first one carries
+      the charset.
+    """
+    if not definition or definition == "NIL":
+        return {}
+    sections: dict[str, dict[int, tuple[str, bool]]] = {}
+    plain: dict[str, str] = {}
+    for pos in range(0, len(definition) - 1, 2):
+        key, value = definition[pos], definition[pos + 1]
+        if not isinstance(key, str) or not isinstance(value, str):
+            continue
+        match = MIME_PARAMETER_RE.match(key)
+        if not match:
+            continue
+        name = match.group("name").lower()
+        if match.group("section") is None and not match.group("encoded"):
+            plain[name] = u2u_decode.u2u_decode(value)
+            continue
+        section = int(match.group("section") or 0)
+        sections.setdefault(name, {})[section] = (value, bool(match.group("encoded")))
+
+    result = dict(plain)
+    for name, parts in sections.items():
+        charset = None
+        decoded = []
+        for _section, (value, encoded) in sorted(parts.items()):
+            if not encoded:
+                decoded.append(value)
+                continue
+            part_charset, _lang, text = email.utils.decode_rfc2231(value)
+            # Only the first section announces the charset
+            charset = part_charset or charset
+            decoded.append(
+                urllib.parse.unquote(
+                    text, encoding=charset or "us-ascii", errors="replace"
+                )
+            )
+        result[name] = "".join(decoded)
+    return {name: value.strip("\r\t\n") for name, value in result.items()}
+
+
 class BodyStructure:
     """
     BODYSTRUCTURE response parser.
@@ -109,56 +226,49 @@ class BodyStructure:
         if definition is not None:
             self.load_from_definition(definition)
 
-    def __store_part(self, definition: list, pnum: str, multisubtype: str) -> None:
+    def __store_part(
+        self, definition: list, pnum: str, multisubtype: str | None
+    ) -> None:
         """Store the given message part in the appropriate category.
 
-        This method sort parts in two categories:
+        This method sort parts in three categories:
 
         * contents (what is going to be displayed)
+        * inlines (images embedded into the HTML content)
         * attachments
 
         As there is no official definition about what is a content and
         what is an attachment, the following rules are applied:
 
-        * If the MIME type is text/plain or text/html:
+        * A text/plain or text/html part is a content, unless its
+          disposition says it is an attachment
 
-         * If no previous part of this type has already been seen,
-           it's a content
-         * Otherwise it's an attachment
+        * An image that can be displayed and carries a Content-ID is an
+          inline, unless it is outside a multipart/related and its
+          disposition says it is an attachment. Whether the HTML
+          content really references it is only known once the content
+          is loaded: see ImapEmail.
 
-        * Else, if the multipart subtype is related, we consider this
-          part as content because it is certainly an embedded image
-
-        * Any other MIME type is considered as an attachment (for now)
+        * Anything else is an attachment
 
         :param definition: a part definition (list)
         :param pnum: the part's number
-        :param multisubtype: the multipart subtype
+        :param multisubtype: the subtype of the enclosing multipart
 
         """
         pnum = "1" if pnum is None else pnum
+        cid = definition[3]
         params = {
             "pnum": pnum,
             "params": definition[2],
-            "cid": definition[3],
+            "cid": cid if isinstance(cid, str) and cid != "NIL" else None,
             "description": definition[4],
             "encoding": definition[5],
             "size": definition[6],
         }
         mtype = definition[0].lower()
         subtype = definition[1].lower()
-        ftype = f"{definition[0].lower()}/{subtype}"
-        if ftype in ("text/plain", "text/html"):
-            if subtype not in self.contents:
-                self.contents[subtype] = [params]
-            else:
-                self.contents[subtype].append(params)
-            return
-        elif multisubtype in ["related"]:
-            params["Content-Type"] = ftype
-            self.inlines[params["cid"].strip("<>")] = params
-            return
-
+        ftype = f"{mtype}/{subtype}"
         params["Content-Type"] = ftype
         if len(definition) > 7:
             extensions = ["md5", "disposition", "language", "location"]
@@ -166,9 +276,28 @@ class BodyStructure:
                 extensions = ["textlines"] + extensions
             elif ftype == "message/rfc822":
                 extensions = ["envelopestruct", "bodystruct", "textlines"] + extensions
-            for idx, value in enumerate(definition[7:]):
+            for idx, value in enumerate(definition[7 : len(extensions) + 7]):
                 params[extensions[idx]] = value
+        disposition = params.get("disposition")
+        disposition = (
+            disposition[0].lower()
+            if isinstance(disposition, list)
+            and disposition
+            and isinstance(disposition[0], str)
+            else None
+        )
+        in_related = (multisubtype or "").lower() == "related"
 
+        if ftype in ("text/plain", "text/html") and disposition != "attachment":
+            self.contents.setdefault(subtype, []).append(params)
+            return
+        if (
+            ftype in constants.INLINE_IMAGE_MIME_TYPES
+            and params["cid"]
+            and (in_related or disposition != "attachment")
+        ):
+            self.inlines[params["cid"].strip("<>")] = params
+            return
         self.attachments += [params]
 
     def load_from_definition(
@@ -179,7 +308,8 @@ class BodyStructure:
                 if isinstance(mp[0], list):
                     self.load_from_definition(mp, mp[1])
                 else:
-                    self.load_from_definition(mp)
+                    # The parts of the multipart being loaded
+                    self.load_from_definition(mp, multisubtype)
             elif isinstance(mp, dict):
                 if isinstance(mp["struct"][0], list):
                     self.load_from_definition(mp["struct"][0], mp["struct"][1])
@@ -189,8 +319,48 @@ class BodyStructure:
     def has_attachments(self) -> int:
         return len(self.attachments)
 
+    def list_attachments(self) -> list[dict]:
+        """Describe every attachment of the message.
+
+        Name, size and content type all come from the body structure,
+        which the listing already fetches: describing an attachment
+        never costs an extra request.
+        """
+        return [self.describe_part(att) for att in self.attachments]
+
+    @staticmethod
+    def describe_part(part: dict) -> dict:
+        """Describe a part the way the interface lists attachments.
+
+        A part whose name can't be decoded gets a generic one (part_1,
+        part_2, ...).
+        """
+        # Content-Disposition wins over Content-Type: it is the one
+        # that names a file, the other names the body part
+        disposition = part.get("disposition")
+        name = (
+            decode_mime_parameters(
+                disposition[1]
+                if isinstance(disposition, list) and len(disposition) > 1
+                else None
+            ).get("filename")
+            or decode_mime_parameters(part.get("params")).get("name")
+            or f"part_{part['pnum']}"
+        )
+        return {
+            "name": smart_str(name),
+            "partnum": part["pnum"],
+            "size": part.get("size"),
+            "content_type": part.get("Content-Type"),
+        }
+
     def find_attachment(self, pnum: str) -> dict | None:
-        for att in self.attachments:
+        """Find a part that can be downloaded.
+
+        Inlines are included: the ones the content doesn't reference
+        are listed as attachments.
+        """
+        for att in self.attachments + list(self.inlines.values()):
             if pnum == att["pnum"]:
                 return att
         return None
@@ -293,7 +463,7 @@ class IMAPconnector:
         :param name: the command's name
         :return: the command's result
         """
-        if name in ["FETCH", "SORT", "STORE", "COPY", "SEARCH", "MOVE"]:
+        if name in ["FETCH", "SORT", "STORE", "COPY", "SEARCH", "MOVE", "THREAD"]:
             try:
                 typ, data = self.m.uid(name, *args)
             except IMAP4Error as e:
@@ -441,6 +611,29 @@ class IMAPconnector:
         """Does the server support the SORT extension (RFC 5256)?"""
         return "SORT" in getattr(self, "capabilities", [])
 
+    @property
+    def thread_algorithm(self) -> str | None:
+        """The threading algorithm to ask the server for.
+
+        REFS is preferred over REFERENCES. Both follow the reply chain
+        (References, In-Reply-To), but REFERENCES adds the last step of
+        RFC 5256: root messages sharing the same base subject are merged
+        into a single thread. Two unrelated messages called "Invoice"
+        then end up in the same conversation, which is not what mail
+        clients (Thunderbird among them) display. REFS is the same
+        algorithm without that step.
+        """
+        capabilities = getattr(self, "capabilities", [])
+        for algorithm in ("REFS", "REFERENCES"):
+            if f"THREAD={algorithm}" in capabilities:
+                return algorithm
+        return None
+
+    @property
+    def has_thread(self) -> bool:
+        """Does the server support the THREAD extension (RFC 5256)?"""
+        return self.thread_algorithm is not None
+
     def messages_count(self, **kwargs) -> int:
         """An enhanced version of messages_count.
 
@@ -499,6 +692,42 @@ class IMAPconnector:
         messages = data[0].decode().split()
         messages.sort(key=int, reverse=reverse)
         return messages
+
+    def threads_count(self, **kwargs) -> int:
+        """Group the messages of a mailbox into conversations.
+
+        ``messages_count`` is called first: it selects the mailbox and
+        gives the order of the messages, with SORT when the server
+        offers it and by arrival otherwise. That order then ranks the
+        threads, so that a conversation which receives a new message
+        comes back to the top of the listing.
+
+        The result is stored in ``self.threads``, as a list of UID
+        lists. Inside a thread, UIDs keep the order given by the server,
+        which is the order of the conversation.
+        """
+        self.messages_count(**kwargs)
+        rank = {uid: pos for pos, uid in enumerate(self.messages)}
+        if not self.has_thread:
+            # Without the extension, every message is its own thread
+            self.threads = [[uid] for uid in self.messages]
+            return len(self.threads)
+        data = self._cmd(
+            "THREAD",
+            self.thread_algorithm.encode(),
+            b"UTF-8",
+            b"(NOT DELETED)",
+            *self.criterions,
+        )
+        threads = []
+        for thread in parse_thread_response(data):
+            # A message deleted between the two commands is dropped
+            uids = [uid for uid in thread if uid in rank]
+            if uids:
+                threads.append(uids)
+        threads.sort(key=lambda uids: min(rank[uid] for uid in uids))
+        self.threads = threads
+        return len(self.threads)
 
     def select_mailbox(
         self, name: str, readonly: bool = True, force: bool = False
@@ -1036,13 +1265,25 @@ class IMAPconnector:
         :param stop: index of the last message (optionnal)
         :param mbox: the mailbox that contains the messages
         """
-        self.select_mailbox(mbox, False)
         if start and stop:
             submessages = self.messages[start - 1 : stop]
-            mrange = ",".join(submessages)
         else:
             submessages = [start]
-            mrange = str(start)
+        return self.fetch_uids(submessages, mbox)
+
+    def fetch_uids(self, uids: list, mbox: str | None = None) -> list:
+        """Retrieve the headers of the given messages.
+
+        One FETCH command is issued for the whole list. Messages the
+        server does not return (deleted in the meantime) are skipped.
+
+        :param uids: the UIDs to retrieve
+        :param mbox: the mailbox that contains the messages
+        """
+        if not uids:
+            return []
+        self.select_mailbox(mbox, False)
+        mrange = ",".join(str(uid) for uid in uids)
         headers = "DATE FROM TO CC SUBJECT"
         if mbox == constants.MAILBOX_NAME_SCHEDULED:
             headers += " X-SCHEDULED-ID X-SCHEDULED-DATETIME"
@@ -1051,8 +1292,11 @@ class IMAPconnector:
         )
         data = self._cmd("FETCH", mrange, query)
         result = []
-        for uid in submessages:
-            msg_data = data[int(uid)]
+        for uid in uids:
+            msg_data = data.get(int(uid))
+            if msg_data is None:
+                logger.debug("Message %s is missing from the FETCH reply", uid)
+                continue
             msg = email.message_from_string(
                 msg_data[f"BODY[HEADER.FIELDS ({headers})]"]
             )
@@ -1069,7 +1313,62 @@ class IMAPconnector:
             bstruct = BodyStructure(msg_data["BODYSTRUCTURE"])
             if bstruct.has_attachments():
                 msg["attachments"] = True
+                # Described here rather than on demand: the body
+                # structure is already parsed, naming its parts is free
+                msg["attachment_list"] = bstruct.list_attachments()
             result += [msg]
+        return result
+
+    def fetch_threads(
+        self, start: int, stop: int | None = None, mbox: str | None = None
+    ) -> list[dict]:
+        """Build a summary of the threads of the given page.
+
+        All the messages of the page are retrieved with a single FETCH,
+        through the same code path as the flat listing, so that flags
+        and body structures are parsed only once and in one place.
+
+        :param start: index of the first thread
+        :param stop: index of the last thread
+        :param mbox: the mailbox that contains the messages
+        """
+        subthreads = self.threads[start - 1 : stop] if start and stop else []
+        messages = {
+            str(msg["imapid"]): msg
+            for msg in self.fetch_uids(
+                [uid for thread in subthreads for uid in thread], mbox
+            )
+        }
+        rank = {uid: pos for pos, uid in enumerate(self.messages)}
+        result = []
+        for thread in subthreads:
+            msgs = [messages[uid] for uid in thread if uid in messages]
+            if not msgs:
+                continue
+            # self.messages is ordered from the most recent message to
+            # the oldest one, so the latest message has the lowest rank
+            latest = min(msgs, key=lambda msg: rank.get(str(msg["imapid"]), 0))
+            participants = {}
+            for msg in msgs:
+                if "From" in msg:
+                    address = imapheader.parse_address(msg["From"])
+                    participants.setdefault(address["address"], address)
+            result.append(
+                {
+                    "root": str(msgs[0]["imapid"]),
+                    # Serializers expect a mapping, not an email.Message
+                    "latest": dict(latest),
+                    "subject": msgs[0]["Subject"] if "Subject" in msgs[0] else "",
+                    "count": len(msgs),
+                    "unseen_count": sum(
+                        1 for msg in msgs if msg.get("style") == "unseen"
+                    ),
+                    "flagged": any(msg.get("flagged") for msg in msgs),
+                    "attachments": any(msg.get("attachments") for msg in msgs),
+                    "participants": list(participants.values()),
+                    "uids": [str(msg["imapid"]) for msg in msgs],
+                }
+            )
         return result
 
     def fetchmail(

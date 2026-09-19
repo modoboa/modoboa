@@ -82,7 +82,8 @@ class InlineImagesTestCase(SimpleTestCase):
         self.assertEqual(email._map_cid("cid:svg@x"), "cid:svg@x")
         self.assertEqual(email._map_cid("cid:html@x"), "cid:html@x")
 
-    def test_inlines_not_fetched_without_images(self):
+    def test_inlines_fetched_without_images(self):
+        """Embedded images don't wait for the remote ones."""
         email = _make_email(
             {
                 "img@x": {
@@ -93,6 +94,22 @@ class InlineImagesTestCase(SimpleTestCase):
             },
             images=False,
         )
+        email._fetch_inlines()
+        email.imapc.fetchpart.assert_called_once()
+
+    def test_inlines_not_embedded_into_replies(self):
+        """A reply would carry them as data: URIs."""
+        email = _make_email(
+            {
+                "img@x": {
+                    "pnum": "2",
+                    "encoding": "base64",
+                    "Content-Type": "image/png",
+                }
+            },
+            images=False,
+        )
+        email.embed_inlines = False
         email._fetch_inlines()
         email.imapc.fetchpart.assert_not_called()
 
@@ -116,3 +133,55 @@ class InlineImagesTestCase(SimpleTestCase):
         email = _make_email({})
         url = "https://example.com/a.png"
         self.assertEqual(email._map_cid(url), url)
+
+
+class RemoteContentTestCase(SimpleTestCase):
+    """Remote resources are dropped, and reported, until images are displayed."""
+
+    HTML = (
+        '<div><img src="cid:img@x"><img src="https://tracker.example/p.gif">'
+        '<a href="https://example.com/">link</a></div>'
+    )
+
+    def _process(self, images, html=None):
+        email = _make_email(
+            {
+                "img@x": {
+                    "pnum": "2",
+                    "encoding": "base64",
+                    "Content-Type": "image/png",
+                }
+            },
+            images=images,
+        )
+        email._fetch_inlines()
+        return email, email._post_process_html(html or self.HTML)
+
+    def test_embedded_images_kept_remote_ones_dropped(self):
+        email, html = self._process(images=False)
+        self.assertIn("data:image/png;base64,", html)
+        self.assertNotIn("tracker.example", html)
+        self.assertTrue(email.remote_content_blocked)
+        # Links are the reader's other choice, and are left alone
+        self.assertIn('href="https://example.com/"', html)
+
+    def test_remote_images_kept_when_displayed(self):
+        email, html = self._process(images=True)
+        self.assertIn("data:image/png;base64,", html)
+        self.assertIn("https://tracker.example/p.gif", html)
+        self.assertFalse(email.remote_content_blocked)
+
+    def test_nothing_blocked_without_remote_content(self):
+        email, html = self._process(
+            images=False,
+            html='<div><img src="cid:img@x"><a href="https://example.com/">l</a></div>',
+        )
+        self.assertFalse(email.remote_content_blocked)
+
+    def test_remote_styles_are_remote_content(self):
+        email, html = self._process(
+            images=False,
+            html="<div style=\"background: url('//cdn.example/bg.png')\">text</div>",
+        )
+        self.assertNotIn("cdn.example", html)
+        self.assertTrue(email.remote_content_blocked)

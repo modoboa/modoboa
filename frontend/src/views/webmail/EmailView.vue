@@ -1,181 +1,148 @@
 <template>
-  <div v-show="loaded" class="bg-white rounded-lg pa-4 position-relative h-100">
-    <v-toolbar color="white">
-      <v-btn icon="mdi-arrow-left" size="small" variant="flat" @click="close" />
-
-      <v-btn-group color="primary" rounded="lg" density="compact" divided>
-        <v-btn prepend-icon="mdi-reply" @click="() => replyToEmail()">
+  <div v-show="loaded" class="bg-white rounded-lg pa-4 h-100 overflow-y-auto">
+    <v-toolbar
+      class="mail-header"
+      color="surface"
+      flat
+      :height="48"
+      :extension-height="40"
+    >
+      <v-btn
+        icon="mdi-arrow-left"
+        variant="text"
+        size="small"
+        :title="$gettext('Back to the mailbox')"
+        @click="close"
+      />
+      <h2 class="mail-subject" :title="email?.subject">
+        {{ email?.subject }}
+      </h2>
+      <template #extension>
+        <v-btn
+          variant="text"
+          size="small"
+          prepend-icon="mdi-reply"
+          @click="() => replyToEmail()"
+        >
           {{ $gettext('Reply') }}
         </v-btn>
-        <v-btn size="small" icon>
-          <v-icon icon="mdi-chevron-down" />
+        <v-btn
+          variant="text"
+          size="small"
+          prepend-icon="mdi-reply-all"
+          @click="() => replyToEmail(true)"
+        >
+          {{ $gettext('Reply all') }}
+        </v-btn>
+        <v-btn
+          variant="text"
+          size="small"
+          prepend-icon="mdi-share-outline"
+          @click="forwardEmail"
+        >
+          {{ $gettext('Forward') }}
+        </v-btn>
+        <template v-if="$route.query.mailbox !== 'Scheduled'">
+          <v-btn
+            v-if="isDraftsFolder"
+            variant="text"
+            size="small"
+            prepend-icon="mdi-pencil"
+            @click="editDraft"
+          >
+            {{ $gettext('Edit') }}
+          </v-btn>
+          <span class="mail-header-separator" />
+          <v-btn
+            icon="mdi-trash-can-outline"
+            color="error"
+            variant="text"
+            size="small"
+            :loading="working"
+            :title="$gettext('Delete')"
+            @click="deleteEmail"
+          />
+          <v-btn
+            v-if="!isJunkFolder"
+            icon="mdi-fire"
+            color="warning"
+            variant="text"
+            size="small"
+            :loading="working"
+            :title="$gettext('Mark as junk')"
+            @click="markEmailAsJunk"
+          />
+          <v-btn
+            v-else
+            icon="mdi-thumb-up-outline"
+            color="success"
+            variant="text"
+            size="small"
+            :loading="working"
+            :title="$gettext('Mark as not junk')"
+            @click="markEmailAsNotJunk"
+          />
+        </template>
+        <v-btn
+          icon
+          variant="text"
+          size="small"
+          :title="$gettext('Display options')"
+        >
+          <v-icon icon="mdi-cog-outline" />
           <v-menu activator="parent">
-            <v-list>
+            <v-list density="compact">
               <v-list-item
-                :title="$gettext('Reply all')"
-                @click="() => replyToEmail(true)"
+                v-if="!enableLinks"
+                :title="$gettext('Enable links')"
+                @click="enableLinks = true"
               />
-              <v-list-item :title="$gettext('Forward')" @click="forwardEmail" />
+              <v-list-item
+                v-else
+                :title="$gettext('Disable links')"
+                @click="enableLinks = false"
+              />
+              <v-list-item
+                v-if="!enableImages"
+                :title="$gettext('Display images')"
+                @click="enableImages = true"
+              />
+              <v-list-item
+                v-else
+                :title="$gettext('Hide images')"
+                @click="enableImages = false"
+              />
+              <v-list-item
+                :title="$gettext('Display source')"
+                @click="openEmailSourceDialog"
+              />
             </v-list>
           </v-menu>
         </v-btn>
-      </v-btn-group>
-      <template v-if="$route.query.mailbox !== 'Scheduled'">
-        <v-btn
-          class="ml-2"
-          color="error"
-          variant="tonal"
-          icon="mdi-trash-can"
-          size="small"
-          :loading="working"
-          @click="deleteEmail"
-        >
-        </v-btn>
-        <v-btn
-          v-if="!isJunkFolder"
-          class="ml-2"
-          color="warning"
-          variant="tonal"
-          icon="mdi-fire"
-          size="small"
-          :loading="working"
-          @click="markEmailAsJunk"
-        >
-        </v-btn>
-        <v-btn
-          v-else
-          class="ml-2"
-          color="success"
-          variant="tonal"
-          icon="mdi-thumb-up"
-          size="small"
-          :loading="working"
-          @click="markEmailAsNotJunk"
-        >
-        </v-btn>
-        <v-btn
-          v-if="isDraftsFolder"
-          class="ml-2"
-          variant="tonal"
-          icon="mdi-pencil"
-          size="small"
-          @click="editDraft"
-        >
-        </v-btn>
       </template>
-      <v-btn class="ml-2" variant="tonal" icon size="small">
-        <v-icon icon="mdi-cog" />
-        <v-menu activator="parent">
-          <v-list density="compact">
-            <v-list-item
-              v-if="!enableLinks"
-              :title="$gettext('Enable links')"
-              @click="enableLinks = true"
-            />
-            <v-list-item
-              v-else
-              :title="$gettext('Disable links')"
-              @click="enableLinks = false"
-            />
-            <v-list-item
-              v-if="!enableImages"
-              :title="$gettext('Display images')"
-              @click="enableImages = true"
-            />
-            <v-list-item
-              v-else
-              :title="$gettext('Hide images')"
-              @click="enableImages = false"
-            />
-            <v-list-item
-              :title="$gettext('Display source')"
-              @click="openEmailSourceDialog"
-            />
-          </v-list>
-        </v-menu>
-      </v-btn>
     </v-toolbar>
 
-    <div v-if="email" ref="headers" class="bg-white pa-4">
-      <h2>{{ email.subject }}</h2>
-      <div class="d-flex mt-2">
-        <v-menu key="sender">
-          <template #activator="{ props }">
-            <h3 v-bind="props">
-              <template v-if="email.from_address.name">
-                {{ email.from_address.name }}
-                <span class="text-grey text-body-medium">
-                  &lt;{{ email.from_address.address }}&gt;
-                </span>
-              </template>
-              <template v-else>
-                {{ email.from_address.address }}
-              </template>
-            </h3>
-          </template>
-          <ContactCard v-model="email.from_address" />
-        </v-menu>
-        <v-spacer />
-        <span class="text-grey">{{ email.date }}</span>
-      </div>
-      <div v-if="email.to.length" class="mt-2 text-grey">
-        {{ $gettext('To') }}
-        <v-menu v-for="(rcpt, index) in email.to" :key="`to-${index}`">
-          <template #activator="{ props }">
-            <span v-if="index > 0">, </span>
-            <span v-bind="props">{{ rcpt.name || rcpt.address }}</span>
-          </template>
-          <ContactCard v-model="email.to[index]" />
-        </v-menu>
-        <template v-if="email.cc?.length">
-          <v-menu v-for="(rcpt, index) in email.cc" :key="`cc-${index}`">
-            <template #activator="{ props }">
-              <span>, </span>
-              <span v-bind="props">{{ rcpt.name || rcpt.address }}</span>
-            </template>
-            <ContactCard v-model="email.cc[index]" />
-          </v-menu>
-        </template>
-      </div>
-      <div v-if="email.attachments.length" class="mt-2">
-        <v-icon icon="mdi-paperclip" />
-        <template
-          v-for="(attachment, index) in email.attachments"
-          :key="attachment.name"
-        >
-          <template v-if="index > 0">, </template>
-          <a
-            href="#"
-            @click="downloadAttachment(attachment.name, attachment.partnum)"
-          >
-            {{ attachment.name }}
-          </a>
-        </template>
-      </div>
-    </div>
+    <MessageHeader
+      v-if="email"
+      :message="email"
+      class="mb-3"
+      @download="downloadAttachment"
+    />
     <v-alert
       v-if="email?.scheduled_datetime"
-      ref="schedulingInfo"
       type="info"
       variant="tonal"
       density="compact"
-      class="mx-1"
+      class="mb-2"
     >
       {{ $gettext('Message scheduled at:') }}
       {{ $date(email.scheduled_datetime) }}
     </v-alert>
-    <!--
-      The message body is untrusted: render it in a sandboxed iframe
-      (no scripts, opaque origin) so it can never reach the application
-      context, even if the server-side HTML cleaner is bypassed.
-    -->
-    <iframe
-      ref="emailFrame"
-      class="email-frame"
-      sandbox="allow-popups allow-popups-to-escape-sandbox"
-      referrerpolicy="no-referrer"
-      :srcdoc="emailDocument"
+    <RemoteContentBanner
+      v-if="email?.remote_content_blocked && !enableImages"
+      @show="enableImages = true"
     />
+    <EmailMessageBody :body="email?.body" :enable-images="enableImages" />
   </div>
   <v-dialog v-model="showEmailSource" max-width="1200">
     <v-card :title="$gettext('Message source')">
@@ -194,13 +161,16 @@
 </template>
 
 <script setup>
-import { computed, nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useGettext } from 'vue3-gettext'
 import { useBusStore } from '@/stores'
 import { useSpecialFolders } from '@/composables/webmail'
 import api from '@/api/webmail'
-import ContactCard from '@/components/webmail/ContactCard.vue'
+import { downloadBlob } from '@/utils'
+import EmailMessageBody from '@/components/webmail/EmailMessageBody.vue'
+import MessageHeader from '@/components/webmail/MessageHeader.vue'
+import RemoteContentBanner from '@/components/webmail/RemoteContentBanner.vue'
 
 const { $gettext } = useGettext()
 const { displayNotification, reloadMailboxCounters } = useBusStore()
@@ -213,21 +183,13 @@ const { isJunkFolder, isDraftsFolder } = useSpecialFolders(
 const enableLinks = ref(false)
 const enableImages = ref(false)
 const email = ref(null)
-const emailFrame = ref(null)
 const emailSource = ref(null)
-const headers = ref(null)
 const loaded = ref(false)
-const schedulingInfo = ref()
 const showEmailSource = ref(false)
 const working = ref(false)
 
 onMounted(() => {
-  window.addEventListener('resize', resizeEmailIframe)
   fetchMailContent()
-})
-
-onUnmounted(() => {
-  window.removeEventListener('resize', resizeEmailIframe)
 })
 
 watch([enableLinks, enableImages], () => {
@@ -239,47 +201,6 @@ const close = () => {
     name: 'MailboxView',
     query: { mailbox: route.query.mailbox },
   })
-}
-
-const emailDocument = computed(() => {
-  if (!email.value?.body) {
-    return ''
-  }
-  // Remote content (images, fonts, etc.) is only allowed once the reader
-  // asks for the images, which keeps tracking pixels from loading by
-  // default, whatever the links are set to.
-  const remoteSrc = enableImages.value ? ' https: http:' : ''
-  const csp = [
-    "default-src 'none'",
-    `img-src data:${remoteSrc}`,
-    `media-src data:${remoteSrc}`,
-    `font-src data:${remoteSrc}`,
-    "style-src 'unsafe-inline'",
-    "form-action 'none'",
-  ].join('; ')
-  return `
-    <!DOCTYPE html><html><head><meta charset="utf-8">
-    <meta http-equiv="Content-Security-Policy" content="${csp}">
-    <base target="_blank"></head><body>
-    ${email.value.body}
-    </body></html>
-  `
-})
-
-const resizeEmailIframe = () => {
-  const iframe = emailFrame.value
-  if (!iframe || !headers.value) {
-    return
-  }
-  let rect
-  if (schedulingInfo.value) {
-    rect = schedulingInfo.value.$el.getBoundingClientRect()
-  } else {
-    rect = headers.value.getBoundingClientRect()
-  }
-  iframe.style.top = `${rect.bottom}px`
-  iframe.style.width = `${rect.width - 24}px`
-  iframe.style.height = `${window.innerHeight - rect.bottom - 32}px`
 }
 
 const fetchMailContent = () => {
@@ -294,21 +215,21 @@ const fetchMailContent = () => {
       reloadMailboxCounters()
       email.value = resp.data
       loaded.value = true
-      nextTick(resizeEmailIframe)
     })
 }
 
-const downloadAttachment = (name, part) => {
-  api
-    .getEmailAttachment(route.query.mailbox, route.query.mailid, part)
-    .then((resp) => {
-      const blob = new Blob([resp.data], { type: resp.headers['Content-Type'] })
-      const link = document.createElement('a')
-      link.href = URL.createObjectURL(blob)
-      link.download = name
-      link.click()
-      URL.revokeObjectURL(link.href)
-    })
+const downloadAttachment = async (attachment) => {
+  const resp = await api.getEmailAttachment(
+    route.query.mailbox,
+    route.query.mailid,
+    attachment.partnum
+  )
+  // Axios lowercases header names
+  const type =
+    resp.headers['content-type'] ||
+    attachment.content_type ||
+    'application/octet-stream'
+  downloadBlob(new Blob([resp.data], { type }), attachment.name)
 }
 
 const deleteEmail = () => {
@@ -381,13 +302,3 @@ const editDraft = () => {
   })
 }
 </script>
-
-<style>
-.email-frame {
-  position: absolute !important;
-  left: 24px;
-  overflow-y: auto;
-  border: none;
-  background-color: #fff;
-}
-</style>

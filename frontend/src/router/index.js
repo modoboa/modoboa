@@ -461,6 +461,15 @@ const routes = [
             },
           },
           {
+            path: 'thread',
+            name: 'ThreadView',
+            component: () => import('@/views/webmail/ThreadView.vue'),
+            meta: {
+              requiresAuth: true,
+              requiresMailbox: true,
+            },
+          },
+          {
             path: 'compose',
             name: 'ComposeEmailView',
             component: () => import('@/views/webmail/ComposeEmailView.vue'),

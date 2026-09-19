@@ -3,6 +3,7 @@
 from django.utils.translation import gettext as _
 from django.utils import timezone
 
+from drf_spectacular.utils import extend_schema_field
 from rest_framework import serializers
 
 from modoboa.lib import email_utils
@@ -42,6 +43,9 @@ class UserPreferencesSerializer(serializers.Serializer):
         default=constants.DisplayMode.PLAIN.value, choices=constants.DISPLAY_MODES
     )
     enable_links = serializers.BooleanField(default=False)
+    listing_mode = serializers.ChoiceField(
+        default=constants.ListingMode.FLAT.value, choices=constants.LISTING_MODES
+    )
     messages_per_page = serializers.IntegerField(default=40)
     refresh_interval = serializers.IntegerField(default=300)
     trash_folder = serializers.CharField(default="Trash")
@@ -57,7 +61,6 @@ class UserPreferencesSerializer(serializers.Serializer):
 
 
 class UserMailboxSerializer(serializers.Serializer):
-
     name = serializers.CharField()
     path = serializers.CharField(required=False)
     label = serializers.CharField()
@@ -73,7 +76,6 @@ class UserMailboxSerializer(serializers.Serializer):
 
 
 class SubscriptionNodeSerializer(serializers.Serializer):
-
     name = serializers.CharField()
     label = serializers.CharField()
     subscribed = serializers.BooleanField()
@@ -84,42 +86,35 @@ class SubscriptionNodeSerializer(serializers.Serializer):
 
 
 class SubscriptionsSerializer(serializers.Serializer):
-
     mailboxes = SubscriptionNodeSerializer(many=True)
     hdelimiter = serializers.CharField()
 
 
 class SubscriptionChangeSerializer(serializers.Serializer):
-
     name = serializers.CharField()
     subscribed = serializers.BooleanField()
 
 
 class SubscriptionUpdateSerializer(serializers.Serializer):
-
     changes = SubscriptionChangeSerializer(many=True)
 
 
 class UserMailboxQuotaSerializer(serializers.Serializer):
-
     usage = serializers.IntegerField(source="quota_usage")
     current = serializers.IntegerField(source="quota_current")
     limit = serializers.IntegerField(source="quota_limit")
 
 
 class UserMailboxUnseenSerializer(serializers.Serializer):
-
     counter = serializers.IntegerField()
 
 
 class UserMailboxesSerializer(serializers.Serializer):
-
     mailboxes = UserMailboxSerializer(many=True)
     hdelimiter = serializers.CharField()
 
 
 class UserMailboxInputSerializer(serializers.Serializer):
-
     name = serializers.CharField()
     # Top-level folders send an empty parent: accept it (treated as "no
     # parent" by the viewsets) instead of rejecting it as blank.
@@ -127,7 +122,6 @@ class UserMailboxInputSerializer(serializers.Serializer):
 
 
 class UserMailboxUpdateSerializer(UserMailboxInputSerializer):
-
     oldname = serializers.CharField()
 
 
@@ -141,6 +135,9 @@ class EmailAddressSerializer(serializers.Serializer):
 class AttachmentSerializer(serializers.Serializer):
     name = serializers.CharField()
     partnum = serializers.CharField()
+    # Encoded size in octets, as announced by the body structure
+    size = serializers.IntegerField(required=False)
+    content_type = serializers.CharField(required=False)
 
 
 class AttachmentUploadSerializer(serializers.Serializer):
@@ -148,13 +145,11 @@ class AttachmentUploadSerializer(serializers.Serializer):
 
 
 class UploadedAttachmentSerializer(serializers.Serializer):
-
     tmpname = serializers.CharField()
     fname = serializers.CharField()
 
 
 class EmailHeadersSerializer(serializers.Serializer):
-
     imapid = serializers.CharField()
     subject = serializers.SerializerMethodField()
     from_address = serializers.SerializerMethodField()
@@ -165,6 +160,9 @@ class EmailHeadersSerializer(serializers.Serializer):
     attachments = serializers.BooleanField(default=False)
     forwarded = serializers.BooleanField(default=False)
     flagged = serializers.BooleanField(default=False)
+    # Described from the body structure the listing already fetches, so
+    # a message can name its files without its body being loaded
+    attachment_list = AttachmentSerializer(many=True, required=False)
     style = serializers.CharField(required=False)
 
     scheduled_id = serializers.IntegerField(
@@ -204,7 +202,6 @@ class EmailHeadersSerializer(serializers.Serializer):
 
 
 class PaginatedEmailListSerializer(serializers.Serializer):
-
     count = serializers.IntegerField()
     first_index = serializers.IntegerField()
     last_index = serializers.IntegerField()
@@ -213,8 +210,41 @@ class PaginatedEmailListSerializer(serializers.Serializer):
     results = EmailHeadersSerializer(many=True)
 
 
-class EmailSerializer(serializers.Serializer):
+class ThreadSummarySerializer(serializers.Serializer):
+    """A conversation, as displayed in the messages list."""
 
+    root = serializers.CharField()
+    latest = EmailHeadersSerializer()
+    subject = serializers.SerializerMethodField()
+    count = serializers.IntegerField()
+    unseen_count = serializers.IntegerField()
+    flagged = serializers.BooleanField(default=False)
+    attachments = serializers.BooleanField(default=False)
+    participants = EmailAddressSerializer(many=True)
+    uids = serializers.ListField(child=serializers.CharField())
+
+    def get_subject(self, obj) -> str:
+        return imapheader.parse_subject(obj["subject"]) if obj["subject"] else ""
+
+
+class PaginatedThreadListSerializer(serializers.Serializer):
+    count = serializers.IntegerField()
+    first_index = serializers.IntegerField()
+    last_index = serializers.IntegerField()
+    prev_page = serializers.IntegerField()
+    next_page = serializers.IntegerField()
+    threading_supported = serializers.BooleanField()
+    results = ThreadSummarySerializer(many=True)
+
+
+class ThreadSerializer(serializers.Serializer):
+    """The messages of a single conversation."""
+
+    threading_supported = serializers.BooleanField()
+    results = EmailHeadersSerializer(many=True)
+
+
+class EmailSerializer(serializers.Serializer):
     subject = serializers.CharField()
     from_address = EmailAddressSerializer(source="From")
     to = EmailAddressSerializer(source="To", many=True)
@@ -224,29 +254,33 @@ class EmailSerializer(serializers.Serializer):
     # Format of the returned body (plain or html)
     body_format = serializers.CharField(source="mformat", required=False)
     date = serializers.CharField(source="Date")
+    # The date in full, where the compact one above leaves parts out
+    date_full = serializers.CharField(source="Date_full", required=False)
     message_id = serializers.CharField(source="Message_ID", required=False)
     in_reply_to = serializers.CharField(source="In_Reply_To", required=False)
     references = serializers.CharField(source="References", required=False)
     # Reply-To may contain several addresses (parsed as a list)
     reply_to = EmailAddressSerializer(source="Reply_To", many=True, required=False)
     attachments = serializers.SerializerMethodField()
+    # Remote images and other resources were dropped from the body: the
+    # reader can ask for them
+    remote_content_blocked = serializers.BooleanField(read_only=True)
 
     scheduled_datetime = serializers.DateTimeField(
         source=constants.CUSTOM_HEADER_SCHEDULED_DATETIME.replace("-", "_"),
         required=False,
     )
 
+    @extend_schema_field(AttachmentSerializer(many=True))
     def get_attachments(self, email):
         result = []
         if email.attachments:
-            for partnum, name in email.attachments.items():
-                data = {"name": name, "partnum": partnum}
-                result.append(data)
+            for partnum, attachment in email.attachments.items():
+                result.append({"partnum": partnum, **attachment})
         return result
 
 
 class MoveSelectionSerializer(serializers.Serializer):
-
     source = serializers.CharField()
     destination = serializers.CharField(required=False)
     selection = serializers.ListField(child=serializers.CharField())
@@ -263,7 +297,6 @@ class MoveSelectionSerializer(serializers.Serializer):
 
 
 class FlagSelectionSerializer(serializers.Serializer):
-
     mailbox = serializers.CharField()
     selection = serializers.ListField(child=serializers.CharField())
     status = serializers.ChoiceField(
@@ -298,7 +331,6 @@ class ScheduledDatetimeMixin:
 
 
 class BaseEmailSerializer(serializers.Serializer):
-
     sender = serializers.EmailField()
     subject = serializers.CharField(required=False)
     body = serializers.CharField(required=False)
@@ -338,7 +370,6 @@ class BaseEmailSerializer(serializers.Serializer):
 
 
 class SendEmailSerializer(ScheduledDatetimeMixin, BaseEmailSerializer):
-
     scheduled_datetime = serializers.DateTimeField(required=False)
     request_dsn = serializers.BooleanField(required=False, default=False)
     request_mdn = serializers.BooleanField(required=False, default=False)
@@ -390,7 +421,6 @@ class SendEmailSerializer(ScheduledDatetimeMixin, BaseEmailSerializer):
 
 
 class SaveEmailSerializer(BaseEmailSerializer):
-
     mailid = serializers.IntegerField(required=False)
 
     def create(self, validated_data):
@@ -414,7 +444,6 @@ class SaveEmailSerializer(BaseEmailSerializer):
 
 
 class ComposeSessionSerializer(serializers.Serializer):
-
     attachments = UploadedAttachmentSerializer(many=True, required=False)
     uid = serializers.CharField()
     signature = serializers.SerializerMethodField()
@@ -428,7 +457,6 @@ class ComposeSessionSerializer(serializers.Serializer):
 
 
 class CreateSessionSerializer(serializers.Serializer):
-
     # Draft being edited: its attachments are copied into the session
     from_draft_message = serializers.IntegerField(required=False)
     # Message being forwarded: its attachments are copied too
@@ -452,12 +480,10 @@ class CreateSessionSerializer(serializers.Serializer):
 
 
 class AllowedSenderSerializer(serializers.Serializer):
-
     address = serializers.EmailField()
 
 
 class ScheduledMessageSerializer(ScheduledDatetimeMixin, serializers.ModelSerializer):
-
     class Meta:
         model = models.ScheduledMessage
         fields = ["error", "scheduled_datetime"]
