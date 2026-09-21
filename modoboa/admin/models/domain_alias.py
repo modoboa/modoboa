@@ -8,7 +8,7 @@ from django.utils.encoding import smart_str
 from django.utils.translation import gettext as _, gettext_lazy
 
 from modoboa.core import models as core_models, signals as core_signals
-from modoboa.lib.exceptions import BadRequest, Conflict
+from modoboa.lib.exceptions import BadRequest, Conflict, PermDeniedException
 from .base import AdminObject
 from .domain import Domain
 
@@ -77,6 +77,8 @@ class DomainAlias(AdminObject):
             self.target = Domain.objects.get(name=domname)
         except Domain.DoesNotExist:
             raise BadRequest(_("Unknown domain %s") % domname) from None
+        if not user.can_access(self.target):
+            raise PermDeniedException
         core_signals.can_create_object.send(
             sender="import", context=self.target, object_type="domain_aliases"
         )
