@@ -10,11 +10,9 @@ from urllib.parse import unquote
 from charset_normalizer import detect as charset_detect
 
 from django.apps import apps
-from django.utils.encoding import smart_str
 from django.utils.html import conditional_escape
 from django.utils.translation import gettext as _
 
-from modoboa.lib import u2u_decode
 from modoboa.lib.email_utils import Email
 from modoboa.webmail import constants
 
@@ -25,16 +23,27 @@ from .utils import decode_payload
 # Headers holding addresses, parsed from their raw value
 ADDRESS_HEADERS = ("From", "To", "Cc", "Bcc", "Reply-To")
 
+# A cid: URL inside an HTML content (RFC 2392)
+CID_URL_RE = re.compile(r"""cid:([^\s"'<>()]+)""", re.I)
+
 
 class ImapEmail(Email):
     """
     A class to represent an email fetched from an IMAP server.
     """
 
+    # Embedded images are displayed even when the remote ones are not:
+    # they travel with the message and loading them tells no one it was
+    # read.
+    embed_inlines = True
+
     headernames = [
         ("From", True),
         ("To", True),
         ("Cc", True),
+        # Only found in the copies of sent messages and in drafts
+        ("Bcc", True),
+        ("Reply-To", True),
         ("Date", True),
         ("Subject", True),
     ]
@@ -46,7 +55,8 @@ class ImapEmail(Email):
         self.imapc = self.imapc.__enter__()
         self.mbox, self.mailid = self.mailid.split(":")
         self.mailid = validate_imap_uid(self.mailid)
-        self.attachments: dict[str, str] = {}
+        # Part number -> {name, size, content_type}
+        self.attachments: dict[str, dict] = {}
         self.To: list = []
 
     def __del__(self):
@@ -117,6 +127,9 @@ class ImapEmail(Email):
             setattr(self, f"original_{header.replace('-', '')}", hdrvalue)
         if not hdrvalue:
             return ""
+        if header == "Date":
+            # The parsed value is compact, like in the listing
+            self.Date_full = imapheader.format_full_date(hdrvalue)
         if header in ADDRESS_HEADERS:
             # Parse the raw value: decoding encoded-words first could turn
             # an encoded comma of a display name into an address separator.
@@ -146,11 +159,11 @@ class ImapEmail(Email):
 
     def fetch_attachments(self):
         result = []
-        for partnum, filename in self.attachments.items():
+        for partnum, attachment in self.attachments.items():
             attdef, content = self.imapc.fetchpart(self.mailid, self.mbox, partnum)
             result.append(
                 {
-                    "filename": filename,
+                    "filename": attachment["name"],
                     "content_type": attdef["Content-Type"],
                     # Store the decoded payload: it is encoded again when
                     # the message is built.
@@ -196,6 +209,7 @@ class ImapEmail(Email):
                             content = content.decode(result["encoding"])
                 bodyc += content
             self._fetch_inlines()
+            self._find_unreferenced_inlines(bodyc)
             if len(bodyc) != 0:
                 bodyc = getattr(self, f"_post_process_{self.mformat}")(bodyc)
                 self._body = getattr(self, f"viewmail_{self.mformat}")(
@@ -221,30 +235,24 @@ class ImapEmail(Email):
         return None
 
     def _find_attachments(self) -> None:
-        """Retrieve attachments from the parsed body structure.
+        """Retrieve attachments from the parsed body structure."""
+        for attachment in self.bs.list_attachments():
+            self.attachments[attachment.pop("partnum")] = attachment
 
-        We try to find and decode a file name for each attachment. If
-        we failed, a generic name will be used (ie. part_1, part_2, ...).
+    def _find_unreferenced_inlines(self, content: str) -> None:
+        """List the inlines the displayed content doesn't show.
+
+        They can't be seen otherwise: an image the HTML doesn't
+        reference, or any image when the plain text is displayed.
         """
-        for att in self.bs.attachments:
-            attname = "part_{}".format(att["pnum"])
-            if "params" in att and att["params"] != "NIL":
-                for pos, value in enumerate(att["params"]):
-                    if not value.startswith("name"):
-                        continue
-                    attname = u2u_decode.u2u_decode(att["params"][pos + 1]).strip(
-                        "\r\t\n"
-                    )
-                    break
-            if "disposition" in att and len(att["disposition"]) > 1:
-                for pos, value in enumerate(att["disposition"][1]):
-                    if not value.startswith("filename"):
-                        continue
-                    attname = u2u_decode.u2u_decode(
-                        att["disposition"][1][pos + 1]
-                    ).strip("\r\t\n")
-                    break
-            self.attachments[att["pnum"]] = smart_str(attname)
+        referenced = set()
+        if self.mformat == "html":
+            referenced = {unquote(cid) for cid in CID_URL_RE.findall(content)}
+        for cid, params in self.bs.inlines.items():
+            if cid in referenced or params["pnum"] in self.attachments:
+                continue
+            attachment = self.bs.describe_part(params)
+            self.attachments[attachment.pop("partnum")] = attachment
 
     def _fetch_inlines(self):
         """Embed inline images into the body as data: URIs.
@@ -253,8 +261,7 @@ class ImapEmail(Email):
         publicly served directory leaked them to other users (message
         UIDs are only unique per mailbox).
         """
-        if not self.images:
-            # cid: references are only rewritten when images are displayed
+        if not (self.embed_inlines or self.images):
             return
         for params in self.bs.inlines.values():
             content_type = params.get("Content-Type", "")
@@ -285,6 +292,10 @@ class ImapEmail(Email):
 class Modifier(ImapEmail):
     """Message modifier."""
 
+    # A reply or a forward would carry them as data: URIs, that
+    # many clients refuse to display
+    embed_inlines = False
+
     def __init__(self, request, *args, **kwargs):
         super().__init__(request, *args, **kwargs)
         self.fetch_headers(raw_addresses=True)
@@ -304,7 +315,6 @@ class ReplyModifier(Modifier):
     """Modify a message to reply to it."""
 
     headernames = ImapEmail.headernames + [
-        ("Reply-To", True),
         ("Message-ID", False),
         ("References", False),
     ]
@@ -401,8 +411,9 @@ class EditModifier(ImapEmail):
     neither escaped nor wrapped in a <pre> block.
     """
 
+    embed_inlines = False
+
     headernames = ImapEmail.headernames + [
-        ("Bcc", True),
         ("In-Reply-To", False),
         ("References", False),
     ]

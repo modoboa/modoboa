@@ -45,6 +45,20 @@ export default {
     }
     return repository.get(`/webmail/emails/`, { params })
   },
+  getMailboxThreads(mailbox, options) {
+    const params = {
+      mailbox,
+      ...options,
+    }
+    return repository.get(`/webmail/emails/threads/`, { params })
+  },
+  getThread(mailbox, mailid) {
+    const params = {
+      mailbox,
+      mailid,
+    }
+    return repository.get(`/webmail/emails/thread/`, { params })
+  },
   getEmailContent(mailbox, mailid, options) {
     const params = {
       mailbox,

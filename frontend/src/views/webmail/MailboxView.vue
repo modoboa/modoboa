@@ -1,8 +1,5 @@
 <template>
-  <div class="position-relative h-100">
-    <div class="text-headline-medium ml-4">
-      {{ $gettext('Webmail') }}
-    </div>
+  <div class="d-flex flex-column h-100">
     <EmailList :mailbox="$route.query.mailbox || 'INBOX'" />
   </div>
 </template>

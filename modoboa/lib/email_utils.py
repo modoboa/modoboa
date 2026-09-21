@@ -25,6 +25,8 @@ from modoboa.lib.exceptions import InternalError
 # used by Email()
 _RE_REMOVE_EXTRA_WHITESPACE = re.compile(r"\n\s*\n")
 _RE_CID = re.compile(r".*[ ]*cid=\"([^\"]*)\".*", re.I)
+# A URL fetched from another server when the content is displayed
+_RE_REMOTE_URL = re.compile(r"^\s*(https?:)?//", re.I)
 
 
 class EmailAddress:
@@ -78,6 +80,9 @@ class Email:
         # Images (inline and remote) are controlled separately: displaying
         # them should not require enabling the links of the message.
         self.images = self.links if images is None else bool(images)
+        # Set when the HTML content referenced remote resources that were
+        # dropped because images are not displayed
+        self.remote_content_blocked = False
 
         self._msg = None
         self._headers = None
@@ -240,15 +245,17 @@ class Email:
         else:
             for anchor in html.iter("a"):
                 anchor.attrib.pop("href", None)
-        if self.images:
-            html.rewrite_links(self._map_cid)
-        else:
-            # rewrite_links() gives no element context: set the links of
-            # the message aside while every other URL is dropped.
+        # rewrite_links() gives no element context: set the links of the
+        # message aside while the other remote URLs are dropped.
+        anchors = []
+        if not self.images:
             anchors = [(a, a.get("href")) for a in html.iter("a") if a.get("href")]
-            html.rewrite_links(lambda x: None)
-            for anchor, href in anchors:
-                anchor.set("href", href)
+            for anchor, _href in anchors:
+                del anchor.attrib["href"]
+        self.remote_content_blocked = False
+        html.rewrite_links(self._rewrite_url)
+        for anchor, href in anchors:
+            anchor.set("href", href)
         safe_attrs = list(defs.safe_attrs) + ["class", "style"]
         cleaner = Cleaner(
             scripts=True,
@@ -262,6 +269,20 @@ class Email:
         )
         mail_text = lxml.html.tostring(cleaner.clean_html(html), encoding="unicode")
         return smart_str(mail_text)
+
+    def _rewrite_url(self, url):
+        """Decide what becomes of a URL of the HTML content.
+
+        Embedded images travel with the message and are always
+        displayed. Anything else is only kept when images are, as
+        loading it would tell its server the message was read.
+        """
+        url = self._map_cid(url)
+        if url[:5].lower() == "data:" or self.images:
+            return url
+        if _RE_REMOTE_URL.match(url):
+            self.remote_content_blocked = True
+        return None
 
     def _map_cid(self, url):
         if url.startswith("cid:"):
