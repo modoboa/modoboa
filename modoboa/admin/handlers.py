@@ -253,6 +253,8 @@ def import_account_mailbox(sender, user, account, row, **kwargs):
                 dom = models.Domain.objects.get(name=domname.strip())
             except models.Domain.DoesNotExist:
                 continue
+            if not user.can_access(dom):
+                raise exceptions.PermDeniedException
             dom.add_admin(account)
 
 

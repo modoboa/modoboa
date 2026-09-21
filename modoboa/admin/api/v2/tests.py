@@ -1094,6 +1094,59 @@ dlist; dlist@test.com; True; user1@test.com; user@extdomain.com
         )
         self.assertTrue(admin.is_owner(dlist))
 
+    def test_import_domainadmin_non_owned_domain(self):
+        """A reseller must not grant admin rights on a domain it cannot access.
+
+        Regression test for cross-tenant privilege escalation: the extra
+        administered domains columns of an account row were only checked
+        for existence.
+        """
+        self.set_global_parameter("enable_admin_limits", False, app="limits")
+        reseller = core_factories.UserFactory(
+            username="reseller", groups=("Resellers",)
+        )
+        # The reseller owns test.com but not test2.com.
+        grant_access_to_object(
+            reseller, models.Domain.objects.get(name="test.com"), is_owner=True
+        )
+        token = Token.objects.create(user=reseller)
+        self.client.credentials(HTTP_AUTHORIZATION="Token " + token.key)
+        url = reverse("v2:identities-import-from-csv")
+        test2 = models.Domain.objects.get(name="test2.com")
+        rows = [
+            # With a mailbox in an owned domain
+            "account;pwn@test.com;Toto12345;P;W;True;DomainAdmins;pwn@test.com;0;test2.com",
+            # Without any mailbox
+            "account;pwn2;Toto12345;P;W;True;DomainAdmins;;0;test2.com",
+        ]
+        for row in rows:
+            f = ContentFile(row, name="identities.csv")
+            resp = self.client.post(
+                url, {"sourcefile": f, "sepchar": ";", "crypt_passwords": True}
+            )
+            self.assertEqual(resp.status_code, 200)
+            self.assertFalse(resp.json()["status"])
+        self.assertFalse(
+            core_models.User.objects.filter(
+                username__in=["pwn@test.com", "pwn2"]
+            ).exists()
+        )
+        self.assertEqual(
+            [admin.username for admin in test2.admins], ["admin@test2.com"]
+        )
+
+        # An owned domain is still accepted.
+        f = ContentFile(
+            "account;pwn@test.com;Toto12345;P;W;True;DomainAdmins;pwn@test.com;0;test.com",
+            name="identities.csv",
+        )
+        resp = self.client.post(
+            url, {"sourcefile": f, "sepchar": ";", "crypt_passwords": True}
+        )
+        self.assertTrue(resp.json()["status"])
+        da = core_models.User.objects.get(username="pwn@test.com")
+        self.assertIn(da, models.Domain.objects.get(name="test.com").admins)
+
     def test_export(self):
         response = self.client.get(reverse("v2:identities-export"))
         expected_response = "account,admin,,,,True,SuperAdmins,,\r\naccount,admin@test.com,{PLAIN}toto,,,True,DomainAdmins,admin@test.com,10,test.com\r\naccount,admin@test2.com,{PLAIN}toto,,,True,DomainAdmins,admin@test2.com,10,test2.com\r\naccount,user@test.com,{PLAIN}toto,,,True,SimpleUsers,user@test.com,10\r\naccount,user@test2.com,{PLAIN}toto,,,True,SimpleUsers,user@test2.com,10\r\nalias,alias@test.com,True,user@test.com\r\nalias,forward@test.com,True,user@external.com\r\nalias,postmaster@test.com,True,test@truc.fr,toto@titi.com\r\n"  # NOQA:E501
