@@ -78,6 +78,32 @@ class QuarantineViewSetTestCase(TestDataMixin, ModoAPITestCase):
         content = resp.json()
         self.assertEqual(content["count"], 1)
 
+    def test_list_simpleuser_scope(self):
+        """A simple user must only see messages sent to its own addresses."""
+        self.set_global_parameter("recipient_delimiter", "+")
+        own_ext = factories.create_spam("user+tag@test.com")
+        factories.create_spam("superuser@test.com")
+        factories.create_spam("user@test.com.evil.example")
+        factories.create_spam("username@test.com")
+        factories.create_spam("user@testxcom")
+        user = core_models.User.objects.get(username="user@test.com")
+        self.client.force_authenticate(user)
+        url = reverse("v2:amavis-quarantine-list")
+        resp = self.client.get(url)
+        self.assertEqual(resp.status_code, 200)
+        content = resp.json()
+        self.assertEqual(content["count"], 2)
+        self.assertEqual(
+            sorted(msg["to_address"] for msg in content["results"]),
+            ["user+tag@test.com", "user@test.com"],
+        )
+
+        # Message sent to an address with extension is also reachable
+        mail_id = smart_str(own_ext.mail.mail_id)
+        url = reverse("v2:amavis-quarantine-detail", args=[mail_id])
+        resp = self.client.get(f"{url}?rcpt=user%2Btag@test.com")
+        self.assertEqual(resp.status_code, 200)
+
     def test_retrieve(self):
         mail_id = smart_str(self.msgrcpt.mail.mail_id)
         rcpt = smart_str(self.msgrcpt.rid.email)

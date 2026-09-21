@@ -7,6 +7,7 @@ from email.utils import parseaddr
 import idna
 
 from django.conf import settings
+from django.db.models import Q
 from django.utils.translation import gettext as _
 
 from rest_framework import authentication, exceptions
@@ -365,8 +366,18 @@ def setup_manual_learning_for_mbox(mbox):
     return result
 
 
-def make_query_args(address, exact_extension=True, wildcard=None, domain_search=False):
+def make_query_args(
+    address, exact_extension=True, wildcard=None, domain_search=False, escape=None
+):
+    """Build the list of recipient addresses matching :kw:`address`.
+
+    When :kw:`escape` is provided, it is applied to every literal part of
+    the generated values (but not to :kw:`wildcard`), which allows to
+    safely use them inside a regular expression.
+    """
     assert isinstance(address, str), "address should be of type str"
+    if escape is None:
+        escape = lambda value: value  # NOQA:E731
     conf = dict(param_tools.get_global_parameters("amavis"))
     local_part, domain = split_address(address)
     if not conf["localpart_is_case_sensitive"]:
@@ -378,19 +389,41 @@ def make_query_args(address, exact_extension=True, wildcard=None, domain_search=
         domain = idna.encode(domain, uts46=True).decode("ascii")
     delimiter = conf["recipient_delimiter"]
     local_part, extension = split_local_part(local_part, delimiter=delimiter)
+    e_local_part = escape(local_part)
+    e_domain = escape(domain) if domain else domain
+    e_delimiter = escape(delimiter) if delimiter else delimiter
     query_args = []
     if conf["localpart_is_case_sensitive"] or (domain and domain != orig_domain):
-        query_args.append(address)
+        query_args.append(escape(address))
     if extension:
-        query_args.append(f"{local_part}{delimiter}{extension}@{domain}")
+        query_args.append(f"{e_local_part}{e_delimiter}{escape(extension)}@{e_domain}")
     if delimiter and not exact_extension and wildcard:
-        query_args.append(f"{local_part}{delimiter}{wildcard}@{domain}")
-    query_args.append(f"{local_part}@{domain}")
+        query_args.append(f"{e_local_part}{e_delimiter}{wildcard}@{e_domain}")
+    query_args.append(f"{e_local_part}@{e_domain}")
     if domain_search:
-        query_args.append(f"@{domain}")
+        query_args.append(f"@{e_domain}")
         query_args.append("@.")
 
     return query_args
+
+
+def get_user_recipients_filter(user, field="str_email"):
+    """Return a filter matching recipient addresses owned by a simple user.
+
+    Addresses (and their extensions if a recipient delimiter is
+    configured) are matched exactly: the generated regular expression is
+    escaped and anchored.
+    """
+    rcpts = [user.email]
+    mailbox = admin_models.Mailbox.objects.filter(user=user).first()
+    if mailbox:
+        rcpts += mailbox.alias_addresses
+    patterns = []
+    for rcpt in rcpts:
+        patterns += make_query_args(
+            rcpt, exact_extension=False, wildcard=".*", escape=re.escape
+        )
+    return Q(**{f"{field}__regex": f"^({'|'.join(patterns)})$"})
 
 
 def cleanup_email_address(address):
