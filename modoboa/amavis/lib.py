@@ -25,6 +25,8 @@ class SelfServiceAuthentication(authentication.BaseAuthentication):
     def authenticate(self, request):
         from .sql_connector import SQLconnector
 
+        if not param_tools.get_global_parameter("self_service", app="amavis"):
+            return None
         mail_id = request._request.resolver_match.kwargs.get("pk")
         if request.method == "GET":
             rcpt = request.GET.get("rcpt")

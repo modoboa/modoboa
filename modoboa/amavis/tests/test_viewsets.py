@@ -175,6 +175,23 @@ class QuarantineViewSetTestCase(TestDataMixin, ModoAPITestCase):
         self.msgrcpt.refresh_from_db()
         self.assertEqual(self.msgrcpt.rs, "D")
 
+    def test_selfservice_disabled(self):
+        """A valid triplet must be rejected when self-service is off."""
+        self.client.logout()
+        mail_id = smart_str(self.msgrcpt.mail.mail_id)
+        rcpt = smart_str(self.msgrcpt.rid.email)
+        secret_id = smart_str(self.msgrcpt.mail.secret_id)
+        url = reverse("v2:amavis-quarantine-detail", args=[mail_id])
+        response = self.client.get(f"{url}?rcpt={rcpt}&secret_id={secret_id}")
+        self.assertEqual(response.status_code, 403)
+
+        url = reverse("v2:amavis-quarantine-delete", args=[mail_id])
+        data = {"mailid": mail_id, "rcpt": rcpt, "secret_id": secret_id}
+        response = self.client.post(url, data, format="json")
+        self.assertEqual(response.status_code, 403)
+        self.msgrcpt.refresh_from_db()
+        self.assertEqual(self.msgrcpt.rs, " ")
+
     def test_delete_selfservice_other_message_denied(self):
         """Self-service can only target the message it authenticated for."""
         self.client.logout()
