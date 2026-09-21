@@ -7,7 +7,7 @@ from django.db.models import Q
 from modoboa.admin.models import Domain
 from modoboa.lib.email_utils import decode
 
-from .lib import cleanup_email_address, make_query_args
+from .lib import cleanup_email_address, get_user_recipients_filter
 from .models import Maddr, Msgrcpt, Quarantine
 from .utils import ConvertFrom, fix_utf8_encoding, smart_bytes, smart_str
 
@@ -66,16 +66,7 @@ class SQLconnector:
         if "str_email" not in self._annotations:
             self._annotations["str_email"] = ConvertFrom("rid__email")
 
-        rcpts = [self.user.email]
-        if hasattr(self.user, "mailbox"):
-            rcpts += self.user.mailbox.alias_addresses
-
-        query_rcpts = []
-        for rcpt in rcpts:
-            query_rcpts += make_query_args(rcpt, exact_extension=False, wildcard=".*")
-
-        re = f"({'|'.join(query_rcpts)})"
-        return flt & Q(str_email__regex=re)
+        return flt & get_user_recipients_filter(self.user)
 
     def _apply_msgrcpt_filters(self, flt):
         """Apply filters based on user's role."""
