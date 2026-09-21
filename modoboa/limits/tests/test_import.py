@@ -24,6 +24,7 @@ class LimitImportTestCase(ModoAPITestCase):
 
     def _test_domain_alias_import(self, limit):
         """Check domain aliases limit."""
+        self.domain.add_admin(self.reseller)
         self.authenticate_user(self.reseller)
 
         self.assertFalse(limit.is_exceeded())
