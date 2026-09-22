@@ -122,28 +122,47 @@
 
     <template v-if="!inScheduledView">
       <span class="mail-toolbar-separator" />
-      <v-btn-toggle
-        :model-value="listingMode"
+      <v-btn
         class="mail-mode"
-        density="compact"
         variant="text"
-        mandatory
-        @update:model-value="changeListingMode"
+        size="small"
+        :prepend-icon="listingModeIcon"
+        append-icon="mdi-menu-down"
+        :title="$gettext('Display mode')"
       >
-        <v-btn
-          value="flat"
-          icon="mdi-format-list-bulleted"
-          size="small"
-          :title="$gettext('Display messages one by one')"
-        />
-        <v-btn
-          value="threaded"
-          icon="mdi-forum-outline"
-          size="small"
-          :disabled="!threadingAvailable"
-          :title="threadingButtonTitle"
-        />
-      </v-btn-toggle>
+        <v-menu activator="parent">
+          <v-list density="compact">
+            <v-list-item
+              prepend-icon="mdi-format-list-bulleted"
+              :active="!threadedMode"
+              color="primary"
+              :title="$gettext('Messages one by one')"
+              @click="changeListingMode('flat')"
+            >
+              <template #append>
+                <v-icon v-if="!threadedMode" icon="mdi-check" />
+              </template>
+            </v-list-item>
+            <v-list-item
+              prepend-icon="mdi-forum-outline"
+              :active="threadedMode"
+              color="primary"
+              :title="$gettext('Conversations')"
+              :subtitle="
+                threadingAvailable
+                  ? undefined
+                  : $gettext('Not available in this folder')
+              "
+              :disabled="!threadingAvailable"
+              @click="changeListingMode('threaded')"
+            >
+              <template #append>
+                <v-icon v-if="threadedMode" icon="mdi-check" />
+              </template>
+            </v-list-item>
+          </v-list>
+        </v-menu>
+      </v-btn>
       <span class="mail-toolbar-separator" />
     </template>
 
@@ -169,93 +188,122 @@
         @click="page = emails.next_page"
       />
     </div>
+    <v-progress-linear
+      :active="showProgress"
+      class="mail-toolbar-progress"
+      color="primary"
+      height="2"
+      absolute
+      location="bottom"
+      indeterminate
+    />
   </v-toolbar>
-  <v-skeleton-loader v-if="loading" class="mx-1" type="card@2" />
-  <template v-else>
-    <v-alert
-      v-if="inScheduledView"
-      type="info"
-      variant="tonal"
-      density="compact"
-      class="mx-1 mb-2 flex-0-0"
-    >
-      {{
-        $gettext(
-          'Scheduled messages will be sent at the specified date and time. (visible on the right)'
-        )
-      }}
-    </v-alert>
-    <div class="emails overflow-y-auto">
-      <div v-if="emails.results?.length" class="mail-list mx-1">
-        <div class="mail-list-header">
-          <span class="spacer-accent" />
-          <span class="spacer-check" />
-          <span class="spacer-icon" />
-          <span v-if="displayThreads" class="spacer-expand" />
-          <span class="cell-sender">
-            {{ inScheduledView ? $gettext('Recipients') : $gettext('Sender') }}
-          </span>
-          <span class="cell-subject">{{ $gettext('Subject') }}</span>
-          <span class="cell-date">{{ $gettext('Date') }}</span>
-        </div>
-        <template v-if="displayThreads">
-          <ThreadListItem
-            v-for="thread in emails.results"
-            :key="thread.root"
-            :thread="thread"
-            :mailbox="props.mailbox"
-            @open="openEmail"
-            @open-thread="openThread"
-            @toggle-follow="toggleFollowState"
-            @dragstart="onDragStart"
-          />
-        </template>
-        <template v-else>
-          <EmailListItem
-            v-for="email in emails.results"
-            :key="email.imapid"
-            :email="email"
-            :scheduled="inScheduledView"
-            @open="openEmail"
-            @toggle-follow="toggleFollowState"
-            @reschedule="reScheduleMessage"
-            @delete-scheduled="deleteScheduledMessage"
-            @scheduling-error="displaySchedulingError"
-            @dragstart="onDragStart"
-          />
-        </template>
-      </div>
-      <v-alert
-        v-else
-        class="mt-4"
-        type="info"
-        :text="$gettext('No message yet in this mailbox')"
-        variant="tonal"
-      />
-    </div>
-    <v-dialog v-model="showSchedulingForm" max-width="800">
-      <EmailSchedulingForm
-        :initial-date="selectedScheduledEmail.scheduled_datetime_raw"
-        @schedule="updateScheduledEmail"
-        @close="closeSchedulingForm"
-      />
-    </v-dialog>
-    <v-dialog v-model="showSchedulingError" max-width="400">
-      <v-card
-        max-width="400"
-        :text="schedulingError"
-        :title="$gettext('Sending failure')"
+  <v-alert
+    v-if="inScheduledView"
+    type="info"
+    variant="tonal"
+    density="compact"
+    class="mx-1 mb-2 flex-0-0"
+  >
+    {{
+      $gettext(
+        'Scheduled messages will be sent at the specified date and time. (visible on the right)'
+      )
+    }}
+  </v-alert>
+  <div
+    class="emails overflow-y-auto"
+    :class="{ 'emails-refreshing': showProgress && !firstLoad }"
+    :aria-busy="loading"
+  >
+    <!-- Nothing to show yet: rows shaped like the real ones -->
+    <div v-if="firstLoad" class="mail-list mx-1">
+      <div
+        v-for="(widths, index) in GHOST_ROWS"
+        :key="index"
+        class="mail-row mail-row-ghost"
       >
-        <template #:actions>
-          <v-btn
-            class="ms-auto"
-            :text="$gettext('Close')"
-            @click="showSchedulingError = false"
-          ></v-btn>
-        </template>
-      </v-card>
-    </v-dialog>
-  </template>
+        <span class="accent" />
+        <span class="cell-check"><span class="ghost-box" /></span>
+        <span class="cell-icon"><span class="ghost-box" /></span>
+        <span class="cell-sender">
+          <span class="ghost-bar" :style="{ width: widths[0] }" />
+        </span>
+        <span class="cell-subject">
+          <span class="ghost-bar" :style="{ width: widths[1] }" />
+        </span>
+        <span class="cell-date"><span class="ghost-bar" /></span>
+      </div>
+    </div>
+    <div v-else-if="emails.results?.length" class="mail-list mx-1">
+      <div class="mail-list-header">
+        <span class="spacer-accent" />
+        <span class="spacer-check" />
+        <span class="spacer-icon" />
+        <span v-if="displayThreads" class="spacer-expand" />
+        <span class="cell-sender">
+          {{ inScheduledView ? $gettext('Recipients') : $gettext('Sender') }}
+        </span>
+        <span class="cell-subject">{{ $gettext('Subject') }}</span>
+        <span class="cell-date">{{ $gettext('Date') }}</span>
+      </div>
+      <template v-if="displayThreads">
+        <ThreadListItem
+          v-for="thread in emails.results"
+          :key="thread.root"
+          :thread="thread"
+          :mailbox="props.mailbox"
+          @open="openEmail"
+          @open-thread="openThread"
+          @toggle-follow="toggleFollowState"
+          @dragstart="onDragStart"
+        />
+      </template>
+      <template v-else>
+        <EmailListItem
+          v-for="email in emails.results"
+          :key="email.imapid"
+          :email="email"
+          :scheduled="inScheduledView"
+          @open="openEmail"
+          @toggle-follow="toggleFollowState"
+          @reschedule="reScheduleMessage"
+          @delete-scheduled="deleteScheduledMessage"
+          @scheduling-error="displaySchedulingError"
+          @dragstart="onDragStart"
+        />
+      </template>
+    </div>
+    <v-alert
+      v-else
+      class="mt-4"
+      type="info"
+      :text="$gettext('No message yet in this mailbox')"
+      variant="tonal"
+    />
+  </div>
+  <v-dialog v-model="showSchedulingForm" max-width="800">
+    <EmailSchedulingForm
+      :initial-date="selectedScheduledEmail.scheduled_datetime_raw"
+      @schedule="updateScheduledEmail"
+      @close="closeSchedulingForm"
+    />
+  </v-dialog>
+  <v-dialog v-model="showSchedulingError" max-width="400">
+    <v-card
+      max-width="400"
+      :text="schedulingError"
+      :title="$gettext('Sending failure')"
+    >
+      <template #:actions>
+        <v-btn
+          class="ms-auto"
+          :text="$gettext('Close')"
+          @click="showSchedulingError = false"
+        ></v-btn>
+      </template>
+    </v-card>
+  </v-dialog>
 </template>
 
 <script setup>
@@ -284,7 +332,11 @@ const router = useRouter()
 const route = useRoute()
 
 const selectedScheduledEmail = ref(null)
+// A request is in progress, and it has lasted long enough to be shown:
+// quick answers don't make anything blink
 const loading = ref(false)
+const showProgress = ref(false)
+const loadFailed = ref(false)
 const emails = ref({})
 const page = ref(1)
 const schedulingError = ref('')
@@ -305,6 +357,25 @@ let unmounted = false
 let lastFetchWasThreaded = null
 // Used when the refresh_interval preference can't be read
 const DEFAULT_REFRESH_INTERVAL = 300
+// Delay before a request in progress gets an indicator
+const PROGRESS_DELAY = 200
+// Widths of the sender and the subject of the placeholder rows
+const GHOST_ROWS = [
+  ['60%', '70%'],
+  ['80%', '45%'],
+  ['50%', '60%'],
+  ['70%', '80%'],
+  ['55%', '50%'],
+  ['75%', '65%'],
+]
+let progressTimeout = null
+// Only the answer to the last request is displayed
+let lastRequestId = 0
+
+// No listing received yet: placeholder rows stand in for it
+const firstLoad = computed(
+  () => emails.value.results === undefined && !loadFailed.value
+)
 
 const currentMailbox = computed(() => {
   return route.query.mailbox || 'INBOX'
@@ -356,10 +427,8 @@ const threadedMode = computed(
   () => listingMode.value === 'threaded' && threadingAvailable.value
 )
 
-const threadingButtonTitle = computed(() =>
-  threadingAvailable.value
-    ? $gettext('Group messages into conversations')
-    : $gettext('Conversations are not available in this folder')
+const listingModeIcon = computed(() =>
+  threadedMode.value ? 'mdi-forum-outline' : 'mdi-format-list-bulleted'
 )
 
 const changeListingMode = (mode) => {
@@ -437,9 +506,28 @@ const openThread = (mailid) => {
   })
 }
 
-const fetchEmails = () => {
-  emails.value = {}
+const startLoading = () => {
   loading.value = true
+  clearTimeout(progressTimeout)
+  progressTimeout = setTimeout(() => {
+    showProgress.value = true
+  }, PROGRESS_DELAY)
+}
+
+const stopLoading = () => {
+  clearTimeout(progressTimeout)
+  loading.value = false
+  showProgress.value = false
+}
+
+// The listing on screen stays there until the new one arrives. A silent
+// fetch, used by the periodic refresh, shows no indicator at all.
+const fetchEmails = ({ silent = false } = {}) => {
+  const requestId = ++lastRequestId
+  loadFailed.value = false
+  if (!silent) {
+    startLoading()
+  }
   const options = { page: page.value, search: search.value }
   const threaded = threadedMode.value
   lastFetchWasThreaded = threaded
@@ -448,11 +536,14 @@ const fetchEmails = () => {
     : api.getMailboxEmails(props.mailbox, options)
   request
     .then((resp) => {
+      if (requestId !== lastRequestId) {
+        return
+      }
       if (resp.data.threading_supported !== undefined) {
         threadingSupported.value = resp.data.threading_supported
         if (!resp.data.threading_supported) {
           // The server can't thread: fall back to the flat listing
-          fetchEmails()
+          fetchEmails({ silent })
           return
         }
       }
@@ -461,15 +552,26 @@ const fetchEmails = () => {
       // and threads and messages don't carry the same fields
       displayThreads.value = threaded
       emails.value = resp.data
-      loading.value = false
+      stopLoading()
     })
     .catch(() => {
-      loading.value = false
+      if (requestId === lastRequestId) {
+        loadFailed.value = true
+        stopLoading()
+      }
     })
 }
 
 const autoRefreshContent = () => {
   fetchEmails()
+  reloadMailboxCounters()
+}
+
+// Don't step on a load the user asked for
+const periodicRefresh = () => {
+  if (!loading.value) {
+    fetchEmails({ silent: true })
+  }
   reloadMailboxCounters()
 }
 
@@ -542,10 +644,9 @@ const flagSelection = (status) => {
 }
 
 const emptyMailbox = () => {
-  loading.value = true
+  startLoading()
   api.emptyUserMailbox(currentMailbox.value).then(() => {
-    emails.value = {}
-    loading.value = false
+    fetchEmails()
     reloadMailboxCounters()
   })
 }
@@ -615,18 +716,21 @@ onMounted(async () => {
   if (threadedMode.value !== lastFetchWasThreaded) {
     fetchEmails()
   }
-  intervalId = setInterval(autoRefreshContent, interval * 1000)
+  intervalId = setInterval(periodicRefresh, interval * 1000)
 })
 
 onUnmounted(() => {
   unmounted = true
   clearInterval(intervalId)
+  clearTimeout(progressTimeout)
 })
 
 watch(
   () => props.mailbox,
   () => {
     webmailStore.selection = []
+    // The messages of the previous mailbox mustn't linger meanwhile
+    emails.value = {}
     fetchEmails()
   }
 )
@@ -660,5 +764,13 @@ watch(page, () => {
 .emails {
   flex: 1 1 auto;
   min-height: 0;
+  transition: opacity 0.2s ease;
+}
+
+/* A new listing is on its way: the current one stays, faded, and can't
+   be acted on anymore */
+.emails-refreshing {
+  opacity: 0.55;
+  pointer-events: none;
 }
 </style>
