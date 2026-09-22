@@ -27,6 +27,8 @@ class SelfServiceAuthentication(authentication.BaseAuthentication):
     def authenticate(self, request):
         from .sql_connector import SQLconnector
 
+        if not param_tools.get_global_parameter("self_service", app="amavis"):
+            return None
         # The message id comes from the URL (the self-service links in
         # quarantine notifications and the frontend only put it there);
         # QuarantineViewSet._check_message_access then pins the action to
