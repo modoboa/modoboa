@@ -177,8 +177,27 @@ class TimeoutTestCase(WebmailTestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(self.mock_imap4.call_args.kwargs["timeout"], 5)
 
+    def test_secured_connection_uses_timeout(self):
+        self.set_global_parameter("imap_secured", True)
+        url = reverse("v2:webmail-email-list")
+        with mock.patch("imaplib.IMAP4_SSL") as mock_imap4_ssl:
+            mock_imap4_ssl.return_value = IMAP4Mock()
+            with self.settings(WEBMAIL_IMAP_TIMEOUT=5):
+                response = self.client.get(f"{url}?mailbox=INBOX")
+        self.assertEqual(response.status_code, 200)
+        self.mock_imap4.assert_not_called()
+        self.assertEqual(mock_imap4_ssl.call_args.kwargs["timeout"], 5)
+
     def test_timeout_during_command_is_an_imap_error(self):
         self.mock_imap4.return_value._simple_command = mock.Mock(
+            side_effect=TimeoutError("timed out")
+        )
+        url = reverse("v2:webmail-email-list")
+        response = self.client.get(f"{url}?mailbox=INBOX")
+        self.assertEqual(response.status_code, 500)
+
+    def test_timeout_during_uid_command_is_an_imap_error(self):
+        self.mock_imap4.return_value.uid = mock.Mock(
             side_effect=TimeoutError("timed out")
         )
         url = reverse("v2:webmail-email-list")
