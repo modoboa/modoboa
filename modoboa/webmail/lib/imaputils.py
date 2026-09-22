@@ -33,6 +33,10 @@ logger = logging.getLogger("modoboa.webmail")
 
 # imaplib.Debug = 4
 
+# Default timeout (in seconds) of IMAP socket operations. Without it, a
+# server that never answers blocks the worker forever.
+DEFAULT_IMAP_TIMEOUT = 30
+
 # workaround for the "got more than 10000 bytes" exception. MAXLINE
 # value set to 1M, as on latest python versions.
 MAXLINE = 1000000
@@ -466,7 +470,7 @@ class IMAPconnector:
         if name in ["FETCH", "SORT", "STORE", "COPY", "SEARCH", "MOVE", "THREAD"]:
             try:
                 typ, data = self.m.uid(name, *args)
-            except IMAP4Error as e:
+            except (IMAP4Error, OSError) as e:
                 raise ImapError(e) from None
             if typ == "NO":
                 raise ImapError(data)
@@ -476,7 +480,7 @@ class IMAPconnector:
 
         try:
             typ, data = self.m._simple_command(name, *args)
-        except IMAP4Error as e:
+        except (IMAP4Error, OSError) as e:
             raise ImapError(e) from None
         if typ == "NO":
             raise ImapError(data)
@@ -511,11 +515,12 @@ class IMAPconnector:
         :param user: username
         :param passwd: password
         """
+        timeout = getattr(settings, "WEBMAIL_IMAP_TIMEOUT", DEFAULT_IMAP_TIMEOUT)
         try:
             if self.conf["imap_secured"]:
-                self.m = imaplib.IMAP4_SSL(self.address, self.port)
+                self.m = imaplib.IMAP4_SSL(self.address, self.port, timeout=timeout)
             else:
-                self.m = imaplib.IMAP4(self.address, self.port)
+                self.m = imaplib.IMAP4(self.address, self.port, timeout=timeout)
         except (OSError, IMAP4Error, ssl.SSLError) as error:
             raise ImapError(_(f"Connection to IMAP server failed: {error}")) from None
 

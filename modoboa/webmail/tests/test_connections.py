@@ -152,3 +152,35 @@ class RequestConnectionTestCase(WebmailTestCase):
             response = self.client.get(f"{url}?mailbox=INBOX&mailid=46931")
         self.assertEqual(response.status_code, 500)
         self.assertEqual(self.imap.commands.count("LOGOUT"), 1)
+
+
+class TimeoutTestCase(WebmailTestCase):
+    """A server that never answers must not block the worker forever."""
+
+    def setUp(self):
+        super().setUp()
+        self.authenticate()
+
+    def test_connection_uses_default_timeout(self):
+        url = reverse("v2:webmail-email-list")
+        response = self.client.get(f"{url}?mailbox=INBOX")
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            self.mock_imap4.call_args.kwargs["timeout"],
+            imaputils.DEFAULT_IMAP_TIMEOUT,
+        )
+
+    def test_connection_timeout_is_configurable(self):
+        url = reverse("v2:webmail-email-list")
+        with self.settings(WEBMAIL_IMAP_TIMEOUT=5):
+            response = self.client.get(f"{url}?mailbox=INBOX")
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(self.mock_imap4.call_args.kwargs["timeout"], 5)
+
+    def test_timeout_during_command_is_an_imap_error(self):
+        self.mock_imap4.return_value._simple_command = mock.Mock(
+            side_effect=TimeoutError("timed out")
+        )
+        url = reverse("v2:webmail-email-list")
+        response = self.client.get(f"{url}?mailbox=INBOX")
+        self.assertEqual(response.status_code, 500)
