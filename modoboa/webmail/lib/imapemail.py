@@ -48,6 +48,9 @@ class ImapEmail(Email):
         self.mailid = validate_imap_uid(self.mailid)
         self.attachments: dict[str, str] = {}
         self.To: list = []
+        # Not every message has a Date: header (drafts saved by some
+        # clients, messages injected by scripts...)
+        self.Date: str = ""
 
     def close(self) -> None:
         """Release the IMAP connection (back to the pool, or logout).
