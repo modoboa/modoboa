@@ -25,14 +25,15 @@ class U2UTestCase(TestCase):
                 "Sm=?ISO-8859-1?B?9g==?=rg=?ISO-8859-1?B?5Q==?=sbord",
                 "Sm\xf6rg\xe5sbord",
             ),
-            # The following case currently fails because of the way we split
-            # encoded words to parse them separately, which can lead to
-            # unexpected unicode decode errors... I think it will work fine on
-            # Python3
-            # ("=?utf-8?B?VMOpbMOpcMOpYWdlIFZJTkNJIEF1dG9yb3V0ZXMgLSBFeHDD?=\n"
-            #  "=?utf-8?B?qWRpdGlvbiBkZSB2b3RyZSBjb21tYW5kZSBOwrAgMjAxNzEyMDcw"
-            #  "MDA1?=\n=?utf-8?B?MyBkdSAwNy8xMi8yMDE3IDE0OjQ5OjQx?=",
-            #  "")
+            # A multibyte character split across two encoded words
+            (
+                "=?utf-8?B?VMOpbMOpcMOpYWdlIFZJTkNJIEF1dG9yb3V0ZXMgLSBFeHDD?=\n"
+                " =?utf-8?B?qWRpdGlvbiBkZSB2b3RyZSBjb21tYW5kZSBOwrAgMjAxNzEyMDcw"
+                "MDA1?=\n =?utf-8?B?MyBkdSAwNy8xMi8yMDE3IDE0OjQ5OjQx?=",
+                "T\xe9l\xe9p\xe9age VINCI Autoroutes - Exp\xe9dition de votre "
+                "commande N\xb0 2017120700053 du 07/12/2017 14:49:41",
+            ),
+            ("=?UTF-8?Q?Caf=C3?= =?UTF-8?Q?=A9_cr=C3=A8me?=", "Caf\xe9 cr\xe8me"),
         ]
         for sample in samples:
             self.assertEqual(u2u_decode.u2u_decode(sample[0]), sample[1])
