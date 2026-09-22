@@ -2,6 +2,7 @@
 
 import email
 import email.utils
+import hashlib
 import imaplib
 import logging
 import re
@@ -10,6 +11,7 @@ import time
 import urllib.parse
 
 from django.conf import settings
+from django.core.cache import cache
 from django.utils.encoding import smart_str
 from django.utils.translation import gettext as _
 
@@ -46,6 +48,11 @@ if hasattr(imaplib, "_MAXLINE") and imaplib._MAXLINE < MAXLINE:
 # Keep a reference to the real exception class: tests replace
 # imaplib.IMAP4 with a mock, which would also replace IMAP4.error.
 IMAP4Error = imaplib.IMAP4.error
+
+# How long what the server says about itself (capabilities, namespaces)
+# is kept: it hardly ever changes, and asking costs a round trip on
+# every request.
+SERVER_INFO_CACHE_TIMEOUT = 3600
 
 # A message UID set: one or more positive integers separated by commas.
 UID_RE = re.compile(r"^[0-9]+(?:,[0-9]+)*$")
@@ -407,6 +414,7 @@ class IMAPconnector:
         r'^(?:STATUS\s+)?"?(?P<name>[^"(]*?)"?\s*\((?P<items>[^)]*)\)\s*$'
     )
     status_unseen_pattern = re.compile(r"UNSEEN (\d+)")
+    status_item_pattern = re.compile(r"([A-Z]+) (\d+)")
 
     def __init__(self, user: str, password: str, with_namespaces: bool = True) -> None:
         self.__hdelimiter: str | None = None
@@ -537,12 +545,17 @@ class IMAPconnector:
             data = self._cmd("LOGIN", user, passwd)
         self.m.state = "AUTH"
         if "CAPABILITY" in self.m.untagged_responses:
+            # Sent along the authentication reply: free and fresh
             self.capabilities = (
                 self.m.untagged_responses.pop("CAPABILITY")[0].decode().split()
             )
-        else:
+            return
+        key = self._server_info_key("capabilities")
+        self.capabilities = cache.get(key)
+        if self.capabilities is None:
             data = self._cmd("CAPABILITY")
             self.capabilities = data[0].decode().split()
+            cache.set(key, self.capabilities, SERVER_INFO_CACHE_TIMEOUT)
 
     def logout(self) -> None:
         """Logout from server.
@@ -556,7 +569,8 @@ class IMAPconnector:
             return
         self._usage_count = 0
         try:
-            self._cmd("CHECK")
+            # No CHECK first: it costs a round trip on every request and
+            # servers commit changes on their own (RFC 9051 removed it).
             self._cmd("LOGOUT")
         except (ImapError, OSError):
             pass
@@ -569,8 +583,28 @@ class IMAPconnector:
             if hasattr(self, "current_mailbox"):
                 del self.current_mailbox
 
+    def _server_info_key(self, name: str) -> str:
+        """Cache key of an information the server gives about a user.
+
+        The name is hashed: cache backends restrict the characters and
+        the length of keys.
+        """
+        digest = hashlib.sha256(
+            f"{self.address}:{self.port}:{self.user}".encode()
+        ).hexdigest()
+        return f"modoboa.webmail.{name}.{digest}"
+
     def load_namespaces(self) -> None:
-        """Load available namespaces."""
+        """Load available namespaces.
+
+        They are cached: a NAMESPACE command on every request would cost
+        a round trip for an answer that doesn't change.
+        """
+        key = self._server_info_key("namespaces")
+        cached = cache.get(key)
+        if cached is not None:
+            self.__hdelimiter, self.__ns_prefixes = cached
+            return
         data = self._cmd("NAMESPACE")
         nslist = self.namespaces_pattern.findall(data[0].decode())
         for pos, item in enumerate(["personal", "others", "public"]):
@@ -583,6 +617,12 @@ class IMAPconnector:
                 if item not in self.__ns_prefixes:
                     self.__ns_prefixes[item] = []
                 self.__ns_prefixes[item].append(m.group("prefix"))
+        if self.__hdelimiter is not None:
+            cache.set(
+                key,
+                (self.__hdelimiter, self.__ns_prefixes),
+                SERVER_INFO_CACHE_TIMEOUT,
+            )
 
     def parse_search_parameters(self, criterion: str, pattern: str) -> None:
         """Parse search information and apply them."""
@@ -676,7 +716,6 @@ class IMAPconnector:
             self.messages = self._search_messages(
                 reverse=criterion.startswith("REVERSE")
             )
-        self.getquota(mbox)
         return len(self.messages)
 
     def _search_messages(self, reverse: bool = True) -> list:
@@ -767,6 +806,32 @@ class IMAPconnector:
         if m is None:
             return 0
         return int(m.group(1))
+
+    def mailbox_state(self, mailbox: str) -> dict:
+        """Return a summary of the mailbox content, with one STATUS command.
+
+        ``state`` changes as soon as a message arrives, leaves or (when
+        the server supports CONDSTORE) sees its flags change: clients
+        compare it to know whether their listing is outdated, instead of
+        requesting the listing again.
+
+        :param mailbox: the mailbox's name
+        :return: a dict {"state": str, "unseen": int}
+        """
+        items = ["MESSAGES", "UIDNEXT", "UIDVALIDITY", "UNSEEN"]
+        if "CONDSTORE" in getattr(self, "capabilities", []):
+            items.append("HIGHESTMODSEQ")
+        data = self._cmd(
+            "STATUS", self._encode_mbox_name(mailbox), f"({' '.join(items)})"
+        )
+        response = data[-1].decode() if data else ""
+        # The items are in the last parenthesis: the mailbox name, quoted
+        # before them, may hold anything.
+        values = dict(self.status_item_pattern.findall(response[response.rfind("(") :]))
+        return {
+            "state": "-".join(values.get(item, "") for item in items),
+            "unseen": int(values.get("UNSEEN", 0)),
+        }
 
     def _encode_mbox_name(self, folder):
         """Encode folder name (str) to imap4-utf-7 and quote it."""
@@ -1257,6 +1322,29 @@ class IMAPconnector:
         bs = BodyStructure(data[int(uid)]["BODYSTRUCTURE"])
         attdef = bs.find_attachment(partnum)
         return attdef, data[int(uid)][f"BODY[{partnum}]"]
+
+    def fetch_parts(self, uid: str, mbox: str, pnums: list[str]) -> dict:
+        """Retrieve several parts of a message with a single FETCH.
+
+        Parts are peeked: reading them doesn't mark the message as seen.
+        Parts the server does not return are missing from the result.
+
+        :param uid: a message UID
+        :param mbox: the mailbox containing the message
+        :param pnums: the part numbers
+        :return: a dict {part number: raw payload}
+        """
+        if not pnums:
+            return {}
+        uid = validate_imap_uid(uid)
+        pnums = [validate_imap_partnum(pnum) for pnum in pnums]
+        self.select_mailbox(mbox, False)
+        items = " ".join(f"BODY.PEEK[{pnum}]" for pnum in pnums)
+        data = self._cmd("FETCH", uid, f"({items})")
+        if not data or int(uid) not in data:
+            return {}
+        msg = data[int(uid)]
+        return {pnum: msg[f"BODY[{pnum}]"] for pnum in pnums if f"BODY[{pnum}]" in msg}
 
     def fetch(
         self, start: int, stop: int | None = None, mbox: str | None = None

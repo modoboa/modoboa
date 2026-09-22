@@ -84,7 +84,6 @@ class SortFallbackTestCase(WebmailTestCase):
         connector.capabilities = ["QUOTA"]
         connector.criterions = []
         connector.select_mailbox = lambda *args, **kwargs: None
-        connector.getquota = lambda *args, **kwargs: None
 
         total = connector.messages_count(mbox="INBOX")
 

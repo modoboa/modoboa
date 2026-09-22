@@ -109,6 +109,11 @@ class UserMailboxUnseenSerializer(serializers.Serializer):
     counter = serializers.IntegerField()
 
 
+class UserMailboxStatusSerializer(serializers.Serializer):
+    state = serializers.CharField()
+    unseen = serializers.IntegerField()
+
+
 class UserMailboxesSerializer(serializers.Serializer):
     mailboxes = UserMailboxSerializer(many=True)
     hdelimiter = serializers.CharField()
@@ -207,6 +212,9 @@ class PaginatedEmailListSerializer(serializers.Serializer):
     last_index = serializers.IntegerField()
     prev_page = serializers.IntegerField()
     next_page = serializers.IntegerField()
+    # See UserMailboxViewSet.status
+    state = serializers.CharField(allow_null=True)
+    unseen = serializers.IntegerField(allow_null=True)
     results = EmailHeadersSerializer(many=True)
 
 
@@ -234,6 +242,9 @@ class PaginatedThreadListSerializer(serializers.Serializer):
     prev_page = serializers.IntegerField()
     next_page = serializers.IntegerField()
     threading_supported = serializers.BooleanField()
+    # See UserMailboxViewSet.status
+    state = serializers.CharField(allow_null=True)
+    unseen = serializers.IntegerField(allow_null=True)
     results = ThreadSummarySerializer(many=True)
 
 

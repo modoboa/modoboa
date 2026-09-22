@@ -91,6 +91,8 @@ class UserMailboxViewSet(ImapConnectionMixin, viewsets.GenericViewSet):
             return serializers.UserMailboxQuotaSerializer
         if self.action == "unseen":
             return serializers.UserMailboxUnseenSerializer
+        if self.action == "status":
+            return serializers.UserMailboxStatusSerializer
         if self.action in ["create", "compress", "empty", "delete"]:
             return serializers.UserMailboxInputSerializer
         if self.action == "rename":
@@ -130,6 +132,20 @@ class UserMailboxViewSet(ImapConnectionMixin, viewsets.GenericViewSet):
             serializer = self.get_serializer(
                 {"counter": imapc.unseen_messages(mailbox)}
             )
+        return response.Response(serializer.data)
+
+    @action(methods=["get"], detail=False)
+    def status(self, request):
+        """Tell whether the content of a mailbox changed, cheaply.
+
+        Meant to be polled: the listing is only requested again when the
+        state differs from the one it came with.
+        """
+        mailbox = request.GET.get("mailbox")
+        if mailbox is None:
+            raise Http404
+        with lib.get_imapconnector(request) as imapc:
+            serializer = self.get_serializer(imapc.mailbox_state(mailbox))
         return response.Response(serializer.data)
 
     def create(self, request):
@@ -238,6 +254,9 @@ class UserEmailViewSet(ImapConnectionMixin, viewsets.GenericViewSet):
         mailbox = request.GET.get("mailbox", "INBOX")
         search = _validate_search(request.GET.get("search"))
         with lib.get_imapconnector(request) as imapc:
+            # Read before the listing: a change made in between is seen
+            # as a change by the next poll, never missed.
+            status = imapc.mailbox_state(mailbox)
             if search:
                 # The single search field of the interface looks for the
                 # pattern in the headers and in the body
@@ -255,6 +274,7 @@ class UserEmailViewSet(ImapConnectionMixin, viewsets.GenericViewSet):
                         "last_index": 0,
                         "prev_page": None,
                         "next_page": None,
+                        **status,
                         "results": [],
                     }
                 )
@@ -270,6 +290,7 @@ class UserEmailViewSet(ImapConnectionMixin, viewsets.GenericViewSet):
                 "last_index": first_index + len(content) - 1,
                 "prev_page": page.previous_page_number if page.has_previous else None,
                 "next_page": page.next_page_number if page.has_next else None,
+                **status,
                 "results": content,
             }
         )
@@ -290,6 +311,7 @@ class UserEmailViewSet(ImapConnectionMixin, viewsets.GenericViewSet):
             if not imapc.has_thread:
                 # The server can't thread: the client stays in flat mode
                 return response.Response(self._empty_thread_page(False))
+            status = imapc.mailbox_state(mailbox)
             if search:
                 # The single search field of the interface looks for the
                 # pattern in the headers and in the body
@@ -298,7 +320,7 @@ class UserEmailViewSet(ImapConnectionMixin, viewsets.GenericViewSet):
             paginator = Paginator(total, messages_per_page)
             page = paginator.getpage(page_num)
             if not page:
-                return response.Response(self._empty_thread_page(True))
+                return response.Response(self._empty_thread_page(True, status))
 
             content = imapc.fetch_threads(page.id_start, page.id_stop, mbox=mailbox)
         first_index = (page_num - 1) * messages_per_page + 1
@@ -310,12 +332,15 @@ class UserEmailViewSet(ImapConnectionMixin, viewsets.GenericViewSet):
                 "prev_page": page.previous_page_number if page.has_previous else None,
                 "next_page": page.next_page_number if page.has_next else None,
                 "threading_supported": True,
+                **status,
                 "results": content,
             }
         )
         return response.Response(serializer.data)
 
-    def _empty_thread_page(self, threading_supported: bool) -> dict:
+    def _empty_thread_page(
+        self, threading_supported: bool, status: dict | None = None
+    ) -> dict:
         serializer = self.get_serializer(
             {
                 "count": 0,
@@ -324,6 +349,7 @@ class UserEmailViewSet(ImapConnectionMixin, viewsets.GenericViewSet):
                 "prev_page": None,
                 "next_page": None,
                 "threading_supported": threading_supported,
+                **(status or {"state": None, "unseen": None}),
                 "results": [],
             }
         )

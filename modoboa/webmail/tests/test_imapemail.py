@@ -24,10 +24,9 @@ def _make_email(inlines, links=True, images=None):
     email.bs = mock.Mock(inlines=inlines)
     # MagicMock: ImapEmail.__del__ calls imapc.__exit__()
     email.imapc = mock.MagicMock()
-    email.imapc.fetchpart.return_value = (
-        None,
-        base64.b64encode(PNG_BYTES).decode(),
-    )
+    email.imapc.fetch_parts.side_effect = lambda uid, mbox, pnums: {
+        pnum: base64.b64encode(PNG_BYTES).decode() for pnum in pnums
+    }
     return email
 
 
@@ -78,7 +77,7 @@ class InlineImagesTestCase(SimpleTestCase):
             }
         )
         email._fetch_inlines()
-        email.imapc.fetchpart.assert_not_called()
+        email.imapc.fetch_parts.assert_not_called()
         self.assertEqual(email._map_cid("cid:svg@x"), "cid:svg@x")
         self.assertEqual(email._map_cid("cid:html@x"), "cid:html@x")
 
@@ -95,7 +94,7 @@ class InlineImagesTestCase(SimpleTestCase):
             images=False,
         )
         email._fetch_inlines()
-        email.imapc.fetchpart.assert_called_once()
+        email.imapc.fetch_parts.assert_called_once()
 
     def test_inlines_not_embedded_into_replies(self):
         """A reply would carry them as data: URIs."""
@@ -111,7 +110,7 @@ class InlineImagesTestCase(SimpleTestCase):
         )
         email.embed_inlines = False
         email._fetch_inlines()
-        email.imapc.fetchpart.assert_not_called()
+        email.imapc.fetch_parts.assert_not_called()
 
     def test_inlines_fetched_without_links(self):
         """Images are displayed even when the links stay disabled."""
@@ -127,7 +126,25 @@ class InlineImagesTestCase(SimpleTestCase):
             images=True,
         )
         email._fetch_inlines()
-        email.imapc.fetchpart.assert_called_once()
+        email.imapc.fetch_parts.assert_called_once()
+
+    def test_only_referenced_inlines_fetched(self):
+        """Images the content doesn't show are listed, not downloaded."""
+        email = _make_email(
+            {
+                cid: {
+                    "pnum": pnum,
+                    "encoding": "base64",
+                    "Content-Type": "image/png",
+                }
+                for cid, pnum in (("a@x", "2"), ("b@x", "3"), ("c@x", "4"))
+            }
+        )
+        email._fetch_inlines({"a@x", "c@x"})
+        # A single command for every image
+        email.imapc.fetch_parts.assert_called_once_with("3", "INBOX", ["2", "4"])
+        self.assertTrue(email._map_cid("cid:a@x").startswith("data:image/png"))
+        self.assertEqual(email._map_cid("cid:b@x"), "cid:b@x")
 
     def test_other_urls_untouched(self):
         email = _make_email({})

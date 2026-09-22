@@ -230,9 +230,7 @@ function openMailbox(mailbox) {
   api.getUserMailboxQuota(mailbox).then((resp) => {
     mailboxQuota.value = resp.data
   })
-  // A message may have arrived since the tree was loaded: refresh the
-  // selected mailbox counter so it reflects the current unseen count.
-  refreshMailboxUnseen(mailbox)
+  // The counter of the mailbox comes with its listing
 }
 
 const fetchUserMailboxes = async () => {
@@ -296,6 +294,17 @@ const deleteMailbox = async () => {
 watch(dataKey, () => {
   fetchUserMailboxes()
 })
+
+// Counters received along the listings
+watch(
+  () => webmailStore.unseenCounters,
+  (counters) => {
+    for (const [name, counter] of Object.entries(counters)) {
+      updateMailboxUnseen(userMailboxes.value, name, counter)
+    }
+  },
+  { deep: true }
+)
 
 watch(
   () => busStore.mbCounterKey,

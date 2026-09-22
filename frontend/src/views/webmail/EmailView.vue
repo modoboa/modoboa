@@ -164,7 +164,7 @@
 import { onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useGettext } from 'vue3-gettext'
-import { useBusStore } from '@/stores'
+import { useBusStore, useWebmailStore } from '@/stores'
 import { useSpecialFolders } from '@/composables/webmail'
 import api from '@/api/webmail'
 import { downloadBlob } from '@/utils'
@@ -175,6 +175,7 @@ import RemoteContentBanner from '@/components/webmail/RemoteContentBanner.vue'
 const { $gettext } = useGettext()
 const { displayNotification, reloadMailboxCounters } = useBusStore()
 const route = useRoute()
+const webmailStore = useWebmailStore()
 const router = useRouter()
 const { isJunkFolder, isDraftsFolder } = useSpecialFolders(
   () => route.query.mailbox
@@ -204,18 +205,26 @@ const close = () => {
 }
 
 const fetchMailContent = () => {
+  const { mailbox, mailid } = route.query
   const options = {
     dformat: 'html',
     links: enableLinks.value ? '1' : '0',
     images: enableImages.value ? '1' : '0',
   }
-  api
-    .getEmailContent(route.query.mailbox, route.query.mailid, options)
-    .then((resp) => {
-      reloadMailboxCounters()
-      email.value = resp.data
-      loaded.value = true
-    })
+  // Already opened, hence already read
+  const cached = webmailStore.getContent(mailbox, mailid, options)
+  if (cached) {
+    email.value = cached
+    loaded.value = true
+    return
+  }
+  api.getEmailContent(mailbox, mailid, options).then((resp) => {
+    webmailStore.setContent(mailbox, mailid, options, resp.data)
+    webmailStore.flagInListing(mailbox, [mailid], 'read')
+    reloadMailboxCounters()
+    email.value = resp.data
+    loaded.value = true
+  })
 }
 
 const downloadAttachment = async (attachment) => {
@@ -236,6 +245,7 @@ const deleteEmail = () => {
   working.value = true
   api.deleteSelection(route.query.mailbox, [route.query.mailid]).then(() => {
     working.value = false
+    webmailStore.removeFromListing(route.query.mailbox, [route.query.mailid])
     router.push({
       name: 'MailboxView',
       query: { mailbox: route.query.mailbox },
@@ -250,6 +260,7 @@ const markEmailAsJunk = () => {
     .markSelectionAsJunk(route.query.mailbox, [route.query.mailid])
     .then(() => {
       working.value = false
+      webmailStore.removeFromListing(route.query.mailbox, [route.query.mailid])
       router.push({
         name: 'MailboxView',
         query: { mailbox: route.query.mailbox },
@@ -264,6 +275,7 @@ const markEmailAsNotJunk = () => {
     .markSelectionAsNotJunk(route.query.mailbox, [route.query.mailid])
     .then(() => {
       working.value = false
+      webmailStore.removeFromListing(route.query.mailbox, [route.query.mailid])
       router.push({
         name: 'MailboxView',
         query: { mailbox: route.query.mailbox },

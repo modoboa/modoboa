@@ -79,7 +79,6 @@ class ThreadOrderTestCase(SimpleTestCase):
         connector.capabilities = capabilities or ["SORT", "THREAD=REFS"]
         connector.criterions = []
         connector.select_mailbox = lambda *args, **kwargs: None
-        connector.getquota = lambda *args, **kwargs: None
         return connector
 
     def test_threads_follow_their_latest_message(self):

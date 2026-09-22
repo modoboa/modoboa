@@ -112,12 +112,18 @@ class ImapEmail(Email):
         contacts = [self.From] + self.To
         if hasattr(self, "Cc"):
             contacts += self.Cc
+        # One query for every address of the message
+        known = dict(
+            contacts_models.EmailAddress.objects.filter(
+                contact__addressbook=addressbook,
+                address__in=[contact["address"] for contact in contacts],
+            )
+            .order_by("-pk")
+            .values_list("address", "contact_id")
+        )
         for contact in contacts:
-            emailaddress = contacts_models.EmailAddress.objects.filter(
-                contact__addressbook=addressbook, address=contact["address"]
-            ).first()
-            if emailaddress:
-                contact["contact_id"] = emailaddress.contact.id
+            if contact["address"] in known:
+                contact["contact_id"] = known[contact["address"]]
 
     def get_header(self, msg, header: str, **kwargs):
         """Look for a particular header.
@@ -191,12 +197,12 @@ class ImapEmail(Email):
             self.fetch_body_structure()
             bodyc = ""
             parts = self.bs.contents.get(self.mformat, [])
+            # Every part of the content is retrieved with one command
+            payloads = self.imapc.fetch_parts(
+                self.mailid, self.mbox, [part["pnum"] for part in parts]
+            )
             for part in parts:
-                pnum = part["pnum"]
-                data = self.imapc._cmd("FETCH", self.mailid, f"(BODY.PEEK[{pnum}])")
-                if not data or int(self.mailid) not in data:
-                    continue
-                raw = data[int(self.mailid)].get(f"BODY[{pnum}]")
+                raw = payloads.get(part["pnum"])
                 if raw is None:
                     # The server answered with another part than the one
                     # we asked for: skip it instead of failing.
@@ -211,7 +217,7 @@ class ImapEmail(Email):
                             result = charset_detect(content)
                             content = content.decode(result["encoding"])
                 bodyc += content
-            self._fetch_inlines()
+            self._fetch_inlines(self._referenced_cids(bodyc))
             self._find_unreferenced_inlines(bodyc)
             if len(bodyc) != 0:
                 bodyc = getattr(self, f"_post_process_{self.mformat}")(bodyc)
@@ -242,41 +248,61 @@ class ImapEmail(Email):
         for attachment in self.bs.list_attachments():
             self.attachments[attachment.pop("partnum")] = attachment
 
+    def _referenced_cids(self, content: str) -> set[str]:
+        """Content-IDs of the inlines the displayed content shows.
+
+        None when the plain text is displayed: it can't show images.
+        """
+        if self.mformat != "html":
+            return set()
+        return {unquote(cid) for cid in CID_URL_RE.findall(content)}
+
     def _find_unreferenced_inlines(self, content: str) -> None:
         """List the inlines the displayed content doesn't show.
 
         They can't be seen otherwise: an image the HTML doesn't
         reference, or any image when the plain text is displayed.
         """
-        referenced = set()
-        if self.mformat == "html":
-            referenced = {unquote(cid) for cid in CID_URL_RE.findall(content)}
+        referenced = self._referenced_cids(content)
         for cid, params in self.bs.inlines.items():
             if cid in referenced or params["pnum"] in self.attachments:
                 continue
             attachment = self.bs.describe_part(params)
             self.attachments[attachment.pop("partnum")] = attachment
 
-    def _fetch_inlines(self):
+    def _fetch_inlines(self, cids: set[str] | None = None):
         """Embed inline images into the body as data: URIs.
 
         Images are never written to disk: storing them in a shared,
         publicly served directory leaked them to other users (message
         UIDs are only unique per mailbox).
+
+        Only the images the content references are retrieved (all of
+        them when ``cids`` is None), with a single command: the others
+        are listed as attachments and downloaded on demand.
         """
         if not (self.embed_inlines or self.images):
             return
-        for params in self.bs.inlines.values():
+        wanted = {}
+        for cid, params in self.bs.inlines.items():
+            if cids is not None and cid not in cids:
+                continue
             content_type = params.get("Content-Type", "")
             encoding = (params.get("encoding") or "").lower()
             if content_type not in constants.INLINE_IMAGE_MIME_TYPES:
                 continue
             if encoding not in ("base64", "quoted-printable"):
                 continue
-            pdef, content = self.imapc.fetchpart(self.mailid, self.mbox, params["pnum"])
-            payload = decode_payload(encoding, content)
+            wanted[params["pnum"]] = params
+        if not wanted:
+            return
+        payloads = self.imapc.fetch_parts(self.mailid, self.mbox, list(wanted))
+        for pnum, content in payloads.items():
+            params = wanted[pnum]
+            payload = decode_payload(params["encoding"], content)
             params["data_uri"] = (
-                f"data:{content_type};base64,{base64.b64encode(payload).decode()}"
+                f"data:{params['Content-Type']};base64,"
+                f"{base64.b64encode(payload).decode()}"
             )
 
     def _map_cid(self, url):
