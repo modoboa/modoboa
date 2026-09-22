@@ -241,9 +241,11 @@ class ServerInfoCacheTestCase(WebmailTestCase):
         """They are free, and fresher than the cached ones."""
 
         class CapabilitiesOnLoginMock(RecordingIMAP4Mock):
+            # The webmail authenticates with AUTHENTICATE, or with LOGIN
+            # in development mode
             def _simple_command(self, name, *args, **kwargs):
                 result = super()._simple_command(name, *args, **kwargs)
-                if name == "LOGIN":
+                if name in ("AUTHENTICATE", "LOGIN"):
                     self.untagged_responses["CAPABILITY"] = [b"IMAP4rev1 MOVE"]
                 return result
 
