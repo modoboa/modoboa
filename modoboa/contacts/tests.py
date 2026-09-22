@@ -6,7 +6,7 @@ import httmock
 from rq import SimpleWorker
 
 from django.core import management
-from django.test import TestCase
+from django.test import tag, TestCase
 from django.urls import reverse
 from django.utils import timezone
 
@@ -133,6 +133,7 @@ class AddressBookViewSetTestCase(TestDataMixin, ModoAPITestCase):
         contact = abook.contact_set.first()
         self.assertIsNot(contact.etag, None)
 
+    @tag("redis")
     def test_sync_from_cdav(self):
         """Test sync from CardDAV endpoint."""
         data = {"username": self.user.username, "password": "toto"}

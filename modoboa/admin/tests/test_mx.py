@@ -8,7 +8,7 @@ from rq import SimpleWorker
 from testfixtures import LogCapture
 
 from django.core import mail
-from django.test import override_settings
+from django.test import override_settings, tag
 from django.utils.translation import gettext as _
 
 import django_rq
@@ -219,6 +219,7 @@ class DNSBLTestCase(ModoTestCase):
         )
         models.DNSBLResult.objects.all().delete()
 
+    @tag("redis")
     @mock.patch("socket.gethostbyname")
     @mock.patch("socket.getaddrinfo")
     @mock.patch.object(dns.resolver.Resolver, "resolve")

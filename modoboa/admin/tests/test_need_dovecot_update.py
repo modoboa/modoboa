@@ -2,11 +2,12 @@
 
 import os
 import shutil
+from unittest import skipIf
 
 from django.core.management import call_command
 from django.urls import reverse
 
-from modoboa.lib.tests import ModoAPITestCase, SETTINGS_SAMPLE
+from modoboa.lib.tests import NO_LDAP, ModoAPITestCase, SETTINGS_SAMPLE
 from .. import factories
 
 
@@ -37,6 +38,7 @@ class NeedDovecotUpdateTestCase(ModoAPITestCase):
         self.localconfig.refresh_from_db()
         self.assertTrue(self.localconfig.need_dovecot_update)
 
+    @skipIf(NO_LDAP, "No ldap module installed")
     def test_update_dovecot_ldap_conf(self):
         self.localconfig.need_dovecot_update = True
         self.localconfig.save()

@@ -10,6 +10,7 @@ from rq import SimpleWorker
 from testfixtures import compare
 
 from django.core.management import call_command
+from django.test import tag
 from django.urls import reverse
 
 import django_rq
@@ -98,6 +99,7 @@ class DomainTestCase(ModoAPITestCase):
         self.assertEqual(domain.identities_count, 5)
 
 
+@tag("redis")
 class DKIMTestCase(ModoAPITestCase):
     """Test case for DKIM."""
 
