@@ -39,7 +39,50 @@ class TextPartMock(IMAP4Mock):
         return super().uid(command, *args)
 
 
+# Message without a Date: header (UID 46936)
+_HEADERS_WITHOUT_DATE = (
+    b"From: <sender@example.test>\r\n"
+    b"To: <user@test.com>\r\n"
+    b"Subject: No date\r\n\r\n"
+)
+
+
+class NoDateMock(IMAP4Mock):
+    """Server returning a message without a Date: header."""
+
+    def uid(self, command, *args):
+        if command == "FETCH" and int(args[0]) == 46936:
+            header = b"855 (UID 46936 " + tests_data.BODYSTRUCTURE_4
+            if "HEADER.FIELDS" in args[1]:
+                return "OK", [
+                    (
+                        header
+                        + b" BODY[HEADER.FIELDS (FROM TO CC DATE SUBJECT)] {%d}"
+                        % len(_HEADERS_WITHOUT_DATE),
+                        _HEADERS_WITHOUT_DATE,
+                    ),
+                    b")",
+                ]
+            if args[1] == "(BODYSTRUCTURE)":
+                return "OK", [header, ")"]
+            return "OK", [
+                (b"855 (UID 46936 BODY[1.1] {25}", b"This is a test message.\r\n"),
+                b")",
+            ]
+        return super().uid(command, *args)
+
+
 class RobustnessTestCase(WebmailTestCase):
+
+    def test_email_without_date(self):
+        self.mock_imap4.return_value = NoDateMock()
+        self.authenticate()
+        url = reverse("v2:webmail-email-content")
+        response = self.client.get(f"{url}?mailbox=INBOX&mailid=46936")
+        self.assertEqual(response.status_code, 200)
+        content = response.json()
+        self.assertEqual(content["date"], "")
+        self.assertEqual(content["subject"], "No date")
 
     def _get_quota(self, quotadef: bytes) -> dict:
         self.mock_imap4.return_value = QuotaMock(quotadef)

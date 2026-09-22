@@ -58,6 +58,9 @@ class ImapEmail(Email):
         # Part number -> {name, size, content_type}
         self.attachments: dict[str, dict] = {}
         self.To: list = []
+        # Not every message has a Date: header (drafts saved by some
+        # clients, messages injected by scripts...)
+        self.Date: str = ""
 
     def __del__(self):
         # The connector may not exist yet if __init__ failed, and it is
