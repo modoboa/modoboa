@@ -15,7 +15,7 @@ from modoboa.core.models import User
 from modoboa.lib.tests import ModoAPITestCase
 from . import utils
 from .. import factories
-from ..models import Alias, Domain
+from ..models import Alias, Domain, DomainAlias
 
 
 class ImportTestCase(ModoAPITestCase):
@@ -128,6 +128,30 @@ domainalias; domalias1.com; test.com; True
         self.assertIn(
             "You are not allowed to import domain aliases", resp.content.decode()
         )
+
+    def test_import_domainalias_by_reseller(self):
+        """Check a reseller can't import an alias for a domain it can't access."""
+        reseller = core_factories.UserFactory(
+            username="reseller", groups=("Resellers",)
+        )
+        Domain.objects.get(name="test.com").add_admin(reseller)
+        self.authenticate_user(reseller)
+        url = reverse("v2:identities-import-from-csv")
+        f = ContentFile(
+            b"domainalias; alias-own.test; test.com; True", name="identities.csv"
+        )
+        resp = self.client.post(url, {"sourcefile": f, "crypt_passwords": True})
+        self.assertEqual(resp.json()["status"], True)
+        self.assertTrue(DomainAlias.objects.filter(name="alias-own.test").exists())
+
+        f = ContentFile(
+            b"domainalias; alias-victim.test; test2.com; True", name="identities.csv"
+        )
+        resp = self.client.post(url, {"sourcefile": f, "crypt_passwords": True})
+        self.assertEqual(resp.json()["status"], False)
+        self.assertIn("Permission denied", resp.json()["message"])
+        self.assertFalse(DomainAlias.objects.filter(name="alias-victim.test").exists())
+        self.assertFalse(Alias.objects.filter(address="@alias-victim.test").exists())
 
     def test_import_quota_too_big(self):
         admin = User.objects.get(username="admin@test.com")
