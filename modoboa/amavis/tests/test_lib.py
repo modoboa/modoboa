@@ -1,3 +1,5 @@
+import re
+
 from django.test import SimpleTestCase
 
 from modoboa.lib.tests import ModoTestCase
@@ -58,6 +60,21 @@ class MakeQueryArgsTests(ModoTestCase):
         ]
         output = make_query_args(
             address, exact_extension=False, wildcard=".*", domain_search=True
+        )
+        self.assertEqual(output, expected_output)
+
+    def test_simple_email_address_escaped(self):
+        """Check literal parts are escaped but not the wildcard."""
+        self.set_global_parameter("localpart_is_case_sensitive", False)
+        self.set_global_parameter("recipient_delimiter", "+")
+        address = "User+Foo@sub.exAMPLE.COM"
+        expected_output = [
+            r"user\+foo@sub\.example\.com",
+            r"user\+.*@sub\.example\.com",
+            r"user@sub\.example\.com",
+        ]
+        output = make_query_args(
+            address, exact_extension=False, wildcard=".*", escape=re.escape
         )
         self.assertEqual(output, expected_output)
 

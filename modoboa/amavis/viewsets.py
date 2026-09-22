@@ -17,6 +17,7 @@ from modoboa.admin import models as admin_models
 from modoboa.amavis import models, serializers, tasks
 from modoboa.amavis.lib import (
     AMrelease,
+    get_user_recipients_filter,
     manual_learning_enabled,
     SelfServiceAuthentication,
 )
@@ -26,20 +27,6 @@ from modoboa.parameters import tools as param_tools
 
 
 SELFSERVICE_ACTIONS = ["retrieve", "headers", "delete", "release"]
-
-
-def get_user_valid_addresses(user):
-    """Retrieve all valid addresses of a user."""
-    valid_addresses = []
-    if user.role == "SimpleUsers":
-        valid_addresses.append(user.email)
-        try:
-            mb = admin_models.Mailbox.objects.get(user=user)
-        except admin_models.Mailbox.DoesNotExist:
-            pass
-        else:
-            valid_addresses += mb.alias_addresses
-    return valid_addresses
 
 
 class QuarantineViewSet(viewsets.GenericViewSet):
@@ -91,8 +78,7 @@ class QuarantineViewSet(viewsets.GenericViewSet):
         if rcpt is not None:
             rcpts = rcpts.filter(str_email=rcpt)
         if request.user.role == "SimpleUsers":
-            valid_addresses = get_user_valid_addresses(request.user)
-            if not rcpts.filter(str_email__in=valid_addresses).exists():
+            if not rcpts.filter(get_user_recipients_filter(request.user)).exists():
                 raise Http404
         else:
             domains = admin_models.Domain.objects.get_for_admin(
