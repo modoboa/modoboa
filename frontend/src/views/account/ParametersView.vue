@@ -8,7 +8,7 @@
       :app="$route.params.app"
       :structure="structure"
       :values="parameters"
-      :save-function="parametersApi.saveUserApplication"
+      :save-function="saveParameters"
     />
   </div>
 </template>
@@ -19,15 +19,26 @@ import { useGettext } from 'vue3-gettext'
 import { useRoute } from 'vue-router'
 import ParametersForm from '@/components/tools/ParametersForm'
 import parametersApi from '@/api/parameters'
+import { useWebmailStore } from '@/stores'
 
 const { $gettext } = useGettext()
 const route = useRoute()
+const webmailStore = useWebmailStore()
 
 const label = ref('')
 const structure = ref([])
 const parameters = ref({})
 
 const title = computed(() => $gettext('Settings: ' + label.value))
+
+async function saveParameters(app, body) {
+  const resp = await parametersApi.saveUserApplication(app, body)
+  if (app === 'webmail') {
+    // The webmail keeps them for the session
+    webmailStore.forgetPreferences()
+  }
+  return resp
+}
 
 function loadParams(app) {
   parametersApi.getUserApplicationStructure(app).then((response) => {

@@ -189,7 +189,7 @@
 import { computed, onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useGettext } from 'vue3-gettext'
-import { useBusStore } from '@/stores'
+import { useBusStore, useWebmailStore } from '@/stores'
 import { useSpecialFolders } from '@/composables/webmail'
 import api from '@/api/webmail'
 import { downloadBlob } from '@/utils'
@@ -200,6 +200,7 @@ import RemoteContentBanner from '@/components/webmail/RemoteContentBanner.vue'
 const { $gettext, $ngettext } = useGettext()
 const { displayNotification, reloadMailboxCounters } = useBusStore()
 const route = useRoute()
+const webmailStore = useWebmailStore()
 const router = useRouter()
 const { isJunkFolder } = useSpecialFolders(() => route.query.mailbox)
 
@@ -291,10 +292,22 @@ const loadContent = async (message, reload = false) => {
     links: '0',
     images: imagesEnabled.value[message.imapid] ? '1' : '0',
   }
+  const unread = message.style === 'unseen'
+  // An unread message must be requested to be marked as read
+  const cached =
+    !unread && webmailStore.getContent(mailbox.value, message.imapid, options)
+  if (cached) {
+    contents.value[message.imapid] = cached
+    return
+  }
   const resp = await api.getEmailContent(mailbox.value, message.imapid, options)
+  webmailStore.setContent(mailbox.value, message.imapid, options, resp.data)
   contents.value[message.imapid] = resp.data
-  message.style = undefined
-  reloadMailboxCounters()
+  if (unread) {
+    message.style = undefined
+    webmailStore.flagInListing(mailbox.value, [message.imapid], 'read')
+    reloadMailboxCounters()
+  }
 }
 
 // The body is loaded again: the server only keeps the remote images
@@ -348,6 +361,7 @@ const runOnThread = async (request, message) => {
   working.value = true
   try {
     await request(mailbox.value, uids.value)
+    webmailStore.removeFromListing(mailbox.value, uids.value)
     backToMailbox()
     displayNotification({ msg: message })
   } finally {

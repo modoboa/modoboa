@@ -16,6 +16,11 @@ export default {
     const params = { mailbox }
     return repository.get('webmail/mailboxes/unseen/', { params })
   },
+  // Cheap summary telling whether the content of a mailbox changed
+  getUserMailboxStatus(mailbox) {
+    const params = { mailbox }
+    return repository.get('/webmail/mailboxes/status/', { params })
+  },
   createUserMailbox(body) {
     return repository.post('/webmail/mailboxes/', body)
   },

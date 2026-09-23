@@ -326,10 +326,17 @@ const props = defineProps({
 })
 
 const { $gettext, $ngettext } = useGettext()
-const { displayNotification, reloadMailboxCounters } = useBusStore()
+const { displayNotification } = useBusStore()
 const webmailStore = useWebmailStore()
 const router = useRouter()
 const route = useRoute()
+
+// Coming back from a message: the listing left is displayed at once, and
+// only requested again if the mailbox changed meanwhile
+const cachedListing =
+  webmailStore.lastListing?.mailbox === props.mailbox
+    ? webmailStore.lastListing
+    : null
 
 const selectedScheduledEmail = ref(null)
 // A request is in progress, and it has lasted long enough to be shown:
@@ -337,24 +344,24 @@ const selectedScheduledEmail = ref(null)
 const loading = ref(false)
 const showProgress = ref(false)
 const loadFailed = ref(false)
-const emails = ref({})
-const page = ref(1)
+const emails = ref(cachedListing?.data || {})
+const page = ref(cachedListing?.page || 1)
 const schedulingError = ref('')
-const search = ref('')
+const search = ref(cachedListing?.search || '')
 const selectAll = ref(false)
 const showSchedulingError = ref(false)
 const showSchedulingForm = ref(false)
 const working = ref(false)
 // null until the server tells whether it supports the THREAD extension
-const threadingSupported = ref(null)
+const threadingSupported = ref(cachedListing?.threadingSupported ?? null)
 // Whether the results currently held by `emails` are threads
-const displayThreads = ref(false)
+const displayThreads = ref(cachedListing?.threaded || false)
 const userPreferences = ref(null)
 
 let intervalId = null
 let unmounted = false
 // Which listing the last request asked for, to avoid fetching twice
-let lastFetchWasThreaded = null
+let lastFetchWasThreaded = cachedListing ? cachedListing.threaded : null
 // Used when the refresh_interval preference can't be read
 const DEFAULT_REFRESH_INTERVAL = 300
 // Delay before a request in progress gets an indicator
@@ -493,6 +500,16 @@ const displaySchedulingError = async (email) => {
 }
 
 const openEmail = (emailid) => {
+  const id = String(emailid)
+  const unread = (emails.value.results || []).some((item) =>
+    displayThreads.value
+      ? item.unseen_count > 0 && item.uids.map(String).includes(id)
+      : String(item.imapid) === id && item.style === 'unseen'
+  )
+  if (unread) {
+    // It must be requested to be marked as read
+    webmailStore.forgetContent(props.mailbox, emailid)
+  }
   router.push({
     name: 'EmailView',
     query: { mailbox: props.mailbox, mailid: emailid },
@@ -553,6 +570,16 @@ const fetchEmails = ({ silent = false } = {}) => {
       displayThreads.value = threaded
       emails.value = resp.data
       stopLoading()
+      webmailStore.lastListing = {
+        mailbox: props.mailbox,
+        page: options.page,
+        search: options.search,
+        threaded,
+        threadingSupported: threadingSupported.value,
+        data: emails.value,
+      }
+      // The listing carries the counter of the mailbox
+      webmailStore.setUnseen(props.mailbox, resp.data.unseen)
     })
     .catch(() => {
       if (requestId === lastRequestId) {
@@ -562,17 +589,34 @@ const fetchEmails = ({ silent = false } = {}) => {
     })
 }
 
-const autoRefreshContent = () => {
-  fetchEmails()
-  reloadMailboxCounters()
+// Polled: a cheap status request tells whether the mailbox changed since
+// the listing was received, and the listing is only requested again then.
+const autoRefreshContent = async () => {
+  if (document.hidden || loading.value) {
+    return
+  }
+  const knownState = emails.value.state
+  if (knownState) {
+    try {
+      const resp = await api.getUserMailboxStatus(props.mailbox)
+      webmailStore.setUnseen(props.mailbox, resp.data.unseen)
+      if (resp.data.state === knownState) {
+        return
+      }
+    } catch {
+      // The listing would fail the same way
+      return
+    }
+  }
+  fetchEmails({ silent: true })
 }
 
-// Don't step on a load the user asked for
-const periodicRefresh = () => {
-  if (!loading.value) {
-    fetchEmails({ silent: true })
+// Refreshes are skipped while the page is hidden: catch up when it
+// shows again
+const onVisibilityChange = () => {
+  if (!document.hidden) {
+    autoRefreshContent()
   }
-  reloadMailboxCounters()
 }
 
 const submitSearch = () => {
@@ -583,71 +627,62 @@ const toggleAllSelection = (value) => {
   webmailStore.selection = value ? [...pageIds.value] : []
 }
 
-const deleteSelection = () => {
-  if (!webmailStore.selection.length) {
+// The messages are updated on screen right away. The listing is then
+// requested again: it fills the page, or brings the messages back if the
+// request failed.
+const runOnSelection = async (request, msg, update) => {
+  const selection = [...webmailStore.selection]
+  if (!selection.length) {
     return
   }
+  const mailbox = currentMailbox.value
   working.value = true
-  api.deleteSelection(currentMailbox.value, webmailStore.selection).then(() => {
+  update(mailbox, selection)
+  webmailStore.selection = []
+  try {
+    await request(mailbox, selection)
+    displayNotification({ msg })
+  } finally {
     working.value = false
-    webmailStore.selection = []
-    displayNotification({ msg: $gettext('Message(s) deleted') })
-    fetchEmails()
-    reloadMailboxCounters()
-  })
+    fetchEmails({ silent: true })
+  }
 }
 
-const markSelectionAsJunk = () => {
-  if (!webmailStore.selection.length) {
-    return
-  }
-  working.value = true
-  api
-    .markSelectionAsJunk(currentMailbox.value, webmailStore.selection)
-    .then(() => {
-      working.value = false
-      webmailStore.selection = []
-      displayNotification({ msg: $gettext('Message(s) marked as junk') })
-      autoRefreshContent()
-    })
-}
+const removeSelection = (request, msg) =>
+  runOnSelection(request, msg, webmailStore.removeFromListing)
 
-const markSelectionAsNotJunk = () => {
-  if (!webmailStore.selection.length) {
-    return
-  }
-  working.value = true
-  api
-    .markSelectionAsNotJunk(currentMailbox.value, webmailStore.selection)
-    .then(() => {
-      working.value = false
-      webmailStore.selection = []
-      displayNotification({ msg: $gettext('Message(s) marked as not junk') })
-      autoRefreshContent()
-    })
-}
+const deleteSelection = () =>
+  removeSelection(api.deleteSelection, $gettext('Message(s) deleted'))
 
-const flagSelection = (status) => {
-  if (!webmailStore.selection.length) {
-    return
-  }
-  working.value = true
-  api
-    .flagSelection(currentMailbox.value, webmailStore.selection, status)
-    .then(() => {
-      working.value = false
-      webmailStore.selection = []
-      displayNotification({ msg: $gettext('Message(s) flagged') })
-      fetchEmails()
-      reloadMailboxCounters()
-    })
-}
+const markSelectionAsJunk = () =>
+  removeSelection(
+    api.markSelectionAsJunk,
+    $gettext('Message(s) marked as junk')
+  )
+
+const markSelectionAsNotJunk = () =>
+  removeSelection(
+    api.markSelectionAsNotJunk,
+    $gettext('Message(s) marked as not junk')
+  )
+
+const flagSelection = (status) =>
+  runOnSelection(
+    (mailbox, selection) => api.flagSelection(mailbox, selection, status),
+    $gettext('Message(s) flagged'),
+    (mailbox, selection) => {
+      webmailStore.flagInListing(mailbox, selection, status)
+      if (status === 'unread') {
+        selection.forEach((id) => webmailStore.forgetContent(mailbox, id))
+      }
+    }
+  )
 
 const emptyMailbox = () => {
   startLoading()
   api.emptyUserMailbox(currentMailbox.value).then(() => {
+    webmailStore.setUnseen(currentMailbox.value, 0)
     fetchEmails()
-    reloadMailboxCounters()
   })
 }
 
@@ -685,6 +720,10 @@ const onDragStart = (event, ids) => {
 // listing mode. Unset values are returned as null but refused on save,
 // so they are dropped before keeping the payload for later updates.
 const loadPreferences = async () => {
+  if (webmailStore.preferences) {
+    userPreferences.value = webmailStore.preferences.params
+    return webmailStore.preferences.interval
+  }
   try {
     const resp = await parametersApi.getUserApplication('webmail')
     const params = resp.data.params || {}
@@ -695,9 +734,10 @@ const loadPreferences = async () => {
       webmailStore.setListingMode(params.listing_mode)
     }
     const value = Number(params.refresh_interval)
-    if (Number.isInteger(value) && value > 0) {
-      return value
-    }
+    const interval =
+      Number.isInteger(value) && value > 0 ? value : DEFAULT_REFRESH_INTERVAL
+    webmailStore.preferences = { params: userPreferences.value, interval }
+    return interval
   } catch {
     // Keep refreshing with the default interval
   }
@@ -705,7 +745,9 @@ const loadPreferences = async () => {
 }
 
 onMounted(async () => {
-  if (webmailStore.listingModeLoaded) {
+  if (cachedListing) {
+    autoRefreshContent()
+  } else if (webmailStore.listingModeLoaded) {
     // The mode is known from a previous listing: don't wait
     fetchEmails()
   }
@@ -716,21 +758,29 @@ onMounted(async () => {
   if (threadedMode.value !== lastFetchWasThreaded) {
     fetchEmails()
   }
-  intervalId = setInterval(periodicRefresh, interval * 1000)
+  intervalId = setInterval(autoRefreshContent, interval * 1000)
+  document.addEventListener('visibilitychange', onVisibilityChange)
 })
 
 onUnmounted(() => {
   unmounted = true
   clearInterval(intervalId)
   clearTimeout(progressTimeout)
+  document.removeEventListener('visibilitychange', onVisibilityChange)
 })
 
 watch(
   () => props.mailbox,
   () => {
     webmailStore.selection = []
+    search.value = ''
     // The messages of the previous mailbox mustn't linger meanwhile
     emails.value = {}
+    if (page.value !== 1) {
+      // The page watcher fetches the listing
+      page.value = 1
+      return
+    }
     fetchEmails()
   }
 )
@@ -747,7 +797,8 @@ watch(
 watch(
   () => webmailStore.listingKey,
   () => {
-    fetchEmails()
+    // Messages were moved out of the listing, which stays displayed
+    fetchEmails({ silent: true })
   }
 )
 watch(page, () => {
