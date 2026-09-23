@@ -164,6 +164,69 @@ h6 {
   }
 }
 
+/* Placeholder rows, while the first listing is on its way: the same
+   columns as the real rows, with a soft pulse instead of the content */
+.mail-row.mail-row-ghost {
+  cursor: default;
+
+  &:hover {
+    background-color: transparent;
+  }
+
+  .cell-check,
+  .cell-icon {
+    display: flex;
+    justify-content: center;
+  }
+
+  .ghost-box,
+  .ghost-bar {
+    display: block;
+    border-radius: 4px;
+    background-color: rgba(var(--v-theme-on-surface), 0.08);
+    animation: mail-ghost-pulse 1.4s ease-in-out infinite;
+  }
+
+  .ghost-box {
+    width: 16px;
+    height: 16px;
+  }
+
+  .ghost-bar {
+    height: 10px;
+  }
+
+  .cell-date .ghost-bar {
+    width: 48px;
+    margin-left: auto;
+  }
+
+  /* Rows further down fade in later, like a wave */
+  @for $i from 2 through 6 {
+    &:nth-child(#{$i}) {
+      .ghost-box,
+      .ghost-bar {
+        animation-delay: #{($i - 1) * 0.1}s;
+      }
+    }
+  }
+}
+
+@keyframes mail-ghost-pulse {
+  50% {
+    opacity: 0.4;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mail-row.mail-row-ghost {
+    .ghost-box,
+    .ghost-bar {
+      animation: none;
+    }
+  }
+}
+
 /* Column titles above the list */
 .mail-list-header {
   display: flex;
@@ -212,6 +275,15 @@ h6 {
  * a selection checkbox padded to land on the column of the rows below.
  */
 .mail-toolbar {
+  /* v-toolbar sets width: 100%, which its side margins would push past
+     the right edge of the list below. Qualified with .v-toolbar to win
+     over Vuetify's rule whatever the stylesheet order. */
+  &.v-toolbar {
+    width: auto;
+    /* Rounds the ends of the progress line along the bottom border */
+    overflow: hidden;
+  }
+
   .v-toolbar__content {
     gap: 4px;
     /* 3px of accent bar and the 8px gap of a row, so that this checkbox
@@ -255,12 +327,13 @@ h6 {
     flex: 1 1 auto;
   }
 
+  /* Only the icon of the current mode and the menu arrow */
   .mail-mode {
-    height: 32px;
+    min-width: 0;
+    padding: 0 6px;
 
-    .v-btn--active {
-      color: rgb(var(--v-theme-primary));
-      background-color: rgba(var(--v-theme-primary), 0.12);
+    .v-btn__prepend {
+      margin-inline-end: 0;
     }
   }
 
