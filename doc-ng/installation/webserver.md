@@ -123,6 +123,10 @@ upstream modoboa {
     server unix:{{ uwsgi_socket_path }} fail_timeout=0;
 }
 
+upstream modoboa_introspect {
+    server unix:{{ uwsgi_introspect_socket_path }} fail_timeout=0;
+}
+
 server {
     listen 80;
     listen [::]:80;
@@ -156,6 +160,13 @@ server {
 
     location /media/ {
         try_files $uri $uri/ =404;
+    }
+
+    location = /api/o/introspect/ {
+        include uwsgi_params;
+        uwsgi_param UWSGI_SCRIPT instance.wsgi:application;
+        uwsgi_pass modoboa_introspect;
+        uwsgi_read_timeout 15s;
     }
 
     location ~ ^/(api|accounts|autodiscover) {
@@ -240,6 +251,8 @@ not be completely self-explanatory:
     unix:/run/uwsgi/app/ app name /socket
     ```
     where `app name` is the name of the application.
+* `uwsgi_introspect_socket_path`: The location where the uwsgi instance
+    dedicated to OAuth2 introspection is listening (see below).
 
 Your uwsgi configuration should be:
 
@@ -267,6 +280,30 @@ not require it. In the configuration above:
     This directory is the parent of `modoboa's settings dir`
 * `name`: The name that you passed to `modoboa-admin.py deploy`
     when you created your Modoboa instance, usually `instance`.
+
+#### Dedicated instance for OAuth2 introspection
+
+Dovecot validates the OAuth2 tokens used by the webmail by calling the
+`/api/o/introspect/` endpoint of Modoboa, while a webmail request waits
+for Dovecot. If this endpoint was served by the same uwsgi instance,
+every worker could end up waiting for Dovecot, leaving none to answer
+the introspection call: uwsgi would lock up until restarted.
+
+That is why the nginx configuration above routes this endpoint to a
+second uwsgi instance. Create a second configuration file, with the
+same content as the first one except for the following lines:
+
+``` ini
+# An introspection is a single SQL query: 2 processes are enough
+processes = 2
+socket = <uwsgi_introspect_socket_path>
+harakiri = 10
+```
+
+On Debian and derivatives, if the files are named
+`modoboa_instance.ini` and `modoboa_introspect_instance.ini`, the socket
+paths are respectively `/run/uwsgi/app/modoboa_instance/socket` and
+`/run/uwsgi/app/modoboa_introspect_instance/socket`.
 
 Now, you can go the `dovecot` section to continue the installation.
 
@@ -352,5 +389,13 @@ If you do plan to use SSL, you\'ll have to generate a certificate and a key.
 [This article](http://wiki.nginx.org/HttpSslModule#Generate_Certificates) contains information about how to do it.
 
 Paste this content to your configuration (replace values between `<>` with yours) and restart nginx.
+
+::: tip
+As explained in the uWSGI section, the `/api/o/introspect/` endpoint
+should be served by a second gunicorn instance, listening on its own
+socket, with a dedicated `upstream` and an exact match
+`location = /api/o/introspect/` block. Otherwise, gunicorn can lock up
+when all its workers wait for Dovecot.
+:::
 
 Now, you can go the [Dovecot](./dovecot) section to continue the installation.

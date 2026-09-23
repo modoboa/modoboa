@@ -207,6 +207,85 @@ Add the `address` key to both handlers in the `LOGGING` variable:
 },
 ```
 
+### Recommended: dedicated uWSGI instance for OAuth2 introspection
+
+Dovecot validates the OAuth2 tokens used by the webmail by calling
+the `/api/o/introspect/` endpoint, which is served by the same uWSGI
+instance as the rest of Modoboa. A webmail request waits for Dovecot,
+which waits for the introspection call: when every uWSGI worker is busy
+waiting for Dovecot, the introspection call cannot be served. uWSGI then
+locks up, nginx returns `504` errors and uWSGI must be restarted. With
+the default 4 processes, a few concurrent webmail requests are enough.
+
+The fix is to serve the introspection endpoint with a dedicated uWSGI
+instance, which never waits for Dovecot.
+
+If you use [modoboa installer](https://github.com/modoboa/modoboa-installer),
+update it and run it in upgrade mode: it deploys the new instance and
+updates the nginx configuration. The number of processes of the new
+instance is set by the `nb_introspection_processes` option of the
+`uwsgi` section (2 by default).
+
+``` shell
+$ sudo python3 run.py --upgrade <domain>
+```
+
+Otherwise, create a second uWSGI configuration file, for example
+`/etc/uwsgi/apps-available/modoboa_introspect_instance.ini`. Copy the
+content of your existing Modoboa configuration file
+(`modoboa_instance.ini` by default) and change the following lines:
+
+``` ini
+processes = 2 # [!code ++]
+socket = /run/uwsgi/app/modoboa_introspect_instance/socket # [!code ++]
+harakiri = 10 # [!code ++]
+```
+
+Enable it and restart uWSGI:
+
+``` shell
+$ sudo ln -s /etc/uwsgi/apps-available/modoboa_introspect_instance.ini /etc/uwsgi/apps-enabled/
+$ sudo systemctl restart uwsgi
+```
+
+Then declare the new upstream in your nginx configuration, and route
+the introspection endpoint to it. The `location` block must be added to
+the server block serving Modoboa:
+
+``` nginx
+upstream modoboa_introspect { # [!code ++]
+    server unix:/run/uwsgi/app/modoboa_introspect_instance/socket fail_timeout=0; # [!code ++]
+} # [!code ++]
+
+server {
+    # ...
+    location = /api/o/introspect/ { # [!code ++]
+        include uwsgi_params; # [!code ++]
+        uwsgi_param UWSGI_SCRIPT instance.wsgi:application; # [!code ++]
+        uwsgi_pass modoboa_introspect; # [!code ++]
+        uwsgi_read_timeout 15s; # [!code ++]
+    } # [!code ++]
+    # ...
+}
+```
+
+Finally, check the configuration and reload nginx:
+
+``` shell
+$ sudo nginx -t
+$ sudo systemctl reload nginx
+```
+
+### Webmail: IMAP timeout
+
+The webmail now stops waiting for the IMAP server after 30 seconds,
+instead of blocking a uWSGI worker forever. To change this value, add
+the following variable to your `settings.py` file (in seconds):
+
+``` python
+WEBMAIL_IMAP_TIMEOUT = 30
+```
+
 ## Version 2.10.1
 
 ### Webmail attachments moved out of `MEDIA_ROOT`
