@@ -98,16 +98,64 @@ class AccessRuleTestCase(ModoAPITestCase):
         self.assertTrue(cfg.has_section("calendars"))
 
         # Check user-defined rules
-        section = "user@test.com-to-User calendar 0-acr"
+        section = f"user@test.com-to-{cal.name}-acr"
         self.assertTrue(cfg.has_section(section))
         self.assertEqual(cfg.get(section, "user"), "user@test.com")
-        self.assertEqual(
-            cfg.get(section, "collection"), "admin@test.com/User calendar 0"
-        )
+        self.assertEqual(cfg.get(section, "collection"), f"admin@test.com/{cal.name}")
         self.assertEqual(cfg.get(section, "permissions"), "Rr")
 
         # Call a second time
         jobs.generate_rights()
+
+    def _read_rights_file(self):
+        cfg = ConfigParser()
+        with open(self.rights_file_path) as fpo:
+            cfg.read_file(fpo)
+        return cfg
+
+    def test_rights_file_rule_deletion(self):
+        """A deleted access rule must disappear from the rights file."""
+        owner = admin_models.Mailbox.objects.get(
+            address="admin", domain__name="test.com"
+        )
+        grantee = admin_models.Mailbox.objects.get(
+            address="user", domain__name="test.com"
+        )
+        cal = factories.UserCalendarFactory(mailbox=owner)
+        acr = factories.AccessRuleFactory(
+            mailbox=grantee, calendar=cal, read=True, write=True
+        )
+        jobs.generate_rights()
+        section = f"{grantee}-to-{cal}-acr"
+        self.assertTrue(self._read_rights_file().has_section(section))
+
+        acr.delete()
+        jobs.generate_rights()
+        self.assertFalse(self._read_rights_file().has_section(section))
+
+    def test_rights_file_calendar_creation(self):
+        """A new calendar gets its token rule without any access rule change."""
+        jobs.generate_rights()
+        mbox = admin_models.Mailbox.objects.get(
+            address="admin", domain__name="test.com"
+        )
+        cal = factories.UserCalendarFactory(mailbox=mbox)
+        jobs.generate_rights()
+        self.assertTrue(
+            self._read_rights_file().has_section(f"token-{cal._path}-access")
+        )
+
+    def test_rights_file_not_rewritten_when_unchanged(self):
+        """The file is left untouched when rules did not change."""
+        jobs.generate_rights()
+        with open(self.rights_file_path) as fpo:
+            content = fpo.read()
+        jobs.generate_rights()
+        with open(self.rights_file_path) as fpo:
+            self.assertEqual(fpo.read(), content)
+        management.call_command("generate_rights", force=True)
+        with open(self.rights_file_path) as fpo:
+            self.assertNotEqual(fpo.read(), content)
 
     def test_rights_file_generation_with_admin(self):
         self.set_global_parameter(
