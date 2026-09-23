@@ -52,7 +52,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-16 19:34+0200\n"
+"POT-Creation-Date: 2026-09-23 18:31+0200\n"
 "PO-Revision-Date: 2011-07-01 08:15+0000\n"
 "Last-Translator: Gerhard Adler <ge.adler@gmail.com>, 2025\n"
 "Language-Team: German (http://app.transifex.com/tonio/modoboa/language/de/)\n"
@@ -102,7 +102,7 @@ msgstr "Kann nicht größer als Domain Kontingent sein"
 #: admin/api/v1/serializers.py:185 admin/api/v1/serializers.py:381
 #: admin/api/v1/serializers.py:428 admin/api/v2/serializers.py:402
 #: admin/api/v2/serializers.py:652 admin/api/v2/serializers.py:705
-#: admin/models/alias.py:45 calendars/serializers.py:102
+#: admin/models/alias.py:45 calendars/serializers.py:101
 msgid "Permission denied."
 msgstr "Zugriff verweigert."
 
@@ -128,7 +128,7 @@ msgid "Must be equal to mailbox full_address"
 msgstr "Muss mit mailbox full_address übereinstimmen"
 
 #: admin/api/v1/serializers.py:414 admin/api/v2/serializers.py:686
-#: calendars/serializers.py:203 pdfcredentials/api/v2/serializers.py:91
+#: calendars/serializers.py:202 pdfcredentials/api/v2/serializers.py:91
 msgid "This field is required."
 msgstr "Dieses Feld ist erforderlich"
 
@@ -1050,7 +1050,7 @@ msgstr ""
 msgid "Display"
 msgstr "Darstellung"
 
-#: amavis/app_settings.py:243 webmail/app_settings.py:202
+#: amavis/app_settings.py:243 webmail/app_settings.py:212
 msgid "Number of displayed emails per page"
 msgstr "Anzahl dargestellter Nachrichten pro Seite"
 
@@ -1090,24 +1090,24 @@ msgstr ""
 msgid "Pending requests"
 msgstr ""
 
-#: amavis/lib.py:59
+#: amavis/lib.py:62
 #, python-format
 msgid "Connection to amavis failed: %s"
 msgstr ""
 
-#: amavis/lib.py:124
+#: amavis/lib.py:127
 #, fuzzy
 #| msgid "Failed to locate rrdtool binary."
 msgid "Failed to find {} binary"
 msgstr "RRDTool Binary konnte nicht gefunden werden"
 
-#: amavis/lib.py:165
+#: amavis/lib.py:168
 #, fuzzy
 #| msgid "Local recipient {}@{} not found"
 msgid "No recipient found"
 msgstr "Lokaler Empfänger {}@{} nicht gefunden"
 
-#: amavis/lib.py:176
+#: amavis/lib.py:179
 #, fuzzy
 #| msgid "Domain not found."
 msgid "Local domain not found"
@@ -1213,7 +1213,7 @@ msgstr "Gesendete Nachrichten"
 msgid "Please visit %(listingurl)s for a full listing."
 msgstr ""
 
-#: amavis/viewsets.py:174
+#: amavis/viewsets.py:160
 #, fuzzy
 #| msgid "Invalid address"
 msgid "Invalid request"
@@ -1358,13 +1358,17 @@ msgid "Server location is not set, please fix it."
 msgstr ""
 "Der Serverstandort ist nicht festgelegt. Bitte beheben Sie das Problem."
 
-#: calendars/serializers.py:246
+#: calendars/serializers.py:240
 #, fuzzy
 #| msgid "Domain not found."
 msgid "Mailbox not found"
 msgstr "Domain nicht gefunden."
 
-#: calendars/viewsets.py:198
+#: calendars/serializers.py:246
+msgid "An access rule already exists for this mailbox"
+msgstr ""
+
+#: calendars/viewsets.py:197
 msgid "Uploaded file is too big (max: {} bytes)"
 msgstr "Hochgeladene Datei ist zu groß (max: {} Bytes)"
 
@@ -1495,7 +1499,7 @@ msgid "Calendar"
 msgstr "Kalender"
 
 #: core/api/v2/viewsets.py:215 core/api/v2/viewsets.py:217
-#: webmail/app_settings.py:307 webmail/app_settings.py:314
+#: webmail/app_settings.py:317 webmail/app_settings.py:324
 msgid "Webmail"
 msgstr "Webmail"
 
@@ -2270,7 +2274,7 @@ msgstr ""
 msgid "Failed to update password: LDAP module not installed"
 msgstr "Konnte Passwort nicht aktualisieren: LDAP-Modul nicht installiert"
 
-#: core/models.py:185 policyd/core.py:117
+#: core/models.py:185 policyd/core.py:123
 msgid "account"
 msgstr "Konto"
 
@@ -2690,7 +2694,7 @@ msgstr ""
 msgid "Failed to communicate with public API: %s"
 msgstr "Die Kommunikation mit der öffentlichen API ist fehlgeschlagen: %s"
 
-#: lib/email_utils.py:146 lib/email_utils.py:365
+#: lib/email_utils.py:151 lib/email_utils.py:386
 msgid "unable to determine encoding of string"
 msgstr "Kodierung der Zeichenkette konnte nicht bestimmt werden"
 
@@ -3248,15 +3252,15 @@ msgstr ""
 "Die Datei \"PDF_credentials\" konnte nicht erstellt werden. Bitte überprüfen "
 "Sie die Berechtigungen oder den Pfad."
 
-#: policyd/core.py:99
+#: policyd/core.py:105
 msgid "Daily sending limit reached"
 msgstr "Tägliches Sendelimit erreicht"
 
-#: policyd/core.py:118
+#: policyd/core.py:124
 msgid "domain"
 msgstr "Domain"
 
-#: policyd/core.py:136
+#: policyd/core.py:142
 msgid "[modoboa] Sending limit reached"
 msgstr "[modoboa] Sendelimit erreicht"
 
@@ -3428,7 +3432,7 @@ msgstr "ist"
 msgid "is not"
 msgstr "ist nicht"
 
-#: sievefilters/constants.py:28 webmail/lib/imapemail.py:361
+#: sievefilters/constants.py:28 webmail/lib/imapemail.py:374
 msgid "Subject"
 msgstr "Betreff"
 
@@ -3741,73 +3745,83 @@ msgstr "Aktiviere Darstellung von HTML-Links"
 msgid "Enable/Disable HTML links display"
 msgstr "Aktiviere/Deaktiviere Darstellung von HTML-Links"
 
-#: webmail/app_settings.py:205
+#: webmail/app_settings.py:201
+#, fuzzy
+#| msgid "Message sending limit"
+msgid "Messages list mode"
+msgstr "Nachrichtenversand Limit"
+
+#: webmail/app_settings.py:203
+msgid "Display messages one by one or grouped into conversations"
+msgstr ""
+
+#: webmail/app_settings.py:215
 msgid "Sets the maximum number of messages displayed in a page"
 msgstr ""
 "Legt die maximale Anzahl von Nachrichten fest, die auf einer Seite "
 "dargestellt werden"
 
-#: webmail/app_settings.py:212
+#: webmail/app_settings.py:222
 msgid "Listing refresh rate"
 msgstr "Aktualisierungsintervall für Liste"
 
-#: webmail/app_settings.py:214
+#: webmail/app_settings.py:224
 msgid "Automatic listing refresh rate (in secconds)"
 msgstr "AutoAktualisier Rate der Auflistung (in Sekunden)"
 
-#: webmail/app_settings.py:225
+#: webmail/app_settings.py:235
 msgid "Folders"
 msgstr "Verzeichnisse"
 
-#: webmail/app_settings.py:231
+#: webmail/app_settings.py:241
 msgid "Trash folder"
 msgstr "Papierkorb"
 
-#: webmail/app_settings.py:233
+#: webmail/app_settings.py:243
 msgid "Folder where deleted messages go"
 msgstr "Ordner, in dem gelöschte Nachrichten abgelegt werden"
 
-#: webmail/app_settings.py:240
+#: webmail/app_settings.py:250
 msgid "Sent folder"
 msgstr "Gesendete Nachrichten"
 
-#: webmail/app_settings.py:242
+#: webmail/app_settings.py:252
 msgid "Folder where copies of sent messages go"
 msgstr "Ordner, in den Kopien gesendeter Nachrichten gehen"
 
-#: webmail/app_settings.py:249
+#: webmail/app_settings.py:259
 msgid "Drafts folder"
 msgstr "Entwürfe"
 
-#: webmail/app_settings.py:250
+#: webmail/app_settings.py:260
 msgid "Folder where drafts go"
 msgstr "Ordner für Entwürfe"
 
-#: webmail/app_settings.py:256
+#: webmail/app_settings.py:266
 msgid "Junk folder"
 msgstr "Junk Ordner"
 
-#: webmail/app_settings.py:258
+#: webmail/app_settings.py:268
 msgid "Folder where junk messages should go"
 msgstr "Ordner, in den Junk-Nachrichten gehen sollten"
 
-#: webmail/app_settings.py:269
+#: webmail/app_settings.py:279
 msgid "Composing messages"
 msgstr "Nachrichten erstellen"
 
-#: webmail/app_settings.py:275
+#: webmail/app_settings.py:285
 msgid "Default editor"
 msgstr "Standard-Editor"
 
-#: webmail/app_settings.py:277
+#: webmail/app_settings.py:287
 msgid "The default editor to use when composing a message"
 msgstr "Der Standard-Editor zum Erstellen einer Nachricht"
 
-#: webmail/app_settings.py:284
+#: webmail/app_settings.py:294
 msgid "Signature text"
 msgstr "Signatur"
 
-#: webmail/app_settings.py:286
+#: webmail/app_settings.py:296
 msgid "User defined email signature"
 msgstr "Benutzerdefinierte E-Mail-Signatur"
 
@@ -3833,6 +3847,18 @@ msgstr ""
 msgid "Run the purge_webmail_legacy_data management command."
 msgstr ""
 
+#: webmail/constants.py:75
+#, fuzzy
+#| msgid "All messages"
+msgid "Messages"
+msgstr "Alle Nachrichten"
+
+#: webmail/constants.py:76
+#, fuzzy
+#| msgid "Check new versions"
+msgid "Conversations"
+msgstr "Prüfe auf neue Versionen"
+
 #: webmail/exceptions.py:23
 msgid "Server response"
 msgstr "Server-Antwort"
@@ -3849,63 +3875,63 @@ msgstr ""
 msgid "Failed to remove attachment: "
 msgstr "Konnte Anhang nicht entfernen:"
 
-#: webmail/lib/imapemail.py:327
+#: webmail/lib/imapemail.py:340
 msgid "wrote:"
 msgstr "schrieb:"
 
-#: webmail/lib/imapemail.py:363
+#: webmail/lib/imapemail.py:376
 msgid "Date"
 msgstr "Datum"
 
-#: webmail/lib/imapemail.py:379 webmail/lib/imapemail.py:382
+#: webmail/lib/imapemail.py:392 webmail/lib/imapemail.py:395
 msgid "Original message"
 msgstr "Ursprüngliche Nachricht"
 
-#: webmail/lib/imaputils.py:55 webmail/viewsets.py:26
+#: webmail/lib/imaputils.py:68 webmail/viewsets.py:26
 msgid "Invalid message identifier"
 msgstr ""
 
-#: webmail/lib/imaputils.py:62 webmail/viewsets.py:40
+#: webmail/lib/imaputils.py:75 webmail/viewsets.py:40
 #, fuzzy
 #| msgid "Invalid rounds number"
 msgid "Invalid part number"
 msgstr "Ungültige Zahl für Runden"
 
-#: webmail/lib/imaputils.py:75 webmail/viewsets.py:47
+#: webmail/lib/imaputils.py:88 webmail/viewsets.py:47
 msgid "Invalid search pattern"
 msgstr ""
 
-#: webmail/lib/imaputils.py:88
+#: webmail/lib/imaputils.py:101
 #, fuzzy
 #| msgid "Enter a valid domain name"
 msgid "Invalid mailbox name"
 msgstr "Geben Sie einen gültigen Domain-Namen an"
 
-#: webmail/lib/imaputils.py:331
+#: webmail/lib/imaputils.py:505
 msgid "Failed to retrieve hierarchy delimiter"
 msgstr "Hierarchietrennzeichen konnte nicht abgerufen werden"
 
-#: webmail/lib/imaputils.py:690
+#: webmail/lib/imaputils.py:924
 msgid "Inbox"
 msgstr "Posteingang"
 
-#: webmail/lib/imaputils.py:694
+#: webmail/lib/imaputils.py:928
 msgid "Drafts"
 msgstr "Entwürfe"
 
-#: webmail/lib/imaputils.py:699
+#: webmail/lib/imaputils.py:933
 msgid "Junk"
 msgstr "SPAM"
 
-#: webmail/lib/imaputils.py:704
+#: webmail/lib/imaputils.py:938
 msgid "Sent"
 msgstr "Gesendet"
 
-#: webmail/lib/imaputils.py:712
+#: webmail/lib/imaputils.py:946
 msgid "Scheduled"
 msgstr ""
 
-#: webmail/lib/imaputils.py:719
+#: webmail/lib/imaputils.py:953
 msgid "Trash"
 msgstr "Papierkorb"
 
@@ -3931,43 +3957,43 @@ msgstr "Name der Domain"
 msgid "This address is no longer allowed for this account"
 msgstr ""
 
-#: webmail/serializers.py:257
+#: webmail/serializers.py:291
 msgid "Moving scheduled messages is forbidden"
 msgstr ""
 
-#: webmail/serializers.py:290
+#: webmail/serializers.py:323
 msgid "Only datetime in the future is allowed"
 msgstr ""
 
-#: webmail/serializers.py:295
+#: webmail/serializers.py:328
 msgid "Provived datetime must be one minute in the future at least"
 msgstr ""
 
-#: webmail/serializers.py:326
+#: webmail/serializers.py:358
 #, fuzzy
 #| msgid "You are not allowed to import domain aliases."
 msgid "You are not allowed to send from this address"
 msgstr ""
 "Sie verfügen nicht über ausreichend Rechte, um Domain Aliase zu importieren."
 
-#: webmail/serializers.py:368
+#: webmail/serializers.py:399
 msgid ""
 "original_mailbox, original_mailid and original_action must be provided "
 "together"
 msgstr ""
 
-#: webmail/serializers.py:385
+#: webmail/serializers.py:416
 #, python-format
 msgid ""
 "Ensure this field has no more than %(max_length)s characters to schedule the "
 "message"
 msgstr ""
 
-#: webmail/serializers.py:445
+#: webmail/serializers.py:473
 msgid "forward_mailbox and forward_mailid must be provided together"
 msgstr ""
 
-#: webmail/serializers.py:449
+#: webmail/serializers.py:477
 msgid "A session can't start from a draft and a forwarded message"
 msgstr ""
 
@@ -3977,25 +4003,25 @@ msgstr ""
 msgid "Invalid page number"
 msgstr "Ungültige Zahl für Runden"
 
-#: webmail/viewsets.py:153
+#: webmail/viewsets.py:152
 msgid "This mailbox is used by the webmail and can't be renamed"
 msgstr ""
 
-#: webmail/viewsets.py:194
+#: webmail/viewsets.py:193
 msgid "This mailbox is used by the webmail and can't be deleted"
 msgstr ""
 
-#: webmail/viewsets.py:527
+#: webmail/viewsets.py:604
 #, python-format
 msgid "A message cannot carry more than %s attachments"
 msgstr ""
 
-#: webmail/viewsets.py:539
+#: webmail/viewsets.py:616
 #, python-format
 msgid "Attachment is too big (limit: %s)"
 msgstr "Anhang ist zu groß (Limit: %s)"
 
-#: webmail/viewsets.py:544
+#: webmail/viewsets.py:621
 #, fuzzy, python-format
 #| msgid "Attachment is too big (limit: %s)"
 msgid "Attachments are too big (limit: %s for the whole message)"

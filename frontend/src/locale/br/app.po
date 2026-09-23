@@ -72,7 +72,7 @@ msgstr "Kont krouet"
 #: src/components/admin/identities/IdentityList.vue:565
 #: src/components/admin/identities/IdentityList.vue:594
 #: src/components/tools/CreationForm.vue:135
-#: src/layouts/webmail/WebmailLayout.vue:272
+#: src/layouts/webmail/WebmailLayout.vue:280
 #: src/views/calendars/CalendarView.vue:535
 msgid "Warning"
 msgstr ""
@@ -125,6 +125,7 @@ msgstr "Enaouet"
 #: src/components/quarantine/QuarantineList.vue:49
 #: src/components/quarantine/QuarantineList.vue:235
 #: src/components/webmail/ComposeEmailForm.vue:193
+#: src/components/webmail/EmailList.vue:247
 msgid "Subject"
 msgstr ""
 
@@ -299,7 +300,7 @@ msgstr ""
 #: src/components/admin/identities/IdentityList.vue:570
 #: src/components/admin/identities/IdentityList.vue:599
 #: src/components/tools/CreationForm.vue:142
-#: src/layouts/webmail/WebmailLayout.vue:277
+#: src/layouts/webmail/WebmailLayout.vue:285
 msgid "No"
 msgstr ""
 
@@ -312,7 +313,7 @@ msgstr ""
 #: src/components/admin/identities/IdentityList.vue:569
 #: src/components/admin/identities/IdentityList.vue:598
 #: src/components/tools/CreationForm.vue:141
-#: src/layouts/webmail/WebmailLayout.vue:276
+#: src/layouts/webmail/WebmailLayout.vue:284
 msgid "Yes"
 msgstr ""
 
@@ -574,11 +575,11 @@ msgstr ""
 #: src/components/contacts/ContactForm.vue:148
 #: src/components/tools/ImportForm.vue:51
 #: src/components/webmail/AttachmentsDialog.vue:41
-#: src/components/webmail/EmailList.vue:226
+#: src/components/webmail/EmailList.vue:301
 #: src/components/webmail/EmailSchedulingForm.vue:28
 #: src/components/webmail/MailboxForm.vue:29
-#: src/layouts/connected/ConnectedLayout.vue:19
-#: src/views/webmail/EmailView.vue:188
+#: src/layouts/connected/ConnectedLayout.vue:23
+#: src/views/webmail/EmailView.vue:155
 msgid "Close"
 msgstr "Serriñ"
 
@@ -693,9 +694,10 @@ msgstr "Implij"
 #: src/components/calendars/EventForm.vue:90
 #: src/components/contacts/CategoryForm.vue:18
 #: src/components/contacts/ContactList.vue:237
-#: src/components/webmail/EmailList.vue:293
+#: src/components/webmail/EmailList.vue:35
+#: src/components/webmail/EmailListItem.vue:130
 #: src/views/account/FiltersView.vue:351
-#: src/views/calendars/CalendarView.vue:209
+#: src/views/calendars/CalendarView.vue:209 src/views/webmail/EmailView.vue:62
 msgid "Delete"
 msgstr ""
 
@@ -1038,11 +1040,11 @@ msgstr ""
 msgid "Domain alias deleted"
 msgstr ""
 
-#: src/components/admin/domains/DomainAliasForm.vue:118
+#: src/components/admin/domains/DomainAliasForm.vue:116
 msgid "Domain alias created"
 msgstr ""
 
-#: src/components/admin/domains/DomainAliasForm.vue:122
+#: src/components/admin/domains/DomainAliasForm.vue:120
 msgid "Domain alias updated"
 msgstr ""
 
@@ -1319,7 +1321,7 @@ msgstr "Domani krouet"
 #: src/components/admin/imap_migration/ProvidersList.vue:152
 #: src/components/contacts/ContactList.vue:232
 #: src/views/account/FiltersView.vue:346
-#: src/views/calendars/CalendarView.vue:199
+#: src/views/calendars/CalendarView.vue:199 src/views/webmail/EmailView.vue:53
 msgid "Edit"
 msgstr ""
 
@@ -1683,6 +1685,7 @@ msgstr "Deskrivadur"
 #: src/components/admin/identities/AliasEditForm.vue:41
 #: src/components/admin/identities/AliasRecipientsSummary.vue:4
 #: src/components/admin/identities/IdentityList.vue:253
+#: src/components/webmail/EmailList.vue:245
 msgid "Recipients"
 msgstr "Reseverien"
 
@@ -2060,6 +2063,7 @@ msgstr "Domanioù meret"
 #: src/components/admin/logs/AuditTrailList.vue:51
 #: src/components/admin/logs/MessageList.vue:47
 #: src/components/quarantine/QuarantineList.vue:236
+#: src/components/webmail/EmailList.vue:248
 msgid "Date"
 msgstr ""
 
@@ -2081,7 +2085,7 @@ msgstr ""
 #: src/components/quarantine/QuarantineList.vue:233
 #: src/components/tools/TimeSerieChart.vue:20
 #: src/components/webmail/ComposeEmailForm.vue:100
-#: src/views/webmail/EmailView.vue:122
+#: src/components/webmail/MessageHeader.vue:108
 msgid "To"
 msgstr ""
 
@@ -2339,7 +2343,7 @@ msgid "Synchronization started"
 msgstr ""
 
 #: src/components/quarantine/QuarantineList.vue:27
-#: src/components/webmail/EmailList.vue:15
+#: src/components/webmail/EmailList.vue:99
 #, fuzzy
 msgid "Search in messages"
 msgstr "Emporzhiañ domanioù"
@@ -2584,6 +2588,22 @@ msgstr ""
 msgid "no"
 msgstr ""
 
+#: src/components/webmail/AddressButton.vue:50
+#, fuzzy
+msgid "Me"
+msgstr "Muioc'h"
+
+#: src/components/webmail/AttachmentList.vue:16
+msgid "Download %{name}"
+msgstr ""
+
+#: src/components/webmail/AttachmentList.vue:135
+#, fuzzy
+msgid "%{count} attachment"
+msgid_plural "%{count} attachments"
+msgstr[0] "Emporzhiañ domanioù"
+msgstr[1] "Emporzhiañ domanioù"
+
 #: src/components/webmail/AttachmentsDialog.vue:3
 #: src/components/webmail/ComposeEmailForm.vue:67
 msgid "Attachments"
@@ -2618,11 +2638,13 @@ msgstr "Chomlec'hioù ar c'haser"
 
 #: src/components/webmail/ComposeEmailForm.vue:121
 #: src/components/webmail/ComposeEmailForm.vue:139
+#: src/components/webmail/MessageHeader.vue:109
 msgid "Cc"
 msgstr ""
 
 #: src/components/webmail/ComposeEmailForm.vue:129
 #: src/components/webmail/ComposeEmailForm.vue:166
+#: src/components/webmail/MessageHeader.vue:110
 msgid "Bcc"
 msgstr ""
 
@@ -2658,82 +2680,154 @@ msgstr "Aozañ an darempred"
 msgid "Contact added to address book"
 msgstr ""
 
-#: src/components/webmail/EmailList.vue:66
+#: src/components/webmail/EmailList.vue:19
+msgid "Clear the selection"
+msgstr ""
+
+#: src/components/webmail/EmailList.vue:20
+msgid "Select every message of the page"
+msgstr ""
+
+#: src/components/webmail/EmailList.vue:46 src/views/webmail/EmailView.vue:72
+msgid "Mark as junk"
+msgstr ""
+
+#: src/components/webmail/EmailList.vue:56 src/views/webmail/EmailView.vue:82
+msgid "Mark as not junk"
+msgstr ""
+
+#: src/components/webmail/EmailList.vue:64
+#, fuzzy
+msgid "More actions"
+msgstr "Kadarnadur"
+
+#: src/components/webmail/EmailList.vue:70
 msgid "Mark as read"
 msgstr ""
 
-#: src/components/webmail/EmailList.vue:71
+#: src/components/webmail/EmailList.vue:75
 msgid "Mark as unread"
 msgstr ""
 
-#: src/components/webmail/EmailList.vue:76
+#: src/components/webmail/EmailList.vue:80
 msgid "Mark as followed"
 msgstr ""
 
-#: src/components/webmail/EmailList.vue:81
+#: src/components/webmail/EmailList.vue:85
 msgid "Mark as unfollowed"
 msgstr ""
 
-#: src/components/webmail/EmailList.vue:87
+#: src/components/webmail/EmailList.vue:119
 #, fuzzy
 msgid "Empty mailbox"
 msgstr "Gant ur voest-posteloù"
 
-#: src/components/webmail/EmailList.vue:97
+#: src/components/webmail/EmailList.vue:131
+#, fuzzy
+msgid "Display mode"
+msgstr "Diskouez an anv"
+
+#: src/components/webmail/EmailList.vue:139
+#, fuzzy
+msgid "Messages one by one"
+msgstr "Implij"
+
+#: src/components/webmail/EmailList.vue:150
+#, fuzzy
+msgid "Conversations"
+msgstr "Kadarnadur"
+
+#: src/components/webmail/EmailList.vue:154
+msgid "Not available in this folder"
+msgstr ""
+
+#: src/components/webmail/EmailList.vue:171
 msgid "on"
 msgstr ""
 
-#: src/components/webmail/EmailList.vue:127
+#: src/components/webmail/EmailList.vue:179
+msgid "Previous page"
+msgstr ""
+
+#: src/components/webmail/EmailList.vue:187
+#, fuzzy
+msgid "Next page"
+msgstr "Da-heul"
+
+#: src/components/webmail/EmailList.vue:209
 msgid ""
 "Scheduled messages will be sent at the specified date and time. (visible on "
 "the right)"
 msgstr ""
 
-#: src/components/webmail/EmailList.vue:206
+#: src/components/webmail/EmailList.vue:245
+#, fuzzy
+msgid "Sender"
+msgstr "Kont nevez"
+
+#: src/components/webmail/EmailList.vue:281
 msgid "No message yet in this mailbox"
 msgstr ""
 
-#: src/components/webmail/EmailList.vue:221
+#: src/components/webmail/EmailList.vue:296
 msgid "Sending failure"
 msgstr ""
 
-#: src/components/webmail/EmailList.vue:288
-msgid "Reschedule"
-msgstr ""
+#: src/components/webmail/EmailList.vue:409
+#, fuzzy
+msgid "%{count} message selected"
+msgid_plural "%{count} messages selected"
+msgstr[0] "Emporzhiañ domanioù"
+msgstr[1] "Emporzhiañ domanioù"
 
-#: src/components/webmail/EmailList.vue:335
+#: src/components/webmail/EmailList.vue:474
 #, fuzzy
 msgid "Scheduling updated"
 msgstr "Kont krouet"
 
-#: src/components/webmail/EmailList.vue:346
+#: src/components/webmail/EmailList.vue:485
 msgid "Scheduled canceled and message moved to trash folder"
 msgstr ""
 
-#: src/components/webmail/EmailList.vue:401
+#: src/components/webmail/EmailList.vue:594
 #, fuzzy
 msgid "Message(s) deleted"
 msgstr "Implij"
 
-#: src/components/webmail/EmailList.vue:416
+#: src/components/webmail/EmailList.vue:610
 msgid "Message(s) marked as junk"
 msgstr ""
 
-#: src/components/webmail/EmailList.vue:430
+#: src/components/webmail/EmailList.vue:625
 msgid "Message(s) marked as not junk"
 msgstr ""
 
-#: src/components/webmail/EmailList.vue:445
+#: src/components/webmail/EmailList.vue:640
 #, fuzzy
 msgid "Message(s) flagged"
 msgstr "Implij"
 
-#: src/components/webmail/EmailList.vue:473
+#: src/components/webmail/EmailList.vue:668
+#: src/views/webmail/ThreadView.vue:239
 #, fuzzy
 msgid "%{count} message"
 msgid_plural "%{count} messages"
 msgstr[0] "Emporzhiañ domanioù"
 msgstr[1] "Emporzhiañ domanioù"
+
+#: src/components/webmail/EmailListItem.vue:24
+#: src/components/webmail/ThreadListItem.vue:23
+msgid "Follow up"
+msgstr ""
+
+#: src/components/webmail/EmailListItem.vue:43
+#: src/components/webmail/ThreadListItem.vue:51
+msgid "(no subject)"
+msgstr ""
+
+#: src/components/webmail/EmailListItem.vue:125
+msgid "Reschedule"
+msgstr ""
 
 #: src/components/webmail/EmailSchedulingForm.vue:2
 msgid "Schedule your sending"
@@ -2781,6 +2875,25 @@ msgstr "Domani krouet"
 msgid "Moving selection..."
 msgstr ""
 
+#: src/components/webmail/MessageHeader.vue:48
+#, fuzzy
+msgid "+%{count} more"
+msgstr "Emporzhiañ domanioù"
+
+#: src/components/webmail/MessageHeader.vue:120
+msgid "Reply to"
+msgstr ""
+
+#: src/components/webmail/RemoteContentBanner.vue:12
+msgid "Remote images have been blocked to protect your privacy."
+msgstr ""
+
+#: src/components/webmail/RemoteContentBanner.vue:16
+#: src/views/webmail/EmailView.vue:107
+#, fuzzy
+msgid "Display images"
+msgstr "Diskouez an anv"
+
 #: src/components/webmail/SubscriptionsDialog.vue:2
 #: src/layouts/webmail/WebmailLayout.vue:78
 #, fuzzy
@@ -2797,6 +2910,14 @@ msgstr ""
 #, fuzzy
 msgid "Subscriptions updated"
 msgstr "Kont krouet"
+
+#: src/components/webmail/ThreadListItem.vue:37
+msgid "Hide the messages of this conversation"
+msgstr ""
+
+#: src/components/webmail/ThreadListItem.vue:38
+msgid "Show the messages of this conversation"
+msgstr ""
 
 #: src/composables/amavis.js:33
 msgid "Global database"
@@ -2890,16 +3011,21 @@ msgstr "Gant ur voest-posteloù"
 msgid "Compress this mailbox"
 msgstr ""
 
-#: src/layouts/webmail/WebmailLayout.vue:267
+#: src/layouts/webmail/WebmailLayout.vue:101
+#, fuzzy
+msgid "Webmail"
+msgstr "Postel"
+
+#: src/layouts/webmail/WebmailLayout.vue:275
 #, fuzzy
 msgid "Mailbox compressed"
 msgstr "Boest-posteloù"
 
-#: src/layouts/webmail/WebmailLayout.vue:273
+#: src/layouts/webmail/WebmailLayout.vue:281
 msgid "Delete this mailbox?"
 msgstr ""
 
-#: src/layouts/webmail/WebmailLayout.vue:284
+#: src/layouts/webmail/WebmailLayout.vue:292
 #, fuzzy
 msgid "Mailbox deleted"
 msgstr "Deiziad krouidigezh"
@@ -3057,7 +3183,8 @@ msgstr "Arventennoù"
 msgid "Two-factor auth"
 msgstr "O vezañ anavezet"
 
-#: src/views/account/SettingsView.vue:15 src/views/webmail/EmailView.vue:18
+#: src/views/account/SettingsView.vue:15 src/views/webmail/EmailView.vue:43
+#: src/views/webmail/ThreadView.vue:42 src/views/webmail/ThreadView.vue:148
 msgid "Forward"
 msgstr "Treuzkas"
 
@@ -3303,7 +3430,7 @@ msgstr ""
 msgid "Hide full headers"
 msgstr ""
 
-#: src/views/quarantine/MessageView.vue:201 src/views/webmail/EmailView.vue:322
+#: src/views/quarantine/MessageView.vue:201 src/views/webmail/EmailView.vue:243
 #, fuzzy
 msgid "Message deleted"
 msgstr "Implij"
@@ -3316,60 +3443,91 @@ msgstr ""
 msgid "release requests"
 msgstr ""
 
-#: src/views/webmail/EmailView.vue:8
+#: src/views/webmail/EmailView.vue:14 src/views/webmail/ThreadView.vue:14
+#, fuzzy
+msgid "Back to the mailbox"
+msgstr "Gant ur voest-posteloù"
+
+#: src/views/webmail/EmailView.vue:27 src/views/webmail/ThreadView.vue:26
+#: src/views/webmail/ThreadView.vue:132
 msgid "Reply"
 msgstr ""
 
-#: src/views/webmail/EmailView.vue:15
+#: src/views/webmail/EmailView.vue:35 src/views/webmail/ThreadView.vue:34
+#: src/views/webmail/ThreadView.vue:140
 msgid "Reply all"
 msgstr ""
 
-#: src/views/webmail/EmailView.vue:72
+#: src/views/webmail/EmailView.vue:90
+#, fuzzy
+msgid "Display options"
+msgstr "Diskouez an anv"
+
+#: src/views/webmail/EmailView.vue:97
 #, fuzzy
 msgid "Enable links"
 msgstr "Enaouet"
 
-#: src/views/webmail/EmailView.vue:77
+#: src/views/webmail/EmailView.vue:102
 #, fuzzy
 msgid "Disable links"
 msgstr "Lazhet"
 
-#: src/views/webmail/EmailView.vue:82
-#, fuzzy
-msgid "Display images"
-msgstr "Diskouez an anv"
-
-#: src/views/webmail/EmailView.vue:87
+#: src/views/webmail/EmailView.vue:112
 msgid "Hide images"
 msgstr ""
 
-#: src/views/webmail/EmailView.vue:91
+#: src/views/webmail/EmailView.vue:116
 #, fuzzy
 msgid "Display source"
 msgstr "Diskouez an anv"
 
-#: src/views/webmail/EmailView.vue:164
+#: src/views/webmail/EmailView.vue:138
 #, fuzzy
 msgid "Message scheduled at:"
 msgstr "Implij"
 
-#: src/views/webmail/EmailView.vue:181
+#: src/views/webmail/EmailView.vue:148
 #, fuzzy
 msgid "Message source"
 msgstr "Implij"
 
-#: src/views/webmail/EmailView.vue:336
+#: src/views/webmail/EmailView.vue:257
 msgid "Message marked as junk"
 msgstr ""
 
-#: src/views/webmail/EmailView.vue:350
+#: src/views/webmail/EmailView.vue:271
 msgid "Message marked as not junk"
 msgstr ""
 
-#: src/views/webmail/MailboxView.vue:4
+#: src/views/webmail/ThreadView.vue:51
+msgid "Delete the whole conversation"
+msgstr ""
+
+#: src/views/webmail/ThreadView.vue:61
+msgid "Mark the conversation as junk"
+msgstr ""
+
+#: src/views/webmail/ThreadView.vue:71
+msgid "Mark the conversation as not junk"
+msgstr ""
+
+#: src/views/webmail/ThreadView.vue:156
+msgid "Open"
+msgstr ""
+
+#: src/views/webmail/ThreadView.vue:359
 #, fuzzy
-msgid "Webmail"
-msgstr "Postel"
+msgid "Conversation deleted"
+msgstr "Deiziad krouidigezh"
+
+#: src/views/webmail/ThreadView.vue:362
+msgid "Conversation marked as junk"
+msgstr ""
+
+#: src/views/webmail/ThreadView.vue:367
+msgid "Conversation marked as not junk"
+msgstr ""
 
 #~ msgid "Phone"
 #~ msgstr "Pellgomz"

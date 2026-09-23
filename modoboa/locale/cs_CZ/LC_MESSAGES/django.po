@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-16 19:34+0200\n"
+"POT-Creation-Date: 2026-09-23 18:31+0200\n"
 "PO-Revision-Date: 2020-05-06 11:16+0000\n"
 "Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
 "Language-Team: Czech (Czech Republic) (http://www.transifex.com/tonio/"
@@ -61,7 +61,7 @@ msgstr "Nemůže být vyšší než kvóta domény"
 #: admin/api/v1/serializers.py:185 admin/api/v1/serializers.py:381
 #: admin/api/v1/serializers.py:428 admin/api/v2/serializers.py:402
 #: admin/api/v2/serializers.py:652 admin/api/v2/serializers.py:705
-#: admin/models/alias.py:45 calendars/serializers.py:102
+#: admin/models/alias.py:45 calendars/serializers.py:101
 msgid "Permission denied."
 msgstr "Přístup zamítnut."
 
@@ -86,7 +86,7 @@ msgid "Must be equal to mailbox full_address"
 msgstr "Musí být rovno hodnote schránky celá_adresa"
 
 #: admin/api/v1/serializers.py:414 admin/api/v2/serializers.py:686
-#: calendars/serializers.py:203 pdfcredentials/api/v2/serializers.py:91
+#: calendars/serializers.py:202 pdfcredentials/api/v2/serializers.py:91
 msgid "This field is required."
 msgstr "Toto pole je vyžadováno."
 
@@ -1040,7 +1040,7 @@ msgstr ""
 msgid "Display"
 msgstr "Zobrazení"
 
-#: amavis/app_settings.py:243 webmail/app_settings.py:202
+#: amavis/app_settings.py:243 webmail/app_settings.py:212
 #, fuzzy
 #| msgid "Number of displayed items per page"
 msgid "Number of displayed emails per page"
@@ -1080,22 +1080,22 @@ msgstr ""
 msgid "Pending requests"
 msgstr ""
 
-#: amavis/lib.py:59
+#: amavis/lib.py:62
 #, fuzzy, python-format
 msgid "Connection to amavis failed: %s"
 msgstr "Spojení se serverem IMAP selhalo: %s"
 
-#: amavis/lib.py:124
+#: amavis/lib.py:127
 msgid "Failed to find {} binary"
 msgstr ""
 
-#: amavis/lib.py:165
+#: amavis/lib.py:168
 #, fuzzy
 #| msgid "Local recipient {}@{} not found"
 msgid "No recipient found"
 msgstr "Lokální příjemce {}@{} nebyl nalezen"
 
-#: amavis/lib.py:176
+#: amavis/lib.py:179
 #, fuzzy
 #| msgid "Domain not found."
 msgid "Local domain not found"
@@ -1203,7 +1203,7 @@ msgstr "odeslané zprávy"
 msgid "Please visit %(listingurl)s for a full listing."
 msgstr ""
 
-#: amavis/viewsets.py:174
+#: amavis/viewsets.py:160
 #, fuzzy
 #| msgid "Invalid address"
 msgid "Invalid request"
@@ -1360,13 +1360,17 @@ msgstr ""
 msgid "Server location is not set, please fix it."
 msgstr ""
 
-#: calendars/serializers.py:246
+#: calendars/serializers.py:240
 #, fuzzy
 #| msgid "Domain not found."
 msgid "Mailbox not found"
 msgstr "Doména nebyla nalezena."
 
-#: calendars/viewsets.py:198
+#: calendars/serializers.py:246
+msgid "An access rule already exists for this mailbox"
+msgstr ""
+
+#: calendars/viewsets.py:197
 msgid "Uploaded file is too big (max: {} bytes)"
 msgstr ""
 
@@ -1505,7 +1509,7 @@ msgid "Calendar"
 msgstr ""
 
 #: core/api/v2/viewsets.py:215 core/api/v2/viewsets.py:217
-#: webmail/app_settings.py:307 webmail/app_settings.py:314
+#: webmail/app_settings.py:317 webmail/app_settings.py:324
 #, fuzzy
 #| msgid "E-mail"
 msgid "Webmail"
@@ -2255,7 +2259,7 @@ msgstr "Alternativní  e-mailová adresa, může být použita pro účely obnov
 msgid "Failed to update password: LDAP module not installed"
 msgstr "Nebylo možné změnit heslo: LDAP modul není instalován"
 
-#: core/models.py:185 policyd/core.py:117
+#: core/models.py:185 policyd/core.py:123
 msgid "account"
 msgstr "účet"
 
@@ -2687,7 +2691,7 @@ msgstr ""
 msgid "Failed to communicate with public API: %s"
 msgstr "Povolit komunikaci s veřejným Modoboa API rozhraním"
 
-#: lib/email_utils.py:146 lib/email_utils.py:365
+#: lib/email_utils.py:151 lib/email_utils.py:386
 msgid "unable to determine encoding of string"
 msgstr "Nelze určit kódování textu."
 
@@ -3268,17 +3272,17 @@ msgid ""
 "path."
 msgstr ""
 
-#: policyd/core.py:99
+#: policyd/core.py:105
 #, fuzzy
 #| msgid "%s: limit reached"
 msgid "Daily sending limit reached"
 msgstr "%s: limit byl dosažen"
 
-#: policyd/core.py:118
+#: policyd/core.py:124
 msgid "domain"
 msgstr "doména"
 
-#: policyd/core.py:136
+#: policyd/core.py:142
 #, fuzzy
 #| msgid "%s: limit reached"
 msgid "[modoboa] Sending limit reached"
@@ -3468,7 +3472,7 @@ msgstr "je"
 msgid "is not"
 msgstr "není"
 
-#: sievefilters/constants.py:28 webmail/lib/imapemail.py:361
+#: sievefilters/constants.py:28 webmail/lib/imapemail.py:374
 msgid "Subject"
 msgstr "Předmět"
 
@@ -3812,83 +3816,93 @@ msgstr "Povolit zobrazení HTML odkazů"
 msgid "Enable/Disable HTML links display"
 msgstr "Povolit/Zakázat zobrazení HTML odkazů"
 
-#: webmail/app_settings.py:205
+#: webmail/app_settings.py:201
+#, fuzzy
+#| msgid "Default message display mode"
+msgid "Messages list mode"
+msgstr "Výchozí režim zobrazení zprávy"
+
+#: webmail/app_settings.py:203
+msgid "Display messages one by one or grouped into conversations"
+msgstr ""
+
+#: webmail/app_settings.py:215
 msgid "Sets the maximum number of messages displayed in a page"
 msgstr "Nastavuje maximální počet zobrazených zpráv na stránce"
 
-#: webmail/app_settings.py:212
+#: webmail/app_settings.py:222
 msgid "Listing refresh rate"
 msgstr "Automatické obnovení stránky"
 
-#: webmail/app_settings.py:214
+#: webmail/app_settings.py:224
 msgid "Automatic listing refresh rate (in secconds)"
 msgstr ""
 
-#: webmail/app_settings.py:225
+#: webmail/app_settings.py:235
 msgid "Folders"
 msgstr "Složky"
 
-#: webmail/app_settings.py:231
+#: webmail/app_settings.py:241
 msgid "Trash folder"
 msgstr "Složka koše"
 
-#: webmail/app_settings.py:233
+#: webmail/app_settings.py:243
 #, fuzzy
 #| msgid "rejected messages"
 msgid "Folder where deleted messages go"
 msgstr "Složka pro smazané zprávy"
 
-#: webmail/app_settings.py:240
+#: webmail/app_settings.py:250
 msgid "Sent folder"
 msgstr "Složka odeslané pošty"
 
-#: webmail/app_settings.py:242
+#: webmail/app_settings.py:252
 msgid "Folder where copies of sent messages go"
 msgstr "Složka pro kopie odeslaných zpráv"
 
-#: webmail/app_settings.py:249
+#: webmail/app_settings.py:259
 msgid "Drafts folder"
 msgstr "Složka konceptů"
 
-#: webmail/app_settings.py:250
+#: webmail/app_settings.py:260
 msgid "Folder where drafts go"
 msgstr "Složka pro koncepty zpráv"
 
-#: webmail/app_settings.py:256
+#: webmail/app_settings.py:266
 #, fuzzy
 #| msgid "Sent folder"
 msgid "Junk folder"
 msgstr "Složka pro spam"
 
-#: webmail/app_settings.py:258
+#: webmail/app_settings.py:268
 #, fuzzy
 #| msgid "rejected messages"
 msgid "Folder where junk messages should go"
 msgstr "Složka, kam by měly být přesunuty spamové zprávy"
 
-#: webmail/app_settings.py:269
+#: webmail/app_settings.py:279
 #, fuzzy
 #| msgid "sent messages"
 msgid "Composing messages"
 msgstr "Vytváření zpráv"
 
-#: webmail/app_settings.py:275
+#: webmail/app_settings.py:285
 #, fuzzy
 #| msgid "Default top redirection"
 msgid "Default editor"
 msgstr "Výchozí editor"
 
-#: webmail/app_settings.py:277
+#: webmail/app_settings.py:287
 #, fuzzy
 #| msgid "The default redirection used when no application is specified"
 msgid "The default editor to use when composing a message"
 msgstr "Výchozí editor textu, který se použije pro vytváření zpráv"
 
-#: webmail/app_settings.py:284
+#: webmail/app_settings.py:294
 msgid "Signature text"
 msgstr "Text podpisu"
 
-#: webmail/app_settings.py:286
+#: webmail/app_settings.py:296
 msgid "User defined email signature"
 msgstr "Emailový podpis uživatele"
 
@@ -3914,6 +3928,18 @@ msgstr ""
 msgid "Run the purge_webmail_legacy_data management command."
 msgstr ""
 
+#: webmail/constants.py:75
+#, fuzzy
+#| msgid "sent messages"
+msgid "Messages"
+msgstr "Všechny zprávy"
+
+#: webmail/constants.py:76
+#, fuzzy
+#| msgid "Check new versions"
+msgid "Conversations"
+msgstr "Zkontrolovat verzi"
+
 #: webmail/exceptions.py:23
 #, fuzzy
 #| msgid "Server address"
@@ -3934,67 +3960,67 @@ msgstr ""
 msgid "Failed to remove attachment: "
 msgstr "Nebylo možné odstranit přílohu:"
 
-#: webmail/lib/imapemail.py:327
+#: webmail/lib/imapemail.py:340
 msgid "wrote:"
 msgstr ""
 
-#: webmail/lib/imapemail.py:363
+#: webmail/lib/imapemail.py:376
 msgid "Date"
 msgstr "Datum"
 
-#: webmail/lib/imapemail.py:379 webmail/lib/imapemail.py:382
+#: webmail/lib/imapemail.py:392 webmail/lib/imapemail.py:395
 #, fuzzy
 #| msgid "sent messages"
 msgid "Original message"
 msgstr "Všechny zprávy"
 
-#: webmail/lib/imaputils.py:55 webmail/viewsets.py:26
+#: webmail/lib/imaputils.py:68 webmail/viewsets.py:26
 msgid "Invalid message identifier"
 msgstr ""
 
-#: webmail/lib/imaputils.py:62 webmail/viewsets.py:40
+#: webmail/lib/imaputils.py:75 webmail/viewsets.py:40
 #, fuzzy
 #| msgid "Invalid rounds number"
 msgid "Invalid part number"
 msgstr "Neplatný počet cyklů"
 
-#: webmail/lib/imaputils.py:75 webmail/viewsets.py:47
+#: webmail/lib/imaputils.py:88 webmail/viewsets.py:47
 msgid "Invalid search pattern"
 msgstr ""
 
-#: webmail/lib/imaputils.py:88
+#: webmail/lib/imaputils.py:101
 #, fuzzy
 #| msgid "Enter a valid domain name"
 msgid "Invalid mailbox name"
 msgstr "Vložte platné doménové jméno"
 
-#: webmail/lib/imaputils.py:331
+#: webmail/lib/imaputils.py:505
 msgid "Failed to retrieve hierarchy delimiter"
 msgstr "Nebylo možné zjistit hierarchický oddělovač"
 
-#: webmail/lib/imaputils.py:690
+#: webmail/lib/imaputils.py:924
 msgid "Inbox"
 msgstr "Doručená pošta"
 
-#: webmail/lib/imaputils.py:694
+#: webmail/lib/imaputils.py:928
 #, fuzzy
 #| msgid "Drafts folder"
 msgid "Drafts"
 msgstr "Koncepty"
 
-#: webmail/lib/imaputils.py:699
+#: webmail/lib/imaputils.py:933
 msgid "Junk"
 msgstr "Nevyžádaná pošta"
 
-#: webmail/lib/imaputils.py:704
+#: webmail/lib/imaputils.py:938
 msgid "Sent"
 msgstr "Odeslaná pošta"
 
-#: webmail/lib/imaputils.py:712
+#: webmail/lib/imaputils.py:946
 msgid "Scheduled"
 msgstr ""
 
-#: webmail/lib/imaputils.py:719
+#: webmail/lib/imaputils.py:953
 msgid "Trash"
 msgstr "Koš"
 
@@ -4018,42 +4044,42 @@ msgstr "Doménové jméno"
 msgid "This address is no longer allowed for this account"
 msgstr ""
 
-#: webmail/serializers.py:257
+#: webmail/serializers.py:291
 msgid "Moving scheduled messages is forbidden"
 msgstr ""
 
-#: webmail/serializers.py:290
+#: webmail/serializers.py:323
 msgid "Only datetime in the future is allowed"
 msgstr ""
 
-#: webmail/serializers.py:295
+#: webmail/serializers.py:328
 msgid "Provived datetime must be one minute in the future at least"
 msgstr ""
 
-#: webmail/serializers.py:326
+#: webmail/serializers.py:358
 #, fuzzy
 #| msgid "You are not allowed to import domain aliases."
 msgid "You are not allowed to send from this address"
 msgstr "Nemáte oprávnění pri import doménových aliasů"
 
-#: webmail/serializers.py:368
+#: webmail/serializers.py:399
 msgid ""
 "original_mailbox, original_mailid and original_action must be provided "
 "together"
 msgstr ""
 
-#: webmail/serializers.py:385
+#: webmail/serializers.py:416
 #, python-format
 msgid ""
 "Ensure this field has no more than %(max_length)s characters to schedule the "
 "message"
 msgstr ""
 
-#: webmail/serializers.py:445
+#: webmail/serializers.py:473
 msgid "forward_mailbox and forward_mailid must be provided together"
 msgstr ""
 
-#: webmail/serializers.py:449
+#: webmail/serializers.py:477
 msgid "A session can't start from a draft and a forwarded message"
 msgstr ""
 
@@ -4063,25 +4089,25 @@ msgstr ""
 msgid "Invalid page number"
 msgstr "Neplatný počet cyklů"
 
-#: webmail/viewsets.py:153
+#: webmail/viewsets.py:152
 msgid "This mailbox is used by the webmail and can't be renamed"
 msgstr ""
 
-#: webmail/viewsets.py:194
+#: webmail/viewsets.py:193
 msgid "This mailbox is used by the webmail and can't be deleted"
 msgstr ""
 
-#: webmail/viewsets.py:527
+#: webmail/viewsets.py:604
 #, python-format
 msgid "A message cannot carry more than %s attachments"
 msgstr ""
 
-#: webmail/viewsets.py:539
+#: webmail/viewsets.py:616
 #, python-format
 msgid "Attachment is too big (limit: %s)"
 msgstr "Příloha je příliš velká (omezení: %s)"
 
-#: webmail/viewsets.py:544
+#: webmail/viewsets.py:621
 #, fuzzy, python-format
 #| msgid "Attachment is too big (limit: %s)"
 msgid "Attachments are too big (limit: %s for the whole message)"
