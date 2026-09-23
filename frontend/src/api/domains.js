@@ -7,6 +7,21 @@ export default {
   getDomains(params) {
     return repository.get(`/${domainResource}/`, { params })
   },
+  async getAllDomains(params = {}) {
+    // The API is always paginated, so walk through every page
+    const results = []
+    let page = 1
+    while (true) {
+      const resp = await repository.get(`/${domainResource}/`, {
+        params: { page_size: 100, ...params, page },
+      })
+      results.push(...resp.data.results)
+      if (!resp.data.next) {
+        return results
+      }
+      page += 1
+    }
+  },
   getDomain(domainId) {
     return repository.get(`/${domainResource}/${domainId}/`)
   },
