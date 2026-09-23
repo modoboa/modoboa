@@ -6,7 +6,6 @@ from rest_framework import serializers
 
 from modoboa.admin import models as admin_models
 from modoboa.lib import fields as lib_fields
-from modoboa.lib.permissions import check_mailbox_ownership
 
 from . import backends
 from . import models
@@ -233,13 +232,13 @@ class AccessRuleSerializer(serializers.ModelSerializer):
         read_only_fields = ("calendar",)
 
     def validate_mailbox(self, value):
-        mailbox = admin_models.Mailbox.objects.filter(pk=value["pk"]).first()
+        calendar = self.context["calendar"]
+        mailbox = (
+            models.get_share_candidates(calendar.mailbox).filter(pk=value["pk"]).first()
+        )
         if mailbox is None:
             raise serializers.ValidationError(_("Mailbox not found"))
-        check_mailbox_ownership(self.context["request"].user, mailbox)
-        qset = models.AccessRule.objects.filter(
-            calendar=self.context["calendar"], mailbox=mailbox
-        )
+        qset = models.AccessRule.objects.filter(calendar=calendar, mailbox=mailbox)
         if self.instance:
             qset = qset.exclude(pk=self.instance.pk)
         if qset.exists():

@@ -403,6 +403,52 @@ class AccessRuleViewSetTestCase(TestDataMixin, ModoAPITestCase):
             ).exists()
         )
 
+    def test_create_accessrule_simple_user(self):
+        """A simple user can share a calendar with a mailbox of their domain."""
+        url = reverse("api:access-rule-list", args=[self.calendar.pk])
+        response = self.client.post(
+            url, data=self._rule_data(self.account2.mailbox), format="json"
+        )
+        self.assertEqual(response.status_code, 201)
+        self.assertTrue(
+            models.AccessRule.objects.filter(
+                mailbox=self.account2.mailbox, calendar=self.calendar
+            ).exists()
+        )
+
+    def test_create_accessrule_own_mailbox(self):
+        """The calendar owner can't be a recipient."""
+        url = reverse("api:access-rule-list", args=[self.calendar.pk])
+        response = self.client.post(
+            url, data=self._rule_data(self.account.mailbox), format="json"
+        )
+        self.assertEqual(response.status_code, 400)
+        self.assertIn("mailbox", response.json())
+
+    def test_create_accessrule_inactive_account(self):
+        """A disabled account can't be a recipient."""
+        self.account2.is_active = False
+        self.account2.save()
+        url = reverse("api:access-rule-list", args=[self.calendar.pk])
+        response = self.client.post(
+            url, data=self._rule_data(self.account2.mailbox), format="json"
+        )
+        self.assertEqual(response.status_code, 400)
+        self.assertIn("mailbox", response.json())
+
+    def test_create_accessrule_admin_other_domain(self):
+        """An admin can't share a personal calendar outside their domain."""
+        self.client.force_authenticate(self.admin_account)
+        other_mbox = admin_models.Mailbox.objects.get(
+            address="user", domain__name="test2.com"
+        )
+        url = reverse("api:access-rule-list", args=[self.calendar2.pk])
+        response = self.client.post(
+            url, data=self._rule_data(other_mbox), format="json"
+        )
+        self.assertEqual(response.status_code, 400)
+        self.assertIn("mailbox", response.json())
+
     def test_create_accessrule_duplicate(self):
         """A mailbox can only have one rule per calendar."""
         url = reverse("api:access-rule-list", args=[self.calendar.pk])
@@ -456,14 +502,14 @@ class AccessRuleViewSetTestCase(TestDataMixin, ModoAPITestCase):
         url = reverse("api:access-rule-list", args=[self.calendar.pk])
         response = self.client.post(
             url,
-            data=self._rule_data(self.account.mailbox, calendar=self.calendar2.pk),
+            data=self._rule_data(self.account2.mailbox, calendar=self.calendar2.pk),
             format="json",
         )
         self.assertEqual(response.status_code, 201)
         self.assertEqual(response.json()["calendar"], self.calendar.pk)
         self.assertFalse(
             models.AccessRule.objects.filter(
-                mailbox=self.account.mailbox, calendar=self.calendar2
+                mailbox=self.account2.mailbox, calendar=self.calendar2
             ).exists()
         )
 
@@ -471,7 +517,7 @@ class AccessRuleViewSetTestCase(TestDataMixin, ModoAPITestCase):
         """Try to point an owned rule to a calendar the user doesn't own."""
         acr = factories.AccessRuleFactory(
             calendar=self.calendar,
-            mailbox=self.account.mailbox,
+            mailbox=self.account2.mailbox,
             read=True,
             write=False,
         )
@@ -479,7 +525,7 @@ class AccessRuleViewSetTestCase(TestDataMixin, ModoAPITestCase):
         response = self.client.put(
             url,
             data=self._rule_data(
-                self.account.mailbox, write=True, calendar=self.calendar2.pk
+                self.account2.mailbox, write=True, calendar=self.calendar2.pk
             ),
             format="json",
         )
