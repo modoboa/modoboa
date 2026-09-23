@@ -10,6 +10,7 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 
 from logging.handlers import SysLogHandler
 import os
+import sys
 
 from modoboa.test_settings import *  # noqa
 
@@ -115,8 +116,15 @@ MODOBOA_APPS = (
     "modoboa.contacts",
     "modoboa.calendars",
     "modoboa.webmail",
-    "modoboa.amavis",
 )
+
+# Amavis needs a dedicated database, so it is only enabled on demand:
+# "off" (default), "sqlite" or "mariadb" (see docker/compose.amavis.yml).
+# Tests always run it against sqlite.
+TESTING = len(sys.argv) > 1 and sys.argv[1] == "test"
+AMAVIS_BACKEND = os.environ.get("AMAVIS_BACKEND", "sqlite" if TESTING else "off")
+if AMAVIS_BACKEND != "off":
+    MODOBOA_APPS += ("modoboa.amavis",)
 
 try:
     import ldap  # noqa: F401
@@ -455,26 +463,27 @@ DMARC_MAX_ZIP_MEMBERS = 20  # number of files allowed inside a zip archive
 MIGRATION_MODULES = {"amavis": None}
 TEST_RUNNER = "modoboa.lib.test_runners.CustomTestRunner"
 
-# We force sqlite backend for tests because the generated database is
-# not the same as the one provided by amavis...
+if AMAVIS_BACKEND == "mariadb":
+    DATABASES["amavis"] = {  # noqa
+        "ENGINE": "django.db.backends.mysql",
+        "HOST": os.environ.get("AMAVIS_DB_HOST", "mariadb"),
+        "NAME": "amavis",
+        "USER": "root",
+        "PASSWORD": "Password1000",
+    }
+elif AMAVIS_BACKEND == "sqlite":
+    # The generated database is not the same as the one provided by
+    # amavis, so this is only suitable for tests.
+    DATABASES["amavis"] = {  # noqa
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": "amavis.db",
+        "PORT": "",
+        "ATOMIC_REQUESTS": True,
+    }
 
-DATABASES["amavis"] = {  # noqa
-    "ENGINE": "django.db.backends.sqlite3",
-    "NAME": "amavis.db",
-    "PORT": "",
-    "ATOMIC_REQUESTS": True,
-}
+if AMAVIS_BACKEND != "off":
+    DATABASE_ROUTERS = ["modoboa.amavis.dbrouter.AmavisRouter"]
 
-# Uncomment this in dev mode (docker)
-# DATABASES["amavis"] = {  # NOQA
-#     "ENGINE": "django.db.backends.mysql",
-#     "HOST": "mariadb",
-#     "NAME": "amavis",
-#     "USER": "root",
-#     "PASSWORD": "Password1000",
-# }
-
-DATABASE_ROUTERS = ["modoboa.amavis.dbrouter.AmavisRouter"]
-
-AMAVIS_DEFAULT_DATABASE_ENCODING = "UTF-8"
-# AMAVIS_DEFAULT_DATABASE_ENCODING = "LATIN1"
+# Must match the charset of the amavis database, spelled the way the
+# database engine expects it
+AMAVIS_DEFAULT_DATABASE_ENCODING = "utf8mb4" if AMAVIS_BACKEND == "mariadb" else "UTF-8"
