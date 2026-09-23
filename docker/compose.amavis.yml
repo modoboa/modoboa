@@ -1,0 +1,34 @@
+# Enable the amavis plugin, backed by the MariaDB and amavisd containers.
+#
+# Usage: docker compose -f docker-compose.yml -f docker/compose.amavis.yml up
+# (or: make up-amavis)
+services:
+  mariadb:
+    profiles: !reset []
+
+  amavis:
+    profiles: !reset []
+    depends_on:
+      - mariadb
+
+  api:
+    environment:
+      AMAVIS_BACKEND: mariadb
+    depends_on:
+      - mariadb
+
+  api-unsecured:
+    environment:
+      AMAVIS_BACKEND: mariadb
+
+  rq:
+    environment:
+      AMAVIS_BACKEND: mariadb
+
+  rq-scheduler:
+    environment:
+      AMAVIS_BACKEND: mariadb
+
+  policyd:
+    environment:
+      AMAVIS_BACKEND: mariadb
