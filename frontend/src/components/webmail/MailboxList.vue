@@ -32,7 +32,7 @@
             size="xsmall"
             variant="flat"
             color="transparent"
-            @click="toggleMailbox(mailbox)"
+            @click.stop="toggleMailbox(mailbox)"
           />
         </template>
       </div>
