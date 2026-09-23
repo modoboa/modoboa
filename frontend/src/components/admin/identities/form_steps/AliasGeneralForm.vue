@@ -92,8 +92,8 @@ async function updateAddress() {
     })
 }
 
-domainsApi.getDomains().then((resp) => {
-  domains.value = resp.data
+domainsApi.getAllDomains().then((results) => {
+  domains.value = results
 })
 
 defineExpose({ vFormRef })
