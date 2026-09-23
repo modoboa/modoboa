@@ -18,16 +18,21 @@ export default {
   },
 
   getAccessRules(calendarPk) {
-    return repository.get('/accessrules/')
+    return repository.get(`/user-calendars/${calendarPk}/accessrules/`)
   },
-  createAccessRule(data) {
-    return repository.post('/accessrules/', data)
+  createAccessRule(calendarPk, data) {
+    return repository.post(`/user-calendars/${calendarPk}/accessrules/`, data)
   },
-  updateAccessRule(ruleId, data) {
-    return repository.put(`/accessrules/${ruleId}/`, data)
+  updateAccessRule(calendarPk, ruleId, data) {
+    return repository.put(
+      `/user-calendars/${calendarPk}/accessrules/${ruleId}/`,
+      data
+    )
   },
-  deleteAccessRule(ruleId) {
-    return repository.delete(`/accessrules/${ruleId}/`)
+  deleteAccessRule(calendarPk, ruleId) {
+    return repository.delete(
+      `/user-calendars/${calendarPk}/accessrules/${ruleId}/`
+    )
   },
 
   getUserCalendarEvents(calendarPk, params) {

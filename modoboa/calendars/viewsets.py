@@ -7,7 +7,6 @@ import dateutil
 from django import http
 from django.utils.translation import gettext as _
 
-from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.decorators import action
 from rest_framework import permissions, response, viewsets
 
@@ -269,21 +268,34 @@ class MailboxViewSet(viewsets.ReadOnlyModelViewSet):
 
     def get_queryset(self):
         """Filter queryset based on current user."""
-        domain_pk = self.request.user.mailbox.domain_id
-        return admin_models.Mailbox.objects.filter(
-            domain__pk=domain_pk, domain__enabled=True, user__is_active=True
-        ).exclude(pk=self.request.user.mailbox.pk)
+        return models.get_share_candidates(self.request.user.mailbox)
 
 
 class AccessRuleViewSet(viewsets.ModelViewSet):
-    """AccessRule viewset."""
+    """AccessRule viewset, nested under a user calendar."""
 
-    filter_backends = (DjangoFilterBackend,)
-    filter_fields = ("calendar",)
     permission_classes = [permissions.IsAuthenticated]
     serializer_class = serializers.AccessRuleSerializer
 
+    def get_calendar(self):
+        """Return the parent UserCalendar owned by the current user."""
+        if not hasattr(self, "_calendar"):
+            self._calendar = models.UserCalendar.objects.filter(
+                mailbox__user=self.request.user, pk=self.kwargs["calendar_pk"]
+            ).first()
+            if not self._calendar:
+                raise http.Http404
+        return self._calendar
+
     def get_queryset(self):
+        if getattr(self, "swagger_fake_view", False):
+            return models.AccessRule.objects.none()
         return models.AccessRule.objects.filter(
-            calendar__mailbox=self.request.user.mailbox
-        )
+            calendar=self.get_calendar()
+        ).select_related("mailbox__domain")
+
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        if "calendar_pk" in self.kwargs:
+            context["calendar"] = self.get_calendar()
+        return context

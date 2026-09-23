@@ -109,20 +109,27 @@ mailboxesApi.getAll().then((response) => {
 
 async function submit() {
   if (!currentRule.value.pk) {
-    currentRule.value.calendar = props.calendarPk
-    api.createAccessRule(currentRule.value).then((response) => {
-      accessRules.value.push(response.data)
-      resetForm()
-    }, onError)
+    api
+      .createAccessRule(props.calendarPk, currentRule.value)
+      .then((response) => {
+        accessRules.value.push(response.data)
+        resetForm()
+      }, onError)
   } else {
-    api.updateAccessRule(currentRule.value.pk, currentRule.value).then(() => {
-      accessRules.value.filter((item, pos) => {
-        if (item.pk === currentRule.value.pk) {
-          accessRules.value[pos] = currentRule.value
-        }
-      })
-      resetForm()
-    }, onError)
+    api
+      .updateAccessRule(
+        props.calendarPk,
+        currentRule.value.pk,
+        currentRule.value
+      )
+      .then(() => {
+        accessRules.value.filter((item, pos) => {
+          if (item.pk === currentRule.value.pk) {
+            accessRules.value[pos] = currentRule.value
+          }
+        })
+        resetForm()
+      }, onError)
   }
 }
 
@@ -137,7 +144,7 @@ function editRule(rule) {
   currentRule.value = JSON.parse(JSON.stringify(rule))
 }
 function deleteRule(rule) {
-  api.deleteAccessRule(rule.pk).then(() => {
+  api.deleteAccessRule(props.calendarPk, rule.pk).then(() => {
     accessRules.value = accessRules.value.filter((localRule) => {
       return localRule.pk !== rule.pk
     })

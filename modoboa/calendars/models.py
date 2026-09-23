@@ -153,6 +153,16 @@ class SharedCalendar(Calendar):
         return self.domain
 
 
+def get_share_candidates(owner):
+    """Return the mailboxes a user calendar can be shared with.
+
+    :param owner: the ``Mailbox`` owning the calendar
+    """
+    return Mailbox.objects.filter(
+        domain_id=owner.domain_id, domain__enabled=True, user__is_active=True
+    ).exclude(pk=owner.pk)
+
+
 class AccessRule(models.Model):
     """Access rules to user calendars."""
 

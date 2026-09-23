@@ -13,12 +13,14 @@ router.register(
 )
 router.register(r"attendees", viewsets.AttendeeViewSet, basename="attendee")
 router.register(r"mailboxes", viewsets.MailboxViewSet, basename="mailbox")
-router.register(r"accessrules", viewsets.AccessRuleViewSet, basename="access-rule")
 
 calendars_router = routers.NestedSimpleRouter(
     router, r"user-calendars", lookup="calendar"
 )
 calendars_router.register(r"events", viewsets.UserEventViewSet, basename="user-event")
+calendars_router.register(
+    r"accessrules", viewsets.AccessRuleViewSet, basename="access-rule"
+)
 shared_calendars_router = routers.NestedSimpleRouter(
     router, r"shared-calendars", lookup="calendar"
 )
