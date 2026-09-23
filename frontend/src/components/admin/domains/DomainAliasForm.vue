@@ -94,14 +94,12 @@ async function deleteAlias() {
 }
 
 function fetchDomains() {
-  const params = {
-    page_size: 0,
-  }
+  const params = {}
   if (search.value) {
     params.search = search.value
   }
-  domainsApi.getDomains(params).then((resp) => {
-    domains.value = resp.data.results
+  domainsApi.getAllDomains(params).then((results) => {
+    domains.value = results
   })
 }
 const fetchDomainsDelayed = debounce(fetchDomains, 500)
