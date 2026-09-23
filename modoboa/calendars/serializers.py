@@ -229,28 +229,29 @@ class AccessRuleSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.AccessRule
         fields = ("pk", "mailbox", "calendar", "read", "write")
-
-    def __init__(self, *args, **kwargs):
-        """Restrict the calendar field to the current user's calendars."""
-        super().__init__(*args, **kwargs)
-        user = self.context["request"].user
-        if user.is_anonymous or not hasattr(user, "mailbox"):
-            return
-        self.fields["calendar"].queryset = models.UserCalendar.objects.filter(
-            mailbox=user.mailbox
-        )
+        # Calendar comes from the URL (see AccessRuleViewSet)
+        read_only_fields = ("calendar",)
 
     def validate_mailbox(self, value):
         mailbox = admin_models.Mailbox.objects.filter(pk=value["pk"]).first()
         if mailbox is None:
             raise serializers.ValidationError(_("Mailbox not found"))
         check_mailbox_ownership(self.context["request"].user, mailbox)
+        qset = models.AccessRule.objects.filter(
+            calendar=self.context["calendar"], mailbox=mailbox
+        )
+        if self.instance:
+            qset = qset.exclude(pk=self.instance.pk)
+        if qset.exists():
+            raise serializers.ValidationError(
+                _("An access rule already exists for this mailbox")
+            )
         return value
 
     def create(self, validated_data):
         """Create access rule."""
         mailbox = validated_data.pop("mailbox")
-        rule = models.AccessRule(**validated_data)
+        rule = models.AccessRule(calendar=self.context["calendar"], **validated_data)
         rule.mailbox_id = mailbox["pk"]
         rule.save()
         return rule

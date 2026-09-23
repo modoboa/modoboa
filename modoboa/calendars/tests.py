@@ -352,42 +352,75 @@ class AccessRuleViewSetTestCase(TestDataMixin, ModoAPITestCase):
         """Initiate test context."""
         self.client.force_authenticate(self.account)
 
+    def _rule_data(self, mailbox, **kwargs):
+        data = {
+            "mailbox": {"pk": mailbox.pk, "full_address": mailbox.full_address},
+            "read": True,
+        }
+        data.update(kwargs)
+        return data
+
     def test_get_accessrules(self):
         """Test access rule retrieval."""
-        url = reverse("api:access-rule-list")
+        url = reverse("api:access-rule-list", args=[self.calendar.pk])
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.json()), 1)
+        self.assertEqual(response.json()[0]["pk"], self.acr1.pk)
+
+    def test_get_accessrules_scoped_to_calendar(self):
+        """Rules of another calendar of the same user must not be listed."""
+        other_calendar = factories.UserCalendarFactory(mailbox=self.account.mailbox)
+        other_rule = factories.AccessRuleFactory(
+            calendar=other_calendar, mailbox=self.admin_account.mailbox, read=True
+        )
+        url = reverse("api:access-rule-list", args=[other_calendar.pk])
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual([rule["pk"] for rule in response.json()], [other_rule.pk])
+
+        url = reverse("api:access-rule-list", args=[self.calendar.pk])
+        response = self.client.get(url)
+        self.assertEqual([rule["pk"] for rule in response.json()], [self.acr1.pk])
+
+    def test_get_accessrules_calendar_not_owned(self):
+        """Listing rules of a calendar the user doesn't own is refused."""
+        url = reverse("api:access-rule-list", args=[self.calendar2.pk])
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 404)
 
     def test_create_accessrule(self):
         self.client.force_authenticate(self.admin_account)
-        data = {
-            "mailbox": {
-                "pk": self.account.mailbox.pk,
-                "full_address": self.account.mailbox.full_address,
-            },
-            "read": True,
-            "calendar": self.calendar2.pk,
-        }
-        url = reverse("api:access-rule-list")
-        response = self.client.post(url, data=data, format="json")
+        url = reverse("api:access-rule-list", args=[self.calendar2.pk])
+        response = self.client.post(
+            url, data=self._rule_data(self.account.mailbox), format="json"
+        )
         self.assertEqual(response.status_code, 201)
+        self.assertEqual(response.json()["calendar"], self.calendar2.pk)
+        self.assertTrue(
+            models.AccessRule.objects.filter(
+                mailbox=self.account.mailbox, calendar=self.calendar2
+            ).exists()
+        )
+
+    def test_create_accessrule_duplicate(self):
+        """A mailbox can only have one rule per calendar."""
+        url = reverse("api:access-rule-list", args=[self.calendar.pk])
+        response = self.client.post(
+            url, data=self._rule_data(self.admin_account.mailbox), format="json"
+        )
+        self.assertEqual(response.status_code, 400)
+        self.assertIn("mailbox", response.json())
 
     def test_create_accessrule_denied_mailbox(self):
         """Try to create an access rule with a mailbox the user doesn't own."""
         other_mbox = admin_models.Mailbox.objects.get(
             address="user", domain__name="test2.com"
         )
-        data = {
-            "mailbox": {
-                "pk": other_mbox.pk,
-                "full_address": other_mbox.full_address,
-            },
-            "read": True,
-            "calendar": self.calendar.pk,
-        }
-        url = reverse("api:access-rule-list")
-        response = self.client.post(url, data=data, format="json")
+        url = reverse("api:access-rule-list", args=[self.calendar.pk])
+        response = self.client.post(
+            url, data=self._rule_data(other_mbox), format="json"
+        )
         self.assertEqual(response.status_code, 400)
 
     def test_create_accessrule_mailbox_not_found(self):
@@ -398,9 +431,8 @@ class AccessRuleViewSetTestCase(TestDataMixin, ModoAPITestCase):
                 "full_address": "doesnotexist@test.com",
             },
             "read": True,
-            "calendar": self.calendar.pk,
         }
-        url = reverse("api:access-rule-list")
+        url = reverse("api:access-rule-list", args=[self.calendar.pk])
         response = self.client.post(url, data=data, format="json")
         self.assertEqual(response.status_code, 400)
         self.assertIn("mailbox", response.json())
@@ -408,19 +440,27 @@ class AccessRuleViewSetTestCase(TestDataMixin, ModoAPITestCase):
     def test_create_accessrule_denied_calendar(self):
         """Try to grant access to a calendar the user doesn't own."""
         # self.account owns self.calendar; self.calendar2 belongs to admin_account
-        data = {
-            "mailbox": {
-                "pk": self.account.mailbox.pk,
-                "full_address": self.account.mailbox.full_address,
-            },
-            "read": True,
-            "write": True,
-            "calendar": self.calendar2.pk,
-        }
-        url = reverse("api:access-rule-list")
-        response = self.client.post(url, data=data, format="json")
-        self.assertEqual(response.status_code, 400)
-        self.assertIn("calendar", response.json())
+        url = reverse("api:access-rule-list", args=[self.calendar2.pk])
+        response = self.client.post(
+            url, data=self._rule_data(self.account.mailbox, write=True), format="json"
+        )
+        self.assertEqual(response.status_code, 404)
+        self.assertFalse(
+            models.AccessRule.objects.filter(
+                mailbox=self.account.mailbox, calendar=self.calendar2
+            ).exists()
+        )
+
+    def test_create_accessrule_calendar_in_body_ignored(self):
+        """The calendar is taken from the URL, never from the body."""
+        url = reverse("api:access-rule-list", args=[self.calendar.pk])
+        response = self.client.post(
+            url,
+            data=self._rule_data(self.account.mailbox, calendar=self.calendar2.pk),
+            format="json",
+        )
+        self.assertEqual(response.status_code, 201)
+        self.assertEqual(response.json()["calendar"], self.calendar.pk)
         self.assertFalse(
             models.AccessRule.objects.filter(
                 mailbox=self.account.mailbox, calendar=self.calendar2
@@ -435,35 +475,24 @@ class AccessRuleViewSetTestCase(TestDataMixin, ModoAPITestCase):
             read=True,
             write=False,
         )
-        data = {
-            "mailbox": {
-                "pk": self.account.mailbox.pk,
-                "full_address": self.account.mailbox.full_address,
-            },
-            "read": True,
-            "write": True,
-            "calendar": self.calendar2.pk,
-        }
-        url = reverse("api:access-rule-detail", args=[acr.pk])
-        response = self.client.put(url, data=data, format="json")
-        self.assertEqual(response.status_code, 400)
-        self.assertIn("calendar", response.json())
+        url = reverse("api:access-rule-detail", args=[self.calendar.pk, acr.pk])
+        response = self.client.put(
+            url,
+            data=self._rule_data(
+                self.account.mailbox, write=True, calendar=self.calendar2.pk
+            ),
+            format="json",
+        )
+        self.assertEqual(response.status_code, 200)
         acr.refresh_from_db()
         self.assertEqual(acr.calendar, self.calendar)
 
     def test_rights_generation_excludes_forged_rule(self):
         """A rejected create must never reach the generated rights file."""
-        data = {
-            "mailbox": {
-                "pk": self.account.mailbox.pk,
-                "full_address": self.account.mailbox.full_address,
-            },
-            "read": True,
-            "write": True,
-            "calendar": self.calendar2.pk,
-        }
-        url = reverse("api:access-rule-list")
-        self.client.post(url, data=data, format="json")
+        url = reverse("api:access-rule-list", args=[self.calendar2.pk])
+        self.client.post(
+            url, data=self._rule_data(self.account.mailbox, write=True), format="json"
+        )
 
         rights_file_path = tempfile.mktemp()
         self.set_global_parameter("rights_file_path", rights_file_path, app="calendars")
@@ -494,20 +523,16 @@ class AccessRuleViewSetTestCase(TestDataMixin, ModoAPITestCase):
             read=True,
             write=False,
         )
-        data = {
-            "mailbox": {
-                "pk": self.account.mailbox.pk,
-                "full_address": self.account.mailbox.full_address,
-            },
-            "calendar": self.calendar2.pk,
-            "read": False,
-            "write": True,
-        }
-        url = reverse("api:access-rule-detail", args=[acr.pk])
-        response = self.client.put(url, data=data, format="json")
+        url = reverse("api:access-rule-detail", args=[self.calendar2.pk, acr.pk])
+        response = self.client.put(
+            url,
+            data=self._rule_data(self.account.mailbox, read=False, write=True),
+            format="json",
+        )
         self.assertEqual(response.status_code, 200)
         acr.refresh_from_db()
         self.assertFalse(acr.read)
+        self.assertTrue(acr.write)
 
     def test_update_accessrule_permission(self):
         """Try to modify an access rule the user does not own."""
@@ -515,19 +540,19 @@ class AccessRuleViewSetTestCase(TestDataMixin, ModoAPITestCase):
         acr = factories.AccessRuleFactory(
             calendar=calendar, mailbox=self.account.mailbox, read=True, write=True
         )
-        data = {
-            "mailbox": self.account.mailbox.pk,
-            "calendar": calendar.pk,
-            "read": False,
-            "write": True,
-        }
-        url = reverse("api:access-rule-detail", args=[acr.pk])
+        data = self._rule_data(self.account.mailbox, read=False, write=True)
+        # Through the real parent calendar
+        url = reverse("api:access-rule-detail", args=[calendar.pk, acr.pk])
+        response = self.client.put(url, data=data, format="json")
+        self.assertEqual(response.status_code, 404)
+        # Through a calendar the user owns
+        url = reverse("api:access-rule-detail", args=[self.calendar.pk, acr.pk])
         response = self.client.put(url, data=data, format="json")
         self.assertEqual(response.status_code, 404)
 
     def test_delete_accessrule(self):
         """Test access rule removal."""
-        url = reverse("api:access-rule-detail", args=[self.acr1.pk])
+        url = reverse("api:access-rule-detail", args=[self.calendar.pk, self.acr1.pk])
         response = self.client.delete(url)
         self.assertEqual(response.status_code, 204)
         with self.assertRaises(models.AccessRule.DoesNotExist):
