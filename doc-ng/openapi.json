@@ -6,258 +6,15 @@
     },
     "servers": [
         {
-        "url": "https://demo.modoboa.org/api/schema-v2/",
-        "description": "Remote Demo server"
+            "url": "https://demo.modoboa.org/api/schema-v2/",
+            "description": "Remote Demo server"
         },
         {
-        "url": "https://localhost:5000/api/schema-v2/",
-        "description": "Local server"
-        }        
+            "url": "https://localhost:5000/api/schema-v2/",
+            "description": "Local server"
+        }
     ],
     "paths": {
-        "/api/v2/accessrules/": {
-            "get": {
-                "operationId": "accessrules_list",
-                "description": "AccessRule viewset.",
-                "tags": [
-                    "accessrules"
-                ],
-                "security": [
-                    {
-                        "tokenAuth": []
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "$ref": "#/components/schemas/AccessRule"
-                                    }
-                                }
-                            }
-                        },
-                        "description": ""
-                    }
-                }
-            },
-            "post": {
-                "operationId": "accessrules_create",
-                "description": "AccessRule viewset.",
-                "tags": [
-                    "accessrules"
-                ],
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/AccessRule"
-                            }
-                        },
-                        "application/x-www-form-urlencoded": {
-                            "schema": {
-                                "$ref": "#/components/schemas/AccessRule"
-                            }
-                        },
-                        "multipart/form-data": {
-                            "schema": {
-                                "$ref": "#/components/schemas/AccessRule"
-                            }
-                        }
-                    },
-                    "required": true
-                },
-                "security": [
-                    {
-                        "tokenAuth": []
-                    }
-                ],
-                "responses": {
-                    "201": {
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/AccessRule"
-                                }
-                            }
-                        },
-                        "description": ""
-                    }
-                }
-            }
-        },
-        "/api/v2/accessrules/{id}/": {
-            "get": {
-                "operationId": "accessrules_retrieve",
-                "description": "AccessRule viewset.",
-                "parameters": [
-                    {
-                        "in": "path",
-                        "name": "id",
-                        "schema": {
-                            "type": "string"
-                        },
-                        "required": true
-                    }
-                ],
-                "tags": [
-                    "accessrules"
-                ],
-                "security": [
-                    {
-                        "tokenAuth": []
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/AccessRule"
-                                }
-                            }
-                        },
-                        "description": ""
-                    }
-                }
-            },
-            "put": {
-                "operationId": "accessrules_update",
-                "description": "AccessRule viewset.",
-                "parameters": [
-                    {
-                        "in": "path",
-                        "name": "id",
-                        "schema": {
-                            "type": "string"
-                        },
-                        "required": true
-                    }
-                ],
-                "tags": [
-                    "accessrules"
-                ],
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/AccessRule"
-                            }
-                        },
-                        "application/x-www-form-urlencoded": {
-                            "schema": {
-                                "$ref": "#/components/schemas/AccessRule"
-                            }
-                        },
-                        "multipart/form-data": {
-                            "schema": {
-                                "$ref": "#/components/schemas/AccessRule"
-                            }
-                        }
-                    },
-                    "required": true
-                },
-                "security": [
-                    {
-                        "tokenAuth": []
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/AccessRule"
-                                }
-                            }
-                        },
-                        "description": ""
-                    }
-                }
-            },
-            "patch": {
-                "operationId": "accessrules_partial_update",
-                "description": "AccessRule viewset.",
-                "parameters": [
-                    {
-                        "in": "path",
-                        "name": "id",
-                        "schema": {
-                            "type": "string"
-                        },
-                        "required": true
-                    }
-                ],
-                "tags": [
-                    "accessrules"
-                ],
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/PatchedAccessRule"
-                            }
-                        },
-                        "application/x-www-form-urlencoded": {
-                            "schema": {
-                                "$ref": "#/components/schemas/PatchedAccessRule"
-                            }
-                        },
-                        "multipart/form-data": {
-                            "schema": {
-                                "$ref": "#/components/schemas/PatchedAccessRule"
-                            }
-                        }
-                    }
-                },
-                "security": [
-                    {
-                        "tokenAuth": []
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/AccessRule"
-                                }
-                            }
-                        },
-                        "description": ""
-                    }
-                }
-            },
-            "delete": {
-                "operationId": "accessrules_destroy",
-                "description": "AccessRule viewset.",
-                "parameters": [
-                    {
-                        "in": "path",
-                        "name": "id",
-                        "schema": {
-                            "type": "string"
-                        },
-                        "required": true
-                    }
-                ],
-                "tags": [
-                    "accessrules"
-                ],
-                "security": [
-                    {
-                        "tokenAuth": []
-                    }
-                ],
-                "responses": {
-                    "204": {
-                        "description": "No response body"
-                    }
-                }
-            }
-        },
         "/api/v2/account/api_token/": {
             "get": {
                 "operationId": "account_api_token_retrieve",
@@ -503,7 +260,8 @@
                         "in": "path",
                         "name": "id",
                         "schema": {
-                            "type": "string"
+                            "type": "string",
+                            "pattern": "^[^/]+$"
                         },
                         "required": true
                     }
@@ -557,7 +315,8 @@
                         "in": "path",
                         "name": "id",
                         "schema": {
-                            "type": "string"
+                            "type": "string",
+                            "pattern": "^[^/]+$"
                         },
                         "required": true
                     }
@@ -586,7 +345,8 @@
                         "in": "path",
                         "name": "id",
                         "schema": {
-                            "type": "string"
+                            "type": "string",
+                            "pattern": "^[^/]+$"
                         },
                         "required": true
                     }
@@ -642,7 +402,8 @@
                         "in": "path",
                         "name": "id",
                         "schema": {
-                            "type": "string"
+                            "type": "string",
+                            "pattern": "^[^/]+$"
                         },
                         "required": true
                     }
@@ -874,7 +635,8 @@
                         "in": "path",
                         "name": "filter",
                         "schema": {
-                            "type": "string"
+                            "type": "string",
+                            "pattern": "^[^/]+$"
                         },
                         "required": true
                     },
@@ -882,7 +644,8 @@
                         "in": "path",
                         "name": "id",
                         "schema": {
-                            "type": "string"
+                            "type": "string",
+                            "pattern": "^[^/]+$"
                         },
                         "required": true
                     }
@@ -938,7 +701,8 @@
                         "in": "path",
                         "name": "filter",
                         "schema": {
-                            "type": "string"
+                            "type": "string",
+                            "pattern": "^[^/]+$"
                         },
                         "required": true
                     },
@@ -946,7 +710,8 @@
                         "in": "path",
                         "name": "id",
                         "schema": {
-                            "type": "string"
+                            "type": "string",
+                            "pattern": "^[^/]+$"
                         },
                         "required": true
                     }
@@ -1001,7 +766,8 @@
                         "in": "path",
                         "name": "filter",
                         "schema": {
-                            "type": "string"
+                            "type": "string",
+                            "pattern": "^[^/]+$"
                         },
                         "required": true
                     },
@@ -1009,7 +775,8 @@
                         "in": "path",
                         "name": "id",
                         "schema": {
-                            "type": "string"
+                            "type": "string",
+                            "pattern": "^[^/]+$"
                         },
                         "required": true
                     }
@@ -1064,7 +831,8 @@
                         "in": "path",
                         "name": "filter",
                         "schema": {
-                            "type": "string"
+                            "type": "string",
+                            "pattern": "^[^/]+$"
                         },
                         "required": true
                     },
@@ -1072,7 +840,8 @@
                         "in": "path",
                         "name": "id",
                         "schema": {
-                            "type": "string"
+                            "type": "string",
+                            "pattern": "^[^/]+$"
                         },
                         "required": true
                     }
@@ -1227,8 +996,7 @@
                 "security": [
                     {
                         "tokenAuth": []
-                    },
-                    {}
+                    }
                 ],
                 "responses": {
                     "200": {
@@ -1245,8 +1013,7 @@
                 "security": [
                     {
                         "tokenAuth": []
-                    },
-                    {}
+                    }
                 ],
                 "responses": {
                     "200": {
@@ -1952,6 +1719,52 @@
                 }
             }
         },
+        "/api/v2/accounts/bulk_delete/": {
+            "post": {
+                "operationId": "accounts_bulk_delete_create",
+                "description": "Delete multiple accounts at the same time.",
+                "tags": [
+                    "accounts"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/AccountBulkDelete"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/AccountBulkDelete"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/AccountBulkDelete"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "tokenAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AccountBulkDelete"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
         "/api/v2/accounts/exists/": {
             "get": {
                 "operationId": "accounts_exists_retrieve",
@@ -2514,8 +2327,9 @@
                         "in": "query",
                         "name": "domain",
                         "schema": {
-                            "type": "integer"
-                        }
+                            "type": "string"
+                        },
+                        "description": "The domain name"
                     },
                     {
                         "name": "ordering",
@@ -2858,6 +2672,499 @@
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/Alias"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/v2/amavis/policies/{id}/": {
+            "get": {
+                "operationId": "amavis_policies_retrieve",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "amavis"
+                ],
+                "security": [
+                    {
+                        "tokenAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Policy"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "put": {
+                "operationId": "amavis_policies_update",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "amavis"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Policy"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Policy"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Policy"
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "tokenAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Policy"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "patch": {
+                "operationId": "amavis_policies_partial_update",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "amavis"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatchedPolicy"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatchedPolicy"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatchedPolicy"
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "tokenAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Policy"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/v2/amavis/quarantine/": {
+            "get": {
+                "operationId": "amavis_quarantine_list",
+                "parameters": [
+                    {
+                        "name": "ordering",
+                        "required": false,
+                        "in": "query",
+                        "description": "Which field to use when ordering the results.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "tags": [
+                    "amavis"
+                ],
+                "security": [
+                    {
+                        "tokenAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/PaginatedMessageList"
+                                    }
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/v2/amavis/quarantine/{id}/": {
+            "get": {
+                "operationId": "amavis_quarantine_retrieve",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "amavis"
+                ],
+                "security": [
+                    {
+                        "tokenAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Message"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/v2/amavis/quarantine/{id}/delete/": {
+            "post": {
+                "operationId": "amavis_quarantine_delete_create",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "amavis"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/MessageIdentifier"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/MessageIdentifier"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/MessageIdentifier"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "tokenAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/MessageIdentifier"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/v2/amavis/quarantine/{id}/headers/": {
+            "get": {
+                "operationId": "amavis_quarantine_headers_retrieve",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "amavis"
+                ],
+                "security": [
+                    {
+                        "tokenAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/MessageHeaders"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/v2/amavis/quarantine/{id}/release/": {
+            "post": {
+                "operationId": "amavis_quarantine_release_create",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "amavis"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/MessageIdentifier"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/MessageIdentifier"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/MessageIdentifier"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "tokenAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/MessageIdentifier"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/v2/amavis/quarantine/delete_selection/": {
+            "post": {
+                "operationId": "amavis_quarantine_delete_selection_create",
+                "tags": [
+                    "amavis"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/MessageSelection"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/MessageSelection"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/MessageSelection"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "tokenAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/MessageSelection"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/v2/amavis/quarantine/mark_selection/": {
+            "post": {
+                "operationId": "amavis_quarantine_mark_selection_create",
+                "tags": [
+                    "amavis"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/MarkMessageSelection"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/MarkMessageSelection"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/MarkMessageSelection"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "tokenAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/MarkMessageSelection"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/v2/amavis/quarantine/release_selection/": {
+            "post": {
+                "operationId": "amavis_quarantine_release_selection_create",
+                "tags": [
+                    "amavis"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/MessageSelection"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/MessageSelection"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/MessageSelection"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "tokenAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/MessageSelection"
                                 }
                             }
                         },
@@ -4620,6 +4927,52 @@
                 }
             }
         },
+        "/api/v2/domains/bulk_delete/": {
+            "post": {
+                "operationId": "domains_bulk_delete_create",
+                "description": "Delete multiple domains at the same time.",
+                "tags": [
+                    "domains"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/DomainBulkDelete"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/DomainBulkDelete"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/DomainBulkDelete"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "tokenAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/DomainBulkDelete"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
         "/api/v2/domains/export/": {
             "get": {
                 "operationId": "domains_export_retrieve",
@@ -5370,6 +5723,35 @@
                 }
             }
         },
+        "/api/v2/frontend/plugins/": {
+            "get": {
+                "operationId": "frontend_plugins_list",
+                "description": "Expose registered Modoboa plugins frontend manifest.",
+                "tags": [
+                    "frontend"
+                ],
+                "security": [
+                    {
+                        "tokenAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/FrontendPluginManifest"
+                                    }
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
         "/api/v2/identities/": {
             "get": {
                 "operationId": "identities_list",
@@ -5620,8 +6002,7 @@
                 "security": [
                     {
                         "tokenAuth": []
-                    },
-                    {}
+                    }
                 ],
                 "responses": {
                     "200": {
@@ -5657,8 +6038,7 @@
                 "security": [
                     {
                         "tokenAuth": []
-                    },
-                    {}
+                    }
                 ],
                 "responses": {
                     "200": {
@@ -6119,26 +6499,6 @@
                 }
             }
         },
-        "/api/v2/password_reset/": {
-            "post": {
-                "operationId": "password_reset_create",
-                "description": "Recover password.",
-                "tags": [
-                    "password_reset"
-                ],
-                "security": [
-                    {
-                        "tokenAuth": []
-                    },
-                    {}
-                ],
-                "responses": {
-                    "200": {
-                        "description": "No response body"
-                    }
-                }
-            }
-        },
         "/api/v2/relaydomains/": {
             "get": {
                 "operationId": "relaydomains_list",
@@ -6377,26 +6737,6 @@
                 ],
                 "responses": {
                     "204": {
-                        "description": "No response body"
-                    }
-                }
-            }
-        },
-        "/api/v2/reset_confirm/": {
-            "post": {
-                "operationId": "reset_confirm_create",
-                "description": "Get and set new user password.",
-                "tags": [
-                    "reset_confirm"
-                ],
-                "security": [
-                    {
-                        "tokenAuth": []
-                    },
-                    {}
-                ],
-                "responses": {
-                    "200": {
                         "description": "No response body"
                     }
                 }
@@ -6881,8 +7221,7 @@
                 "security": [
                     {
                         "tokenAuth": []
-                    },
-                    {}
+                    }
                 ],
                 "responses": {
                     "200": {
@@ -6939,8 +7278,7 @@
                 "security": [
                     {
                         "tokenAuth": []
-                    },
-                    {}
+                    }
                 ],
                 "responses": {
                     "201": {
@@ -6985,8 +7323,7 @@
                 "security": [
                     {
                         "tokenAuth": []
-                    },
-                    {}
+                    }
                 ],
                 "responses": {
                     "200": {
@@ -7049,8 +7386,7 @@
                 "security": [
                     {
                         "tokenAuth": []
-                    },
-                    {}
+                    }
                 ],
                 "responses": {
                     "200": {
@@ -7112,8 +7448,7 @@
                 "security": [
                     {
                         "tokenAuth": []
-                    },
-                    {}
+                    }
                 ],
                 "responses": {
                     "200": {
@@ -7156,8 +7491,7 @@
                 "security": [
                     {
                         "tokenAuth": []
-                    },
-                    {}
+                    }
                 ],
                 "responses": {
                     "204": {
@@ -7206,8 +7540,7 @@
                 "security": [
                     {
                         "tokenAuth": []
-                    },
-                    {}
+                    }
                 ],
                 "responses": {
                     "200": {
@@ -7439,26 +7772,6 @@
                 }
             }
         },
-        "/api/v2/sms_totp/": {
-            "post": {
-                "operationId": "sms_totp_create",
-                "description": "Check SMS Totp code.",
-                "tags": [
-                    "sms_totp"
-                ],
-                "security": [
-                    {
-                        "tokenAuth": []
-                    },
-                    {}
-                ],
-                "responses": {
-                    "200": {
-                        "description": "No response body"
-                    }
-                }
-            }
-        },
         "/api/v2/statistics/": {
             "get": {
                 "operationId": "statistics_list",
@@ -7574,6 +7887,59 @@
                 }
             }
         },
+        "/api/v2/theme/logo/": {
+            "post": {
+                "operationId": "theme_logo_create",
+                "description": "Upload or clear a custom theme logo.",
+                "tags": [
+                    "theme"
+                ],
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ThemeLogoUpload"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "tokenAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ThemeLogoUpload"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "delete": {
+                "operationId": "theme_logo_destroy",
+                "description": "Upload or clear a custom theme logo.",
+                "tags": [
+                    "theme"
+                ],
+                "security": [
+                    {
+                        "tokenAuth": []
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No response body"
+                    }
+                }
+            }
+        },
         "/api/v2/transports/": {
             "get": {
                 "operationId": "transports_list",
@@ -7584,8 +7950,7 @@
                 "security": [
                     {
                         "tokenAuth": []
-                    },
-                    {}
+                    }
                 ],
                 "responses": {
                     "200": {
@@ -7677,6 +8042,305 @@
                 }
             }
         },
+        "/api/v2/user-calendars/{calendar_pk}/accessrules/": {
+            "get": {
+                "operationId": "user_calendars_accessrules_list",
+                "description": "AccessRule viewset, nested under a user calendar.",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "calendar_pk",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "user-calendars"
+                ],
+                "security": [
+                    {
+                        "tokenAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/AccessRule"
+                                    }
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "post": {
+                "operationId": "user_calendars_accessrules_create",
+                "description": "AccessRule viewset, nested under a user calendar.",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "calendar_pk",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "user-calendars"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/AccessRule"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/AccessRule"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/AccessRule"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "tokenAuth": []
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AccessRule"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/v2/user-calendars/{calendar_pk}/accessrules/{id}/": {
+            "get": {
+                "operationId": "user_calendars_accessrules_retrieve",
+                "description": "AccessRule viewset, nested under a user calendar.",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "calendar_pk",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "required": true
+                    },
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "A unique integer value identifying this access rule.",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "user-calendars"
+                ],
+                "security": [
+                    {
+                        "tokenAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AccessRule"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "put": {
+                "operationId": "user_calendars_accessrules_update",
+                "description": "AccessRule viewset, nested under a user calendar.",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "calendar_pk",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "required": true
+                    },
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "A unique integer value identifying this access rule.",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "user-calendars"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/AccessRule"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/AccessRule"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/AccessRule"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "tokenAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AccessRule"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "patch": {
+                "operationId": "user_calendars_accessrules_partial_update",
+                "description": "AccessRule viewset, nested under a user calendar.",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "calendar_pk",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "required": true
+                    },
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "A unique integer value identifying this access rule.",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "user-calendars"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatchedAccessRule"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatchedAccessRule"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatchedAccessRule"
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "tokenAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AccessRule"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "delete": {
+                "operationId": "user_calendars_accessrules_destroy",
+                "description": "AccessRule viewset, nested under a user calendar.",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "calendar_pk",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "required": true
+                    },
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "A unique integer value identifying this access rule.",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "user-calendars"
+                ],
+                "security": [
+                    {
+                        "tokenAuth": []
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No response body"
+                    }
+                }
+            }
+        },
         "/api/v2/user-calendars/{calendar_pk}/events/": {
             "get": {
                 "operationId": "user_calendars_events_list",
@@ -7697,8 +8361,7 @@
                 "security": [
                     {
                         "tokenAuth": []
-                    },
-                    {}
+                    }
                 ],
                 "responses": {
                     "200": {
@@ -7755,8 +8418,7 @@
                 "security": [
                     {
                         "tokenAuth": []
-                    },
-                    {}
+                    }
                 ],
                 "responses": {
                     "201": {
@@ -7801,8 +8463,7 @@
                 "security": [
                     {
                         "tokenAuth": []
-                    },
-                    {}
+                    }
                 ],
                 "responses": {
                     "200": {
@@ -7865,8 +8526,7 @@
                 "security": [
                     {
                         "tokenAuth": []
-                    },
-                    {}
+                    }
                 ],
                 "responses": {
                     "200": {
@@ -7928,8 +8588,7 @@
                 "security": [
                     {
                         "tokenAuth": []
-                    },
-                    {}
+                    }
                 ],
                 "responses": {
                     "200": {
@@ -7972,8 +8631,7 @@
                 "security": [
                     {
                         "tokenAuth": []
-                    },
-                    {}
+                    }
                 ],
                 "responses": {
                     "204": {
@@ -8022,8 +8680,7 @@
                 "security": [
                     {
                         "tokenAuth": []
-                    },
-                    {}
+                    }
                 ],
                 "responses": {
                     "200": {
@@ -8258,6 +8915,7 @@
         "/api/v2/webmail/compose-sessions/": {
             "post": {
                 "operationId": "webmail_compose_sessions_create",
+                "description": "Close the IMAP connection of the request once it is over.\n\nEvery operation of a request shares one connection (see\n``get_imapconnector``); it is closed here, even if the view raised.",
                 "tags": [
                     "webmail"
                 ],
@@ -8302,6 +8960,7 @@
         "/api/v2/webmail/compose-sessions/{id}/": {
             "get": {
                 "operationId": "webmail_compose_sessions_retrieve",
+                "description": "Close the IMAP connection of the request once it is over.\n\nEvery operation of a request shares one connection (see\n``get_imapconnector``); it is closed here, even if the view raised.",
                 "parameters": [
                     {
                         "in": "path",
@@ -8337,6 +8996,7 @@
         "/api/v2/webmail/compose-sessions/{id}/attachments/": {
             "post": {
                 "operationId": "webmail_compose_sessions_attachments_create",
+                "description": "Close the IMAP connection of the request once it is over.\n\nEvery operation of a request shares one connection (see\n``get_imapconnector``); it is closed here, even if the view raised.",
                 "parameters": [
                     {
                         "in": "path",
@@ -8382,6 +9042,7 @@
         "/api/v2/webmail/compose-sessions/{id}/attachments/{name}/": {
             "delete": {
                 "operationId": "webmail_compose_sessions_attachments_destroy",
+                "description": "Close the IMAP connection of the request once it is over.\n\nEvery operation of a request shares one connection (see\n``get_imapconnector``); it is closed here, even if the view raised.",
                 "parameters": [
                     {
                         "in": "path",
@@ -8418,6 +9079,7 @@
         "/api/v2/webmail/compose-sessions/{id}/save/": {
             "post": {
                 "operationId": "webmail_compose_sessions_save_create",
+                "description": "Close the IMAP connection of the request once it is over.\n\nEvery operation of a request shares one connection (see\n``get_imapconnector``); it is closed here, even if the view raised.",
                 "parameters": [
                     {
                         "in": "path",
@@ -8529,6 +9191,7 @@
         "/api/v2/webmail/compose-sessions/allowed_senders/": {
             "get": {
                 "operationId": "webmail_compose_sessions_allowed_senders_retrieve",
+                "description": "Close the IMAP connection of the request once it is over.\n\nEvery operation of a request shares one connection (see\n``get_imapconnector``); it is closed here, even if the view raised.",
                 "tags": [
                     "webmail"
                 ],
@@ -8554,6 +9217,7 @@
         "/api/v2/webmail/emails/": {
             "get": {
                 "operationId": "webmail_emails_list",
+                "description": "Close the IMAP connection of the request once it is over.\n\nEvery operation of a request shares one connection (see\n``get_imapconnector``); it is closed here, even if the view raised.",
                 "tags": [
                     "webmail"
                 ],
@@ -8582,6 +9246,7 @@
         "/api/v2/webmail/emails/attachment/": {
             "get": {
                 "operationId": "webmail_emails_attachment_retrieve",
+                "description": "Close the IMAP connection of the request once it is over.\n\nEvery operation of a request shares one connection (see\n``get_imapconnector``); it is closed here, even if the view raised.",
                 "tags": [
                     "webmail"
                 ],
@@ -8607,6 +9272,7 @@
         "/api/v2/webmail/emails/content/": {
             "get": {
                 "operationId": "webmail_emails_content_retrieve",
+                "description": "Close the IMAP connection of the request once it is over.\n\nEvery operation of a request shares one connection (see\n``get_imapconnector``); it is closed here, even if the view raised.",
                 "tags": [
                     "webmail"
                 ],
@@ -8632,6 +9298,7 @@
         "/api/v2/webmail/emails/delete/": {
             "post": {
                 "operationId": "webmail_emails_delete_create",
+                "description": "Close the IMAP connection of the request once it is over.\n\nEvery operation of a request shares one connection (see\n``get_imapconnector``); it is closed here, even if the view raised.",
                 "tags": [
                     "webmail"
                 ],
@@ -8677,6 +9344,7 @@
         "/api/v2/webmail/emails/flag/": {
             "post": {
                 "operationId": "webmail_emails_flag_create",
+                "description": "Close the IMAP connection of the request once it is over.\n\nEvery operation of a request shares one connection (see\n``get_imapconnector``); it is closed here, even if the view raised.",
                 "tags": [
                     "webmail"
                 ],
@@ -8722,6 +9390,7 @@
         "/api/v2/webmail/emails/mark_as_junk/": {
             "post": {
                 "operationId": "webmail_emails_mark_as_junk_create",
+                "description": "Close the IMAP connection of the request once it is over.\n\nEvery operation of a request shares one connection (see\n``get_imapconnector``); it is closed here, even if the view raised.",
                 "tags": [
                     "webmail"
                 ],
@@ -8767,6 +9436,7 @@
         "/api/v2/webmail/emails/mark_as_not_junk/": {
             "post": {
                 "operationId": "webmail_emails_mark_as_not_junk_create",
+                "description": "Close the IMAP connection of the request once it is over.\n\nEvery operation of a request shares one connection (see\n``get_imapconnector``); it is closed here, even if the view raised.",
                 "tags": [
                     "webmail"
                 ],
@@ -8812,6 +9482,7 @@
         "/api/v2/webmail/emails/move/": {
             "post": {
                 "operationId": "webmail_emails_move_create",
+                "description": "Close the IMAP connection of the request once it is over.\n\nEvery operation of a request shares one connection (see\n``get_imapconnector``); it is closed here, even if the view raised.",
                 "tags": [
                     "webmail"
                 ],
@@ -8857,6 +9528,7 @@
         "/api/v2/webmail/emails/source/": {
             "get": {
                 "operationId": "webmail_emails_source_retrieve",
+                "description": "Close the IMAP connection of the request once it is over.\n\nEvery operation of a request shares one connection (see\n``get_imapconnector``); it is closed here, even if the view raised.",
                 "tags": [
                     "webmail"
                 ],
@@ -8879,9 +9551,62 @@
                 }
             }
         },
+        "/api/v2/webmail/emails/thread/": {
+            "get": {
+                "operationId": "webmail_emails_thread_retrieve",
+                "description": "Return the messages of the conversation holding a message.",
+                "tags": [
+                    "webmail"
+                ],
+                "security": [
+                    {
+                        "tokenAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Thread"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/v2/webmail/emails/threads/": {
+            "get": {
+                "operationId": "webmail_emails_threads_retrieve",
+                "description": "List the conversations of a mailbox, page by page.\n\nThe pagination applies to the threads, not to the messages: a\npage holds ``messages_per_page`` conversations.",
+                "tags": [
+                    "webmail"
+                ],
+                "security": [
+                    {
+                        "tokenAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/PaginatedThreadList"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
         "/api/v2/webmail/mailboxes/": {
             "get": {
                 "operationId": "webmail_mailboxes_list",
+                "description": "Close the IMAP connection of the request once it is over.\n\nEvery operation of a request shares one connection (see\n``get_imapconnector``); it is closed here, even if the view raised.",
                 "tags": [
                     "webmail"
                 ],
@@ -8908,6 +9633,7 @@
             },
             "post": {
                 "operationId": "webmail_mailboxes_create",
+                "description": "Close the IMAP connection of the request once it is over.\n\nEvery operation of a request shares one connection (see\n``get_imapconnector``); it is closed here, even if the view raised.",
                 "tags": [
                     "webmail"
                 ],
@@ -8953,6 +9679,7 @@
         "/api/v2/webmail/mailboxes/compress/": {
             "post": {
                 "operationId": "webmail_mailboxes_compress_create",
+                "description": "Close the IMAP connection of the request once it is over.\n\nEvery operation of a request shares one connection (see\n``get_imapconnector``); it is closed here, even if the view raised.",
                 "tags": [
                     "webmail"
                 ],
@@ -8998,6 +9725,7 @@
         "/api/v2/webmail/mailboxes/delete/": {
             "post": {
                 "operationId": "webmail_mailboxes_delete_create",
+                "description": "Close the IMAP connection of the request once it is over.\n\nEvery operation of a request shares one connection (see\n``get_imapconnector``); it is closed here, even if the view raised.",
                 "tags": [
                     "webmail"
                 ],
@@ -9043,6 +9771,7 @@
         "/api/v2/webmail/mailboxes/empty/": {
             "post": {
                 "operationId": "webmail_mailboxes_empty_create",
+                "description": "Close the IMAP connection of the request once it is over.\n\nEvery operation of a request shares one connection (see\n``get_imapconnector``); it is closed here, even if the view raised.",
                 "tags": [
                     "webmail"
                 ],
@@ -9088,6 +9817,7 @@
         "/api/v2/webmail/mailboxes/quota/": {
             "get": {
                 "operationId": "webmail_mailboxes_quota_retrieve",
+                "description": "Close the IMAP connection of the request once it is over.\n\nEvery operation of a request shares one connection (see\n``get_imapconnector``); it is closed here, even if the view raised.",
                 "tags": [
                     "webmail"
                 ],
@@ -9113,6 +9843,7 @@
         "/api/v2/webmail/mailboxes/rename/": {
             "post": {
                 "operationId": "webmail_mailboxes_rename_create",
+                "description": "Close the IMAP connection of the request once it is over.\n\nEvery operation of a request shares one connection (see\n``get_imapconnector``); it is closed here, even if the view raised.",
                 "tags": [
                     "webmail"
                 ],
@@ -9155,6 +9886,102 @@
                 }
             }
         },
+        "/api/v2/webmail/mailboxes/status/": {
+            "get": {
+                "operationId": "webmail_mailboxes_status_retrieve",
+                "description": "Tell whether the content of a mailbox changed, cheaply.\n\nMeant to be polled: the listing is only requested again when the\nstate differs from the one it came with.",
+                "tags": [
+                    "webmail"
+                ],
+                "security": [
+                    {
+                        "tokenAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UserMailboxStatus"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/v2/webmail/mailboxes/subscriptions/": {
+            "get": {
+                "operationId": "webmail_mailboxes_subscriptions_retrieve",
+                "description": "List or update IMAP folder subscriptions for the current user.",
+                "tags": [
+                    "webmail"
+                ],
+                "security": [
+                    {
+                        "tokenAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Subscriptions"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "post": {
+                "operationId": "webmail_mailboxes_subscriptions_create",
+                "description": "List or update IMAP folder subscriptions for the current user.",
+                "tags": [
+                    "webmail"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SubscriptionUpdate"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SubscriptionUpdate"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SubscriptionUpdate"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "tokenAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SubscriptionUpdate"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
         "/api/v2/webmail/mailboxes/unseen/": {
             "get": {
                 "operationId": "webmail_mailboxes_unseen_retrieve",
@@ -9184,6 +10011,7 @@
         "/api/v2/webmail/scheduled-messages/{id}/": {
             "get": {
                 "operationId": "webmail_scheduled_messages_retrieve",
+                "description": "Close the IMAP connection of the request once it is over.\n\nEvery operation of a request shares one connection (see\n``get_imapconnector``); it is closed here, even if the view raised.",
                 "parameters": [
                     {
                         "in": "path",
@@ -9217,6 +10045,7 @@
             },
             "put": {
                 "operationId": "webmail_scheduled_messages_update",
+                "description": "Close the IMAP connection of the request once it is over.\n\nEvery operation of a request shares one connection (see\n``get_imapconnector``); it is closed here, even if the view raised.",
                 "parameters": [
                     {
                         "in": "path",
@@ -9270,6 +10099,7 @@
             },
             "patch": {
                 "operationId": "webmail_scheduled_messages_partial_update",
+                "description": "Close the IMAP connection of the request once it is over.\n\nEvery operation of a request shares one connection (see\n``get_imapconnector``); it is closed here, even if the view raised.",
                 "parameters": [
                     {
                         "in": "path",
@@ -9322,6 +10152,7 @@
             },
             "delete": {
                 "operationId": "webmail_scheduled_messages_destroy",
+                "description": "Close the IMAP connection of the request once it is over.\n\nEvery operation of a request shares one connection (see\n``get_imapconnector``); it is closed here, even if the view raised.",
                 "parameters": [
                     {
                         "in": "path",
@@ -9404,7 +10235,8 @@
                         "$ref": "#/components/schemas/Mailbox"
                     },
                     "calendar": {
-                        "type": "integer"
+                        "type": "integer",
+                        "readOnly": true
                     },
                     "read": {
                         "type": "boolean"
@@ -9465,11 +10297,19 @@
                         "maxLength": 128
                     },
                     "secondary_email": {
-                        "type": "string",
-                        "format": "email",
                         "nullable": true,
                         "description": "An alternative e-mail address, can be used for recovery needs.",
-                        "maxLength": 254
+                        "oneOf": [
+                            {
+                                "type": "string",
+                                "format": "email",
+                                "maxLength": 254
+                            },
+                            {
+                                "type": "string",
+                                "maxLength": 0
+                            }
+                        ]
                     },
                     "domains": {
                         "type": "array",
@@ -9557,6 +10397,25 @@
                     "subject"
                 ]
             },
+            "AccountBulkDelete": {
+                "type": "object",
+                "description": "Serializer used with bulk delete operation.",
+                "properties": {
+                    "ids": {
+                        "type": "array",
+                        "items": {
+                            "type": "integer"
+                        }
+                    },
+                    "keepdir": {
+                        "type": "boolean",
+                        "default": false
+                    }
+                },
+                "required": [
+                    "ids"
+                ]
+            },
             "AccountMe": {
                 "type": "object",
                 "description": "Custom Account serializer for connected user.",
@@ -9608,11 +10467,19 @@
                         "maxLength": 128
                     },
                     "secondary_email": {
-                        "type": "string",
-                        "format": "email",
                         "nullable": true,
                         "description": "An alternative e-mail address, can be used for recovery needs.",
-                        "maxLength": 254
+                        "oneOf": [
+                            {
+                                "type": "string",
+                                "format": "email",
+                                "maxLength": 254
+                            },
+                            {
+                                "type": "string",
+                                "maxLength": 0
+                            }
+                        ]
                     },
                     "domains": {
                         "type": "array",
@@ -9685,11 +10552,19 @@
                         "maxLength": 128
                     },
                     "secondary_email": {
-                        "type": "string",
-                        "format": "email",
                         "nullable": true,
                         "description": "An alternative e-mail address, can be used for recovery needs.",
-                        "maxLength": 254
+                        "oneOf": [
+                            {
+                                "type": "string",
+                                "format": "email",
+                                "maxLength": 254
+                            },
+                            {
+                                "type": "string",
+                                "maxLength": 0
+                            }
+                        ]
                     }
                 }
             },
@@ -9821,6 +10696,22 @@
                         "type": "integer",
                         "readOnly": true
                     },
+                    "domain": {
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/AlarmDomain"
+                            }
+                        ],
+                        "readOnly": true
+                    },
+                    "mailbox": {
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/AlarmMailbox"
+                            }
+                        ],
+                        "readOnly": true
+                    },
                     "created": {
                         "type": "string",
                         "format": "date-time"
@@ -9836,8 +10727,8 @@
                                 "$ref": "#/components/schemas/AlarmStatusEnum"
                             }
                         ],
-                        "minimum": -2147483648,
-                        "maximum": 2147483647
+                        "minimum": -9223372036854775808,
+                        "maximum": 9223372036854775807
                     },
                     "title": {
                         "type": "string"
@@ -9845,22 +10736,6 @@
                     "internal_name": {
                         "type": "string",
                         "maxLength": 120
-                    },
-                    "domain": {
-                        "allOf": [
-                            {
-                                "$ref": "#/components/schemas/Nested"
-                            }
-                        ],
-                        "readOnly": true
-                    },
-                    "mailbox": {
-                        "allOf": [
-                            {
-                                "$ref": "#/components/schemas/Nested"
-                            }
-                        ],
-                        "readOnly": true
                     }
                 },
                 "required": [
@@ -9883,6 +10758,46 @@
                 },
                 "required": [
                     "ids"
+                ]
+            },
+            "AlarmDomain": {
+                "type": "object",
+                "description": "Minimal domain representation exposed through alarms.",
+                "properties": {
+                    "pk": {
+                        "type": "integer",
+                        "readOnly": true,
+                        "title": "ID"
+                    },
+                    "name": {
+                        "type": "string",
+                        "description": "The domain name",
+                        "maxLength": 253
+                    }
+                },
+                "required": [
+                    "name",
+                    "pk"
+                ]
+            },
+            "AlarmMailbox": {
+                "type": "object",
+                "description": "Minimal mailbox representation exposed through alarms.",
+                "properties": {
+                    "pk": {
+                        "type": "integer",
+                        "readOnly": true,
+                        "title": "ID"
+                    },
+                    "address": {
+                        "type": "string",
+                        "description": "Mailbox address (without the @domain.tld part)",
+                        "maxLength": 252
+                    }
+                },
+                "required": [
+                    "address",
+                    "pk"
                 ]
             },
             "AlarmStatusEnum": {
@@ -10004,6 +10919,27 @@
                     "name"
                 ]
             },
+            "Attachment": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "partnum": {
+                        "type": "string"
+                    },
+                    "size": {
+                        "type": "integer"
+                    },
+                    "content_type": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "name",
+                    "partnum"
+                ]
+            },
             "Attendee": {
                 "type": "object",
                 "description": "Attendee serializer.",
@@ -10020,6 +10956,27 @@
                     "display_name",
                     "email"
                 ]
+            },
+            "BlankEnum": {
+                "enum": [
+                    ""
+                ]
+            },
+            "BodyFormatEnum": {
+                "enum": [
+                    "plain",
+                    "html"
+                ],
+                "type": "string",
+                "description": "* `plain` - text\n* `html` - html"
+            },
+            "BypassBannedChecksEnum": {
+                "enum": [
+                    "N",
+                    "Y"
+                ],
+                "type": "string",
+                "description": "* `N` - yes\n* `Y` - no\n* `` - default"
             },
             "CSVIdentityImport": {
                 "type": "object",
@@ -10086,6 +11043,15 @@
                     "pk"
                 ]
             },
+            "CategoryEnum": {
+                "enum": [
+                    "admin",
+                    "user",
+                    "account"
+                ],
+                "type": "string",
+                "description": "* `admin` - admin\n* `user` - user\n* `account` - account"
+            },
             "CheckPassword": {
                 "type": "object",
                 "description": "Simple serializer to check user password.",
@@ -10124,6 +11090,49 @@
                 "required": [
                     "calendar",
                     "token"
+                ]
+            },
+            "CompactMessage": {
+                "type": "object",
+                "properties": {
+                    "mailid": {
+                        "type": "string"
+                    },
+                    "type": {
+                        "type": "string"
+                    },
+                    "status": {
+                        "type": "string"
+                    },
+                    "score": {
+                        "type": "string"
+                    },
+                    "to_address": {
+                        "type": "string"
+                    },
+                    "from_address": {
+                        "type": "string"
+                    },
+                    "subject": {
+                        "type": "string"
+                    },
+                    "datetime": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "style": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "datetime",
+                    "from_address",
+                    "mailid",
+                    "score",
+                    "status",
+                    "subject",
+                    "to_address",
+                    "type"
                 ]
             },
             "ComposeSession": {
@@ -10302,6 +11311,13 @@
                 "properties": {
                     "from_draft_message": {
                         "type": "integer"
+                    },
+                    "forward_mailbox": {
+                        "type": "string"
+                    },
+                    "forward_mailid": {
+                        "type": "integer",
+                        "minimum": 1
                     }
                 }
             },
@@ -10513,7 +11529,7 @@
                         "nullable": true,
                         "title": "Key length",
                         "minimum": 0,
-                        "maximum": 2147483647,
+                        "maximum": 9223372036854775807,
                         "oneOf": [
                             {
                                 "$ref": "#/components/schemas/DkimKeyLengthEnum"
@@ -10529,7 +11545,7 @@
                     },
                     "dkim_private_key_path": {
                         "type": "string",
-                        "maxLength": 254
+                        "readOnly": true
                     },
                     "mailbox_count": {
                         "type": "integer",
@@ -10550,8 +11566,9 @@
                     },
                     "message_limit": {
                         "type": "integer",
-                        "maximum": 2147483647,
+                        "maximum": 9223372036854775807,
                         "minimum": 0,
+                        "format": "int64",
                         "nullable": true,
                         "title": "Message sending limit",
                         "description": "Number of messages this domain can send per day"
@@ -10572,7 +11589,6 @@
                     },
                     "enable_dns_checks": {
                         "type": "boolean",
-                        "readOnly": true,
                         "description": "Check to enable DNS checks for this domain"
                     },
                     "domain_admin": {
@@ -10610,10 +11626,10 @@
                 "required": [
                     "allocated_quota_in_percent",
                     "creation",
+                    "dkim_private_key_path",
                     "dkim_public_key",
                     "dns_global_status",
                     "domainalias_count",
-                    "enable_dns_checks",
                     "last_modification",
                     "mailbox_count",
                     "mbalias_count",
@@ -10679,6 +11695,25 @@
                     "target"
                 ]
             },
+            "DomainBulkDelete": {
+                "type": "object",
+                "description": "Serializer used with bulk delete operation.",
+                "properties": {
+                    "ids": {
+                        "type": "array",
+                        "items": {
+                            "type": "integer"
+                        }
+                    },
+                    "keep_folder": {
+                        "type": "boolean",
+                        "default": false
+                    }
+                },
+                "required": [
+                    "ids"
+                ]
+            },
             "Email": {
                 "type": "object",
                 "properties": {
@@ -10700,21 +11735,48 @@
                             "$ref": "#/components/schemas/EmailAddress"
                         }
                     },
+                    "bcc": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/EmailAddress"
+                        }
+                    },
                     "body": {
+                        "type": "string"
+                    },
+                    "body_format": {
                         "type": "string"
                     },
                     "date": {
                         "type": "string"
                     },
+                    "date_full": {
+                        "type": "string"
+                    },
                     "message_id": {
                         "type": "string"
                     },
+                    "in_reply_to": {
+                        "type": "string"
+                    },
+                    "references": {
+                        "type": "string"
+                    },
                     "reply_to": {
-                        "type": "string",
-                        "format": "email"
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/EmailAddress"
+                        }
                     },
                     "attachments": {
-                        "type": "string",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Attachment"
+                        },
+                        "readOnly": true
+                    },
+                    "remote_content_blocked": {
+                        "type": "boolean",
                         "readOnly": true
                     },
                     "scheduled_datetime": {
@@ -10727,6 +11789,7 @@
                     "body",
                     "date",
                     "from_address",
+                    "remote_content_blocked",
                     "subject",
                     "to"
                 ]
@@ -10746,7 +11809,7 @@
                         "maxLength": 254
                     },
                     "type": {
-                        "$ref": "#/components/schemas/Type9e9Enum"
+                        "$ref": "#/components/schemas/TypeE1dEnum"
                     }
                 },
                 "required": [
@@ -10770,7 +11833,7 @@
                         "maxLength": 254
                     },
                     "type": {
-                        "$ref": "#/components/schemas/Type9e9Enum"
+                        "$ref": "#/components/schemas/TypeE1dEnum"
                     },
                     "display_name": {
                         "type": "string",
@@ -10825,6 +11888,12 @@
                         "type": "boolean",
                         "default": false
                     },
+                    "attachment_list": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Attachment"
+                        }
+                    },
                     "style": {
                         "type": "string"
                     },
@@ -10873,8 +11942,9 @@
                     },
                     "port": {
                         "type": "integer",
-                        "maximum": 2147483647,
-                        "minimum": 0
+                        "maximum": 9223372036854775807,
+                        "minimum": 0,
+                        "format": "int64"
                     },
                     "secured": {
                         "type": "boolean"
@@ -11032,6 +12102,228 @@
                 "type": "string",
                 "description": "* `read` - Read\n* `unread` - Unread\n* `flagged` - Flagged\n* `unflagged` - Unflagged"
             },
+            "FormatEnum": {
+                "enum": [
+                    "esm",
+                    "systemjs",
+                    "var"
+                ],
+                "type": "string",
+                "description": "* `esm` - esm\n* `systemjs` - systemjs\n* `var` - var"
+            },
+            "FrontendMenuEntry": {
+                "type": "object",
+                "description": "Serializer used to describe a menu entry exposed by a plugin.",
+                "properties": {
+                    "label": {
+                        "type": "string"
+                    },
+                    "icon": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "to": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "url": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "roles": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "category": {
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/CategoryEnum"
+                            }
+                        ],
+                        "default": "admin"
+                    },
+                    "children": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "additionalProperties": {}
+                        }
+                    }
+                },
+                "required": [
+                    "label"
+                ]
+            },
+            "FrontendPluginManifest": {
+                "type": "object",
+                "description": "Serializer used to expose a plugin manifest to the frontend.",
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "label": {
+                        "type": "string"
+                    },
+                    "remote": {
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/FrontendRemote"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "menu_entries": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/FrontendMenuEntry"
+                        }
+                    },
+                    "routes": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/FrontendRoute"
+                        }
+                    },
+                    "ui_extensions": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/components/schemas/FrontendUIExtension"
+                            }
+                        }
+                    }
+                },
+                "required": [
+                    "label",
+                    "name"
+                ]
+            },
+            "FrontendRemote": {
+                "type": "object",
+                "description": "Serializer describing a Module Federation remote exposed by a plugin.",
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "url": {
+                        "type": "string"
+                    },
+                    "format": {
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/FormatEnum"
+                            }
+                        ],
+                        "default": "esm"
+                    }
+                },
+                "required": [
+                    "name",
+                    "url"
+                ]
+            },
+            "FrontendRoute": {
+                "type": "object",
+                "description": "Serializer used to describe a frontend route exposed by a plugin.",
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "path": {
+                        "type": "string"
+                    },
+                    "component": {
+                        "type": "string"
+                    },
+                    "parent": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "meta": {
+                        "type": "object",
+                        "additionalProperties": {}
+                    },
+                    "props": {
+                        "type": "object",
+                        "additionalProperties": {}
+                    },
+                    "children": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "additionalProperties": {}
+                        }
+                    }
+                },
+                "required": [
+                    "component",
+                    "name",
+                    "path"
+                ]
+            },
+            "FrontendUIExtension": {
+                "type": "object",
+                "description": "Generic serializer for a UI extension descriptor.\n\nPlugin-specific shapes are validated against this loose schema; any\nextra keys declared by a plugin are passed through unchanged so that\nextension points can interpret them as needed on the frontend.",
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "title": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "component": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "position": {
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/FrontendUIExtensionPosition"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "applies_to": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "props": {
+                        "type": "object",
+                        "additionalProperties": {}
+                    },
+                    "summary": {
+                        "type": "object",
+                        "additionalProperties": {}
+                    }
+                },
+                "required": [
+                    "name"
+                ]
+            },
+            "FrontendUIExtensionPosition": {
+                "type": "object",
+                "description": "Serializer describing where a UI extension item should be inserted.",
+                "properties": {
+                    "after": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "before": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "at": {
+                        "type": "integer",
+                        "nullable": true
+                    }
+                }
+            },
             "GetAccountCredentials": {
                 "type": "object",
                 "description": "A serializer for get account credential view.",
@@ -11042,6 +12334,21 @@
                 },
                 "required": [
                     "account_id"
+                ]
+            },
+            "Header": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "value": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "name",
+                    "value"
                 ]
             },
             "Identity": {
@@ -11136,6 +12443,15 @@
                     "message"
                 ]
             },
+            "LogoTypeEnum": {
+                "enum": [
+                    "login",
+                    "menu",
+                    "creation_form"
+                ],
+                "type": "string",
+                "description": "* `login` - login\n* `menu` - menu\n* `creation_form` - creation_form"
+            },
             "MXRecord": {
                 "type": "object",
                 "description": "Serializer for MXRecord.",
@@ -11167,19 +12483,51 @@
             },
             "Mailbox": {
                 "type": "object",
-                "description": "Mailbox serializer.",
+                "description": "Base mailbox serializer.",
                 "properties": {
                     "pk": {
-                        "type": "integer"
+                        "type": "integer",
+                        "readOnly": true,
+                        "title": "ID"
                     },
                     "full_address": {
                         "type": "string",
                         "format": "email"
+                    },
+                    "use_domain_quota": {
+                        "type": "boolean"
+                    },
+                    "quota": {
+                        "type": "string"
+                    },
+                    "message_limit": {
+                        "type": "integer",
+                        "maximum": 9223372036854775807,
+                        "minimum": 0,
+                        "format": "int64",
+                        "nullable": true,
+                        "title": "Message sending limit",
+                        "description": "Number of messages this mailbox can send per day"
+                    },
+                    "quota_usage": {
+                        "type": "integer",
+                        "readOnly": true
+                    },
+                    "is_send_only": {
+                        "type": "boolean"
+                    },
+                    "sent_messages_in_percent": {
+                        "type": "integer",
+                        "nullable": true,
+                        "description": "Return number of sent messages as a percentage.",
+                        "readOnly": true
                     }
                 },
                 "required": [
                     "full_address",
-                    "pk"
+                    "pk",
+                    "quota_usage",
+                    "sent_messages_in_percent"
                 ]
             },
             "Maillog": {
@@ -11216,8 +12564,9 @@
                     },
                     "size": {
                         "type": "integer",
-                        "maximum": 2147483647,
-                        "minimum": 0
+                        "maximum": 9223372036854775807,
+                        "minimum": 0,
+                        "format": "int64"
                     },
                     "status": {
                         "type": "string",
@@ -11234,6 +12583,27 @@
                     "status"
                 ]
             },
+            "MarkMessageSelection": {
+                "type": "object",
+                "properties": {
+                    "selection": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/MessageIdentifier"
+                        }
+                    },
+                    "type": {
+                        "type": "string"
+                    },
+                    "database": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "selection",
+                    "type"
+                ]
+            },
             "MatchTypeEnum": {
                 "enum": [
                     "allof",
@@ -11242,6 +12612,78 @@
                 ],
                 "type": "string",
                 "description": "* `allof` - All of the following\n* `anyof` - Any of the following\n* `all` - All messages"
+            },
+            "Message": {
+                "type": "object",
+                "properties": {
+                    "qtype": {
+                        "type": "string"
+                    },
+                    "qreason": {
+                        "type": "string"
+                    },
+                    "headers": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Header"
+                        }
+                    },
+                    "body": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "body",
+                    "headers",
+                    "qreason",
+                    "qtype"
+                ]
+            },
+            "MessageHeaders": {
+                "type": "object",
+                "properties": {
+                    "headers": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Header"
+                        }
+                    }
+                },
+                "required": [
+                    "headers"
+                ]
+            },
+            "MessageIdentifier": {
+                "type": "object",
+                "properties": {
+                    "mailid": {
+                        "type": "string"
+                    },
+                    "rcpt": {
+                        "type": "string"
+                    },
+                    "secret_id": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "mailid",
+                    "rcpt"
+                ]
+            },
+            "MessageSelection": {
+                "type": "object",
+                "properties": {
+                    "selection": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/MessageIdentifier"
+                        }
+                    }
+                },
+                "required": [
+                    "selection"
+                ]
             },
             "Migration": {
                 "type": "object",
@@ -11363,93 +12805,27 @@
                         "type": "integer",
                         "readOnly": true
                     },
-                    "creation": {
-                        "type": "string",
-                        "format": "date-time"
-                    },
-                    "last_modification": {
-                        "type": "string",
-                        "format": "date-time",
-                        "readOnly": true
-                    },
                     "name": {
                         "type": "string",
-                        "description": "The domain name",
-                        "maxLength": 253
+                        "maxLength": 50
                     },
-                    "quota": {
-                        "type": "integer",
-                        "maximum": 2147483647,
-                        "minimum": 0
+                    "address": {
+                        "type": "string",
+                        "maxLength": 200
                     },
-                    "default_mailbox_quota": {
+                    "port": {
                         "type": "integer",
-                        "maximum": 2147483647,
-                        "minimum": 0
-                    },
-                    "message_limit": {
-                        "type": "integer",
-                        "maximum": 2147483647,
+                        "maximum": 9223372036854775807,
                         "minimum": 0,
-                        "nullable": true,
-                        "title": "Message sending limit",
-                        "description": "Number of messages this domain can send per day"
+                        "format": "int64"
                     },
-                    "enabled": {
-                        "type": "boolean",
-                        "description": "Check to activate this domain"
-                    },
-                    "type": {
-                        "type": "string",
-                        "maxLength": 20
-                    },
-                    "enable_dns_checks": {
-                        "type": "boolean",
-                        "description": "Check to enable DNS checks for this domain"
-                    },
-                    "last_dns_check_execution": {
-                        "type": "string",
-                        "format": "date-time",
-                        "nullable": true
-                    },
-                    "enable_dkim": {
-                        "type": "boolean",
-                        "title": "Enable DKIM signing",
-                        "description": "If you activate this feature, a DKIM key will be generated for this domain."
-                    },
-                    "dkim_key_selector": {
-                        "type": "string",
-                        "maxLength": 30
-                    },
-                    "dkim_key_length": {
-                        "nullable": true,
-                        "title": "Key length",
-                        "minimum": 0,
-                        "maximum": 2147483647,
-                        "oneOf": [
-                            {
-                                "$ref": "#/components/schemas/DkimKeyLengthEnum"
-                            },
-                            {
-                                "$ref": "#/components/schemas/NullEnum"
-                            }
-                        ]
-                    },
-                    "dkim_public_key": {
-                        "type": "string"
-                    },
-                    "dkim_private_key_path": {
-                        "type": "string",
-                        "maxLength": 254
-                    },
-                    "transport": {
-                        "type": "integer",
-                        "nullable": true
+                    "secured": {
+                        "type": "boolean"
                     }
                 },
                 "required": [
+                    "address",
                     "id",
-                    "last_modification",
                     "name"
                 ]
             },
@@ -11526,6 +12902,14 @@
                     "name",
                     "type"
                 ]
+            },
+            "OriginalActionEnum": {
+                "enum": [
+                    "reply",
+                    "forward"
+                ],
+                "type": "string",
+                "description": "* `reply` - reply\n* `forward` - forward"
             },
             "PaginatedAccountList": {
                 "type": "object",
@@ -11700,6 +13084,14 @@
                     "next_page": {
                         "type": "integer"
                     },
+                    "state": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "unseen": {
+                        "type": "integer",
+                        "nullable": true
+                    },
                     "results": {
                         "type": "array",
                         "items": {
@@ -11713,7 +13105,9 @@
                     "last_index",
                     "next_page",
                     "prev_page",
-                    "results"
+                    "results",
+                    "state",
+                    "unseen"
                 ]
             },
             "PaginatedLogList": {
@@ -11777,6 +13171,88 @@
                         }
                     }
                 }
+            },
+            "PaginatedMessageList": {
+                "type": "object",
+                "properties": {
+                    "count": {
+                        "type": "integer"
+                    },
+                    "first_index": {
+                        "type": "integer"
+                    },
+                    "last_index": {
+                        "type": "integer"
+                    },
+                    "prev_page": {
+                        "type": "integer"
+                    },
+                    "next_page": {
+                        "type": "integer"
+                    },
+                    "results": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/CompactMessage"
+                        }
+                    }
+                },
+                "required": [
+                    "count",
+                    "first_index",
+                    "last_index",
+                    "next_page",
+                    "prev_page",
+                    "results"
+                ]
+            },
+            "PaginatedThreadList": {
+                "type": "object",
+                "properties": {
+                    "count": {
+                        "type": "integer"
+                    },
+                    "first_index": {
+                        "type": "integer"
+                    },
+                    "last_index": {
+                        "type": "integer"
+                    },
+                    "prev_page": {
+                        "type": "integer"
+                    },
+                    "next_page": {
+                        "type": "integer"
+                    },
+                    "threading_supported": {
+                        "type": "boolean"
+                    },
+                    "state": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "unseen": {
+                        "type": "integer",
+                        "nullable": true
+                    },
+                    "results": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ThreadSummary"
+                        }
+                    }
+                },
+                "required": [
+                    "count",
+                    "first_index",
+                    "last_index",
+                    "next_page",
+                    "prev_page",
+                    "results",
+                    "state",
+                    "threading_supported",
+                    "unseen"
+                ]
             },
             "Parameter": {
                 "type": "object",
@@ -11877,7 +13353,8 @@
                         "$ref": "#/components/schemas/Mailbox"
                     },
                     "calendar": {
-                        "type": "integer"
+                        "type": "integer",
+                        "readOnly": true
                     },
                     "read": {
                         "type": "boolean"
@@ -12074,7 +13551,7 @@
                         "nullable": true,
                         "title": "Key length",
                         "minimum": 0,
-                        "maximum": 2147483647,
+                        "maximum": 9223372036854775807,
                         "oneOf": [
                             {
                                 "$ref": "#/components/schemas/DkimKeyLengthEnum"
@@ -12090,7 +13567,7 @@
                     },
                     "dkim_private_key_path": {
                         "type": "string",
-                        "maxLength": 254
+                        "readOnly": true
                     },
                     "mailbox_count": {
                         "type": "integer",
@@ -12111,8 +13588,9 @@
                     },
                     "message_limit": {
                         "type": "integer",
-                        "maximum": 2147483647,
+                        "maximum": 9223372036854775807,
                         "minimum": 0,
+                        "format": "int64",
                         "nullable": true,
                         "title": "Message sending limit",
                         "description": "Number of messages this domain can send per day"
@@ -12133,7 +13611,6 @@
                     },
                     "enable_dns_checks": {
                         "type": "boolean",
-                        "readOnly": true,
                         "description": "Check to enable DNS checks for this domain"
                     },
                     "domain_admin": {
@@ -12217,8 +13694,9 @@
                     },
                     "port": {
                         "type": "integer",
-                        "maximum": 2147483647,
-                        "minimum": 0
+                        "maximum": 9223372036854775807,
+                        "minimum": 0,
+                        "format": "int64"
                     },
                     "secured": {
                         "type": "boolean"
@@ -12250,6 +13728,76 @@
                     "use_count": {
                         "type": "integer",
                         "readOnly": true
+                    }
+                }
+            },
+            "PatchedPolicy": {
+                "type": "object",
+                "properties": {
+                    "bypass_virus_checks": {
+                        "nullable": true,
+                        "title": "Virus filter",
+                        "description": "Bypass virus checks or not. Choose 'default' to use global settings.\n\n* `N` - yes\n* `Y` - no\n* `` - default",
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/BypassBannedChecksEnum"
+                            },
+                            {
+                                "$ref": "#/components/schemas/BlankEnum"
+                            },
+                            {
+                                "$ref": "#/components/schemas/NullEnum"
+                            }
+                        ]
+                    },
+                    "bypass_spam_checks": {
+                        "nullable": true,
+                        "title": "Spam filter",
+                        "description": "Bypass spam checks or not. Choose 'default' to use global settings.\n\n* `N` - yes\n* `Y` - no\n* `` - default",
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/BypassBannedChecksEnum"
+                            },
+                            {
+                                "$ref": "#/components/schemas/BlankEnum"
+                            },
+                            {
+                                "$ref": "#/components/schemas/NullEnum"
+                            }
+                        ]
+                    },
+                    "bypass_banned_checks": {
+                        "nullable": true,
+                        "title": "Banned filter",
+                        "description": "Bypass banned checks or not. Choose 'default' to use global settings.\n\n* `N` - yes\n* `Y` - no\n* `` - default",
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/BypassBannedChecksEnum"
+                            },
+                            {
+                                "$ref": "#/components/schemas/BlankEnum"
+                            },
+                            {
+                                "$ref": "#/components/schemas/NullEnum"
+                            }
+                        ]
+                    },
+                    "spam_tag2_level": {
+                        "type": "number",
+                        "format": "double",
+                        "nullable": true
+                    },
+                    "spam_kill_level": {
+                        "type": "number",
+                        "format": "double",
+                        "nullable": true
+                    },
+                    "spam_subject_tag2": {
+                        "type": "string",
+                        "nullable": true,
+                        "title": "Spam marker",
+                        "description": "Modify spam subject using the specified text. Choose 'default' to use global settings.",
+                        "maxLength": 192
                     }
                 }
             },
@@ -12363,6 +13911,7 @@
                     },
                     "name": {
                         "type": "string",
+                        "pattern": "^[^/\\\\\\r\\n\\u0000]+$",
                         "maxLength": 200
                     },
                     "color": {
@@ -12397,6 +13946,7 @@
                     },
                     "name": {
                         "type": "string",
+                        "pattern": "^[^/\\\\\\r\\n\\u0000]+$",
                         "maxLength": 200
                     },
                     "color": {
@@ -12461,11 +14011,19 @@
                         "maxLength": 128
                     },
                     "secondary_email": {
-                        "type": "string",
-                        "format": "email",
                         "nullable": true,
                         "description": "An alternative e-mail address, can be used for recovery needs.",
-                        "maxLength": 254
+                        "oneOf": [
+                            {
+                                "type": "string",
+                                "format": "email",
+                                "maxLength": 254
+                            },
+                            {
+                                "type": "string",
+                                "maxLength": 0
+                            }
+                        ]
                     },
                     "tfa_enabled": {
                         "type": "boolean",
@@ -12586,6 +14144,76 @@
                 ],
                 "type": "string",
                 "description": "* `home` - Home\n* `work` - Work\n* `other` - Other\n* `main` - Main\n* `cell` - Cellular\n* `fax` - Fax\n* `pager` - Pager"
+            },
+            "Policy": {
+                "type": "object",
+                "properties": {
+                    "bypass_virus_checks": {
+                        "nullable": true,
+                        "title": "Virus filter",
+                        "description": "Bypass virus checks or not. Choose 'default' to use global settings.\n\n* `N` - yes\n* `Y` - no\n* `` - default",
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/BypassBannedChecksEnum"
+                            },
+                            {
+                                "$ref": "#/components/schemas/BlankEnum"
+                            },
+                            {
+                                "$ref": "#/components/schemas/NullEnum"
+                            }
+                        ]
+                    },
+                    "bypass_spam_checks": {
+                        "nullable": true,
+                        "title": "Spam filter",
+                        "description": "Bypass spam checks or not. Choose 'default' to use global settings.\n\n* `N` - yes\n* `Y` - no\n* `` - default",
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/BypassBannedChecksEnum"
+                            },
+                            {
+                                "$ref": "#/components/schemas/BlankEnum"
+                            },
+                            {
+                                "$ref": "#/components/schemas/NullEnum"
+                            }
+                        ]
+                    },
+                    "bypass_banned_checks": {
+                        "nullable": true,
+                        "title": "Banned filter",
+                        "description": "Bypass banned checks or not. Choose 'default' to use global settings.\n\n* `N` - yes\n* `Y` - no\n* `` - default",
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/BypassBannedChecksEnum"
+                            },
+                            {
+                                "$ref": "#/components/schemas/BlankEnum"
+                            },
+                            {
+                                "$ref": "#/components/schemas/NullEnum"
+                            }
+                        ]
+                    },
+                    "spam_tag2_level": {
+                        "type": "number",
+                        "format": "double",
+                        "nullable": true
+                    },
+                    "spam_kill_level": {
+                        "type": "number",
+                        "format": "double",
+                        "nullable": true
+                    },
+                    "spam_subject_tag2": {
+                        "type": "string",
+                        "nullable": true,
+                        "title": "Spam marker",
+                        "description": "Modify spam subject using the specified text. Choose 'default' to use global settings.",
+                        "maxLength": 192
+                    }
+                }
             },
             "ROEvent": {
                 "type": "object",
@@ -12771,6 +14399,15 @@
                             "format": "email"
                         }
                     },
+                    "in_reply_to": {
+                        "type": "string"
+                    },
+                    "references": {
+                        "type": "string"
+                    },
+                    "body_format": {
+                        "$ref": "#/components/schemas/BodyFormatEnum"
+                    },
                     "mailid": {
                         "type": "integer"
                     }
@@ -12836,9 +14473,36 @@
                     "in_reply_to": {
                         "type": "string"
                     },
+                    "references": {
+                        "type": "string"
+                    },
+                    "body_format": {
+                        "$ref": "#/components/schemas/BodyFormatEnum"
+                    },
                     "scheduled_datetime": {
                         "type": "string",
                         "format": "date-time"
+                    },
+                    "request_dsn": {
+                        "type": "boolean",
+                        "default": false
+                    },
+                    "request_mdn": {
+                        "type": "boolean",
+                        "default": false
+                    },
+                    "mailid": {
+                        "type": "integer"
+                    },
+                    "original_mailbox": {
+                        "type": "string"
+                    },
+                    "original_mailid": {
+                        "type": "integer",
+                        "minimum": 1
+                    },
+                    "original_action": {
+                        "$ref": "#/components/schemas/OriginalActionEnum"
                     }
                 },
                 "required": [
@@ -12880,6 +14544,7 @@
                     },
                     "name": {
                         "type": "string",
+                        "pattern": "^[^/\\\\\\r\\n\\u0000]+$",
                         "maxLength": 200
                     },
                     "color": {
@@ -12965,6 +14630,77 @@
                     "domain_count"
                 ]
             },
+            "SubscriptionChange": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "subscribed": {
+                        "type": "boolean"
+                    }
+                },
+                "required": [
+                    "name",
+                    "subscribed"
+                ]
+            },
+            "SubscriptionNode": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "label": {
+                        "type": "string"
+                    },
+                    "subscribed": {
+                        "type": "boolean"
+                    },
+                    "sub": {
+                        "type": "string",
+                        "readOnly": true
+                    }
+                },
+                "required": [
+                    "label",
+                    "name",
+                    "sub",
+                    "subscribed"
+                ]
+            },
+            "SubscriptionUpdate": {
+                "type": "object",
+                "properties": {
+                    "changes": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/SubscriptionChange"
+                        }
+                    }
+                },
+                "required": [
+                    "changes"
+                ]
+            },
+            "Subscriptions": {
+                "type": "object",
+                "properties": {
+                    "mailboxes": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/SubscriptionNode"
+                        }
+                    },
+                    "hdelimiter": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "hdelimiter",
+                    "mailboxes"
+                ]
+            },
             "Tag": {
                 "type": "object",
                 "description": "Serializer used to represent a tag.",
@@ -13022,8 +14758,106 @@
                     "theme_label_color": {
                         "type": "string",
                         "default": "#616161"
+                    },
+                    "theme_login_logo_url": {
+                        "type": "string",
+                        "default": ""
+                    },
+                    "theme_menu_logo_url": {
+                        "type": "string",
+                        "default": ""
+                    },
+                    "theme_creation_form_logo_url": {
+                        "type": "string",
+                        "default": ""
                     }
                 }
+            },
+            "ThemeLogoUpload": {
+                "type": "object",
+                "properties": {
+                    "logo_type": {
+                        "$ref": "#/components/schemas/LogoTypeEnum"
+                    },
+                    "image": {
+                        "type": "string",
+                        "format": "uri"
+                    }
+                },
+                "required": [
+                    "image",
+                    "logo_type"
+                ]
+            },
+            "Thread": {
+                "type": "object",
+                "description": "The messages of a single conversation.",
+                "properties": {
+                    "threading_supported": {
+                        "type": "boolean"
+                    },
+                    "results": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/EmailHeaders"
+                        }
+                    }
+                },
+                "required": [
+                    "results",
+                    "threading_supported"
+                ]
+            },
+            "ThreadSummary": {
+                "type": "object",
+                "description": "A conversation, as displayed in the messages list.",
+                "properties": {
+                    "root": {
+                        "type": "string"
+                    },
+                    "latest": {
+                        "$ref": "#/components/schemas/EmailHeaders"
+                    },
+                    "subject": {
+                        "type": "string",
+                        "readOnly": true
+                    },
+                    "count": {
+                        "type": "integer"
+                    },
+                    "unseen_count": {
+                        "type": "integer"
+                    },
+                    "flagged": {
+                        "type": "boolean",
+                        "default": false
+                    },
+                    "attachments": {
+                        "type": "boolean",
+                        "default": false
+                    },
+                    "participants": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/EmailAddress"
+                        }
+                    },
+                    "uids": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "required": [
+                    "count",
+                    "latest",
+                    "participants",
+                    "root",
+                    "subject",
+                    "uids",
+                    "unseen_count"
+                ]
             },
             "Transport": {
                 "type": "object",
@@ -13089,7 +14923,7 @@
                     "name"
                 ]
             },
-            "Type9e9Enum": {
+            "TypeE1dEnum": {
                 "enum": [
                     "home",
                     "work",
@@ -13136,6 +14970,7 @@
                     },
                     "name": {
                         "type": "string",
+                        "pattern": "^[^/\\\\\\r\\n\\u0000]+$",
                         "maxLength": 200
                     },
                     "color": {
@@ -13229,6 +15064,21 @@
                     "current",
                     "limit",
                     "usage"
+                ]
+            },
+            "UserMailboxStatus": {
+                "type": "object",
+                "properties": {
+                    "state": {
+                        "type": "string"
+                    },
+                    "unseen": {
+                        "type": "integer"
+                    }
+                },
+                "required": [
+                    "state",
+                    "unseen"
                 ]
             },
             "UserMailboxTypeEnum": {
@@ -13335,11 +15185,19 @@
                         "maxLength": 128
                     },
                     "secondary_email": {
-                        "type": "string",
-                        "format": "email",
                         "nullable": true,
                         "description": "An alternative e-mail address, can be used for recovery needs.",
-                        "maxLength": 254
+                        "oneOf": [
+                            {
+                                "type": "string",
+                                "format": "email",
+                                "maxLength": 254
+                            },
+                            {
+                                "type": "string",
+                                "maxLength": 0
+                            }
+                        ]
                     },
                     "tfa_enabled": {
                         "type": "boolean",
