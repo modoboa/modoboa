@@ -685,6 +685,14 @@ class EventViewSetTestCase(TestDataMixin, ModoAPITestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.json()), 2)
 
+    def test_caldav_client_uses_preemptive_auth(self):
+        """Credentials must be sent with the first request (no 401 round trip)."""
+        url = f"/api/v2/user-calendars/{self.calendar.pk}/events/"
+        url = "{}?start={}&end={}".format(url, "20060712T182145Z", "20070712T182145Z")
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(self.client_mock.call_args.kwargs["auth_type"], "basic")
+
     def test_get_user_events_wrong_calendar(self):
         url = f"/api/v2/user-calendars/{self.calendar2.pk}/events/"
         url = "{}?start={}&end={}".format(url, "20060712T182145Z", "20070712T182145Z")
