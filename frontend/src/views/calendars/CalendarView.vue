@@ -124,6 +124,7 @@
       />
     </v-dialog>
     <ConfirmDialog ref="confirm" />
+    <RecurrenceScopeDialog ref="scopeDialog" />
   </div>
 </template>
 
@@ -140,6 +141,7 @@ import CalendarDetail from '@/components/calendars/CalendarDetail'
 import ConfirmDialog from '@/components/tools/ConfirmDialog'
 import EventForm from '@/components/calendars/EventForm'
 import ImportEventsForm from '@/components/calendars/ImportEventsForm'
+import RecurrenceScopeDialog from '@/components/calendars/RecurrenceScopeDialog'
 
 const { $gettext, current } = useGettext()
 const layoutStore = useLayoutStore()
@@ -147,6 +149,7 @@ const busStore = useBusStore()
 
 const calendarRef = ref()
 const confirm = ref()
+const scopeDialog = ref()
 const events = ref([])
 const selectInfo = ref()
 const selectedCalendar = ref(null)
@@ -338,15 +341,28 @@ async function updateEventDates(calEvent) {
     data.end_date = data.end.toISOString().split('T')[0]
     data.allDay = calEvent.allDay
   } else if (!calEvent.end) {
-    const end = DateTime.fromJSDate(data.start)
-    end.plus({ hours: 1 })
-    data.end = end
+    data.end = DateTime.fromJSDate(data.start).plus({ hours: 1 }).toJSDate()
+  }
+  if (calEvent.recurrence_id) {
+    const scope = await scopeDialog.value.open($gettext('Edit event'))
+    if (!scope) {
+      // Put the occurrence back where it was
+      updating.value = false
+      refreshCalendarEvents()
+      return
+    }
+    data.recurrence_id = calEvent.recurrence_id
+    data.scope = scope
   }
   try {
     await api.patchUserEvent(evtCalendar.pk, calEvent.id, data)
     busStore.displayNotification({ msg: $gettext('Event updated') })
   } finally {
     updating.value = false
+  }
+  if (calEvent.recurrence_id) {
+    // Other occurrences may have changed too
+    refreshCalendarEvents()
   }
 }
 

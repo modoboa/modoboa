@@ -4,6 +4,8 @@ import os
 import tempfile
 from unittest import mock
 
+from caldav import Event
+
 from configparser import ConfigParser
 
 from django.urls import reverse
@@ -663,13 +665,20 @@ class EventViewSetTestCase(TestDataMixin, ModoAPITestCase):
         self.client_mock.return_value = mocks.DAVClientMock()
         self.addCleanup(patcher1.stop)
 
-        patcher2 = mock.patch("caldav.Calendar")
+        patcher2 = mock.patch("modoboa.calendars.backends.caldav_.Calendar")
         self.cal_mock = patcher2.start()
         self.cal_mock.return_value = mocks.Calendar(client=self.client_mock)
         self.addCleanup(patcher2.stop)
 
         self.client.force_authenticate(self.account)
         self.set_global_parameter("server_location", "http://localhost")
+        mocks.ACTIONS.clear()
+
+    def _saved_ics(self):
+        """Return the iCalendar data saved on the fake server."""
+        saved = [action for action in mocks.ACTIONS if action[0] == "add_event"]
+        self.assertEqual(len(saved), 1)
+        return saved[0][2]
 
     def test_get_user_events(self):
         """Test event(s) retrieval."""
@@ -795,6 +804,179 @@ class EventViewSetTestCase(TestDataMixin, ModoAPITestCase):
         url = f"/api/v2/shared-calendars/{self.scalendar.pk}/events/1234/"
         response = self.client.delete(url)
         self.assertEqual(response.status_code, 200)
+
+    def test_get_events_expands_recurrences(self):
+        """Occurrences of a recurring event are returned with their id."""
+        occurrence = mocks.EV_RECURRING.replace(
+            "RRULE:FREQ=WEEKLY;COUNT=5", "RECURRENCE-ID:20260901T080000Z"
+        )
+        self.cal_mock.return_value.search = mock.Mock(
+            return_value=[Event(data=occurrence, parent=self.cal_mock.return_value)]
+        )
+        url = f"/api/v2/user-calendars/{self.calendar.pk}/events/"
+        url = f"{url}?start=2026-09-01T00:00:00Z&end=2026-09-30T00:00:00Z"
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(self.cal_mock.return_value.search.call_args.kwargs["expand"])
+        self.assertEqual(
+            response.json()[0]["recurrence_id"], "2026-09-01T08:00:00+00:00"
+        )
+
+    def test_get_events_without_recurrence(self):
+        url = f"/api/v2/user-calendars/{self.calendar.pk}/events/"
+        url = "{}?start={}&end={}".format(url, "20060712T182145Z", "20070712T182145Z")
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertIsNone(response.json()[0]["recurrence_id"])
+
+    def test_patch_occurrence(self):
+        """Modify only one occurrence of a recurring event."""
+        self.cal_mock.return_value.event_data = mocks.EV_RECURRING
+        url = f"/api/v2/user-calendars/{self.calendar.pk}/events/weekly-1/"
+        data = {
+            "title": "Moved meeting",
+            "start": "2026-09-08T14:00:00Z",
+            "end": "2026-09-08T15:00:00Z",
+            "recurrence_id": "2026-09-08T08:00:00+00:00",
+            "scope": "occurrence",
+        }
+        response = self.client.patch(url, data=data, format="json")
+        self.assertEqual(response.status_code, 200)
+        ics = self._saved_ics()
+        # The series is untouched, an override is added
+        self.assertIn("DTSTART:20260901T080000Z", ics)
+        self.assertIn("SUMMARY:Weekly meeting", ics)
+        self.assertIn("RECURRENCE-ID:20260908T080000Z", ics)
+        self.assertIn("DTSTART:20260908T140000Z", ics)
+        self.assertIn("SUMMARY:Moved meeting", ics)
+
+    def test_patch_series(self):
+        """Moving an occurrence with series scope moves the whole series."""
+        self.cal_mock.return_value.event_data = mocks.EV_RECURRING
+        url = f"/api/v2/user-calendars/{self.calendar.pk}/events/weekly-1/"
+        data = {
+            "title": "Later meeting",
+            "start": "2026-09-15T09:00:00Z",
+            "end": "2026-09-15T10:30:00Z",
+            "recurrence_id": "2026-09-15T08:00:00+00:00",
+            "scope": "series",
+        }
+        response = self.client.patch(url, data=data, format="json")
+        self.assertEqual(response.status_code, 200)
+        ics = self._saved_ics()
+        self.assertIn("DTSTART:20260901T090000Z", ics)
+        self.assertIn("DTEND:20260901T103000Z", ics)
+        self.assertIn("SUMMARY:Later meeting", ics)
+        self.assertNotIn("RECURRENCE-ID", ics)
+
+    def test_patch_series_all_day_status(self):
+        self.cal_mock.return_value.event_data = mocks.EV_RECURRING
+        url = f"/api/v2/user-calendars/{self.calendar.pk}/events/weekly-1/"
+        data = {
+            "allDay": True,
+            "start_date": "2026-09-15",
+            "end_date": "2026-09-15",
+            "recurrence_id": "2026-09-15T08:00:00+00:00",
+            "scope": "series",
+        }
+        response = self.client.patch(url, data=data, format="json")
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(mocks.ACTIONS, [])
+
+    def test_patch_all_day_event_keeps_duration(self):
+        """End date of all day events is inclusive in the API."""
+        self.cal_mock.return_value.event_data = mocks.EV_ALLDAY
+        url = f"/api/v2/user-calendars/{self.calendar.pk}/events/allday-1/"
+        data = {
+            "title": "Renamed",
+            "allDay": True,
+            "start_date": "2026-09-02",
+            "end_date": "2026-09-02",
+        }
+        response = self.client.patch(url, data=data, format="json")
+        self.assertEqual(response.status_code, 200)
+        ics = self._saved_ics()
+        self.assertIn("DTSTART;VALUE=DATE:20260902", ics)
+        self.assertIn("DTEND;VALUE=DATE:20260903", ics)
+
+    def test_patch_recurrence_requires_scope(self):
+        url = f"/api/v2/user-calendars/{self.calendar.pk}/events/weekly-1/"
+        data = {
+            "start": "2026-09-08T14:00:00Z",
+            "end": "2026-09-08T15:00:00Z",
+            "recurrence_id": "2026-09-08T08:00:00+00:00",
+        }
+        response = self.client.patch(url, data=data, format="json")
+        self.assertEqual(response.status_code, 400)
+        self.assertIn("scope", response.json())
+
+    def test_patch_invalid_recurrence_id(self):
+        url = f"/api/v2/user-calendars/{self.calendar.pk}/events/weekly-1/"
+        data = {
+            "start": "2026-09-08T14:00:00Z",
+            "end": "2026-09-08T15:00:00Z",
+            "recurrence_id": "not a date",
+            "scope": "occurrence",
+        }
+        response = self.client.patch(url, data=data, format="json")
+        self.assertEqual(response.status_code, 400)
+        self.assertIn("recurrence_id", response.json())
+
+    def test_move_occurrence_to_other_calendar_denied(self):
+        calendar = factories.UserCalendarFactory(
+            name="Other", mailbox=self.calendar.mailbox
+        )
+        url = f"/api/v2/user-calendars/{self.calendar.pk}/events/weekly-1/"
+        data = {
+            "start": "2026-09-08T14:00:00Z",
+            "end": "2026-09-08T15:00:00Z",
+            "recurrence_id": "2026-09-08T08:00:00+00:00",
+            "scope": "occurrence",
+            "calendar": calendar.pk,
+        }
+        response = self.client.patch(url, data=data, format="json")
+        self.assertEqual(response.status_code, 400)
+        self.assertIn("calendar", response.json())
+        self.assertEqual(mocks.ACTIONS, [])
+
+    def test_move_event_saves_before_delete(self):
+        """The event must be saved in the new calendar before its removal."""
+        calendar = factories.UserCalendarFactory(
+            name="Other", mailbox=self.calendar.mailbox
+        )
+        url = f"/api/v2/user-calendars/{self.calendar.pk}/events/1234/"
+        data = {
+            "start": "2018-03-27T10:00:00Z",
+            "end": "2018-03-27T11:00:00Z",
+            "calendar": calendar.pk,
+        }
+        response = self.client.patch(url, data=data, format="json")
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            [action[0] for action in mocks.ACTIONS], ["add_event", "delete"]
+        )
+
+    def test_delete_occurrence(self):
+        """Deleting one occurrence adds an EXDATE to the series."""
+        self.cal_mock.return_value.event_data = mocks.EV_RECURRING
+        url = (
+            f"/api/v2/user-calendars/{self.calendar.pk}/events/weekly-1/"
+            "?recurrence_id=2026-09-08T08:00:00%2B00:00&scope=occurrence"
+        )
+        response = self.client.delete(url)
+        self.assertEqual(response.status_code, 200)
+        ics = self._saved_ics()
+        self.assertIn("EXDATE:20260908T080000Z", ics)
+        self.assertNotIn("delete", [action[0] for action in mocks.ACTIONS])
+
+    def test_delete_series(self):
+        url = (
+            f"/api/v2/user-calendars/{self.calendar.pk}/events/weekly-1/"
+            "?recurrence_id=2026-09-08T08:00:00%2B00:00&scope=series"
+        )
+        response = self.client.delete(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual([action[0] for action in mocks.ACTIONS], ["delete"])
 
     def test_shared_events_own_domain(self):
         """A simple user can use events of a shared calendar in its domain."""

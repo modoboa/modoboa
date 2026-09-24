@@ -10,6 +10,9 @@ from modoboa.lib import fields as lib_fields
 from . import backends
 from . import models
 
+#: Scope of a modification made on an occurrence of a recurring event
+RECURRENCE_SCOPES = ("occurrence", "series")
+
 
 class CalDAVCalendarMixin:
     """Mixin for calendar serializers."""
@@ -143,6 +146,30 @@ class EventSerializer(serializers.Serializer):
     description = serializers.CharField(required=False, allow_blank=True)
 
     attendees = AttendeeSerializer(many=True, required=False)
+    recurrence_id = serializers.CharField(required=False, allow_null=True)
+
+
+class RecurrenceSerializer(serializers.Serializer):
+    """Identify an occurrence of a recurring event and the scope of an action."""
+
+    recurrence_id = serializers.CharField(required=False, allow_null=True)
+    scope = serializers.ChoiceField(
+        choices=RECURRENCE_SCOPES, required=False, allow_null=True
+    )
+
+    def validate_recurrence_id(self, value):
+        if not value:
+            return None
+        try:
+            return backends.parse_recurrence_id(value)
+        except ValueError as exc:
+            raise serializers.ValidationError(_("Invalid recurrence id")) from exc
+
+    def validate(self, data):
+        data = super().validate(data)
+        if data.get("recurrence_id") and not data.get("scope"):
+            raise serializers.ValidationError({"scope": _("This field is required.")})
+        return data
 
 
 class ROEventSerializer(EventSerializer):
@@ -170,6 +197,10 @@ class WritableEventSerializer(EventSerializer):
     start_date = serializers.DateField(required=False)
     end_date = serializers.DateField(required=False)
 
+    scope = serializers.ChoiceField(
+        choices=RECURRENCE_SCOPES, required=False, allow_null=True
+    )
+
     def __init__(self, *args, **kwargs):
         """Set calendar list."""
         calendar_type = kwargs.pop("calendar_type")
@@ -190,8 +221,12 @@ class WritableEventSerializer(EventSerializer):
                 domain=user.mailbox.domain
             )
 
+    def validate_recurrence_id(self, value):
+        return RecurrenceSerializer().validate_recurrence_id(value)
+
     def validate(self, data):
         """Make sure dates are present with allDay flag."""
+        RecurrenceSerializer().validate(data)
         errors = {}
         if data.get("allDay", False):
             mandatory_fields = ["start_date", "end_date"]

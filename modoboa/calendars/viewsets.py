@@ -124,6 +124,25 @@ class BaseEventViewSet(viewsets.ViewSet):
             event["calendar"]["domain"] = calendar.domain.pk
         return response.Response(event, status=201)
 
+    def _update_event(self, pk, calendar, data):
+        """Update an event, return an error response if not possible."""
+        new_calendar = data.get("calendar")
+        if (
+            data.get("scope") == "occurrence"
+            and new_calendar
+            and new_calendar.pk != calendar.pk
+        ):
+            return response.Response(
+                {"calendar": [_("An occurrence cannot be moved to another calendar")]},
+                status=400,
+            )
+        backend = backends.get_backend_from_request("caldav_", self.request, calendar)
+        try:
+            backend.update_event(pk, data)
+        except ValueError as exc:
+            return response.Response({"non_field_errors": [str(exc)]}, status=400)
+        return None
+
     def update(self, request, pk, calendar_pk):
         """Update existing event."""
         serializer = self.get_serializer()
@@ -132,10 +151,11 @@ class BaseEventViewSet(viewsets.ViewSet):
             serializer.update_calendar_field(new_calendar_type)
         serializer.is_valid(raise_exception=True)
         calendar = self.get_calendar(calendar_pk)
-        backend = backends.get_backend_from_request("caldav_", request, calendar)
-        uid = backend.update_event(pk, serializer.validated_data)
+        error = self._update_event(pk, calendar, serializer.validated_data)
+        if error:
+            return error
         event = dict(serializer.data)
-        event["id"] = uid
+        event["id"] = pk
         return response.Response(event, status=200)
 
     def partial_update(self, request, pk, calendar_pk):
@@ -143,8 +163,9 @@ class BaseEventViewSet(viewsets.ViewSet):
         serializer = self.get_serializer(partial=True)
         serializer.is_valid(raise_exception=True)
         calendar = self.get_calendar(calendar_pk)
-        backend = backends.get_backend_from_request("caldav_", request, calendar)
-        backend.update_event(pk, serializer.validated_data)
+        error = self._update_event(pk, calendar, serializer.validated_data)
+        if error:
+            return error
         return response.Response(status=200)
 
     def list(self, request, calendar_pk):
@@ -171,10 +192,12 @@ class BaseEventViewSet(viewsets.ViewSet):
         return response.Response(serializer.data)
 
     def destroy(self, request, pk, calendar_pk):
-        """Destroy a specific event."""
+        """Destroy a specific event (or one occurrence of a recurring event)."""
+        serializer = serializers.RecurrenceSerializer(data=request.query_params)
+        serializer.is_valid(raise_exception=True)
         calendar = self.get_calendar(calendar_pk)
         backend = backends.get_backend_from_request("caldav_", request, calendar)
-        backend.delete_event(pk)
+        backend.delete_event(pk, **serializer.validated_data)
         return response.Response()
 
     @action(detail=False, methods=["post"])

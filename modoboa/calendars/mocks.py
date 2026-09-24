@@ -31,6 +31,38 @@ END:VCALENDAR
 """
 
 
+EV_RECURRING = """BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Example Corp.//CalDAV Client//EN
+BEGIN:VEVENT
+UID:weekly-1
+DTSTAMP:20260901T000000Z
+DTSTART:20260901T080000Z
+DTEND:20260901T090000Z
+RRULE:FREQ=WEEKLY;COUNT=5
+SUMMARY:Weekly meeting
+END:VEVENT
+END:VCALENDAR
+"""
+
+EV_ALLDAY = """BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Example Corp.//CalDAV Client//EN
+BEGIN:VEVENT
+UID:allday-1
+DTSTAMP:20260901T000000Z
+DTSTART;VALUE=DATE:20260902
+DTEND;VALUE=DATE:20260903
+RRULE:FREQ=WEEKLY;COUNT=3
+SUMMARY:All day
+END:VEVENT
+END:VCALENDAR
+"""
+
+#: Actions performed on the fake CalDAV server, in order
+ACTIONS = []
+
+
 class Response:
     """Fake requests response."""
 
@@ -48,6 +80,7 @@ class DAVClientMock:
         return True
 
     def delete(self, url):
+        ACTIONS.append(("delete", str(url)))
         return True
 
     def proppatch(self, url, body, dummy=None):
@@ -59,18 +92,22 @@ class DAVClientMock:
 
 class Calendar:
 
+    #: iCalendar data returned by event_by_url
+    event_data = EV1
+
     def __init__(self, client=None, url=None, parent=None, name=None, id=None, **extra):
         self.url = URL.objectify(url or "http://localhost/calendar")
         self.client = DAVClientMock()
 
     def add_event(self, data):
+        ACTIONS.append(("add_event", str(self.url), data))
         return True
 
     def save_event(self, *args, **kwargs):
         return True
 
     def event_by_url(self, url):
-        res = Event(url=url, data=EV1, parent=self)
+        res = Event(url=url, data=self.event_data, parent=self)
         return res
 
     def search(self, **kwargs):
