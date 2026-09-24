@@ -221,24 +221,31 @@ const leftMenuItems = computed(() => {
   return result
 })
 
+let fetchEventsCounter = 0
+
 async function fetchUserEvents({ start, end }) {
-  let newEvents = []
-  for (const calendar of userCalendars.value) {
-    const resp = await api.getUserCalendarEvents(calendar.pk, {
-      start: start.date,
-      end: end.date,
-    })
-    newEvents = newEvents.concat(
-      resp.data.map((event) => {
-        const newEvent = { ...event }
-        newEvent.start = Date.parse(event.start)
-        newEvent.end = Date.parse(event.end)
-        newEvent.timed = !event.allDay
-        return newEvent
+  const fetchId = ++fetchEventsCounter
+  const responses = await Promise.all(
+    userCalendars.value.map((calendar) =>
+      api.getUserCalendarEvents(calendar.pk, {
+        start: start.date,
+        end: end.date,
       })
     )
+  )
+  if (fetchId !== fetchEventsCounter) {
+    // A more recent fetch has been triggered (e.g. fast navigation)
+    return
   }
-  events.value = newEvents
+  events.value = responses.flatMap((resp) =>
+    resp.data.map((event) => {
+      const newEvent = { ...event }
+      newEvent.start = Date.parse(event.start)
+      newEvent.end = Date.parse(event.end)
+      newEvent.timed = !event.allDay
+      return newEvent
+    })
+  )
 }
 
 const setToday = () => {

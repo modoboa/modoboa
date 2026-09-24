@@ -24,8 +24,11 @@ class Caldav_Backend(CalendarBackend):
         """Constructor."""
         super().__init__(calendar)
         server_url = smart_str(param_tools.get_global_parameter("server_location"))
+        # Send credentials preemptively: otherwise the first request is sent
+        # anonymously and Radicale answers 401 after its anti-bruteforce
+        # delay ([auth] delay, ~1s), which is paid on every API call.
         self.client = caldav.DAVClient(
-            server_url, username=username, password=str(password)
+            server_url, username=username, password=str(password), auth_type="basic"
         )
         if self.calendar:
             self.remote_cal = Calendar(self.client, calendar.encoded_path)

@@ -110,6 +110,8 @@ hosts = 0.0.0.0:5232,[::]:5232
 [auth]
 type = radicale_modoboa_auth_oauth2
 oauth2_introspection_endpoint = https://radicale:<client_secret>@<hostname of your server>/api/o/introspect/
+cache_logins = True
+cache_successful_logins_expiry = 60
 
 [rights]
 type = from_file
@@ -118,6 +120,14 @@ file = /etc/radicale/rights
 [storage]
 filesystem_folder = /var/lib/radicale/collections
 ````
+
+::: tip
+`cache_logins` avoids calling the introspection endpoint on every CalDAV
+request (each call costs around 100ms because the client secret is
+hashed). It requires `radicale-modoboa-auth-oauth2` >= 0.5.0. A revoked
+token remains accepted until its cache entry expires
+(`cache_successful_logins_expiry`, in seconds).
+:::
 
 With that set-up, radicale should be working when managing calendars
 through modoboa's web interface but [not]{#not}\_ when using other
