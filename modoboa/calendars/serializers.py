@@ -320,3 +320,21 @@ class GlobalParametersSerializer(serializers.Serializer):
     rights_file_path = serializers.CharField(default="/etc/radicale/rights")
     allow_calendars_administration = serializers.BooleanField(default=False)
     max_ics_file_size = serializers.CharField(default="10240")
+
+
+HOUR_CHOICES = [(hour, f"{hour:02d}:00") for hour in range(25)]
+
+
+class UserPreferencesSerializer(serializers.Serializer):
+    """A serializer for user preferences."""
+
+    working_hours_start = serializers.ChoiceField(choices=HOUR_CHOICES[:-1], default=9)
+    working_hours_end = serializers.ChoiceField(choices=HOUR_CHOICES[1:], default=18)
+
+    def validate(self, data):
+        """Make sure working hours define a valid range."""
+        if data["working_hours_start"] >= data["working_hours_end"]:
+            raise serializers.ValidationError(
+                {"working_hours_end": _("End of working hours must be after its start")}
+            )
+        return data

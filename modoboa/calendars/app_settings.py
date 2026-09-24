@@ -77,6 +77,40 @@ GLOBAL_PARAMETERS_STRUCT = collections.OrderedDict(
     ]
 )
 
+USER_PREFERENCES_STRUCT = collections.OrderedDict(
+    [
+        (
+            "display",
+            {
+                "label": gettext_lazy("Display"),
+                "params": collections.OrderedDict(
+                    [
+                        (
+                            "working_hours_start",
+                            {
+                                "label": gettext_lazy("Start of working hours"),
+                                "help_text": gettext_lazy(
+                                    "Hours outside working hours are greyed out "
+                                    "and the calendar scrolls to this hour by default"
+                                ),
+                            },
+                        ),
+                        (
+                            "working_hours_end",
+                            {
+                                "label": gettext_lazy("End of working hours"),
+                                "help_text": gettext_lazy(
+                                    "Hours outside working hours are greyed out"
+                                ),
+                            },
+                        ),
+                    ]
+                ),
+            },
+        )
+    ]
+)
+
 
 def load_settings():
     """Load calendars settings."""
@@ -89,4 +123,11 @@ def load_settings():
         gettext_lazy("Calendars"),
         GLOBAL_PARAMETERS_STRUCT,
         serializers.GlobalParametersSerializer,
+    )
+    param_tools.registry.add(
+        "user",
+        "calendars",
+        gettext_lazy("Calendars"),
+        USER_PREFERENCES_STRUCT,
+        serializers.UserPreferencesSerializer,
     )
