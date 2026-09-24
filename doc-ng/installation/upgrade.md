@@ -294,7 +294,15 @@ around 100ms. Radicale can cache successful logins, but this feature is
 only available to external authentication plugins starting with
 `radicale-modoboa-auth-oauth2` 0.5.0.
 
-First, upgrade the plugin inside Radicale's virtualenv
+If you use [modoboa installer](https://github.com/modoboa/modoboa-installer),
+update it and run it in upgrade mode: it upgrades the plugin and enables
+the cache in Radicale's configuration.
+
+``` shell
+$ sudo python3 run.py --upgrade <domain>
+```
+
+Otherwise, upgrade the plugin inside Radicale's virtualenv
 (`/srv/radicale/env` by default):
 
 ``` shell
