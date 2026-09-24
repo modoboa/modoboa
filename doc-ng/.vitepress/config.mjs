@@ -1,6 +1,6 @@
 import { defineConfig } from 'vitepress'
 import { useSidebar } from 'vitepress-openapi'
-import spec from '../openapi.json'
+import spec from '../openapi.json' with { type: 'json' }
 
 const sidebar = useSidebar({
   spec,
