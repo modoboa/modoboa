@@ -1,19 +1,18 @@
 # Translators:
 # Adrien spitfireap, 2026
 # Antoine Nguyen <tonio@ngyn.org>, 2026
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "PO-Revision-Date: 2024-08-01 12:26+0000\n"
 "Last-Translator: Antoine Nguyen <tonio@ngyn.org>, 2026\n"
 "Language-Team: French (https://app.transifex.com/tonio/teams/13749/fr/)\n"
-"Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n == 0 || n == 1) ? 0 : n != 0 && n % "
-"1000000 == 0 ? 1 : 2;\n"
+"Language: fr\n"
+"Plural-Forms: nplurals=3; plural=(n == 0 || n == 1) ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;\n"
 
 #: src/api/repository.js:43
 msgid "Unable to reach the server, please check your connection"
@@ -132,12 +131,12 @@ msgstr "Contenu"
 #: src/components/account/AutoReplyForm.vue:24
 msgid ""
 "The content of your answer. You can use the following variables, which will "
-"be automatically replaced by the appropriate value: %(name)s, %(fromdate)s, %"
-"(untildate)s"
+"be automatically replaced by the appropriate value: %(name)s, %(fromdate)s, "
+"%(untildate)s"
 msgstr ""
 "Le contenu de votre réponse. Vous pouvez utiliser les variables suivantes, "
-"qui seront automatiquement remplacées par les valeurs appropriées : %"
-"(name)s, %(fromdate)s, %(untildate)s"
+"qui seront automatiquement remplacées par les valeurs appropriées : "
+"%(name)s, %(fromdate)s, %(untildate)s"
 
 #: src/components/account/AutoReplyForm.vue:36
 #: src/components/admin/logs/MessageList.vue:50
@@ -584,12 +583,11 @@ msgstr "Cliquer ici pour copier la clé"
 
 #: src/components/account/TotpAuthForm.vue:34
 msgid ""
-"Install a soft token authenticator like FreeOTP or Google Authenticator from "
-"your application repository and use that app to scan this QR code."
+"Install a soft token authenticator like FreeOTP or Google Authenticator from"
+" your application repository and use that app to scan this QR code."
 msgstr ""
 "Installez un logiciel d'authentification de jeton comme FreeOTP ou google\n"
-"                 Authentification depuis votre magasin d'applications et "
-"utilisez\n"
+"                 Authentification depuis votre magasin d'applications et utilisez\n"
 "                 cette application pour scanner ce QR code."
 
 #: src/components/account/TotpAuthForm.vue:39
@@ -791,8 +789,8 @@ msgid ""
 "If you configured it recently, please wait for the first report to be "
 "received and processed."
 msgstr ""
-"Si vous l'avez récemment configuré, veuillez attendre que le premier rapport "
-"soit reçu et traité. "
+"Si vous l'avez récemment configuré, veuillez attendre que le premier rapport"
+" soit reçu et traité. "
 
 #: src/components/admin/dmarc/DmarcAligmentChart.vue:127
 #: src/components/admin/dmarc/DmarcAligmentChart.vue:143
@@ -825,7 +823,8 @@ msgstr "Synthèse DNSBL pour"
 
 #: src/components/admin/domains/DNSBLSummary.vue:10
 msgid ""
-"IP address %{ address } is currently listed by the following DNSBL providers:"
+"IP address %{ address } is currently listed by the following DNSBL "
+"providers:"
 msgstr ""
 "L'adresse IP %{ address } est actuellement listée par les fournisseurs de "
 "DNSBL suivants :"
@@ -952,11 +951,12 @@ msgid ""
 "DKIM key does not seem to be generated yet or has failed. Do you want to "
 "requeue the job?"
 msgstr ""
-"La génération de la clé DKIM ne semble pas avoir eu lieu ou a échoué. Voulez "
-"vous replanifier cette action ?"
+"La génération de la clé DKIM ne semble pas avoir eu lieu ou a échoué. Voulez"
+" vous replanifier cette action ?"
 
 #: src/components/admin/domains/DNSDetail.vue:299
-msgid "DKIM keys already exist for this domain. Do you want to overwrite them?"
+msgid ""
+"DKIM keys already exist for this domain. Do you want to overwrite them?"
 msgstr "Des clés DKIM existent déjà pour ce domaine. Voulez-vous les écraser?"
 
 #: src/components/admin/domains/DNSStatusChip.vue:18
@@ -1698,11 +1698,11 @@ msgstr "Commencer à saisir un nom ici..."
 #: src/components/admin/identities/form_steps/AccountAliasForm.vue:8
 #: src/components/admin/identities/form_steps/AliasRecipientForm.vue:8
 msgid ""
-"Alias(es) of this mailbox. To create a catchall alias, just enter the domain "
-"name (@domain.tld)."
+"Alias(es) of this mailbox. To create a catchall alias, just enter the domain"
+" name (@domain.tld)."
 msgstr ""
-"Alias(s) de cette boîte aux lettres. Pour créer un alias fourre-tout, entrer "
-"uniquement le nom du domaine (@domain.tld)."
+"Alias(s) de cette boîte aux lettres. Pour créer un alias fourre-tout, entrer"
+" uniquement le nom du domaine (@domain.tld)."
 
 #: src/components/admin/identities/form_steps/AccountAliasForm.vue:50
 msgid "Alias already added"
@@ -1727,9 +1727,9 @@ msgstr "Ex: 10MB. Laisser vide pour aucune limite"
 
 #: src/components/admin/identities/form_steps/AccountMailboxForm.vue:15
 msgid ""
-"Quota for this mailbox, can be expressed in KB, MB (default) or GB. Define a "
-"custom value or use domain's default one. Leave empty to define an unlimited "
-"value (not allowed for domain administrators)."
+"Quota for this mailbox, can be expressed in KB, MB (default) or GB. Define a"
+" custom value or use domain's default one. Leave empty to define an "
+"unlimited value (not allowed for domain administrators)."
 msgstr ""
 "Quota pour cette boite. Peut être exprimé en Ko, Mo (défaut) ou Go. Définir "
 "une valeur spécifique ou utiliser la valeur par défaut du domaine. Laisser "
@@ -1784,8 +1784,8 @@ msgid ""
 "A user with no privileges but with a mailbox. He will be allowed to use all "
 "end-user features: webmail, calendar, contacts, filters."
 msgstr ""
-"Un utilisateur sans privilèges mais ayant une boîte mail. Il sera autorisé à "
-"utiliser toutes les fonctionnalités de l'utilisateur final : webmail, "
+"Un utilisateur sans privilèges mais ayant une boîte mail. Il sera autorisé à"
+" utiliser toutes les fonctionnalités de l'utilisateur final : webmail, "
 "calendrier, contacts, filtres."
 
 #: src/components/admin/identities/form_steps/AccountRoleForm.vue:91
@@ -1811,8 +1811,8 @@ msgid ""
 "administrator, plus the possibility to create domains and to assign "
 "resources."
 msgstr ""
-"Un utilisateur intermédiaire qui a les mêmes privilèges qu'un administrateur "
-"de domaine, et la possibilité de créer des domaines et d'affecter des "
+"Un utilisateur intermédiaire qui a les mêmes privilèges qu'un administrateur"
+" de domaine, et la possibilité de créer des domaines et d'affecter des "
 "ressources."
 
 #: src/components/admin/identities/form_steps/AccountRoleForm.vue:109
@@ -1824,8 +1824,8 @@ msgid ""
 "A user with all privileges, can do anything. By default, such a user does "
 "not have a mailbox so he can't access end-user features."
 msgstr ""
-"Un utilisateur ayant tous les privilège, peut tout faire. Par défaut, il n'a "
-"pas de boîte mail et ne peut donc pas accéder aux fonctionnalités d'un "
+"Un utilisateur ayant tous les privilège, peut tout faire. Par défaut, il n'a"
+" pas de boîte mail et ne peut donc pas accéder aux fonctionnalités d'un "
 "utilisateur final."
 
 #: src/components/admin/identities/form_steps/AliasGeneralForm.vue:10
@@ -1947,7 +1947,8 @@ msgstr "Sécurisé"
 #: src/components/admin/imap_migration/form_steps/ProviderGeneralForm.vue:30
 msgid "Is the IMAP connection secured using SSL/TLS or StartTLS"
 msgstr ""
-"La connexion IMAP est-elle sécurisée via l'utilisation de SSL/TLS ou StartTLS"
+"La connexion IMAP est-elle sécurisée via l'utilisation de SSL/TLS ou "
+"StartTLS"
 
 #: src/components/admin/imap_migration/form_steps/ProviderGeneralForm.vue:36
 msgid "Check connection:"
@@ -2180,8 +2181,8 @@ msgstr "Information du carnet d'adresse"
 
 #: src/components/contacts/AddressBookInfo.vue:9
 msgid ""
-"To access this address book from the outside (such as Mozilla Thunderbird or "
-"your smartphone), use the following URL:"
+"To access this address book from the outside (such as Mozilla Thunderbird or"
+" your smartphone), use the following URL:"
 msgstr ""
 "Pour accéder à ce carnet d'adresse depuis l'extérieur (comme Mozilla "
 "Thunderbird ou votre smartphone), utilisez l'URL suivante :"
@@ -2436,8 +2437,8 @@ msgid ""
 "The first element of each line is mandatory and must be equal to one of the "
 "previous values."
 msgstr ""
-"Le premier élément de chaque ligne est obligatoire et doit être égal à l'une "
-"des valeurs précédentes."
+"Le premier élément de chaque ligne est obligatoire et doit être égal à l'une"
+" des valeurs précédentes."
 
 #: src/components/tools/ImportForm.vue:20
 msgid "You can use a different character as separator."
@@ -2527,21 +2528,19 @@ msgid "no"
 msgstr "non"
 
 #: src/components/webmail/AddressButton.vue:50
-#, fuzzy
 msgid "Me"
-msgstr "Plus"
+msgstr "Moi"
 
 #: src/components/webmail/AttachmentList.vue:16
 msgid "Download %{name}"
-msgstr ""
+msgstr "Télécharger %{name}"
 
 #: src/components/webmail/AttachmentList.vue:135
-#, fuzzy
 msgid "%{count} attachment"
 msgid_plural "%{count} attachments"
-msgstr[0] "%{count} message"
-msgstr[1] "%{count} messages"
-msgstr[2] "%{count} messages"
+msgstr[0] "%{count} piece jointe"
+msgstr[1] "%{count} pièces jointes"
+msgstr[2] "%{count} pièces jointes"
 
 #: src/components/webmail/AttachmentsDialog.vue:3
 #: src/components/webmail/ComposeEmailForm.vue:67
@@ -2615,28 +2614,24 @@ msgid "Contact added to address book"
 msgstr "Contact ajouté au carnet d'adresse"
 
 #: src/components/webmail/EmailList.vue:19
-#, fuzzy
 msgid "Clear the selection"
-msgstr "Supprimer la sélection"
+msgstr "Effacer la sélection"
 
 #: src/components/webmail/EmailList.vue:20
 msgid "Select every message of the page"
-msgstr ""
+msgstr "Sélectionner tous les messages de la page"
 
 #: src/components/webmail/EmailList.vue:46 src/views/webmail/EmailView.vue:72
-#, fuzzy
 msgid "Mark as junk"
-msgstr "Marquer comme non lu"
+msgstr "Marquer comme indésirable"
 
 #: src/components/webmail/EmailList.vue:56 src/views/webmail/EmailView.vue:82
-#, fuzzy
 msgid "Mark as not junk"
-msgstr "Message marqué comme légitime"
+msgstr "Marquer comme acceptable"
 
 #: src/components/webmail/EmailList.vue:64
-#, fuzzy
 msgid "More actions"
-msgstr "Migrations"
+msgstr "Plus d'actions"
 
 #: src/components/webmail/EmailList.vue:70
 msgid "Mark as read"
@@ -2659,23 +2654,20 @@ msgid "Empty mailbox"
 msgstr "Vider la boite aux lettres"
 
 #: src/components/webmail/EmailList.vue:131
-#, fuzzy
 msgid "Display mode"
-msgstr "Nom affiché"
+msgstr "Mode d'affichage"
 
 #: src/components/webmail/EmailList.vue:139
-#, fuzzy
 msgid "Messages one by one"
-msgstr "Source du message"
+msgstr "Messages un par un"
 
 #: src/components/webmail/EmailList.vue:150
-#, fuzzy
 msgid "Conversations"
-msgstr "Confirmation"
+msgstr "Conversations"
 
 #: src/components/webmail/EmailList.vue:154
 msgid "Not available in this folder"
-msgstr ""
+msgstr "Indisponible dans ce dossier"
 
 #: src/components/webmail/EmailList.vue:171
 msgid "on"
@@ -2683,12 +2675,11 @@ msgstr "le"
 
 #: src/components/webmail/EmailList.vue:179
 msgid "Previous page"
-msgstr ""
+msgstr "Page précédente"
 
 #: src/components/webmail/EmailList.vue:187
-#, fuzzy
 msgid "Next page"
-msgstr "Suivant"
+msgstr "Page suivante"
 
 #: src/components/webmail/EmailList.vue:209
 msgid ""
@@ -2699,9 +2690,8 @@ msgstr ""
 "(visible sur la droite)"
 
 #: src/components/webmail/EmailList.vue:245
-#, fuzzy
 msgid "Sender"
-msgstr "Envoyer"
+msgstr "Expéditeur"
 
 #: src/components/webmail/EmailList.vue:281
 msgid "No message yet in this mailbox"
@@ -2712,12 +2702,11 @@ msgid "Sending failure"
 msgstr "Echec de l'envoi"
 
 #: src/components/webmail/EmailList.vue:409
-#, fuzzy
 msgid "%{count} message selected"
 msgid_plural "%{count} messages selected"
-msgstr[0] "%{count} message"
-msgstr[1] "%{count} messages"
-msgstr[2] "%{count} messages"
+msgstr[0] "%{count} message sélectionné"
+msgstr[1] "%{count} messages sélectionnés"
+msgstr[2] "%{count} messages sélectionnés"
 
 #: src/components/webmail/EmailList.vue:474
 msgid "Scheduling updated"
@@ -2754,13 +2743,12 @@ msgstr[2] "%{count} messages"
 #: src/components/webmail/EmailListItem.vue:24
 #: src/components/webmail/ThreadListItem.vue:23
 msgid "Follow up"
-msgstr ""
+msgstr "Suivi"
 
 #: src/components/webmail/EmailListItem.vue:43
 #: src/components/webmail/ThreadListItem.vue:51
-#, fuzzy
 msgid "(no subject)"
-msgstr "Sujet"
+msgstr "(pas de sujet)"
 
 #: src/components/webmail/EmailListItem.vue:125
 msgid "Reschedule"
@@ -2807,18 +2795,16 @@ msgid "Moving selection..."
 msgstr "Déplacement de la sélection..."
 
 #: src/components/webmail/MessageHeader.vue:48
-#, fuzzy
 msgid "+%{count} more"
-msgstr "%{count} message"
+msgstr "+%{count} en plus"
 
 #: src/components/webmail/MessageHeader.vue:120
-#, fuzzy
 msgid "Reply to"
-msgstr "Répondre"
+msgstr "Répondre à"
 
 #: src/components/webmail/RemoteContentBanner.vue:12
 msgid "Remote images have been blocked to protect your privacy."
-msgstr ""
+msgstr "Les images distantes ont été bloquées pour protéger votre vie privée."
 
 #: src/components/webmail/RemoteContentBanner.vue:16
 #: src/views/webmail/EmailView.vue:107
@@ -2844,11 +2830,11 @@ msgstr "Abonnements mis à jour"
 
 #: src/components/webmail/ThreadListItem.vue:37
 msgid "Hide the messages of this conversation"
-msgstr ""
+msgstr "Cacher les messages de cette conversation"
 
 #: src/components/webmail/ThreadListItem.vue:38
 msgid "Show the messages of this conversation"
-msgstr ""
+msgstr "Afficher les messages de cette conversation"
 
 #: src/composables/amavis.js:33
 msgid "Global database"
@@ -3164,8 +3150,8 @@ msgstr "Chiffrer les mots de passe"
 #: src/views/admin/identities/IdentitiesView.vue:95
 msgid "Check this option if passwords contained in your file are not crypted"
 msgstr ""
-"Cochez cette option si les mots de passe contenus dans votre fichier ne sont "
-"pas chiffrés"
+"Cochez cette option si les mots de passe contenus dans votre fichier ne sont"
+" pas chiffrés"
 
 #: src/views/admin/imap_migration/ProviderEditView.vue:3
 msgid "Edit provider"
@@ -3181,9 +3167,9 @@ msgstr "Messages importants"
 
 #: src/views/admin/InformationView.vue:22
 msgid ""
-"The password scheme you are using has been deprecated and will be removed in "
-"the next minor version. The procedure to upgrade to a stronger scheme is as "
-"follows:"
+"The password scheme you are using has been deprecated and will be removed in"
+" the next minor version. The procedure to upgrade to a stronger scheme is as"
+" follows:"
 msgstr ""
 "La méthode de chiffrement de mot de passe que vous utilisez a été rendue "
 "obsolète et sera retirée dans la prochaine version mineure. La procédure de "
@@ -3202,8 +3188,8 @@ msgstr ""
 msgid ""
 "Make sure <strong>Update password scheme at login</strong> option is enabled"
 msgstr ""
-"Assurez vous que l'option <strong>Mettre à jour la méthode de chiffrement du "
-"mot de passe à la connexion</strong> est activée"
+"Assurez vous que l'option <strong>Mettre à jour la méthode de chiffrement du"
+" mot de passe à la connexion</strong> est activée"
 
 #: src/views/admin/InformationView.vue:51
 msgid "Save your changes"
@@ -3238,9 +3224,9 @@ msgid ""
 "Please note that you will see this message until <strong>ALL</strong> user "
 "passwords have been converted using the new scheme."
 msgstr ""
-"Veuillez noter que vous verrez ce message jusqu'à ce que <strong>TOUS</"
-"strong> les mots de passe de vos utilisateurs aient été convertis en "
-"utilisant la nouvelle méthode."
+"Veuillez noter que vous verrez ce message jusqu'à ce que "
+"<strong>TOUS</strong> les mots de passe de vos utilisateurs aient été "
+"convertis en utilisant la nouvelle méthode."
 
 #: src/views/admin/InformationView.vue:92
 msgid "Installed components"
@@ -3342,7 +3328,8 @@ msgstr "Voir l'intégralité des entêtes"
 msgid "Hide full headers"
 msgstr "Cacher l'intégralité des entêtes"
 
-#: src/views/quarantine/MessageView.vue:201 src/views/webmail/EmailView.vue:243
+#: src/views/quarantine/MessageView.vue:201
+#: src/views/webmail/EmailView.vue:243
 msgid "Message deleted"
 msgstr "Marquer comme supprimé"
 
@@ -3355,9 +3342,8 @@ msgid "release requests"
 msgstr "requêtes de libération"
 
 #: src/views/webmail/EmailView.vue:14 src/views/webmail/ThreadView.vue:14
-#, fuzzy
 msgid "Back to the mailbox"
-msgstr "Modifier cette boite aux lettres"
+msgstr "Retourner à la boite aux lettres"
 
 #: src/views/webmail/EmailView.vue:27 src/views/webmail/ThreadView.vue:26
 #: src/views/webmail/ThreadView.vue:132
@@ -3370,9 +3356,8 @@ msgid "Reply all"
 msgstr "Répondre à tous"
 
 #: src/views/webmail/EmailView.vue:90
-#, fuzzy
 msgid "Display options"
-msgstr "Afficher les images"
+msgstr "Options d'affichage"
 
 #: src/views/webmail/EmailView.vue:97
 msgid "Enable links"
@@ -3407,34 +3392,29 @@ msgid "Message marked as not junk"
 msgstr "Message marqué comme légitime"
 
 #: src/views/webmail/ThreadView.vue:51
-#, fuzzy
 msgid "Delete the whole conversation"
-msgstr "Supprimer la sélection"
+msgstr "Supprimer toute la conversation"
 
 #: src/views/webmail/ThreadView.vue:61
 msgid "Mark the conversation as junk"
-msgstr ""
+msgstr "Marquer la conversation comme indésirable"
 
 #: src/views/webmail/ThreadView.vue:71
 msgid "Mark the conversation as not junk"
-msgstr ""
+msgstr "Marquer la conversation comme acceptable"
 
 #: src/views/webmail/ThreadView.vue:156
-#, fuzzy
 msgid "Open"
-msgstr "Ouvert"
+msgstr "Ouvrir"
 
 #: src/views/webmail/ThreadView.vue:359
-#, fuzzy
 msgid "Conversation deleted"
-msgstr "Migration supprimée"
+msgstr "Conversation supprimée"
 
 #: src/views/webmail/ThreadView.vue:362
-#, fuzzy
 msgid "Conversation marked as junk"
-msgstr "Message marqué comme pourriel"
+msgstr "Conversation marquée comme indésirable"
 
 #: src/views/webmail/ThreadView.vue:367
-#, fuzzy
 msgid "Conversation marked as not junk"
-msgstr "Message marqué comme légitime"
+msgstr "Conversation marquée comme acceptable"
