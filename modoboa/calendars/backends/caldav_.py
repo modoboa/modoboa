@@ -17,6 +17,83 @@ from modoboa.parameters import tools as param_tools
 from . import CalendarBackend
 
 
+def same_date(value1, value2):
+    """Compare two dates or datetimes, possibly using different timezones."""
+    if isinstance(value1, datetime.datetime) != isinstance(value2, datetime.datetime):
+        return False
+    if isinstance(value1, datetime.datetime) and (
+        (value1.tzinfo is None) != (value2.tzinfo is None)
+    ):
+        return value1.replace(tzinfo=None) == value2.replace(tzinfo=None)
+    return value1 == value2
+
+
+def convert_date(value, reference):
+    """Convert value to the type (and timezone) used by reference."""
+    if not isinstance(reference, datetime.datetime):
+        return value.date() if isinstance(value, datetime.datetime) else value
+    if not isinstance(value, datetime.datetime):
+        return datetime.datetime.combine(value, datetime.time.min).replace(
+            tzinfo=reference.tzinfo
+        )
+    if reference.tzinfo is None:
+        return value.replace(tzinfo=None)
+    if value.tzinfo is None:
+        return value.replace(tzinfo=reference.tzinfo)
+    return value.astimezone(reference.tzinfo)
+
+
+def get_vevent_end(vevent):
+    """Return the end of a vevent (DTEND is optional)."""
+    if "dtend" in vevent.contents:
+        return vevent.dtend.value
+    if "duration" in vevent.contents:
+        return vevent.dtstart.value + vevent.duration.value
+    if isinstance(vevent.dtstart.value, datetime.datetime):
+        return vevent.dtstart.value
+    return vevent.dtstart.value + datetime.timedelta(days=1)
+
+
+def set_vevent_dates(vevent, start=None, end=None):
+    """Replace the dates of a vevent."""
+    if start is not None:
+        del vevent.contents["dtstart"]
+        vevent.add("dtstart").value = start
+    if end is not None:
+        vevent.contents.pop("duration", None)
+        vevent.contents.pop("dtend", None)
+        vevent.add("dtend").value = end
+
+
+def get_requested_dates(data):
+    """Return the (start, end) dates of an event, as stored in iCalendar."""
+    if data.get("allDay"):
+        # DTEND is exclusive for all day events (see create_event)
+        return data["start_date"], data["end_date"] + relativedelta(days=1)
+    return data.get("start"), data.get("end")
+
+
+def get_master(vcal):
+    """Return the main vevent of an event (the one without RECURRENCE-ID)."""
+    for vevent in vcal.vevent_list:
+        if "recurrence-id" not in vevent.contents:
+            return vevent
+    return vcal.vevent_list[0]
+
+
+def get_overrides(vcal):
+    """Return the vevents overriding an occurrence of a recurring event."""
+    return [vevent for vevent in vcal.vevent_list if "recurrence-id" in vevent.contents]
+
+
+def find_override(vcal, recurrence_id):
+    """Return the vevent overriding the given occurrence, if any."""
+    for vevent in get_overrides(vcal):
+        if same_date(vevent.recurrence_id.value, recurrence_id):
+            return vevent
+    return None
+
+
 class Caldav_Backend(CalendarBackend):
     """CalDAV calendar backend."""
 
@@ -33,11 +110,21 @@ class Caldav_Backend(CalendarBackend):
         if self.calendar:
             self.remote_cal = Calendar(self.client, calendar.encoded_path)
 
+    def _event_url(self, uid):
+        """Return the URL of an event in the current calendar."""
+        return f"{self.remote_cal.url.geturl()}/{uid}.ics"
+
     def _serialize_event(self, event):
         """Convert a vevent to a dictionary."""
         vevent = event.vobject_instance.vevent
         description = (
             vevent.description.value if "description" in vevent.contents else ""
+        )
+        # Expanded occurrences of a recurring event all carry a RECURRENCE-ID
+        recurrence_id = (
+            vevent.recurrence_id.value.isoformat()
+            if "recurrence-id" in vevent.contents
+            else None
         )
         result = {
             "id": vevent.uid.value,
@@ -46,11 +133,13 @@ class Caldav_Backend(CalendarBackend):
             "description": description,
             "calendar": self.calendar,
             "attendees": [],
+            "recurrence_id": recurrence_id,
         }
+        dtend = get_vevent_end(vevent)
         if isinstance(vevent.dtstart.value, datetime.datetime):
             all_day = False
             start = vevent.dtstart.value
-            end = vevent.dtend.value
+            end = dtend
         else:
             tz = timezone.get_current_timezone()
             all_day = True
@@ -60,7 +149,7 @@ class Caldav_Backend(CalendarBackend):
             # Small back to make vuetify calendar happy. 'All day' events are generally
             # created from one day to the day after (even for a 1 day duration...)
             end = datetime.datetime.combine(
-                vevent.dtend.value - relativedelta(days=1), datetime.time.min
+                dtend - relativedelta(days=1), datetime.time.min
             ).replace(tzinfo=tz)
         result.update({"allDay": all_day, "start": start, "end": end})
         if "attendee" in vevent.contents:
@@ -98,66 +187,137 @@ class Caldav_Backend(CalendarBackend):
         )
         return uid
 
-    def update_event(self, uid, original_data):
-        """Update an existing event."""
-        data = dict(original_data)
-        url = f"{self.remote_cal.url.geturl()}/{uid}.ics"
-        cal = self.remote_cal.event_by_url(url)
-        orig_evt = cal.vobject_instance.vevent
+    def _update_vevent(self, vevent, data):
+        """Apply modifications to a vevent."""
         if "title" in data:
-            orig_evt.summary.value = data["title"]
-        if data.get("allDay"):
-            data["start"] = data["start_date"]
-            data["end"] = data["end_date"]
-        if "start" in data:
-            del orig_evt.contents["dtstart"]
-            orig_evt.add("dtstart").value = data["start"]
-        if "end" in data:
-            del orig_evt.contents["dtend"]
-            orig_evt.add("dtend").value = data["end"]
+            vevent.summary.value = data["title"]
+        start, end = get_requested_dates(data)
+        set_vevent_dates(vevent, start, end)
         if "description" in data:
-            if "description" in orig_evt.contents:
-                orig_evt.description.value = data["description"]
+            if "description" in vevent.contents:
+                vevent.description.value = data["description"]
             else:
-                orig_evt.add("description").value = data["description"]
+                vevent.add("description").value = data["description"]
         if "attendees" in data:
-            if "attendee" in orig_evt.contents:
-                del orig_evt.contents["attendee"]
+            if "attendee" in vevent.contents:
+                del vevent.contents["attendee"]
             for attdef in data.get("attendees", []):
-                attendee = orig_evt.add("attendee")
+                attendee = vevent.add("attendee")
                 attendee.value = "MAILTO:{}".format(attdef["email"])
                 attendee.params["CN"] = [attdef["display_name"]]
                 attendee.params["ROLE"] = ["REQ-PARTICIPANT"]
-        if "calendar" in data and self.calendar.pk != data["calendar"].pk:
-            # Calendar has been changed, remove old event first.
-            self.remote_cal.client.delete(url)
-            remote_cal = Calendar(self.client, data["calendar"].encoded_path)
-            url = f"{remote_cal.url.geturl()}/{uid}.ics"
+
+    def _get_or_create_override(self, vcal, recurrence_id):
+        """Return the vevent overriding an occurrence, create it if needed."""
+        override = find_override(vcal, recurrence_id)
+        if override is not None:
+            return override
+        master = get_master(vcal)
+        override = master.duplicate(master)
+        for name in ("rrule", "rdate", "exdate"):
+            override.contents.pop(name, None)
+        start = convert_date(recurrence_id, master.dtstart.value)
+        duration = get_vevent_end(master) - master.dtstart.value
+        override.add("recurrence-id").value = start
+        set_vevent_dates(override, start, start + duration)
+        vcal.add(override)
+        return override
+
+    def _move_series(self, vcal, recurrence_id, data):
+        """Move a whole series based on the new dates of one occurrence."""
+        new_start, new_end = get_requested_dates(data)
+        if new_start is None or new_end is None:
+            return
+        master = get_master(vcal)
+        override = find_override(vcal, recurrence_id)
+        if override is not None:
+            occ_start = override.dtstart.value
+            occ_end = get_vevent_end(override)
         else:
-            remote_cal = self.remote_cal
-        remote_cal.add_event(cal.instance)
+            occ_start = convert_date(recurrence_id, master.dtstart.value)
+            occ_end = occ_start + (get_vevent_end(master) - master.dtstart.value)
+        if isinstance(new_start, datetime.datetime) != isinstance(
+            occ_start, datetime.datetime
+        ):
+            raise ValueError("Cannot change the all day status of a recurring event")
+        if same_date(new_start, occ_start) and same_date(new_end, occ_end):
+            return
+        delta = new_start - occ_start
+        start = master.dtstart.value + delta
+        set_vevent_dates(master, start, start + (new_end - new_start))
+        # Keep exceptions attached to the right occurrences
+        for exdate in master.contents.get("exdate", []):
+            exdate.value = [value + delta for value in exdate.value]
+        for vevent in get_overrides(vcal):
+            if same_date(vevent.dtstart.value, vevent.recurrence_id.value):
+                # Occurrence not moved by the user: follow the series
+                set_vevent_dates(
+                    vevent,
+                    vevent.dtstart.value + delta,
+                    get_vevent_end(vevent) + delta,
+                )
+            vevent.recurrence_id.value += delta
+
+    def update_event(self, uid, original_data):
+        """Update an existing event.
+
+        For a recurring event, ``recurrence_id`` identifies the modified
+        occurrence and ``scope`` tells if the modification applies to this
+        occurrence only or to the whole series.
+        """
+        data = dict(original_data)
+        scope = data.pop("scope", None)
+        recurrence_id = data.pop("recurrence_id", None)
+        new_calendar = data.pop("calendar", None)
+        url = self._event_url(uid)
+        cal = self.remote_cal.event_by_url(url)
+        vcal = cal.vobject_instance
+        if recurrence_id and scope == "occurrence":
+            self._update_vevent(self._get_or_create_override(vcal, recurrence_id), data)
+        else:
+            if recurrence_id and scope == "series":
+                self._move_series(vcal, recurrence_id, data)
+                for field in ("start", "end", "start_date", "end_date", "allDay"):
+                    data.pop(field, None)
+            self._update_vevent(get_master(vcal), data)
+        if new_calendar and self.calendar.pk != new_calendar.pk:
+            # Save the event in the new calendar before removing the old one,
+            # so it is never lost.
+            Calendar(self.client, new_calendar.encoded_path).add_event(vcal.serialize())
+            self.remote_cal.client.delete(url)
+        else:
+            self.remote_cal.add_event(vcal.serialize())
         return uid
 
     def get_event(self, uid):
         """Retrieve and event using its uid."""
-        url = f"{self.remote_cal.url.geturl()}/{uid}.ics"
-        event = self.remote_cal.event_by_url(url)
+        event = self.remote_cal.event_by_url(self._event_url(uid))
         return self._serialize_event(event)
 
     def get_events(self, start, end):
-        """Retrieve a list of events."""
+        """Retrieve a list of events (recurring events are expanded)."""
         orig_events = self.remote_cal.search(
-            server_expand=False, start=start, end=end, event=True
+            expand=True, start=start, end=end, event=True
         )
         events = []
         for event in orig_events:
             events.append(self._serialize_event(event))
         return events
 
-    def delete_event(self, uid):
-        """Delete an event using its uid."""
-        url = f"{self.remote_cal.url.geturl()}/{uid}.ics"
-        self.remote_cal.client.delete(url)
+    def delete_event(self, uid, recurrence_id=None, scope=None):
+        """Delete an event (or only one occurrence of it) using its uid."""
+        url = self._event_url(uid)
+        if not recurrence_id or scope != "occurrence":
+            self.remote_cal.client.delete(url)
+            return
+        cal = self.remote_cal.event_by_url(url)
+        vcal = cal.vobject_instance
+        override = find_override(vcal, recurrence_id)
+        if override is not None:
+            vcal.remove(override)
+        master = get_master(vcal)
+        master.add("exdate").value = [convert_date(recurrence_id, master.dtstart.value)]
+        self.remote_cal.add_event(vcal.serialize())
 
     def import_events(self, fp):
         """Import events from file."""

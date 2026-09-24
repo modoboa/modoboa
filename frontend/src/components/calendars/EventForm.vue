@@ -96,6 +96,7 @@
         </v-btn>
       </v-card-actions>
     </v-form>
+    <RecurrenceScopeDialog ref="scopeDialog" />
   </v-card>
 </template>
 
@@ -106,6 +107,7 @@ import { useGettext } from 'vue3-gettext'
 import { useBusStore } from '@/stores'
 import api from '@/api/calendars'
 import rules from '@/plugins/rules'
+import RecurrenceScopeDialog from '@/components/calendars/RecurrenceScopeDialog'
 
 const props = defineProps({
   info: {
@@ -127,6 +129,7 @@ const userCalendars = ref([])
 const form = ref({})
 const formErrors = ref({})
 const formRef = ref()
+const scopeDialog = ref()
 const working = ref(false)
 
 const title = computed(() => {
@@ -181,9 +184,29 @@ function close() {
   formErrors.value = {}
   emit('close')
 }
+/**
+ * For an occurrence of a recurring event, ask the user if the action applies
+ * to this occurrence only or to the whole series.
+ * Return the parameters to send, or null if the user cancelled.
+ */
+async function getRecurrenceParams(title) {
+  if (!props.event?.recurrence_id) {
+    return {}
+  }
+  const scope = await scopeDialog.value.open(title)
+  if (!scope) {
+    return null
+  }
+  return { recurrence_id: props.event.recurrence_id, scope }
+}
+
 async function saveEvent() {
   const { valid } = await formRef.value.validate()
   if (!valid) {
+    return
+  }
+  const recurrenceParams = await getRecurrenceParams($gettext('Edit event'))
+  if (recurrenceParams === null) {
     return
   }
   working.value = true
@@ -194,6 +217,7 @@ async function saveEvent() {
       allDay: form.value.allDay,
       attendees: form.value.attendees,
       calendar: form.value.calendar,
+      ...recurrenceParams,
     }
 
     if (data.allDay) {
@@ -207,7 +231,8 @@ async function saveEvent() {
       await api.createUserEvent(form.value.calendar, data)
       busStore.displayNotification({ msg: $gettext('Event added') })
     } else {
-      await api.patchUserEvent(form.value.calendar, props.event.id, data)
+      // The event is still stored in its original calendar
+      await api.patchUserEvent(props.event.calendar.pk, props.event.id, data)
       busStore.displayNotification({ msg: $gettext('Event updated') })
     }
     emit('refreshCalendar', data.calendar)
@@ -218,9 +243,17 @@ async function saveEvent() {
 }
 
 async function deleteEvent() {
+  const recurrenceParams = await getRecurrenceParams($gettext('Delete event'))
+  if (recurrenceParams === null) {
+    return
+  }
   working.value = true
   try {
-    await api.deleteUserEvent(form.value.calendar, props.event.id)
+    await api.deleteUserEvent(
+      props.event.calendar.pk,
+      props.event.id,
+      recurrenceParams
+    )
     busStore.displayNotification({ msg: $gettext('Event deleted') })
     emit('refreshCalendar', form.value.calendar)
     close()
