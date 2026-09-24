@@ -906,3 +906,61 @@ class MailboxViewSetTestCase(ModoAPITestCase):
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.json()), 1)
+
+
+class UserPreferencesTestCase(ModoAPITestCase):
+    """User preferences test case."""
+
+    @classmethod
+    def setUpTestData(cls):
+        super().setUpTestData()
+        populate_database()
+        cls.account = core_models.User.objects.get(username="user@test.com")
+
+    def setUp(self):
+        """Initiate test context."""
+        self.client.force_authenticate(self.account)
+
+    def test_get_default_preferences(self):
+        url = reverse("v2:parameter-user-detail", args=["calendars"])
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        params = response.json()["params"]
+        self.assertEqual(params["working_hours_start"], 9)
+        self.assertEqual(params["working_hours_end"], 18)
+
+    def test_update_preferences(self):
+        url = reverse("v2:parameter-user-detail", args=["calendars"])
+        response = self.client.put(
+            url,
+            {"working_hours_start": 8, "working_hours_end": 24},
+            format="json",
+        )
+        self.assertEqual(response.status_code, 200)
+        self.account.refresh_from_db()
+        self.assertEqual(
+            self.account.parameters.get_value("working_hours_start", app="calendars"),
+            8,
+        )
+        self.assertEqual(
+            self.account.parameters.get_value("working_hours_end", app="calendars"),
+            24,
+        )
+
+    def test_update_preferences_invalid_range(self):
+        url = reverse("v2:parameter-user-detail", args=["calendars"])
+        response = self.client.put(
+            url,
+            {"working_hours_start": 18, "working_hours_end": 9},
+            format="json",
+        )
+        self.assertEqual(response.status_code, 400)
+        self.assertIn("working_hours_end", response.json())
+
+        response = self.client.put(
+            url,
+            {"working_hours_start": 24, "working_hours_end": 24},
+            format="json",
+        )
+        self.assertEqual(response.status_code, 400)
+        self.assertIn("working_hours_start", response.json())

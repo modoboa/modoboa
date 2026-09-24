@@ -20,6 +20,7 @@ const userSettingsMenuItems = computed(() => {
   const result = []
   // Temporary solution...
   const appIcons = {
+    calendars: 'mdi-calendar',
     contacts: 'mdi-contacts-outline',
     webmail: 'mdi-at',
     amavis: 'mdi-server-security',

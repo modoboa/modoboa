@@ -56,6 +56,8 @@
                     item-title="text"
                     :hint="param.help_text"
                     persistent-hint
+                    :error="formErrors[param.name] !== undefined"
+                    :error-messages="formErrors[param.name]"
                     density="compact"
                     variant="outlined"
                   />
