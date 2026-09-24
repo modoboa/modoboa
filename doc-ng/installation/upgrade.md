@@ -286,6 +286,49 @@ the following variable to your `settings.py` file (in seconds):
 WEBMAIL_IMAP_TIMEOUT = 30
 ```
 
+### Recommended: enable Radicale login cache
+
+Each request sent by the calendar to Radicale triggers a call to the
+`/api/o/introspect/` endpoint to validate the OAuth2 token, which costs
+around 100ms. Radicale can cache successful logins, but this feature is
+only available to external authentication plugins starting with
+`radicale-modoboa-auth-oauth2` 0.5.0.
+
+First, upgrade the plugin inside Radicale's virtualenv
+(`/srv/radicale/env` by default):
+
+``` shell
+$ sudo -u radicale /srv/radicale/env/bin/pip install -U "radicale-modoboa-auth-oauth2>=0.5.0"
+```
+
+Then, add the following lines to the `[auth]` section of Radicale's
+configuration file (`/etc/radicale/config` by default):
+
+``` ini
+[auth]
+type = radicale_modoboa_auth_oauth2
+oauth2_introspection_endpoint = ...
+cache_logins = True # [!code ++]
+cache_successful_logins_expiry = 60 # [!code ++]
+```
+
+::: warning
+A revoked token remains accepted by Radicale until its cache entry
+expires (`cache_successful_logins_expiry`, in seconds).
+:::
+
+Finally, restart Radicale:
+
+``` shell
+$ sudo supervisorctl restart radicale
+```
+
+Radicale's log should contain the following line at startup:
+
+``` txt
+auth.cache_logins enabled for oauth2 plugin (successful: 60 sec, failed: 90 sec)
+```
+
 ## Version 2.10.1
 
 ### Webmail attachments moved out of `MEDIA_ROOT`
