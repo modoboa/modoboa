@@ -350,6 +350,20 @@ class ImportFromFileSerializer(serializers.Serializer):
     ics_file = serializers.FileField()
 
 
+class RightsRequestSerializer(serializers.Serializer):
+    """Rights requested by the Radicale server."""
+
+    user = serializers.CharField()
+
+
+class RightsSerializer(serializers.Serializer):
+    """Rights of a user on collections owned by someone else."""
+
+    admin_domains = serializers.ListField(child=serializers.CharField())
+    managed_domains = serializers.ListField(child=serializers.CharField())
+    shares = serializers.DictField(child=serializers.CharField())
+
+
 class GlobalParametersSerializer(serializers.Serializer):
     """A serializer for global parameters."""
 

@@ -133,6 +133,37 @@ With that set-up, radicale should be working when managing calendars
 through modoboa's web interface but [not]{#not}\_ when using other
 clients like Thunderbird.
 
+### Rights management with the Modoboa API (recommended)
+
+With the `from_file` rights backend, Modoboa writes the rights file
+periodically, but Radicale (>= 3.3) only reads it at startup and both
+services must share the same filesystem. The `radicale-modoboa-rights`
+plugin asks the Modoboa API instead, so calendars shared through access
+rules work immediately, even when Radicale runs on another server.
+
+Install it inside radicale venv:
+
+``` shell
+$ sudo -u radicale /var/lib/radicale/env/bin/pip install radicale-modoboa-rights
+```
+
+Then replace the `[rights]` section of `/etc/radicale/config`, using the
+same OAuth2 application as above:
+
+```ini
+[rights]
+type = radicale_modoboa_rights
+modoboa_rights_endpoint = https://<hostname of your server>/api/v2/calendar-rights/
+modoboa_client_id = radicale
+modoboa_client_secret = <client_secret>
+```
+
+Access to a user's own calendars and to the shared calendars of his
+domain is decided by the plugin itself, without calling the API. Rights
+fetched from the API are cached (60 seconds by default): a revoked
+access rule is enforced after this delay. See the plugin documentation
+for all settings.
+
 ### Modifications for using external clients (optional)
 
 To ensure other clients can identify, you need to modify radicale by

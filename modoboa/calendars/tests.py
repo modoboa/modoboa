@@ -1,5 +1,6 @@
 """Radicale extension unit tests."""
 
+import base64
 import os
 import tempfile
 from unittest import mock
@@ -15,6 +16,8 @@ from django.db import connection
 from django.db.migrations.executor import MigrationExecutor
 from django.test import TransactionTestCase
 
+from oauth2_provider.models import get_application_model
+
 from modoboa.admin import factories as admin_factories
 from modoboa.admin import models as admin_models
 from modoboa.core import factories as core_factories
@@ -23,6 +26,7 @@ from modoboa.lib.tests import ModoAPITestCase
 
 from modoboa.admin.factories import populate_database
 
+from . import authentication
 from . import factories
 from . import jobs
 from . import models
@@ -1222,6 +1226,173 @@ class MailboxViewSetTestCase(ModoAPITestCase):
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.json()), 1)
+
+
+class RightsViewSetTestCase(TestDataMixin, ModoAPITestCase):
+    """Rights requested by the Radicale server."""
+
+    @classmethod
+    def setUpTestData(cls):
+        super().setUpTestData()
+        Application = get_application_model()
+        cls.client_secret = "radicale-secret"
+        Application.objects.create(
+            name="Radicale",
+            client_id="radicale",
+            client_secret=cls.client_secret,
+            client_type=Application.CLIENT_CONFIDENTIAL,
+            authorization_grant_type=Application.GRANT_CLIENT_CREDENTIALS,
+        )
+        Application.objects.create(
+            name="Dovecot",
+            client_id="dovecot",
+            client_secret=cls.client_secret,
+            client_type=Application.CLIENT_CONFIDENTIAL,
+            authorization_grant_type=Application.GRANT_CLIENT_CREDENTIALS,
+        )
+        cls.url = reverse("api:calendar-rights-list")
+
+    def setUp(self):
+        super().setUp()
+        self.authenticate_radicale()
+
+    def authenticate_radicale(self, client_id="radicale", client_secret=None):
+        credentials = f"{client_id}:{client_secret or self.client_secret}"
+        self.client.credentials(
+            HTTP_AUTHORIZATION="Basic "
+            + base64.b64encode(credentials.encode()).decode()
+        )
+
+    def get_rights(self, username):
+        response = self.client.post(self.url, {"user": username}, format="json")
+        self.assertEqual(response.status_code, 200)
+        return response.json()
+
+    def test_shared_calendar(self):
+        rights = self.get_rights("admin@test.com")
+        self.assertEqual(rights["shares"], {self.calendar.path: "rwd"})
+
+    def test_read_only_shared_calendar(self):
+        self.acr1.write = False
+        self.acr1.save()
+        rights = self.get_rights("admin@test.com")
+        self.assertEqual(rights["shares"], {self.calendar.path: "r"})
+
+    def test_write_only_shared_calendar(self):
+        self.acr1.read = False
+        self.acr1.save()
+        rights = self.get_rights("admin@test.com")
+        self.assertEqual(rights["shares"], {self.calendar.path: "wd"})
+
+    def test_rule_without_access(self):
+        self.acr1.read = False
+        self.acr1.write = False
+        self.acr1.save()
+        rights = self.get_rights("admin@test.com")
+        self.assertEqual(rights["shares"], {})
+
+    def test_shared_calendar_of_inactive_owner(self):
+        self.account.is_active = False
+        self.account.save()
+        rights = self.get_rights("admin@test.com")
+        self.assertEqual(rights["shares"], {})
+
+    def test_shared_calendar_of_disabled_domain(self):
+        admin_models.Domain.objects.filter(pk=self.domain.pk).update(enabled=False)
+        rights = self.get_rights("admin@test.com")
+        self.assertEqual(rights["shares"], {})
+
+    def test_calendars_of_other_users_are_not_returned(self):
+        rights = self.get_rights("user@test.com")
+        self.assertEqual(
+            rights, {"admin_domains": [], "managed_domains": [], "shares": {}}
+        )
+
+    def test_domain_admin(self):
+        rights = self.get_rights("admin@test.com")
+        self.assertEqual(rights["managed_domains"], ["test.com"])
+        self.assertEqual(rights["admin_domains"], [])
+        self.set_global_parameter(
+            "allow_calendars_administration", True, app="calendars"
+        )
+        rights = self.get_rights("admin@test.com")
+        self.assertEqual(rights["admin_domains"], ["test.com"])
+
+    def test_superadmin(self):
+        rights = self.get_rights("admin")
+        self.assertEqual(rights["managed_domains"], ["*"])
+        self.assertEqual(rights["admin_domains"], [])
+        self.set_global_parameter(
+            "allow_calendars_administration", True, app="calendars"
+        )
+        rights = self.get_rights("admin")
+        self.assertEqual(rights["admin_domains"], ["*"])
+
+    def test_unknown_user(self):
+        rights = self.get_rights("unknown@test.com")
+        self.assertEqual(
+            rights, {"admin_domains": [], "managed_domains": [], "shares": {}}
+        )
+
+    def test_inactive_user(self):
+        self.admin_account.is_active = False
+        self.admin_account.save()
+        rights = self.get_rights("admin@test.com")
+        self.assertEqual(
+            rights, {"admin_domains": [], "managed_domains": [], "shares": {}}
+        )
+
+    def test_missing_user(self):
+        response = self.client.post(self.url, {}, format="json")
+        self.assertEqual(response.status_code, 400)
+
+    def test_authentication_required(self):
+        self.client.credentials()
+        response = self.client.post(self.url, {"user": "admin@test.com"})
+        self.assertEqual(response.status_code, 401)
+        self.assertIn("WWW-Authenticate", response)
+
+    def test_invalid_credentials(self):
+        for client_id, client_secret in [
+            ("radicale", "wrong-secret"),
+            ("unknown", self.client_secret),
+            # Valid credentials of another application
+            ("dovecot", self.client_secret),
+        ]:
+            with self.subTest(client_id=client_id):
+                self.authenticate_radicale(client_id, client_secret)
+                response = self.client.post(self.url, {"user": "admin@test.com"})
+                self.assertEqual(response.status_code, 401)
+
+    def test_invalid_basic_header(self):
+        for header in [
+            "Basic",
+            "Basic !!!",
+            "Basic " + base64.b64encode(b"a").decode(),
+        ]:
+            with self.subTest(header=header):
+                self.client.credentials(HTTP_AUTHORIZATION=header)
+                response = self.client.post(self.url, {"user": "admin@test.com"})
+                self.assertEqual(response.status_code, 401)
+
+    def test_user_token_is_refused(self):
+        self.authenticate_user(self.sadmin)
+        response = self.client.post(self.url, {"user": "admin@test.com"})
+        self.assertEqual(response.status_code, 401)
+
+    @mock.patch.dict(authentication._verified_secrets, clear=True)
+    def test_verified_secret_is_remembered(self):
+        with mock.patch.object(
+            authentication,
+            "check_password",
+            wraps=authentication.check_password,
+        ) as check_password:
+            self.get_rights("admin@test.com")
+            self.get_rights("admin@test.com")
+            self.authenticate_radicale(client_secret="wrong-secret")
+            response = self.client.post(self.url, {"user": "admin@test.com"})
+            self.assertEqual(response.status_code, 401)
+        self.assertEqual(check_password.call_count, 2)
 
 
 class RenameDuplicateCalendarsMigrationTestCase(TransactionTestCase):
