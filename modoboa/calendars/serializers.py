@@ -22,6 +22,18 @@ class CalDAVCalendarMixin:
         models.calendar_name_validator(value)
         return value
 
+    def check_name_is_free(self, queryset, name):
+        """Make sure no other calendar of queryset is named name.
+
+        Comparison ignores case, like most database collations.
+        """
+        if self.instance:
+            queryset = queryset.exclude(pk=self.instance.pk)
+        if queryset.filter(name__iexact=name).exists():
+            raise serializers.ValidationError(
+                {"name": _("A calendar with this name already exists.")}
+            )
+
     def create_remote_calendar(self, calendar):
         """Create caldav calendar."""
         request = self.context["request"]
@@ -42,6 +54,19 @@ class UserCalendarSerializer(CalDAVCalendarMixin, serializers.ModelSerializer):
         model = models.UserCalendar
         fields = ("pk", "name", "color", "path", "full_url", "share_url")
         read_only_fields = ("pk", "path", "full_url", "share_url")
+
+    def validate(self, data):
+        """Names are unique per owner."""
+        if "name" in data:
+            mailbox = (
+                self.instance.mailbox
+                if self.instance
+                else self.context["request"].user.mailbox
+            )
+            self.check_name_is_free(
+                models.UserCalendar.objects.filter(mailbox=mailbox), data["name"]
+            )
+        return data
 
     def create(self, validated_data):
         """Use current user."""
@@ -103,6 +128,18 @@ class SharedCalendarSerializer(CalDAVCalendarMixin, serializers.ModelSerializer)
         ):
             raise serializers.ValidationError(_("Permission denied."))
         return value
+
+    def validate(self, data):
+        """Names are unique per domain."""
+        if "name" in data:
+            domain_pk = (
+                data["domain"]["pk"] if "domain" in data else self.instance.domain_id
+            )
+            self.check_name_is_free(
+                models.SharedCalendar.objects.filter(domain_id=domain_pk),
+                data["name"],
+            )
+        return data
 
     def create(self, validated_data):
         """Create shared calendar."""

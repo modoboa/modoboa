@@ -132,6 +132,11 @@ class UserCalendar(Calendar):
 
     class Meta(Calendar.Meta):
         db_table = "radicale_usercalendar"
+        constraints = [
+            models.UniqueConstraint(
+                fields=["mailbox", "name"], name="radicale_usercalendar_unique_name"
+            )
+        ]
 
     @property
     def owner(self):
@@ -164,11 +169,31 @@ class SharedCalendar(Calendar):
 
     class Meta(Calendar.Meta):
         db_table = "radicale_sharedcalendar"
+        constraints = [
+            models.UniqueConstraint(
+                fields=["domain", "name"], name="radicale_sharedcalendar_unique_name"
+            )
+        ]
 
     @property
     def owner(self):
         """Return calendar owner."""
         return self.domain
+
+
+def get_free_path(model, path):
+    """Return a collection path not used by any calendar of model.
+
+    A calendar keeps its path when it is renamed, so the path built from
+    a new calendar's name can already be used. Comparison ignores case,
+    for case-insensitive filesystems and database collations.
+    """
+    candidate = path
+    counter = 2
+    while model.objects.filter(_path__iexact=candidate).exists():
+        candidate = f"{path}-{counter}"
+        counter += 1
+    return candidate
 
 
 def get_share_candidates(owner):

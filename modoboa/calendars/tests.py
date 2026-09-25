@@ -11,6 +11,9 @@ from configparser import ConfigParser
 from django.urls import reverse
 from django.core import management
 from django.core.exceptions import ValidationError
+from django.db import connection
+from django.db.migrations.executor import MigrationExecutor
+from django.test import TransactionTestCase
 
 from modoboa.admin import factories as admin_factories
 from modoboa.admin import models as admin_models
@@ -288,6 +291,56 @@ class UserCalendarViewSetTestCase(TestDataMixin, ModoAPITestCase):
         self.assertEqual(response.status_code, 400)
         self.assertIn("name", response.json())
 
+    @mock.patch("caldav.DAVClient")
+    def test_create_calendar_with_existing_name(self, client_mock):
+        """Calendar names are unique per owner, ignoring case."""
+        client_mock.return_value = mocks.DAVClientMock()
+        url = reverse("api:user-calendar-list")
+        for name in [self.calendar.name, self.calendar.name.upper()]:
+            with self.subTest(name=name):
+                response = self.client.post(
+                    url, {"name": name, "color": "#ffffff"}, format="json"
+                )
+                self.assertEqual(response.status_code, 400)
+                self.assertIn("name", response.json())
+        # Other users can use the same name
+        self.client.force_authenticate(self.admin_account)
+        response = self.client.post(
+            url, {"name": self.calendar.name, "color": "#ffffff"}, format="json"
+        )
+        self.assertEqual(response.status_code, 201)
+
+    @mock.patch("caldav.DAVClient")
+    @mock.patch("caldav.Calendar")
+    def test_rename_calendar_with_existing_name(self, cal_mock, client_mock):
+        client_mock.return_value = mocks.DAVClientMock()
+        cal_mock.return_value = mocks.Calendar()
+        other = factories.UserCalendarFactory(mailbox=self.account.mailbox)
+        url = reverse("api:user-calendar-detail", args=[other.pk])
+        response = self.client.put(
+            url, {"name": self.calendar.name, "color": "#ffffff"}, format="json"
+        )
+        self.assertEqual(response.status_code, 400)
+        self.assertIn("name", response.json())
+        # Keeping its own name is allowed
+        response = self.client.put(
+            url, {"name": other.name, "color": "#000000"}, format="json"
+        )
+        self.assertEqual(response.status_code, 200)
+
+    def test_new_calendar_does_not_reuse_path_of_renamed_one(self):
+        """A renamed calendar keeps its path, a new one must not take it."""
+        calendar = factories.UserCalendarFactory(
+            mailbox=self.account.mailbox, name="Work"
+        )
+        calendar.name = "Job"
+        calendar.save()
+        new_calendar = factories.UserCalendarFactory(
+            mailbox=self.account.mailbox, name="work"
+        )
+        self.assertEqual(calendar.path, "user@test.com/Work")
+        self.assertEqual(new_calendar.path, "user@test.com/work-2")
+
     def test_calendar_name_validator(self):
         for name in ["Test calendaré", "Mon agenda (perso)", "v1.2", "A & B"]:
             with self.subTest(name=name):
@@ -383,6 +436,25 @@ class SharedCalendarViewSetTestCase(TestDataMixin, ModoAPITestCase):
             "domain": {"pk": self.domain.pk, "name": "test.com"},
         }
         url = reverse("api:shared-calendar-list")
+        response = self.client.post(url, data, format="json")
+        self.assertEqual(response.status_code, 201)
+
+    @mock.patch("caldav.DAVClient")
+    def test_create_calendar_with_existing_name(self, client_mock):
+        """Calendar names are unique per domain."""
+        client_mock.return_value = mocks.DAVClientMock()
+        self.client.force_authenticate(self.sadmin)
+        url = reverse("api:shared-calendar-list")
+        data = {
+            "name": self.scalendar.name,
+            "color": "#ffffff",
+            "domain": {"pk": self.domain.pk, "name": "test.com"},
+        }
+        response = self.client.post(url, data, format="json")
+        self.assertEqual(response.status_code, 400)
+        self.assertIn("name", response.json())
+        # Another domain can use the same name
+        data["domain"] = {"pk": self.domain2.pk, "name": "test2.com"}
         response = self.client.post(url, data, format="json")
         self.assertEqual(response.status_code, 201)
 
@@ -1150,3 +1222,61 @@ class MailboxViewSetTestCase(ModoAPITestCase):
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.json()), 1)
+
+
+class RenameDuplicateCalendarsMigrationTestCase(TransactionTestCase):
+    """Migration renaming calendars before names become unique."""
+
+    databases = "__all__"
+    migrate_from = ("calendars", "0007_calendar_name_validator")
+    migrate_to = ("calendars", "0009_calendar_name_unique_constraints")
+
+    def get_targets(self, executor, node):
+        """Return migration targets: node for calendars, latest for others."""
+        return [node] + [
+            leaf for leaf in executor.loader.graph.leaf_nodes() if leaf[0] != node[0]
+        ]
+
+    def setUp(self):
+        executor = MigrationExecutor(connection)
+        targets = self.get_targets(executor, self.migrate_from)
+        executor.migrate(targets)
+        executor.loader.build_graph()
+        apps = executor.loader.project_state(targets).apps
+        Domain = apps.get_model("admin", "Domain")
+        Mailbox = apps.get_model("admin", "Mailbox")
+        User = apps.get_model("core", "User")
+        UserCalendar = apps.get_model("calendars", "UserCalendar")
+        domain = Domain.objects.create(name="migration.test", quota=0)
+        user = User.objects.create(username="user@migration.test")
+        mailbox = Mailbox.objects.create(
+            address="user", domain=domain, user=user, quota=0
+        )
+        for name in ["Work", "work", "Work", "Work (2)", "Home"]:
+            UserCalendar.objects.create(
+                mailbox=mailbox, name=name, _path=f"user@migration.test/{name}"
+            )
+
+    def tearDown(self):
+        # Leave the database fully migrated for other tests
+        executor = MigrationExecutor(connection)
+        executor.migrate(executor.loader.graph.leaf_nodes())
+
+    def test_duplicates_are_renamed(self):
+        executor = MigrationExecutor(connection)
+        targets = self.get_targets(executor, self.migrate_to)
+        executor.migrate(targets)
+        executor.loader.build_graph()
+        apps = executor.loader.project_state(targets).apps
+        UserCalendar = apps.get_model("calendars", "UserCalendar")
+        calendars = UserCalendar.objects.order_by("pk").values_list("name", "_path")
+        self.assertEqual(
+            list(calendars),
+            [
+                ("Work", "user@migration.test/Work"),
+                ("work (3)", "user@migration.test/work"),
+                ("Work (4)", "user@migration.test/Work"),
+                ("Work (2)", "user@migration.test/Work (2)"),
+                ("Home", "user@migration.test/Home"),
+            ],
+        )
