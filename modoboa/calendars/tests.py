@@ -10,6 +10,7 @@ from configparser import ConfigParser
 
 from django.urls import reverse
 from django.core import management
+from django.core.exceptions import ValidationError
 
 from modoboa.admin import factories as admin_factories
 from modoboa.admin import models as admin_models
@@ -276,6 +277,28 @@ class UserCalendarViewSetTestCase(TestDataMixin, ModoAPITestCase):
         self.assertFalse(
             models.UserCalendar.objects.filter(name__contains="zzz-pwned").exists()
         )
+
+    @mock.patch("caldav.DAVClient")
+    def test_create_calendar_rejects_radicale_forbidden_characters(self, client_mock):
+        """Radicale refuses paths containing some characters."""
+        client_mock.return_value = mocks.DAVClientMock()
+        url = reverse("api:user-calendar-list")
+        payload = {"name": "Réunions d'équipe", "color": "#ffffff"}
+        response = self.client.post(url, payload, format="json")
+        self.assertEqual(response.status_code, 400)
+        self.assertIn("name", response.json())
+
+    def test_calendar_name_validator(self):
+        for name in ["Test calendaré", "Mon agenda (perso)", "v1.2", "A & B"]:
+            with self.subTest(name=name):
+                models.calendar_name_validator(name)
+        invalid_names = [
+            f"cal{char}endar" for char in models.CALENDAR_NAME_FORBIDDEN_CHARACTERS
+        ] + [".", "..", "cal\nendar", "cal\tendar", "cal\x00", "cal\x7f", "cal\u200b"]
+        for name in invalid_names:
+            with self.subTest(name=name):
+                with self.assertRaises(ValidationError):
+                    models.calendar_name_validator(name)
 
     @mock.patch("caldav.DAVClient")
     @mock.patch("caldav.Calendar")
