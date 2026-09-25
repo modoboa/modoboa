@@ -1,6 +1,7 @@
 """Radicale extension unit tests."""
 
 import base64
+import datetime
 import os
 import tempfile
 from unittest import mock
@@ -15,8 +16,9 @@ from django.core.exceptions import ValidationError
 from django.db import connection
 from django.db.migrations.executor import MigrationExecutor
 from django.test import TransactionTestCase
+from django.utils import timezone
 
-from oauth2_provider.models import get_application_model
+from oauth2_provider.models import get_access_token_model, get_application_model
 
 from modoboa.admin import factories as admin_factories
 from modoboa.admin import models as admin_models
@@ -26,7 +28,6 @@ from modoboa.lib.tests import ModoAPITestCase
 
 from modoboa.admin.factories import populate_database
 
-from . import authentication
 from . import factories
 from . import jobs
 from . import models
@@ -1236,14 +1237,14 @@ class RightsViewSetTestCase(TestDataMixin, ModoAPITestCase):
         super().setUpTestData()
         Application = get_application_model()
         cls.client_secret = "radicale-secret"
-        Application.objects.create(
+        cls.radicale = Application.objects.create(
             name="Radicale",
             client_id="radicale",
             client_secret=cls.client_secret,
             client_type=Application.CLIENT_CONFIDENTIAL,
             authorization_grant_type=Application.GRANT_CLIENT_CREDENTIALS,
         )
-        Application.objects.create(
+        cls.dovecot = Application.objects.create(
             name="Dovecot",
             client_id="dovecot",
             client_secret=cls.client_secret,
@@ -1256,12 +1257,16 @@ class RightsViewSetTestCase(TestDataMixin, ModoAPITestCase):
         super().setUp()
         self.authenticate_radicale()
 
-    def authenticate_radicale(self, client_id="radicale", client_secret=None):
-        credentials = f"{client_id}:{client_secret or self.client_secret}"
-        self.client.credentials(
-            HTTP_AUTHORIZATION="Basic "
-            + base64.b64encode(credentials.encode()).decode()
+    def authenticate_radicale(self, application=None, expires_in=300):
+        """Use an access token obtained with the client credentials grant."""
+        token = get_access_token_model().objects.create(
+            user=None,
+            application=application or self.radicale,
+            token=f"token-{get_access_token_model().objects.count()}",
+            expires=timezone.now() + datetime.timedelta(seconds=expires_in),
+            scope="read write",
         )
+        self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {token.token}")
 
     def get_rights(self, username):
         response = self.client.post(self.url, {"user": username}, format="json")
@@ -1346,53 +1351,52 @@ class RightsViewSetTestCase(TestDataMixin, ModoAPITestCase):
         response = self.client.post(self.url, {}, format="json")
         self.assertEqual(response.status_code, 400)
 
+    def test_client_credentials_grant(self):
+        """Radicale gets a token with its client credentials."""
+        credentials = f"radicale:{self.client_secret}"
+        self.client.credentials(
+            HTTP_AUTHORIZATION="Basic "
+            + base64.b64encode(credentials.encode()).decode()
+        )
+        response = self.client.post(
+            reverse("oauth2_provider:token"), {"grant_type": "client_credentials"}
+        )
+        self.assertEqual(response.status_code, 200)
+        token = response.json()["access_token"]
+        self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {token}")
+        rights = self.get_rights("admin@test.com")
+        self.assertEqual(rights["shares"], {self.calendar.path: "rwd"})
+
     def test_authentication_required(self):
         self.client.credentials()
         response = self.client.post(self.url, {"user": "admin@test.com"})
         self.assertEqual(response.status_code, 401)
         self.assertIn("WWW-Authenticate", response)
 
-    def test_invalid_credentials(self):
-        for client_id, client_secret in [
-            ("radicale", "wrong-secret"),
-            ("unknown", self.client_secret),
-            # Valid credentials of another application
-            ("dovecot", self.client_secret),
-        ]:
-            with self.subTest(client_id=client_id):
-                self.authenticate_radicale(client_id, client_secret)
-                response = self.client.post(self.url, {"user": "admin@test.com"})
-                self.assertEqual(response.status_code, 401)
-
-    def test_invalid_basic_header(self):
-        for header in [
-            "Basic",
-            "Basic !!!",
-            "Basic " + base64.b64encode(b"a").decode(),
-        ]:
-            with self.subTest(header=header):
-                self.client.credentials(HTTP_AUTHORIZATION=header)
-                response = self.client.post(self.url, {"user": "admin@test.com"})
-                self.assertEqual(response.status_code, 401)
-
-    def test_user_token_is_refused(self):
-        self.authenticate_user(self.sadmin)
+    def test_invalid_token(self):
+        self.client.credentials(HTTP_AUTHORIZATION="Bearer unknown")
         response = self.client.post(self.url, {"user": "admin@test.com"})
         self.assertEqual(response.status_code, 401)
 
-    @mock.patch.dict(authentication._verified_secrets, clear=True)
-    def test_verified_secret_is_remembered(self):
-        with mock.patch.object(
-            authentication,
-            "check_password",
-            wraps=authentication.check_password,
-        ) as check_password:
-            self.get_rights("admin@test.com")
-            self.get_rights("admin@test.com")
-            self.authenticate_radicale(client_secret="wrong-secret")
-            response = self.client.post(self.url, {"user": "admin@test.com"})
-            self.assertEqual(response.status_code, 401)
-        self.assertEqual(check_password.call_count, 2)
+    def test_expired_token(self):
+        self.authenticate_radicale(expires_in=-1)
+        response = self.client.post(self.url, {"user": "admin@test.com"})
+        self.assertEqual(response.status_code, 401)
+
+    def test_token_of_another_application(self):
+        self.authenticate_radicale(application=self.dovecot)
+        response = self.client.post(self.url, {"user": "admin@test.com"})
+        self.assertEqual(response.status_code, 403)
+
+    def test_user_tokens_are_refused(self):
+        # OAuth2 token of a user
+        self.authenticate_user_with_oauth(self.sadmin)
+        response = self.client.post(self.url, {"user": "admin@test.com"})
+        self.assertEqual(response.status_code, 403)
+        # API token of a user
+        self.authenticate_user(self.sadmin)
+        response = self.client.post(self.url, {"user": "admin@test.com"})
+        self.assertEqual(response.status_code, 401)
 
 
 class RenameDuplicateCalendarsMigrationTestCase(TransactionTestCase):
