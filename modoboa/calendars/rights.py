@@ -2,7 +2,8 @@
 
 They are requested by the radicale-modoboa-rights plugin, which decides
 locally the access of users to their own calendars and to the shared
-calendars of their domain.
+calendars of their domain. Shares are also written to the rights file
+(generate_rights command), so both give the same access.
 """
 
 from django.db.models import Q
@@ -23,6 +24,20 @@ def get_administered_domains(user):
         return [ALL_DOMAINS]
     return sorted(
         Domain.objects.get_for_admin(user).values_list("name", flat=True).distinct()
+    )
+
+
+def get_effective_access_rules():
+    """Return the access rules granting an access.
+
+    Rules granting no access, or involving an inactive owner or grantee,
+    or a calendar of a disabled domain, are ignored.
+    """
+    return models.AccessRule.objects.filter(
+        Q(read=True) | Q(write=True),
+        mailbox__user__is_active=True,
+        calendar__mailbox__user__is_active=True,
+        calendar__mailbox__domain__enabled=True,
     )
 
 
@@ -53,12 +68,8 @@ def get_user_rights(username):
     ):
         rights["admin_domains"] = domains
     rules = (
-        models.AccessRule.objects.filter(
-            Q(read=True) | Q(write=True),
-            mailbox__user=user,
-            calendar__mailbox__user__is_active=True,
-            calendar__mailbox__domain__enabled=True,
-        )
+        get_effective_access_rules()
+        .filter(mailbox__user=user)
         .order_by("pk")
         .values_list("calendar___path", "read", "write")
     )

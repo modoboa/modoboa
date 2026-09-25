@@ -32,6 +32,7 @@ from . import factories
 from . import jobs
 from . import models
 from . import mocks
+from . import rights
 
 
 class TestDataMixin:
@@ -113,7 +114,7 @@ class AccessRuleTestCase(ModoAPITestCase):
         self.assertTrue(cfg.has_section(section))
         self.assertEqual(cfg.get(section, "user"), "user@test.com")
         self.assertEqual(cfg.get(section, "collection"), f"admin@test.com/{cal.name}")
-        self.assertEqual(cfg.get(section, "permissions"), "Rr")
+        self.assertEqual(cfg.get(section, "permissions"), "r")
 
         # Call a second time
         jobs.generate_rights()
@@ -156,6 +157,68 @@ class AccessRuleTestCase(ModoAPITestCase):
             self._read_rights_file().has_section(
                 f"token-usercalendar-{cal.pk}-{cal.path}"
             )
+        )
+
+    def test_rights_file_shares_match_api(self):
+        """The rights file and the rights API give the same shares."""
+        grantee = admin_models.Mailbox.objects.get(
+            address="user", domain__name="test.com"
+        )
+        owner = admin_models.Mailbox.objects.get(
+            address="admin", domain__name="test.com"
+        )
+        inactive_owner = admin_models.Mailbox.objects.get(
+            address="admin", domain__name="test2.com"
+        )
+        expected = {}
+        for read, write, permissions in [
+            (True, False, "r"),
+            (True, True, "rwd"),
+            (False, True, "wd"),
+            (False, False, None),
+        ]:
+            cal = factories.UserCalendarFactory(mailbox=owner)
+            factories.AccessRuleFactory(
+                mailbox=grantee, calendar=cal, read=read, write=write
+            )
+            if permissions:
+                expected[cal.path] = permissions
+        cal = factories.UserCalendarFactory(mailbox=inactive_owner)
+        factories.AccessRuleFactory(mailbox=grantee, calendar=cal, read=True)
+        inactive_owner.user.is_active = False
+        inactive_owner.user.save()
+        jobs.generate_rights()
+
+        cfg = self._read_rights_file()
+        file_shares = {
+            cfg.get(section, "collection"): cfg.get(section, "permissions")
+            for section in cfg.sections()
+            if cfg.get(section, "user") == grantee.full_address
+        }
+        self.assertEqual(file_shares, expected)
+        self.assertEqual(
+            rights.get_user_rights(grantee.full_address)["shares"], expected
+        )
+
+    def test_rights_file_ignores_inactive_grantee(self):
+        grantee = admin_models.Mailbox.objects.get(
+            address="user", domain__name="test.com"
+        )
+        owner = admin_models.Mailbox.objects.get(
+            address="admin", domain__name="test.com"
+        )
+        cal = factories.UserCalendarFactory(mailbox=owner)
+        factories.AccessRuleFactory(mailbox=grantee, calendar=cal, read=True)
+        grantee.user.is_active = False
+        grantee.user.save()
+        jobs.generate_rights()
+        cfg = self._read_rights_file()
+        self.assertFalse(
+            [
+                section
+                for section in cfg.sections()
+                if cfg.get(section, "user") == grantee.full_address
+            ]
         )
 
     def test_rights_file_sections_are_unique(self):
