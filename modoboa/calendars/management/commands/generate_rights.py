@@ -45,31 +45,40 @@ permissions: {perm}
         )
 
     def _user_access_rules(self):
-        """Create user access rules."""
+        """Create user access rules.
+
+        Section names include the rule's pk: names built from the grantee
+        and the calendar only are not unique (e.g. two owners sharing a
+        calendar with the same name) and Radicale refuses to start when a
+        section is duplicated.
+        """
         qset = models.AccessRule.objects.order_by("pk").values_list(
+            "pk",
             "mailbox__address",
             "mailbox__domain__name",
-            "calendar__name",
             "calendar___path",
             "read",
             "write",
         )
-        for address, domain, name, path, read, write in qset.iterator():
+        for pk, address, domain, path, read, write in qset.iterator():
             email = f"{address}@{domain}"
             permission = ""
             if read:
                 permission += "Rr"
             if write:
                 permission += "Ww"
-            self._generate_acr(f"{email}-to-{name}-acr", email, path, permission)
+            self._generate_acr(f"acr-{pk}-{email}-to-{path}", email, path, permission)
 
     def _token_access_rules(self):
         """Create token access rules."""
         for model in [models.UserCalendar, models.SharedCalendar]:
-            qset = model.objects.order_by("pk").values_list("_path", "access_token")
-            for path, token in qset.iterator():
+            model_name = model._meta.model_name
+            qset = model.objects.order_by("pk").values_list(
+                "pk", "_path", "access_token"
+            )
+            for pk, path, token in qset.iterator():
                 self._generate_acr(
-                    f"token-{path}-access",
+                    f"token-{model_name}-{pk}-{path}",
                     token,
                     path,
                     perm="Rr",

@@ -81,7 +81,7 @@ class AccessRuleTestCase(ModoAPITestCase):
         )
         cal = factories.UserCalendarFactory(mailbox=mbox)
 
-        factories.AccessRuleFactory(
+        acr = factories.AccessRuleFactory(
             mailbox=admin_models.Mailbox.objects.get(
                 address="user", domain__name="test.com"
             ),
@@ -100,7 +100,7 @@ class AccessRuleTestCase(ModoAPITestCase):
         self.assertTrue(cfg.has_section("calendars"))
 
         # Check user-defined rules
-        section = f"user@test.com-to-{cal.name}-acr"
+        section = f"acr-{acr.pk}-user@test.com-to-{cal.path}"
         self.assertTrue(cfg.has_section(section))
         self.assertEqual(cfg.get(section, "user"), "user@test.com")
         self.assertEqual(cfg.get(section, "collection"), f"admin@test.com/{cal.name}")
@@ -128,7 +128,7 @@ class AccessRuleTestCase(ModoAPITestCase):
             mailbox=grantee, calendar=cal, read=True, write=True
         )
         jobs.generate_rights()
-        section = f"{grantee}-to-{cal}-acr"
+        section = f"acr-{acr.pk}-{grantee}-to-{cal.path}"
         self.assertTrue(self._read_rights_file().has_section(section))
 
         acr.delete()
@@ -144,8 +144,47 @@ class AccessRuleTestCase(ModoAPITestCase):
         cal = factories.UserCalendarFactory(mailbox=mbox)
         jobs.generate_rights()
         self.assertTrue(
-            self._read_rights_file().has_section(f"token-{cal._path}-access")
+            self._read_rights_file().has_section(
+                f"token-usercalendar-{cal.pk}-{cal.path}"
+            )
         )
+
+    def test_rights_file_sections_are_unique(self):
+        """Radicale refuses to start if a section is duplicated."""
+        grantee = admin_models.Mailbox.objects.get(
+            address="user", domain__name="test.com"
+        )
+        paths = []
+        # Two owners sharing a calendar with the same name
+        for address, domain in [("admin", "test.com"), ("admin", "test2.com")]:
+            owner = admin_models.Mailbox.objects.get(
+                address=address, domain__name=domain
+            )
+            cal = factories.UserCalendarFactory(mailbox=owner, name="Work")
+            factories.AccessRuleFactory(mailbox=grantee, calendar=cal, read=True)
+            paths.append(cal.path)
+        # Two calendars with the same path (possible with existing data)
+        factories.UserCalendarFactory(mailbox=grantee, name="Duplicate")
+        other = factories.UserCalendarFactory(mailbox=grantee, name="Other")
+        models.UserCalendar.objects.filter(pk=other.pk).update(
+            _path="user@test.com/Duplicate"
+        )
+        jobs.generate_rights()
+
+        # ConfigParser is strict by default, like Radicale
+        cfg = self._read_rights_file()
+        collections = [
+            cfg.get(section, "collection")
+            for section in cfg.sections()
+            if cfg.get(section, "user") == grantee.full_address
+        ]
+        self.assertEqual(sorted(collections), sorted(paths))
+        tokens = [
+            section
+            for section in cfg.sections()
+            if cfg.get(section, "collection") == "user@test.com/Duplicate"
+        ]
+        self.assertEqual(len(tokens), 2)
 
     def test_rights_file_not_rewritten_when_unchanged(self):
         """The file is left untouched when rules did not change."""
