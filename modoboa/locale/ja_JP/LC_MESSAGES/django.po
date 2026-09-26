@@ -725,7 +725,7 @@ msgid ""
 "The domain's reputation will be affected and there is a chance that emails "
 "coming from it are considered as spam. You should contact those providers "
 "and ask them to unlist detected IP address(es)."
-msgstr "ドメインの格付けが影響を与え、このドメインからのメールが SPAM とみなされる可能性があります。DNSBL 提供元に連絡し、検出された IP アドレスのリストからの削除を依頼する必要があります。"
+msgstr "ドメインの格付けが影響を与え、このドメインからのメールが「迷惑」とみなされる可能性があります。DNSBL 提供元に連絡し、検出された IP アドレスのリストからの削除を依頼する必要があります。"
 
 #: admin/templates/admin/notifications/domain_invalid_mx.html:3
 #, python-format
@@ -994,11 +994,11 @@ msgstr "ウイルスチェックをする・しないを設定します。「デ
 
 #: amavis/models.py:115
 msgid "Spam filter"
-msgstr "SPAM フィルター"
+msgstr "「迷惑」フィルター"
 
 #: amavis/models.py:125
 msgid "Bypass spam checks or not. Choose 'default' to use global settings."
-msgstr "SPAM チェックをする・しないを設定します。「デフォルト」を選択すると全体設定を使用します。"
+msgstr "「迷惑」チェックをする・しないを設定します。「デフォルト」を選択すると全体設定を使用します。"
 
 #: amavis/models.py:129
 msgid "Banned filter"
@@ -1010,13 +1010,13 @@ msgstr "ブロックチェックをする・しないを設定します。「デ
 
 #: amavis/models.py:170
 msgid "Spam marker"
-msgstr "SPAM マーカー"
+msgstr "「迷惑」マーカー"
 
 #: amavis/models.py:176
 msgid ""
 "Modify spam subject using the specified text. Choose 'default' to use global"
 " settings."
-msgstr "指定したテキストで SPAM の件名を変更します。「デフォルト」を選択すると全体設定を使用します。"
+msgstr "指定したテキストで「迷惑」の件名を変更します。「デフォルト」を選択すると全体設定を使用します。"
 
 #: amavis/templates/amavis/notifications/pending_requests.html:3
 #, python-format
@@ -2678,7 +2678,7 @@ msgstr "ウイルスメッセージ"
 
 #: maillog/graphics.py:182
 msgid "spam messages"
-msgstr "SPAM メッセージ"
+msgstr "「迷惑」メッセージ"
 
 #: maillog/graphics.py:189
 msgid "greylisted messages"
@@ -3234,7 +3234,7 @@ msgid ""
 "exists with the email you entered. You should receive them shortly.</p> "
 "<p>If you don't receive an email, please make sure you've entered your "
 "primary address, and check your spam folder.</p>"
-msgstr "<p>入力したメールアドレスが登録済みのものであれば、パスワード設定方法を記載したメールが届きます。</p> <p>メールが届かなければ、入力したアドレスが正しいものだったかどうか、または SPAM フォルダーに配信されていないかを確認してください。</p>"
+msgstr "<p>入力したメールアドレスが登録済みのものであれば、パスワード設定方法を記載したメールが届きます。</p> <p>メールが届かなければ、入力したアドレスが正しいものだったかどうか、または「迷惑」フォルダーに配信されていないかを確認してください。</p>"
 
 #: templates/registration/password_reset_email.html:4
 #, python-format
