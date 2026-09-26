@@ -3301,11 +3301,11 @@ msgstr "会話全体を削除"
 
 #: src/views/webmail/ThreadView.vue:61
 msgid "Mark the conversation as junk"
-msgstr "会話を SPAM とマーク"
+msgstr "会話を「迷惑」とマーク"
 
 #: src/views/webmail/ThreadView.vue:71
 msgid "Mark the conversation as not junk"
-msgstr "会話を HAM とマーク"
+msgstr "会話を「正当」とマーク"
 
 #: src/views/webmail/ThreadView.vue:156
 msgid "Open"
@@ -3317,8 +3317,8 @@ msgstr "会話を削除しました"
 
 #: src/views/webmail/ThreadView.vue:362
 msgid "Conversation marked as junk"
-msgstr "SPAM マークの会話"
+msgstr "「迷惑」マークの会話"
 
 #: src/views/webmail/ThreadView.vue:367
 msgid "Conversation marked as not junk"
-msgstr "HAM マークの会話"
+msgstr "「正当」マークの会話"
