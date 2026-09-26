@@ -1,10 +1,11 @@
 """Radicale extension models."""
 
 import os
+import unicodedata
 
 from six.moves import urllib
 
-from django.core.validators import RegexValidator
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.encoding import smart_str
 from django.utils.translation import gettext as _
@@ -14,14 +15,31 @@ from modoboa.admin.models import Domain, Mailbox
 from modoboa.lib import exceptions as lib_exceptions
 from modoboa.parameters import tools as param_tools
 
+#: Characters forbidden in calendar names. A name ends up verbatim in the
+#: collection path and in the Radicale rights file (an INI file):
+#: - path separators would change the path,
+#: - Radicale (>= 3.8, validate_path_value = minimal) refuses paths
+#:   containing any of :'"*?,
+#: Control characters (newlines, NUL...) are refused too, they would let a
+#: name break out of its value in the rights file.
+CALENDAR_NAME_FORBIDDEN_CHARACTERS = "/\\:'\"*?,"
 
-#: A calendar name ends up verbatim in the Radicale rights file (an INI file)
-#: and in the collection path. Forbid the characters that would let a name
-#: break out of its value: path separators, newlines and NUL.
-calendar_name_validator = RegexValidator(
-    regex=r"^[^/\\\r\n\x00]+$",
-    message=_("Calendar name contains invalid characters."),
-)
+
+def calendar_name_validator(value):
+    """Check that a calendar name can be used as a Radicale collection name."""
+    if value in (".", "..") or any(
+        char in CALENDAR_NAME_FORBIDDEN_CHARACTERS
+        or unicodedata.category(char).startswith("C")
+        for char in value
+    ):
+        raise ValidationError(
+            _(
+                "Calendar name cannot be . or .. nor contain control characters "
+                "or any of: %(characters)s"
+            )
+            % {"characters": " ".join(CALENDAR_NAME_FORBIDDEN_CHARACTERS)},
+            code="invalid",
+        )
 
 
 class Calendar(models.Model):
@@ -114,6 +132,11 @@ class UserCalendar(Calendar):
 
     class Meta(Calendar.Meta):
         db_table = "radicale_usercalendar"
+        constraints = [
+            models.UniqueConstraint(
+                fields=["mailbox", "name"], name="radicale_usercalendar_unique_name"
+            )
+        ]
 
     @property
     def owner(self):
@@ -146,11 +169,31 @@ class SharedCalendar(Calendar):
 
     class Meta(Calendar.Meta):
         db_table = "radicale_sharedcalendar"
+        constraints = [
+            models.UniqueConstraint(
+                fields=["domain", "name"], name="radicale_sharedcalendar_unique_name"
+            )
+        ]
 
     @property
     def owner(self):
         """Return calendar owner."""
         return self.domain
+
+
+def get_free_path(model, path):
+    """Return a collection path not used by any calendar of model.
+
+    A calendar keeps its path when it is renamed, so the path built from
+    a new calendar's name can already be used. Comparison ignores case,
+    for case-insensitive filesystems and database collations.
+    """
+    candidate = path
+    counter = 2
+    while model.objects.filter(_path__iexact=candidate).exists():
+        candidate = f"{path}-{counter}"
+        counter += 1
+    return candidate
 
 
 def get_share_candidates(owner):
