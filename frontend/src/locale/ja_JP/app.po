@@ -2248,7 +2248,7 @@ msgstr "「迷惑」とマーク"
 
 #: src/components/quarantine/QuarantineList.vue:105
 msgid "Mark as not spam"
-msgstr "HAM とマーク"
+msgstr "非「迷惑」とマーク"
 
 #: src/components/quarantine/QuarantineList.vue:125
 msgid "Display"
@@ -2266,7 +2266,7 @@ msgstr "メッセージを解放しました"
 #: src/components/quarantine/QuarantineList.vue:287
 #: src/views/quarantine/MessageView.vue:241
 msgid "Message marked as spam"
-msgstr "メッセージを SPAM とマークしました"
+msgstr "「迷惑」マークのメッセージ"
 
 #: src/components/quarantine/QuarantineList.vue:290
 #: src/views/quarantine/MessageView.vue:245
