@@ -3222,7 +3222,7 @@ msgstr "メッセージを削除"
 
 #: src/views/quarantine/MessageView.vue:53
 msgid "Mark as non-spam"
-msgstr "HAM とマーク"
+msgstr "非「迷惑」とマーク"
 
 #: src/views/quarantine/MessageView.vue:68
 msgid "View full headers"
