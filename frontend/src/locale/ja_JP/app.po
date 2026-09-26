@@ -2271,7 +2271,7 @@ msgstr "「迷惑」マークのメッセージ"
 #: src/components/quarantine/QuarantineList.vue:290
 #: src/views/quarantine/MessageView.vue:245
 msgid "Message marked as non-spam"
-msgstr "メッセージを HAM とマークしました"
+msgstr "非「迷惑」マークのメッセージ"
 
 #: src/components/quarantine/QuarantineList.vue:358
 msgid "Selection deleted"
