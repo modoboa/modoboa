@@ -2244,7 +2244,7 @@ msgstr "選択メッセージを削除"
 #: src/components/quarantine/QuarantineList.vue:101
 #: src/views/quarantine/MessageView.vue:49
 msgid "Mark as spam"
-msgstr "SPAM とマーク"
+msgstr "「迷惑」とマーク"
 
 #: src/components/quarantine/QuarantineList.vue:105
 msgid "Mark as not spam"
