@@ -1359,7 +1359,7 @@ msgstr "以上の「迷惑」"
 
 #: src/components/admin/domains/DomainPolicyForm.vue:84
 msgid "or more throw spam message away"
-msgstr "以上は SPAM メッセージを破棄"
+msgstr "以上の「迷惑」メッセージを破棄"
 
 #: src/components/admin/domains/DomainPolicyForm.vue:96
 #: src/components/tools/ChooseColumnsForm.vue:19
