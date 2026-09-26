@@ -1296,7 +1296,7 @@ msgstr "コンテンツフィルター設定を編集"
 
 #: src/components/admin/domains/DomainPolicy.vue:17
 msgid "Spam filters"
-msgstr "SPAM フィルター"
+msgstr "「迷惑」フィルター"
 
 #: src/components/admin/domains/DomainPolicy.vue:27
 #: src/components/admin/domains/DomainPolicy.vue:41
@@ -1317,7 +1317,7 @@ msgstr "ブロックフィルター"
 
 #: src/components/admin/domains/DomainPolicy.vue:60
 msgid "Spam classification threshold"
-msgstr "SPAM 分類のしきい値"
+msgstr "「迷惑」分類のしきい値"
 
 #: src/components/admin/domains/DomainPolicy.vue:70
 msgid "Rejection threshold"
@@ -1326,7 +1326,7 @@ msgstr "拒否するしきい値"
 #: src/components/admin/domains/DomainPolicy.vue:79
 #: src/components/admin/domains/DomainPolicyForm.vue:34
 msgid "Spam marker"
-msgstr "SPAM マーカー"
+msgstr "「迷惑」マーカー"
 
 #: src/components/admin/domains/DomainPolicyForm.vue:4
 msgid "Content filter settings"
@@ -1338,7 +1338,7 @@ msgstr "ウイルスチェックを無効に"
 
 #: src/components/admin/domains/DomainPolicyForm.vue:18
 msgid "Disable spam checks"
-msgstr "SPAM チェックを無効に"
+msgstr "「迷惑」チェックを無効に"
 
 #: src/components/admin/domains/DomainPolicyForm.vue:26
 msgid "Disable banned checks"
@@ -1355,7 +1355,7 @@ msgstr "しきい値"
 
 #: src/components/admin/domains/DomainPolicyForm.vue:69
 msgid "or more is spam"
-msgstr "以上は SPAM"
+msgstr "以上の「迷惑」"
 
 #: src/components/admin/domains/DomainPolicyForm.vue:84
 msgid "or more throw spam message away"
