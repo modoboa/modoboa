@@ -55,7 +55,7 @@
       </v-menu>
     </v-toolbar>
 
-    <div style="overflow: auto">
+    <div ref="calendarContainer" style="overflow: auto">
       <v-calendar
         ref="calendarRef"
         v-model="focus"
@@ -66,6 +66,8 @@
         event-name="title"
         :event-color="getEventColor"
         :event-ripple="false"
+        :interval-height="INTERVAL_HEIGHT"
+        :interval-style="getIntervalStyle"
         @mousedown:event="startDrag"
         @mousedown:time="startTime"
         @mousedown:day="startDay"
@@ -129,12 +131,13 @@
 </template>
 
 <script setup>
-import { computed, onMounted, ref, watch } from 'vue'
+import { computed, nextTick, onMounted, ref, watch } from 'vue'
 import { useGettext } from 'vue3-gettext'
 import { useLayoutStore } from '@/stores'
 import { useBusStore } from '@/stores'
 import { DateTime } from 'luxon'
 import api from '@/api/calendars'
+import parametersApi from '@/api/parameters'
 import CalendarAccessRulesForm from '@/components/calendars/CalendarAccessRulesForm'
 import CalendarForm from '@/components/calendars/CalendarForm'
 import CalendarDetail from '@/components/calendars/CalendarDetail'
@@ -147,7 +150,11 @@ const { $gettext, current } = useGettext()
 const layoutStore = useLayoutStore()
 const busStore = useBusStore()
 
+const INTERVAL_HEIGHT = 48
+const WEEKEND_DAYS = [0, 6]
+
 const calendarRef = ref()
+const calendarContainer = ref()
 const confirm = ref()
 const scopeDialog = ref()
 const events = ref([])
@@ -170,6 +177,7 @@ const createStart = ref(null)
 const extendOriginal = ref(null)
 const updating = ref(false)
 const moving = ref(false)
+const preferences = ref({ working_hours_start: 9, working_hours_end: 18 })
 
 const typeToLabel = {
   day: $gettext('Day'),
@@ -249,6 +257,30 @@ async function fetchUserEvents({ start, end }) {
       return newEvent
     })
   )
+}
+
+const getIntervalStyle = (interval) => {
+  if (
+    !WEEKEND_DAYS.includes(interval.weekday) &&
+    interval.hour >= preferences.value.working_hours_start &&
+    interval.hour < preferences.value.working_hours_end
+  ) {
+    return undefined
+  }
+  return { backgroundColor: 'rgba(var(--v-theme-on-surface), 0.05)' }
+}
+
+const scrollToWorkingHours = () => {
+  // VCalendar.scrollToTime() is not usable here: the root component
+  // exposes its own implementation, which is not bound to the
+  // scroll area rendered by the daily view.
+  const scrollArea = calendarContainer.value?.querySelector(
+    '.v-calendar-daily__scroll-area'
+  )
+  if (scrollArea) {
+    scrollArea.scrollTop =
+      preferences.value.working_hours_start * INTERVAL_HEIGHT
+  }
 }
 
 const setToday = () => {
@@ -577,12 +609,22 @@ watch(
   { immediate: true }
 )
 
+watch(ctype, async () => {
+  await nextTick()
+  scrollToWorkingHours()
+})
+
 onMounted(() => {
-  calendarRef.value.scrollToTime('07:00')
+  scrollToWorkingHours()
   calendarRef.value.checkChange()
 })
 
-await fetchUserCalendars()
+async function fetchPreferences() {
+  const resp = await parametersApi.getUserApplication('calendars')
+  preferences.value = resp.data.params
+}
+
+await Promise.all([fetchUserCalendars(), fetchPreferences()])
 </script>
 
 <style scoped>
