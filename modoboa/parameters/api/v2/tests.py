@@ -147,7 +147,7 @@ class UserParametersAPITestCase(ModoAPITestCase):
         url = reverse("v2:parameter-user-applications")
         resp = self.client.get(url)
         self.assertEqual(resp.status_code, 200)
-        self.assertEqual(len(resp.json()), 3)
+        self.assertEqual(len(resp.json()), 4)
 
     def test_get_structure(self):
         url = reverse("v2:parameter-user-structure")
@@ -161,7 +161,7 @@ class UserParametersAPITestCase(ModoAPITestCase):
         self.assertEqual(len(resp_contacts.json()), 1)
 
     def test_retrieve(self):
-        for app in ["contacts", "webmail"]:
+        for app in ["calendars", "contacts", "webmail"]:
             url = reverse("v2:parameter-user-detail", args=[app])
             resp = self.client.get(url)
             self.assertEqual(resp.status_code, 200)
