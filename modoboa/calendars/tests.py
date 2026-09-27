@@ -668,6 +668,47 @@ class AccessRuleViewSetTestCase(TestDataMixin, ModoAPITestCase):
             ).exists()
         )
 
+    def test_create_accessrule_read_write(self):
+        """A rule can grant read and write access."""
+        url = reverse("api:access-rule-list", args=[self.calendar.pk])
+        response = self.client.post(
+            url, data=self._rule_data(self.account2.mailbox, write=True), format="json"
+        )
+        self.assertEqual(response.status_code, 201)
+        rule = models.AccessRule.objects.get(
+            mailbox=self.account2.mailbox, calendar=self.calendar
+        )
+        self.assertTrue(rule.read)
+        self.assertTrue(rule.write)
+
+    def test_create_accessrule_without_access(self):
+        """A rule granting no access is refused."""
+        url = reverse("api:access-rule-list", args=[self.calendar.pk])
+        for data in [
+            self._rule_data(self.account2.mailbox, read=False, write=False),
+            {"mailbox": self._rule_data(self.account2.mailbox)["mailbox"]},
+        ]:
+            response = self.client.post(url, data=data, format="json")
+            self.assertEqual(response.status_code, 400)
+            self.assertIn("read", response.json())
+        self.assertFalse(
+            models.AccessRule.objects.filter(mailbox=self.account2.mailbox).exists()
+        )
+
+    def test_create_accessrule_write_only(self):
+        """A write-only rule is refused: the calendar couldn't be displayed."""
+        url = reverse("api:access-rule-list", args=[self.calendar.pk])
+        response = self.client.post(
+            url,
+            data=self._rule_data(self.account2.mailbox, read=False, write=True),
+            format="json",
+        )
+        self.assertEqual(response.status_code, 400)
+        self.assertIn("read", response.json())
+        self.assertFalse(
+            models.AccessRule.objects.filter(mailbox=self.account2.mailbox).exists()
+        )
+
     def test_create_accessrule_own_mailbox(self):
         """The calendar owner can't be a recipient."""
         url = reverse("api:access-rule-list", args=[self.calendar.pk])
@@ -824,13 +865,54 @@ class AccessRuleViewSetTestCase(TestDataMixin, ModoAPITestCase):
         url = reverse("api:access-rule-detail", args=[self.calendar2.pk, acr.pk])
         response = self.client.put(
             url,
-            data=self._rule_data(self.account.mailbox, read=False, write=True),
+            data=self._rule_data(self.account.mailbox, write=True),
             format="json",
         )
         self.assertEqual(response.status_code, 200)
         acr.refresh_from_db()
-        self.assertFalse(acr.read)
+        self.assertTrue(acr.read)
         self.assertTrue(acr.write)
+
+    def test_update_accessrule_remove_read(self):
+        """Read access can't be removed from a rule."""
+        url = reverse("api:access-rule-detail", args=[self.calendar.pk, self.acr1.pk])
+        response = self.client.put(
+            url,
+            data=self._rule_data(self.admin_account.mailbox, read=False, write=True),
+            format="json",
+        )
+        self.assertEqual(response.status_code, 400)
+        self.assertIn("read", response.json())
+        response = self.client.patch(url, data={"read": False}, format="json")
+        self.assertEqual(response.status_code, 400)
+        self.assertIn("read", response.json())
+        self.acr1.refresh_from_db()
+        self.assertTrue(self.acr1.read)
+        self.assertTrue(self.acr1.write)
+
+    def test_update_existing_write_only_rule(self):
+        """A write-only rule created before validation must get read access."""
+        acr = factories.AccessRuleFactory(
+            calendar=self.calendar,
+            mailbox=self.account2.mailbox,
+            read=False,
+            write=True,
+        )
+        url = reverse("api:access-rule-detail", args=[self.calendar.pk, acr.pk])
+        response = self.client.put(
+            url,
+            data=self._rule_data(self.account2.mailbox, read=False, write=True),
+            format="json",
+        )
+        self.assertEqual(response.status_code, 400)
+        response = self.client.put(
+            url,
+            data=self._rule_data(self.account2.mailbox, write=True),
+            format="json",
+        )
+        self.assertEqual(response.status_code, 200)
+        acr.refresh_from_db()
+        self.assertTrue(acr.read)
 
     def test_update_accessrule_permission(self):
         """Try to modify an access rule the user does not own."""
@@ -838,7 +920,7 @@ class AccessRuleViewSetTestCase(TestDataMixin, ModoAPITestCase):
         acr = factories.AccessRuleFactory(
             calendar=calendar, mailbox=self.account.mailbox, read=True, write=True
         )
-        data = self._rule_data(self.account.mailbox, read=False, write=True)
+        data = self._rule_data(self.account.mailbox)
         # Through the real parent calendar
         url = reverse("api:access-rule-detail", args=[calendar.pk, acr.pk])
         response = self.client.put(url, data=data, format="json")
