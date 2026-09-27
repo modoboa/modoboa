@@ -1518,13 +1518,17 @@ class RenameDuplicateCalendarsMigrationTestCase(TransactionTestCase):
                 ("Home", "user@migration.test/Home"),
             ],
         )
-        populate_database()
-        cls.account = core_models.User.objects.get(username="user@test.com")
 
 
 class UserPreferencesTestCase(ModoAPITestCase):
-    """User preferences test case."""        
-        
+    """User preferences test case."""
+
+    @classmethod
+    def setUpTestData(cls):
+        super().setUpTestData()
+        populate_database()
+        cls.account = core_models.User.objects.get(username="user@test.com")
+
     def setUp(self):
         """Initiate test context."""
         self.client.force_authenticate(self.account)
