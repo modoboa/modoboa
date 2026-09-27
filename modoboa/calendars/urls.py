@@ -13,6 +13,7 @@ router.register(
 )
 router.register(r"attendees", viewsets.AttendeeViewSet, basename="attendee")
 router.register(r"mailboxes", viewsets.MailboxViewSet, basename="mailbox")
+router.register(r"calendar-rights", viewsets.RightsViewSet, basename="calendar-rights")
 
 calendars_router = routers.NestedSimpleRouter(
     router, r"user-calendars", lookup="calendar"

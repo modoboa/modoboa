@@ -7,6 +7,8 @@ import dateutil
 from django import http
 from django.utils.translation import gettext as _
 
+from drf_spectacular.utils import extend_schema
+from oauth2_provider.contrib.rest_framework import OAuth2Authentication
 from rest_framework.decorators import action
 from rest_framework import permissions, response, viewsets
 
@@ -15,7 +17,9 @@ from modoboa.lib.web_utils import size2integer
 
 from . import backends
 from . import models
+from . import rights
 from . import serializers
+from .permissions import IsRadicale
 
 
 def parse_date_from_iso(value):
@@ -322,3 +326,22 @@ class AccessRuleViewSet(viewsets.ModelViewSet):
         if "calendar_pk" in self.kwargs:
             context["calendar"] = self.get_calendar()
         return context
+
+
+class RightsViewSet(viewsets.GenericViewSet):
+    """Rights of a user, requested by the Radicale server.
+
+    See the radicale-modoboa-rights plugin.
+    """
+
+    authentication_classes = [OAuth2Authentication]
+    permission_classes = [IsRadicale]
+    serializer_class = serializers.RightsRequestSerializer
+
+    @extend_schema(responses=serializers.RightsSerializer)
+    def create(self, request):
+        """Return the rights of a user on collections owned by someone else."""
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        data = rights.get_user_rights(serializer.validated_data["user"])
+        return response.Response(serializers.RightsSerializer(data).data)

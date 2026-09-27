@@ -34,12 +34,15 @@ Then, just run the following command:
 $ docker-compose up
 ```
 
-Then if not done already, run this command to create an OIDC application in order to be able to log in from the frontend:
+Then if not done already, run these commands to create the OAuth2 applications used to log in from the frontend, and by Dovecot and Radicale:
 
 ``` bash
-$ docker exec modoboa-api '/bin/sh -c python3 /code/test_project/manage.py createapplication --name modoboa_frontend --client-id "LVQbfIIX3khWR3nDvix1u9yEGHZUxcx53bhJ7FlD" --user 1 --algorithm RS256 --redirect-uris 'https://localhost:3000/login/logged' public authorization-code'
-$ docker exec modoboa-api '/bin/sh -c python3 /code/test_project/manage.py createapplication --name Dovecot --skip-authorization --client-id=dovecot --client-secret=Toto12345 confidential client-credentials'
+$ docker exec modoboa_api sh -c 'cd /code/test_project && python3 manage.py createapplication --name modoboa_frontend --client-id "LVQbfIIX3khWR3nDvix1u9yEGHZUxcx53bhJ7FlD" --user 1 --algorithm RS256 --redirect-uris https://localhost:3000/login/logged public authorization-code'
+$ docker exec modoboa_api sh -c 'cd /code/test_project && python3 manage.py createapplication --name Dovecot --skip-authorization --client-id=dovecot --client-secret=Toto12345 confidential client-credentials'
+$ docker exec modoboa_api sh -c 'cd /code/test_project && python3 manage.py createapplication --name Radicale --skip-authorization --client-id=radicale --client-secret=Radicale12345 confidential client-credentials'
 ```
+
+The `Radicale` application must keep this name: the calendar rights endpoint only accepts its tokens.
 
 It will start the docker environment and make a Modoboa instance available at `https://localhost:8000`
 and the new admin interface at `https://localhost:3000`.

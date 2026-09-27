@@ -85,7 +85,7 @@ type = radicale_modoboa_auth_oauth2
 # Incorrect authentication delay (seconds)
 #delay = 1
 
-oauth2_introspection_endpoint = http://dovecot:Toto12345@api-unsecured:8001/api/o/introspect/
+oauth2_introspection_endpoint = http://radicale:Radicale12345@api-unsecured:8001/api/o/introspect/
 
 # Cache successful logins to avoid one introspection call per request
 cache_logins = True
@@ -96,10 +96,13 @@ cache_successful_logins_expiry = 60
 
 # Rights backend
 # Value: none | authenticated | owner_only | owner_write | from_file
-type = from_file
+type = radicale_modoboa_rights
 
-# File for rights management from_file
-file = /etc/radicale/rights
+# Rights are fetched from the Modoboa API with the credentials of the
+# Radicale OAuth2 application, also used for authentication
+modoboa_rights_endpoint = http://api-unsecured:8001/api/v2/calendar-rights/
+modoboa_client_id = radicale
+modoboa_client_secret = Radicale12345
 
 
 [storage]
