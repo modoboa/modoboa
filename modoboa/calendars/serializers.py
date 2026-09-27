@@ -342,10 +342,12 @@ class AccessRuleSerializer(serializers.ModelSerializer):
 
     def update(self, instance, validated_data):
         """Update access rule."""
-        mailbox = validated_data.pop("mailbox")
+        # Absent from partial updates
+        mailbox = validated_data.pop("mailbox", None)
         for key, value in validated_data.items():
             setattr(instance, key, value)
-        instance.mailbox_id = mailbox["pk"]
+        if mailbox is not None:
+            instance.mailbox_id = mailbox["pk"]
         instance.save()
         return instance
 

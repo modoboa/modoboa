@@ -890,6 +890,19 @@ class AccessRuleViewSetTestCase(TestDataMixin, ModoAPITestCase):
         self.assertTrue(self.acr1.read)
         self.assertTrue(self.acr1.write)
 
+    def test_partial_update_accessrule(self):
+        """A partial update without mailbox keeps the rule's mailbox."""
+        acr = factories.AccessRuleFactory(
+            calendar=self.calendar, mailbox=self.account2.mailbox, read=True
+        )
+        url = reverse("api:access-rule-detail", args=[self.calendar.pk, acr.pk])
+        response = self.client.patch(url, data={"write": True}, format="json")
+        self.assertEqual(response.status_code, 200)
+        acr.refresh_from_db()
+        self.assertEqual(acr.mailbox, self.account2.mailbox)
+        self.assertTrue(acr.read)
+        self.assertTrue(acr.write)
+
     def test_update_existing_write_only_rule(self):
         """A write-only rule created before validation must get read access."""
         acr = factories.AccessRuleFactory(
