@@ -319,6 +319,19 @@ class AccessRuleSerializer(serializers.ModelSerializer):
             )
         return value
 
+    def validate(self, data):
+        """Make sure the rule grants read access.
+
+        A rule without any access grants nothing, and CalDAV clients
+        can't display a calendar they can only write to.
+        """
+        read = data.get("read", self.instance.read if self.instance else False)
+        if not read:
+            raise serializers.ValidationError(
+                {"read": _("Read access is required to share a calendar")}
+            )
+        return data
+
     def create(self, validated_data):
         """Create access rule."""
         mailbox = validated_data.pop("mailbox")
@@ -329,10 +342,12 @@ class AccessRuleSerializer(serializers.ModelSerializer):
 
     def update(self, instance, validated_data):
         """Update access rule."""
-        mailbox = validated_data.pop("mailbox")
+        # Absent from partial updates
+        mailbox = validated_data.pop("mailbox", None)
         for key, value in validated_data.items():
             setattr(instance, key, value)
-        instance.mailbox_id = mailbox["pk"]
+        if mailbox is not None:
+            instance.mailbox_id = mailbox["pk"]
         instance.save()
         return instance
 

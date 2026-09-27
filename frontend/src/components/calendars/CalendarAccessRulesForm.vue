@@ -9,17 +9,19 @@
           <v-select
             v-model="currentRule.mailbox"
             :label="$gettext('Full address')"
-            :form-errors="formErrors['mailbox']"
+            :error-messages="formErrors.mailbox"
             :items="mailboxes"
             item-title="full_address"
             return-object
             variant="outlined"
             density="compact"
           />
+          <!-- Read access is always granted: required to display the calendar -->
           <v-checkbox
-            v-model="currentRule.read"
+            :model-value="true"
             :label="$gettext('Read')"
             class="ml-4"
+            disabled
           />
           <v-checkbox
             v-model="currentRule.write"
@@ -32,6 +34,7 @@
             icon="mdi-content-save-outline"
             type="submit"
             size="small"
+            :disabled="!currentRule.mailbox"
           />
         </div>
       </v-form>
@@ -94,7 +97,7 @@ const emit = defineEmits(['close'])
 
 const accessRules = ref([])
 const mailboxes = ref([])
-const currentRule = ref({})
+const currentRule = ref({ read: true })
 const formErrors = ref({})
 
 api.getAccessRules(props.calendarPk).then((response) => {
@@ -134,14 +137,15 @@ async function submit() {
 }
 
 function resetForm() {
-  currentRule.value = {}
+  currentRule.value = { read: true }
   formErrors.value = {}
 }
-function onError(response) {
-  formErrors.value = response.data
+function onError(error) {
+  formErrors.value = error.response?.data || {}
 }
 function editRule(rule) {
-  currentRule.value = JSON.parse(JSON.stringify(rule))
+  // Rules created before read access was required get it when saved
+  currentRule.value = { ...JSON.parse(JSON.stringify(rule)), read: true }
 }
 function deleteRule(rule) {
   api.deleteAccessRule(props.calendarPk, rule.pk).then(() => {
