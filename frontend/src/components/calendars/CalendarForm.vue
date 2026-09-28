@@ -20,15 +20,12 @@
             />
           </v-col>
           <v-col cols="12">
-            <v-color-picker
+            <ColorField
               v-model="calendar.color"
               :label="$gettext('Color')"
-              class="ma-2"
-              swatches-max-height="200px"
-              show-swatches
-              hide-inputs
               :rules="[rules.required]"
-            ></v-color-picker>
+              :error-messages="formErrors.color"
+            />
           </v-col>
         </v-row>
       </v-card-text>
@@ -49,16 +46,18 @@ import { useGettext } from 'vue3-gettext'
 import { useBusStore } from '@/stores'
 import rules from '@/plugins/rules'
 import calendarsApi from '@/api/calendars'
+import ColorField from '@/components/tools/ColorField'
 
 const emit = defineEmits(['close', 'colorChanged'])
 const props = defineProps({
   initialCalendar: {
     type: Object,
-    default: () => {
-      return { color: '' }
-    },
+    default: null,
   },
 })
+
+// Default color of new calendars (see Calendar.color)
+const DEFAULT_COLOR = '#3a87ad'
 
 const { $gettext } = useGettext()
 const busStore = useBusStore()
@@ -70,7 +69,7 @@ onMounted(() => {
   }
 })
 
-const calendar = ref({})
+const calendar = ref({ color: DEFAULT_COLOR })
 const shared = ref(false)
 const formErrors = ref({})
 const formRef = ref()
@@ -84,7 +83,7 @@ const submitLabel = computed(() => {
 })
 
 function close() {
-  calendar.value = {}
+  calendar.value = { color: DEFAULT_COLOR }
   shared.value = false
   formErrors.value = {}
   emit('close')
@@ -115,6 +114,8 @@ async function submit() {
     busStore.displayNotification({
       msg,
     })
+  } catch (error) {
+    formErrors.value = error.response?.data || {}
   } finally {
     working.value = false
   }

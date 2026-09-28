@@ -18,6 +18,13 @@ from . import rights
 RECURRENCE_SCOPES = ("occurrence", "series")
 
 
+def check_color(value):
+    """Make sure value is a color the calendar view can display."""
+    if not re.fullmatch(r"#[0-9a-fA-F]{6}", value):
+        raise serializers.ValidationError(_("Invalid color"))
+    return value
+
+
 class CalDAVCalendarMixin:
     """Mixin for calendar serializers."""
 
@@ -25,6 +32,9 @@ class CalDAVCalendarMixin:
         """Reject names that could break out of the Radicale rights file."""
         models.calendar_name_validator(value)
         return value
+
+    def validate_color(self, value):
+        return check_color(value)
 
     def check_name_is_free(self, queryset, name):
         """Make sure no other calendar of queryset is named name.
@@ -114,9 +124,7 @@ class SharedWithMeCalendarSerializer(serializers.ModelSerializer):
 
     def validate_color(self, value):
         """An empty value restores the color chosen by the owner."""
-        if value and not re.fullmatch(r"#[0-9a-fA-F]{6}", value):
-            raise serializers.ValidationError(_("Invalid color"))
-        return value
+        return check_color(value) if value else value
 
     def to_representation(self, instance):
         data = super().to_representation(instance)

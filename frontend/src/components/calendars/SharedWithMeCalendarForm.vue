@@ -7,18 +7,12 @@
       {{ calendar.name }} ({{ calendar.owner }})
     </v-card-subtitle>
     <v-card-text class="py-4">
-      <v-color-picker
+      <ColorField
         v-model="color"
-        mode="hex"
-        :modes="['hex']"
-        class="ma-2"
-        swatches-max-height="200px"
-        show-swatches
-        hide-inputs
-      ></v-color-picker>
-      <div v-if="formErrors.color" class="text-error">
-        {{ formErrors.color.join(' ') }}
-      </div>
+        :label="$gettext('Color')"
+        :hint="$gettext('Only you see this color')"
+        :error-messages="formErrors.color"
+      />
     </v-card-text>
     <v-card-actions>
       <v-btn :loading="working" @click="save('')">
@@ -26,7 +20,7 @@
       </v-btn>
       <v-spacer />
       <v-btn :loading="working" @click="close">{{ $gettext('Close') }}</v-btn>
-      <v-btn color="primary" :loading="working" @click="save(color)">
+      <v-btn color="primary" :loading="working" @click="save(color || '')">
         {{ $gettext('Update') }}
       </v-btn>
     </v-card-actions>
@@ -38,6 +32,7 @@ import { ref } from 'vue'
 import { useGettext } from 'vue3-gettext'
 import { useBusStore } from '@/stores'
 import api from '@/api/calendars'
+import ColorField from '@/components/tools/ColorField'
 
 // Color of a calendar shared with the current user: it only applies to them
 const props = defineProps({

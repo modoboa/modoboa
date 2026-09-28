@@ -524,6 +524,18 @@ class UserCalendarViewSetTestCase(TestDataMixin, ModoAPITestCase):
         )
         self.assertEqual(response.status_code, 200)
 
+    @mock.patch("caldav.DAVClient")
+    def test_create_calendar_invalid_color(self, client_mock):
+        client_mock.return_value = mocks.DAVClientMock()
+        url = reverse("api:user-calendar-list")
+        for color in ["red", "#3a87ad80", "#gg0000", ""]:
+            with self.subTest(color=color):
+                response = self.client.post(
+                    url, {"name": "Colored", "color": color}, format="json"
+                )
+                self.assertEqual(response.status_code, 400)
+                self.assertIn("color", response.json())
+
     def test_new_calendar_does_not_reuse_path_of_renamed_one(self):
         """A renamed calendar keeps its path, a new one must not take it."""
         calendar = factories.UserCalendarFactory(
