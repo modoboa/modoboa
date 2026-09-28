@@ -1,5 +1,6 @@
 """Calendar serializers."""
 
+from django.db.models import Q
 from django.utils.translation import gettext as _
 
 from rest_framework import serializers
@@ -9,6 +10,7 @@ from modoboa.lib import fields as lib_fields
 
 from . import backends
 from . import models
+from . import rights
 
 #: Scope of a modification made on an occurrence of a recurring event
 RECURRENCE_SCOPES = ("occurrence", "series")
@@ -87,6 +89,39 @@ class UserCalendarSerializer(CalDAVCalendarMixin, serializers.ModelSerializer):
         if old_name != instance.name or old_color != instance.color:
             self.update_remote_calendar(instance)
         return instance
+
+
+class SharedWithMeCalendarSerializer(serializers.ModelSerializer):
+    """A user calendar shared with the current user by an access rule.
+
+    The share URL is not returned: its token belongs to the owner.
+    """
+
+    pk = serializers.IntegerField(source="calendar.pk", read_only=True)
+    name = serializers.CharField(source="calendar.name", read_only=True)
+    color = serializers.CharField(source="calendar.color", read_only=True)
+    full_url = serializers.CharField(source="calendar.full_url", read_only=True)
+    owner = lib_fields.DRFEmailFieldUTF8(
+        source="calendar.mailbox.full_address", read_only=True
+    )
+
+    class Meta:
+        model = models.AccessRule
+        fields = ("pk", "name", "color", "full_url", "owner", "write")
+        read_only_fields = ("write",)
+
+
+class EventCalendarSerializer(serializers.ModelSerializer):
+    """Calendar of an event.
+
+    The calendar can be shared with the current user, so its share URL
+    is not returned.
+    """
+
+    class Meta:
+        model = models.UserCalendar
+        fields = ("pk", "name", "color")
+        read_only_fields = fields
 
 
 class DomainSerializer(serializers.ModelSerializer):
@@ -219,7 +254,7 @@ class ROEventSerializer(EventSerializer):
         self.fields["calendar"] = (
             SharedCalendarSerializer()
             if calendar_type != "user"
-            else UserCalendarSerializer()
+            else EventCalendarSerializer()
         )
 
 
@@ -250,8 +285,11 @@ class WritableEventSerializer(EventSerializer):
         if user.is_anonymous:
             return
         if calendar_type == "user":
+            shared_calendars = (
+                rights.get_rules_shared_with(user).filter(write=True).values("calendar")
+            )
             self.fields["calendar"].queryset = models.UserCalendar.objects.filter(
-                mailbox__user=user
+                Q(mailbox__user=user) | Q(pk__in=shared_calendars)
             )
         elif hasattr(user, "mailbox"):
             self.fields["calendar"].queryset = models.SharedCalendar.objects.filter(

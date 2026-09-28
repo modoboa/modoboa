@@ -5,6 +5,13 @@
         <span class="headline">{{ title }}</span>
       </v-card-title>
       <v-card-text class="py-4">
+        <v-alert v-if="readOnly" type="info" variant="tonal" class="mb-4">
+          {{
+            $gettext(
+              'This event belongs to a calendar shared with you in read-only mode.'
+            )
+          }}
+        </v-alert>
         <v-row class="mb-2">
           <v-col cols="12">
             <v-text-field
@@ -12,6 +19,7 @@
               :label="$gettext('Title')"
               :rules="[rules.required]"
               :error-messages="formErrors.title"
+              :readonly="readOnly"
               density="compact"
               variant="outlined"
             />
@@ -24,6 +32,7 @@
             :label="$gettext('From')"
             :rules="[rules.required]"
             :error-messages="formErrors.start"
+            :readonly="readOnly"
             density="compact"
             variant="outlined"
             :type="dateType"
@@ -34,6 +43,7 @@
             :label="$gettext('To')"
             :rules="[rules.required]"
             :error-messages="formErrors.end"
+            :readonly="readOnly"
             density="compact"
             variant="outlined"
             :type="dateType"
@@ -43,12 +53,13 @@
           <v-icon icon="mdi-calendar" class="mr-4" />
           <v-select
             v-model="form.calendar"
-            :items="userCalendars"
-            item-title="name"
+            :items="calendarItems"
+            item-title="title"
             item-value="pk"
             :label="$gettext('Calendar')"
             :rules="[rules.required]"
             :error-messages="formErrors.calendar"
+            :readonly="readOnly"
             density="compact"
             variant="outlined"
           />
@@ -63,6 +74,7 @@
               item-title="display_name"
               item-value="email"
               return-object
+              :readonly="readOnly"
               variant="outlined"
               density="compact"
               multiple
@@ -74,6 +86,7 @@
             :label="$gettext('Description')"
             auto-grow
             rows="2"
+            :readonly="readOnly"
             variant="outlined"
             density="compact"
             class="mb-3"
@@ -82,7 +95,7 @@
       </v-card-text>
       <v-card-actions>
         <v-btn
-          v-if="props.event"
+          v-if="props.event && !readOnly"
           :loading="working"
           color="error"
           @click="deleteEvent"
@@ -91,7 +104,12 @@
         </v-btn>
         <v-spacer />
         <v-btn :loading="working" @click="close">{{ $gettext('Close') }}</v-btn>
-        <v-btn color="primary" type="submit" :loading="working">
+        <v-btn
+          v-if="!readOnly"
+          color="primary"
+          type="submit"
+          :loading="working"
+        >
           {{ $gettext('Save') }}
         </v-btn>
       </v-card-actions>
@@ -118,6 +136,11 @@ const props = defineProps({
     type: Object,
     default: null,
   },
+  // Displayed calendars: own ones and the ones shared with the user
+  calendars: {
+    type: Array,
+    default: () => [],
+  },
 })
 const emit = defineEmits(['close', 'refreshCalendar'])
 
@@ -125,16 +148,32 @@ const { $gettext } = useGettext()
 const busStore = useBusStore()
 
 const attendees = ref([])
-const userCalendars = ref([])
 const form = ref({})
 const formErrors = ref({})
 const formRef = ref()
 const scopeDialog = ref()
 const working = ref(false)
 
+const readOnly = computed(() => props.event?.editable === false)
+
 const title = computed(() => {
+  if (readOnly.value) {
+    return $gettext('Event')
+  }
   return props.event ? $gettext('Edit event') : $gettext('New event')
 })
+
+// Calendars the event can be saved in, plus its current one
+const calendarItems = computed(() =>
+  props.calendars
+    .filter((calendar) => calendar.write || calendar.pk === form.value.calendar)
+    .map((calendar) => ({
+      pk: calendar.pk,
+      title: calendar.owner
+        ? `${calendar.name} (${calendar.owner})`
+        : calendar.name,
+    }))
+)
 
 const dateType = computed(() => {
   return form.value.allDay ? 'date' : 'datetime-local'
@@ -261,8 +300,4 @@ async function deleteEvent() {
     working.value = false
   }
 }
-
-api.getUserCalendars().then((resp) => {
-  userCalendars.value = resp.data
-})
 </script>

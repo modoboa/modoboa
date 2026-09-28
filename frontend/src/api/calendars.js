@@ -16,6 +16,9 @@ export default {
   deleteUserCalendar(pk) {
     return repository.delete(`/user-calendars/${pk}/`)
   },
+  getCalendarsSharedWithMe() {
+    return repository.get('/calendars-shared-with-me/')
+  },
 
   getAccessRules(calendarPk) {
     return repository.get(`/user-calendars/${calendarPk}/accessrules/`)
@@ -35,8 +38,11 @@ export default {
     )
   },
 
-  getUserCalendarEvents(calendarPk, params) {
-    return repository.get(`/user-calendars/${calendarPk}/events/`, { params })
+  getUserCalendarEvents(calendarPk, params, config = {}) {
+    return repository.get(`/user-calendars/${calendarPk}/events/`, {
+      params,
+      ...config,
+    })
   },
   getUserEvent(calendarPk, eventId) {
     return repository.get(`/user-calendars/${calendarPk}/events/${eventId}/`)

@@ -84,7 +84,7 @@
             <component :is="eventSummary"></component>
           </div>
           <div
-            v-if="timed"
+            v-if="timed && event.editable"
             class="v-event-drag-bottom"
             @mousedown.stop="extendBottom(event)"
           ></div>
@@ -106,6 +106,7 @@
       <EventForm
         :info="selectInfo"
         :event="selectedEvent"
+        :calendars="calendars"
         @refresh-calendar="refreshCalendarEvents"
         @close="closeEventForm"
       />
@@ -162,6 +163,7 @@ const selectInfo = ref()
 const selectedCalendar = ref(null)
 const selectedEvent = ref(null)
 const userCalendars = ref([])
+const sharedWithMeCalendars = ref([])
 const showAccessRulesForm = ref(false)
 const showCalendarForm = ref(false)
 const showInformation = ref(false)
@@ -185,6 +187,12 @@ const typeToLabel = {
   month: $gettext('Month'),
 }
 
+// Calendars whose events are displayed
+const calendars = computed(() => [
+  ...userCalendars.value.map((calendar) => ({ ...calendar, write: true })),
+  ...sharedWithMeCalendars.value,
+])
+
 const leftMenuItems = computed(() => {
   const result = [
     {
@@ -199,6 +207,7 @@ const leftMenuItems = computed(() => {
   ]
   for (const calendar of userCalendars.value) {
     result.push({
+      key: `calendar-${calendar.pk}`,
       text: calendar.name,
       children: [
         {
@@ -229,6 +238,34 @@ const leftMenuItems = computed(() => {
       ],
     })
   }
+  if (sharedWithMeCalendars.value.length) {
+    result.push({
+      text: $gettext('Shared with me'),
+      subheader: true,
+    })
+  }
+  for (const calendar of sharedWithMeCalendars.value) {
+    const children = [
+      {
+        text: $gettext('Information'),
+        icon: 'mdi-information-outline',
+        action: () => openInformation(calendar),
+      },
+    ]
+    if (calendar.write) {
+      children.push({
+        text: $gettext('Import'),
+        icon: 'mdi-calendar-import-outline',
+        action: () => openImportEventsForm(calendar),
+      })
+    }
+    result.push({
+      key: `shared-with-me-${calendar.pk}`,
+      text: calendar.name,
+      subtitle: calendar.owner,
+      children,
+    })
+  }
   return result
 })
 
@@ -236,27 +273,50 @@ let fetchEventsCounter = 0
 
 async function fetchUserEvents({ start, end }) {
   const fetchId = ++fetchEventsCounter
-  const responses = await Promise.all(
-    userCalendars.value.map((calendar) =>
-      api.getUserCalendarEvents(calendar.pk, {
-        start: start.date,
-        end: end.date,
-      })
+  const fetchedCalendars = calendars.value
+  // A calendar can fail (e.g. an access rule removed in the meantime)
+  // without preventing the display of the others
+  const results = await Promise.allSettled(
+    fetchedCalendars.map((calendar) =>
+      api.getUserCalendarEvents(
+        calendar.pk,
+        { start: start.date, end: end.date },
+        { ignoreErrors: true }
+      )
     )
   )
   if (fetchId !== fetchEventsCounter) {
     // A more recent fetch has been triggered (e.g. fast navigation)
     return
   }
-  events.value = responses.flatMap((resp) =>
-    resp.data.map((event) => {
-      const newEvent = { ...event }
-      newEvent.start = Date.parse(event.start)
-      newEvent.end = Date.parse(event.end)
-      newEvent.timed = !event.allDay
-      return newEvent
+  const newEvents = []
+  const failedCalendars = []
+  results.forEach((result, index) => {
+    const calendar = fetchedCalendars[index]
+    if (result.status === 'rejected') {
+      failedCalendars.push(calendar.name)
+      return
+    }
+    for (const event of result.value.data) {
+      newEvents.push({
+        ...event,
+        start: Date.parse(event.start),
+        end: Date.parse(event.end),
+        timed: !event.allDay,
+        editable: calendar.write,
+        owner: calendar.owner,
+      })
+    }
+  })
+  events.value = newEvents
+  if (failedCalendars.length) {
+    busStore.displayNotification({
+      msg: $gettext('Unable to load the events of: %{ names }', {
+        names: failedCalendars.join(', '),
+      }),
+      type: 'error',
     })
-  )
+  }
 }
 
 const getIntervalStyle = (interval) => {
@@ -336,8 +396,12 @@ function closeImportEventsForm() {
 }
 
 async function fetchUserCalendars() {
-  const resp = await api.getUserCalendars()
+  const [resp, sharedWithMeResp] = await Promise.all([
+    api.getUserCalendars(),
+    api.getCalendarsSharedWithMe(),
+  ])
   userCalendars.value = resp.data
+  sharedWithMeCalendars.value = sharedWithMeResp.data
 }
 
 function refreshCalendarEvents() {
@@ -456,6 +520,7 @@ const startTime = (nativeEvent, tms) => {
       start: createStart.value,
       end: createStart.value,
       timed: true,
+      editable: true,
     }
 
     events.value.push(createEvent.value)
@@ -474,6 +539,9 @@ const mouseMove = (nativeEvent, tms) => {
   const mouse = toTime(tms)
 
   if (dragEvent.value && dragTime.value !== null) {
+    if (!dragEvent.value.editable) {
+      return
+    }
     moving.value = true
     const start = dragEvent.value.start
     const end = dragEvent.value.end
@@ -498,6 +566,9 @@ const mouseMove = (nativeEvent, tms) => {
 const mouseMoveDay = (nativeEvent, tms) => {
   const mouse = toTime(tms)
   if (dragEvent.value && dragDay.value !== null) {
+    if (!dragEvent.value.editable) {
+      return
+    }
     moving.value = true
     const start = dragEvent.value.start
     const end = dragEvent.value.end

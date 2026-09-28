@@ -7,10 +7,11 @@ import dateutil
 from django import http
 from django.utils.translation import gettext as _
 
+from caldav.lib import error as caldav_error
 from drf_spectacular.utils import extend_schema
 from oauth2_provider.contrib.rest_framework import OAuth2Authentication
 from rest_framework.decorators import action
-from rest_framework import permissions, response, viewsets
+from rest_framework import exceptions, mixins, permissions, response, viewsets
 
 from modoboa.admin import models as admin_models
 from modoboa.lib.web_utils import size2integer
@@ -67,6 +68,26 @@ class UserCalendarViewSet(CheckTokenMixin, viewsets.ModelViewSet):
         return qset
 
 
+class CalendarSharedWithMeViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
+    """Calendars other users share with the current user."""
+
+    permission_classes = [permissions.IsAuthenticated]
+    serializer_class = serializers.SharedWithMeCalendarSerializer
+
+    def get_queryset(self):
+        if getattr(self, "swagger_fake_view", False):
+            return models.AccessRule.objects.none()
+        return (
+            rights.get_rules_shared_with(self.request.user)
+            .select_related("calendar__mailbox__domain")
+            .order_by(
+                "calendar__name",
+                "calendar__mailbox__domain__name",
+                "calendar__mailbox__address",
+            )
+        )
+
+
 class SharedCalendarViewSet(CheckTokenMixin, viewsets.ModelViewSet):
     """Shared calendar viewset."""
 
@@ -93,6 +114,18 @@ class BaseEventViewSet(viewsets.ViewSet):
 
     lookup_value_regex = r"[0-9a-zA-Z\-\.@]+"
     permission_classes = (permissions.IsAuthenticated,)
+
+    def handle_exception(self, exc):
+        """Return a meaningful status when the CalDAV server refuses a request.
+
+        For example, an access rule can be removed while its calendar
+        is displayed.
+        """
+        if isinstance(exc, caldav_error.AuthorizationError):
+            exc = exceptions.PermissionDenied()
+        elif isinstance(exc, caldav_error.NotFoundError):
+            exc = exceptions.NotFound()
+        return super().handle_exception(exc)
 
     def get_serializer(self, data=None, **kwargs):
         args = []
@@ -235,14 +268,32 @@ class UserEventViewSet(BaseEventViewSet):
 
     type = "user"
 
+    #: Actions allowed on a calendar shared in read-only mode
+    read_actions = ("list", "retrieve")
+
     def get_calendar(self, pk):
-        """Return UserCalendar instance."""
-        calendar = models.UserCalendar.objects.filter(
-            mailbox__user=self.request.user, pk=pk
-        ).first()
-        if not calendar:
+        """Return UserCalendar instance.
+
+        The calendar is owned by the current user, or shared with them
+        by an access rule.
+        """
+        user = self.request.user
+        calendar = models.UserCalendar.objects.filter(mailbox__user=user, pk=pk).first()
+        if calendar:
+            return calendar
+        rule = (
+            rights.get_rules_shared_with(user)
+            .filter(calendar__pk=pk)
+            .select_related("calendar")
+            .first()
+        )
+        if not rule:
             raise http.Http404
-        return calendar
+        if not rule.write and self.action not in self.read_actions:
+            raise exceptions.PermissionDenied(
+                _("This calendar is shared with you in read-only mode")
+            )
+        return rule.calendar
 
 
 class SharedEventViewSet(BaseEventViewSet):
