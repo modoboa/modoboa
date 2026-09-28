@@ -19,6 +19,9 @@ export default {
   getCalendarsSharedWithMe() {
     return repository.get('/calendars-shared-with-me/')
   },
+  patchCalendarSharedWithMe(pk, data) {
+    return repository.patch(`/calendars-shared-with-me/${pk}/`, data)
+  },
 
   getAccessRules(calendarPk) {
     return repository.get(`/user-calendars/${calendarPk}/accessrules/`)

@@ -1,5 +1,7 @@
 """Calendar serializers."""
 
+import re
+
 from django.db.models import Q
 from django.utils.translation import gettext as _
 
@@ -94,12 +96,12 @@ class UserCalendarSerializer(CalDAVCalendarMixin, serializers.ModelSerializer):
 class SharedWithMeCalendarSerializer(serializers.ModelSerializer):
     """A user calendar shared with the current user by an access rule.
 
+    The grantee chooses the color and the visibility of the calendar.
     The share URL is not returned: its token belongs to the owner.
     """
 
     pk = serializers.IntegerField(source="calendar.pk", read_only=True)
     name = serializers.CharField(source="calendar.name", read_only=True)
-    color = serializers.CharField(source="calendar.color", read_only=True)
     full_url = serializers.CharField(source="calendar.full_url", read_only=True)
     owner = lib_fields.DRFEmailFieldUTF8(
         source="calendar.mailbox.full_address", read_only=True
@@ -107,8 +109,19 @@ class SharedWithMeCalendarSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.AccessRule
-        fields = ("pk", "name", "color", "full_url", "owner", "write")
+        fields = ("pk", "name", "color", "visible", "full_url", "owner", "write")
         read_only_fields = ("write",)
+
+    def validate_color(self, value):
+        """An empty value restores the color chosen by the owner."""
+        if value and not re.fullmatch(r"#[0-9a-fA-F]{6}", value):
+            raise serializers.ValidationError(_("Invalid color"))
+        return value
+
+    def to_representation(self, instance):
+        data = super().to_representation(instance)
+        data["color"] = instance.color or instance.calendar.color
+        return data
 
 
 class EventCalendarSerializer(serializers.ModelSerializer):

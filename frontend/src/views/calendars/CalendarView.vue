@@ -118,6 +118,14 @@
         @close="closeAccessRulesForm"
       />
     </v-dialog>
+    <v-dialog v-model="showSharedWithMeColorForm" persistent max-width="800px">
+      <SharedWithMeCalendarForm
+        v-if="selectedCalendar"
+        :calendar="selectedCalendar"
+        @color-changed="refreshCalendars"
+        @close="closeSharedWithMeColorForm"
+      />
+    </v-dialog>
     <v-dialog v-model="showImportEventsForm" persistent max-width="800px">
       <ImportEventsForm
         v-if="selectedCalendar"
@@ -146,6 +154,7 @@ import ConfirmDialog from '@/components/tools/ConfirmDialog'
 import EventForm from '@/components/calendars/EventForm'
 import ImportEventsForm from '@/components/calendars/ImportEventsForm'
 import RecurrenceScopeDialog from '@/components/calendars/RecurrenceScopeDialog'
+import SharedWithMeCalendarForm from '@/components/calendars/SharedWithMeCalendarForm'
 
 const { $gettext, current } = useGettext()
 const layoutStore = useLayoutStore()
@@ -169,6 +178,7 @@ const showCalendarForm = ref(false)
 const showInformation = ref(false)
 const showEventForm = ref(false)
 const showImportEventsForm = ref(false)
+const showSharedWithMeColorForm = ref(false)
 const ctype = ref('week')
 const focus = ref('')
 const dragEvent = ref(null)
@@ -251,6 +261,22 @@ const leftMenuItems = computed(() => {
         icon: 'mdi-information-outline',
         action: () => openInformation(calendar),
       },
+      calendar.visible
+        ? {
+            text: $gettext('Hide'),
+            icon: 'mdi-eye-off-outline',
+            action: () => setCalendarVisibility(calendar, false),
+          }
+        : {
+            text: $gettext('Show'),
+            icon: 'mdi-eye-outline',
+            action: () => setCalendarVisibility(calendar, true),
+          },
+      {
+        text: $gettext('Color'),
+        icon: 'mdi-palette-outline',
+        action: () => openSharedWithMeColorForm(calendar),
+      },
     ]
     if (calendar.write) {
       children.push({
@@ -262,7 +288,9 @@ const leftMenuItems = computed(() => {
     result.push({
       key: `shared-with-me-${calendar.pk}`,
       text: calendar.name,
-      subtitle: calendar.owner,
+      subtitle: calendar.visible
+        ? calendar.owner
+        : `${calendar.owner} · ${$gettext('hidden')}`,
       children,
     })
   }
@@ -273,7 +301,9 @@ let fetchEventsCounter = 0
 
 async function fetchUserEvents({ start, end }) {
   const fetchId = ++fetchEventsCounter
-  const fetchedCalendars = calendars.value
+  const fetchedCalendars = calendars.value.filter(
+    (calendar) => calendar.visible !== false
+  )
   // A calendar can fail (e.g. an access rule removed in the meantime)
   // without preventing the display of the others
   const results = await Promise.allSettled(
@@ -300,6 +330,8 @@ async function fetchUserEvents({ start, end }) {
     for (const event of result.value.data) {
       newEvents.push({
         ...event,
+        // The color of a calendar shared with the user is chosen by them
+        color: calendar.owner ? calendar.color : event.color,
         start: Date.parse(event.start),
         end: Date.parse(event.end),
         timed: !event.allDay,
@@ -402,6 +434,26 @@ async function fetchUserCalendars() {
   ])
   userCalendars.value = resp.data
   sharedWithMeCalendars.value = sharedWithMeResp.data
+}
+
+function openSharedWithMeColorForm(calendar) {
+  selectedCalendar.value = calendar
+  showSharedWithMeColorForm.value = true
+}
+
+function closeSharedWithMeColorForm() {
+  selectedCalendar.value = null
+  showSharedWithMeColorForm.value = false
+}
+
+async function setCalendarVisibility(calendar, visible) {
+  await api.patchCalendarSharedWithMe(calendar.pk, { visible })
+  await refreshCalendars()
+}
+
+async function refreshCalendars() {
+  await fetchUserCalendars()
+  refreshCalendarEvents()
 }
 
 function refreshCalendarEvents() {

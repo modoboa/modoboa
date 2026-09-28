@@ -337,6 +337,7 @@ class UserCalendarViewSetTestCase(TestDataMixin, ModoAPITestCase):
                     "pk": calendar.pk,
                     "name": "Team",
                     "color": "#ff0000",
+                    "visible": True,
                     "full_url": "http://localhost:5232/user2@test.com/Team",
                     "owner": "user2@test.com",
                     "write": False,
@@ -377,6 +378,70 @@ class UserCalendarViewSetTestCase(TestDataMixin, ModoAPITestCase):
         self.account2.save()
         response = self.client.get(reverse("api:calendar-shared-with-me-list"))
         self.assertEqual(response.json(), [])
+
+    def test_calendar_shared_with_me_display_settings(self):
+        """The grantee chooses the color and the visibility of a calendar."""
+        calendar = factories.UserCalendarFactory(
+            mailbox=self.account2.mailbox, color="#ff0000"
+        )
+        rule = factories.AccessRuleFactory(
+            calendar=calendar, mailbox=self.account.mailbox, read=True
+        )
+        url = reverse("api:calendar-shared-with-me-detail", args=[calendar.pk])
+        response = self.client.patch(
+            url, {"color": "#00ff00", "visible": False}, format="json"
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json()["color"], "#00ff00")
+        self.assertFalse(response.json()["visible"])
+        rule.refresh_from_db()
+        self.assertEqual(rule.color, "#00ff00")
+        self.assertFalse(rule.visible)
+        # The owner's calendar is not modified
+        calendar.refresh_from_db()
+        self.assertEqual(calendar.color, "#ff0000")
+        # An empty color restores the one of the owner
+        response = self.client.patch(url, {"color": ""}, format="json")
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json()["color"], "#ff0000")
+
+    def test_calendar_shared_with_me_invalid_color(self):
+        calendar = factories.UserCalendarFactory(mailbox=self.account2.mailbox)
+        factories.AccessRuleFactory(
+            calendar=calendar, mailbox=self.account.mailbox, read=True
+        )
+        url = reverse("api:calendar-shared-with-me-detail", args=[calendar.pk])
+        for color in ["red", "#ff00001", "#gg0000"]:
+            with self.subTest(color=color):
+                response = self.client.patch(url, {"color": color}, format="json")
+                self.assertEqual(response.status_code, 400)
+                self.assertIn("color", response.json())
+
+    def test_calendar_shared_with_me_write_access_is_read_only(self):
+        """The grantee cannot give themselves write access."""
+        calendar = factories.UserCalendarFactory(mailbox=self.account2.mailbox)
+        rule = factories.AccessRuleFactory(
+            calendar=calendar, mailbox=self.account.mailbox, read=True
+        )
+        url = reverse("api:calendar-shared-with-me-detail", args=[calendar.pk])
+        response = self.client.patch(url, {"write": True}, format="json")
+        self.assertEqual(response.status_code, 200)
+        rule.refresh_from_db()
+        self.assertFalse(rule.write)
+
+    def test_calendar_not_shared_with_me_display_settings(self):
+        # Own calendar, and calendar shared with another user
+        for calendar in [self.calendar, self.acr1.calendar]:
+            with self.subTest(calendar=calendar.pk):
+                url = reverse("api:calendar-shared-with-me-detail", args=[calendar.pk])
+                response = self.client.patch(url, {"visible": False}, format="json")
+                self.assertEqual(response.status_code, 404)
+        self.client.force_authenticate(self.account2)
+        url = reverse("api:calendar-shared-with-me-detail", args=[self.calendar.pk])
+        response = self.client.patch(url, {"visible": False}, format="json")
+        self.assertEqual(response.status_code, 404)
+        self.acr1.refresh_from_db()
+        self.assertTrue(self.acr1.visible)
 
     @mock.patch("caldav.DAVClient")
     def test_create_calendar(self, client_mock):
@@ -1005,6 +1070,20 @@ class AccessRuleViewSetTestCase(TestDataMixin, ModoAPITestCase):
         url = reverse("api:access-rule-detail", args=[self.calendar.pk, acr.pk])
         response = self.client.put(url, data=data, format="json")
         self.assertEqual(response.status_code, 404)
+
+    def test_update_accessrule_display_settings_ignored(self):
+        """Display settings belong to the grantee, not to the owner."""
+        self.acr1.color = "#00ff00"
+        self.acr1.save()
+        url = reverse("api:access-rule-detail", args=[self.calendar.pk, self.acr1.pk])
+        response = self.client.patch(
+            url, {"color": "#ff0000", "visible": False}, format="json"
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertNotIn("color", response.json())
+        self.acr1.refresh_from_db()
+        self.assertEqual(self.acr1.color, "#00ff00")
+        self.assertTrue(self.acr1.visible)
 
     def test_delete_accessrule(self):
         """Test access rule removal."""

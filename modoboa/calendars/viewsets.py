@@ -68,11 +68,19 @@ class UserCalendarViewSet(CheckTokenMixin, viewsets.ModelViewSet):
         return qset
 
 
-class CalendarSharedWithMeViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
-    """Calendars other users share with the current user."""
+class CalendarSharedWithMeViewSet(
+    mixins.ListModelMixin, mixins.UpdateModelMixin, viewsets.GenericViewSet
+):
+    """Calendars other users share with the current user.
+
+    Calendars are identified by their pk. Only their display settings
+    can be modified.
+    """
 
     permission_classes = [permissions.IsAuthenticated]
     serializer_class = serializers.SharedWithMeCalendarSerializer
+    lookup_field = "calendar"
+    lookup_url_kwarg = "pk"
 
     def get_queryset(self):
         if getattr(self, "swagger_fake_view", False):
