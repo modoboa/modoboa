@@ -7,8 +7,13 @@
     measure the content and size the frame, which an opaque origin
     forbids. It is safe *because* 'allow-scripts' is not granted: without
     it the document cannot execute anything, so it cannot use that origin.
+    Chromium does not repaint an in-place srcdoc change (Firefox does),
+    so :key recreates the iframe whenever the document changes and the
+    new srcdoc is applied on insertion.
+    See: https://issues.chromium.org/issues/555608153
   -->
   <iframe
+    :key="document"
     ref="frame"
     class="email-body"
     sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin"
