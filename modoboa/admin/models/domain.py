@@ -317,10 +317,16 @@ class Domain(mixins.MessageLimitMixin, AdminObject):
     def __str__(self):
         return smart_str(self.name)
 
-    def generate_dkim_key(self):
-        """Launch domain key creation."""
+    def generate_dkim_key(self, force: bool = False):
+        """Launch domain key creation.
+
+        Use force to replace an existing key.
+        """
+        args = ["modo", "manage_dkim_keys", f"--domain={self.name}"]
+        if force:
+            args.append("--force")
         queue = django_rq.get_queue("dkim")
-        queue.enqueue(call_command, "modo", "manage_dkim_keys", f"--domain={self.name}")
+        queue.enqueue(call_command, *args)
 
     def from_csv(self, user, row):
         """Create a new domain from a CSV entry.

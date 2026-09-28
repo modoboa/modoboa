@@ -65,6 +65,9 @@ export default {
   patchDomain(domainId, data) {
     return repository.patch(`/${domainResource}/${domainId}/`, data)
   },
+  generateDKIMKey(domainId) {
+    return repository.post(`/${domainResource}/${domainId}/dkim/generate/`)
+  },
   deleteDomain(domainId, data) {
     return repository.post(`/${domainResource}/${domainId}/delete/`, data)
   },

@@ -25,27 +25,42 @@ class MapsUpdater:
             )
             return False
 
-        try:
-            with open(self.config["key_map_path"]) as f:
-                for line in f:
-                    domain_name, path = line.split()
-                    self.dkim_path_map[domain_name] = path.replace("\n", "")
-        except FileNotFoundError:
-            pass
-        try:
-            with open(self.config["selector_map_path"]) as f:
-                for line in f:
-                    domain_name, selector = line.split()
-                    self.selector_map[domain_name] = selector
-        except FileNotFoundError:
-            pass
+        self.modified_key_path_file = self.load_map(
+            self.config["key_map_path"], self.dkim_path_map
+        )
+        self.modified_selector_file = self.load_map(
+            self.config["selector_map_path"], self.selector_map
+        )
         return True
+
+    def load_map(self, path: str, content: dict[str, str]) -> bool:
+        """Load a map file into content.
+
+        Malformed lines are skipped so they get removed on next write.
+        Return True if such lines were found.
+        """
+        malformed = False
+        try:
+            with open(path) as f:
+                for line in f:
+                    parts = line.split()
+                    if not parts:
+                        continue
+                    if len(parts) != 2:
+                        logger.warning("Ignoring malformed line in %s: %r", path, line)
+                        malformed = True
+                        continue
+                    content[parts[0]] = parts[1]
+        except FileNotFoundError:
+            pass
+        return malformed
 
     def manage_domain(self, domain_instance):
         domain_name = domain_instance.name
         selector_entry = self.selector_map.get(domain_name)
         dkim_path_entry = self.dkim_path_map.get(domain_name)
-        if not domain_instance.enable_dkim:
+        # Without a private key, rspamd can't sign for this domain
+        if not domain_instance.enable_dkim or not domain_instance.dkim_private_key_path:
             if selector_entry is not None:
                 self.selector_map.pop(domain_name)
                 self.modified_selector_file = True

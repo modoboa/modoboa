@@ -17,8 +17,11 @@ from ....constants import DKIM_WRITE_ERROR, ALARM_OPENED, DKIM_ERROR
 class ManageDKIMKeys(BaseCommand):
     """Command class."""
 
-    def create_new_dkim_key(self, domain: str, *, restrict: bool = True) -> None:
-        """Create a new DKIM key."""
+    def create_new_dkim_key(self, domain: str, *, restrict: bool = True) -> bool:
+        """Create a new DKIM key.
+
+        Return True if the key has been generated, False otherwise.
+        """
         storage_dir = param_tools.get_global_parameter("dkim_keys_storage_dir")
         pkey_path = os.path.join(storage_dir, f"{domain.name}.pem")
 
@@ -39,7 +42,7 @@ class ManageDKIMKeys(BaseCommand):
                 title=_("Failed to generate DKIM private key"),
                 internal_name=DKIM_ERROR,
             )
-            return
+            return False
 
         alarm_qset = domain.alarms.filter(internal_name=DKIM_WRITE_ERROR)
         if not os.access(storage_dir, os.W_OK):
@@ -55,7 +58,7 @@ class ManageDKIMKeys(BaseCommand):
                 alarm = alarm_qset.first()
                 if alarm.status != ALARM_OPENED:
                     alarm.reopen()
-            return
+            return False
         elif alarm_qset.exists():
             alarm_qset.first().close()
         key_size = (
@@ -73,7 +76,7 @@ class ManageDKIMKeys(BaseCommand):
             domain.alarms.create(
                 title=_("Failed to generate DKIM private key"), internal_name=DKIM_ERROR
             )
-            return
+            return False
 
         # `openssl` generates keys to be only user read- and writable by default
         #
@@ -93,7 +96,7 @@ class ManageDKIMKeys(BaseCommand):
             domain.alarms.create(
                 title=_("Failed to generate DKIM public key"), internal_name=DKIM_ERROR
             )
-            return
+            return False
         public_key = ""
         for cpt, line in enumerate(smart_str(output).splitlines()):
             if cpt == 0 or line.startswith("-----"):
@@ -101,6 +104,7 @@ class ManageDKIMKeys(BaseCommand):
             public_key += line
         domain.dkim_public_key = public_key
         domain.save(update_fields=["dkim_public_key", "dkim_private_key_path"])
+        return True
 
     def add_arguments(self, parser):
         """Add arguments to command."""
@@ -117,6 +121,17 @@ class ManageDKIMKeys(BaseCommand):
             action="store_false",
             help="Do not restrict file permissions on generated DKIM key files",
         )
+        parser.add_argument(
+            "--force",
+            action="store_true",
+            help="Generate a new key even if one already exists",
+        )
+
+    def key_is_missing(self, domain) -> bool:
+        """Check if domain has no DKIM key or if its file is missing."""
+        return not domain.dkim_private_key_path or not os.path.isfile(
+            domain.dkim_private_key_path
+        )
 
     def handle(self, *args, **options):
         """Entry point."""
@@ -124,19 +139,13 @@ class ManageDKIMKeys(BaseCommand):
             "dkim_default_key_length"
         )
 
-        domains = []
+        qset = models.Domain.objects.filter(enable_dkim=True)
         if options["domain"] != "":
-            domain = models.Domain.objects.filter(
-                name=options["domain"], enable_dkim=True, dkim_private_key_path=""
-            ).first()
-            if domain:
-                self.create_new_dkim_key(domain, restrict=options["restrict"])
-                domains.append(domain)
-        else:
-            qset = models.Domain.objects.filter(
-                enable_dkim=True, dkim_private_key_path=""
-            )
-            for domain in qset:
-                self.create_new_dkim_key(domain, restrict=options["restrict"])
+            qset = qset.filter(name=options["domain"])
+        domains = []
+        for domain in qset:
+            if not options["force"] and not self.key_is_missing(domain):
+                continue
+            if self.create_new_dkim_key(domain, restrict=options["restrict"]):
                 domains.append(domain)
         signals.dkim_keys_created.send(self, domains=domains)

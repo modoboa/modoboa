@@ -82,6 +82,44 @@ class ManagementCommandTestCase(ModoAPITestCase):
             content = fp.read()
         self.assertNotIn(domain.name, content)
 
+    def test_job_domain_without_key(self):
+        """A domain without private key must not be written to maps."""
+        self.configure()
+        domain = admin_models.Domain.objects.get(name="test.com")
+        domain.enable_dkim = True
+        domain.dkim_private_key_path = "xxx"
+        domain.save()
+        jobs.update_rspamd_maps([domain.id])
+
+        domain.dkim_private_key_path = ""
+        domain.save()
+        jobs.update_rspamd_maps([domain.id])
+        with open(self.key_map_path) as fp:
+            self.assertNotIn(domain.name, fp.read())
+        with open(self.selector_map_path) as fp:
+            self.assertNotIn(domain.name, fp.read())
+
+    def test_job_malformed_map(self):
+        """Malformed lines must not break the update and must be dropped."""
+        self.configure()
+        with open(self.key_map_path, "w") as fp:
+            fp.write("broken.com\n\nok.com /path/ok.com.pem\n")
+        domain = admin_models.Domain.objects.get(name="test.com")
+        domain.enable_dkim = True
+        domain.dkim_private_key_path = "xxx"
+        domain.save()
+        with LogCapture("modoboa.jobs") as log:
+            jobs.update_rspamd_maps([domain.id])
+        log.check(
+            (
+                "modoboa.jobs",
+                "WARNING",
+                f"Ignoring malformed line in {self.key_map_path}: 'broken.com\\n'",
+            )
+        )
+        with open(self.key_map_path) as fp:
+            self.assertEqual(fp.read(), "ok.com /path/ok.com.pem\ntest.com xxx\n")
+
     def test_signal_handler(self):
         self.set_global_parameter("dkim_keys_storage_dir", self.workdir, app="admin")
         self.configure()

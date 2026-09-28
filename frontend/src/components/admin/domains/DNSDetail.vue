@@ -246,11 +246,8 @@ function copyPubKey() {
 }
 
 function confirmGenNewKey() {
-  const payload = {
-    dkim_private_key_path: '',
-  }
   domainsApi
-    .patchDomain(domain.value.pk, payload)
+    .generateDKIMKey(domain.value.pk)
     .then(() => {
       busStore.displayNotification({
         msg: $gettext(
@@ -266,44 +263,35 @@ function confirmGenNewKey() {
     })
 }
 
-function cancelDKIMGen() {
-  keyLoading.value = false
+async function askKeyGeneration(message, color) {
+  keyLoading.value = true
+  const result = await dialog.value.open($gettext('Warning'), message, {
+    color,
+    cancelLabel: $gettext('No'),
+    agreeLabel: $gettext('Yes'),
+  })
+  if (result) {
+    confirmGenNewKey()
+  } else {
+    keyLoading.value = false
+  }
 }
 
-async function retryKeyGeneration() {
-  keyLoading.value = true
-  domainsApi.getDomainDNSDetail(domain.value.pk).then(async (resp) => {
-    detail.value = resp.data
-    const result = await dialog.value.open(
-      $gettext('warning'),
-      $gettext(
-        'DKIM key does not seem to be generated yet or has failed. Do you want to requeue the job?'
-      ),
-      {
-        color: 'warning',
-        cancelLabel: $gettext('No'),
-        agreeLabel: $gettext('Yes'),
-      }
-    )
-    if (result) {
-      confirmGenNewKey()
-    } else {
-      cancelDKIMGen()
-    }
-  })
+function retryKeyGeneration() {
+  askKeyGeneration(
+    $gettext(
+      'DKIM key does not seem to be generated yet or has failed. Do you want to requeue the job?'
+    ),
+    'warning'
+  )
 }
 
 function generateNewKey() {
-  dialog.value.open(
-    $gettext('Warning'),
+  askKeyGeneration(
     $gettext(
       'DKIM keys already exist for this domain. Do you want to overwrite them?'
     ),
-    {
-      color: 'error',
-      cancelLabel: $gettext('No'),
-      agreeLabel: $gettext('Yes'),
-    }
+    'error'
   )
 }
 
