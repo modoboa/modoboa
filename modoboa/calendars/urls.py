@@ -11,6 +11,11 @@ router.register(
 router.register(
     r"shared-calendars", viewsets.SharedCalendarViewSet, basename="shared-calendar"
 )
+router.register(
+    r"calendars-shared-with-me",
+    viewsets.CalendarSharedWithMeViewSet,
+    basename="calendar-shared-with-me",
+)
 router.register(r"attendees", viewsets.AttendeeViewSet, basename="attendee")
 router.register(r"mailboxes", viewsets.MailboxViewSet, basename="mailbox")
 router.register(r"calendar-rights", viewsets.RightsViewSet, basename="calendar-rights")

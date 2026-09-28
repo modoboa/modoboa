@@ -4,6 +4,19 @@
       <span class="headline">{{ $gettext('Calendar information') }}</span>
     </v-card-title>
     <v-card-text>
+      <p v-if="calendar.owner" class="mb-4">
+        {{
+          calendar.write
+            ? $gettext(
+                'This calendar is shared with you by %{ owner }. You can modify its events.',
+                { owner: calendar.owner }
+              )
+            : $gettext(
+                'This calendar is shared with you by %{ owner } in read-only mode.',
+                { owner: calendar.owner }
+              )
+        }}
+      </p>
       <p>
         {{
           $gettext(
@@ -21,16 +34,18 @@
           )
         }}
       </p>
-      <p>
-        {{
-          $gettext(
-            'You can also share a read-only version of this calendar using the following URL: '
-          )
-        }}
-      </p>
-      <v-alert type="info" class="my-4" variant="tonal">
-        {{ calendar.share_url }}
-      </v-alert>
+      <template v-if="calendar.share_url">
+        <p>
+          {{
+            $gettext(
+              'You can also share a read-only version of this calendar using the following URL: '
+            )
+          }}
+        </p>
+        <v-alert type="info" class="my-4" variant="tonal">
+          {{ calendar.share_url }}
+        </v-alert>
+      </template>
     </v-card-text>
     <v-card-actions>
       <v-spacer />

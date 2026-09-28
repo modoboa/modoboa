@@ -7,6 +7,7 @@ import tempfile
 from unittest import mock
 
 from caldav import Event
+from caldav.lib import error as caldav_error
 
 from configparser import ConfigParser
 
@@ -315,6 +316,133 @@ class UserCalendarViewSetTestCase(TestDataMixin, ModoAPITestCase):
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
 
+    def test_shared_with_me(self):
+        """Calendars shared with the user are listed apart from their own."""
+        calendar = factories.UserCalendarFactory(
+            name="Team", mailbox=self.account2.mailbox, color="#ff0000"
+        )
+        factories.AccessRuleFactory(
+            calendar=calendar, mailbox=self.account.mailbox, read=True
+        )
+        # Shared with another user
+        factories.AccessRuleFactory(
+            calendar=calendar, mailbox=self.admin_account.mailbox, read=True
+        )
+        response = self.client.get(reverse("api:calendar-shared-with-me-list"))
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            response.json(),
+            [
+                {
+                    "pk": calendar.pk,
+                    "name": "Team",
+                    "color": "#ff0000",
+                    "visible": True,
+                    "full_url": "http://localhost:5232/user2@test.com/Team",
+                    "owner": "user2@test.com",
+                    "write": False,
+                }
+            ],
+        )
+        response = self.client.get(reverse("api:user-calendar-list"))
+        self.assertEqual([cal["pk"] for cal in response.json()], [self.calendar.pk])
+
+    def test_shared_with_me_write_access(self):
+        self.client.force_authenticate(self.admin_account)
+        response = self.client.get(reverse("api:calendar-shared-with-me-list"))
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            [(cal["pk"], cal["write"]) for cal in response.json()],
+            [(self.calendar.pk, True)],
+        )
+
+    def test_shared_with_me_ignores_rules_without_read_access(self):
+        """Rules created before read access was required."""
+        calendar = factories.UserCalendarFactory(mailbox=self.account2.mailbox)
+        factories.AccessRuleFactory(
+            calendar=calendar, mailbox=self.account.mailbox, write=True
+        )
+        factories.AccessRuleFactory(
+            calendar=factories.UserCalendarFactory(mailbox=self.account2.mailbox),
+            mailbox=self.account.mailbox,
+        )
+        response = self.client.get(reverse("api:calendar-shared-with-me-list"))
+        self.assertEqual(response.json(), [])
+
+    def test_shared_with_me_ignores_inactive_owner(self):
+        calendar = factories.UserCalendarFactory(mailbox=self.account2.mailbox)
+        factories.AccessRuleFactory(
+            calendar=calendar, mailbox=self.account.mailbox, read=True
+        )
+        self.account2.is_active = False
+        self.account2.save()
+        response = self.client.get(reverse("api:calendar-shared-with-me-list"))
+        self.assertEqual(response.json(), [])
+
+    def test_calendar_shared_with_me_display_settings(self):
+        """The grantee chooses the color and the visibility of a calendar."""
+        calendar = factories.UserCalendarFactory(
+            mailbox=self.account2.mailbox, color="#ff0000"
+        )
+        rule = factories.AccessRuleFactory(
+            calendar=calendar, mailbox=self.account.mailbox, read=True
+        )
+        url = reverse("api:calendar-shared-with-me-detail", args=[calendar.pk])
+        response = self.client.patch(
+            url, {"color": "#00ff00", "visible": False}, format="json"
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json()["color"], "#00ff00")
+        self.assertFalse(response.json()["visible"])
+        rule.refresh_from_db()
+        self.assertEqual(rule.color, "#00ff00")
+        self.assertFalse(rule.visible)
+        # The owner's calendar is not modified
+        calendar.refresh_from_db()
+        self.assertEqual(calendar.color, "#ff0000")
+        # An empty color restores the one of the owner
+        response = self.client.patch(url, {"color": ""}, format="json")
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json()["color"], "#ff0000")
+
+    def test_calendar_shared_with_me_invalid_color(self):
+        calendar = factories.UserCalendarFactory(mailbox=self.account2.mailbox)
+        factories.AccessRuleFactory(
+            calendar=calendar, mailbox=self.account.mailbox, read=True
+        )
+        url = reverse("api:calendar-shared-with-me-detail", args=[calendar.pk])
+        for color in ["red", "#ff00001", "#gg0000"]:
+            with self.subTest(color=color):
+                response = self.client.patch(url, {"color": color}, format="json")
+                self.assertEqual(response.status_code, 400)
+                self.assertIn("color", response.json())
+
+    def test_calendar_shared_with_me_write_access_is_read_only(self):
+        """The grantee cannot give themselves write access."""
+        calendar = factories.UserCalendarFactory(mailbox=self.account2.mailbox)
+        rule = factories.AccessRuleFactory(
+            calendar=calendar, mailbox=self.account.mailbox, read=True
+        )
+        url = reverse("api:calendar-shared-with-me-detail", args=[calendar.pk])
+        response = self.client.patch(url, {"write": True}, format="json")
+        self.assertEqual(response.status_code, 200)
+        rule.refresh_from_db()
+        self.assertFalse(rule.write)
+
+    def test_calendar_not_shared_with_me_display_settings(self):
+        # Own calendar, and calendar shared with another user
+        for calendar in [self.calendar, self.acr1.calendar]:
+            with self.subTest(calendar=calendar.pk):
+                url = reverse("api:calendar-shared-with-me-detail", args=[calendar.pk])
+                response = self.client.patch(url, {"visible": False}, format="json")
+                self.assertEqual(response.status_code, 404)
+        self.client.force_authenticate(self.account2)
+        url = reverse("api:calendar-shared-with-me-detail", args=[self.calendar.pk])
+        response = self.client.patch(url, {"visible": False}, format="json")
+        self.assertEqual(response.status_code, 404)
+        self.acr1.refresh_from_db()
+        self.assertTrue(self.acr1.visible)
+
     @mock.patch("caldav.DAVClient")
     def test_create_calendar(self, client_mock):
         """Create a new calendar."""
@@ -395,6 +523,18 @@ class UserCalendarViewSetTestCase(TestDataMixin, ModoAPITestCase):
             url, {"name": other.name, "color": "#000000"}, format="json"
         )
         self.assertEqual(response.status_code, 200)
+
+    @mock.patch("caldav.DAVClient")
+    def test_create_calendar_invalid_color(self, client_mock):
+        client_mock.return_value = mocks.DAVClientMock()
+        url = reverse("api:user-calendar-list")
+        for color in ["red", "#3a87ad80", "#gg0000", ""]:
+            with self.subTest(color=color):
+                response = self.client.post(
+                    url, {"name": "Colored", "color": color}, format="json"
+                )
+                self.assertEqual(response.status_code, 400)
+                self.assertIn("color", response.json())
 
     def test_new_calendar_does_not_reuse_path_of_renamed_one(self):
         """A renamed calendar keeps its path, a new one must not take it."""
@@ -943,6 +1083,20 @@ class AccessRuleViewSetTestCase(TestDataMixin, ModoAPITestCase):
         response = self.client.put(url, data=data, format="json")
         self.assertEqual(response.status_code, 404)
 
+    def test_update_accessrule_display_settings_ignored(self):
+        """Display settings belong to the grantee, not to the owner."""
+        self.acr1.color = "#00ff00"
+        self.acr1.save()
+        url = reverse("api:access-rule-detail", args=[self.calendar.pk, self.acr1.pk])
+        response = self.client.patch(
+            url, {"color": "#ff0000", "visible": False}, format="json"
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertNotIn("color", response.json())
+        self.acr1.refresh_from_db()
+        self.assertEqual(self.acr1.color, "#00ff00")
+        self.assertTrue(self.acr1.visible)
+
     def test_delete_accessrule(self):
         """Test access rule removal."""
         url = reverse("api:access-rule-detail", args=[self.calendar.pk, self.acr1.pk])
@@ -1323,6 +1477,155 @@ class EventViewSetTestCase(TestDataMixin, ModoAPITestCase):
         self.set_global_parameter("max_ics_file_size", "2048")
         with open(path) as fp:
             response = self.client.post(url, {"ics_file": fp})
+        self.assertEqual(response.status_code, 404)
+
+    def _share_calendar(self, write=False):
+        """Return a calendar of another user shared with the current one."""
+        calendar = factories.UserCalendarFactory(
+            name="Team", mailbox=self.account2.mailbox
+        )
+        factories.AccessRuleFactory(
+            calendar=calendar, mailbox=self.account.mailbox, read=True, write=write
+        )
+        return calendar
+
+    def test_get_events_of_calendar_shared_with_me(self):
+        calendar = self._share_calendar()
+        url = f"/api/v2/user-calendars/{calendar.pk}/events/"
+        response = self.client.get(f"{url}?start=20060712T182145Z&end=20070712T182145Z")
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(response.json()), 2)
+        response = self.client.get(f"{url}1234/")
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            response.json()["calendar"],
+            {"pk": calendar.pk, "name": "Team", "color": calendar.color},
+        )
+
+    def test_events_do_not_expose_share_url(self):
+        """The token of a calendar belongs to its owner."""
+        url = f"/api/v2/user-calendars/{self.calendar.pk}/events/1234/"
+        self.client.force_authenticate(self.admin_account)
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertNotIn("share_url", response.json()["calendar"])
+        self.assertNotIn(self.calendar.access_token, response.content.decode())
+
+    def test_get_events_of_calendar_no_longer_shared(self):
+        calendar = self._share_calendar()
+        models.AccessRule.objects.filter(calendar=calendar).delete()
+        response = self.client.get(f"/api/v2/user-calendars/{calendar.pk}/events/1234/")
+        self.assertEqual(response.status_code, 404)
+
+    def test_get_events_of_calendar_of_inactive_owner(self):
+        calendar = self._share_calendar()
+        self.account2.is_active = False
+        self.account2.save()
+        response = self.client.get(f"/api/v2/user-calendars/{calendar.pk}/events/1234/")
+        self.assertEqual(response.status_code, 404)
+
+    def test_write_events_of_read_only_shared_calendar(self):
+        calendar = self._share_calendar()
+        base = f"/api/v2/user-calendars/{calendar.pk}/events"
+        data = {
+            "title": "Test event",
+            "start": "2018-03-27T10:00:00Z",
+            "end": "2018-03-27T11:00:00Z",
+            "calendar": calendar.pk,
+        }
+        response = self.client.post(f"{base}/", data=data, format="json")
+        self.assertEqual(response.status_code, 400)
+        self.assertIn("calendar", response.json())
+
+        data["calendar"] = self.calendar.pk
+        response = self.client.put(f"{base}/1234/", data=data, format="json")
+        self.assertEqual(response.status_code, 403)
+        response = self.client.patch(f"{base}/1234/", data=data, format="json")
+        self.assertEqual(response.status_code, 403)
+        response = self.client.delete(f"{base}/1234/")
+        self.assertEqual(response.status_code, 403)
+
+        path = os.path.join(
+            os.path.abspath(os.path.dirname(__file__)), "test_data/events.ics"
+        )
+        self.set_global_parameter("max_ics_file_size", "2048")
+        with open(path) as fp:
+            response = self.client.post(f"{base}/import_from_file/", {"ics_file": fp})
+        self.assertEqual(response.status_code, 403)
+        self.assertEqual(mocks.ACTIONS, [])
+
+    def test_write_events_of_shared_calendar(self):
+        calendar = self._share_calendar(write=True)
+        base = f"/api/v2/user-calendars/{calendar.pk}/events"
+        data = {
+            "title": "Test event",
+            "start": "2018-03-27T10:00:00Z",
+            "end": "2018-03-27T11:00:00Z",
+            "calendar": calendar.pk,
+        }
+        response = self.client.post(f"{base}/", data=data, format="json")
+        self.assertEqual(response.status_code, 201)
+        response = self.client.patch(f"{base}/1234/", data=data, format="json")
+        self.assertEqual(response.status_code, 200)
+        response = self.client.delete(f"{base}/1234/")
+        self.assertEqual(response.status_code, 200)
+
+    def test_move_event_to_shared_calendar(self):
+        calendar = self._share_calendar(write=True)
+        url = f"/api/v2/user-calendars/{self.calendar.pk}/events/1234/"
+        data = {
+            "start": "2018-03-27T10:00:00Z",
+            "end": "2018-03-27T11:00:00Z",
+            "calendar": calendar.pk,
+        }
+        response = self.client.patch(url, data=data, format="json")
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            [action[0] for action in mocks.ACTIONS], ["add_event", "delete"]
+        )
+
+    def test_move_event_to_read_only_shared_calendar(self):
+        calendar = self._share_calendar()
+        url = f"/api/v2/user-calendars/{self.calendar.pk}/events/1234/"
+        data = {
+            "start": "2018-03-27T10:00:00Z",
+            "end": "2018-03-27T11:00:00Z",
+            "calendar": calendar.pk,
+        }
+        response = self.client.patch(url, data=data, format="json")
+        self.assertEqual(response.status_code, 400)
+        self.assertIn("calendar", response.json())
+        self.assertEqual(mocks.ACTIONS, [])
+
+    def test_move_event_from_shared_calendar(self):
+        calendar = self._share_calendar(write=True)
+        url = f"/api/v2/user-calendars/{calendar.pk}/events/1234/"
+        data = {
+            "start": "2018-03-27T10:00:00Z",
+            "end": "2018-03-27T11:00:00Z",
+            "calendar": self.calendar.pk,
+        }
+        response = self.client.patch(url, data=data, format="json")
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            [action[0] for action in mocks.ACTIONS], ["add_event", "delete"]
+        )
+
+    def test_caldav_authorization_error(self):
+        """Radicale can refuse an access Modoboa still grants (cache)."""
+        self.cal_mock.return_value.search = mock.Mock(
+            side_effect=caldav_error.AuthorizationError(reason="Forbidden")
+        )
+        url = f"/api/v2/user-calendars/{self.calendar.pk}/events/"
+        response = self.client.get(f"{url}?start=20060712T182145Z&end=20070712T182145Z")
+        self.assertEqual(response.status_code, 403)
+
+    def test_caldav_not_found_error(self):
+        self.cal_mock.return_value.event_by_url = mock.Mock(
+            side_effect=caldav_error.NotFoundError(reason="Not found")
+        )
+        url = f"/api/v2/user-calendars/{self.calendar.pk}/events/1234/"
+        response = self.client.get(url)
         self.assertEqual(response.status_code, 404)
 
     def test_import_from_file(self):

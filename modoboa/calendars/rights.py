@@ -41,6 +41,15 @@ def get_effective_access_rules():
     )
 
 
+def get_rules_shared_with(user):
+    """Return the effective access rules letting user read a calendar.
+
+    Radicale refuses to list the events of a calendar without read
+    access, so rules granting only write access are ignored.
+    """
+    return get_effective_access_rules().filter(mailbox__user=user, read=True)
+
+
 def get_share_permissions(read, write):
     """Return Radicale permissions matching an access rule."""
     permissions = "r" if read else ""

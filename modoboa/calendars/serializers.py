@@ -1,5 +1,8 @@
 """Calendar serializers."""
 
+import re
+
+from django.db.models import Q
 from django.utils.translation import gettext as _
 
 from rest_framework import serializers
@@ -9,9 +12,17 @@ from modoboa.lib import fields as lib_fields
 
 from . import backends
 from . import models
+from . import rights
 
 #: Scope of a modification made on an occurrence of a recurring event
 RECURRENCE_SCOPES = ("occurrence", "series")
+
+
+def check_color(value):
+    """Make sure value is a color the calendar view can display."""
+    if not re.fullmatch(r"#[0-9a-fA-F]{6}", value):
+        raise serializers.ValidationError(_("Invalid color"))
+    return value
 
 
 class CalDAVCalendarMixin:
@@ -21,6 +32,9 @@ class CalDAVCalendarMixin:
         """Reject names that could break out of the Radicale rights file."""
         models.calendar_name_validator(value)
         return value
+
+    def validate_color(self, value):
+        return check_color(value)
 
     def check_name_is_free(self, queryset, name):
         """Make sure no other calendar of queryset is named name.
@@ -87,6 +101,48 @@ class UserCalendarSerializer(CalDAVCalendarMixin, serializers.ModelSerializer):
         if old_name != instance.name or old_color != instance.color:
             self.update_remote_calendar(instance)
         return instance
+
+
+class SharedWithMeCalendarSerializer(serializers.ModelSerializer):
+    """A user calendar shared with the current user by an access rule.
+
+    The grantee chooses the color and the visibility of the calendar.
+    The share URL is not returned: its token belongs to the owner.
+    """
+
+    pk = serializers.IntegerField(source="calendar.pk", read_only=True)
+    name = serializers.CharField(source="calendar.name", read_only=True)
+    full_url = serializers.CharField(source="calendar.full_url", read_only=True)
+    owner = lib_fields.DRFEmailFieldUTF8(
+        source="calendar.mailbox.full_address", read_only=True
+    )
+
+    class Meta:
+        model = models.AccessRule
+        fields = ("pk", "name", "color", "visible", "full_url", "owner", "write")
+        read_only_fields = ("write",)
+
+    def validate_color(self, value):
+        """An empty value restores the color chosen by the owner."""
+        return check_color(value) if value else value
+
+    def to_representation(self, instance):
+        data = super().to_representation(instance)
+        data["color"] = instance.color or instance.calendar.color
+        return data
+
+
+class EventCalendarSerializer(serializers.ModelSerializer):
+    """Calendar of an event.
+
+    The calendar can be shared with the current user, so its share URL
+    is not returned.
+    """
+
+    class Meta:
+        model = models.UserCalendar
+        fields = ("pk", "name", "color")
+        read_only_fields = fields
 
 
 class DomainSerializer(serializers.ModelSerializer):
@@ -219,7 +275,7 @@ class ROEventSerializer(EventSerializer):
         self.fields["calendar"] = (
             SharedCalendarSerializer()
             if calendar_type != "user"
-            else UserCalendarSerializer()
+            else EventCalendarSerializer()
         )
 
 
@@ -250,8 +306,11 @@ class WritableEventSerializer(EventSerializer):
         if user.is_anonymous:
             return
         if calendar_type == "user":
+            shared_calendars = (
+                rights.get_rules_shared_with(user).filter(write=True).values("calendar")
+            )
             self.fields["calendar"].queryset = models.UserCalendar.objects.filter(
-                mailbox__user=user
+                Q(mailbox__user=user) | Q(pk__in=shared_calendars)
             )
         elif hasattr(user, "mailbox"):
             self.fields["calendar"].queryset = models.SharedCalendar.objects.filter(

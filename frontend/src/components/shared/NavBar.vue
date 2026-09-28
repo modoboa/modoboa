@@ -26,7 +26,7 @@
       :lines="layoutStore.compactLeftMenu ? false : true"
       nav
     >
-      <template v-for="item in menuItems" :key="item.text">
+      <template v-for="item in menuItems" :key="item.key || item.text">
         <template v-if="displayMenuItem(item)">
           <v-list-subheader v-if="item.subheader" class="text-white">
             {{ item.text.toUpperCase() }}
@@ -50,12 +50,13 @@
             :prepend-icon="item.icon"
           >
           </v-list-item>
-          <v-list-group v-else :value="item.text">
+          <v-list-group v-else :value="item.key || item.text">
             <template #activator="{ props }">
               <v-list-item
                 v-bind="props"
-                :key="item.text"
+                :key="item.key || item.text"
                 :title="item.text"
+                :subtitle="item.subtitle"
                 color="white"
                 :prepend-icon="item.icon"
               >

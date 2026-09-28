@@ -216,6 +216,9 @@ class AccessRule(models.Model):
         UserCalendar, related_name="rules", on_delete=models.CASCADE
     )
     last_update = models.DateTimeField(auto_now=True)
+    # Display settings chosen by the grantee (the calendar color if empty)
+    color = models.CharField(max_length=7, blank=True, default="")
+    visible = models.BooleanField(default=True)
 
     class Meta:
         unique_together = ("mailbox", "calendar")
