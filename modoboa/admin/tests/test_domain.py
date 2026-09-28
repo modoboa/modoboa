@@ -176,7 +176,9 @@ class DKIMTestCase(ModoAPITestCase):
         )
         key_path = os.path.join(self.workdir, "{}.pem".format(values["name"]))
         self.assertTrue(os.path.exists(key_path))
-        self.assertEqual(stat.S_IMODE(os.stat(key_path).st_mode), stat.S_IRUSR | stat.S_IWUSR)
+        self.assertEqual(
+            stat.S_IMODE(os.stat(key_path).st_mode), stat.S_IRUSR | stat.S_IWUSR
+        )
 
         domain.refresh_from_db()
 
@@ -195,7 +197,9 @@ class DKIMTestCase(ModoAPITestCase):
         )
         key_path = os.path.join(self.workdir, "{}.pem".format(values["name"]))
         self.assertTrue(os.path.exists(key_path))
-        self.assertEqual(stat.S_IMODE(os.stat(key_path).st_mode), 0o666 & ~sysutils.UMASK)
+        self.assertEqual(
+            stat.S_IMODE(os.stat(key_path).st_mode), 0o666 & ~sysutils.UMASK
+        )
 
         domain.refresh_from_db()
 
@@ -221,7 +225,6 @@ class DKIMTestCase(ModoAPITestCase):
         )
         domain.refresh_from_db()
         self.assertEqual(domain.dkim_private_key_path, "")
-
 
     def test_dkim_key_path_traversal_refused(self):
         """A crafted domain name must not let the key escape storage_dir."""
@@ -278,6 +281,83 @@ class DKIMTestCase(ModoAPITestCase):
         os.unlink(key_path)
         worker.work(burst=True)
         self.assertTrue(os.path.exists(key_path))
+
+    def _create_domain_with_key(self):
+        self.set_global_parameter("dkim_keys_storage_dir", self.workdir)
+        domain = Domain.objects.get(name="test.com")
+        domain.enable_dkim = True
+        domain.save()
+        call_command("modo", "manage_dkim_keys", f"--domain={domain.name}")
+        domain.refresh_from_db()
+        self.assertTrue(os.path.isfile(domain.dkim_private_key_path))
+        return domain
+
+    def test_dkim_key_regeneration(self):
+        """Check that an existing key is only replaced when forced."""
+        domain = self._create_domain_with_key()
+        public_key = domain.dkim_public_key
+
+        call_command("modo", "manage_dkim_keys", f"--domain={domain.name}")
+        domain.refresh_from_db()
+        self.assertEqual(domain.dkim_public_key, public_key)
+
+        call_command("modo", "manage_dkim_keys", f"--domain={domain.name}", "--force")
+        domain.refresh_from_db()
+        self.assertNotEqual(domain.dkim_public_key, public_key)
+
+    def test_dkim_key_file_missing(self):
+        """Check that a key is generated again when its file is missing."""
+        domain = self._create_domain_with_key()
+        public_key = domain.dkim_public_key
+        os.remove(domain.dkim_private_key_path)
+
+        call_command("modo", "manage_dkim_keys")
+        domain.refresh_from_db()
+        self.assertTrue(os.path.isfile(domain.dkim_private_key_path))
+        self.assertNotEqual(domain.dkim_public_key, public_key)
+
+    def test_dkim_key_generation_failure_not_notified(self):
+        """Domains for which generation failed must not be notified."""
+        self.set_global_parameter(
+            "dkim_keys_storage_dir", os.path.join(self.workdir, "missing")
+        )
+        Domain.objects.filter(name="test.com").update(enable_dkim=True)
+        notified = []
+
+        def receiver(sender, domains, **kwargs):
+            notified.extend(domains)
+
+        admin_signals.dkim_keys_created.connect(receiver)
+        try:
+            call_command("modo", "manage_dkim_keys")
+        finally:
+            admin_signals.dkim_keys_created.disconnect(receiver)
+        self.assertEqual(notified, [])
+
+    def test_generate_dkim_key_api(self):
+        """Check the API action used to (re)generate a key."""
+        domain = self._create_domain_with_key()
+        public_key = domain.dkim_public_key
+        url = reverse("v2:domain-generate-dkim-key", args=[domain.pk])
+
+        # Domain administrators can't change domains
+        self.authenticate_user(User.objects.get(username="admin@test.com"))
+        response = self.client.post(url)
+        self.assertEqual(response.status_code, 403)
+
+        self.authenticate_user(self.sadmin)
+        response = self.client.post(url)
+        self.assertEqual(response.status_code, 202)
+        queue = django_rq.get_queue("dkim")
+        worker = SimpleWorker([queue], connection=queue.connection)
+        worker.work(burst=True)
+        domain.refresh_from_db()
+        self.assertNotEqual(domain.dkim_public_key, public_key)
+
+        domain.enable_dkim = False
+        domain.save()
+        response = self.client.post(url)
+        self.assertEqual(response.status_code, 400)
 
 
 class DomainSerializerPluginSignalsTestCase(ModoAPITestCase):

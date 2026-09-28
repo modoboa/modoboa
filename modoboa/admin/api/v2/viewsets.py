@@ -99,6 +99,11 @@ class DomainViewSet(
                 permissions.IsAuthenticated(),
                 lib_permissions.CanDeleteDomain(),
             ]
+        if self.action == "generate_dkim_key":
+            return [
+                permissions.IsAuthenticated(),
+                lib_permissions.CanChangeDomain(),
+            ]
         return super().get_permissions()
 
     def get_serializer_class(self, *args, **kwargs):
@@ -145,6 +150,19 @@ class DomainViewSet(
         for domain in domains:
             domain.delete(request.user, keep_folder)
         return response.Response(status=status.HTTP_204_NO_CONTENT)
+
+    @extend_schema(request=None, responses={202: None})
+    @action(methods=["post"], detail=True, url_path="dkim/generate")
+    def generate_dkim_key(self, request, **kwargs):
+        """Queue the generation of a new DKIM key, replacing any existing one."""
+        domain = self.get_object()
+        if not domain.enable_dkim:
+            return response.Response(
+                {"enable_dkim": [_("DKIM signing is not enabled for this domain")]},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+        domain.generate_dkim_key(force=True)
+        return response.Response(status=status.HTTP_202_ACCEPTED)
 
     @action(methods=["get"], detail=True)
     def administrators(self, request, **kwargs):
