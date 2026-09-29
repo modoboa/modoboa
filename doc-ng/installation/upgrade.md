@@ -131,7 +131,7 @@ If you need to rebuild you virtualenv, you can check this [part of the documenta
 
 The section below containt specific migration steps to upgrade Modoboa instance.
 
-## Version 2.10.2
+## Version 2.11.0
 
 ### Required changes to Postfix configuration
 
@@ -336,6 +336,137 @@ Radicale's log should contain the following line at startup:
 ``` txt
 auth.cache_logins enabled for oauth2 plugin (successful: 60 sec, failed: 90 sec)
 ```
+
+### Recommended: manage calendar rights with the Modoboa API
+
+Calendars shared through access rules used to reach Radicale through
+a rights file, written every 2 minutes by Modoboa. This rarely worked:
+
+* Radicale (>= 3.3) only reads this file at startup, so new or revoked
+  shares were ignored until Radicale was restarted
+* the file is written on Modoboa's server, so Radicale never saw it
+  when running on another server without a shared filesystem
+
+The new `radicale-modoboa-rights` plugin asks the Modoboa API instead
+(`/api/v2/calendar-rights/`), so shares work immediately, wherever
+Radicale runs. Access to a user's own calendars and to the shared
+calendars of their domain is decided by the plugin itself, without
+calling the API. Rights fetched from the API are cached: a revoked
+share is enforced after 60 seconds at most (`modoboa_rights_cache_ttl`
+setting).
+
+The plugin also fixes the rights given to recipients of a share with
+write access: they can modify events but can no longer delete the
+calendar itself.
+
+Requirements:
+
+* Radicale 3.3 or later
+* the OAuth2 application used by Radicale's authentication plugin must
+  be named `Radicale` and use the client credentials grant (this is
+  the case if you followed the installation guide or used the
+  installer). The rights endpoint refuses other applications.
+
+If you use [modoboa installer](https://github.com/modoboa/modoboa-installer),
+update it and run it in upgrade mode: it installs the plugin and
+updates Radicale's configuration.
+
+``` shell
+$ sudo python3 run.py --upgrade <domain>
+```
+
+Otherwise, install the plugin inside Radicale's virtualenv
+(`/srv/radicale/env` by default):
+
+``` shell
+$ sudo -u radicale /srv/radicale/env/bin/pip install "radicale-modoboa-rights>=1.0.0"
+```
+
+Then replace the `[rights]` section of Radicale's configuration file
+(`/etc/radicale/config` by default), using the client id and secret of
+the `Radicale` OAuth2 application:
+
+``` ini
+[rights]
+type = from_file # [!code --]
+file = /etc/radicale/rights # [!code --]
+type = radicale_modoboa_rights # [!code ++]
+modoboa_rights_endpoint = https://<hostname of your server>/api/v2/calendar-rights/ # [!code ++]
+modoboa_client_id = radicale # [!code ++]
+modoboa_client_secret = <client_secret> # [!code ++]
+```
+
+Finally, restart Radicale:
+
+``` shell
+$ sudo supervisorctl restart radicale
+```
+
+See the [plugin documentation](https://github.com/modoboa/radicale-modoboa-rights)
+for the other settings (cache duration, behaviour when the API is
+unreachable, etc.).
+
+::: tip
+If you keep the `from_file` backend, restart Radicale after this
+upgrade: section names in the rights file have changed, and duplicate
+names could prevent Radicale from starting.
+:::
+
+### Recommended: keep the OAuth2 client secret out of Radicale's configuration URL
+
+`radicale-modoboa-auth-oauth2` used to require the client id and secret
+of the `Radicale` OAuth2 application inside the introspection URL
+(`https://radicale:<client_secret>@.../api/o/introspect/`), where it
+could end up in logs. Starting with version 1.0.0, they can be given
+as separate settings, and the password of the URL is masked in logs.
+The old URL format still works.
+
+This version requires Radicale 3.5.6 or later.
+
+If you use [modoboa installer](https://github.com/modoboa/modoboa-installer),
+running it in upgrade mode (see above) upgrades the plugin and updates
+the configuration.
+
+Otherwise, upgrade the plugin inside Radicale's virtualenv:
+
+``` shell
+$ sudo -u radicale /srv/radicale/env/bin/pip install -U "radicale-modoboa-auth-oauth2>=1.0.0"
+```
+
+Then update the `[auth]` section of Radicale's configuration file:
+
+``` ini
+[auth]
+type = radicale_modoboa_auth_oauth2
+oauth2_introspection_endpoint = https://radicale:<client_secret>@<hostname of your server>/api/o/introspect/ # [!code --]
+oauth2_introspection_endpoint = https://<hostname of your server>/api/o/introspect/ # [!code ++]
+modoboa_client_id = radicale # [!code ++]
+modoboa_client_secret = <client_secret> # [!code ++]
+cache_logins = True
+cache_successful_logins_expiry = 60
+```
+
+Finally, restart Radicale:
+
+``` shell
+$ sudo supervisorctl restart radicale
+```
+
+### Calendar names and access rules
+
+The `migrate` command makes calendar names unique per owner (user or
+domain, case insensitive): when several calendars share the same name,
+the oldest one keeps it and the others get a suffix, like
+`Work (2)`. Only names change: calendar URLs, hence Radicale
+collections and CalDAV clients, are not affected.
+
+New calendar names can no longer be `.` or `..`, nor contain control
+characters or any of `/ \ : ' " * ? ,`, which Radicale refuses.
+Existing calendars are left untouched.
+
+Access rules must now grant read access: rules without any access, or
+with write access only, are refused. Existing rules are not modified;
+they are fixed the next time they are saved.
 
 ## Version 2.10.1
 
