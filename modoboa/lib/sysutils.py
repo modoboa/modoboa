@@ -19,7 +19,13 @@ def exec_cmd(cmd, sudo_user=None, pinput=None, capture_output=True, **kwargs):
     Run a command using the current user. Set :keyword:`sudo_user` if
     you need different privileges.
 
-    :param str cmd: the command to execute
+    Backport of CVE-2026-27602: callers must now pass ``shell=True``
+    explicitly when ``cmd`` is a shell string. Prefer passing ``cmd``
+    as a ``list[str]`` (with ``shell`` left unset/False) so arguments
+    are not subject to shell interpretation.
+
+    :param cmd: the command to execute (``str`` with ``shell=True``,
+        or ``list[str]``)
     :param str sudo_user: a valid system username
     :param str pinput: data to send to process's stdin
     :param bool capture_output: capture process output or not
@@ -27,8 +33,10 @@ def exec_cmd(cmd, sudo_user=None, pinput=None, capture_output=True, **kwargs):
     :return: return code, command output
     """
     if sudo_user is not None:
-        cmd = "sudo -u %s %s" % (sudo_user, cmd)
-    kwargs["shell"] = True
+        if isinstance(cmd, list):
+            cmd = ["sudo", "-u", sudo_user] + cmd
+        else:
+            cmd = "sudo -u %s %s" % (sudo_user, cmd)
     if pinput is not None:
         kwargs["stdin"] = subprocess.PIPE
     if capture_output:
@@ -49,7 +57,10 @@ def doveadm_cmd(params, pinput=None, capture_output=True, **kwargs):
     Run doveadm command using the current user. Set :keyword:`sudo_user` if
     you need different privileges.
 
-    :param str params: the parameters to give to doveadm
+    Backport of CVE-2026-27602: ``params`` must be a ``list[str]`` so the
+    arguments are passed to ``subprocess`` without shell interpretation.
+
+    :param list params: the parameters to give to doveadm
     :param str sudo_user: a valid system username
     :param str pinput: data to send to process's stdin
     :param bool capture_output: capture process output or not
@@ -57,7 +68,7 @@ def doveadm_cmd(params, pinput=None, capture_output=True, **kwargs):
     :return: return code, command output
     """
     dpath = None
-    code, output = exec_cmd("which doveadm")
+    code, output = exec_cmd("which doveadm", shell=True)
     if not code:
         dpath = force_str(output).strip()
     else:
@@ -75,7 +86,7 @@ def doveadm_cmd(params, pinput=None, capture_output=True, **kwargs):
     sudo_user = dovecot_user if curuser != dovecot_user else None
     if dpath:
         return exec_cmd(
-            "{} {}".format(dpath, params),
+            [dpath] + list(params),
             sudo_user=sudo_user,
             pinput=pinput,
             capture_output=capture_output,
