@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-23 18:31+0200\n"
+"POT-Creation-Date: 2026-09-29 11:30+0200\n"
 "PO-Revision-Date: 2018-07-06 08:26+0000\n"
 "Last-Translator: akong <akong@aspa.idv.tw>\n"
 "Language-Team: Chinese (Taiwan) (http://www.transifex.com/tonio/modoboa/"
@@ -60,7 +60,7 @@ msgstr "不可以超過網域配額"
 #: admin/api/v1/serializers.py:185 admin/api/v1/serializers.py:381
 #: admin/api/v1/serializers.py:428 admin/api/v2/serializers.py:402
 #: admin/api/v2/serializers.py:652 admin/api/v2/serializers.py:705
-#: admin/models/alias.py:45 calendars/serializers.py:101
+#: admin/models/alias.py:45 calendars/serializers.py:185
 msgid "Permission denied."
 msgstr "權限不足"
 
@@ -85,7 +85,8 @@ msgid "Must be equal to mailbox full_address"
 msgstr "必須跟信箱完整位址一樣"
 
 #: admin/api/v1/serializers.py:414 admin/api/v2/serializers.py:686
-#: calendars/serializers.py:202 pdfcredentials/api/v2/serializers.py:91
+#: calendars/serializers.py:264 calendars/serializers.py:333
+#: pdfcredentials/api/v2/serializers.py:91
 msgid "This field is required."
 msgstr "這個欄位是必填的"
 
@@ -97,7 +98,7 @@ msgstr "本機網域 {} 不存在"
 msgid "A list of recipient"
 msgstr "收件人列表"
 
-#: admin/api/v1/serializers.py:534 admin/api/v2/viewsets.py:418
+#: admin/api/v1/serializers.py:534 admin/api/v2/viewsets.py:436
 #, fuzzy
 #| msgid "User '%s' already exists"
 msgid "This alias already exists"
@@ -172,15 +173,19 @@ msgstr "信箱是必要的"
 msgid "Unknown status"
 msgstr "未知"
 
-#: admin/api/v2/viewsets.py:120
+#: admin/api/v2/viewsets.py:125
 msgid "You don't have access to this domain"
 msgstr "您無權訪問此網域"
 
-#: admin/api/v2/viewsets.py:123 admin/api/v2/viewsets.py:141
+#: admin/api/v2/viewsets.py:128 admin/api/v2/viewsets.py:146
 msgid "You can't delete your own domain"
 msgstr "您不可以刪除您擁有的網域"
 
-#: admin/api/v2/viewsets.py:333 core/handlers.py:95
+#: admin/api/v2/viewsets.py:161
+msgid "DKIM signing is not enabled for this domain"
+msgstr ""
+
+#: admin/api/v2/viewsets.py:351 core/handlers.py:95
 msgid "You can't delete your own account"
 msgstr "您不可以刪除您擁有的帳號"
 
@@ -583,18 +588,18 @@ msgstr ""
 msgid "Unable to decode CSV file using %(encoding)s encoding"
 msgstr ""
 
-#: admin/management/commands/subcommands/_manage_dkim_keys.py:39
-#: admin/management/commands/subcommands/_manage_dkim_keys.py:74
+#: admin/management/commands/subcommands/_manage_dkim_keys.py:42
+#: admin/management/commands/subcommands/_manage_dkim_keys.py:77
 msgid "Failed to generate DKIM private key"
 msgstr ""
 
-#: admin/management/commands/subcommands/_manage_dkim_keys.py:49
+#: admin/management/commands/subcommands/_manage_dkim_keys.py:52
 msgid ""
 "DKIM path non-writable (either a permission issue or the directory does not "
 "exist)"
 msgstr ""
 
-#: admin/management/commands/subcommands/_manage_dkim_keys.py:94
+#: admin/management/commands/subcommands/_manage_dkim_keys.py:97
 #, fuzzy
 #| msgid "Enable communication with Modoboa public API"
 msgid "Failed to generate DKIM public key"
@@ -694,42 +699,42 @@ msgstr "假如您啟用這個功能，DKIM 金鑰將會產生給這個網域。"
 msgid "Key length"
 msgstr "金鑰長度"
 
-#: admin/models/domain.py:338 admin/models/domain_alias.py:70
+#: admin/models/domain.py:344 admin/models/domain_alias.py:70
 #: core/models.py:358 relaydomains/lib.py:13
 msgid "Invalid line"
 msgstr "無效的線"
 
-#: admin/models/domain.py:343
+#: admin/models/domain.py:349
 #, fuzzy
 #| msgid "Enter a valid domain name"
 msgid "Invalid domain name"
 msgstr "輸入有效的網域名稱"
 
-#: admin/models/domain.py:347
+#: admin/models/domain.py:353
 #, fuzzy
 #| msgid "Enter a valid domain name"
 msgid "{}: invalid domain name"
 msgstr "輸入有效的網域名稱"
 
-#: admin/models/domain.py:356
+#: admin/models/domain.py:362
 #, fuzzy
 #| msgid "No authorized MX record found for domain {}"
 msgid "{}: no authorized MX record found for domain"
 msgstr "沒有找到這個網域已驗證過的 MX 紀錄 {}"
 
-#: admin/models/domain.py:362
+#: admin/models/domain.py:368
 #, fuzzy
 #| msgid "Invalid quota value for domain '{}'"
 msgid "{}: invalid quota value for domain"
 msgstr "此網域有無效的配額值 '{}'"
 
-#: admin/models/domain.py:368
+#: admin/models/domain.py:374
 #, fuzzy
 #| msgid "Invalid default mailbox quota value for domain '{}'"
 msgid "{}: invalid default mailbox quota value for domain"
 msgstr "此網域有無效的預設信箱配額值 '{}'"
 
-#: admin/models/domain.py:375
+#: admin/models/domain.py:381
 #, fuzzy
 #| msgid "Default mailbox quota cannot be greater than domain quota"
 msgid "{}: default mailbox quota cannot be greater than domain quota"
@@ -1020,7 +1025,8 @@ msgid ""
 "database)"
 msgstr ""
 
-#: amavis/app_settings.py:236 webmail/app_settings.py:176
+#: amavis/app_settings.py:236 calendars/app_settings.py:85
+#: webmail/app_settings.py:176
 msgid "Display"
 msgstr "顯示"
 
@@ -1325,30 +1331,87 @@ msgid ""
 "Maximum size in bytes of imported ICS files (or KB, MB, GB if specified)"
 msgstr ""
 
-#: calendars/app_settings.py:89 core/api/v2/viewsets.py:205
+#: calendars/app_settings.py:91
+msgid "Start of working hours"
+msgstr ""
+
+#: calendars/app_settings.py:93
+msgid ""
+"Hours outside working hours are greyed out and the calendar scrolls to this "
+"hour by default"
+msgstr ""
+
+#: calendars/app_settings.py:101
+msgid "End of working hours"
+msgstr ""
+
+#: calendars/app_settings.py:103
+msgid "Hours outside working hours are greyed out"
+msgstr ""
+
+#: calendars/app_settings.py:123 calendars/app_settings.py:130
+#: core/api/v2/viewsets.py:205
 msgid "Calendars"
 msgstr ""
 
-#: calendars/models.py:23
-msgid "Calendar name contains invalid characters."
+#: calendars/models.py:37
+#, python-format
+msgid ""
+"Calendar name cannot be . or .. nor contain control characters or any of: "
+"%(characters)s"
 msgstr ""
 
-#: calendars/models.py:58 calendars/models.py:75 contacts/models.py:39
+#: calendars/models.py:76 calendars/models.py:93 contacts/models.py:39
 msgid "Server location is not set, please fix it."
 msgstr ""
 
-#: calendars/serializers.py:240
+#: calendars/serializers.py:24
+#, fuzzy
+#| msgid "Invalid line"
+msgid "Invalid color"
+msgstr "無效的線"
+
+#: calendars/serializers.py:48
+#, fuzzy
+msgid "A calendar with this name already exists."
+msgstr "這個名稱的別名已存在"
+
+#: calendars/serializers.py:259
+#, fuzzy
+#| msgid "Invalid address"
+msgid "Invalid recurrence id"
+msgstr "無效位址"
+
+#: calendars/serializers.py:371
 #, fuzzy
 #| msgid "Domain not found."
 msgid "Mailbox not found"
 msgstr "網域不存在。"
 
-#: calendars/serializers.py:246
+#: calendars/serializers.py:377
 msgid "An access rule already exists for this mailbox"
 msgstr ""
 
-#: calendars/viewsets.py:197
+#: calendars/serializers.py:390
+#, fuzzy
+#| msgid "A mailbox is required"
+msgid "Read access is required to share a calendar"
+msgstr "信箱是必要的"
+
+#: calendars/serializers.py:463
+msgid "End of working hours must be after its start"
+msgstr ""
+
+#: calendars/viewsets.py:181
+msgid "An occurrence cannot be moved to another calendar"
+msgstr ""
+
+#: calendars/viewsets.py:265
 msgid "Uploaded file is too big (max: {} bytes)"
+msgstr ""
+
+#: calendars/viewsets.py:302
+msgid "This calendar is shared with you in read-only mode"
 msgstr ""
 
 #: contacts/app_settings.py:11
@@ -3401,7 +3464,7 @@ msgstr ""
 msgid "is not"
 msgstr ""
 
-#: sievefilters/constants.py:28 webmail/lib/imapemail.py:374
+#: sievefilters/constants.py:28 webmail/lib/imapemail.py:400
 msgid "Subject"
 msgstr "主旨"
 
@@ -3876,67 +3939,67 @@ msgstr ""
 msgid "Failed to remove attachment: "
 msgstr "移除附件失敗:"
 
-#: webmail/lib/imapemail.py:340
+#: webmail/lib/imapemail.py:366
 msgid "wrote:"
 msgstr ""
 
-#: webmail/lib/imapemail.py:376
+#: webmail/lib/imapemail.py:402
 msgid "Date"
 msgstr "日期"
 
-#: webmail/lib/imapemail.py:392 webmail/lib/imapemail.py:395
+#: webmail/lib/imapemail.py:418 webmail/lib/imapemail.py:421
 #, fuzzy
 #| msgid "sent messages"
 msgid "Original message"
 msgstr "已發訊息"
 
-#: webmail/lib/imaputils.py:68 webmail/viewsets.py:26
+#: webmail/lib/imaputils.py:75 webmail/viewsets.py:26
 msgid "Invalid message identifier"
 msgstr ""
 
-#: webmail/lib/imaputils.py:75 webmail/viewsets.py:40
+#: webmail/lib/imaputils.py:82 webmail/viewsets.py:40
 #, fuzzy
 #| msgid "Invalid value"
 msgid "Invalid part number"
 msgstr "無效的值"
 
-#: webmail/lib/imaputils.py:88 webmail/viewsets.py:47
+#: webmail/lib/imaputils.py:95 webmail/viewsets.py:47
 msgid "Invalid search pattern"
 msgstr ""
 
-#: webmail/lib/imaputils.py:101
+#: webmail/lib/imaputils.py:108
 #, fuzzy
 #| msgid "Enter a valid domain name"
 msgid "Invalid mailbox name"
 msgstr "輸入有效的網域名稱"
 
-#: webmail/lib/imaputils.py:505
+#: webmail/lib/imaputils.py:513
 msgid "Failed to retrieve hierarchy delimiter"
 msgstr "無法檢查層次分隔"
 
-#: webmail/lib/imaputils.py:924
+#: webmail/lib/imaputils.py:989
 msgid "Inbox"
 msgstr "收件夾"
 
-#: webmail/lib/imaputils.py:928
+#: webmail/lib/imaputils.py:993
 #, fuzzy
 #| msgid "Create aliases"
 msgid "Drafts"
 msgstr "草稿"
 
-#: webmail/lib/imaputils.py:933
+#: webmail/lib/imaputils.py:998
 msgid "Junk"
 msgstr "垃圾信"
 
-#: webmail/lib/imaputils.py:938
+#: webmail/lib/imaputils.py:1003
 msgid "Sent"
 msgstr "寄件夾"
 
-#: webmail/lib/imaputils.py:946
+#: webmail/lib/imaputils.py:1011
 msgid "Scheduled"
 msgstr ""
 
-#: webmail/lib/imaputils.py:953
+#: webmail/lib/imaputils.py:1018
 msgid "Trash"
 msgstr "垃圾筒"
 
@@ -3960,42 +4023,42 @@ msgstr "網域名稱"
 msgid "This address is no longer allowed for this account"
 msgstr ""
 
-#: webmail/serializers.py:291
+#: webmail/serializers.py:302
 msgid "Moving scheduled messages is forbidden"
 msgstr ""
 
-#: webmail/serializers.py:323
+#: webmail/serializers.py:334
 msgid "Only datetime in the future is allowed"
 msgstr ""
 
-#: webmail/serializers.py:328
+#: webmail/serializers.py:339
 msgid "Provived datetime must be one minute in the future at least"
 msgstr ""
 
-#: webmail/serializers.py:358
+#: webmail/serializers.py:369
 #, fuzzy
 #| msgid "You are not allowed to import domain aliases."
 msgid "You are not allowed to send from this address"
 msgstr "您未允許匯入網域別名。"
 
-#: webmail/serializers.py:399
+#: webmail/serializers.py:410
 msgid ""
 "original_mailbox, original_mailid and original_action must be provided "
 "together"
 msgstr ""
 
-#: webmail/serializers.py:416
+#: webmail/serializers.py:427
 #, python-format
 msgid ""
 "Ensure this field has no more than %(max_length)s characters to schedule the "
 "message"
 msgstr ""
 
-#: webmail/serializers.py:473
+#: webmail/serializers.py:484
 msgid "forward_mailbox and forward_mailid must be provided together"
 msgstr ""
 
-#: webmail/serializers.py:477
+#: webmail/serializers.py:488
 msgid "A session can't start from a draft and a forwarded message"
 msgstr ""
 
@@ -4005,25 +4068,25 @@ msgstr ""
 msgid "Invalid page number"
 msgstr "無效的值"
 
-#: webmail/viewsets.py:152
+#: webmail/viewsets.py:168
 msgid "This mailbox is used by the webmail and can't be renamed"
 msgstr ""
 
-#: webmail/viewsets.py:193
+#: webmail/viewsets.py:209
 msgid "This mailbox is used by the webmail and can't be deleted"
 msgstr ""
 
-#: webmail/viewsets.py:604
+#: webmail/viewsets.py:630
 #, python-format
 msgid "A message cannot carry more than %s attachments"
 msgstr ""
 
-#: webmail/viewsets.py:616
+#: webmail/viewsets.py:642
 #, python-format
 msgid "Attachment is too big (limit: %s)"
 msgstr "附件太大 (限制: %s)"
 
-#: webmail/viewsets.py:621
+#: webmail/viewsets.py:647
 #, fuzzy, python-format
 #| msgid "Attachment is too big (limit: %s)"
 msgid "Attachments are too big (limit: %s for the whole message)"

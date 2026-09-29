@@ -71,15 +71,15 @@ msgstr "API-Token erstellt"
 
 #: src/components/account/APISetupForm.vue:94
 #: src/components/account/FidoAuthForm.vue:189
-#: src/components/admin/domains/DNSDetail.vue:298
+#: src/components/admin/domains/DNSDetail.vue:268
 #: src/components/admin/domains/DomainList.vue:305
 #: src/components/admin/domains/DomainList.vue:332
 #: src/components/admin/identities/IdentityList.vue:525
 #: src/components/admin/identities/IdentityList.vue:565
 #: src/components/admin/identities/IdentityList.vue:594
 #: src/components/tools/CreationForm.vue:135
-#: src/layouts/webmail/WebmailLayout.vue:280
-#: src/views/calendars/CalendarView.vue:535
+#: src/layouts/webmail/WebmailLayout.vue:278
+#: src/views/calendars/CalendarView.vue:713
 msgid "Warning"
 msgstr "Warnung"
 
@@ -96,6 +96,7 @@ msgstr "Sie sind dabei, Ihren API Zugriffstoken zu löschen"
 #: src/components/admin/identities/AccountEditForm.vue:212
 #: src/components/admin/identities/AliasEditForm.vue:69
 #: src/components/admin/imap_migration/ProviderForm.vue:58
+#: src/components/calendars/RecurrenceScopeDialog.vue:14
 #: src/components/tools/ConfirmDialog.vue:55
 #: src/components/webmail/SubscriptionsDialog.vue:32
 msgid "Cancel"
@@ -150,7 +151,7 @@ msgstr ""
 
 #: src/components/account/AutoReplyForm.vue:36
 #: src/components/admin/logs/MessageList.vue:50
-#: src/components/calendars/EventForm.vue:24
+#: src/components/calendars/EventForm.vue:32
 #: src/components/quarantine/QuarantineList.vue:234
 #: src/components/tools/TimeSerieChart.vue:19
 #: src/components/webmail/ComposeEmailForm.vue:83
@@ -300,28 +301,26 @@ msgid "Do you really want to delete this WebAuthn device?"
 msgstr "Wollen Sie dieses WebAuthn Gerät wirklich löschen?"
 
 #: src/components/account/FidoAuthForm.vue:193
-#: src/components/admin/domains/DNSDetail.vue:284
-#: src/components/admin/domains/DNSDetail.vue:304
+#: src/components/admin/domains/DNSDetail.vue:270
 #: src/components/admin/domains/DomainList.vue:311
 #: src/components/admin/domains/DomainList.vue:336
 #: src/components/admin/identities/IdentityList.vue:530
 #: src/components/admin/identities/IdentityList.vue:570
 #: src/components/admin/identities/IdentityList.vue:599
 #: src/components/tools/CreationForm.vue:142
-#: src/layouts/webmail/WebmailLayout.vue:285
+#: src/layouts/webmail/WebmailLayout.vue:283
 msgid "No"
 msgstr "Nein"
 
 #: src/components/account/FidoAuthForm.vue:194
-#: src/components/admin/domains/DNSDetail.vue:285
-#: src/components/admin/domains/DNSDetail.vue:305
+#: src/components/admin/domains/DNSDetail.vue:271
 #: src/components/admin/domains/DomainList.vue:312
 #: src/components/admin/domains/DomainList.vue:337
 #: src/components/admin/identities/IdentityList.vue:529
 #: src/components/admin/identities/IdentityList.vue:569
 #: src/components/admin/identities/IdentityList.vue:598
 #: src/components/tools/CreationForm.vue:141
-#: src/layouts/webmail/WebmailLayout.vue:284
+#: src/layouts/webmail/WebmailLayout.vue:282
 msgid "Yes"
 msgstr "Ja"
 
@@ -338,7 +337,7 @@ msgstr "Eigenes Gerät bearbeiten"
 #: src/components/admin/identities/AccountEditForm.vue:221
 #: src/components/admin/identities/AliasEditForm.vue:78
 #: src/components/admin/imap_migration/ProviderForm.vue:66
-#: src/components/calendars/EventForm.vue:95
+#: src/components/calendars/EventForm.vue:113
 #: src/views/account/FiltersView.vue:100
 msgid "Save"
 msgstr "Speichern"
@@ -402,7 +401,8 @@ msgstr "Neuer Filter"
 #: src/components/account/FilterForm.vue:195
 #: src/components/account/ForwardForm.vue:25
 #: src/components/admin/domains/DomainAliasForm.vue:75
-#: src/components/calendars/CalendarForm.vue:81
+#: src/components/calendars/CalendarForm.vue:80
+#: src/components/calendars/SharedWithMeCalendarForm.vue:24
 #: src/components/contacts/CategoryForm.vue:60
 #: src/components/contacts/ContactCategoriesForm.vue:24
 #: src/components/contacts/ContactForm.vue:185
@@ -412,7 +412,7 @@ msgstr "Aktualisieren"
 
 #: src/components/account/FilterForm.vue:195
 #: src/components/account/FilterSetForm.vue:30
-#: src/components/calendars/CalendarForm.vue:83
+#: src/components/calendars/CalendarForm.vue:82
 #: src/components/webmail/MailboxForm.vue:79
 msgid "Create"
 msgstr "Erstellen"
@@ -557,11 +557,12 @@ msgstr ""
 #: src/components/admin/domains/DomainAliasForm.vue:33
 #: src/components/admin/domains/DomainDKIMKey.vue:37
 #: src/components/admin/domains/DomainDNSConfig.vue:82
-#: src/components/calendars/CalendarAccessRulesForm.vue:77
-#: src/components/calendars/CalendarDetail.vue:37
-#: src/components/calendars/CalendarForm.vue:37
-#: src/components/calendars/EventForm.vue:93
+#: src/components/calendars/CalendarAccessRulesForm.vue:80
+#: src/components/calendars/CalendarDetail.vue:52
+#: src/components/calendars/CalendarForm.vue:34
+#: src/components/calendars/EventForm.vue:106
 #: src/components/calendars/ImportEventsForm.vue:27
+#: src/components/calendars/SharedWithMeCalendarForm.vue:22
 #: src/components/contacts/AddressBookInfo.vue:27
 #: src/components/contacts/CategoryForm.vue:22
 #: src/components/contacts/ContactCategoriesForm.vue:21
@@ -689,13 +690,13 @@ msgstr "Verwendung"
 #: src/components/admin/identities/IdentityList.vue:510
 #: src/components/admin/imap_migration/MigrationsList.vue:130
 #: src/components/admin/imap_migration/ProvidersList.vue:146
-#: src/components/calendars/EventForm.vue:90
+#: src/components/calendars/EventForm.vue:103
 #: src/components/contacts/CategoryForm.vue:18
 #: src/components/contacts/ContactList.vue:237
 #: src/components/webmail/EmailList.vue:35
 #: src/components/webmail/EmailListItem.vue:130
 #: src/views/account/FiltersView.vue:351
-#: src/views/calendars/CalendarView.vue:209 src/views/webmail/EmailView.vue:62
+#: src/views/calendars/CalendarView.vue:239 src/views/webmail/EmailView.vue:62
 msgid "Delete"
 msgstr "Löschen"
 
@@ -937,18 +938,14 @@ msgstr "Aktualisieren"
 msgid "DKIM key copied to clipboard"
 msgstr "DKIM-Schlüssel in Zwischenablage kopiert"
 
-#: src/components/admin/domains/DNSDetail.vue:256
+#: src/components/admin/domains/DNSDetail.vue:253
 msgid ""
 "A new key will be generated soon. Refresh the page in a moment to see it."
 msgstr ""
 "Ein neuer Schlüssel wird in Kürze generiert. Aktualisieren Sie die Seite um "
 "ihn anzuzeigen."
 
-#: src/components/admin/domains/DNSDetail.vue:278
-msgid "warning"
-msgstr "Warnung"
-
-#: src/components/admin/domains/DNSDetail.vue:279
+#: src/components/admin/domains/DNSDetail.vue:282
 msgid ""
 "DKIM key does not seem to be generated yet or has failed. Do you want to "
 "requeue the job?"
@@ -956,7 +953,7 @@ msgstr ""
 "DKIM Schlüssel scheint noch nicht generiert worden zu sein oder ist "
 "fehlgeschlagen. Wollen Sie den Auftrag erneut in die Warteschlange stellen?"
 
-#: src/components/admin/domains/DNSDetail.vue:299
+#: src/components/admin/domains/DNSDetail.vue:291
 msgid "DKIM keys already exist for this domain. Do you want to overwrite them?"
 msgstr ""
 "Für diese Domain sind bereits DKIM-Schlüssel vorhanden. Möchten Sie sie "
@@ -1316,7 +1313,7 @@ msgstr "Domain gelöscht"
 #: src/components/admin/imap_migration/ProvidersList.vue:152
 #: src/components/contacts/ContactList.vue:232
 #: src/views/account/FiltersView.vue:346
-#: src/views/calendars/CalendarView.vue:199 src/views/webmail/EmailView.vue:53
+#: src/views/calendars/CalendarView.vue:229 src/views/webmail/EmailView.vue:53
 msgid "Edit"
 msgstr "Bearbeiten"
 
@@ -1549,7 +1546,7 @@ msgid "Account created"
 msgstr "Konto gelöscht"
 
 #: src/components/admin/identities/AccountEditForm.vue:31
-#: src/components/calendars/CalendarAccessRulesForm.vue:42
+#: src/components/calendars/CalendarAccessRulesForm.vue:45
 #: src/components/shared/TopMenu.vue:130
 #: src/views/admin/identities/AccountView.vue:4
 #: src/views/admin/identities/IdentitiesView.vue:23
@@ -1664,7 +1661,7 @@ msgstr "Läuft ab am"
 #: src/components/admin/identities/AliasSummary.vue:30
 #: src/components/admin/identities/form_steps/AliasGeneralForm.vue:58
 #: src/components/admin/identities/IdentityList.vue:261
-#: src/components/calendars/EventForm.vue:74
+#: src/components/calendars/EventForm.vue:86
 #: src/views/admin/InformationView.vue:148
 msgid "Description"
 msgstr "Beschreibung"
@@ -2058,7 +2055,7 @@ msgid "Queue ID"
 msgstr "Warteschlangen ID"
 
 #: src/components/admin/logs/MessageList.vue:49
-#: src/components/calendars/EventForm.vue:34
+#: src/components/calendars/EventForm.vue:43
 #: src/components/quarantine/QuarantineList.vue:52
 #: src/components/quarantine/QuarantineList.vue:233
 #: src/components/tools/TimeSerieChart.vue:20
@@ -2075,13 +2072,13 @@ msgstr "Kalender teilen"
 msgid "Full address"
 msgstr "Ganze Adresse"
 
-#: src/components/calendars/CalendarAccessRulesForm.vue:21
-#: src/components/calendars/CalendarAccessRulesForm.vue:43
+#: src/components/calendars/CalendarAccessRulesForm.vue:22
+#: src/components/calendars/CalendarAccessRulesForm.vue:46
 msgid "Read"
 msgstr "Lesen"
 
-#: src/components/calendars/CalendarAccessRulesForm.vue:26
-#: src/components/calendars/CalendarAccessRulesForm.vue:44
+#: src/components/calendars/CalendarAccessRulesForm.vue:28
+#: src/components/calendars/CalendarAccessRulesForm.vue:47
 msgid "Write"
 msgstr "Schreiben"
 
@@ -2089,7 +2086,16 @@ msgstr "Schreiben"
 msgid "Calendar information"
 msgstr "Kalenderinformation"
 
-#: src/components/calendars/CalendarDetail.vue:9
+#: src/components/calendars/CalendarDetail.vue:10
+msgid ""
+"This calendar is shared with you by %{ owner }. You can modify its events."
+msgstr ""
+
+#: src/components/calendars/CalendarDetail.vue:14
+msgid "This calendar is shared with you by %{ owner } in read-only mode."
+msgstr ""
+
+#: src/components/calendars/CalendarDetail.vue:22
 msgid ""
 "To access this calendar from the outside (such as Mozilla Thunderbird or "
 "your smartphone), use the following URL:"
@@ -2097,12 +2103,12 @@ msgstr ""
 "Um auf diesem Kalender von außen (wie z.B. Mozilla Thunderbird oder ihrem "
 "Smartphone) zuzugreifen, verwenden Sie bitte die folgende URL:"
 
-#: src/components/calendars/CalendarDetail.vue:19
+#: src/components/calendars/CalendarDetail.vue:32
 #: src/components/contacts/AddressBookInfo.vue:19
 msgid "The credentials are the same than the ones you use to access Modoboa."
 msgstr "Die Zugangsdaten sind dieselben, die Sie auch für Modoboa verwenden."
 
-#: src/components/calendars/CalendarDetail.vue:26
+#: src/components/calendars/CalendarDetail.vue:40
 msgid ""
 "You can also share a read-only version of this calendar using the following "
 "URL: "
@@ -2115,54 +2121,73 @@ msgid "Edit calendar"
 msgstr "Kalender bearbeiten"
 
 #: src/components/calendars/CalendarForm.vue:8
-#: src/views/calendars/CalendarView.vue:181
+#: src/views/calendars/CalendarView.vue:210
 msgid "New calendar"
 msgstr "Neuer Kalender"
 
 #: src/components/calendars/CalendarForm.vue:25
+#: src/components/calendars/SharedWithMeCalendarForm.vue:12
+#: src/views/calendars/CalendarView.vue:276
 msgid "Color"
 msgstr "Farbe"
 
-#: src/components/calendars/CalendarForm.vue:103
+#: src/components/calendars/CalendarForm.vue:102
+#: src/components/calendars/SharedWithMeCalendarForm.vue:65
 msgid "Calendar updated"
 msgstr "Kalender aktualisiert"
 
-#: src/components/calendars/CalendarForm.vue:106
+#: src/components/calendars/CalendarForm.vue:105
 msgid "Calendar created"
 msgstr "Kalender erstellt"
 
-#: src/components/calendars/EventForm.vue:12
+#: src/components/calendars/EventForm.vue:10
+msgid "This event belongs to a calendar shared with you in read-only mode."
+msgstr ""
+
+#: src/components/calendars/EventForm.vue:19
 msgid "Title"
 msgstr "Titel"
 
-#: src/components/calendars/EventForm.vue:49
+#: src/components/calendars/EventForm.vue:59
 #: src/views/calendars/CalendarView.vue:4
 msgid "Calendar"
 msgstr "Kalender"
 
-#: src/components/calendars/EventForm.vue:61
+#: src/components/calendars/EventForm.vue:72
 msgid "Attendees"
 msgstr "Teilnehmer"
 
-#: src/components/calendars/EventForm.vue:133
+#: src/components/calendars/EventForm.vue:161
+#, fuzzy
+msgid "Event"
+msgstr "Ereignis bearbeiten"
+
+#: src/components/calendars/EventForm.vue:163
+#: src/components/calendars/EventForm.vue:247
+#: src/views/calendars/CalendarView.vue:495
 msgid "Edit event"
 msgstr "Ereignis bearbeiten"
 
-#: src/components/calendars/EventForm.vue:133
-#: src/views/calendars/CalendarView.vue:399
+#: src/components/calendars/EventForm.vue:163
+#: src/views/calendars/CalendarView.vue:570
 msgid "New event"
 msgstr "Neues Ereignis"
 
-#: src/components/calendars/EventForm.vue:208
+#: src/components/calendars/EventForm.vue:271
 msgid "Event added"
 msgstr "Termin hinzugefügt"
 
-#: src/components/calendars/EventForm.vue:211
-#: src/views/calendars/CalendarView.vue:340
+#: src/components/calendars/EventForm.vue:275
+#: src/views/calendars/CalendarView.vue:507
 msgid "Event updated"
 msgstr "Ereignis aktualisiert"
 
-#: src/components/calendars/EventForm.vue:224
+#: src/components/calendars/EventForm.vue:285
+#, fuzzy
+msgid "Delete event"
+msgstr "Token löschen"
+
+#: src/components/calendars/EventForm.vue:296
 msgid "Event deleted"
 msgstr "Ereignis gelöscht"
 
@@ -2190,6 +2215,33 @@ msgid "%{ n } event imported"
 msgid_plural "%{ n } events imported"
 msgstr[0] "%{ n } Ereignis importiert"
 msgstr[1] "%{ n } Ereignisse importiert"
+
+#: src/components/calendars/RecurrenceScopeDialog.vue:10
+msgid "This event is part of a recurring series."
+msgstr ""
+
+#: src/components/calendars/RecurrenceScopeDialog.vue:18
+#, fuzzy
+msgid "This event"
+msgstr "Ereignis bearbeiten"
+
+#: src/components/calendars/RecurrenceScopeDialog.vue:21
+#, fuzzy
+msgid "All events"
+msgstr "Alle Nachrichten"
+
+#: src/components/calendars/SharedWithMeCalendarForm.vue:4
+#, fuzzy
+msgid "Calendar color"
+msgstr "Kalender erstellt"
+
+#: src/components/calendars/SharedWithMeCalendarForm.vue:13
+msgid "Only you see this color"
+msgstr ""
+
+#: src/components/calendars/SharedWithMeCalendarForm.vue:19
+msgid "Owner's color"
+msgstr ""
 
 #: src/components/contacts/AddressBookInfo.vue:4
 msgid "Address book information"
@@ -2489,15 +2541,16 @@ msgid "Don't treat duplicated objects as errors"
 msgstr "Doppelte Objekte nicht als Fehler behandeln"
 
 #: src/components/tools/ImportForm.vue:54
-#: src/views/calendars/CalendarView.vue:214
+#: src/views/calendars/CalendarView.vue:244
+#: src/views/calendars/CalendarView.vue:283
 msgid "Import"
 msgstr "Import"
 
-#: src/components/tools/ParametersForm.vue:225
+#: src/components/tools/ParametersForm.vue:227
 msgid "Parameters updated"
 msgstr "Parameter aktualisiert"
 
-#: src/components/tools/ParametersForm.vue:230
+#: src/components/tools/ParametersForm.vue:232
 msgid "Could not save parameters"
 msgstr "Parameter konnten nicht gespeichert werden"
 
@@ -2527,19 +2580,19 @@ msgstr "Relative Zeiträume"
 
 #: src/components/tools/TimeSerieChart.vue:110
 #: src/views/calendars/CalendarView.vue:46
-#: src/views/calendars/CalendarView.vue:172
+#: src/views/calendars/CalendarView.vue:195
 msgid "Day"
 msgstr "Tag"
 
 #: src/components/tools/TimeSerieChart.vue:111
 #: src/views/calendars/CalendarView.vue:49
-#: src/views/calendars/CalendarView.vue:173
+#: src/views/calendars/CalendarView.vue:196
 msgid "Week"
 msgstr "Woche"
 
 #: src/components/tools/TimeSerieChart.vue:112
 #: src/views/calendars/CalendarView.vue:52
-#: src/views/calendars/CalendarView.vue:174
+#: src/views/calendars/CalendarView.vue:197
 msgid "Month"
 msgstr "Monat"
 
@@ -2738,40 +2791,40 @@ msgstr "Noch keine Nachricht in diesem Postfach"
 msgid "Sending failure"
 msgstr "Senden verboten"
 
-#: src/components/webmail/EmailList.vue:409
+#: src/components/webmail/EmailList.vue:416
 #, fuzzy
 msgid "%{count} message selected"
 msgid_plural "%{count} messages selected"
 msgstr[0] "Wichtige Nachrichten"
 msgstr[1] "Wichtige Nachrichten"
 
-#: src/components/webmail/EmailList.vue:474
+#: src/components/webmail/EmailList.vue:481
 #, fuzzy
 msgid "Scheduling updated"
 msgstr "Konto gelöscht"
 
-#: src/components/webmail/EmailList.vue:485
+#: src/components/webmail/EmailList.vue:492
 msgid "Scheduled canceled and message moved to trash folder"
 msgstr ""
 
-#: src/components/webmail/EmailList.vue:594
+#: src/components/webmail/EmailList.vue:655
 msgid "Message(s) deleted"
 msgstr "Nachricht(en) gelöscht"
 
-#: src/components/webmail/EmailList.vue:610
+#: src/components/webmail/EmailList.vue:660
 msgid "Message(s) marked as junk"
 msgstr "Als Junk markierte Nachricht(en)"
 
-#: src/components/webmail/EmailList.vue:625
+#: src/components/webmail/EmailList.vue:666
 msgid "Message(s) marked as not junk"
 msgstr "Nicht als Junk markierte Nachricht(en)"
 
-#: src/components/webmail/EmailList.vue:640
+#: src/components/webmail/EmailList.vue:672
 msgid "Message(s) flagged"
 msgstr "Nachricht(en) markiert"
 
-#: src/components/webmail/EmailList.vue:668
-#: src/views/webmail/ThreadView.vue:239
+#: src/components/webmail/EmailList.vue:703
+#: src/views/webmail/ThreadView.vue:240
 #, fuzzy
 msgid "%{count} message"
 msgid_plural "%{count} messages"
@@ -2892,12 +2945,12 @@ msgstr "Standardwert der Domain verwenden"
 msgid "User's database"
 msgstr ""
 
-#: src/layouts/account/AccountLayout.vue:29
+#: src/layouts/account/AccountLayout.vue:30
 #: src/layouts/admin/AdminLayout.vue:130
 msgid "Settings"
 msgstr "Einstellungen"
 
-#: src/layouts/account/AccountLayout.vue:35
+#: src/layouts/account/AccountLayout.vue:36
 msgid "Filters"
 msgstr "Filter"
 
@@ -2942,7 +2995,8 @@ msgid "Migrations"
 msgstr "Migrationen"
 
 #: src/layouts/admin/AdminLayout.vue:143 src/views/admin/InformationView.vue:4
-#: src/views/calendars/CalendarView.vue:194
+#: src/views/calendars/CalendarView.vue:224
+#: src/views/calendars/CalendarView.vue:260
 msgid "Information"
 msgstr "Information"
 
@@ -2970,15 +3024,15 @@ msgstr "Dieses Postfach komprimieren"
 msgid "Webmail"
 msgstr "Webmail"
 
-#: src/layouts/webmail/WebmailLayout.vue:275
+#: src/layouts/webmail/WebmailLayout.vue:273
 msgid "Mailbox compressed"
 msgstr "Postfach komprimiert"
 
-#: src/layouts/webmail/WebmailLayout.vue:281
+#: src/layouts/webmail/WebmailLayout.vue:279
 msgid "Delete this mailbox?"
 msgstr "Dieses Postfach löschen?"
 
-#: src/layouts/webmail/WebmailLayout.vue:292
+#: src/layouts/webmail/WebmailLayout.vue:290
 msgid "Mailbox deleted"
 msgstr "Postfach gelöscht"
 
@@ -3113,7 +3167,7 @@ msgstr "Filtersatz aktivieren"
 msgid "Deactivate filter set"
 msgstr "Filtersatz aktivieren"
 
-#: src/views/account/ParametersView.vue:30
+#: src/views/account/ParametersView.vue:32
 #: src/views/admin/ParametersView.vue:60
 #, fuzzy
 msgid "Settings: "
@@ -3318,19 +3372,40 @@ msgstr "Parameter konnten nicht gespeichert werden"
 msgid "Today"
 msgstr ""
 
-#: src/views/calendars/CalendarView.vue:185
+#: src/views/calendars/CalendarView.vue:214
 msgid "My calendars"
 msgstr "Meine Kalender"
 
-#: src/views/calendars/CalendarView.vue:204
+#: src/views/calendars/CalendarView.vue:234
 msgid "Access rules"
 msgstr "Zugriffsregeln"
 
-#: src/views/calendars/CalendarView.vue:536
+#: src/views/calendars/CalendarView.vue:253
+msgid "Shared with me"
+msgstr ""
+
+#: src/views/calendars/CalendarView.vue:266
+msgid "Hide"
+msgstr ""
+
+#: src/views/calendars/CalendarView.vue:271
+#, fuzzy
+msgid "Show"
+msgstr "Zeige Schlüssel"
+
+#: src/views/calendars/CalendarView.vue:293
+msgid "hidden"
+msgstr ""
+
+#: src/views/calendars/CalendarView.vue:346
+msgid "Unable to load the events of: %{ names }"
+msgstr ""
+
+#: src/views/calendars/CalendarView.vue:714
 msgid "Do you really want to delete this calendar?"
 msgstr "Wollen Sie den Kalender wirklich löschen?"
 
-#: src/views/calendars/CalendarView.vue:546
+#: src/views/calendars/CalendarView.vue:724
 msgid "Calendar deleted"
 msgstr "Kalender gelöscht"
 
@@ -3377,7 +3452,7 @@ msgstr ""
 msgid "Hide full headers"
 msgstr ""
 
-#: src/views/quarantine/MessageView.vue:201 src/views/webmail/EmailView.vue:243
+#: src/views/quarantine/MessageView.vue:201 src/views/webmail/EmailView.vue:253
 msgid "Message deleted"
 msgstr "Nachricht gelöscht"
 
@@ -3436,11 +3511,11 @@ msgstr "Nachricht gelöscht"
 msgid "Message source"
 msgstr "Nachrichtenverlauf"
 
-#: src/views/webmail/EmailView.vue:257
+#: src/views/webmail/EmailView.vue:268
 msgid "Message marked as junk"
 msgstr "Als Junk markierte Nachricht"
 
-#: src/views/webmail/EmailView.vue:271
+#: src/views/webmail/EmailView.vue:283
 msgid "Message marked as not junk"
 msgstr "Nachricht als, kein Junk markiert"
 
@@ -3461,20 +3536,23 @@ msgstr ""
 msgid "Open"
 msgstr "Geöffnet"
 
-#: src/views/webmail/ThreadView.vue:359
+#: src/views/webmail/ThreadView.vue:373
 #, fuzzy
 msgid "Conversation deleted"
 msgstr "Migration gelöscht"
 
-#: src/views/webmail/ThreadView.vue:362
+#: src/views/webmail/ThreadView.vue:376
 #, fuzzy
 msgid "Conversation marked as junk"
 msgstr "Als Junk markierte Nachricht"
 
-#: src/views/webmail/ThreadView.vue:367
+#: src/views/webmail/ThreadView.vue:381
 #, fuzzy
 msgid "Conversation marked as not junk"
 msgstr "Nachricht als, kein Junk markiert"
+
+#~ msgid "warning"
+#~ msgstr "Warnung"
 
 #~ msgid "E-mail"
 #~ msgstr "E-Mail"

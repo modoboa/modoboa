@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-23 18:31+0200\n"
+"POT-Creation-Date: 2026-09-29 11:30+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -51,7 +51,7 @@ msgstr ""
 #: admin/api/v1/serializers.py:185 admin/api/v1/serializers.py:381
 #: admin/api/v1/serializers.py:428 admin/api/v2/serializers.py:402
 #: admin/api/v2/serializers.py:652 admin/api/v2/serializers.py:705
-#: admin/models/alias.py:45 calendars/serializers.py:101
+#: admin/models/alias.py:45 calendars/serializers.py:185
 msgid "Permission denied."
 msgstr ""
 
@@ -76,7 +76,8 @@ msgid "Must be equal to mailbox full_address"
 msgstr ""
 
 #: admin/api/v1/serializers.py:414 admin/api/v2/serializers.py:686
-#: calendars/serializers.py:202 pdfcredentials/api/v2/serializers.py:91
+#: calendars/serializers.py:264 calendars/serializers.py:333
+#: pdfcredentials/api/v2/serializers.py:91
 msgid "This field is required."
 msgstr ""
 
@@ -88,7 +89,7 @@ msgstr ""
 msgid "A list of recipient"
 msgstr ""
 
-#: admin/api/v1/serializers.py:534 admin/api/v2/viewsets.py:418
+#: admin/api/v1/serializers.py:534 admin/api/v2/viewsets.py:436
 msgid "This alias already exists"
 msgstr ""
 
@@ -157,15 +158,19 @@ msgstr ""
 msgid "Unknown status"
 msgstr ""
 
-#: admin/api/v2/viewsets.py:120
+#: admin/api/v2/viewsets.py:125
 msgid "You don't have access to this domain"
 msgstr ""
 
-#: admin/api/v2/viewsets.py:123 admin/api/v2/viewsets.py:141
+#: admin/api/v2/viewsets.py:128 admin/api/v2/viewsets.py:146
 msgid "You can't delete your own domain"
 msgstr ""
 
-#: admin/api/v2/viewsets.py:333 core/handlers.py:95
+#: admin/api/v2/viewsets.py:161
+msgid "DKIM signing is not enabled for this domain"
+msgstr ""
+
+#: admin/api/v2/viewsets.py:351 core/handlers.py:95
 msgid "You can't delete your own account"
 msgstr ""
 
@@ -527,18 +532,18 @@ msgstr ""
 msgid "Unable to decode CSV file using %(encoding)s encoding"
 msgstr ""
 
-#: admin/management/commands/subcommands/_manage_dkim_keys.py:39
-#: admin/management/commands/subcommands/_manage_dkim_keys.py:74
+#: admin/management/commands/subcommands/_manage_dkim_keys.py:42
+#: admin/management/commands/subcommands/_manage_dkim_keys.py:77
 msgid "Failed to generate DKIM private key"
 msgstr ""
 
-#: admin/management/commands/subcommands/_manage_dkim_keys.py:49
+#: admin/management/commands/subcommands/_manage_dkim_keys.py:52
 msgid ""
 "DKIM path non-writable (either a permission issue or the directory does not "
 "exist)"
 msgstr ""
 
-#: admin/management/commands/subcommands/_manage_dkim_keys.py:94
+#: admin/management/commands/subcommands/_manage_dkim_keys.py:97
 msgid "Failed to generate DKIM public key"
 msgstr ""
 
@@ -632,32 +637,32 @@ msgstr ""
 msgid "Key length"
 msgstr ""
 
-#: admin/models/domain.py:338 admin/models/domain_alias.py:70
+#: admin/models/domain.py:344 admin/models/domain_alias.py:70
 #: core/models.py:358 relaydomains/lib.py:13
 msgid "Invalid line"
 msgstr ""
 
-#: admin/models/domain.py:343
+#: admin/models/domain.py:349
 msgid "Invalid domain name"
 msgstr ""
 
-#: admin/models/domain.py:347
+#: admin/models/domain.py:353
 msgid "{}: invalid domain name"
 msgstr ""
 
-#: admin/models/domain.py:356
+#: admin/models/domain.py:362
 msgid "{}: no authorized MX record found for domain"
 msgstr ""
 
-#: admin/models/domain.py:362
+#: admin/models/domain.py:368
 msgid "{}: invalid quota value for domain"
 msgstr ""
 
-#: admin/models/domain.py:368
+#: admin/models/domain.py:374
 msgid "{}: invalid default mailbox quota value for domain"
 msgstr ""
 
-#: admin/models/domain.py:375
+#: admin/models/domain.py:381
 msgid "{}: default mailbox quota cannot be greater than domain quota"
 msgstr ""
 
@@ -905,7 +910,8 @@ msgid ""
 "database)"
 msgstr ""
 
-#: amavis/app_settings.py:236 webmail/app_settings.py:176
+#: amavis/app_settings.py:236 calendars/app_settings.py:85
+#: webmail/app_settings.py:176
 msgid "Display"
 msgstr ""
 
@@ -1166,28 +1172,78 @@ msgid ""
 "Maximum size in bytes of imported ICS files (or KB, MB, GB if specified)"
 msgstr ""
 
-#: calendars/app_settings.py:89 core/api/v2/viewsets.py:205
+#: calendars/app_settings.py:91
+msgid "Start of working hours"
+msgstr ""
+
+#: calendars/app_settings.py:93
+msgid ""
+"Hours outside working hours are greyed out and the calendar scrolls to this "
+"hour by default"
+msgstr ""
+
+#: calendars/app_settings.py:101
+msgid "End of working hours"
+msgstr ""
+
+#: calendars/app_settings.py:103
+msgid "Hours outside working hours are greyed out"
+msgstr ""
+
+#: calendars/app_settings.py:123 calendars/app_settings.py:130
+#: core/api/v2/viewsets.py:205
 msgid "Calendars"
 msgstr ""
 
-#: calendars/models.py:23
-msgid "Calendar name contains invalid characters."
+#: calendars/models.py:37
+#, python-format
+msgid ""
+"Calendar name cannot be . or .. nor contain control characters or any of: "
+"%(characters)s"
 msgstr ""
 
-#: calendars/models.py:58 calendars/models.py:75 contacts/models.py:39
+#: calendars/models.py:76 calendars/models.py:93 contacts/models.py:39
 msgid "Server location is not set, please fix it."
 msgstr ""
 
-#: calendars/serializers.py:240
+#: calendars/serializers.py:24
+msgid "Invalid color"
+msgstr ""
+
+#: calendars/serializers.py:48
+msgid "A calendar with this name already exists."
+msgstr ""
+
+#: calendars/serializers.py:259
+msgid "Invalid recurrence id"
+msgstr ""
+
+#: calendars/serializers.py:371
 msgid "Mailbox not found"
 msgstr ""
 
-#: calendars/serializers.py:246
+#: calendars/serializers.py:377
 msgid "An access rule already exists for this mailbox"
 msgstr ""
 
-#: calendars/viewsets.py:197
+#: calendars/serializers.py:390
+msgid "Read access is required to share a calendar"
+msgstr ""
+
+#: calendars/serializers.py:463
+msgid "End of working hours must be after its start"
+msgstr ""
+
+#: calendars/viewsets.py:181
+msgid "An occurrence cannot be moved to another calendar"
+msgstr ""
+
+#: calendars/viewsets.py:265
 msgid "Uploaded file is too big (max: {} bytes)"
+msgstr ""
+
+#: calendars/viewsets.py:302
+msgid "This calendar is shared with you in read-only mode"
 msgstr ""
 
 #: contacts/app_settings.py:11
@@ -3095,7 +3151,7 @@ msgstr ""
 msgid "is not"
 msgstr ""
 
-#: sievefilters/constants.py:28 webmail/lib/imapemail.py:374
+#: sievefilters/constants.py:28 webmail/lib/imapemail.py:400
 msgid "Subject"
 msgstr ""
 
@@ -3502,59 +3558,59 @@ msgstr ""
 msgid "Failed to remove attachment: "
 msgstr ""
 
-#: webmail/lib/imapemail.py:340
+#: webmail/lib/imapemail.py:366
 msgid "wrote:"
 msgstr ""
 
-#: webmail/lib/imapemail.py:376
+#: webmail/lib/imapemail.py:402
 msgid "Date"
 msgstr ""
 
-#: webmail/lib/imapemail.py:392 webmail/lib/imapemail.py:395
+#: webmail/lib/imapemail.py:418 webmail/lib/imapemail.py:421
 msgid "Original message"
 msgstr ""
 
-#: webmail/lib/imaputils.py:68 webmail/viewsets.py:26
+#: webmail/lib/imaputils.py:75 webmail/viewsets.py:26
 msgid "Invalid message identifier"
 msgstr ""
 
-#: webmail/lib/imaputils.py:75 webmail/viewsets.py:40
+#: webmail/lib/imaputils.py:82 webmail/viewsets.py:40
 msgid "Invalid part number"
 msgstr ""
 
-#: webmail/lib/imaputils.py:88 webmail/viewsets.py:47
+#: webmail/lib/imaputils.py:95 webmail/viewsets.py:47
 msgid "Invalid search pattern"
 msgstr ""
 
-#: webmail/lib/imaputils.py:101
+#: webmail/lib/imaputils.py:108
 msgid "Invalid mailbox name"
 msgstr ""
 
-#: webmail/lib/imaputils.py:505
+#: webmail/lib/imaputils.py:513
 msgid "Failed to retrieve hierarchy delimiter"
 msgstr ""
 
-#: webmail/lib/imaputils.py:924
+#: webmail/lib/imaputils.py:989
 msgid "Inbox"
 msgstr ""
 
-#: webmail/lib/imaputils.py:928
+#: webmail/lib/imaputils.py:993
 msgid "Drafts"
 msgstr ""
 
-#: webmail/lib/imaputils.py:933
+#: webmail/lib/imaputils.py:998
 msgid "Junk"
 msgstr ""
 
-#: webmail/lib/imaputils.py:938
+#: webmail/lib/imaputils.py:1003
 msgid "Sent"
 msgstr ""
 
-#: webmail/lib/imaputils.py:946
+#: webmail/lib/imaputils.py:1011
 msgid "Scheduled"
 msgstr ""
 
-#: webmail/lib/imaputils.py:953
+#: webmail/lib/imaputils.py:1018
 msgid "Trash"
 msgstr ""
 
@@ -3574,40 +3630,40 @@ msgstr ""
 msgid "This address is no longer allowed for this account"
 msgstr ""
 
-#: webmail/serializers.py:291
+#: webmail/serializers.py:302
 msgid "Moving scheduled messages is forbidden"
 msgstr ""
 
-#: webmail/serializers.py:323
+#: webmail/serializers.py:334
 msgid "Only datetime in the future is allowed"
 msgstr ""
 
-#: webmail/serializers.py:328
+#: webmail/serializers.py:339
 msgid "Provived datetime must be one minute in the future at least"
 msgstr ""
 
-#: webmail/serializers.py:358
+#: webmail/serializers.py:369
 msgid "You are not allowed to send from this address"
 msgstr ""
 
-#: webmail/serializers.py:399
+#: webmail/serializers.py:410
 msgid ""
 "original_mailbox, original_mailid and original_action must be provided "
 "together"
 msgstr ""
 
-#: webmail/serializers.py:416
+#: webmail/serializers.py:427
 #, python-format
 msgid ""
 "Ensure this field has no more than %(max_length)s characters to schedule the "
 "message"
 msgstr ""
 
-#: webmail/serializers.py:473
+#: webmail/serializers.py:484
 msgid "forward_mailbox and forward_mailid must be provided together"
 msgstr ""
 
-#: webmail/serializers.py:477
+#: webmail/serializers.py:488
 msgid "A session can't start from a draft and a forwarded message"
 msgstr ""
 
@@ -3615,25 +3671,25 @@ msgstr ""
 msgid "Invalid page number"
 msgstr ""
 
-#: webmail/viewsets.py:152
+#: webmail/viewsets.py:168
 msgid "This mailbox is used by the webmail and can't be renamed"
 msgstr ""
 
-#: webmail/viewsets.py:193
+#: webmail/viewsets.py:209
 msgid "This mailbox is used by the webmail and can't be deleted"
 msgstr ""
 
-#: webmail/viewsets.py:604
+#: webmail/viewsets.py:630
 #, python-format
 msgid "A message cannot carry more than %s attachments"
 msgstr ""
 
-#: webmail/viewsets.py:616
+#: webmail/viewsets.py:642
 #, python-format
 msgid "Attachment is too big (limit: %s)"
 msgstr ""
 
-#: webmail/viewsets.py:621
+#: webmail/viewsets.py:647
 #, python-format
 msgid "Attachments are too big (limit: %s for the whole message)"
 msgstr ""
