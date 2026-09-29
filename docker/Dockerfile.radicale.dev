@@ -4,11 +4,8 @@ LABEL org.opencontainers.image.authors="Antoine Nguyen <tonio@ngyn.org>"
 
 WORKDIR /app
 
-RUN pip install -U Radicale pytz "radicale-modoboa-auth-oauth2>=1.0.0" requests
-# radicale-modoboa-rights is only published on TestPyPI for now: only
-# take the plugin from there, its dependencies come from PyPI
-RUN pip install --no-deps --index-url https://test.pypi.org/simple/ \
-    radicale-modoboa-rights==0.1.dev4
+RUN pip install -U Radicale pytz "radicale-modoboa-auth-oauth2>=1.0.0" \
+    "radicale-modoboa-rights>=1.0.0" requests
 
 EXPOSE 5232
 
