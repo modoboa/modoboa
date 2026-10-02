@@ -86,7 +86,10 @@ jobs:
     strategy:
       matrix:
         database: ['postgres', 'mysql']
-        python-version: ['3.10', '3.11', '3.12', '3.13', '3.14']
+        # Pull requests only test the oldest and newest supported
+        # versions: a full matrix per run exceeds the concurrent jobs
+        # limit as soon as two runs overlap. Pushes test all of them.
+        python-version: ${{ github.event_name == 'pull_request' && fromJSON('["3.10", "3.14"]') || fromJSON('["3.10", "3.11", "3.12", "3.13", "3.14"]') }}
       fail-fast: false
 
     env:
