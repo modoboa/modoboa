@@ -138,25 +138,6 @@ jobs:
 
       # Coverage runs on 3.14: with branch coverage enabled, coverage.py
       # only uses its faster sys.monitoring core from Python 3.14
-      - name: Start redis sentinel
-        if: ${{ matrix.python-version == '3.14' && matrix.database == 'postgres' }}
-        uses: hoverkraft-tech/compose-action@v2.0.1
-        with:
-          compose-file: "./docker/compose.redis-sentinel.yml"
-
-      - name: Run tests againt redis sentinel
-        if: ${{ matrix.python-version == '3.14' && matrix.database == 'postgres' }}
-        run: |
-          cd test_project
-          coverage run manage.py test modoboa.policyd
-        env:
-          POSTGRES_PORT: ${{ job.services.postgres.ports[5432] }}
-          REDIS_SENTINEL: 1
-          REDIS_SENTINEL_HOST: localhost
-          REDIS_SENTINEL_PORT: 26379
-          REDIS_MASTER: mymaster
-          OIDC_RSA_PRIVATE_KEY: ${{ vars.OIDC_RSA_PRIVATE_KEY }}
-
       - name: Run tests and coverage
         if: ${{ matrix.python-version == '3.14' && matrix.database == 'postgres' }}
         run: |
@@ -184,20 +165,84 @@ jobs:
           name: coverage-results
           path: test_project/coverage.xml
 
+  # Runs alongside the test matrix instead of lengthening its slowest job
+  test-sentinel:
+    runs-on: ubuntu-latest
+    environment: test
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: modoboa
+        ports:
+          - 5432/tcp
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+
+    env:
+      DB: postgres
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python 3.14
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.14'
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v10.2.0
+        with:
+          enable-cache: true
+          cache-dependency-glob: pyproject.toml
+      - name: Install system packages
+        uses: awalsh128/cache-apt-pkgs-action@v1.6.3
+        with:
+          packages: librrd-dev rrdtool libldap2-dev libsasl2-dev libssl-dev
+          version: 1.0
+      - name: Install Python dependencies
+        run: |
+          uv pip install --system -e ".[ldap,test,dev,postgresql]" coverage
+
+      - name: Start redis sentinel
+        uses: hoverkraft-tech/compose-action@v2.0.1
+        with:
+          compose-file: "./docker/compose.redis-sentinel.yml"
+
+      - name: Run tests againt redis sentinel
+        run: |
+          cd test_project
+          coverage run manage.py test modoboa.policyd
+          coverage combine
+          coverage xml -o coverage-sentinel.xml
+        env:
+          POSTGRES_PORT: ${{ job.services.postgres.ports[5432] }}
+          REDIS_SENTINEL: 1
+          REDIS_SENTINEL_HOST: localhost
+          REDIS_SENTINEL_PORT: 26379
+          REDIS_MASTER: mymaster
+          OIDC_RSA_PRIVATE_KEY: ${{ vars.OIDC_RSA_PRIVATE_KEY }}
+
+      - name: Upload coverage result
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-results-sentinel
+          path: test_project/coverage-sentinel.xml
+
   coverage:
-    needs: test
+    needs: [test, test-sentinel]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - name: Download coverage results
         uses: actions/download-artifact@v4
         with:
-          name: coverage-results
+          pattern: coverage-results*
+          merge-multiple: true
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v4.5.0
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          files: ./coverage.xml
+          files: ./coverage.xml,./coverage-sentinel.xml
 
   release:
     if: github.event_name != 'pull_request'
