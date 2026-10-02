@@ -523,6 +523,9 @@ class ComposeSessionViewSet(viewsets.GenericViewSet):
             # The files now belong to the scheduled message: only drop the
             # compose session.
             manager.delete(pk)
+            # The sending job can't reach the mailbox of the user: the
+            # original message is flagged as soon as the answer is scheduled
+            self._flag_original_message(request, serializer.validated_data)
             return response.Response(status=204)
 
         status, error = send_mail(

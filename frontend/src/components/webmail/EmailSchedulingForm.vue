@@ -6,7 +6,7 @@
           <v-date-picker
             v-model="date"
             class="w-50"
-            :allowed-dates="allowedDates"
+            :min="today"
             :rules="[rules.required]"
           />
           <div
@@ -58,10 +58,8 @@ const close = () => {
   emit('close')
 }
 
-const allowedDates = (value) => {
-  const now = new Date()
-  return value > now
-}
+// Today stays selectable: the time decides
+const today = DateTime.now().startOf('day').toJSDate()
 
 const validateDatetime = (value) => {
   const now = new Date()
@@ -92,9 +90,10 @@ const submit = async () => {
   if (!valid) {
     return
   }
-  const datetime = date.value
+  // Don't change the date selected in the picker
+  const datetime = new Date(date.value)
   const parts = time.value.split(':')
-  datetime.setHours(parseInt(parts[0]), parseInt(parts[1]))
+  datetime.setHours(parseInt(parts[0]), parseInt(parts[1]), 0, 0)
   if (!validateDatetime(datetime)) {
     return
   }
