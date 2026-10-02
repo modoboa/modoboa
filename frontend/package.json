@@ -54,5 +54,9 @@
     "unplugin-fonts": "^1.0.3",
     "vite": "^8",
     "vite-plugin-vuetify": "^2.1.0"
+  },
+  "resolutions": {
+    "undici": "^7.29.1",
+    "adm-zip": "^0.6.1"
   }
 }
