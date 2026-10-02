@@ -3,7 +3,6 @@
 import asyncio
 from aiosmtplib import send
 from unittest.mock import AsyncMock
-import multiprocessing
 from multiprocessing import Process
 import os
 import socket
@@ -26,7 +25,6 @@ from modoboa.policyd import core as policyd_core
 from . import constants
 
 FAILURE_RESPONSE = b"action=defer_if_permit Daily limit reached, retry later\n\n"
-multiprocessing.set_start_method("fork")
 
 
 def start_policy_daemon(*args):

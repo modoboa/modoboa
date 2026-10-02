@@ -353,6 +353,12 @@ CACHES = {
         "LOCATION": f"{BASE_DIR}/cache",
     }
 }
+if TESTING:
+    # The cache directory would be shared by the processes of a parallel
+    # test run
+    CACHES["default"] = {
+        "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
+    }
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators

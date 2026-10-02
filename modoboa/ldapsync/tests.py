@@ -105,6 +105,8 @@ class DovecotConfFileTestCase(SimpleTestCase):
 class LDAPExportTestCase(ModoTestCase):
     """Synchronization related tests."""
 
+    parallel_group = "ldap"
+
     def setUp(self):
         super().setUp()
         self.set_global_parameters(
@@ -196,6 +198,8 @@ class LDAPExportTestCase(ModoTestCase):
 @skipIf(NO_LDAP, "No ldap module installed")
 class LDAPImportTestCase(ModoTestCase):
     """Import related tests."""
+
+    parallel_group = "ldap"
 
     def setUp(self):
         super().setUp()
