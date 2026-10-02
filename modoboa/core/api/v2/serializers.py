@@ -484,6 +484,7 @@ class FrontendMenuEntrySerializer(serializers.Serializer):
     icon = serializers.CharField(required=False, allow_blank=True, allow_null=True)
     to = serializers.CharField(required=False, allow_blank=True, allow_null=True)
     url = serializers.CharField(required=False, allow_blank=True, allow_null=True)
+    badge = serializers.CharField(required=False, allow_blank=True, allow_null=True)
     roles = serializers.ListField(
         child=serializers.CharField(), required=False, default=list
     )
@@ -550,6 +551,13 @@ class FrontendUIExtensionSerializer(serializers.Serializer):
     summary = serializers.DictField(required=False, default=dict)
 
 
+class FrontendPluginStatusSerializer(serializers.Serializer):
+    """Serializer describing a short status message exposed by a plugin."""
+
+    text = serializers.CharField()
+    color = serializers.CharField(required=False, allow_blank=True, allow_null=True)
+
+
 class FrontendPluginManifestSerializer(serializers.Serializer):
     """Serializer used to expose a plugin manifest to the frontend."""
 
@@ -561,3 +569,4 @@ class FrontendPluginManifestSerializer(serializers.Serializer):
     ui_extensions = serializers.DictField(
         child=FrontendUIExtensionSerializer(many=True), required=False, default=dict
     )
+    status = FrontendPluginStatusSerializer(required=False, allow_null=True)

@@ -230,6 +230,12 @@ The following class attributes are recognized on `ModoExtension`:
 | `frontend_remote: dict \| None` | Federated remote descriptor (where the host loads your bundle from). |
 | `frontend_ui_extensions: dict[str, list[dict]]` | Items inserted at named extension points throughout the UI. |
 
+The `get_frontend_status()` method can also be overridden to return a
+short status (`{"text": "...", "color": "success"}`, where `color` is a
+theme color such as `success`, `warning` or `error`), exposed as the
+`status` field of the manifest. It is computed on each manifest request
+and returns `None` by default.
+
 ### Declaring the remote
 
 `frontend_remote` describes the federated entry the host should load:
@@ -266,6 +272,7 @@ frontend_menu_entries = [
         "url": "https://...",        # OR an external URL
         "category": "admin",         # admin | user | account
         "roles": ["SuperAdmins"],   # optional role gate
+        "badge": "PRO",              # optional short label displayed next to the entry
         "children": [...],           # nested submenu items
     }
 ]
@@ -314,6 +321,7 @@ The extension points currently exposed by the host:
 | `domain.edit_form.panels` | Extra panels in the domain edit form. |
 | `domain.detail.general.blocks` | Blocks added to the *General* tab of the domain detail view (set `column: "left"` or `"right"`). |
 | `domain.detail.tabs` | Top-level tabs added to the domain detail view. |
+| `admin.information.pro` | Content of the *Modoboa Pro* tab of the *Information* page, reserved to the Modoboa Pro plugin. |
 
 Example:
 
