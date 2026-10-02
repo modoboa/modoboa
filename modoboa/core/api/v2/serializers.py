@@ -124,6 +124,7 @@ class CoreGlobalParametersSerializer(serializers.Serializer):
     )
     show_rss_feed_to_superadmins = serializers.BooleanField(default=False)
     hide_features_widget = serializers.BooleanField(default=False)
+    hide_pro_promotion = serializers.BooleanField(default=False)
 
     # Theme settings
     theme_primary_color = serializers.CharField(default="#046BF8")

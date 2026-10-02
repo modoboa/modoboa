@@ -68,6 +68,7 @@ CORE_SETTINGS = {
     "ldap_dovecot_conf_file": "/etc/dovecot/dovecot-modoboa.conf",
     "rss_feed_url": "",
     "hide_features_widget": False,
+    "hide_pro_promotion": False,
     "sender_address": "noreply@yourdomain.test",
     "enable_api_communication": True,
     "check_new_versions": True,
@@ -346,6 +347,19 @@ class ComponentAPITestCase(ModoAPITestCase):
         url = reverse("v2:components_information")
         resp = self.client.get(url)
         self.assertEqual(resp.status_code, 200)
+
+
+class CapabilitiesAPITestCase(ModoAPITestCase):
+    def test_pro_promotion(self):
+        url = reverse("v2:capabilities")
+        resp = self.client.get(url)
+        self.assertEqual(resp.status_code, 200)
+        self.assertIn("pro_promotion", resp.json()["capabilities"])
+
+        self.set_global_parameter("hide_pro_promotion", True, app="core")
+        resp = self.client.get(url)
+        self.assertEqual(resp.status_code, 200)
+        self.assertNotIn("pro_promotion", resp.json()["capabilities"])
 
 
 class NotificationAPITestCase(ModoAPITestCase):

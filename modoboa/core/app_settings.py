@@ -509,6 +509,16 @@ GLOBAL_PARAMETERS_STRUCT = collections.OrderedDict(
                                 ),
                             },
                         ),
+                        (
+                            "hide_pro_promotion",
+                            {
+                                "label": gettext_lazy("Hide Modoboa Pro promotion"),
+                                "help_text": gettext_lazy(
+                                    "Hide the Modoboa Pro menu entry and presentation "
+                                    "when the plugin is not installed"
+                                ),
+                            },
+                        ),
                     ]
                 ),
             },

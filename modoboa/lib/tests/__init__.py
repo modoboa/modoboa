@@ -77,6 +77,7 @@ SETTINGS_SAMPLE = {
         "password_recovery_msg": "",
         "ldap_dovecot_sync": False,
         "hide_features_widget": "False",
+        "hide_pro_promotion": "False",
         "enable_inactive_accounts": "True",
         "inactive_account_threshold": "30",
         "ldap_search_filter": "(mail=%(user)s)",

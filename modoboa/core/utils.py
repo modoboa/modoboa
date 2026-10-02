@@ -148,4 +148,9 @@ def get_capabilities():
     # IMAP migration
     if "modoboa.imap_migration" in settings.MODOBOA_APPS:
         capabilities.update({"imap_migration": {}})
+    # Modoboa Pro promotion (menu entry and presentation)
+    from modoboa.parameters import tools as param_tools
+
+    if not param_tools.get_global_parameter("hide_pro_promotion", app="core"):
+        capabilities.update({"pro_promotion": {}})
     return capabilities
