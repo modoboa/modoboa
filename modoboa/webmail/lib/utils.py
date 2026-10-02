@@ -4,10 +4,12 @@ from email.header import Header
 from email.mime.image import MIMEImage
 from importlib.metadata import version
 import os
+import re
 from pathlib import Path
 from urllib.parse import unquote, urlparse
 
-import lxml
+import lxml.etree
+import lxml.html
 
 from django.conf import settings
 from django.core.mail import EmailMessage, EmailMultiAlternatives
@@ -20,25 +22,163 @@ from modoboa.webmail.lib.attachments import (
 )
 
 
+# Elements starting on a new line
+_LINE_TAGS = {
+    "address",
+    "article",
+    "aside",
+    "dd",
+    "div",
+    "dl",
+    "dt",
+    "figcaption",
+    "figure",
+    "footer",
+    "form",
+    "header",
+    "li",
+    "main",
+    "nav",
+    "ol",
+    "section",
+    "table",
+    "tr",
+    "ul",
+}
+# Elements separated from the surrounding text by a blank line
+_PARAGRAPH_TAGS = {"blockquote", "h1", "h2", "h3", "h4", "h5", "h6", "hr", "p", "pre"}
+# Elements whose content is never displayed
+_HIDDEN_TAGS = {"head", "script", "style", "template", "title"}
+_WHITESPACE_RE = re.compile(r"\s+")
+
+
+class _PlainTextWriter:
+    """Lay out the text of an HTML document line by line."""
+
+    def __init__(self):
+        self.lines: list[str] = []
+        self.current = ""
+        self.quote_depth = 0
+        # Quote depth of the blank line to write before the next text
+        self.pending_blank: int | None = None
+
+    def _prefix(self, depth: int) -> str:
+        return "> " * depth
+
+    def write(self, text: str, preformatted: bool = False) -> None:
+        if not preformatted:
+            text = _WHITESPACE_RE.sub(" ", text)
+            if not self.current or self.current.endswith(" "):
+                text = text.lstrip(" ")
+        for pos, chunk in enumerate(text.split("\n")):
+            if pos:
+                self.end_line(force=True)
+            if not chunk:
+                continue
+            if not self.current and self.pending_blank is not None:
+                if self.lines:
+                    depth = min(self.pending_blank, self.quote_depth)
+                    self.lines.append(self._prefix(depth).rstrip())
+                self.pending_blank = None
+            self.current += chunk
+
+    def end_line(self, force: bool = False) -> None:
+        if not self.current and not force:
+            return
+        line = self._prefix(self.quote_depth) + self.current.rstrip()
+        self.lines.append(line.rstrip())
+        self.current = ""
+
+    def end_paragraph(self) -> None:
+        self.end_line()
+        if self.pending_blank is None or self.pending_blank > self.quote_depth:
+            self.pending_blank = self.quote_depth
+
+    def text(self) -> str:
+        self.end_line()
+        return "\n".join(self.lines).strip("\n")
+
+
 def html2plaintext(content: str) -> str:
     """HTML to plain text translation.
 
+    The text keeps the layout of the document: paragraphs, line breaks,
+    lists and quotes ("> " prefix). Link targets follow their text.
+
     :param content: some HTML content
     """
-    if not content:
+    if not content or not content.strip():
         return ""
-    html = lxml.html.fromstring(content)
-    plaintext = ""
-    for ch in html.iter():
-        p = None
-        if ch.text is not None:
-            p = ch.text.strip("\r\t\n")
-        if ch.tag == "img":
-            p = ch.get("alt")
-        if p is None:
+    try:
+        html = lxml.html.fromstring(content)
+    except (lxml.etree.ParserError, ValueError):
+        return ""
+    writer = _PlainTextWriter()
+    hidden = 0
+    preformatted = 0
+    # Item counters of the enclosing lists (None for bulleted ones)
+    lists: list[int | None] = []
+    events = ("start", "end", "comment", "pi")
+    for event, element in lxml.etree.iterwalk(html, events=events):
+        tag = element.tag if isinstance(element.tag, str) else None
+        if event == "start":
+            if tag in _HIDDEN_TAGS:
+                hidden += 1
+            if hidden:
+                continue
+            if tag in _PARAGRAPH_TAGS:
+                writer.end_paragraph()
+            elif tag in _LINE_TAGS:
+                writer.end_line()
+            if tag == "blockquote":
+                writer.quote_depth += 1
+            elif tag == "pre":
+                preformatted += 1
+            elif tag == "br":
+                writer.end_line(force=True)
+            elif tag == "hr":
+                writer.write("----")
+            elif tag == "img" and element.get("alt"):
+                writer.write(element.get("alt"))
+            elif tag in ("ol", "ul"):
+                lists.append(0 if tag == "ol" else None)
+            elif tag == "li":
+                indent = "  " * max(len(lists) - 1, 0)
+                if lists and lists[-1] is not None:
+                    lists[-1] += 1
+                    writer.write(f"{indent}{lists[-1]}. ", preformatted=True)
+                else:
+                    writer.write(f"{indent}- ", preformatted=True)
+            if element.text:
+                writer.write(element.text, preformatted > 0)
             continue
-        plaintext += p + "\n"
-    return plaintext
+        if tag in _HIDDEN_TAGS:
+            hidden -= 1
+        elif not hidden and event == "end":
+            if tag == "a":
+                href = element.get("href", "")
+                label = element.text_content().strip()
+                if (
+                    href
+                    and not href.startswith(("#", "javascript:"))
+                    and href not in (label, f"mailto:{label}")
+                ):
+                    writer.write(f" <{href}>")
+            elif tag in ("td", "th"):
+                writer.write(" ")
+            elif tag in ("ol", "ul") and lists:
+                lists.pop()
+            if tag in _PARAGRAPH_TAGS:
+                writer.end_paragraph()
+            elif tag in _LINE_TAGS:
+                writer.end_line()
+            if tag == "blockquote":
+                writer.quote_depth -= 1
+            elif tag == "pre":
+                preformatted -= 1
+        if element.tail and not hidden and element is not html:
+            writer.write(element.tail, preformatted > 0)
+    return writer.text()
 
 
 def decode_payload(encoding, payload):
