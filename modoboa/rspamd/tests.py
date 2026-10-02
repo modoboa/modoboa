@@ -146,6 +146,11 @@ class ManagementCommandTestCase(ModoAPITestCase):
         self.assertTrue(os.path.exists(self.selector_map_path))
 
 
+@modify_settings(
+    INSTALLED_APPS={
+        "append": "modoboa.rspamd",
+    }
+)
 class ParametersAPITestCase(ModoAPITestCase):
 
     def test_update_settings(self):

@@ -16,6 +16,9 @@ from .. import models
 class LDAPTestCaseMixin:
     """Set of methods used to test LDAP features."""
 
+    # The directory is shared: these tests change the same passwords
+    parallel_group = "ldap"
+
     @cached_property
     def ldapauthbackend(self):
         """Return LDAPAuthBackend instance."""

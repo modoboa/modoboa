@@ -109,12 +109,18 @@ jobs:
           && sudo apt-get install -y \
             librrd-dev rrdtool libldap2-dev libsasl2-dev libssl-dev
           uv pip install --system -e ".[ldap,test,dev,${{ matrix.database == 'postgres' && 'postgresql' || 'mysql' }}]" coverage
+      - name: Configure mysqldump
+        if: ${{ matrix.database == 'mysql' }}
+        # The parallel test runner clones the test database with the
+        # mysqldump of the runner (MySQL 8), which fails against MariaDB
+        # unless column statistics are disabled
+        run: printf '[mysqldump]\ncolumn-statistics=0\n' > ~/.my.cnf
       - name: Run tests
         if: ${{ matrix.python-version != '3.14' || matrix.database != 'postgres' }}
         run: |
           python ./tests.py
           cd test_project
-          python3 manage.py test modoboa
+          python3 manage.py test --parallel auto modoboa
         env:
           # use localhost for the host here because we are running the job on the VM.
           # If we were running the job on in a container this would be postgres
@@ -152,7 +158,7 @@ jobs:
         run: |
           python ./tests.py
           cd test_project
-          coverage run manage.py test modoboa
+          coverage run manage.py test --parallel auto modoboa
           coverage combine
           coverage xml
           coverage report

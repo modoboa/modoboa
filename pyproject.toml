@@ -108,6 +108,7 @@ test = [
 	"httmock==1.4.0",
 	"testfixtures==8.3.0",
     "freezegun",
+	"tblib",
 	"tox",
 ]
 ldap = ["django-auth-ldap<6.0.0"]
