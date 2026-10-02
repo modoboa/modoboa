@@ -34,6 +34,32 @@ const openRspamdDashboard = () => {
   window.location = rspamdUrl.value
 }
 
+const proMenuItem = computed(() => {
+  const item = {
+    key: 'modoboa-pro',
+    text: 'Modoboa Pro',
+    to: { name: 'ModoboaPro' },
+    roles: [constants.SUPER_ADMIN],
+    class: 'nav-item-outlined',
+    iconColor: 'secondary',
+  }
+  const manifest = pluginsStore.getManifest(constants.PRO_PLUGIN_NAME)
+  if (!manifest) {
+    return {
+      ...item,
+      icon: 'mdi-star-four-points-outline',
+      subtitle: $gettext('Discover'),
+      condition: () => 'pro_promotion' in globalStore.capabilities,
+    }
+  }
+  return {
+    ...item,
+    icon: 'mdi-star-four-points',
+    subtitle: manifest.status?.text,
+    withBell: ['warning', 'error'].includes(manifest.status?.color),
+  }
+})
+
 const adminMenuItems = computed(() => {
   const result = [
     {
@@ -126,6 +152,11 @@ const adminMenuItems = computed(() => {
   })
   return result.concat([
     {
+      key: 'system-divider',
+      divider: true,
+      roles: [constants.SUPER_ADMIN],
+    },
+    {
       icon: 'mdi-cog',
       text: $gettext('Settings'),
       children: settings,
@@ -143,8 +174,9 @@ const adminMenuItems = computed(() => {
       text: $gettext('Information'),
       roles: [constants.SUPER_ADMIN],
       to: { name: 'Information' },
-      withBell: true,
+      withBell: globalStore.adminNotifications.length > 0,
     },
+    proMenuItem.value,
   ])
 })
 

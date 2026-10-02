@@ -342,6 +342,17 @@ const routes = [
         path: 'information',
         name: 'Information',
         component: () => import('@/views/admin/InformationView.vue'),
+        props: { tab: 'components' },
+        meta: {
+          requiresAuth: true,
+          allowedRoles: [constants.SUPER_ADMIN],
+        },
+      },
+      {
+        path: 'modoboa-pro',
+        name: 'ModoboaPro',
+        component: () => import('@/views/admin/InformationView.vue'),
+        props: { tab: 'pro' },
         meta: {
           requiresAuth: true,
           allowedRoles: [constants.SUPER_ADMIN],

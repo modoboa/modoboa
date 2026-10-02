@@ -4,5 +4,6 @@
   "SUPER_ADMIN": "SuperAdmins",
   "RESELLER": "Resellers",
   "DOMAIN_ADMIN": "DomainAdmins",
-  "USER": "SimpleUsers"
+  "USER": "SimpleUsers",
+  "PRO_PLUGIN_NAME": "modoboa_pro"
 }
