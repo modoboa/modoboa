@@ -374,27 +374,32 @@ class FIDOViewSetTestCase(ModoAPITestCase):
         self.assertIn("pubKeyCredParams", resp.json()["publicKey"])
         self.assertIn("user", resp.json()["publicKey"])
         self.assertIn("id", resp.json()["publicKey"]["user"])
-        self.assertEqual(resp.json(), {
-            "publicKey": {
-                "authenticatorSelection": {
-                    "requireResidentKey": False,
-                    "residentKey": "discouraged",
-                     "userVerification": "discouraged",
+        self.assertEqual(
+            resp.json(),
+            {
+                "publicKey": {
+                    "authenticatorSelection": {
+                        "requireResidentKey": False,
+                        "residentKey": "discouraged",
+                        "userVerification": "discouraged",
+                    },
+                    "excludeCredentials": [],
+                    "challenge": resp.json()["publicKey"]["challenge"],  # Random value
+                    "pubKeyCredParams": resp.json()["publicKey"][
+                        "pubKeyCredParams"
+                    ],  # Complex and subject to change
+                    "rp": {
+                        "id": "testserver",
+                        "name": "Modoboa",
+                    },
+                    "user": {
+                        "id": resp.json()["publicKey"]["user"]["id"],  # Random value
+                        "name": "admin",
+                        "displayName": "admin",
+                    },
                 },
-                "excludeCredentials": [],
-                "challenge": resp.json()["publicKey"]["challenge"],  # Random value
-                "pubKeyCredParams": resp.json()["publicKey"]["pubKeyCredParams"],  # Complex and subject to change
-                "rp": {
-                    "id": "testserver",
-                    "name": "Modoboa",
-                },
-                "user": {
-                    "id": resp.json()["publicKey"]["user"]["id"],  # Random value
-                    "name": "admin",
-                    "displayName": "admin",
-                }
             },
-        })
+        )
 
         register_complete_mock.side_effect = [AuthenticatorData()]
         data = {
