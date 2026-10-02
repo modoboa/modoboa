@@ -41,6 +41,9 @@ class ScheduledMessage(models.Model):
     body_format = models.CharField(
         max_length=5, choices=constants.DISPLAY_MODES, blank=True, default=""
     )
+    # Shared by the copy kept in the Scheduled folder and the message sent.
+    # Empty for messages scheduled before it was recorded.
+    message_id = models.CharField(max_length=255, blank=True, default="")
 
     def __str__(self):
         return f"{self.subject} - {self.sender} - {self.scheduled_datetime}"
@@ -53,7 +56,11 @@ class ScheduledMessage(models.Model):
             "to": self.to.split(","),
             "request_dsn": self.request_dsn,
             "request_mdn": self.request_mdn,
+            # The copy and the message sent must be identical
+            "date": self.scheduled_datetime,
         }
+        if self.message_id:
+            result["message_id"] = self.message_id
         if self.subject:
             result["subject"] = self.subject
         if self.body:
@@ -93,10 +100,16 @@ class ScheduledMessage(models.Model):
 
         return True
 
-    def to_email_message(self) -> EmailMessage:
-        """Convert this scheduled message to an EmailMessage instance."""
+    def to_email_message(self, scheduling_headers: bool = True) -> EmailMessage:
+        """Convert this scheduled message to an EmailMessage instance.
+
+        :param scheduling_headers: add the headers identifying the copy kept
+            in the Scheduled folder. They must not reach the recipients.
+        """
         attachments = [attachment.to_dict() for attachment in self.attachments.all()]
         result = create_message(self.account, self.to_dict(), attachments)
+        if not scheduling_headers:
+            return result
         result.extra_headers.update(
             {
                 constants.CUSTOM_HEADER_SCHEDULED_ID: self.id,

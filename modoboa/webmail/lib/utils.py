@@ -2,6 +2,7 @@
 
 from email.header import Header
 from email.mime.image import MIMEImage
+from email.utils import formatdate, make_msgid
 from importlib.metadata import version
 import os
 import re
@@ -13,6 +14,7 @@ import lxml.html
 
 from django.conf import settings
 from django.core.mail import EmailMessage, EmailMultiAlternatives
+from django.core.mail.utils import DNS_NAME
 from django.utils.translation import gettext as _
 
 from modoboa.core import models as core_models
@@ -338,11 +340,38 @@ def build_references(references: str, in_reply_to: str) -> str:
     return " ".join(result)
 
 
+def build_message_id(sender: str) -> str:
+    """Return a new Message-ID, in the domain of the sender address."""
+    domain = sender.rpartition("@")[2]
+    try:
+        domain = domain.encode("idna").decode("ascii")
+    except UnicodeError:
+        domain = ""
+    return make_msgid(domain=domain or str(DNS_NAME))
+
+
 def create_message(
     user: core_models.User, attributes: dict, attachments: list
 ) -> EmailMessage:
-    """Create an EmailMessage instance ready to be sent."""
-    extra_headers = {"User-Agent": "Modoboa {}".format(version("modoboa"))}
+    """Create an EmailMessage instance ready to be sent.
+
+    Its Message-ID and Date are set once and for all: Django would build
+    new ones each time the MIME message is generated, and the copy saved
+    into the Sent folder would not be the message actually sent.
+
+    Optional attributes: "message_id" and "date" (a datetime), for a
+    message built several times (scheduled sending).
+    """
+    date = attributes.get("date")
+    extra_headers = {
+        "User-Agent": "Modoboa {}".format(version("modoboa")),
+        "Message-ID": attributes.get("message_id")
+        or build_message_id(attributes["sender"]),
+        "Date": formatdate(
+            date.timestamp() if date else None,
+            localtime=settings.EMAIL_USE_LOCALTIME,
+        ),
+    }
     if attributes.get("request_mdn"):
         extra_headers["Disposition-Notification-To"] = format_sender_address(
             user, attributes["sender"]

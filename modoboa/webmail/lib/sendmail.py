@@ -8,7 +8,11 @@ from modoboa.lib.oauth2 import get_access_token
 from modoboa.parameters import tools as param_tools
 from modoboa.webmail import constants, models
 from modoboa.webmail.exceptions import ImapError, WebmailInternalError
-from modoboa.webmail.lib.utils import check_sender_address, create_message
+from modoboa.webmail.lib.utils import (
+    build_message_id,
+    check_sender_address,
+    create_message,
+)
 
 from . import get_imapconnector
 
@@ -125,6 +129,7 @@ def schedule_email(
         request_dsn=attributes.get("request_dsn", False),
         request_mdn=attributes.get("request_mdn", False),
         body_format=attributes.get("body_format", ""),
+        message_id=build_message_id(attributes["sender"]),
     )
     for attr in ["cc", "bcc"]:
         if attr in attributes:
@@ -178,7 +183,7 @@ def send_scheduled_message(sched_msg: models.ScheduledMessage) -> bool:
         set_send_error(sched_msg, error)
         return False
 
-    msg = sched_msg.to_email_message()
+    msg = sched_msg.to_email_message(scheduling_headers=False)
     conf = dict(param_tools.get_global_parameters("webmail"))
     options = {
         "host": conf["scheduling_smtp_server"],
