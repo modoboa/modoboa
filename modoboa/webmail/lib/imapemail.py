@@ -3,6 +3,7 @@ Set of classes to manipulate/display emails inside the webmail.
 """
 
 import base64
+import html
 import re
 import email
 from urllib.parse import unquote
@@ -18,7 +19,7 @@ from modoboa.webmail import constants
 
 from . import imapheader
 from .imaputils import get_imapconnector, validate_imap_uid, BodyStructure
-from .utils import decode_payload
+from .utils import decode_payload, html2plaintext
 
 # Headers holding addresses, parsed from their raw value
 ADDRESS_HEADERS = ("From", "To", "Cc", "Bcc", "Reply-To")
@@ -330,9 +331,31 @@ class Modifier(ImapEmail):
         self.fetch_headers(raw_addresses=True)
         self._inject_textheader()
         getattr(self, f"_modify_{self.dformat}")()
+        # The body is now in the requested format, whatever the parts of
+        # the message
+        self.mformat = self.dformat
+
+    def _post_process_plain(self, content):
+        if self.dformat == "html":
+            # Turned into HTML by _modify_html: escaping is required
+            return super()._post_process_plain(content)
+        # Raw text for the editor: the base class escapes it for display
+        return html.unescape(super()._post_process_plain(content))
+
+    def _post_process_html(self, content):
+        if self.dformat == "plain":
+            # No text part: write the reply or the forward from the text of
+            # the HTML one
+            return html2plaintext(content)
+        return super()._post_process_html(content)
+
+    def viewmail_plain(self, contents=None, **kwargs):
+        if self.dformat == "plain":
+            return contents
+        return super().viewmail_plain(contents, **kwargs)
 
     def _modify_plain(self):
-        self.body = re.sub("</?pre>", "", self.body)
+        pass
 
     def _modify_html(self):
         if self.dformat == "html" and self.mformat != self.dformat:

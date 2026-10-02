@@ -16,7 +16,7 @@
             prepend-icon="mdi-send"
             :loading="working"
             :text="$gettext('Send')"
-            @click="submit"
+            @click="submit()"
           >
           </v-btn>
           <v-btn size="small" icon>
@@ -216,10 +216,7 @@
       />
     </v-dialog>
     <v-dialog v-model="showSchedulingForm" max-width="800">
-      <EmailSchedulingForm
-        @schedule="scheduleAndSubmit"
-        @close="closeSchedulingForm"
-      />
+      <EmailSchedulingForm @schedule="submit" @close="closeSchedulingForm" />
     </v-dialog>
   </div>
 </template>
@@ -407,33 +404,31 @@ const prepareMessage = () => {
   return result
 }
 
-const submit = async (reload) => {
+// The sending date is only given to this attempt: if it fails, the next
+// click on "Send" must not schedule the message
+const submit = async (scheduledDatetime = null) => {
   const { valid } = await formRef.value.validate()
   if (!valid) {
     return
   }
   working.value = true
   const body = prepareMessage()
+  if (scheduledDatetime) {
+    body.scheduled_datetime = scheduledDatetime
+  }
   try {
     await api.sendEmailFromComposeSession(route.query.uid, body)
     router.push({ name: 'MailboxView' })
-    const msg = body.scheduled_datetime
+    reloadData()
+    const msg = scheduledDatetime
       ? $gettext('Email scheduled')
       : $gettext('Email sent')
-    if (reload) {
-      reloadData()
-    }
     displayNotification({ msg })
   } catch {
     // Already displayed to the user by the API client
   } finally {
     working.value = false
   }
-}
-
-const scheduleAndSubmit = async (datetime) => {
-  form.value.scheduled_datetime = datetime
-  await submit(true)
 }
 
 const openAttachmentsDialog = () => {

@@ -1,5 +1,7 @@
 """Webmail serializers."""
 
+import logging
+
 from django.utils.translation import gettext as _
 from django.utils import timezone
 
@@ -8,9 +10,12 @@ from rest_framework import serializers
 
 from modoboa.lib import email_utils
 from modoboa.webmail import constants, models
+from modoboa.webmail.exceptions import ImapError
 from modoboa.webmail.lib import imapheader, signature
 from modoboa.webmail.lib.imaputils import get_imapconnector
 from modoboa.webmail.lib.utils import allowed_sender_addresses, create_message
+
+logger = logging.getLogger("modoboa.webmail")
 
 
 class GlobalParametersSerializer(serializers.Serializer):
@@ -447,10 +452,16 @@ class SaveEmailSerializer(BaseEmailSerializer):
             # the draft so it is not lost when the draft is reopened.
             mime_message["Bcc"] = ", ".join(validated_data["bcc"])
         with get_imapconnector(self.context["request"]) as imapc:
-            if "mailid" in validated_data:
-                imapc.delete_mail(drafts_folder, validated_data["mailid"])
             mailid = imapc.push_mail(drafts_folder, mime_message)
             imapc.mark_messages_unread(drafts_folder, [str(mailid)])
+            # The previous version goes only once the new one is stored: a
+            # failure must not lose the draft
+            if "mailid" in validated_data:
+                try:
+                    imapc.delete_mail(drafts_folder, validated_data["mailid"])
+                except ImapError:
+                    # A leftover copy is better than a lost draft
+                    logger.exception("Failed to remove the previous draft version")
             return mailid
 
 
