@@ -103,11 +103,15 @@ jobs:
         with:
           enable-cache: true
           cache-dependency-glob: pyproject.toml
-      - name: Install dependencies
+      - name: Install system packages
+        # Restored from the cache without contacting the APT mirrors,
+        # whose response time varies a lot
+        uses: awalsh128/cache-apt-pkgs-action@v1.6.3
+        with:
+          packages: librrd-dev rrdtool libldap2-dev libsasl2-dev libssl-dev
+          version: 1.0
+      - name: Install Python dependencies
         run: |
-          sudo apt-get update -y \
-          && sudo apt-get install -y \
-            librrd-dev rrdtool libldap2-dev libsasl2-dev libssl-dev
           uv pip install --system -e ".[ldap,test,dev,${{ matrix.database == 'postgres' && 'postgresql' || 'mysql' }}]" coverage
       - name: Configure mysqldump
         if: ${{ matrix.database == 'mysql' }}
