@@ -17,6 +17,14 @@ export const usePluginsStore = defineStore('plugins', () => {
     return manifests.value
   }
 
+  function getManifest(name) {
+    return manifests.value.find((manifest) => manifest.name === name)
+  }
+
+  function isInstalled(name) {
+    return getManifest(name) !== undefined
+  }
+
   const routes = computed(() =>
     manifests.value.flatMap((manifest) => manifest.routes || [])
   )
@@ -26,6 +34,7 @@ export const usePluginsStore = defineStore('plugins', () => {
       text: entry.label,
       icon: entry.icon || undefined,
       roles: entry.roles && entry.roles.length ? entry.roles : undefined,
+      badge: entry.badge || undefined,
     }
     if (entry.to) {
       item.to = { name: entry.to }
@@ -86,6 +95,8 @@ export const usePluginsStore = defineStore('plugins', () => {
     loaded,
     routes,
     fetchManifests,
+    getManifest,
+    isInstalled,
     menuEntriesByCategory,
     menuItemsByCategory,
     uiExtensions,

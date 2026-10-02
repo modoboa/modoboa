@@ -113,6 +113,15 @@ class ModoExtension:
         """Return UI extension descriptors keyed by extension-point id."""
         return {key: list(value) for key, value in self.frontend_ui_extensions.items()}
 
+    def get_frontend_status(self) -> dict | None:
+        """Return a short status the frontend can display next to the extension.
+
+        Expected format: ``{"text": "...", "color": "success"}`` where
+        ``color`` is a theme color name (success, warning, error, info).
+        Return ``None`` when there is nothing to report.
+        """
+        return None
+
     def get_frontend_manifest(self) -> dict:
         """Return the frontend manifest of this extension."""
         return {
@@ -122,6 +131,7 @@ class ModoExtension:
             "menu_entries": self.get_frontend_menu_entries(),
             "routes": self.get_frontend_routes(),
             "ui_extensions": self.get_frontend_ui_extensions(),
+            "status": self.get_frontend_status(),
         }
 
     def load_initial_data(self):

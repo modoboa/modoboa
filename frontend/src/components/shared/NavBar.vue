@@ -28,7 +28,8 @@
     >
       <template v-for="item in menuItems" :key="item.key || item.text">
         <template v-if="displayMenuItem(item)">
-          <v-list-subheader v-if="item.subheader" class="text-white">
+          <v-divider v-if="item.divider" class="my-2 border-opacity-50" />
+          <v-list-subheader v-else-if="item.subheader" class="text-white">
             {{ item.text.toUpperCase() }}
           </v-list-subheader>
           <v-list-item
@@ -36,9 +37,13 @@
             :value="item"
             :exact="item.exact"
             :title="item.text"
+            :subtitle="item.subtitle"
             :prepend-icon="item.icon"
             @click="item.action"
           >
+            <template v-if="item.badge || item.withBell" #append>
+              <NavBarItemAppend :item="item" />
+            </template>
           </v-list-item>
           <v-list-item
             v-else-if="!item.children"
@@ -47,8 +52,16 @@
             link
             :exact="item.exact"
             :title="item.text"
-            :prepend-icon="item.icon"
+            :subtitle="item.subtitle"
+            :prepend-icon="item.iconColor ? undefined : item.icon"
+            :class="item.class"
           >
+            <template v-if="item.iconColor" #prepend>
+              <v-icon :icon="item.icon" :color="item.iconColor" />
+            </template>
+            <template v-if="item.badge || item.withBell" #append>
+              <NavBarItemAppend :item="item" />
+            </template>
           </v-list-item>
           <v-list-group v-else :value="item.key || item.text">
             <template #activator="{ props }">
@@ -78,7 +91,11 @@
                   :title="subitem.text"
                   :value="subitem"
                   :prepend-icon="subitem.icon"
-                ></v-list-item>
+                >
+                  <template v-if="subitem.badge" #append>
+                    <NavBarItemAppend :item="subitem" />
+                  </template>
+                </v-list-item>
               </template>
             </template>
           </v-list-group>
@@ -93,6 +110,7 @@ import { useRouter } from 'vue-router'
 import { ref, computed } from 'vue'
 import { useLogos } from '@/composables/logos'
 import { useAuthStore, useLayoutStore } from '@/stores'
+import NavBarItemAppend from './NavBarItemAppend.vue'
 
 const props = defineProps({
   color: {
@@ -137,5 +155,9 @@ function displayMenuItem(item) {
 <style lang="scss" scoped>
 .logo {
   cursor: pointer;
+}
+
+.nav-item-outlined {
+  border: thin solid rgba(255, 255, 255, 0.35);
 }
 </style>

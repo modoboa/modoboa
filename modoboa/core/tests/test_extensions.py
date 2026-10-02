@@ -303,6 +303,7 @@ class FrontendPluginsAPIViewTests(ModoAPITestCase):
                     "to": "TestPluginRoute",
                     "category": "admin",
                     "roles": ["SuperAdmins"],
+                    "badge": "PRO",
                 }
             ]
             frontend_routes = [
@@ -344,10 +345,22 @@ class FrontendPluginsAPIViewTests(ModoAPITestCase):
             "https://localhost:5174/remoteEntry.js",
         )
         self.assertEqual(manifest["menu_entries"][0]["to"], "TestPluginRoute")
+        self.assertEqual(manifest["menu_entries"][0]["badge"], "PRO")
         self.assertEqual(manifest["routes"][0]["component"], "./TestPlugin")
         self.assertEqual(
             manifest["ui_extensions"]["domain.detail.tabs"][0]["component"],
             "./TestTab",
+        )
+        self.assertIsNone(manifest["status"])
+
+    def test_status_is_exposed_in_manifest(self):
+        ext = extensions.exts_pool.get_extension("test_plugin")
+        ext.get_frontend_status = lambda: {"text": "License active", "color": "success"}
+        response = self.client.get(reverse("v2:frontend_plugins"))
+        self.assertEqual(response.status_code, 200)
+        manifest = next(m for m in response.json() if m["name"] == "test_plugin")
+        self.assertEqual(
+            manifest["status"], {"text": "License active", "color": "success"}
         )
 
     def test_remote_static_path_is_resolved_in_manifest(self):

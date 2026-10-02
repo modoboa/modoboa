@@ -68,6 +68,7 @@ CORE_SETTINGS = {
     "ldap_dovecot_conf_file": "/etc/dovecot/dovecot-modoboa.conf",
     "rss_feed_url": "",
     "hide_features_widget": False,
+    "hide_pro_promotion": False,
     "sender_address": "noreply@yourdomain.test",
     "enable_api_communication": True,
     "check_new_versions": True,
@@ -348,6 +349,19 @@ class ComponentAPITestCase(ModoAPITestCase):
         self.assertEqual(resp.status_code, 200)
 
 
+class CapabilitiesAPITestCase(ModoAPITestCase):
+    def test_pro_promotion(self):
+        url = reverse("v2:capabilities")
+        resp = self.client.get(url)
+        self.assertEqual(resp.status_code, 200)
+        self.assertIn("pro_promotion", resp.json()["capabilities"])
+
+        self.set_global_parameter("hide_pro_promotion", True, app="core")
+        resp = self.client.get(url)
+        self.assertEqual(resp.status_code, 200)
+        self.assertNotIn("pro_promotion", resp.json()["capabilities"])
+
+
 class NotificationAPITestCase(ModoAPITestCase):
     def test_get_notifications(self):
         url = reverse("v2:notifications")
@@ -374,27 +388,32 @@ class FIDOViewSetTestCase(ModoAPITestCase):
         self.assertIn("pubKeyCredParams", resp.json()["publicKey"])
         self.assertIn("user", resp.json()["publicKey"])
         self.assertIn("id", resp.json()["publicKey"]["user"])
-        self.assertEqual(resp.json(), {
-            "publicKey": {
-                "authenticatorSelection": {
-                    "requireResidentKey": False,
-                    "residentKey": "discouraged",
-                     "userVerification": "discouraged",
+        self.assertEqual(
+            resp.json(),
+            {
+                "publicKey": {
+                    "authenticatorSelection": {
+                        "requireResidentKey": False,
+                        "residentKey": "discouraged",
+                        "userVerification": "discouraged",
+                    },
+                    "excludeCredentials": [],
+                    "challenge": resp.json()["publicKey"]["challenge"],  # Random value
+                    "pubKeyCredParams": resp.json()["publicKey"][
+                        "pubKeyCredParams"
+                    ],  # Complex and subject to change
+                    "rp": {
+                        "id": "testserver",
+                        "name": "Modoboa",
+                    },
+                    "user": {
+                        "id": resp.json()["publicKey"]["user"]["id"],  # Random value
+                        "name": "admin",
+                        "displayName": "admin",
+                    },
                 },
-                "excludeCredentials": [],
-                "challenge": resp.json()["publicKey"]["challenge"],  # Random value
-                "pubKeyCredParams": resp.json()["publicKey"]["pubKeyCredParams"],  # Complex and subject to change
-                "rp": {
-                    "id": "testserver",
-                    "name": "Modoboa",
-                },
-                "user": {
-                    "id": resp.json()["publicKey"]["user"]["id"],  # Random value
-                    "name": "admin",
-                    "displayName": "admin",
-                }
             },
-        })
+        )
 
         register_complete_mock.side_effect = [AuthenticatorData()]
         data = {
