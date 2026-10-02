@@ -2,9 +2,12 @@
 
 from unittest import mock
 
+from dateutil.relativedelta import relativedelta
+
 from django.core import mail
 from django.test import SimpleTestCase
 from django.urls import reverse
+from django.utils import timezone
 
 from modoboa.webmail.exceptions import ImapError
 from modoboa.webmail.lib.imaputils import IMAPconnector
@@ -14,7 +17,6 @@ ADD_FLAG = "modoboa.webmail.lib.imaputils.IMAPconnector._add_flag"
 
 
 class FlagMethodsTestCase(SimpleTestCase):
-
     def test_uid_is_passed_as_a_list(self):
         """A plain string would be joined as "1,2,3" and flag other messages."""
         imapc = IMAPconnector.__new__(IMAPconnector)
@@ -27,7 +29,6 @@ class FlagMethodsTestCase(SimpleTestCase):
 
 
 class FlagAfterSendingTestCase(WebmailTestCase):
-
     def setUp(self):
         super().setUp()
         self.authenticate()
@@ -91,3 +92,17 @@ class FlagAfterSendingTestCase(WebmailTestCase):
             )
         self.assertEqual(response.status_code, 204)
         self.assertEqual(len(mail.outbox), 1)
+
+    def test_scheduled_reply_flags_original(self):
+        """The sending job can't reach the mailbox: flagged once scheduled."""
+        scheduled_datetime = timezone.now() + relativedelta(hours=1)
+        with mock.patch(ADD_FLAG) as add_flag:
+            response = self._send(
+                original_mailbox="INBOX",
+                original_mailid=46931,
+                original_action="reply",
+                scheduled_datetime=scheduled_datetime.isoformat(),
+            )
+        self.assertEqual(response.status_code, 204)
+        self.assertEqual(len(mail.outbox), 0)
+        add_flag.assert_called_once_with("INBOX", ["46931"], r"(\Answered)")

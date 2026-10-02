@@ -677,6 +677,9 @@ class ComposeSessionViewSet(ImapConnectionMixin, viewsets.GenericViewSet):
             # compose session.
             manager.delete(pk)
             self._delete_draft(request, draft_mailid)
+            # The sending job can't reach the mailbox of the user: the
+            # original message is flagged as soon as the answer is scheduled
+            self._flag_original_message(request, serializer.validated_data)
             return response.Response(status=204)
 
         status, error = send_mail(
