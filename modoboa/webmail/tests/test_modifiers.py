@@ -4,7 +4,7 @@ from unittest import mock
 
 from django.urls import reverse
 
-from modoboa.webmail.lib.imapemail import ReplyModifier
+from modoboa.webmail.lib.imapemail import ForwardModifier, ReplyModifier
 
 from modoboa.webmail.mocks import IMAP4Mock
 from modoboa.webmail.tests.test_viewsets import WebmailTestCase
@@ -166,3 +166,36 @@ class ModifierContentTestCase(WebmailTestCase):
         self.assertTrue(modifier.embed_inlines)
         modifier.dformat = "plain"
         self.assertFalse(modifier.embed_inlines)
+
+    def test_reply_subject_prefixes(self):
+        modifier = ReplyModifier.__new__(ReplyModifier)
+        modifier.imapc = mock.MagicMock()
+        for subject, expected in (
+            ("Question", "Re: Question"),
+            ("Re: Question", "Re: Question"),
+            ("RE : Question", "RE : Question"),
+            ("AW: Frage", "AW: Frage"),
+            ("Re[2]: Question", "Re[2]: Question"),
+            ("Réf. : Dossier", "Réf. : Dossier"),
+            ("Fwd: Question", "Re: Fwd: Question"),
+            ("Return policy", "Re: Return policy"),
+            ("", ""),
+        ):
+            with self.subTest(subject=subject):
+                modifier.Subject = subject
+                self.assertEqual(modifier.subject, expected)
+
+    def test_forward_subject_prefixes(self):
+        modifier = ForwardModifier.__new__(ForwardModifier)
+        modifier.imapc = mock.MagicMock()
+        for subject, expected in (
+            ("Question", "Fwd: Question"),
+            ("Fwd: Question", "Fwd: Question"),
+            ("TR: Question", "TR: Question"),
+            ("WG: Frage", "WG: Frage"),
+            ("Re: Question", "Fwd: Re: Question"),
+            ("Travaux", "Fwd: Travaux"),
+        ):
+            with self.subTest(subject=subject):
+                modifier.Subject = subject
+                self.assertEqual(modifier.subject, expected)
