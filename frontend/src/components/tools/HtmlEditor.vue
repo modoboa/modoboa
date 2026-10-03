@@ -75,6 +75,49 @@
           @click="editor.chain().focus().toggleOrderedList().run()"
         />
       </v-btn-toggle>
+      <v-menu
+        v-if="editor"
+        v-model="showLinkMenu"
+        :close-on-content-click="false"
+      >
+        <template #activator="{ props: menuProps }">
+          <v-btn-group class="ml-2" color="grey-lighten-3">
+            <v-btn
+              v-bind="menuProps"
+              icon="mdi-link-variant"
+              :color="editor.isActive('link') ? 'primary' : undefined"
+              :title="$gettext('Link')"
+              size="small"
+            />
+          </v-btn-group>
+        </template>
+        <v-card min-width="350" class="pa-2">
+          <v-text-field
+            v-model="linkUrl"
+            :label="$gettext('URL')"
+            placeholder="https://"
+            density="compact"
+            variant="outlined"
+            hide-details
+            autofocus
+            @keydown.enter.prevent="applyLink"
+          />
+          <v-card-actions>
+            <v-btn
+              v-if="editor.isActive('link')"
+              color="error"
+              :text="$gettext('Remove')"
+              @click="removeLink"
+            />
+            <v-spacer />
+            <v-btn
+              color="primary"
+              :text="$gettext('Apply')"
+              @click="applyLink"
+            />
+          </v-card-actions>
+        </v-card>
+      </v-menu>
       <v-btn-group v-if="editor" class="ml-2" color="grey-lighten-3">
         <v-btn
           icon="mdi-undo"
@@ -102,7 +145,10 @@
 <script setup>
 import { ref, watch } from 'vue'
 import Highlight from '@tiptap/extension-highlight'
+import Image from '@tiptap/extension-image'
+import { TableKit } from '@tiptap/extension-table'
 import TextAlign from '@tiptap/extension-text-align'
+import { TextStyleKit } from '@tiptap/extension-text-style'
 import StarterKit from '@tiptap/starter-kit'
 import { useEditor, EditorContent } from '@tiptap/vue-3'
 
@@ -116,20 +162,61 @@ const emit = defineEmits(['update:modelValue'])
 
 const selection = ref([])
 const toolbar = ref()
+const showLinkMenu = ref(false)
+const linkUrl = ref('')
 
 const editor = useEditor({
   content: props.modelValue,
+  // The content of quoted messages must survive: images (embedded ones are
+  // data: URIs), tables, colors and fonts
   extensions: [
-    StarterKit,
+    StarterKit.configure({
+      link: { openOnClick: false },
+    }),
     TextAlign.configure({
       types: ['heading', 'paragraph'],
     }),
     Highlight,
+    Image.configure({ inline: true, allowBase64: true }),
+    TableKit,
+    TextStyleKit,
   ],
   onUpdate: () => {
     emit('update:modelValue', editor.value.getHTML())
   },
 })
+
+watch(showLinkMenu, (value) => {
+  if (value) {
+    linkUrl.value = editor.value.getAttributes('link').href || ''
+  }
+})
+
+const applyLink = () => {
+  const href = linkUrl.value.trim()
+  if (!href) {
+    removeLink()
+    return
+  }
+  const chain = editor.value.chain().focus()
+  if (editor.value.state.selection.empty && !editor.value.isActive('link')) {
+    // Nothing selected: the address is the text of the link
+    chain.insertContent({
+      type: 'text',
+      text: href,
+      marks: [{ type: 'link', attrs: { href } }],
+    })
+  } else {
+    chain.extendMarkRange('link').setLink({ href })
+  }
+  chain.run()
+  showLinkMenu.value = false
+}
+
+const removeLink = () => {
+  editor.value.chain().focus().extendMarkRange('link').unsetLink().run()
+  showLinkMenu.value = false
+}
 
 watch(
   () => props.modelValue,
@@ -155,6 +242,24 @@ watch(
     li p {
       margin-top: 0.25em;
       margin-bottom: 0.25em;
+    }
+  }
+  blockquote {
+    border-left: 3px solid rgba(var(--v-border-color), 0.4);
+    margin: 0.5rem 0;
+    padding-left: 1rem;
+  }
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+  table {
+    border-collapse: collapse;
+    td,
+    th {
+      border: 1px solid rgba(var(--v-border-color), var(--v-border-opacity));
+      padding: 0.25rem 0.5rem;
+      vertical-align: top;
     }
   }
 }

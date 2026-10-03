@@ -17,7 +17,10 @@
   "dependencies": {
     "@mdi/font": "^7.3.67",
     "@tiptap/extension-highlight": "^3.11.0",
+    "@tiptap/extension-image": "^3.11.0",
+    "@tiptap/extension-table": "^3.11.0",
     "@tiptap/extension-text-align": "^3.11.0",
+    "@tiptap/extension-text-style": "^3.11.0",
     "@tiptap/pm": "^3.11.0",
     "@tiptap/starter-kit": "^3.11.0",
     "@tiptap/vue-3": "^3.11.0",
