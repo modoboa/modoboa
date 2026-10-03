@@ -30,7 +30,17 @@ BODYSTRUCTURES = {
     HTML_MESSAGE: b'BODYSTRUCTURE ("text" "html" ("charset" "utf-8") NIL NIL "7bit"'
     b" %d 1 NIL NIL NIL NIL)" % len(HTML_BODY),
 }
-BODIES = {PLAIN_MESSAGE: PLAIN_BODY, HTML_MESSAGE: HTML_BODY}
+FLOWED_MESSAGE = 72
+FLOWED_BODY = b"A long line cut \nin two.\n> Quoted text \n> cut too."
+BODYSTRUCTURES[FLOWED_MESSAGE] = (
+    b'BODYSTRUCTURE ("text" "plain" ("charset" "utf-8" "format" "flowed") NIL NIL'
+    b' "7bit" %d 3 NIL NIL NIL NIL)' % len(FLOWED_BODY)
+)
+BODIES = {
+    PLAIN_MESSAGE: PLAIN_BODY,
+    HTML_MESSAGE: HTML_BODY,
+    FLOWED_MESSAGE: FLOWED_BODY,
+}
 
 
 class MessagesMock(IMAP4Mock):
@@ -199,3 +209,10 @@ class ModifierContentTestCase(WebmailTestCase):
             with self.subTest(subject=subject):
                 modifier.Subject = subject
                 self.assertEqual(modifier.subject, expected)
+
+    def test_flowed_message_is_joined(self):
+        content = self._content(FLOWED_MESSAGE, "reply", "plain")
+        self.assertEqual(
+            content["body"],
+            f"{ATTRIBUTION}\n> A long line cut in two.\n>> Quoted text cut too.",
+        )

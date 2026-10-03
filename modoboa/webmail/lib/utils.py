@@ -23,6 +23,7 @@ from django.utils.translation import gettext as _
 
 from modoboa.core import models as core_models
 from modoboa.webmail import constants
+from modoboa.webmail.lib import flowed
 from modoboa.webmail.lib.attachments import (
     create_mail_attachment,
     get_attachments_dir,
@@ -399,6 +400,34 @@ def make_body_images_inline(body: str) -> tuple[str, list]:
     return lxml.html.tostring(html, encoding="unicode"), parts
 
 
+def _set_flowed(msg) -> None:
+    """Declare the text part of a MIME message as format=flowed."""
+    for part in msg.walk():
+        if part.get_content_type() == "text/plain" and not part.get(
+            "Content-Disposition"
+        ):
+            part.set_param("format", "flowed")
+            return
+
+
+class FlowedEmailMessage(EmailMessage):
+    """A message whose text is sent as format=flowed (RFC 3676)."""
+
+    def message(self, *args, **kwargs):
+        msg = super().message(*args, **kwargs)
+        _set_flowed(msg)
+        return msg
+
+
+class FlowedEmailMultiAlternatives(EmailMultiAlternatives):
+    """A message whose text alternative is sent as format=flowed."""
+
+    def message(self, *args, **kwargs):
+        msg = super().message(*args, **kwargs)
+        _set_flowed(msg)
+        return msg
+
+
 def html_msg(body: str) -> EmailMultiAlternatives:
     """Create a multipart message.
 
@@ -412,8 +441,8 @@ def html_msg(body: str) -> EmailMultiAlternatives:
     else:
         tbody = ""
         images = []
-    msg = EmailMultiAlternatives()
-    msg.body = tbody
+    msg = FlowedEmailMultiAlternatives()
+    msg.body = flowed.encode(tbody)
     msg.attach_alternative(body, "text/html")
     for img in images:
         msg.attach(img)
@@ -422,8 +451,8 @@ def html_msg(body: str) -> EmailMultiAlternatives:
 
 def plain_msg(body: str) -> EmailMessage:
     """Create a simple text message."""
-    msg = EmailMessage()
-    msg.body = body
+    msg = FlowedEmailMessage()
+    msg.body = flowed.encode(body)
     return msg
 
 

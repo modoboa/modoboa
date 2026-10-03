@@ -19,6 +19,7 @@ from modoboa.webmail import constants
 
 from . import imapheader
 from .imaputils import get_imapconnector, validate_imap_uid, BodyStructure
+from . import flowed
 from .utils import decode_payload, html2plaintext
 
 # Headers holding addresses, parsed from their raw value
@@ -224,6 +225,10 @@ class ImapEmail(Email):
                         except (UnicodeDecodeError, LookupError):
                             result = charset_detect(content)
                             content = content.decode(result["encoding"])
+                if isinstance(content, str) and self._is_flowed(part):
+                    content = flowed.decode(
+                        content, delsp=self._find_param(part, "delsp") == "yes"
+                    )
                 bodyc += content
             self._fetch_inlines(self._referenced_cids(bodyc))
             self._find_unreferenced_inlines(bodyc)
@@ -250,6 +255,20 @@ class ImapEmail(Email):
             if elem == "charset":
                 return part["params"][pos + 1]
         return None
+
+    def _find_param(self, part, name: str) -> str | None:
+        """Return the value of a parameter of a part, lowercased."""
+        params = part.get("params") or []
+        for pos in range(0, len(params) - 1, 2):
+            key = params[pos]
+            if isinstance(key, str) and key.lower() == name:
+                value = params[pos + 1]
+                return value.lower() if isinstance(value, str) else None
+        return None
+
+    def _is_flowed(self, part) -> bool:
+        """Tell if a text part is in format=flowed (RFC 3676)."""
+        return self.mformat == "plain" and self._find_param(part, "format") == "flowed"
 
     def _find_attachments(self) -> None:
         """Retrieve attachments from the parsed body structure."""
