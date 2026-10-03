@@ -62,7 +62,11 @@ class UserPreferencesSerializer(serializers.Serializer):
         default=constants.DisplayMode.PLAIN.value, choices=constants.DISPLAY_MODES
     )
     signature = serializers.CharField(required=False)
-    signature = serializers.CharField(required=False)
+    # In replies and forwards
+    signature_position = serializers.ChoiceField(
+        default=constants.SignaturePosition.ABOVE.value,
+        choices=constants.SIGNATURE_POSITIONS,
+    )
 
 
 class UserMailboxSerializer(serializers.Serializer):
@@ -469,10 +473,14 @@ class ComposeSessionSerializer(serializers.Serializer):
     attachments = UploadedAttachmentSerializer(many=True, required=False)
     uid = serializers.CharField()
     signature = serializers.SerializerMethodField()
+    signature_position = serializers.SerializerMethodField()
     editor_format = serializers.SerializerMethodField()
 
     def get_editor_format(self, obj):
         return self.context["request"].user.parameters.get_value("editor")
+
+    def get_signature_position(self, obj):
+        return self.context["request"].user.parameters.get_value("signature_position")
 
     def get_signature(self, obj):
         return str(signature.EmailSignature(self.context["request"].user))
