@@ -516,6 +516,18 @@ def build_message_id(sender: str) -> str:
     return make_msgid(domain=domain or str(DNS_NAME))
 
 
+def message_copy(msg: EmailMessage):
+    """Return the MIME message to store into a folder of the user.
+
+    Django never writes Bcc into the MIME message, as it is sent: the copy
+    keeps it, so that the user knows who received the message.
+    """
+    result = msg.message()
+    if msg.bcc:
+        result["Bcc"] = ", ".join(msg.bcc)
+    return result
+
+
 def create_message(
     user: core_models.User, attributes: dict, attachments: list
 ) -> EmailMessage:
