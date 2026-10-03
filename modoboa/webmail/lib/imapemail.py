@@ -24,6 +24,13 @@ from .utils import decode_payload, html2plaintext
 # Headers holding addresses, parsed from their raw value
 ADDRESS_HEADERS = ("From", "To", "Cc", "Bcc", "Reply-To")
 
+# Subject prefixes of replies and forwards, as clients write them in
+# various languages ("RE :", "AW:", "Réf.:", "TR:", "WG:"...)
+_REPLY_PREFIX_RE = re.compile(
+    r"^\s*(re|aw|sv|antw|odp|rif|res|ref|réf)\s*(\[\d+\])?\s*\.?\s*:", re.I
+)
+_FORWARD_PREFIX_RE = re.compile(r"^\s*(fwd?|tr|wg|rv|enc|doorst)\s*\.?\s*:", re.I)
+
 # A cid: URL inside an HTML content (RFC 2392)
 CID_URL_RE = re.compile(r"""cid:([^\s"'<>()]+)""", re.I)
 
@@ -383,12 +390,9 @@ class ReplyModifier(Modifier):
     @property
     def subject(self) -> str:
         result: str = getattr(self, "Subject", "")
-        if not result:
+        if not result or _REPLY_PREFIX_RE.match(result):
             return result
-        m = re.match(r"re\s*:\s*.+", result.lower())
-        if not m:
-            return f"Re: {result}"
-        return result
+        return f"Re: {result}"
 
     def _inject_textheader(self):
         sender = self.From.get("name") or self.From["address"]
@@ -432,6 +436,8 @@ class ForwardModifier(Modifier):
     @property
     def subject(self) -> str:
         result: str = getattr(self, "Subject", "")
+        if _FORWARD_PREFIX_RE.match(result):
+            return result
         return f"Fwd: {result}"
 
     def __getfunc(self, name):
