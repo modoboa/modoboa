@@ -51,7 +51,8 @@ _LINE_TAGS = {
 _PARAGRAPH_TAGS = {"blockquote", "h1", "h2", "h3", "h4", "h5", "h6", "hr", "p", "pre"}
 # Elements whose content is never displayed
 _HIDDEN_TAGS = {"head", "script", "style", "template", "title"}
-_WHITESPACE_RE = re.compile(r"\s+")
+# HTML whitespace: a non-breaking space is never collapsed
+_WHITESPACE_RE = re.compile(r"[ \t\n\r\f]+")
 
 
 class _PlainTextWriter:
@@ -72,6 +73,7 @@ class _PlainTextWriter:
             text = _WHITESPACE_RE.sub(" ", text)
             if not self.current or self.current.endswith(" "):
                 text = text.lstrip(" ")
+            text = text.replace("\xa0", " ")
         for pos, chunk in enumerate(text.split("\n")):
             if pos:
                 self.end_line(force=True)
@@ -101,6 +103,20 @@ class _PlainTextWriter:
         return "\n".join(self.lines).strip("\n")
 
 
+def _block_kind(element, tag: str | None) -> str | None:
+    """Tell how an element is separated from the text around it."""
+    parent = element.getparent()
+    if tag in ("div", "p") and parent is not None and parent.tag == "li":
+        # Rich text editors put the content of list items into paragraphs:
+        # it must stay on the line of the item marker
+        return "item"
+    if tag in _PARAGRAPH_TAGS:
+        return "paragraph"
+    if tag in _LINE_TAGS:
+        return "line"
+    return None
+
+
 def html2plaintext(content: str) -> str:
     """HTML to plain text translation.
 
@@ -128,9 +144,16 @@ def html2plaintext(content: str) -> str:
                 hidden += 1
             if hidden:
                 continue
-            if tag in _PARAGRAPH_TAGS:
+            kind = _block_kind(element, tag)
+            if kind == "paragraph":
                 writer.end_paragraph()
-            elif tag in _LINE_TAGS:
+            elif kind == "line":
+                writer.end_line()
+            elif kind == "item" and (
+                element.getprevious() is not None
+                or (element.getparent().text or "").strip()
+            ):
+                # Not the first content of the item
                 writer.end_line()
             if tag == "blockquote":
                 writer.quote_depth += 1
@@ -170,9 +193,10 @@ def html2plaintext(content: str) -> str:
                 writer.write(" ")
             elif tag in ("ol", "ul") and lists:
                 lists.pop()
-            if tag in _PARAGRAPH_TAGS:
+            kind = _block_kind(element, tag)
+            if kind == "paragraph":
                 writer.end_paragraph()
-            elif tag in _LINE_TAGS:
+            elif kind in ("line", "item"):
                 writer.end_line()
             if tag == "blockquote":
                 writer.quote_depth -= 1
