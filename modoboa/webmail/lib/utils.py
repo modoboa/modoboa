@@ -95,8 +95,14 @@ class _PlainTextWriter:
     def end_line(self, force: bool = False) -> None:
         if not self.current and not force:
             return
-        line = self._prefix(self.quote_depth) + self.current.rstrip()
-        self.lines.append(line.rstrip())
+        content = self.current.rstrip()
+        line = self._prefix(self.quote_depth) + content
+        if content == "--":
+            # The signature separator keeps its trailing space (RFC 3676)
+            line += " "
+        else:
+            line = line.rstrip()
+        self.lines.append(line)
         self.current = ""
 
     def end_paragraph(self) -> None:

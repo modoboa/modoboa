@@ -321,6 +321,20 @@ const getDefaultSender = (originalEmail) => {
   return allowedSenders.value[0]?.address || authStore.authUser.username
 }
 
+// Leave room to write before the signature, and before or after the
+// quoted message
+const addSignature = (body, signature, format, above) => {
+  const space = format === 'html' ? '<p></p>' : '\n\n'
+  if (!body) {
+    return space + signature
+  }
+  if (above) {
+    // Paragraphs separate the signature from the quoted message in HTML
+    return space + signature + (format === 'html' ? '' : '\n\n') + body
+  }
+  return body + space + signature
+}
+
 // A new message, a reply or a forward
 const initForm = async (session, originalEmail) => {
   form.value = {
@@ -368,7 +382,12 @@ const initForm = async (session, originalEmail) => {
       )
       signature = resp.data.body
     }
-    body += signature
+    body = addSignature(
+      body,
+      signature,
+      format,
+      session.signature_position !== 'below'
+    )
   }
   form.value.body = body
   bodyFormat.value = format
