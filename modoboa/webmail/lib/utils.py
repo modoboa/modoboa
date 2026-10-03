@@ -1,9 +1,12 @@
 """Misc. utilities."""
 
+import base64
+import binascii
 from email.header import Header
 from email.mime.image import MIMEImage
 from email.utils import formatdate, make_msgid
 from importlib.metadata import version
+import hashlib
 import os
 import re
 from pathlib import Path
@@ -19,6 +22,7 @@ from django.utils.html import escape
 from django.utils.translation import gettext as _
 
 from modoboa.core import models as core_models
+from modoboa.webmail import constants
 from modoboa.webmail.lib.attachments import (
     create_mail_attachment,
     get_attachments_dir,
@@ -67,7 +71,8 @@ class _PlainTextWriter:
         self.pending_blank: int | None = None
 
     def _prefix(self, depth: int) -> str:
-        return "> " * depth
+        # ">>" for nested quotes, as RFC 3676 (format=flowed) wants it
+        return ">" * depth + " " if depth else ""
 
     def write(self, text: str, preformatted: bool = False) -> None:
         if not preformatted:
@@ -122,7 +127,7 @@ def html2plaintext(content: str) -> str:
     """HTML to plain text translation.
 
     The text keeps the layout of the document: paragraphs, line breaks,
-    lists and quotes ("> " prefix). Link targets follow their text.
+    lists and quotes (">" prefix). Link targets follow their text.
 
     :param content: some HTML content
     """
@@ -286,6 +291,43 @@ def decode_payload(encoding, payload):
     return payload
 
 
+# An image embedded into the HTML content
+_DATA_URI_RE = re.compile(r"data:(image/[\w.+-]+);base64,(.*)", re.I | re.S)
+
+
+def _data_uri_image(src: str, parts: dict) -> str | None:
+    """Turn an image given as a data: URI into a part of the message.
+
+    The editor shows the embedded images of replies, forwards and drafts
+    as data: URIs, that many clients refuse to display.
+
+    :param parts: the parts already created, by Content-ID (the same image
+        is attached once)
+    :return: the Content-ID of the part, None if the URI is not a valid image
+    """
+    match = _DATA_URI_RE.match(src)
+    if not match:
+        return None
+    content_type = match.group(1).lower()
+    if content_type not in constants.INLINE_IMAGE_MIME_TYPES:
+        return None
+    try:
+        payload = base64.b64decode(match.group(2), validate=False)
+    except (binascii.Error, ValueError):
+        return None
+    if not payload:
+        return None
+    subtype = content_type.split("/")[1]
+    cid = f"{hashlib.sha256(payload).hexdigest()[:24]}@modoboa"
+    if cid not in parts:
+        part = MIMEImage(payload, _subtype=subtype)
+        part["Content-ID"] = f"<{cid}>"
+        part.set_param("name", f"{cid.split('@')[0]}.{subtype}")
+        part["Content-Disposition"] = "inline"
+        parts[cid] = part
+    return cid
+
+
 def make_body_images_inline(body: str) -> tuple[str, list]:
     """Look for images inside the body and make them inline.
 
@@ -300,6 +342,7 @@ def make_body_images_inline(body: str) -> tuple[str, list]:
     """
     html = lxml.html.fromstring(body)
     parts = []
+    embedded: dict = {}
     root = Path(settings.BASE_DIR).resolve()
     # Never embed private files: attachments of any user, and the legacy
     # webmail media directory (inline images and uploads of other users).
@@ -310,6 +353,11 @@ def make_body_images_inline(body: str) -> tuple[str, list]:
     for tag in html.iter("img"):
         src = tag.get("src")
         if src is None:
+            continue
+        if src[:5].lower() == "data:":
+            cid = _data_uri_image(src, embedded)
+            if cid is not None:
+                tag.set("src", f"cid:{cid}")
             continue
         o = urlparse(src)
         # Only handle local references, never remote URLs.
@@ -341,6 +389,7 @@ def make_body_images_inline(body: str) -> tuple[str, list]:
         part.replace_header("Content-Type", f'{part["Content-Type"]}; name="{fname}"')
         part["Content-Disposition"] = "inline"
         parts.append(part)
+    parts += embedded.values()
     return lxml.html.tostring(html, encoding="unicode"), parts
 
 
