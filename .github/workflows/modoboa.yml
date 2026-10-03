@@ -207,7 +207,7 @@ jobs:
           uv pip install --system -e ".[ldap,test,dev,postgresql]" coverage
 
       - name: Start redis sentinel
-        uses: hoverkraft-tech/compose-action@v2.0.1
+        uses: hoverkraft-tech/compose-action@v3.2.0
         with:
           compose-file: "./docker/compose.redis-sentinel.yml"
 
