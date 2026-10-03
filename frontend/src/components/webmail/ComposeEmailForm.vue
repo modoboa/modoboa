@@ -14,12 +14,13 @@
           <v-btn
             class="ml-2"
             prepend-icon="mdi-send"
+            :disabled="loading"
             :loading="working"
             :text="$gettext('Send')"
             @click="submit()"
           >
           </v-btn>
-          <v-btn size="small" icon>
+          <v-btn size="small" icon :disabled="loading">
             <v-icon icon="mdi-chevron-down" />
             <v-menu activator="parent">
               <v-list>
@@ -64,6 +65,7 @@
           class="ml-2"
           variant="tonal"
           prepend-icon="mdi-paperclip"
+          :disabled="loading"
           :text="$gettext('Attachments') + ` (${attachmentCount})`"
           @click="openAttachmentsDialog"
         />
@@ -72,6 +74,7 @@
           icon="mdi-content-save-outline"
           size="small"
           :title="$gettext('Save as draft')"
+          :disabled="loading"
           :loading="working"
           @click="saveDraft"
         />
@@ -148,7 +151,7 @@
               <v-combobox
                 v-model="form.cc"
                 :items="contacts"
-                item-title="display_name"
+                :item-title="(item) => getItemTitle(item)"
                 return-object
                 :placeholder="$gettext('Provide one or more addresses')"
                 variant="outlined"
@@ -175,7 +178,7 @@
               <v-combobox
                 v-model="form.bcc"
                 :items="contacts"
-                item-title="display_name"
+                :item-title="(item) => getItemTitle(item)"
                 return-object
                 :placeholder="$gettext('Provide one or more addresses')"
                 variant="outlined"
@@ -202,11 +205,7 @@
             </v-col>
           </v-row>
         </div>
-        <BodyEditor
-          v-model="form.body"
-          :editor-mode="editorMode"
-          @on-toggle-html-mode="onToggleHtmlMode"
-        />
+        <BodyEditor v-model="form.body" v-model:format="bodyFormat" />
       </v-form>
     </div>
     <v-dialog v-model="showAttachmentsDialog" max-width="800">
@@ -222,7 +221,7 @@
 </template>
 
 <script setup>
-import { ref, watch } from 'vue'
+import { ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useGettext } from 'vue3-gettext'
 import { useAuthStore, useBusStore } from '@/stores'
@@ -235,10 +234,12 @@ import rules from '@/plugins/rules'
 import api from '@/api/webmail'
 import contactsApi from '@/api/contacts'
 
+// In reply and forward modes, route.query.mailbox and route.query.mailid
+// designate the original message
 const props = defineProps({
-  originalEmail: {
-    type: Object,
-    default: null,
+  reply: {
+    type: Boolean,
+    default: false,
   },
   replyAll: {
     type: Boolean,
@@ -250,7 +251,6 @@ const props = defineProps({
     default: false,
   },
 })
-const emit = defineEmits(['onToggleHtmlMode'])
 
 const route = useRoute()
 const router = useRouter()
@@ -274,22 +274,32 @@ const draftMailid = ref(
   route.query.draft || (isEditingDraft ? route.query.mailid : null)
 )
 const attachmentCount = ref(0)
+// Format of the message, decided once everything is loaded, then changed by
+// the user only
+const bodyFormat = ref('plain')
 const contacts = ref([])
-const editorMode = ref('plain')
-// Mode actually used in the editor: it decides the format of the message
-const htmlMode = ref(false)
 const form = ref({})
 const formRef = ref()
 const showAttachmentsDialog = ref(false)
 const showCcField = ref(false)
 const showBccField = ref(false)
 const showSchedulingForm = ref(false)
+// The form can't be submitted before its content is loaded
+const loading = ref(true)
 const working = ref(false)
 
 const close = () => {
   router.push({
     name: 'MailboxView',
   })
+}
+
+// "Name <address>" when the name is known: the API keeps it
+const formatRecipient = (rcpt) => {
+  if (!rcpt.name) {
+    return rcpt.address
+  }
+  return `"${rcpt.name.replace(/(["\\])/g, '\\$1')}" <${rcpt.address}>`
 }
 
 // Is this one of the addresses the user can send from (aliases included)?
@@ -303,10 +313,10 @@ const isUserAddress = (address) => {
 
 // Reply from the address the original message was sent to, when it is one
 // of the user's addresses; from the main address otherwise.
-const getDefaultSender = () => {
+const getDefaultSender = (originalEmail) => {
   const recipients = [
-    ...(props.originalEmail?.to || []),
-    ...(props.originalEmail?.cc || []),
+    ...(originalEmail?.to || []),
+    ...(originalEmail?.cc || []),
   ]
   const sender = allowedSenders.value.find((item) =>
     recipients.some(
@@ -319,83 +329,134 @@ const getDefaultSender = () => {
   return allowedSenders.value[0]?.address || authStore.authUser.username
 }
 
-const initForm = () => {
+// Leave room to write before the signature, and before or after the
+// quoted message
+const addSignature = (body, signature, format, above) => {
+  const space = format === 'html' ? '<p></p>' : '\n\n'
+  if (!body) {
+    return space + signature
+  }
+  if (above) {
+    // Paragraphs separate the signature from the quoted message in HTML
+    return space + signature + (format === 'html' ? '' : '\n\n') + body
+  }
+  return body + space + signature
+}
+
+// A new message, a reply or a forward
+const initForm = async (session, originalEmail) => {
   form.value = {
-    sender: getDefaultSender(),
+    sender: getDefaultSender(originalEmail),
     request_dsn: false,
     request_mdn: false,
   }
-  if (props.originalEmail) {
+  // The body of the original message is in the format of the editor
+  const format = originalEmail?.body_format || session.editor_format
+  let body = ''
+  if (originalEmail) {
+    let to = []
     if (!props.forward) {
-      // Reply to every Reply-To address if any, to the sender otherwise
-      form.value.to = props.originalEmail.reply_to?.length
-        ? props.originalEmail.reply_to.map((rcpt) => rcpt.address)
-        : [props.originalEmail.from_address.address]
+      if (originalEmail.reply_to?.length) {
+        // Reply to every Reply-To address
+        to = originalEmail.reply_to
+      } else if (isUserAddress(originalEmail.from_address.address)) {
+        // One's own message: reply to its recipients, not to oneself
+        to = originalEmail.to
+      } else {
+        to = [originalEmail.from_address]
+      }
+      form.value.to = to.map(formatRecipient)
     }
     if (props.replyAll) {
-      // Bare addresses only: the API rejects "Name <address>" values
-      const excluded = new Set(form.value.to || [])
-      const addresses = [
-        ...props.originalEmail.to,
-        ...(props.originalEmail.cc || []),
-      ]
-        .map((rcpt) => rcpt.address)
-        .filter((address) => !excluded.has(address) && !isUserAddress(address))
-      form.value.cc = [...new Set(addresses)]
-      showCcField.value = form.value.cc.length > 0
+      const excluded = new Set(to.map((rcpt) => rcpt.address.toLowerCase()))
+      const cc = []
+      for (const rcpt of [...originalEmail.to, ...(originalEmail.cc || [])]) {
+        const address = rcpt.address.toLowerCase()
+        if (!excluded.has(address) && !isUserAddress(address)) {
+          excluded.add(address)
+          cc.push(formatRecipient(rcpt))
+        }
+      }
+      form.value.cc = cc
+      showCcField.value = cc.length > 0
     }
-    form.value.subject = props.originalEmail.subject
-    form.value.body = props.originalEmail.body
-    if (props.originalEmail.message_id) {
-      form.value.in_reply_to = props.originalEmail.message_id
+    form.value.subject = originalEmail.subject
+    body = originalEmail.body || ''
+    if (originalEmail.message_id) {
+      form.value.in_reply_to = originalEmail.message_id
       // Keep the whole thread, not only the parent message
-      if (props.originalEmail.references) {
-        form.value.references = props.originalEmail.references
+      if (originalEmail.references) {
+        form.value.references = originalEmail.references
       }
     }
   }
+  if (session.signature) {
+    // The signature is in the format of the editor preference
+    let signature = session.signature
+    if (session.editor_format !== format) {
+      const resp = await api.convertBody(
+        signature,
+        session.editor_format,
+        format
+      )
+      signature = resp.data.body
+    }
+    body = addSignature(
+      body,
+      signature,
+      format,
+      session.signature_position !== 'below'
+    )
+  }
+  form.value.body = body
+  bodyFormat.value = format
 }
 
-// The editor starts in the mode of the compose session...
-watch(editorMode, (value) => {
-  htmlMode.value = value === 'html'
-})
-
-// ...and the user can switch it while writing
-const onToggleHtmlMode = (value) => {
-  htmlMode.value = value
-  emit('onToggleHtmlMode', value)
+// A draft, in the format it was written in
+const initFormFromDraft = (session, draft) => {
+  form.value = {
+    sender: draft.from_address.address,
+    request_dsn: false,
+    request_mdn: false,
+  }
+  if (draft.to?.length) {
+    form.value.to = draft.to.map(formatRecipient)
+  }
+  if (draft.cc?.length) {
+    form.value.cc = draft.cc.map(formatRecipient)
+    showCcField.value = true
+  }
+  if (draft.bcc?.length) {
+    form.value.bcc = draft.bcc.map(formatRecipient)
+    showBccField.value = true
+  }
+  if (draft.subject) {
+    form.value.subject = draft.subject
+  }
+  form.value.body = draft.body || ''
+  // A reply saved as draft stays in its thread
+  if (draft.in_reply_to) {
+    form.value.in_reply_to = draft.in_reply_to
+  }
+  if (draft.references) {
+    form.value.references = draft.references
+  }
+  bodyFormat.value = draft.body_format || session.editor_format
 }
 
 const prepareMessage = () => {
   const result = { ...form.value }
 
-  if (result.to?.length) {
-    const to = []
-    for (const rcpt of result.to) {
-      to.push(typeof rcpt === 'string' ? rcpt : rcpt.emails[0].address)
+  for (const field of ['to', 'cc', 'bcc']) {
+    if (result[field]?.length) {
+      result[field] = result[field].map(getRecipient).filter(Boolean)
     }
-    result.to = to
   }
-  if (result.cc?.length) {
-    const cc = []
-    for (const rcpt of result.cc) {
-      cc.push(typeof rcpt === 'string' ? rcpt : rcpt.emails[0].address)
-    }
-    result.cc = cc
-  }
-  if (result.bcc?.length) {
-    const bcc = []
-    for (const rcpt of result.bcc) {
-      bcc.push(typeof rcpt === 'string' ? rcpt : rcpt.emails[0].address)
-    }
-    result.bcc = bcc
-  }
-  result.body_format = htmlMode.value ? 'html' : 'plain'
+  result.body_format = bodyFormat.value
   if (draftMailid.value) {
     result.mailid = draftMailid.value
   }
-  if (props.originalEmail && route.query.mailbox && route.query.mailid) {
+  if ((props.reply || props.forward) && route.query.mailid) {
     // Let the server flag the original message (\Answered, $Forwarded)
     result.original_mailbox = route.query.mailbox
     result.original_mailid = route.query.mailid
@@ -453,52 +514,6 @@ const lookForContacts = debounce(async (search) => {
   }
 }, 500)
 
-const initialize = async (body) => {
-  let mode = body.editor_format
-  if (isEditingDraft) {
-    // Load draft (raw body, ready for the editor) in the format it was
-    // written in
-    const draft = await api.getEmailContent(
-      route.query.mailbox,
-      route.query.mailid,
-      { context: 'edit' }
-    )
-    form.value.sender = draft.data.from_address.address
-    if (draft.data.to?.length) {
-      form.value.to = draft.data.to.map((rcpt) => rcpt.address)
-    }
-    if (draft.data.cc?.length) {
-      form.value.cc = draft.data.cc.map((rcpt) => rcpt.address)
-      showCcField.value = true
-    }
-    if (draft.data.bcc?.length) {
-      form.value.bcc = draft.data.bcc.map((rcpt) => rcpt.address)
-      showBccField.value = true
-    }
-    if (draft.data.subject) {
-      form.value.subject = draft.data.subject
-    }
-    if (draft.data.body) {
-      form.value.body = draft.data.body
-    }
-    mode = draft.data.body_format || mode
-    // A reply saved as draft stays in its thread
-    if (draft.data.in_reply_to) {
-      form.value.in_reply_to = draft.data.in_reply_to
-    }
-    if (draft.data.references) {
-      form.value.references = draft.data.references
-    }
-  } else if (body.signature) {
-    if (form.value.body) {
-      form.value.body += body.signature
-    } else {
-      form.value.body = body.signature
-    }
-  }
-  editorMode.value = mode
-}
-
 const openSchedulingForm = () => {
   if (!form.value.to?.length) {
     displayNotification({
@@ -534,22 +549,34 @@ const saveDraft = async () => {
   }
 }
 
+const getContactName = (contact) =>
+  contact.display_name ||
+  [contact.first_name, contact.last_name].filter(Boolean).join(' ')
+
 const getItemTitle = (item) => {
+  if (typeof item === 'string') {
+    // Without the quotes of the name: "John Doe" <john@example.com>
+    return item.replace(/^"(.*)"(\s*<)/, '$1$2').replace(/\\(["\\])/g, '$1')
+  }
+  return getContactName(item)
+}
+
+// A recipient typed by the user, or a contact picked in the list
+const getRecipient = (item) => {
   if (typeof item === 'string') {
     return item
   }
-  return item.display_name || `${item.first_name} ${item.last_name}`
+  const address = item.emails?.[0]?.address
+  if (!address) {
+    return null
+  }
+  return formatRecipient({ name: getContactName(item), address })
 }
 
-watch(
-  () => props.originalEmail,
-  () => {
-    initForm()
-  },
-  { immediate: true }
-)
-
-if (!route.query.uid) {
+const getComposeSession = async () => {
+  if (route.query.uid) {
+    return (await api.getComposeSession(route.query.uid)).data
+  }
   const data = {}
   if (isEditingDraft) {
     data.from_draft_message = route.query.mailid
@@ -558,31 +585,51 @@ if (!route.query.uid) {
     data.forward_mailbox = route.query.mailbox
     data.forward_mailid = route.query.mailid
   }
-  api.createComposeSession(data).then((resp) => {
-    const query = { ...route.query, uid: resp.data.uid }
-    attachmentCount.value = resp.data.attachments?.length || 0
-    router.push({ name: route.name, query })
-    initialize(resp.data)
+  const session = (await api.createComposeSession(data)).data
+  router.replace({
+    name: route.name,
+    query: { ...route.query, uid: session.uid },
   })
-} else {
-  api.getComposeSession(route.query.uid).then((resp) => {
-    attachmentCount.value = resp.data.attachments.length
-    initialize(resp.data)
-  })
+  return session
 }
 
-api.getAllowedSenders().then((resp) => {
-  allowedSenders.value = resp.data
-  // The form may have been initialized before the addresses were known (the
-  // sender can't have been changed yet: the list was empty)
-  if (!isEditingDraft) {
-    form.value.sender = getDefaultSender()
+const getEmailContent = async (context) => {
+  const resp = await api.getEmailContent(
+    route.query.mailbox,
+    route.query.mailid,
+    { context }
+  )
+  return resp.data
+}
+
+// Everything is loaded before the form is filled: the sender depends on the
+// original message and on the allowed addresses, the format on the original
+// message (or the draft) and on the preferences.
+const load = async () => {
+  let originalRequest = null
+  if (props.reply || props.forward) {
+    originalRequest = getEmailContent(props.forward ? 'forward' : 'reply')
   }
-  if (props.replyAll && form.value.cc?.length) {
-    form.value.cc = form.value.cc.filter(
-      (address) => typeof address !== 'string' || !isUserAddress(address)
-    )
-    showCcField.value = form.value.cc.length > 0
+  const draftRequest = isEditingDraft ? getEmailContent('edit') : null
+  try {
+    const [session, senders, originalEmail, draft] = await Promise.all([
+      getComposeSession(),
+      api.getAllowedSenders(),
+      originalRequest,
+      draftRequest,
+    ])
+    allowedSenders.value = senders.data
+    attachmentCount.value = session.attachments?.length || 0
+    if (draft) {
+      initFormFromDraft(session, draft)
+    } else {
+      await initForm(session, originalEmail)
+    }
+    loading.value = false
+  } catch {
+    // Already displayed to the user by the API client
   }
-})
+}
+
+load()
 </script>
