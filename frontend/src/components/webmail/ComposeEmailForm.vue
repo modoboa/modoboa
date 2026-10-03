@@ -151,7 +151,7 @@
               <v-combobox
                 v-model="form.cc"
                 :items="contacts"
-                item-title="display_name"
+                :item-title="(item) => getItemTitle(item)"
                 return-object
                 :placeholder="$gettext('Provide one or more addresses')"
                 variant="outlined"
@@ -178,7 +178,7 @@
               <v-combobox
                 v-model="form.bcc"
                 :items="contacts"
-                item-title="display_name"
+                :item-title="(item) => getItemTitle(item)"
                 return-object
                 :placeholder="$gettext('Provide one or more addresses')"
                 variant="outlined"
@@ -294,6 +294,14 @@ const close = () => {
   })
 }
 
+// "Name <address>" when the name is known: the API keeps it
+const formatRecipient = (rcpt) => {
+  if (!rcpt.name) {
+    return rcpt.address
+  }
+  return `"${rcpt.name.replace(/(["\\])/g, '\\$1')}" <${rcpt.address}>`
+}
+
 // Is this one of the addresses the user can send from (aliases included)?
 const isUserAddress = (address) => {
   const value = address.toLowerCase()
@@ -346,20 +354,31 @@ const initForm = async (session, originalEmail) => {
   const format = originalEmail?.body_format || session.editor_format
   let body = ''
   if (originalEmail) {
+    let to = []
     if (!props.forward) {
-      // Reply to every Reply-To address if any, to the sender otherwise
-      form.value.to = originalEmail.reply_to?.length
-        ? originalEmail.reply_to.map((rcpt) => rcpt.address)
-        : [originalEmail.from_address.address]
+      if (originalEmail.reply_to?.length) {
+        // Reply to every Reply-To address
+        to = originalEmail.reply_to
+      } else if (isUserAddress(originalEmail.from_address.address)) {
+        // One's own message: reply to its recipients, not to oneself
+        to = originalEmail.to
+      } else {
+        to = [originalEmail.from_address]
+      }
+      form.value.to = to.map(formatRecipient)
     }
     if (props.replyAll) {
-      // Bare addresses only: the API rejects "Name <address>" values
-      const excluded = new Set(form.value.to || [])
-      const addresses = [...originalEmail.to, ...(originalEmail.cc || [])]
-        .map((rcpt) => rcpt.address)
-        .filter((address) => !excluded.has(address) && !isUserAddress(address))
-      form.value.cc = [...new Set(addresses)]
-      showCcField.value = form.value.cc.length > 0
+      const excluded = new Set(to.map((rcpt) => rcpt.address.toLowerCase()))
+      const cc = []
+      for (const rcpt of [...originalEmail.to, ...(originalEmail.cc || [])]) {
+        const address = rcpt.address.toLowerCase()
+        if (!excluded.has(address) && !isUserAddress(address)) {
+          excluded.add(address)
+          cc.push(formatRecipient(rcpt))
+        }
+      }
+      form.value.cc = cc
+      showCcField.value = cc.length > 0
     }
     form.value.subject = originalEmail.subject
     body = originalEmail.body || ''
@@ -401,14 +420,14 @@ const initFormFromDraft = (session, draft) => {
     request_mdn: false,
   }
   if (draft.to?.length) {
-    form.value.to = draft.to.map((rcpt) => rcpt.address)
+    form.value.to = draft.to.map(formatRecipient)
   }
   if (draft.cc?.length) {
-    form.value.cc = draft.cc.map((rcpt) => rcpt.address)
+    form.value.cc = draft.cc.map(formatRecipient)
     showCcField.value = true
   }
   if (draft.bcc?.length) {
-    form.value.bcc = draft.bcc.map((rcpt) => rcpt.address)
+    form.value.bcc = draft.bcc.map(formatRecipient)
     showBccField.value = true
   }
   if (draft.subject) {
@@ -428,26 +447,10 @@ const initFormFromDraft = (session, draft) => {
 const prepareMessage = () => {
   const result = { ...form.value }
 
-  if (result.to?.length) {
-    const to = []
-    for (const rcpt of result.to) {
-      to.push(typeof rcpt === 'string' ? rcpt : rcpt.emails[0].address)
+  for (const field of ['to', 'cc', 'bcc']) {
+    if (result[field]?.length) {
+      result[field] = result[field].map(getRecipient).filter(Boolean)
     }
-    result.to = to
-  }
-  if (result.cc?.length) {
-    const cc = []
-    for (const rcpt of result.cc) {
-      cc.push(typeof rcpt === 'string' ? rcpt : rcpt.emails[0].address)
-    }
-    result.cc = cc
-  }
-  if (result.bcc?.length) {
-    const bcc = []
-    for (const rcpt of result.bcc) {
-      bcc.push(typeof rcpt === 'string' ? rcpt : rcpt.emails[0].address)
-    }
-    result.bcc = bcc
   }
   result.body_format = bodyFormat.value
   if (draftMailid.value) {
@@ -546,11 +549,28 @@ const saveDraft = async () => {
   }
 }
 
+const getContactName = (contact) =>
+  contact.display_name ||
+  [contact.first_name, contact.last_name].filter(Boolean).join(' ')
+
 const getItemTitle = (item) => {
+  if (typeof item === 'string') {
+    // Without the quotes of the name: "John Doe" <john@example.com>
+    return item.replace(/^"(.*)"(\s*<)/, '$1$2').replace(/\\(["\\])/g, '$1')
+  }
+  return getContactName(item)
+}
+
+// A recipient typed by the user, or a contact picked in the list
+const getRecipient = (item) => {
   if (typeof item === 'string') {
     return item
   }
-  return item.display_name || `${item.first_name} ${item.last_name}`
+  const address = item.emails?.[0]?.address
+  if (!address) {
+    return null
+  }
+  return formatRecipient({ name: getContactName(item), address })
 }
 
 const getComposeSession = async () => {
