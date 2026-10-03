@@ -13,7 +13,11 @@ from modoboa.webmail import constants, models
 from modoboa.webmail.exceptions import ImapError
 from modoboa.webmail.lib import imapheader, signature
 from modoboa.webmail.lib.imaputils import get_imapconnector
-from modoboa.webmail.lib.utils import allowed_sender_addresses, create_message
+from modoboa.webmail.lib.utils import (
+    allowed_sender_addresses,
+    create_message,
+    message_copy,
+)
 
 logger = logging.getLogger("modoboa.webmail")
 
@@ -450,11 +454,8 @@ class SaveEmailSerializer(BaseEmailSerializer):
         drafts_folder = self.context["request"].user.parameters.get_value(
             "drafts_folder"
         )
-        mime_message = message.message()
-        if validated_data.get("bcc"):
-            # Django never writes Bcc into the MIME message: keep it in
-            # the draft so it is not lost when the draft is reopened.
-            mime_message["Bcc"] = ", ".join(validated_data["bcc"])
+        # Bcc is kept so that it is not lost when the draft is reopened
+        mime_message = message_copy(message)
         with get_imapconnector(self.context["request"]) as imapc:
             mailid = imapc.push_mail(drafts_folder, mime_message)
             imapc.mark_messages_unread(drafts_folder, [str(mailid)])
@@ -540,7 +541,7 @@ class ScheduledMessageSerializer(ScheduledDatetimeMixin, serializers.ModelSerial
                 # rescheduling must still work.
                 imapc.delete_mail(constants.MAILBOX_NAME_SCHEDULED, instance.imap_uid)
             instance.imap_uid = imapc.push_mail(
-                constants.MAILBOX_NAME_SCHEDULED, message.message()
+                constants.MAILBOX_NAME_SCHEDULED, message_copy(message)
             )
             instance.save()
         return instance

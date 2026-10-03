@@ -12,6 +12,7 @@ from modoboa.webmail.lib.utils import (
     build_message_id,
     check_sender_address,
     create_message,
+    message_copy,
 )
 
 from . import get_imapconnector
@@ -102,7 +103,7 @@ def send_mail(request, attributes: dict, attachments: list) -> tuple[bool, str |
     sentfolder = request.user.parameters.get_value("sent_folder")
     try:
         with get_imapconnector(request) as imapc:
-            imapc.push_mail(sentfolder, msg.message())
+            imapc.push_mail(sentfolder, message_copy(msg))
     except (ImapError, WebmailInternalError):
         # The message is sent: reporting a failure would make the user
         # send it again.
@@ -145,7 +146,7 @@ def schedule_email(
             pass
         # TODO: deal with UID Validity
         sched_msg.imap_uid = imapc.push_mail(
-            constants.MAILBOX_NAME_SCHEDULED, msg.message()
+            constants.MAILBOX_NAME_SCHEDULED, message_copy(msg)
         )
         sched_msg.save()
 
