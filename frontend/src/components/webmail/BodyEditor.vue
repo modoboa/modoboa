@@ -11,6 +11,7 @@
         size="small"
         color="primary"
         variant="flat"
+        :loading="converting"
         :title="$gettext('Switch to plain text')"
         @click="toggleFormat"
       />
@@ -24,6 +25,7 @@
         size="small"
         color="grey-lighten-3"
         variant="flat"
+        :loading="converting"
         :title="$gettext('Switch to HTML')"
         @click="toggleFormat"
       />
@@ -38,7 +40,7 @@ import { ref } from 'vue'
 import { useGettext } from 'vue3-gettext'
 import ConfirmDialog from '@/components/tools/ConfirmDialog'
 import HtmlEditor from '@/components/tools/HtmlEditor'
-import { htmlToPlain, plainToHtml } from '@/utils/bodyFormat'
+import api from '@/api/webmail'
 
 const { $gettext } = useGettext()
 
@@ -48,15 +50,28 @@ const model = defineModel({ type: String, default: '' })
 const format = defineModel('format', { type: String, default: 'plain' })
 
 const confirmDialog = ref()
+const converting = ref(false)
+
+// The conversion is made by the server: the text obtained is the one sent
+// as the text part of HTML messages
+const convert = async (target) => {
+  converting.value = true
+  try {
+    const resp = await api.convertBody(model.value, format.value, target)
+    return resp.data.body
+  } finally {
+    converting.value = false
+  }
+}
+
+// An empty editor holds an empty paragraph
+const isEmpty = () => !(model.value || '').replace(/<p><\/p>/g, '').trim()
 
 const toggleFormat = async () => {
-  if (format.value === 'plain') {
-    model.value = plainToHtml(model.value)
-    format.value = 'html'
-    return
-  }
-  const text = htmlToPlain(model.value)
-  if (text) {
+  const target = format.value === 'plain' ? 'html' : 'plain'
+  if (target === 'plain' && !isEmpty()) {
+    // Asked first: the content can't change between the conversion and the
+    // answer
     const confirmed = await confirmDialog.value.open(
       $gettext('Switch to plain text'),
       $gettext(
@@ -68,7 +83,12 @@ const toggleFormat = async () => {
       return
     }
   }
-  model.value = text
-  format.value = 'plain'
+  try {
+    model.value = await convert(target)
+  } catch {
+    // Already displayed to the user by the API client
+    return
+  }
+  format.value = target
 }
 </script>

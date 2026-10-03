@@ -15,6 +15,7 @@ import lxml.html
 from django.conf import settings
 from django.core.mail import EmailMessage, EmailMultiAlternatives
 from django.core.mail.utils import DNS_NAME
+from django.utils.html import escape
 from django.utils.translation import gettext as _
 
 from modoboa.core import models as core_models
@@ -205,6 +206,63 @@ def html2plaintext(content: str) -> str:
         if element.tail and not hidden and element is not html:
             writer.write(element.tail, preformatted > 0)
     return writer.text()
+
+
+_QUOTE_RE = re.compile(r"^(?:> ?)+")
+
+
+def plaintext2html(content: str) -> str:
+    """Plain text to HTML translation, for the editor.
+
+    Blank lines separate paragraphs, line breaks are kept and quoted lines
+    (">" prefix) go into blockquotes.
+
+    :param content: some plain text content
+    """
+    if not content:
+        return ""
+    result = ""
+    depth = 0
+    paragraph: list[str] = []
+
+    def flush() -> str:
+        if not paragraph:
+            return ""
+        html = f"<p>{'<br>'.join(paragraph)}</p>"
+        paragraph.clear()
+        return html
+
+    for line in content.replace("\r\n", "\n").replace("\r", "\n").split("\n"):
+        match = _QUOTE_RE.match(line)
+        quote = match.group(0) if match else ""
+        line_depth = quote.count(">")
+        text = line[len(quote) :]
+        if line_depth != depth:
+            result += flush()
+            if line_depth > depth:
+                result += "<blockquote>" * (line_depth - depth)
+            else:
+                result += "</blockquote>" * (depth - line_depth)
+            depth = line_depth
+        if not text.strip():
+            result += flush()
+            continue
+        text = escape(text)
+        # Keep the indentation, that HTML would collapse
+        indent = len(text) - len(text.lstrip(" "))
+        paragraph.append("&nbsp;" * indent + text[indent:])
+    result += flush()
+    result += "</blockquote>" * depth
+    return result
+
+
+def convert_body(content: str, source: str, target: str) -> str:
+    """Convert a message body from a format (plain or html) to another."""
+    if not content or source == target:
+        return content
+    if target == "html":
+        return plaintext2html(content)
+    return html2plaintext(content)
 
 
 def decode_payload(encoding, payload):

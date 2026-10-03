@@ -229,7 +229,6 @@ import { useSpecialFolders } from '@/composables/webmail'
 import debounce from 'debounce'
 import AttachmentsDialog from '@/components/webmail/AttachmentsDialog'
 import BodyEditor from '@/components/webmail/BodyEditor'
-import { convertBody } from '@/utils/bodyFormat'
 import EmailSchedulingForm from '@/components/webmail/EmailSchedulingForm'
 import rules from '@/plugins/rules'
 import api from '@/api/webmail'
@@ -323,7 +322,7 @@ const getDefaultSender = (originalEmail) => {
 }
 
 // A new message, a reply or a forward
-const initForm = (session, originalEmail) => {
+const initForm = async (session, originalEmail) => {
   form.value = {
     sender: getDefaultSender(originalEmail),
     request_dsn: false,
@@ -360,7 +359,16 @@ const initForm = (session, originalEmail) => {
   }
   if (session.signature) {
     // The signature is in the format of the editor preference
-    body += convertBody(session.signature, session.editor_format, format)
+    let signature = session.signature
+    if (session.editor_format !== format) {
+      const resp = await api.convertBody(
+        signature,
+        session.editor_format,
+        format
+      )
+      signature = resp.data.body
+    }
+    body += signature
   }
   form.value.body = body
   bodyFormat.value = format
@@ -576,7 +584,7 @@ const load = async () => {
     if (draft) {
       initFormFromDraft(session, draft)
     } else {
-      initForm(session, originalEmail)
+      await initForm(session, originalEmail)
     }
     loading.value = false
   } catch {
