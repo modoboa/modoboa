@@ -96,9 +96,9 @@ jobs:
       DB: ${{ matrix.database }}
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v7
         with:
           python-version: ${{ matrix.python-version }}
       - name: Set up uv
@@ -163,7 +163,7 @@ jobs:
 
       - name: Upload coverage result
         if: ${{ matrix.python-version == '3.14' && matrix.database == 'postgres' }}
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: coverage-results
           path: test_project/coverage.xml
@@ -187,9 +187,9 @@ jobs:
       DB: postgres
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Set up Python 3.14
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v7
         with:
           python-version: '3.14'
       - name: Set up uv
@@ -207,7 +207,7 @@ jobs:
           uv pip install --system -e ".[ldap,test,dev,postgresql]" coverage
 
       - name: Start redis sentinel
-        uses: hoverkraft-tech/compose-action@v2.0.1
+        uses: hoverkraft-tech/compose-action@v3.2.0
         with:
           compose-file: "./docker/compose.redis-sentinel.yml"
 
@@ -226,7 +226,7 @@ jobs:
           OIDC_RSA_PRIVATE_KEY: ${{ vars.OIDC_RSA_PRIVATE_KEY }}
 
       - name: Upload coverage result
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: coverage-results-sentinel
           path: test_project/coverage-sentinel.xml
@@ -235,14 +235,14 @@ jobs:
     needs: [test, test-sentinel]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Download coverage results
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           pattern: coverage-results*
           merge-multiple: true
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v4.5.0
+        uses: codecov/codecov-action@v7.1.1
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: ./coverage.xml,./coverage-sentinel.xml
@@ -257,11 +257,11 @@ jobs:
       name: pypi
       url: https://pypi.org/p/modoboa
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
       - name: Set up Python 3.13
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v7
         with:
           python-version: '3.13'
       - name: Build frontend
