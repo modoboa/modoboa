@@ -122,7 +122,7 @@ def schedule_email(
         account=request.user,
         sender=attributes["sender"],
         scheduled_datetime=scheduled_datetime,
-        to=",".join(attributes["to"]),
+        to=", ".join(attributes["to"]),
         subject=attributes.get("subject", ""),
         body=attributes.get("body", ""),
         in_reply_to=attributes.get("in_reply_to", ""),
@@ -134,7 +134,7 @@ def schedule_email(
     )
     for attr in ["cc", "bcc"]:
         if attr in attributes:
-            setattr(sched_msg, attr, ",".join(attributes[attr]))
+            setattr(sched_msg, attr, ", ".join(attributes[attr]))
     sched_msg.save()
 
     # Save a copy of this message into an IMAP mailbox

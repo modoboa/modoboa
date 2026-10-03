@@ -12,7 +12,7 @@ from django.dispatch import receiver
 from modoboa.lib import dovecot
 from modoboa.webmail import constants
 from modoboa.webmail.lib.attachments import WebmailAttachmentStorage, get_storage_path
-from modoboa.webmail.lib.utils import create_message
+from modoboa.webmail.lib.utils import create_message, split_recipients
 
 
 class ScheduledMessage(models.Model):
@@ -53,7 +53,7 @@ class ScheduledMessage(models.Model):
             "in_reply_to": self.in_reply_to,
             "references": self.references,
             "sender": self.sender,
-            "to": self.to.split(","),
+            "to": split_recipients(self.to),
             "request_dsn": self.request_dsn,
             "request_mdn": self.request_mdn,
             # The copy and the message sent must be identical
@@ -69,7 +69,7 @@ class ScheduledMessage(models.Model):
             result["body_format"] = self.body_format
         for hdr in ["cc", "bcc"]:
             if getattr(self, hdr):
-                result[hdr] = getattr(self, hdr).split(",")
+                result[hdr] = split_recipients(getattr(self, hdr))
         return result
 
     def delete_imap_copy(self) -> bool:

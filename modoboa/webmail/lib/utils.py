@@ -4,7 +4,7 @@ import base64
 import binascii
 from email.header import Header
 from email.mime.image import MIMEImage
-from email.utils import formatdate, make_msgid
+from email.utils import formatdate, getaddresses, make_msgid
 from importlib.metadata import version
 import hashlib
 import os
@@ -17,7 +17,9 @@ import lxml.html
 
 from django.conf import settings
 from django.core.mail import EmailMessage, EmailMultiAlternatives
+from django.core.exceptions import ValidationError
 from django.core.mail.utils import DNS_NAME
+from django.core.validators import validate_email
 from django.utils.html import escape
 from django.utils.translation import gettext as _
 
@@ -454,6 +456,39 @@ def plain_msg(body: str) -> EmailMessage:
     msg = FlowedEmailMessage()
     msg.body = flowed.encode(body)
     return msg
+
+
+def format_address(name: str, address: str) -> str:
+    """Format a recipient for a header, its name quoted."""
+    if not name:
+        return address
+    name = name.replace("\\", "\\\\").replace('"', '\\"')
+    return f'"{name}" <{address}>'
+
+
+def parse_recipient(value: str) -> str | None:
+    """Normalize a recipient given as "address" or "Name <address>".
+
+    :return: the formatted recipient, None if it is not a valid one
+    """
+    pairs = getaddresses([value])
+    if len(pairs) != 1:
+        return None
+    name, address = pairs[0]
+    try:
+        validate_email(address)
+    except ValidationError:
+        return None
+    return format_address(name.strip(), address)
+
+
+def split_recipients(value: str) -> list[str]:
+    """Split recipients stored as a header value."""
+    return [
+        format_address(name, address)
+        for name, address in getaddresses([value])
+        if address
+    ]
 
 
 def format_sender_address(user: core_models.User, address: str) -> str:

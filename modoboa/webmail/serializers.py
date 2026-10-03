@@ -8,7 +8,6 @@ from django.utils import timezone
 from drf_spectacular.utils import extend_schema_field
 from rest_framework import serializers
 
-from modoboa.lib import email_utils
 from modoboa.webmail import constants, models
 from modoboa.webmail.exceptions import ImapError
 from modoboa.webmail.lib import imapheader, signature
@@ -17,6 +16,7 @@ from modoboa.webmail.lib.utils import (
     allowed_sender_addresses,
     create_message,
     message_copy,
+    parse_recipient,
 )
 
 logger = logging.getLogger("modoboa.webmail")
@@ -358,9 +358,10 @@ class BaseEmailSerializer(serializers.Serializer):
     sender = serializers.EmailField()
     subject = serializers.CharField(required=False)
     body = serializers.CharField(required=False)
-    to = serializers.ListField(child=serializers.EmailField(), required=False)
-    cc = serializers.ListField(child=serializers.EmailField(), required=False)
-    bcc = serializers.ListField(child=serializers.EmailField(), required=False)
+    # Recipients: "address" or "Name <address>"
+    to = serializers.ListField(child=serializers.CharField(), required=False)
+    cc = serializers.ListField(child=serializers.CharField(), required=False)
+    bcc = serializers.ListField(child=serializers.CharField(), required=False)
     # Message this one replies to, kept in drafts
     in_reply_to = serializers.CharField(required=False)
     # References of the message this one replies to
@@ -383,14 +384,29 @@ class BaseEmailSerializer(serializers.Serializer):
             )
         return value
 
+    def _validate_recipients(self, value):
+        result = []
+        invalid = []
+        for item in value:
+            recipient = parse_recipient(item)
+            if recipient is None:
+                invalid.append(item)
+            else:
+                result.append(recipient)
+        if invalid:
+            raise serializers.ValidationError(
+                _("Invalid addresses: %s") % ", ".join(invalid)
+            )
+        return result
+
     def validate_to(self, value):
-        return email_utils.prepare_addresses(value, "envelope")
+        return self._validate_recipients(value)
 
     def validate_cc(self, value):
-        return email_utils.prepare_addresses(value, "envelope")
+        return self._validate_recipients(value)
 
     def validate_bcc(self, value):
-        return email_utils.prepare_addresses(value, "envelope")
+        return self._validate_recipients(value)
 
 
 class SendEmailSerializer(ScheduledDatetimeMixin, BaseEmailSerializer):
