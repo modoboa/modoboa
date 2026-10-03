@@ -455,10 +455,14 @@ class UserEmailViewSet(ImapConnectionMixin, viewsets.GenericViewSet):
         if not mailbox or not mailid:
             raise Http404
         _validate_mailid(mailid)
-        dformat = request.user.parameters.get_value("displaymode")
+        context = self.request.GET.get("context")
+        if context in ["reply", "forward"]:
+            # Loaded into the editor: in the format it starts with
+            dformat = request.user.parameters.get_value("editor")
+        else:
+            dformat = request.user.parameters.get_value("displaymode")
         if "dformat" in request.GET:
             dformat = request.GET.get("dformat")
-        context = self.request.GET.get("context")
         if context == "edit":
             # A draft is loaded in its own format unless one is requested
             dformat = request.GET.get("dformat")
