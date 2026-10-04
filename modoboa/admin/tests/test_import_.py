@@ -81,6 +81,14 @@ domainalias;test.alias;test.com;True
         resp = self.client.post(url, {"sourcefile": f})
         self.assertIn("Object already exists: domainalias", resp.content.decode())
 
+    def test_import_domain_with_domainalias_conflict(self):
+        factories.DomainAliasFactory(name="dalias.test", target__name="test.com")
+        f = ContentFile(b"domain;dalias.test;100;10;True", name="domains.csv")
+        url = reverse("v2:domain-import-from-csv")
+        resp = self.client.post(url, {"sourcefile": f})
+        self.assertIn("Object already exists: domain", resp.content.decode())
+        self.assertFalse(Domain.objects.filter(name="dalias.test").exists())
+
     def test_import_for_nonlocal_domain(self):
         """Try to import an account for nonlocal domain."""
         f = ContentFile(

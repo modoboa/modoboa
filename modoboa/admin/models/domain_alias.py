@@ -54,8 +54,20 @@ class DomainAlias(AdminObject):
     class Meta:
         app_label = "admin"
 
+    def __init__(self, *args, **kwargs):
+        """Save name and target for further use."""
+        super().__init__(*args, **kwargs)
+        self.oldname = self.name
+        self.old_target_id = self.target_id
+
     def __str__(self):
         return smart_str(self.name)
+
+    def save(self, *args, **kwargs):
+        """Reset stored data once post_save handlers have run."""
+        super().save(*args, **kwargs)
+        self.oldname = self.name
+        self.old_target_id = self.target_id
 
     def from_csv(self, user, row):
         """Create a domain alias from a CSV row

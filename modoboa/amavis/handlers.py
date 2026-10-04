@@ -14,6 +14,7 @@ from .lib import (
     delete_user,
     delete_user_and_policy,
     update_user_and_policy,
+    update_user_and_use_policy,
 )
 from .models import Policy, Users
 from .sql_connector import SQLconnector
@@ -35,16 +36,34 @@ def on_domain_deleted(sender, instance, **kwargs):
 
 
 @receiver(signals.post_save, sender=admin_models.DomainAlias)
-def on_domain_alias_created(sender, instance, **kwargs):
-    """Create user and use domain policy for domain alias."""
-    if not kwargs.get("created"):
+def on_domain_alias_modified(sender, instance, **kwargs):
+    """Create or update user and use domain policy for domain alias."""
+    if kwargs.get("created"):
+        create_user_and_use_policy(f"@{instance.name}", f"@{instance.target.name}")
         return
-    create_user_and_use_policy(f"@{instance.name}", f"@{instance.target.name}")
+    if (
+        instance.oldname == instance.name
+        and instance.old_target_id == instance.target_id
+    ):
+        return
+    if admin_models.Domain.objects.filter(name=instance.name).exists():
+        # Never override the record of an existing domain
+        return
+    if admin_models.Domain.objects.filter(name=instance.oldname).exists():
+        # Never take over the record of an existing domain
+        create_user_and_use_policy(f"@{instance.name}", f"@{instance.target.name}")
+        return
+    update_user_and_use_policy(
+        f"@{instance.oldname}", f"@{instance.name}", f"@{instance.target.name}"
+    )
 
 
 @receiver(signals.pre_delete, sender=admin_models.DomainAlias)
 def on_domain_alias_deleted(sender, instance, **kwargs):
     """Delete user for domain alias."""
+    if admin_models.Domain.objects.filter(name=instance.name).exists():
+        # Never remove the record of an existing domain
+        return
     delete_user(f"@{instance.name}")
 
 

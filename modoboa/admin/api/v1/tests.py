@@ -233,6 +233,43 @@ class DomainAliasAPITestCase(ModoAPITestCase):
         )
         self.assertEqual(response.status_code, 403)
 
+    def _authenticate_reseller(self):
+        """Authenticate as a reseller administrating test.com only."""
+        self.set_global_parameter("enable_admin_limits", False, app="limits")
+        reseller = core_factories.UserFactory(
+            username="reseller", groups=("Resellers",)
+        )
+        models.Domain.objects.get(name="test.com").add_admin(reseller)
+        token = Token.objects.create(user=reseller)
+        self.client.credentials(HTTP_AUTHORIZATION="Token " + token.key)
+
+    def test_post_name_of_existing_domain(self):
+        """Check a domain alias can't take the name of a domain."""
+        self._authenticate_reseller()
+        url = reverse("v1:domain_alias-list")
+        target = models.Domain.objects.get(name="test.com")
+        for name in ["test2.com", "TEST2.com"]:
+            response = self.client.post(
+                url, {"name": name, "target": target.pk}, format="json"
+            )
+            self.assertEqual(response.status_code, 400)
+            self.assertEqual(
+                response.json()["name"][0], "domain with this name already exists"
+            )
+        self.assertFalse(models.DomainAlias.objects.filter(name="test2.com").exists())
+        self.assertFalse(
+            models.Alias.objects.filter(address="@test2.com", internal=True).exists()
+        )
+
+    def test_post_invalid_name(self):
+        """Check domain alias name syntax."""
+        url = reverse("v1:domain_alias-list")
+        target = models.Domain.objects.get(name="test.com")
+        response = self.client.post(
+            url, {"name": "=evil.test", "target": target.pk}, format="json"
+        )
+        self.assertEqual(response.status_code, 400)
+
     def test_put(self):
         """Try to update a domain alias."""
         dalias = models.DomainAlias.objects.get(name="dalias1.com")
@@ -244,6 +281,47 @@ class DomainAliasAPITestCase(ModoAPITestCase):
         dalias.refresh_from_db()
         self.assertEqual(dalias.name, "dalias3.com")
         self.assertTrue(dalias.enabled)
+        self.assertFalse(models.Alias.objects.filter(address="@dalias1.com").exists())
+        alias = models.Alias.objects.get(address="@dalias3.com", internal=True)
+        self.assertEqual(
+            list(alias.aliasrecipient_set.values_list("address", flat=True)),
+            ["@test.com"],
+        )
+
+    def test_patch_target(self):
+        """Check internal alias follows target change."""
+        dalias = models.DomainAlias.objects.get(name="dalias1.com")
+        target = models.Domain.objects.get(name="test2.com")
+        url = reverse("v1:domain_alias-detail", args=[dalias.pk])
+        response = self.client.patch(url, {"target": target.pk}, format="json")
+        self.assertEqual(response.status_code, 200)
+        alias = models.Alias.objects.get(address="@dalias1.com", internal=True)
+        self.assertEqual(
+            list(alias.aliasrecipient_set.values_list("address", flat=True)),
+            ["@test2.com"],
+        )
+
+    def test_patch_name_of_existing_domain(self):
+        """Check a domain alias can't be renamed to the name of a domain."""
+        self._authenticate_reseller()
+        url = reverse("v1:domain_alias-list")
+        target = models.Domain.objects.get(name="test.com")
+        response = self.client.post(
+            url, {"name": "parked.example", "target": target.pk}, format="json"
+        )
+        self.assertEqual(response.status_code, 201)
+        pk = response.json()["pk"]
+        url = reverse("v1:domain_alias-detail", args=[pk])
+        response = self.client.patch(url, {"name": "test2.com"}, format="json")
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(models.DomainAlias.objects.get(pk=pk).name, "parked.example")
+
+        # Generated alias is removed with the domain alias
+        response = self.client.delete(url)
+        self.assertEqual(response.status_code, 204)
+        self.assertFalse(
+            models.Alias.objects.filter(address="@parked.example").exists()
+        )
 
     def test_delete(self):
         """Try to delete an existing domain alias."""
