@@ -47,6 +47,45 @@ class DomainTestCase(ModoAPITestCase):
         self.assertEqual(resp.status_code, 204)
         self.assertFalse(models.Users.objects.filter(email=name).exists())
 
+    def test_update_domain_alias(self):
+        """Check amavis records follow domain alias changes."""
+        domain = admin_factories.DomainFactory(name="domain.test")
+        domain2 = admin_factories.DomainFactory(name="domain2.test")
+        self.client.force_authenticate(self.admin)
+        url = reverse("v2:domain_alias-list")
+        data = {"name": "dalias.test", "target": domain.pk}
+        resp = self.client.post(url, data, format="json")
+        self.assertEqual(resp.status_code, 201)
+
+        url = reverse("v2:domain_alias-detail", args=[resp.json()["pk"]])
+        resp = self.client.patch(url, {"name": "dalias2.test"}, format="json")
+        self.assertEqual(resp.status_code, 200)
+        self.assertFalse(models.Users.objects.filter(email="@dalias.test").exists())
+        user = models.Users.objects.get(email="@dalias2.test")
+        self.assertEqual(user.policy.policy_name, "@domain.test")
+
+        resp = self.client.patch(url, {"target": domain2.pk}, format="json")
+        self.assertEqual(resp.status_code, 200)
+        user = models.Users.objects.get(email="@dalias2.test")
+        self.assertEqual(user.policy.policy_name, "@domain2.test")
+
+        resp = self.client.patch(url, {"name": "domain.test"}, format="json")
+        self.assertEqual(resp.status_code, 400)
+
+    def test_delete_domain_alias_colliding_with_domain(self):
+        """Check a colliding domain alias doesn't remove domain records."""
+        domain = admin_factories.DomainFactory(name="domain.test")
+        domain2 = admin_factories.DomainFactory(name="domain2.test")
+        # Simulate a collision created before validation was enforced
+        dalias = admin_factories.DomainAliasFactory(name="dalias.test", target=domain)
+        dalias.name = domain2.name
+        dalias.save()
+        self.assertTrue(models.Users.objects.filter(email="@domain2.test").exists())
+        self.assertTrue(models.Users.objects.filter(email="@dalias.test").exists())
+
+        dalias.delete()
+        self.assertTrue(models.Users.objects.filter(email="@domain2.test").exists())
+
     def test_rename_domain(self):
         """Test domain rename."""
         domain = admin_factories.DomainFactory(name="domain.test")

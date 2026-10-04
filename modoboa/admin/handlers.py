@@ -40,23 +40,47 @@ def update_domain_mxs_and_mailboxes(sender, instance, **kwargs):
         alias.save(update_fields=["address"])
 
 
+def get_domainalias_internal_aliases(name):
+    """Return the internal aliases generated for a domain alias name."""
+    return models.Alias.objects.filter(
+        address=f"@{name}", internal=True, domain__isnull=True
+    )
+
+
 @receiver(signals.post_save, sender=models.DomainAlias)
-def create_alias_for_domainalias(sender, instance, **kwargs):
-    """Create a dedicated alias for domain alias."""
-    if not kwargs.get("created"):
+def manage_alias_for_domainalias(sender, instance, **kwargs):
+    """Create or update the dedicated alias for domain alias."""
+    created = kwargs.get("created")
+    if (
+        not created
+        and instance.oldname == instance.name
+        and instance.old_target_id == instance.target_id
+    ):
         return
-    alias = models.Alias.objects.create(
-        address=f"@{instance.name}", enabled=True, internal=True
-    )
-    models.AliasRecipient.objects.create(
-        address=f"@{instance.target.name}", alias=alias
-    )
+    alias = None
+    if not created:
+        alias = get_domainalias_internal_aliases(instance.oldname).first()
+    # Remove any stale record left behind for the new name
+    stale = get_domainalias_internal_aliases(instance.name)
+    if alias is not None:
+        stale = stale.exclude(pk=alias.pk)
+    stale.delete()
+    target = f"@{instance.target.name}"
+    if alias is None:
+        alias = models.Alias.objects.create(
+            address=f"@{instance.name}", enabled=True, internal=True
+        )
+        models.AliasRecipient.objects.create(address=target, alias=alias)
+        return
+    alias.address = f"@{instance.name}"
+    alias.save(update_fields=["address"])
+    alias.aliasrecipient_set.update(address=target)
 
 
 @receiver(signals.post_delete, sender=models.DomainAlias)
 def remove_alias_for_domainalias(sender, instance, **kwargs):
     """Remove the alias associated to domain alias."""
-    models.Alias.objects.filter(address=f"@{instance.name}").delete()
+    get_domainalias_internal_aliases(instance.name).delete()
 
 
 @receiver(signals.post_save, sender=models.Mailbox)

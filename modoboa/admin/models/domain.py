@@ -339,6 +339,7 @@ class Domain(mixins.MessageLimitMixin, AdminObject):
         :param str row: a list containing domain's definition
         """
         from .. import lib
+        from .domain_alias import DomainAlias
 
         if len(row) < 5:
             raise BadRequest(_("Invalid line"))
@@ -351,8 +352,9 @@ class Domain(mixins.MessageLimitMixin, AdminObject):
             validators.validate_hostname(self.name)
         except ValidationError:
             raise BadRequest(_("{}: invalid domain name").format(self.name)) from None
-        if Domain.objects.filter(name=self.name).exists():
-            raise Conflict
+        for model in [Domain, DomainAlias]:
+            if model.objects.filter(name=self.name).exists():
+                raise Conflict
         domains_must_have_authorized_mx = param_tools.get_global_parameter(
             "domains_must_have_authorized_mx"
         )

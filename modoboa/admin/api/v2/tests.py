@@ -366,6 +366,22 @@ domainalias; domalias1.com; domain1.com; True
         self.assertFalse(dom.enabled)
         self.assertTrue(admin.is_owner(dom))
 
+    def test_domain_alias_rejects_domain_name(self):
+        """A domain alias can't take the name of an existing domain."""
+        target = models.Domain.objects.get(name="test.com")
+        url = reverse("v2:domain_alias-list")
+        resp = self.client.post(
+            url, {"name": "test2.com", "target": target.pk}, format="json"
+        )
+        self.assertEqual(resp.status_code, 400)
+        resp = self.client.post(
+            url, {"name": "parked.example", "target": target.pk}, format="json"
+        )
+        self.assertEqual(resp.status_code, 201)
+        url = reverse("v2:domain_alias-detail", args=[resp.json()["pk"]])
+        resp = self.client.patch(url, {"name": "test2.com"}, format="json")
+        self.assertEqual(resp.status_code, 400)
+
     def test_domains_import_rejects_invalid_name(self):
         """CSV import must enforce hostname validation like the API path."""
         f = ContentFile(
