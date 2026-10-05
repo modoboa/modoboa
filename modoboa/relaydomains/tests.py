@@ -273,6 +273,29 @@ class ImportTestCase(ModoAPITestCase):
         self.assertFalse(response.json()["status"])
         self.assertFalse(admin_models.Domain.objects.filter(name="relay2.com").exists())
 
+    def test_import_denied_without_permission(self):
+        """Only users allowed to create domains can import relay domains."""
+        admin_factories.populate_database()
+        url = reverse("v2:identities-import-from-csv")
+        for username in ["user@test.com", "admin@test.com"]:
+            self.authenticate_user(
+                admin_models.Mailbox.objects.get(
+                    address=username.split("@")[0], domain__name="test.com"
+                ).user
+            )
+            f = ContentFile(
+                "relaydomain;relay3.com;127.0.0.1;25;relay;True;True",
+                name="identities.csv",
+            )
+            response = self.client.post(url, {"sourcefile": f, "crypt_passwords": True})
+            self.assertEqual(response.status_code, 200)
+            self.assertFalse(response.json()["status"])
+            self.assertIn(
+                "You are not allowed to import relay domains",
+                response.json()["message"],
+            )
+        self.assertFalse(admin_models.Domain.objects.filter(name="relay3.com").exists())
+
 
 class LimitsTestCase(ModoAPITestCase, Operations):
 
@@ -304,6 +327,21 @@ class LimitsTestCase(ModoAPITestCase, Operations):
         response = self.client.post(url, {"keep_folder": False}, format="json")
         self.assertEqual(response.status_code, 204)
         self._check_limit("domains", 1, 2)
+
+    def test_relay_domains_import_limit(self):
+        self._create_relay_domain("relaydomain1.tld", quota=1, default_mailbox_quota=1)
+        self._create_relay_domain("relaydomain2.tld", quota=1, default_mailbox_quota=1)
+        f = ContentFile(
+            "relaydomain;relaydomain3.tld;127.0.0.1;25;relay;True;True",
+            name="domains.csv",
+        )
+        response = self.client.post(
+            reverse("v2:domain-import-from-csv"), {"sourcefile": f}
+        )
+        self.assertFalse(response.json()["status"])
+        self.assertFalse(
+            admin_models.Domain.objects.filter(name="relaydomain3.tld").exists()
+        )
 
 
 class MapFilesTestCase(MapFilesTestCaseMixin, TestCase):
