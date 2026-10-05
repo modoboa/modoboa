@@ -76,12 +76,15 @@ class DomainTestCase(ModoAPITestCase):
         """Check a colliding domain alias doesn't remove domain records."""
         domain = admin_factories.DomainFactory(name="domain.test")
         domain2 = admin_factories.DomainFactory(name="domain2.test")
-        # Simulate a collision created before validation was enforced
+        # Simulate a collision created by a previous version
         dalias = admin_factories.DomainAliasFactory(name="dalias.test", target=domain)
-        dalias.name = domain2.name
+        admin_models.DomainAlias.objects.filter(pk=dalias.pk).update(name=domain2.name)
+        dalias = admin_models.DomainAlias.objects.get(pk=dalias.pk)
+
+        dalias.target = admin_factories.DomainFactory(name="domain3.test")
         dalias.save()
-        self.assertTrue(models.Users.objects.filter(email="@domain2.test").exists())
-        self.assertTrue(models.Users.objects.filter(email="@dalias.test").exists())
+        user = models.Users.objects.get(email="@domain2.test")
+        self.assertEqual(user.policy.policy_name, "@domain2.test")
 
         dalias.delete()
         self.assertTrue(models.Users.objects.filter(email="@domain2.test").exists())

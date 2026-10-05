@@ -1,10 +1,12 @@
 """Internal library."""
 
+from django.core.exceptions import ValidationError
 from django.utils.translation import gettext as _
 
 from modoboa.admin import models as admin_models
 from modoboa.core import signals as core_signals
-from modoboa.lib.exceptions import BadRequest, PermDeniedException
+from modoboa.lib import validators
+from modoboa.lib.exceptions import BadRequest, Conflict, PermDeniedException
 from modoboa.transport import backends as tr_backends, models as tr_models
 
 
@@ -17,6 +19,14 @@ def import_relaydomain(user, row, formopts):
     )
     if len(row) != 7:
         raise BadRequest(_("Invalid line"))
+    name = row[1].strip().lower()
+    try:
+        validators.validate_hostname(name)
+    except ValidationError:
+        raise BadRequest(_("{}: invalid domain name").format(name)) from None
+    for model in [admin_models.Domain, admin_models.DomainAlias]:
+        if model.objects.filter(name=name).exists():
+            raise Conflict
     try:
         target_port = int(row[3].strip())
     except ValueError:
@@ -37,7 +47,7 @@ def import_relaydomain(user, row, formopts):
             )
         )
     domain = admin_models.Domain(
-        name=row[1].strip(),
+        name=name,
         type="relaydomain",
         quota=0,
         enabled=(row[5].strip().lower() in ["true", "1", "yes", "y"]),

@@ -14,4 +14,4 @@ class AdminConfig(AppConfig):
     def ready(self):
         load_admin_settings()
 
-        from . import handlers  # NOQA:F401
+        from . import checks, handlers  # NOQA:F401
