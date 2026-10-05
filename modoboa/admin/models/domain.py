@@ -6,7 +6,7 @@ from reversion import revisions as reversion
 
 from django.core.exceptions import ValidationError
 from django.core.management import call_command
-from django.db import models
+from django.db import models, transaction
 from django.utils import timezone
 from django.utils.encoding import force_str, smart_str
 from django.utils.functional import cached_property
@@ -15,7 +15,7 @@ from django.utils.translation import gettext as _, gettext_lazy
 import django_rq
 
 from modoboa.core import signals as core_signals
-from modoboa.core.models import User
+from modoboa.core.models import LocalConfig, User
 from modoboa.lib import validators
 from modoboa.lib.exceptions import BadRequest, Conflict
 from modoboa.parameters import tools as param_tools
@@ -23,6 +23,32 @@ from modoboa.parameters import tools as param_tools
 from .. import constants
 from .base import AdminObject
 from . import mixins
+
+
+def check_domain_name_is_available(name, model):
+    """Check that a name is not used by another kind of domain object.
+
+    Domains and domain aliases share the same namespace but are stored
+    in different tables. A lock is taken to serialize concurrent
+    creations and renames so a collision can't be introduced between
+    the check and the write.
+
+    Must be called inside a transaction.
+
+    :param str name: the name to check
+    :param model: model of the object being saved
+    """
+    from .domain_alias import DomainAlias
+
+    LocalConfig.objects.select_for_update().first()
+    for other in [Domain, DomainAlias]:
+        if other is model:
+            # Covered by the model's unique constraint
+            continue
+        if other.objects.select_for_update().filter(name=name).exists():
+            raise Conflict(
+                _("A domain or domain alias named {} already exists").format(name)
+            )
 
 
 class Domain(mixins.MessageLimitMixin, AdminObject):
@@ -296,7 +322,10 @@ class Domain(mixins.MessageLimitMixin, AdminObject):
         if self.old_dkim_key_length != self.dkim_key_length:
             self.dkim_public_key = ""
             self.dkim_private_key_path = ""
-        super().save(*args, **kwargs)
+        with transaction.atomic():
+            if self.pk is None or self.oldname != self.name:
+                check_domain_name_is_available(self.name, Domain)
+            super().save(*args, **kwargs)
 
     def delete(self, fromuser, keepdir=False):
         """Custom delete method."""

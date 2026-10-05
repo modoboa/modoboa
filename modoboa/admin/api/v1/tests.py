@@ -242,6 +242,7 @@ class DomainAliasAPITestCase(ModoAPITestCase):
         models.Domain.objects.get(name="test.com").add_admin(reseller)
         token = Token.objects.create(user=reseller)
         self.client.credentials(HTTP_AUTHORIZATION="Token " + token.key)
+        return reseller
 
     def test_post_name_of_existing_domain(self):
         """Check a domain alias can't take the name of a domain."""
@@ -321,6 +322,40 @@ class DomainAliasAPITestCase(ModoAPITestCase):
         self.assertEqual(response.status_code, 204)
         self.assertFalse(
             models.Alias.objects.filter(address="@parked.example").exists()
+        )
+
+    def test_update_legacy_collision(self):
+        """Check a collision created by a previous version can't be used."""
+        reseller = self._authenticate_reseller()
+        new_target = factories.DomainFactory(name="new.example")
+        new_target.add_admin(reseller)
+        url = reverse("v1:domain_alias-list")
+        target = models.Domain.objects.get(name="test.com")
+        response = self.client.post(
+            url, {"name": "parked.example", "target": target.pk}, format="json"
+        )
+        self.assertEqual(response.status_code, 201)
+        pk = response.json()["pk"]
+        # Simulate the state left by the old rename path
+        models.DomainAlias.objects.filter(pk=pk).update(name="test2.com")
+
+        url = reverse("v1:domain_alias-detail", args=[pk])
+        for data in [{"target": new_target.pk}, {"enabled": False}]:
+            response = self.client.patch(url, data, format="json")
+            self.assertEqual(response.status_code, 400)
+        response = self.client.put(
+            url, {"name": "test2.com", "target": new_target.pk}, format="json"
+        )
+        self.assertEqual(response.status_code, 400)
+        self.assertFalse(models.Alias.objects.filter(address="@test2.com").exists())
+
+        # Renaming away is allowed
+        response = self.client.patch(url, {"name": "other.example"}, format="json")
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(
+            models.Alias.objects.filter(
+                address="@other.example", internal=True
+            ).exists()
         )
 
     def test_delete(self):

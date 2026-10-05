@@ -76,6 +76,27 @@ class RelayDomainAPITestCase(DataMixin, ModoAPITestCase):
             ),
         )
 
+    def test_create_name_constraints(self):
+        """Check name validation on creation."""
+        admin_factories.DomainAliasFactory(name="dalias.test", target=self.domain1)
+        url = reverse("api:relaydomain-list")
+        settings = {"relay_target_host": "1.2.3.4", "relay_target_port": 25}
+        for name, error in [
+            ("dalias.test", "domain alias with this name already exists"),
+            ("DALIAS.test", "domain alias with this name already exists"),
+            ("=evil.test", "Enter a valid domain name"),
+        ]:
+            data = {
+                "name": name,
+                "transport": {"service": "relay", "_settings": json.dumps(settings)},
+            }
+            response = self.client.post(url, data, format="json")
+            self.assertEqual(response.status_code, 400)
+            self.assertEqual(response.data["name"], [error])
+        self.assertFalse(
+            admin_models.Domain.objects.filter(name__iexact="dalias.test").exists()
+        )
+
     def test_update(self):
         """Test update service."""
         url = reverse("api:relaydomain-detail", args=[self.domain1.pk])

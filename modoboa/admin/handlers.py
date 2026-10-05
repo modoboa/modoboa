@@ -57,6 +57,9 @@ def manage_alias_for_domainalias(sender, instance, **kwargs):
         and instance.old_target_id == instance.target_id
     ):
         return
+    if models.Domain.objects.filter(name=instance.name).exists():
+        # Never turn an existing domain into an alias
+        return
     alias = None
     if not created:
         alias = get_domainalias_internal_aliases(instance.oldname).first()

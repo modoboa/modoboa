@@ -3,14 +3,14 @@
 from reversion import revisions as reversion
 
 from django.contrib.contenttypes.fields import GenericRelation
-from django.db import models
+from django.db import models, transaction
 from django.utils.encoding import smart_str
 from django.utils.translation import gettext as _, gettext_lazy
 
 from modoboa.core import models as core_models, signals as core_signals
 from modoboa.lib.exceptions import BadRequest, Conflict, PermDeniedException
 from .base import AdminObject
-from .domain import Domain
+from .domain import Domain, check_domain_name_is_available
 
 
 class DomainAliasManager(models.Manager):
@@ -64,8 +64,11 @@ class DomainAlias(AdminObject):
         return smart_str(self.name)
 
     def save(self, *args, **kwargs):
-        """Reset stored data once post_save handlers have run."""
-        super().save(*args, **kwargs)
+        """Check name and reset stored data once post_save handlers have run."""
+        with transaction.atomic():
+            if self.pk is None or self.oldname != self.name:
+                check_domain_name_is_available(self.name, DomainAlias)
+            super().save(*args, **kwargs)
         self.oldname = self.name
         self.old_target_id = self.target_id
 
