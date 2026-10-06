@@ -218,7 +218,7 @@ class UserMailboxViewSet(ImapConnectionMixin, viewsets.GenericViewSet):
         """List or update IMAP folder subscriptions for the current user."""
         if request.method == "GET":
             with lib.get_imapconnector(request) as imapc:
-                mboxes = imapc.get_subscription_tree()
+                mboxes = imapc.get_subscriptions()
                 serializer = self.get_serializer(
                     {"mailboxes": mboxes, "hdelimiter": imapc.hdelimiter}
                 )
