@@ -16,15 +16,13 @@ class EmailSignature:
         if content and len(content):
             getattr(self, f"_format_sig_{dformat}")(content)
 
+    # "-- " lets clients recognize (and hide) signatures (RFC 3676)
+
     def _format_sig_plain(self, content):
-        self._sig = f"""
----
-{html2plaintext(content)}"""
+        self._sig = f"-- \n{html2plaintext(content)}"
 
     def _format_sig_html(self, content):
-        content = f"---<br>{content}"
-        self._sig = content
-        return
+        self._sig = f"<p>-- </p>{content}"
 
     def __str__(self):
         return self._sig

@@ -298,6 +298,16 @@ USER_PREFERENCES_STRUCT = collections.OrderedDict(
                                 "widget": "HTMLField",
                             },
                         ),
+                        (
+                            "signature_position",
+                            {
+                                "label": gettext_lazy("Signature position"),
+                                "help_text": gettext_lazy(
+                                    "Where the signature goes in replies and "
+                                    "forwards"
+                                ),
+                            },
+                        ),
                     ]
                 ),
             },
