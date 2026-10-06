@@ -315,16 +315,36 @@ class Domain(mixins.MessageLimitMixin, AdminObject):
             ungrant_access_to_object(al, account)
 
     def save(self, *args, **kwargs):
-        """Store current data if domain is renamed."""
-        # We check that the instance exists to use m2m relationship
-        if self.pk and self.oldname != self.name:
-            self.old_mail_homes = {mb.id: mb.mail_home for mb in self.mailbox_set.all()}
-        if self.old_dkim_key_length != self.dkim_key_length:
-            self.dkim_public_key = ""
-            self.dkim_private_key_path = ""
+        """Check name and store current data if domain is renamed.
+
+        The previous name is read from the database since this instance
+        may be stale.
+        """
         with transaction.atomic():
-            if self.pk is None or self.oldname != self.name:
+            if self.pk is not None:
+                persisted_name = (
+                    Domain.objects.select_for_update()
+                    .filter(pk=self.pk)
+                    .values_list("name", flat=True)
+                    .first()
+                )
+                if persisted_name is not None:
+                    self.oldname = persisted_name
+            update_fields = kwargs.get("update_fields")
+            if update_fields is not None and "name" not in update_fields:
+                self.oldname = self.name
+            renamed = self.oldname != self.name
+            if self.pk is None or renamed:
                 check_domain_name_is_available(self.name, Domain)
+            self.old_mail_homes = None
+            # We check that the instance exists to use m2m relationship
+            if self.pk and renamed:
+                self.old_mail_homes = {
+                    mb.id: mb.mail_home for mb in self.mailbox_set.all()
+                }
+            if self.old_dkim_key_length != self.dkim_key_length:
+                self.dkim_public_key = ""
+                self.dkim_private_key_path = ""
             super().save(*args, **kwargs)
 
     def delete(self, fromuser, keepdir=False):

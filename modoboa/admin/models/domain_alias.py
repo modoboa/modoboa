@@ -64,8 +64,27 @@ class DomainAlias(AdminObject):
         return smart_str(self.name)
 
     def save(self, *args, **kwargs):
-        """Check name and reset stored data once post_save handlers have run."""
+        """Check name and keep track of the persisted state.
+
+        Previous values, used by post_save handlers, are read from the
+        database since this instance may be stale.
+        """
         with transaction.atomic():
+            if self.pk is not None:
+                persisted = (
+                    DomainAlias.objects.select_for_update()
+                    .filter(pk=self.pk)
+                    .values_list("name", "target_id")
+                    .first()
+                )
+                if persisted is not None:
+                    self.oldname, self.old_target_id = persisted
+            update_fields = kwargs.get("update_fields")
+            if update_fields is not None:
+                if "name" not in update_fields:
+                    self.oldname = self.name
+                if not {"target", "target_id"} & set(update_fields):
+                    self.old_target_id = self.target_id
             if self.pk is None or self.oldname != self.name:
                 check_domain_name_is_available(self.name, DomainAlias)
             super().save(*args, **kwargs)

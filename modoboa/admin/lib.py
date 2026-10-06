@@ -28,7 +28,7 @@ from modoboa.lib.exceptions import Conflict, ModoboaException, PermDeniedExcepti
 from modoboa.parameters import tools as param_tools
 
 from . import signals
-from .models import Alias, Domain, DomainAlias
+from .models import Alias, AliasRecipient, Domain, DomainAlias
 
 
 def get_identities(
@@ -118,6 +118,47 @@ def check_if_domain_exists(name, dtypes):
         if dtype.objects.filter(name=name).exists():
             return label
     return None
+
+
+def get_domainalias_internal_aliases(name):
+    """Return the internal aliases generated for a domain alias name."""
+    return Alias.objects.filter(address=f"@{name}", internal=True, domain__isnull=True)
+
+
+def create_domainalias_internal_alias(name, target_name):
+    """Create the internal alias routing a domain alias to its target."""
+    alias = Alias.objects.create(address=f"@{name}", enabled=True, internal=True)
+    AliasRecipient.objects.create(address=f"@{target_name}", alias=alias)
+    return alias
+
+
+def find_domainalias_inconsistencies():
+    """Find inconsistencies between domains, domain aliases and their routes.
+
+    They can have been introduced by previous versions.
+
+    :return: a tuple (collisions, orphans, wrong_routes): names of domain
+             aliases also used by a domain, names of internal aliases
+             matching no valid domain alias, and a dict mapping valid
+             domain alias names whose internal alias is missing or wrong to
+             their target name
+    """
+    domain_names = set(Domain.objects.values_list("name", flat=True))
+    targets = dict(DomainAlias.objects.values_list("name", "target__name"))
+    routes = {}
+    qset = Alias.objects.filter(
+        address__startswith="@", internal=True, domain__isnull=True
+    ).values_list("address", "aliasrecipient__address")
+    for address, recipient in qset:
+        routes.setdefault(address[1:], set()).add(recipient)
+    collisions = domain_names & set(targets)
+    orphans = {name for name in routes if name not in targets or name in domain_names}
+    wrong_routes = {
+        name: target
+        for name, target in targets.items()
+        if name not in domain_names and routes.get(name) != {f"@{target}"}
+    }
+    return collisions, orphans, wrong_routes
 
 
 def import_domain(user, row, formopts):

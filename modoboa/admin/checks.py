@@ -4,6 +4,8 @@ from django.core.checks import Tags, Warning, register
 from django.db.utils import OperationalError, ProgrammingError
 from django.utils.translation import gettext as _
 
+REPAIR_HINT = _("Run `python manage.py modo repair --dry-run` for details.")
+
 
 @register(Tags.database)
 def check_domain_namespace(app_configs, databases=None, **kwargs):
@@ -15,22 +17,14 @@ def check_domain_namespace(app_configs, databases=None, **kwargs):
     """
     if not databases or "default" not in databases:
         return []
-    from .models import Alias, Domain, DomainAlias
+    from .lib import find_domainalias_inconsistencies
 
     try:
-        domain_names = set(Domain.objects.values_list("name", flat=True))
-        domain_alias_names = set(DomainAlias.objects.values_list("name", flat=True))
-        generated_names = {
-            address[1:]
-            for address in Alias.objects.filter(
-                address__startswith="@", internal=True, domain__isnull=True
-            ).values_list("address", flat=True)
-        }
+        collisions, orphans, wrong_routes = find_domainalias_inconsistencies()
     except (ProgrammingError, OperationalError):
         # This is probably a fresh install...
         return []
     msgs = []
-    collisions = domain_names & domain_alias_names
     if collisions:
         msgs.append(
             Warning(
@@ -44,19 +38,26 @@ def check_domain_namespace(app_configs, databases=None, **kwargs):
                 id="modoboa.admin.W001",
             )
         )
-    stale = (generated_names - domain_alias_names) | (generated_names & domain_names)
-    if stale:
+    if orphans:
         msgs.append(
             Warning(
                 _(
                     "Internal aliases generated for domain aliases are orphaned "
                     "or use the name of a domain: {}"
-                ).format(", ".join(f"@{name}" for name in sorted(stale))),
-                hint=_(
-                    "Check these internal aliases and their recipients, then "
-                    "delete the ones that do not match a domain alias."
-                ),
+                ).format(", ".join(f"@{name}" for name in sorted(orphans))),
+                hint=REPAIR_HINT,
                 id="modoboa.admin.W002",
+            )
+        )
+    if wrong_routes:
+        msgs.append(
+            Warning(
+                _(
+                    "Internal aliases generated for domain aliases are missing "
+                    "or do not point to their target: {}"
+                ).format(", ".join(f"@{name}" for name in sorted(wrong_routes))),
+                hint=REPAIR_HINT,
+                id="modoboa.admin.W003",
             )
         )
     return msgs

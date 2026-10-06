@@ -1,8 +1,10 @@
+from django.core import management
+
 from modoboa.lib.exceptions import Conflict
 from modoboa.lib.tests import ModoTestCase
 from .. import factories
 from ..checks import check_domain_namespace
-from ..handlers import get_domainalias_internal_aliases
+from ..lib import get_domainalias_internal_aliases
 from ..models import Alias, AliasRecipient, Domain, DomainAlias
 
 
@@ -79,6 +81,44 @@ class DomainAliasTestCase(ModoTestCase):
         with self.assertRaises(Conflict):
             dom.save()
 
+    def test_stale_domain_alias_save(self):
+        """Check a stale instance can't restore a name without check."""
+        domal = factories.DomainAliasFactory(name="domalias.net", target=self.dom)
+        stale = DomainAlias.objects.get(pk=domal.pk)
+        domal.name = "domalias.org"
+        domal.save()
+        Domain(name="domalias.net", quota=0, default_mailbox_quota=0).save()
+        stale.enabled = False
+        with self.assertRaises(Conflict):
+            stale.save()
+        # Saving other fields only is allowed
+        stale.save(update_fields=["enabled"])
+        domal.refresh_from_db()
+        self.assertEqual(domal.name, "domalias.org")
+        self.assertFalse(domal.enabled)
+        self.assertEqual(self._get_recipients("@domalias.org"), ["@test.com"])
+
+    def test_stale_domain_save(self):
+        """Check a stale instance can't restore a name without check."""
+        dom = Domain.objects.get(name="test2.com")
+        stale = Domain.objects.get(pk=dom.pk)
+        dom.name = "renamed.example"
+        dom.save()
+        factories.DomainAliasFactory(name="test2.com", target=self.dom)
+        stale.enabled = False
+        with self.assertRaises(Conflict):
+            stale.save()
+        dom.refresh_from_db()
+        self.assertEqual(dom.name, "renamed.example")
+
+    def test_target_rename(self):
+        """Check domain aliases follow their renamed target."""
+        factories.DomainAliasFactory(name="domalias.net", target=self.dom)
+        dom = Domain.objects.get(pk=self.dom.pk)
+        dom.name = "renamed.example"
+        dom.save()
+        self.assertEqual(self._get_recipients("@domalias.net"), ["@renamed.example"])
+
     def test_legacy_collision_target_update(self):
         """Check a target change does not make a domain an alias."""
         domal = self._create_legacy_collision()
@@ -114,3 +154,34 @@ class DomainAliasTestCase(ModoTestCase):
         )
         self.assertIn("test2.com", msgs[0].msg)
         self.assertIn("@parked.example", msgs[1].msg)
+
+    def test_namespace_check_wrong_routes(self):
+        """Check routes not matching their target are reported."""
+        factories.DomainAliasFactory(name="domalias.net", target=self.dom)
+        factories.DomainAliasFactory(name="domalias.org", target=self.dom)
+        # State left by a target rename with a previous version
+        get_domainalias_internal_aliases(
+            "domalias.net"
+        ).first().aliasrecipient_set.update(address="@old.example")
+        get_domainalias_internal_aliases("domalias.org").delete()
+        msgs = check_domain_namespace(None, databases=["default"])
+        self.assertEqual([msg.id for msg in msgs], ["modoboa.admin.W003"])
+        self.assertIn("@domalias.net, @domalias.org", msgs[0].msg)
+
+    def test_repair(self):
+        """Check the repair command fixes routes but not collisions."""
+        factories.DomainAliasFactory(name="domalias.net", target=self.dom)
+        get_domainalias_internal_aliases(
+            "domalias.net"
+        ).first().aliasrecipient_set.update(address="@old.example")
+        self._create_legacy_collision(direct_create=True)
+        management.call_command("modo", "repair", "--quiet", "--dry-run")
+        self.assertEqual(self._get_recipients("@domalias.net"), ["@old.example"])
+        self.assertTrue(get_domainalias_internal_aliases("test2.com").exists())
+
+        management.call_command("modo", "repair", "--quiet")
+        self.assertEqual(self._get_recipients("@domalias.net"), ["@test.com"])
+        self.assertFalse(get_domainalias_internal_aliases("test2.com").exists())
+        self.assertTrue(DomainAlias.objects.filter(name="test2.com").exists())
+        msgs = check_domain_namespace(None, databases=["default"])
+        self.assertEqual([msg.id for msg in msgs], ["modoboa.admin.W001"])
