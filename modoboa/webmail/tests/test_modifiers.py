@@ -1,6 +1,10 @@
 """Tests for the body of replies and forwards, as loaded into the editor."""
 
+from unittest import mock
+
 from django.urls import reverse
+
+from modoboa.webmail.lib.imapemail import ForwardModifier, ReplyModifier
 
 from modoboa.webmail.mocks import IMAP4Mock
 from modoboa.webmail.tests.test_viewsets import WebmailTestCase
@@ -15,14 +19,28 @@ MESSAGE_HEADERS = (
 PLAIN_MESSAGE = 70
 HTML_MESSAGE = 71
 PLAIN_BODY = b'L\'equipe <dev> & "co"\nSecond line'
-HTML_BODY = b"<p>Hello <b>world</b> &amp; co</p><p>Bye</p>"
+HTML_BODY = (
+    b'<p>Hello <b>world</b> &amp; <a href="https://example.test/doc">co</a></p>'
+    b"<p>Bye</p>"
+)
+ATTRIBUTION = "On Sept. 15, 2026, 8 a.m., John Doe wrote:"
 BODYSTRUCTURES = {
     PLAIN_MESSAGE: b'BODYSTRUCTURE ("text" "plain" ("charset" "utf-8") NIL NIL "7bit"'
     b" %d 2 NIL NIL NIL NIL)" % len(PLAIN_BODY),
     HTML_MESSAGE: b'BODYSTRUCTURE ("text" "html" ("charset" "utf-8") NIL NIL "7bit"'
     b" %d 1 NIL NIL NIL NIL)" % len(HTML_BODY),
 }
-BODIES = {PLAIN_MESSAGE: PLAIN_BODY, HTML_MESSAGE: HTML_BODY}
+FLOWED_MESSAGE = 72
+FLOWED_BODY = b"A long line cut \nin two.\n> Quoted text \n> cut too."
+BODYSTRUCTURES[FLOWED_MESSAGE] = (
+    b'BODYSTRUCTURE ("text" "plain" ("charset" "utf-8" "format" "flowed") NIL NIL'
+    b' "7bit" %d 3 NIL NIL NIL NIL)' % len(FLOWED_BODY)
+)
+BODIES = {
+    PLAIN_MESSAGE: PLAIN_BODY,
+    HTML_MESSAGE: HTML_BODY,
+    FLOWED_MESSAGE: FLOWED_BODY,
+}
 
 
 class MessagesMock(IMAP4Mock):
@@ -94,7 +112,7 @@ class ModifierContentTestCase(WebmailTestCase):
         content = self._content(PLAIN_MESSAGE, "reply", "plain")
         self.assertEqual(
             content["body"],
-            '>John Doe wrote:\n>L\'equipe <dev> & "co"\n>Second line',
+            f'{ATTRIBUTION}\n> L\'equipe <dev> & "co"\n> Second line',
         )
         self.assertEqual(content["body_format"], "plain")
 
@@ -115,6 +133,86 @@ class ModifierContentTestCase(WebmailTestCase):
         """Without text part, the reply quotes the text of the HTML one."""
         content = self._content(HTML_MESSAGE, "reply", "plain")
         self.assertEqual(
-            content["body"], ">John Doe wrote:\n>Hello world & co\n>\n>Bye"
+            content["body"],
+            f"{ATTRIBUTION}\n> Hello world & co <https://example.test/doc>\n>\n> Bye",
         )
         self.assertEqual(content["body_format"], "plain")
+
+    def test_html_reply_is_a_blockquote(self):
+        content = self._content(HTML_MESSAGE, "reply", "html")
+        self.assertTrue(
+            content["body"].startswith(f'<p>{ATTRIBUTION}</p><blockquote type="cite">')
+        )
+        self.assertTrue(content["body"].endswith("</blockquote>"))
+        # Links are only blocked to protect the reader
+        self.assertIn('href="https://example.test/doc"', content["body"])
+
+    def test_html_reply_to_plain_message(self):
+        content = self._content(PLAIN_MESSAGE, "reply", "html")
+        self.assertIn(
+            '<blockquote type="cite">L&#x27;equipe &lt;dev&gt;', content["body"]
+        )
+
+    def test_quoted_lines_get_one_more_level(self):
+        modifier = ReplyModifier.__new__(ReplyModifier)
+        # ImapEmail.__del__ closes a connection: there is none here
+        modifier.imapc = mock.MagicMock()
+        modifier.dformat = modifier.mformat = "plain"
+        modifier.body = "Answer\n\n> Question\n>> Older"
+        modifier._modify_plain()
+        self.assertEqual(modifier.body, "> Answer\n>\n>> Question\n>>> Older")
+
+    def test_forward_header(self):
+        content = self._content(PLAIN_MESSAGE, "forward", "plain")
+        self.assertTrue(content["body"].startswith("----- Original message -----\n"))
+        self.assertIn("Date: Sept. 15, 2026, 8 a.m.\n", content["body"])
+        self.assertEqual(content["subject"], "Fwd: Question")
+
+    def test_embedded_images_only_in_html(self):
+        """Images are shown in the HTML editor, useless in plain text."""
+        modifier = ReplyModifier.__new__(ReplyModifier)
+        modifier.imapc = mock.MagicMock()
+        modifier.dformat = "html"
+        self.assertTrue(modifier.embed_inlines)
+        modifier.dformat = "plain"
+        self.assertFalse(modifier.embed_inlines)
+
+    def test_reply_subject_prefixes(self):
+        modifier = ReplyModifier.__new__(ReplyModifier)
+        modifier.imapc = mock.MagicMock()
+        for subject, expected in (
+            ("Question", "Re: Question"),
+            ("Re: Question", "Re: Question"),
+            ("RE : Question", "RE : Question"),
+            ("AW: Frage", "AW: Frage"),
+            ("Re[2]: Question", "Re[2]: Question"),
+            ("Réf. : Dossier", "Réf. : Dossier"),
+            ("Fwd: Question", "Re: Fwd: Question"),
+            ("Return policy", "Re: Return policy"),
+            ("", ""),
+        ):
+            with self.subTest(subject=subject):
+                modifier.Subject = subject
+                self.assertEqual(modifier.subject, expected)
+
+    def test_forward_subject_prefixes(self):
+        modifier = ForwardModifier.__new__(ForwardModifier)
+        modifier.imapc = mock.MagicMock()
+        for subject, expected in (
+            ("Question", "Fwd: Question"),
+            ("Fwd: Question", "Fwd: Question"),
+            ("TR: Question", "TR: Question"),
+            ("WG: Frage", "WG: Frage"),
+            ("Re: Question", "Fwd: Re: Question"),
+            ("Travaux", "Fwd: Travaux"),
+        ):
+            with self.subTest(subject=subject):
+                modifier.Subject = subject
+                self.assertEqual(modifier.subject, expected)
+
+    def test_flowed_message_is_joined(self):
+        content = self._content(FLOWED_MESSAGE, "reply", "plain")
+        self.assertEqual(
+            content["body"],
+            f"{ATTRIBUTION}\n> A long line cut in two.\n>> Quoted text cut too.",
+        )
