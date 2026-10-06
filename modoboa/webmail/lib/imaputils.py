@@ -1227,13 +1227,14 @@ class IMAPconnector:
         self._mailbox_command("delete", self._encode_mbox_name(name))
         return True
 
-    def get_subscription_tree(self) -> list:
-        """Return the full mailbox hierarchy with subscription status.
+    def get_subscriptions(self) -> list[dict]:
+        """Return every mailbox with its subscription status.
 
-        Contrary to :meth:`getmboxes`, every folder is returned (regardless
-        of subscription) as a nested tree. Each node is a dict with the
-        following keys: ``name`` (full path), ``label`` (last path
-        component), ``subscribed`` (bool) and ``sub`` (list of children).
+        Contrary to :meth:`getmboxes`, every folder is returned
+        (regardless of subscription), as a flat list sorted
+        hierarchically: a folder comes right before its children. Each
+        item is a dict with the following keys: ``name`` (full path) and
+        ``subscribed`` (bool).
         """
         resp = self._cmd("LIST", '""', '"*"', "RETURN", "(SUBSCRIBED)")
         entries = []
@@ -1242,27 +1243,11 @@ class IMAPconnector:
             if parsed is None:
                 continue
             flags, name = parsed
-            entries.append((name, "\\Subscribed" in flags))
-
-        tree: list = []
-        index: dict = {}
-        for name, subscribed in sorted(entries, key=lambda e: e[0]):
-            parts = name.split(self.hdelimiter)
-            label = parts[-1]
-            parent_path = self.hdelimiter.join(parts[:-1])
-            node = {
-                "name": name,
-                "label": label,
-                "subscribed": subscribed,
-                "sub": [],
-            }
-            index[name] = node
-            parent = index.get(parent_path)
-            if parent is not None:
-                parent["sub"].append(node)
-            else:
-                tree.append(node)
-        return tree
+            entries.append({"name": name, "subscribed": "\\Subscribed" in flags})
+        # Sorting on the path components keeps children right after their
+        # parent ("A/B" would come after "A-B" with a plain string sort).
+        entries.sort(key=lambda e: e["name"].split(self.hdelimiter))
+        return entries
 
     def subscribe_folder(self, name: str) -> bool:
         self._mailbox_command("subscribe", self._encode_mbox_name(name))

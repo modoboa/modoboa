@@ -88,18 +88,13 @@ class UserMailboxSerializer(serializers.Serializer):
         return None
 
 
-class SubscriptionNodeSerializer(serializers.Serializer):
+class SubscriptionSerializer(serializers.Serializer):
     name = serializers.CharField()
-    label = serializers.CharField()
     subscribed = serializers.BooleanField()
-    sub = serializers.SerializerMethodField()
-
-    def get_sub(self, obj):
-        return SubscriptionNodeSerializer(obj.get("sub", []), many=True).data
 
 
 class SubscriptionsSerializer(serializers.Serializer):
-    mailboxes = SubscriptionNodeSerializer(many=True)
+    mailboxes = SubscriptionSerializer(many=True)
     hdelimiter = serializers.CharField()
 
 

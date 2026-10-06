@@ -24,6 +24,7 @@ class IMAP4Mock:
                 self.untagged_responses["LIST"] = [
                     b'(\\Subscribed) "/" "INBOX"',
                     b'(\\Subscribed \\HasChildren) "/" "Test"',
+                    b'() "/" "Test-Other"',
                     b'() "/" "Test/Sub"',
                 ]
             else:
