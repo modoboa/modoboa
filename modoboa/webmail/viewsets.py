@@ -16,6 +16,7 @@ from modoboa.parameters import tools as param_tools
 from modoboa.webmail import constants, lib, models, serializers
 from modoboa.webmail.exceptions import ImapError, WebmailInternalError
 from modoboa.webmail.lib import attachments
+from modoboa.webmail.lib.utils import convert_body
 from modoboa.webmail.lib.imaputils import UID_RE, PARTNUM_RE
 from modoboa.webmail.lib.sendmail import send_mail, schedule_email
 
@@ -455,10 +456,14 @@ class UserEmailViewSet(ImapConnectionMixin, viewsets.GenericViewSet):
         if not mailbox or not mailid:
             raise Http404
         _validate_mailid(mailid)
-        dformat = request.user.parameters.get_value("displaymode")
+        context = self.request.GET.get("context")
+        if context in ["reply", "forward"]:
+            # Loaded into the editor: in the format it starts with
+            dformat = request.user.parameters.get_value("editor")
+        else:
+            dformat = request.user.parameters.get_value("displaymode")
         if "dformat" in request.GET:
             dformat = request.GET.get("dformat")
-        context = self.request.GET.get("context")
         if context == "edit":
             # A draft is loaded in its own format unless one is requested
             dformat = request.GET.get("dformat")
@@ -551,6 +556,8 @@ class ComposeSessionViewSet(ImapConnectionMixin, viewsets.GenericViewSet):
             return serializers.SaveEmailSerializer
         if self.action == "allowed_senders":
             return serializers.AllowedSenderSerializer
+        if self.action == "convert":
+            return serializers.ConvertBodySerializer
         return serializers.ComposeSessionSerializer
 
     def retrieve(self, request, pk=None):
@@ -599,6 +606,19 @@ class ComposeSessionViewSet(ImapConnectionMixin, viewsets.GenericViewSet):
         mailid = serializer.save()
         serializer.validated_data["mailid"] = mailid
         return response.Response(serializer.validated_data)
+
+    @action(methods=["post"], detail=False)
+    def convert(self, request):
+        """Convert a body when the format of the editor changes.
+
+        The text obtained is the one sent as the text part of HTML
+        messages: there is one conversion only.
+        """
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        data = serializer.validated_data
+        body = convert_body(data["body"], data["source_format"], data["target_format"])
+        return response.Response({"body": body})
 
     @action(methods=["get"], detail=False)
     def allowed_senders(self, request):

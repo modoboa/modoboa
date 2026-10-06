@@ -54,19 +54,41 @@ class ModifierContentTestCase(WebmailTestCase):
         self.mock_imap4.return_value = MessagesMock()
         self.authenticate()
 
-    def _content(self, mailid, context, dformat):
+    def _content(self, mailid, context, dformat=None):
         url = reverse("v2:webmail-email-content")
-        response = self.client.get(
-            url,
-            {
-                "mailbox": "INBOX",
-                "mailid": mailid,
-                "context": context,
-                "dformat": dformat,
-            },
-        )
+        params = {"mailbox": "INBOX", "mailid": mailid, "context": context}
+        if dformat:
+            params["dformat"] = dformat
+        response = self.client.get(url, params)
         self.assertEqual(response.status_code, 200)
         return response.json()
+
+    def _set_preferences(self, editor, displaymode):
+        self.user.parameters.set_value("editor", editor)
+        self.user.parameters.set_value("displaymode", displaymode)
+        self.user.save()
+
+    def test_reply_in_editor_format(self):
+        """The editor format applies, not the display one."""
+        self._set_preferences(editor="html", displaymode="plain")
+        content = self._content(PLAIN_MESSAGE, "reply")
+        self.assertEqual(content["body_format"], "html")
+        self.assertIn("<br>", content["body"])
+
+        self._set_preferences(editor="plain", displaymode="html")
+        content = self._content(HTML_MESSAGE, "reply")
+        self.assertEqual(content["body_format"], "plain")
+        self.assertNotIn("<p>", content["body"])
+
+    def test_forward_in_editor_format(self):
+        self._set_preferences(editor="html", displaymode="plain")
+        content = self._content(PLAIN_MESSAGE, "forward")
+        self.assertEqual(content["body_format"], "html")
+
+    def test_requested_format_wins(self):
+        self._set_preferences(editor="html", displaymode="html")
+        content = self._content(PLAIN_MESSAGE, "reply", "plain")
+        self.assertEqual(content["body_format"], "plain")
 
     def test_plain_reply_is_not_escaped(self):
         content = self._content(PLAIN_MESSAGE, "reply", "plain")

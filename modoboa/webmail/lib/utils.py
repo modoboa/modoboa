@@ -15,6 +15,7 @@ import lxml.html
 from django.conf import settings
 from django.core.mail import EmailMessage, EmailMultiAlternatives
 from django.core.mail.utils import DNS_NAME
+from django.utils.html import escape
 from django.utils.translation import gettext as _
 
 from modoboa.core import models as core_models
@@ -51,7 +52,8 @@ _LINE_TAGS = {
 _PARAGRAPH_TAGS = {"blockquote", "h1", "h2", "h3", "h4", "h5", "h6", "hr", "p", "pre"}
 # Elements whose content is never displayed
 _HIDDEN_TAGS = {"head", "script", "style", "template", "title"}
-_WHITESPACE_RE = re.compile(r"\s+")
+# HTML whitespace: a non-breaking space is never collapsed
+_WHITESPACE_RE = re.compile(r"[ \t\n\r\f]+")
 
 
 class _PlainTextWriter:
@@ -72,6 +74,7 @@ class _PlainTextWriter:
             text = _WHITESPACE_RE.sub(" ", text)
             if not self.current or self.current.endswith(" "):
                 text = text.lstrip(" ")
+            text = text.replace("\xa0", " ")
         for pos, chunk in enumerate(text.split("\n")):
             if pos:
                 self.end_line(force=True)
@@ -101,6 +104,20 @@ class _PlainTextWriter:
         return "\n".join(self.lines).strip("\n")
 
 
+def _block_kind(element, tag: str | None) -> str | None:
+    """Tell how an element is separated from the text around it."""
+    parent = element.getparent()
+    if tag in ("div", "p") and parent is not None and parent.tag == "li":
+        # Rich text editors put the content of list items into paragraphs:
+        # it must stay on the line of the item marker
+        return "item"
+    if tag in _PARAGRAPH_TAGS:
+        return "paragraph"
+    if tag in _LINE_TAGS:
+        return "line"
+    return None
+
+
 def html2plaintext(content: str) -> str:
     """HTML to plain text translation.
 
@@ -128,9 +145,16 @@ def html2plaintext(content: str) -> str:
                 hidden += 1
             if hidden:
                 continue
-            if tag in _PARAGRAPH_TAGS:
+            kind = _block_kind(element, tag)
+            if kind == "paragraph":
                 writer.end_paragraph()
-            elif tag in _LINE_TAGS:
+            elif kind == "line":
+                writer.end_line()
+            elif kind == "item" and (
+                element.getprevious() is not None
+                or (element.getparent().text or "").strip()
+            ):
+                # Not the first content of the item
                 writer.end_line()
             if tag == "blockquote":
                 writer.quote_depth += 1
@@ -170,9 +194,10 @@ def html2plaintext(content: str) -> str:
                 writer.write(" ")
             elif tag in ("ol", "ul") and lists:
                 lists.pop()
-            if tag in _PARAGRAPH_TAGS:
+            kind = _block_kind(element, tag)
+            if kind == "paragraph":
                 writer.end_paragraph()
-            elif tag in _LINE_TAGS:
+            elif kind in ("line", "item"):
                 writer.end_line()
             if tag == "blockquote":
                 writer.quote_depth -= 1
@@ -181,6 +206,63 @@ def html2plaintext(content: str) -> str:
         if element.tail and not hidden and element is not html:
             writer.write(element.tail, preformatted > 0)
     return writer.text()
+
+
+_QUOTE_RE = re.compile(r"^(?:> ?)+")
+
+
+def plaintext2html(content: str) -> str:
+    """Plain text to HTML translation, for the editor.
+
+    Blank lines separate paragraphs, line breaks are kept and quoted lines
+    (">" prefix) go into blockquotes.
+
+    :param content: some plain text content
+    """
+    if not content:
+        return ""
+    result = ""
+    depth = 0
+    paragraph: list[str] = []
+
+    def flush() -> str:
+        if not paragraph:
+            return ""
+        html = f"<p>{'<br>'.join(paragraph)}</p>"
+        paragraph.clear()
+        return html
+
+    for line in content.replace("\r\n", "\n").replace("\r", "\n").split("\n"):
+        match = _QUOTE_RE.match(line)
+        quote = match.group(0) if match else ""
+        line_depth = quote.count(">")
+        text = line[len(quote) :]
+        if line_depth != depth:
+            result += flush()
+            if line_depth > depth:
+                result += "<blockquote>" * (line_depth - depth)
+            else:
+                result += "</blockquote>" * (depth - line_depth)
+            depth = line_depth
+        if not text.strip():
+            result += flush()
+            continue
+        text = escape(text)
+        # Keep the indentation, that HTML would collapse
+        indent = len(text) - len(text.lstrip(" "))
+        paragraph.append("&nbsp;" * indent + text[indent:])
+    result += flush()
+    result += "</blockquote>" * depth
+    return result
+
+
+def convert_body(content: str, source: str, target: str) -> str:
+    """Convert a message body from a format (plain or html) to another."""
+    if not content or source == target:
+        return content
+    if target == "html":
+        return plaintext2html(content)
+    return html2plaintext(content)
 
 
 def decode_payload(encoding, payload):

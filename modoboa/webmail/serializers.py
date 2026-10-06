@@ -478,6 +478,14 @@ class ComposeSessionSerializer(serializers.Serializer):
         return str(signature.EmailSignature(self.context["request"].user))
 
 
+class ConvertBodySerializer(serializers.Serializer):
+    """Body to convert when the format of the editor changes."""
+
+    body = serializers.CharField(allow_blank=True, trim_whitespace=False)
+    source_format = serializers.ChoiceField(choices=constants.DISPLAY_MODES)
+    target_format = serializers.ChoiceField(choices=constants.DISPLAY_MODES)
+
+
 class CreateSessionSerializer(serializers.Serializer):
     # Draft being edited: its attachments are copied into the session
     from_draft_message = serializers.IntegerField(required=False)
