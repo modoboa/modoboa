@@ -217,7 +217,9 @@ class AccountViewSet(v1_viewsets.AccountViewSet):
             content_type=ContentType.objects.get_for_model(user)
         ).values_list("object_id", flat=True)
         return (
-            core_models.User.objects.filter(pk__in=ids)
+            lib_permissions.exclude_higher_roles(
+                user, core_models.User.objects.filter(pk__in=ids)
+            )
             .select_related("mailbox", "mailbox__domain")
             .prefetch_related(
                 "groups", "mailbox__aliasrecipient_set__alias", "userobjectlimit_set"
