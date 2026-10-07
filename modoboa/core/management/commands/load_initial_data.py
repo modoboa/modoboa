@@ -111,11 +111,30 @@ class Command(BaseCommand):
             return
 
         app_model = get_application_model()
-        allowed_host = getattr(settings, "ALLOWED_HOSTS", None)
-        if allowed_host is None:
-            allowed_host = input("What will be the hostname used to access Modoboa? ")
-            if not allowed_host:
-                allowed_host = "localhost"
+        """ localhost is disallowed for REST API purposes """
+        disallowed_hosts = ["localhost", "127.0.0.1", "::1"]
+        allowed_hosts = getattr(settings, "ALLOWED_HOSTS", None)
+        if not allowed_hosts :
+            self.stderr.write(
+                         f"No host was defined in ALLOWED_HOSTS in settings.py"
+                     )
+            return
+        """ ALLOWED_HOSTS can hold many hostnames. We need one which:
+            - (check not yet implemented) resolves to this host
+            - (check not yet implemented) does not violate Cross-Site Request Forgery (CSRF) protection
+            - (check not yet implemented) does not violate Cross-Site scripting (XSS) protection
+            - (implemented) is not localhost
+        """
+        # TODO : be more defensive and implement above ; combine with/see also to do remark below
+        allowed_host = list(set(allowed_hosts) - set(disallowed_hosts))
+        if len(allowed_host) >= 1:
+            allowed_host = allowed_host[0]
+        else:
+            self.stderr.write(
+                         f"Mandatory valid hostname not found in ALLOWED_HOST in settings.py"
+                     )
+            return
+
             allowed_host = [allowed_host]
         frontend_application = app_model.objects.filter(name="modoboa_frontend")
         # TODO : improve support for multiple allowed_host for frontend
