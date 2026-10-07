@@ -478,9 +478,12 @@ class WritableAccountSerializer(AccountSerializer):
             password = validated_data.pop("password")
         user.set_password(password)
         user.save(creator=creator)
+        # The role must be set before the mailbox is created since it
+        # decides which administrators get access to the account.
+        user.role = role
         if mailbox_data:
             self._create_mailbox(creator, user, mailbox_data)
-        user.role = role
+            user.save(update_fields=["email"])
         self.set_permissions(user, domains)
         return user
 

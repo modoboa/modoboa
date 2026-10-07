@@ -188,6 +188,60 @@ def transfer_ownership(user, new_owner=None):
     return new_owner
 
 
+def revoke_access_from_lower_roles(account):
+    """Revoke the access held on an account by accounts with a lower role.
+
+    The access held on the account's mailbox (if any) is also
+    revoked. If one of the revoked entries was the owner, ownership
+    is given to the first active super admin found.
+
+    :param account: a ``User`` instance
+    """
+    objects = [account]
+    mailbox = getattr(account, "mailbox", None)
+    if mailbox is not None:
+        objects.append(mailbox)
+    for obj in objects:
+        ct = ContentType.objects.get_for_model(obj)
+        entries = (
+            ObjectAccess.objects.filter(
+                content_type=ct, object_id=obj.pk, user__is_superuser=False
+            )
+            .exclude(user=account)
+            .select_related("user")
+        )
+        revoked = [entry for entry in entries if entry.user.is_outranked_by(account)]
+        if not revoked:
+            continue
+        ObjectAccess.objects.filter(pk__in=[entry.pk for entry in revoked]).delete()
+        if not any(entry.is_owner for entry in revoked):
+            continue
+        new_owner = (
+            User.objects.filter(is_superuser=True, is_active=True)
+            .exclude(pk=account.pk)
+            .first()
+        )
+        if new_owner is not None:
+            grant_access_to_object(new_owner, obj, is_owner=True)
+
+
+def exclude_higher_roles(user, queryset):
+    """Remove the accounts with a higher role than user's from queryset.
+
+    :param user: a ``User`` instance
+    :param queryset: a ``User`` queryset
+    :return: the filtered queryset
+    """
+    if user.is_superuser:
+        return queryset
+    higher_roles = [
+        role
+        for role, rank in core_constants.ROLE_RANKS.items()
+        if rank > user.role_rank
+    ]
+    return queryset.exclude(is_superuser=True).exclude(groups__name__in=higher_roles)
+
+
 def ungrant_access_to_object(obj, user=None):
     """Ungrant access to an object for a specific user
 

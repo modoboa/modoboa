@@ -14,6 +14,7 @@ from rest_framework.response import Response
 from modoboa.core import models as core_models
 from modoboa.core import sms_backends
 from modoboa.core.api.v1 import serializers as core_serializers
+from modoboa.lib import permissions as lib_permissions
 from modoboa.lib import renderers as lib_renderers
 from modoboa.lib import viewsets as lib_viewsets
 from modoboa.lib.throttle import GetThrottleViewsetMixin, PasswordResetRequestThrottle
@@ -123,7 +124,9 @@ class AccountViewSet(
         ids = user.objectaccess_set.filter(
             content_type=ContentType.objects.get_for_model(user)
         ).values_list("object_id", flat=True)
-        queryset = core_models.User.objects.filter(pk__in=ids)
+        queryset = lib_permissions.exclude_higher_roles(
+            user, core_models.User.objects.filter(pk__in=ids)
+        )
         domain = self.request.query_params.get("domain")
         if domain:
             queryset = queryset.filter(mailbox__domain__name=domain)

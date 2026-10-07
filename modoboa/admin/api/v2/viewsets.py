@@ -291,7 +291,9 @@ class AccountViewSet(v1_viewsets.AccountViewSet):
         # Mirror Mailbox.get_quota_in_percent() at the DB level so results can
         # be ordered by quota usage and served without a per-row Quota query.
         return (
-            core_models.User.objects.filter(pk__in=ids)
+            lib_permissions.exclude_higher_roles(
+                user, core_models.User.objects.filter(pk__in=ids)
+            )
             .select_related("mailbox", "mailbox__domain")
             .prefetch_related("userobjectlimit_set")
             .annotate(
