@@ -302,10 +302,10 @@ PID_FILE_STORAGE_PATH = '/var/run'
 REDIS_HOST = 'localhost'
 REDIS_PORT = 6379
 REDIS_QUOTA_DB = 0
-REDIS_URL = 'redis://{}:{}/{}'.format(REDIS_HOST, REDIS_PORT, REDIS_QUOTA_DB)
-# To use unix socket, use this scheme instead
-# REDIS_HOST must point to the socket path
-# REDIS_URL = 'unix://{}?db={}'.format(REDIS_HOST, REDIS_QUOTA_DB)
+{% if redis_url %}REDIS_URL = '{{ redis_url }}'
+{% else %}REDIS_URL = 'redis://{}:{}/{}'.format(REDIS_HOST, REDIS_PORT, REDIS_QUOTA_DB)
+{% endif %}# To use a unix socket, pass --redisurl to the deploy command, for example:
+# modoboa-admin.py deploy myinstance --redisurl unix:///var/run/redis/redis.sock?db=0
 
 # RQ
 
