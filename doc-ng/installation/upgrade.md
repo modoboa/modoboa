@@ -131,6 +131,49 @@ If you need to rebuild you virtualenv, you can check this [part of the documenta
 
 The section below containt specific migration steps to upgrade Modoboa instance.
 
+## Version 2.11.1
+
+::: warning
+This release fixes several security issues. Upgrading is strongly
+recommended.
+:::
+
+### Security fixes
+
+* Domain administrators could take over SuperAdmin and Reseller
+  accounts that own a mailbox in their domain (they were given access
+  to these accounts when the mailbox was created or when the account
+  was promoted). The `migrate` command removes the access already
+  granted to accounts with a lower role.
+* Relay domain import now checks permissions and limits: any
+  authenticated user, including simple users, could create relay
+  domains through the CSV import.
+* A reseller could give a domain alias the name of a domain owned by
+  another tenant, and so disrupt or redirect part of its inbound mail.
+  Domain and domain alias names now share the same namespace, and the
+  internal aliases generated for domain aliases are kept in sync.
+
+### New system check on domain aliases
+
+Previous versions may have left inconsistencies behind. A new system
+check reports them during `migrate`, or when running:
+
+``` shell
+$ python manage.py check --database default
+```
+
+* `modoboa.admin.W001`: domain aliases using the name of a domain.
+  They are not fixed automatically since they may belong to a
+  legitimate tenant: check who owns them, then rename or delete them.
+* `modoboa.admin.W002` and `modoboa.admin.W003`: internal aliases
+  generated for domain aliases that are orphaned, missing or that don't
+  point to their target. The `repair` command fixes them:
+
+``` shell
+$ python manage.py modo repair --dry-run  # list the problems
+$ python manage.py modo repair
+```
+
 ## Version 2.11.0
 
 ### Required changes to Postfix configuration
