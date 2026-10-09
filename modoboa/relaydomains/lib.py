@@ -4,13 +4,19 @@ from django.core.exceptions import ValidationError
 from django.utils.translation import gettext as _
 
 from modoboa.admin import models as admin_models
+from modoboa.core import signals as core_signals
 from modoboa.lib import validators
-from modoboa.lib.exceptions import BadRequest, Conflict
+from modoboa.lib.exceptions import BadRequest, Conflict, PermDeniedException
 from modoboa.transport import backends as tr_backends, models as tr_models
 
 
 def import_relaydomain(user, row, formopts):
     """Specific code for relay domains import"""
+    if not user.has_perm("admin.add_domain"):
+        raise PermDeniedException(_("You are not allowed to import relay domains"))
+    core_signals.can_create_object.send(
+        sender="import", context=user, klass=admin_models.Domain
+    )
     if len(row) != 7:
         raise BadRequest(_("Invalid line"))
     name = row[1].strip().lower()
