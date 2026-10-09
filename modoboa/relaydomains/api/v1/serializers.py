@@ -2,11 +2,13 @@
 
 import json
 
+from django.core.exceptions import ValidationError
 from django.utils.translation import gettext as _
 
 from rest_framework import serializers
 
 from modoboa.admin import models as admin_models
+from modoboa.lib import validators
 from modoboa.transport import backends as tr_backends, models as tr_models
 
 
@@ -51,6 +53,19 @@ class RelayDomainSerializer(serializers.ModelSerializer):
             "pk",
             "dkim_public_key",
         )
+
+    def validate_name(self, value):
+        """Check name constraints."""
+        value = value.lower()
+        try:
+            validators.validate_hostname(value)
+        except ValidationError:
+            raise serializers.ValidationError(_("Enter a valid domain name")) from None
+        if admin_models.DomainAlias.objects.filter(name=value).exists():
+            raise serializers.ValidationError(
+                _("domain alias with this name already exists")
+            )
+        return value
 
     def create(self, validated_data):
         """Use backend to serialize data."""

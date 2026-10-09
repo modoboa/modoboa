@@ -272,6 +272,27 @@ def create_user_and_use_policy(name, policy, priority=7):
     )
 
 
+def update_user_and_use_policy(oldname, newname, policy):
+    """Update a *users* record that uses an existing policy.
+
+    The record is created if it does not exist.
+
+    :param str oldname: old record name
+    :param str newname: new record name
+    :param str policy: string or Policy instance
+    """
+    if isinstance(policy, str):
+        policy = Policy.objects.get(policy_name=policy[:32])
+    user = Users.objects.filter(email=oldname).first()
+    if user is None:
+        create_user_and_use_policy(newname, policy)
+        return
+    user.email = newname
+    user.fullname = newname
+    user.policy = policy
+    user.save()
+
+
 def update_user_and_policy(oldname, newname):
     """Update records.
 

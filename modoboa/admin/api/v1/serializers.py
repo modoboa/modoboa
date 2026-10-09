@@ -186,8 +186,32 @@ class DomainAliasSerializer(serializers.ModelSerializer):
         return value
 
     def validate_name(self, value):
-        """Lower case name."""
-        return value.lower()
+        """Check name constraints."""
+        value = value.lower()
+        try:
+            validators.validate_hostname(value)
+        except ValidationError:
+            raise serializers.ValidationError(_("Enter a valid domain name")) from None
+        if models.Domain.objects.filter(name=value).exists():
+            raise serializers.ValidationError(_("domain with this name already exists"))
+        return value
+
+    def validate(self, data):
+        """Reject updates that keep a name colliding with a domain."""
+        if (
+            self.instance is not None
+            and "name" not in data
+            and models.Domain.objects.filter(name=self.instance.name).exists()
+        ):
+            raise serializers.ValidationError(
+                {
+                    "name": _(
+                        "domain with this name already exists, rename or "
+                        "delete this domain alias"
+                    )
+                }
+            )
+        return data
 
     def create(self, validated_data):
         """Custom creation."""
