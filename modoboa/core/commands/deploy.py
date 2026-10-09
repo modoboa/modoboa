@@ -63,6 +63,16 @@ class DeployCommand(Command):
             help="A database-url with a name",
         )
         self._parser.add_argument(
+            "--redisurl",
+            type=str,
+            default=None,
+            help=(
+                "A Redis URL (for example "
+                "unix:///var/run/redis/redis.sock?db=0 when Redis only "
+                "listens on a unix socket)"
+            ),
+        )
+        self._parser.add_argument(
             "--domain",
             type=str,
             default=None,
@@ -243,6 +253,7 @@ class DeployCommand(Command):
             {
                 "db_connections": connections,
                 "secret_key": management.utils.get_random_secret_key(),
+                "redis_url": parsed_args.redisurl,
                 "name": parsed_args.name,
                 "allowed_host": allowed_host,
                 "lang": parsed_args.lang,
