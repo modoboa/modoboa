@@ -14,6 +14,7 @@ import django
 from django.core import management
 from django.template import Context, Template
 from django.utils.encoding import smart_str
+from django.utils.safestring import mark_safe
 
 from modoboa.core.commands import Command
 from modoboa.core.utils import generate_rsa_private_key
@@ -29,9 +30,7 @@ DBCONN_TPL = """
         'HOST': '{% if HOST %}{{ HOST }}{% endif %}',
         'PORT': '{% if PORT %}{{ PORT }}{% endif %}',
         'ATOMIC_REQUESTS': True,
-        {% if ENGINE == 'django.db.backends.mysql' %}'OPTIONS' : {
-            "init_command" : 'SET foreign_key_checks = 0;',
-        },{% endif %}
+        {% if OPTIONS %}'OPTIONS': {{ OPTIONS }},{% endif %}
     },
 """
 
@@ -61,6 +60,16 @@ class DeployCommand(Command):
             nargs="+",
             default=None,
             help="A database-url with a name",
+        )
+        self._parser.add_argument(
+            "--redisurl",
+            type=str,
+            default=None,
+            help=(
+                "A Redis URL (for example "
+                "unix:///var/run/redis/redis.sock?db=0 when Redis only "
+                "listens on a unix socket)"
+            ),
         )
         self._parser.add_argument(
             "--domain",
@@ -94,6 +103,27 @@ class DeployCommand(Command):
             default="admin",
             help="Username of the initial super administrator",
         )
+
+    def _get_db_options(self, info):
+        """Build the OPTIONS entry of a database connection.
+
+        Merge user-provided options (e.g. SSL settings parsed from a
+        ``--dburl`` database URL) with engine-specific defaults and
+        return them as a snippet ready to be included in settings.py.
+
+        :param info: the database connection information dict
+        :return: a string (marked safe for template rendering) or ""
+        """
+        options = dict(info.get("OPTIONS") or {})
+        if info.get("ENGINE") == "django.db.backends.mysql":
+            # Historical default, kept unless the user provided their own.
+            options.setdefault("init_command", "SET foreign_key_checks = 0;")
+        if not options:
+            return ""
+        rendered = ",\n            ".join(
+            f"{key!r}: {value!r}" for key, value in options.items()
+        )
+        return mark_safe("{\n            " + rendered + ",\n        }")
 
     def _exec_django_command(self, name, cwd, *args):
         """Run a django command for the freshly created project
@@ -207,9 +237,12 @@ class DeployCommand(Command):
                 # If we set this earlier, our fallback method will never
                 # be triggered
                 info["conn_name"] = conn_name
+                info["OPTIONS"] = self._get_db_options(info)
                 connections[conn_name] = conn_tpl.render(Context(info))
         else:
-            connections["default"] = conn_tpl.render(Context(self.ask_db_info()))
+            info = self.ask_db_info()
+            info["OPTIONS"] = self._get_db_options(info)
+            connections["default"] = conn_tpl.render(Context(info))
 
         if parsed_args.domain:
             allowed_host = parsed_args.domain
@@ -243,6 +276,7 @@ class DeployCommand(Command):
             {
                 "db_connections": connections,
                 "secret_key": management.utils.get_random_secret_key(),
+                "redis_url": parsed_args.redisurl,
                 "name": parsed_args.name,
                 "allowed_host": allowed_host,
                 "lang": parsed_args.lang,

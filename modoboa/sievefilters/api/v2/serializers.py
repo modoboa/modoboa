@@ -87,7 +87,9 @@ class FilterSerializer(serializers.Serializer):
                     {"name": "Subject", "operator": "contains", "value": ""}
                 ]
             else:
-                for t in test["test"]["tests"]:
+                test_node = test["test"]
+                subtests = test_node["tests"] if "tests" in test_node.arguments else [test_node]
+                for t in subtests:
                     if isinstance(t, commands.SizeCommand):
                         item["conditions"] += [
                             {

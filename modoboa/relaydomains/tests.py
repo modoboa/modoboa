@@ -296,6 +296,24 @@ class ImportTestCase(ModoAPITestCase):
             )
         self.assertFalse(admin_models.Domain.objects.filter(name="relay3.com").exists())
 
+    def test_webui_import_name_constraints(self):
+        """Imported names must be valid and unused."""
+        admin_factories.DomainAliasFactory(name="dalias.test", target__name="test.com")
+        url = reverse("v2:domain-import-from-csv")
+        for name, error in [
+            ("DAlias.test", "Object already exists"),
+            ("=evil.test", "invalid domain name"),
+        ]:
+            f = ContentFile(
+                f"relaydomain;{name};127.0.0.1;25;relay;True;True", name="domains.csv"
+            )
+            response = self.client.post(url, {"sourcefile": f})
+            self.assertFalse(response.json()["status"])
+            self.assertIn(error, response.json()["message"])
+        self.assertFalse(
+            admin_models.Domain.objects.filter(type="relaydomain").exists()
+        )
+
 
 class LimitsTestCase(ModoAPITestCase, Operations):
 

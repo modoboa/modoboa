@@ -19,10 +19,18 @@ from modoboa.webmail import constants
 
 from . import imapheader
 from .imaputils import get_imapconnector, validate_imap_uid, BodyStructure
+from . import flowed
 from .utils import decode_payload, html2plaintext
 
 # Headers holding addresses, parsed from their raw value
 ADDRESS_HEADERS = ("From", "To", "Cc", "Bcc", "Reply-To")
+
+# Subject prefixes of replies and forwards, as clients write them in
+# various languages ("RE :", "AW:", "Réf.:", "TR:", "WG:"...)
+_REPLY_PREFIX_RE = re.compile(
+    r"^\s*(re|aw|sv|antw|odp|rif|res|ref|réf)\s*(\[\d+\])?\s*\.?\s*:", re.I
+)
+_FORWARD_PREFIX_RE = re.compile(r"^\s*(fwd?|tr|wg|rv|enc|doorst)\s*\.?\s*:", re.I)
 
 # A cid: URL inside an HTML content (RFC 2392)
 CID_URL_RE = re.compile(r"""cid:([^\s"'<>()]+)""", re.I)
@@ -217,6 +225,10 @@ class ImapEmail(Email):
                         except (UnicodeDecodeError, LookupError):
                             result = charset_detect(content)
                             content = content.decode(result["encoding"])
+                if isinstance(content, str) and self._is_flowed(part):
+                    content = flowed.decode(
+                        content, delsp=self._find_param(part, "delsp") == "yes"
+                    )
                 bodyc += content
             self._fetch_inlines(self._referenced_cids(bodyc))
             self._find_unreferenced_inlines(bodyc)
@@ -243,6 +255,20 @@ class ImapEmail(Email):
             if elem == "charset":
                 return part["params"][pos + 1]
         return None
+
+    def _find_param(self, part, name: str) -> str | None:
+        """Return the value of a parameter of a part, lowercased."""
+        params = part.get("params") or []
+        for pos in range(0, len(params) - 1, 2):
+            key = params[pos]
+            if isinstance(key, str) and key.lower() == name:
+                value = params[pos + 1]
+                return value.lower() if isinstance(value, str) else None
+        return None
+
+    def _is_flowed(self, part) -> bool:
+        """Tell if a text part is in format=flowed (RFC 3676)."""
+        return self.mformat == "plain" and self._find_param(part, "format") == "flowed"
 
     def _find_attachments(self) -> None:
         """Retrieve attachments from the parsed body structure."""
@@ -322,18 +348,24 @@ class ImapEmail(Email):
 class Modifier(ImapEmail):
     """Message modifier."""
 
-    # A reply or a forward would carry them as data: URIs, that
-    # many clients refuse to display
-    embed_inlines = False
-
     def __init__(self, request, *args, **kwargs):
+        # The links of the quoted message are kept: they are only blocked
+        # to protect the reader
+        kwargs["links"] = True
         super().__init__(request, *args, **kwargs)
         self.fetch_headers(raw_addresses=True)
-        self._inject_textheader()
         getattr(self, f"_modify_{self.dformat}")()
+        # Injected once the body is modified: it is not part of the quote
+        self._inject_textheader()
         # The body is now in the requested format, whatever the parts of
         # the message
         self.mformat = self.dformat
+
+    @property
+    def embed_inlines(self) -> bool:
+        # Shown by the editor as data: URIs, turned back into parts of the
+        # message when it is sent (see make_body_images_inline)
+        return self.dformat == "html"
 
     def _post_process_plain(self, content):
         if self.dformat == "html":
@@ -359,7 +391,7 @@ class Modifier(ImapEmail):
 
     def _modify_html(self):
         if self.dformat == "html" and self.mformat != self.dformat:
-            self.body = re.sub("</?pre>", "", self.body)
+            self.body = re.sub("</?pre>", "", self.body or "")
             self.body = re.sub("\n", "<br>", self.body)
 
 
@@ -377,33 +409,44 @@ class ReplyModifier(Modifier):
     @property
     def subject(self) -> str:
         result: str = getattr(self, "Subject", "")
-        if not result:
+        if not result or _REPLY_PREFIX_RE.match(result):
             return result
-        m = re.match(r"re\s*:\s*.+", result.lower())
-        if not m:
-            return f"Re: {result}"
-        return result
+        return f"Re: {result}"
 
     def _inject_textheader(self):
-        sender = self.From.get("name", self.From["address"])
-        textheader = f"{sender} {_('wrote:')}"
+        sender = self.From.get("name") or self.From["address"]
+        date = getattr(self, "Date_full", "")
+        if date:
+            textheader = _("On %(date)s, %(sender)s wrote:") % {
+                "date": date,
+                "sender": sender,
+            }
+        else:
+            textheader = _("%(sender)s wrote:") % {"sender": sender}
         if self.dformat == "html":
             # The sender name comes from the message: escape it before
             # injecting it into HTML content.
             textheader = f"<p>{conditional_escape(textheader)}</p>"
         else:
             textheader = f"{textheader}\n"
-        self.body = textheader + self.body
+        self.body = textheader + (self.body or "")
 
     def _modify_plain(self):
         super()._modify_plain()
-        lines = self.body.split("\n")
-        body = ""
-        for line in lines:
-            if body != "":
-                body += "\n"
-            body += f">{line}"
-        self.body = body
+        lines = []
+        for line in (self.body or "").split("\n"):
+            if not line:
+                lines.append(">")
+            elif line.startswith(">"):
+                # Already quoted: one more level
+                lines.append(f">{line}")
+            else:
+                lines.append(f"> {line}")
+        self.body = "\n".join(lines)
+
+    def _modify_html(self):
+        super()._modify_html()
+        self.body = f'<blockquote type="cite">{self.body or ""}</blockquote>'
 
 
 class ForwardModifier(Modifier):
@@ -412,17 +455,23 @@ class ForwardModifier(Modifier):
     @property
     def subject(self) -> str:
         result: str = getattr(self, "Subject", "")
+        if _FORWARD_PREFIX_RE.match(result):
+            return result
         return f"Fwd: {result}"
 
     def __getfunc(self, name):
         return getattr(self, f"{name}_{self.dformat}")
 
     def _inject_textheader(self):
-        textheader = "{}\n".format(self.__getfunc("_header_begin")())
+        textheader = self.__getfunc("_header_begin")()
+        if self.dformat == "plain":
+            textheader += "\n"
         textheader += self.__getfunc("_header_line")(
             _("Subject"), getattr(self, "Subject", "")
         )
-        textheader += self.__getfunc("_header_line")(_("Date"), self.Date)
+        textheader += self.__getfunc("_header_line")(
+            _("Date"), getattr(self, "Date_full", "") or self.Date
+        )
         for hdr in ["From", "To", "Reply-To", "Cc"]:
             try:
                 key = re.sub("-", "_", hdr)
@@ -435,13 +484,13 @@ class ForwardModifier(Modifier):
             except AttributeError:
                 pass
         textheader += self.__getfunc("_header_end")()
-        self.body = textheader + self.body
+        self.body = textheader + (self.body or "")
 
     def _header_begin_plain(self):
         return f"----- {_('Original message')} -----"
 
     def _header_begin_html(self):
-        return f"----- {_('Original message')} -----"
+        return f"<p>----- {_('Original message')} -----</p>"
 
     def _header_line_plain(self, key, value):
         return f"{key}: {value}\n"
@@ -460,10 +509,10 @@ class EditModifier(ImapEmail):
     """Load a draft message so it can be edited.
 
     The body is returned as raw content for the editor: plain text is
-    neither escaped nor wrapped in a <pre> block.
+    neither escaped nor wrapped in a <pre> block. Links are kept and
+    embedded images are given as data: URIs (turned back into parts of the
+    message when it is saved or sent).
     """
-
-    embed_inlines = False
 
     headernames = ImapEmail.headernames + [
         ("In-Reply-To", False),
@@ -474,6 +523,7 @@ class EditModifier(ImapEmail):
         # Without an explicit format, the draft is loaded in the format it
         # was written in, whatever the user preferences.
         self.detect_format = dformat is None
+        kwargs["links"] = True
         super().__init__(request, *args, dformat=dformat or "plain", **kwargs)
         self.fetch_headers()
 

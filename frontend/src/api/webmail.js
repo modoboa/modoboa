@@ -138,6 +138,14 @@ export default {
   createComposeSession(data = {}) {
     return repository.post('/webmail/compose-sessions/', data)
   },
+  // Convert a body when the format of the editor changes (plain or html)
+  convertBody(body, sourceFormat, targetFormat) {
+    return repository.post('/webmail/compose-sessions/convert/', {
+      body: body || '',
+      source_format: sourceFormat,
+      target_format: targetFormat,
+    })
+  },
   getAllowedSenders() {
     return repository.get('/webmail/compose-sessions/allowed_senders/')
   },

@@ -8,12 +8,16 @@ from django.utils import timezone
 from drf_spectacular.utils import extend_schema_field
 from rest_framework import serializers
 
-from modoboa.lib import email_utils
 from modoboa.webmail import constants, models
 from modoboa.webmail.exceptions import ImapError
 from modoboa.webmail.lib import imapheader, signature
 from modoboa.webmail.lib.imaputils import get_imapconnector
-from modoboa.webmail.lib.utils import allowed_sender_addresses, create_message
+from modoboa.webmail.lib.utils import (
+    allowed_sender_addresses,
+    create_message,
+    message_copy,
+    parse_recipient,
+)
 
 logger = logging.getLogger("modoboa.webmail")
 
@@ -62,7 +66,11 @@ class UserPreferencesSerializer(serializers.Serializer):
         default=constants.DisplayMode.PLAIN.value, choices=constants.DISPLAY_MODES
     )
     signature = serializers.CharField(required=False)
-    signature = serializers.CharField(required=False)
+    # In replies and forwards
+    signature_position = serializers.ChoiceField(
+        default=constants.SignaturePosition.ABOVE.value,
+        choices=constants.SIGNATURE_POSITIONS,
+    )
 
 
 class UserMailboxSerializer(serializers.Serializer):
@@ -80,18 +88,13 @@ class UserMailboxSerializer(serializers.Serializer):
         return None
 
 
-class SubscriptionNodeSerializer(serializers.Serializer):
+class SubscriptionSerializer(serializers.Serializer):
     name = serializers.CharField()
-    label = serializers.CharField()
     subscribed = serializers.BooleanField()
-    sub = serializers.SerializerMethodField()
-
-    def get_sub(self, obj):
-        return SubscriptionNodeSerializer(obj.get("sub", []), many=True).data
 
 
 class SubscriptionsSerializer(serializers.Serializer):
-    mailboxes = SubscriptionNodeSerializer(many=True)
+    mailboxes = SubscriptionSerializer(many=True)
     hdelimiter = serializers.CharField()
 
 
@@ -350,9 +353,10 @@ class BaseEmailSerializer(serializers.Serializer):
     sender = serializers.EmailField()
     subject = serializers.CharField(required=False)
     body = serializers.CharField(required=False)
-    to = serializers.ListField(child=serializers.EmailField(), required=False)
-    cc = serializers.ListField(child=serializers.EmailField(), required=False)
-    bcc = serializers.ListField(child=serializers.EmailField(), required=False)
+    # Recipients: "address" or "Name <address>"
+    to = serializers.ListField(child=serializers.CharField(), required=False)
+    cc = serializers.ListField(child=serializers.CharField(), required=False)
+    bcc = serializers.ListField(child=serializers.CharField(), required=False)
     # Message this one replies to, kept in drafts
     in_reply_to = serializers.CharField(required=False)
     # References of the message this one replies to
@@ -375,14 +379,29 @@ class BaseEmailSerializer(serializers.Serializer):
             )
         return value
 
+    def _validate_recipients(self, value):
+        result = []
+        invalid = []
+        for item in value:
+            recipient = parse_recipient(item)
+            if recipient is None:
+                invalid.append(item)
+            else:
+                result.append(recipient)
+        if invalid:
+            raise serializers.ValidationError(
+                _("Invalid addresses: %s") % ", ".join(invalid)
+            )
+        return result
+
     def validate_to(self, value):
-        return email_utils.prepare_addresses(value, "envelope")
+        return self._validate_recipients(value)
 
     def validate_cc(self, value):
-        return email_utils.prepare_addresses(value, "envelope")
+        return self._validate_recipients(value)
 
     def validate_bcc(self, value):
-        return email_utils.prepare_addresses(value, "envelope")
+        return self._validate_recipients(value)
 
 
 class SendEmailSerializer(ScheduledDatetimeMixin, BaseEmailSerializer):
@@ -446,11 +465,8 @@ class SaveEmailSerializer(BaseEmailSerializer):
         drafts_folder = self.context["request"].user.parameters.get_value(
             "drafts_folder"
         )
-        mime_message = message.message()
-        if validated_data.get("bcc"):
-            # Django never writes Bcc into the MIME message: keep it in
-            # the draft so it is not lost when the draft is reopened.
-            mime_message["Bcc"] = ", ".join(validated_data["bcc"])
+        # Bcc is kept so that it is not lost when the draft is reopened
+        mime_message = message_copy(message)
         with get_imapconnector(self.context["request"]) as imapc:
             mailid = imapc.push_mail(drafts_folder, mime_message)
             imapc.mark_messages_unread(drafts_folder, [str(mailid)])
@@ -469,13 +485,25 @@ class ComposeSessionSerializer(serializers.Serializer):
     attachments = UploadedAttachmentSerializer(many=True, required=False)
     uid = serializers.CharField()
     signature = serializers.SerializerMethodField()
+    signature_position = serializers.SerializerMethodField()
     editor_format = serializers.SerializerMethodField()
 
     def get_editor_format(self, obj):
         return self.context["request"].user.parameters.get_value("editor")
 
+    def get_signature_position(self, obj):
+        return self.context["request"].user.parameters.get_value("signature_position")
+
     def get_signature(self, obj):
         return str(signature.EmailSignature(self.context["request"].user))
+
+
+class ConvertBodySerializer(serializers.Serializer):
+    """Body to convert when the format of the editor changes."""
+
+    body = serializers.CharField(allow_blank=True, trim_whitespace=False)
+    source_format = serializers.ChoiceField(choices=constants.DISPLAY_MODES)
+    target_format = serializers.ChoiceField(choices=constants.DISPLAY_MODES)
 
 
 class CreateSessionSerializer(serializers.Serializer):
@@ -524,7 +552,7 @@ class ScheduledMessageSerializer(ScheduledDatetimeMixin, serializers.ModelSerial
                 # rescheduling must still work.
                 imapc.delete_mail(constants.MAILBOX_NAME_SCHEDULED, instance.imap_uid)
             instance.imap_uid = imapc.push_mail(
-                constants.MAILBOX_NAME_SCHEDULED, message.message()
+                constants.MAILBOX_NAME_SCHEDULED, message_copy(message)
             )
             instance.save()
         return instance

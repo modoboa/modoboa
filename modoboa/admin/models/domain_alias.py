@@ -3,14 +3,14 @@
 from reversion import revisions as reversion
 
 from django.contrib.contenttypes.fields import GenericRelation
-from django.db import models
+from django.db import models, transaction
 from django.utils.encoding import smart_str
 from django.utils.translation import gettext as _, gettext_lazy
 
 from modoboa.core import models as core_models, signals as core_signals
 from modoboa.lib.exceptions import BadRequest, Conflict, PermDeniedException
 from .base import AdminObject
-from .domain import Domain
+from .domain import Domain, check_domain_name_is_available
 
 
 class DomainAliasManager(models.Manager):
@@ -54,8 +54,42 @@ class DomainAlias(AdminObject):
     class Meta:
         app_label = "admin"
 
+    def __init__(self, *args, **kwargs):
+        """Save name and target for further use."""
+        super().__init__(*args, **kwargs)
+        self.oldname = self.name
+        self.old_target_id = self.target_id
+
     def __str__(self):
         return smart_str(self.name)
+
+    def save(self, *args, **kwargs):
+        """Check name and keep track of the persisted state.
+
+        Previous values, used by post_save handlers, are read from the
+        database since this instance may be stale.
+        """
+        with transaction.atomic():
+            if self.pk is not None:
+                persisted = (
+                    DomainAlias.objects.select_for_update()
+                    .filter(pk=self.pk)
+                    .values_list("name", "target_id")
+                    .first()
+                )
+                if persisted is not None:
+                    self.oldname, self.old_target_id = persisted
+            update_fields = kwargs.get("update_fields")
+            if update_fields is not None:
+                if "name" not in update_fields:
+                    self.oldname = self.name
+                if not {"target", "target_id"} & set(update_fields):
+                    self.old_target_id = self.target_id
+            if self.pk is None or self.oldname != self.name:
+                check_domain_name_is_available(self.name, DomainAlias)
+            super().save(*args, **kwargs)
+        self.oldname = self.name
+        self.old_target_id = self.target_id
 
     def from_csv(self, user, row):
         """Create a domain alias from a CSV row

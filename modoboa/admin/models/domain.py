@@ -6,7 +6,7 @@ from reversion import revisions as reversion
 
 from django.core.exceptions import ValidationError
 from django.core.management import call_command
-from django.db import models
+from django.db import models, transaction
 from django.utils import timezone
 from django.utils.encoding import force_str, smart_str
 from django.utils.functional import cached_property
@@ -15,7 +15,7 @@ from django.utils.translation import gettext as _, gettext_lazy
 import django_rq
 
 from modoboa.core import signals as core_signals
-from modoboa.core.models import User
+from modoboa.core.models import LocalConfig, User
 from modoboa.lib import validators
 from modoboa.lib.exceptions import BadRequest, Conflict
 from modoboa.parameters import tools as param_tools
@@ -23,6 +23,32 @@ from modoboa.parameters import tools as param_tools
 from .. import constants
 from .base import AdminObject
 from . import mixins
+
+
+def check_domain_name_is_available(name, model):
+    """Check that a name is not used by another kind of domain object.
+
+    Domains and domain aliases share the same namespace but are stored
+    in different tables. A lock is taken to serialize concurrent
+    creations and renames so a collision can't be introduced between
+    the check and the write.
+
+    Must be called inside a transaction.
+
+    :param str name: the name to check
+    :param model: model of the object being saved
+    """
+    from .domain_alias import DomainAlias
+
+    LocalConfig.objects.select_for_update().first()
+    for other in [Domain, DomainAlias]:
+        if other is model:
+            # Covered by the model's unique constraint
+            continue
+        if other.objects.select_for_update().filter(name=name).exists():
+            raise Conflict(
+                _("A domain or domain alias named {} already exists").format(name)
+            )
 
 
 class Domain(mixins.MessageLimitMixin, AdminObject):
@@ -289,14 +315,37 @@ class Domain(mixins.MessageLimitMixin, AdminObject):
             ungrant_access_to_object(al, account)
 
     def save(self, *args, **kwargs):
-        """Store current data if domain is renamed."""
-        # We check that the instance exists to use m2m relationship
-        if self.pk and self.oldname != self.name:
-            self.old_mail_homes = {mb.id: mb.mail_home for mb in self.mailbox_set.all()}
-        if self.old_dkim_key_length != self.dkim_key_length:
-            self.dkim_public_key = ""
-            self.dkim_private_key_path = ""
-        super().save(*args, **kwargs)
+        """Check name and store current data if domain is renamed.
+
+        The previous name is read from the database since this instance
+        may be stale.
+        """
+        with transaction.atomic():
+            if self.pk is not None:
+                persisted_name = (
+                    Domain.objects.select_for_update()
+                    .filter(pk=self.pk)
+                    .values_list("name", flat=True)
+                    .first()
+                )
+                if persisted_name is not None:
+                    self.oldname = persisted_name
+            update_fields = kwargs.get("update_fields")
+            if update_fields is not None and "name" not in update_fields:
+                self.oldname = self.name
+            renamed = self.oldname != self.name
+            if self.pk is None or renamed:
+                check_domain_name_is_available(self.name, Domain)
+            self.old_mail_homes = None
+            # We check that the instance exists to use m2m relationship
+            if self.pk and renamed:
+                self.old_mail_homes = {
+                    mb.id: mb.mail_home for mb in self.mailbox_set.all()
+                }
+            if self.old_dkim_key_length != self.dkim_key_length:
+                self.dkim_public_key = ""
+                self.dkim_private_key_path = ""
+            super().save(*args, **kwargs)
 
     def delete(self, fromuser, keepdir=False):
         """Custom delete method."""
@@ -339,6 +388,7 @@ class Domain(mixins.MessageLimitMixin, AdminObject):
         :param str row: a list containing domain's definition
         """
         from .. import lib
+        from .domain_alias import DomainAlias
 
         if len(row) < 5:
             raise BadRequest(_("Invalid line"))
@@ -351,8 +401,9 @@ class Domain(mixins.MessageLimitMixin, AdminObject):
             validators.validate_hostname(self.name)
         except ValidationError:
             raise BadRequest(_("{}: invalid domain name").format(self.name)) from None
-        if Domain.objects.filter(name=self.name).exists():
-            raise Conflict
+        for model in [Domain, DomainAlias]:
+            if model.objects.filter(name=self.name).exists():
+                raise Conflict
         domains_must_have_authorized_mx = param_tools.get_global_parameter(
             "domains_must_have_authorized_mx"
         )

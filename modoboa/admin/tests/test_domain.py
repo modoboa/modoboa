@@ -4,6 +4,7 @@ import os
 import shutil
 import stat
 import tempfile
+from unittest import mock
 
 from rest_framework import serializers as drf_serializers
 from rq import SimpleWorker
@@ -22,6 +23,7 @@ from modoboa.lib.tests import ModoAPITestCase, SETTINGS_SAMPLE
 
 from .. import constants
 from .. import factories
+from .. import jobs
 from ..models import Alarm, Alias, Domain
 
 
@@ -480,3 +482,24 @@ class DomainSerializerPluginSignalsTestCase(ModoAPITestCase):
         )
         self.assertEqual(response.status_code, 200)
         self.assertEqual(self.update_calls, [("test.com", {"extra_field": "updated"})])
+
+
+class DNSChecksJobTestCase(ModoAPITestCase):
+    @classmethod
+    def setUpTestData(cls):  # NOQA:N802
+        """Create test data."""
+        super().setUpTestData()
+        factories.populate_database()
+
+    def test_concurrent_rename(self):
+        """Check the job does not restore a stale domain name."""
+        domain = Domain.objects.get(name="test.com")
+
+        def rename(checker, dom):
+            Domain.objects.filter(pk=dom.pk).update(name="renamed.example")
+
+        with mock.patch.object(jobs.DNSChecker, "run", rename):
+            jobs.launch_domain_dns_checks(domain.pk)
+        domain.refresh_from_db()
+        self.assertEqual(domain.name, "renamed.example")
+        self.assertIsNotNone(domain.last_dns_check_execution)
