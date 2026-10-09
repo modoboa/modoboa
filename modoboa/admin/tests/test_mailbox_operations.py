@@ -75,6 +75,65 @@ class MailboxOperationTestCase(ModoAPITestCase):
         self.assertFalse(models.MailboxOperation.objects.exists())
         self.assertTrue(os.path.exists(mb.mail_home))
 
+    def _rename_admin(self, mail_home_mock):
+        """Rename admin@test.com to admin2@test.com and point mail_home to the new path."""
+        mail_home_mock.__get__ = mock.Mock(
+            return_value=f"{self.workdir}/test.com/admin"
+        )
+        mb = models.Mailbox.objects.get(address="admin", domain__name="test.com")
+        values = {
+            "username": "admin2@test.com",
+            "role": "DomainAdmins",
+            "is_active": True,
+            "email": "admin2@test.com",
+            "language": "en",
+            "mailbox": {"use_domain_quota": True},
+        }
+        response = self.client.put(
+            reverse("v2:account-detail", args=[mb.user.pk]), values, format="json"
+        )
+        self.assertEqual(response.status_code, 200)
+        new_path = f"{self.workdir}/test.com/admin2"
+        mail_home_mock.__get__ = mock.Mock(return_value=new_path)
+        return mb, new_path
+
+    @mock.patch("modoboa.admin.models.Mailbox.mail_home")
+    def test_rename_account_destination_exists(self, mail_home_mock):
+        """Existing destination: no move, alarm raised, mailbox unblocked."""
+        mb, new_path = self._rename_admin(mail_home_mock)
+        os.makedirs(new_path)
+        jobs.handle_mailbox_operations()
+        self.assertFalse(models.MailboxOperation.objects.exists())
+        self.assertTrue(os.path.exists(f"{self.workdir}/test.com/admin"))
+        self.assertFalse(os.path.exists(f"{new_path}/admin"))
+        self.assertTrue(
+            models.Alarm.objects.filter(
+                mailbox=mb, internal_name="mailbox_rename_failed"
+            ).exists()
+        )
+
+    @mock.patch("modoboa.admin.jobs.exec_cmd", return_value=(1, b"Permission denied"))
+    @mock.patch("modoboa.admin.models.Mailbox.mail_home")
+    def test_rename_account_move_fails(self, mail_home_mock, exec_cmd_mock):
+        """Failed move: alarm raised and mailbox unblocked."""
+        mb, new_path = self._rename_admin(mail_home_mock)
+        jobs.handle_mailbox_operations()
+        self.assertFalse(models.MailboxOperation.objects.exists())
+        alarm = models.Alarm.objects.get(
+            mailbox=mb, internal_name="mailbox_rename_failed"
+        )
+        self.assertIn("Permission denied", alarm.title)
+
+    @mock.patch("modoboa.admin.models.Mailbox.mail_home")
+    def test_pending_operations_purged_when_disabled(self, mail_home_mock):
+        """Disabling handle_mailboxes drops pending operations."""
+        self._rename_admin(mail_home_mock)
+        self.assertTrue(models.MailboxOperation.objects.exists())
+        self.set_global_parameter("handle_mailboxes", False)
+        jobs.handle_mailbox_operations()
+        self.assertFalse(models.MailboxOperation.objects.exists())
+        self.assertTrue(os.path.exists(f"{self.workdir}/test.com/admin"))
+
     @mock.patch("modoboa.admin.models.Mailbox.mail_home")
     def test_delete_domain(self, mail_home_mock):
         """Check delete operation."""
