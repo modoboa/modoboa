@@ -250,6 +250,8 @@ class User(AbstractUser):
         if self.is_superuser:
             return True
 
+        if isinstance(obj, User) and self.is_outranked_by(obj):
+            return False
         ct = ContentType.objects.get_for_model(obj)
         try:
             ooentry = self.objectaccess_set.get(content_type=ct, object_id=obj.id)
@@ -263,9 +265,19 @@ class User(AbstractUser):
         ct = ContentType.objects.get_for_model(self)
         qs = self.objectaccess_set.filter(content_type=ct)
         for ooentry in qs.all():
-            if ooentry.content_object.is_owner(obj):
+            account = ooentry.content_object
+            if account.is_owner(obj) and not self.is_outranked_by(account):
                 return True
         return False
+
+    @property
+    def role_rank(self):
+        """Return the rank of this account's role (see ROLE_RANKS)."""
+        return constants.ROLE_RANKS.get(self.role, 0)
+
+    def is_outranked_by(self, account):
+        """Tell if account has a higher role than this one."""
+        return account.role_rank > self.role_rank
 
     @property
     def role(self):
@@ -314,6 +326,13 @@ class User(AbstractUser):
                 grant_access_to_object(self, self)
         self.save()
         self._role = role
+        if role in constants.PRIVILEGED_ROLES:
+            from modoboa.lib.permissions import revoke_access_from_lower_roles
+
+            # Accounts with a lower role (domain admins for example)
+            # may have been given access to this account while it was
+            # less privileged: they must not keep it.
+            revoke_access_from_lower_roles(self)
 
     def get_role_display(self):
         """Return the display name of this role."""

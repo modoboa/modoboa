@@ -720,10 +720,13 @@ class WritableAccountSerializer(v1_serializers.WritableAccountSerializer):
         if "language" not in validated_data:
             user.language = settings.LANGUAGE_CODE
         user.save(creator=creator)
+        # The role must be set before the mailbox is created since it
+        # decides which administrators get access to the account.
+        user.role = role
         if mailbox_data:
             mailbox_data["full_address"] = user.username
             self._create_mailbox(creator, user, mailbox_data)
-        user.role = role
+            user.save(update_fields=["email"])
         self.set_permissions(user, domains)
         if aliases:
             for alias in aliases:
