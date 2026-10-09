@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-29 11:30+0200\n"
+"POT-Creation-Date: 2026-10-09 15:54+0200\n"
 "PO-Revision-Date: 2018-07-06 08:26+0000\n"
 "Last-Translator: akong <akong@aspa.idv.tw>\n"
 "Language-Team: Chinese (Taiwan) (http://www.transifex.com/tonio/modoboa/"
@@ -34,11 +34,12 @@ msgstr "預設套用在信箱幾 MB 的配額。值為0表示沒配額。"
 msgid "Default quota in MB applied to mailboxes. A value of 0 means no quota."
 msgstr "預設套用在信箱幾 MB 的配額。值為0表示沒配額。"
 
-#: admin/api/v1/serializers.py:98 lib/validators.py:13
+#: admin/api/v1/serializers.py:98 admin/api/v1/serializers.py:194
+#: lib/validators.py:13 relaydomains/api/v1/serializers.py:63
 msgid "Enter a valid domain name"
 msgstr "輸入有效的網域名稱"
 
-#: admin/api/v1/serializers.py:101
+#: admin/api/v1/serializers.py:101 relaydomains/api/v1/serializers.py:66
 #, fuzzy
 msgid "domain alias with this name already exists"
 msgstr "這個名稱的別名已存在"
@@ -57,62 +58,73 @@ msgstr "輸入有效的電子郵件"
 msgid "Cannot be greater than domain quota"
 msgstr "不可以超過網域配額"
 
-#: admin/api/v1/serializers.py:185 admin/api/v1/serializers.py:381
-#: admin/api/v1/serializers.py:428 admin/api/v2/serializers.py:402
+#: admin/api/v1/serializers.py:185 admin/api/v1/serializers.py:405
+#: admin/api/v1/serializers.py:452 admin/api/v2/serializers.py:402
 #: admin/api/v2/serializers.py:652 admin/api/v2/serializers.py:705
 #: admin/models/alias.py:45 calendars/serializers.py:185
 msgid "Permission denied."
 msgstr "權限不足"
 
-#: admin/api/v1/serializers.py:248 admin/api/v2/serializers.py:118
+#: admin/api/v1/serializers.py:196
+#, fuzzy
+msgid "domain with this name already exists"
+msgstr "這個名稱的別名已存在"
+
+#: admin/api/v1/serializers.py:209
+#, fuzzy
+msgid ""
+"domain with this name already exists, rename or delete this domain alias"
+msgstr "這個名稱的別名已存在"
+
+#: admin/api/v1/serializers.py:272 admin/api/v2/serializers.py:118
 #: admin/api/v2/serializers.py:573 amavis/serializers.py:39
-#: core/api/v2/serializers.py:218 core/api/v2/serializers.py:220
-#: core/api/v2/serializers.py:229 transport/backends.py:40
+#: core/api/v2/serializers.py:219 core/api/v2/serializers.py:221
+#: core/api/v2/serializers.py:230 transport/backends.py:40
 msgid "This field is required"
 msgstr "這個欄位是必填的"
 
-#: admin/api/v1/serializers.py:260
+#: admin/api/v1/serializers.py:284
 msgid ""
 "List of administered domains (resellers and domain administrators only)."
 msgstr "管理員網域列表 (只有經銷商和網域管理員)。"
 
-#: admin/api/v1/serializers.py:354 admin/api/v2/serializers.py:634
+#: admin/api/v1/serializers.py:378 admin/api/v2/serializers.py:634
 msgid "Not allowed for this role."
 msgstr "不允許這個身份"
 
-#: admin/api/v1/serializers.py:372
+#: admin/api/v1/serializers.py:396
 msgid "Must be equal to mailbox full_address"
 msgstr "必須跟信箱完整位址一樣"
 
-#: admin/api/v1/serializers.py:414 admin/api/v2/serializers.py:686
+#: admin/api/v1/serializers.py:438 admin/api/v2/serializers.py:686
 #: calendars/serializers.py:264 calendars/serializers.py:333
 #: pdfcredentials/api/v2/serializers.py:91
 msgid "This field is required."
 msgstr "這個欄位是必填的"
 
-#: admin/api/v1/serializers.py:425 admin/api/v2/serializers.py:702
+#: admin/api/v1/serializers.py:449 admin/api/v2/serializers.py:702
 msgid "Local domain {} does not exist"
 msgstr "本機網域 {} 不存在"
 
-#: admin/api/v1/serializers.py:518
+#: admin/api/v1/serializers.py:545
 msgid "A list of recipient"
 msgstr "收件人列表"
 
-#: admin/api/v1/serializers.py:534 admin/api/v2/viewsets.py:436
+#: admin/api/v1/serializers.py:561 admin/api/v2/viewsets.py:438
 #, fuzzy
 #| msgid "User '%s' already exists"
 msgid "This alias already exists"
 msgstr "使用者 '%s' 已存在"
 
-#: admin/api/v1/serializers.py:570
+#: admin/api/v1/serializers.py:597
 msgid "You don't have access to this domain."
 msgstr "您不能存取這個網域。"
 
-#: admin/api/v1/serializers.py:579
+#: admin/api/v1/serializers.py:606
 msgid "You don't have access to this mailbox."
 msgstr "您不能存取這個信箱。"
 
-#: admin/api/v1/viewsets.py:180
+#: admin/api/v1/viewsets.py:183
 msgid "Here is your new Modoboa password: {}"
 msgstr ""
 
@@ -167,7 +179,7 @@ msgstr ""
 msgid "A mailbox is required to create aliases."
 msgstr "信箱是必要的"
 
-#: admin/api/v2/serializers.py:902
+#: admin/api/v2/serializers.py:905
 #, fuzzy
 #| msgid "Unknown"
 msgid "Unknown status"
@@ -185,7 +197,7 @@ msgstr "您不可以刪除您擁有的網域"
 msgid "DKIM signing is not enabled for this domain"
 msgstr ""
 
-#: admin/api/v2/viewsets.py:351 core/handlers.py:95
+#: admin/api/v2/viewsets.py:353 core/handlers.py:95
 msgid "You can't delete your own account"
 msgstr "您不可以刪除您擁有的帳號"
 
@@ -374,7 +386,7 @@ msgid ""
 "removed within Modoboa"
 msgstr "當他要在 Modoboa 上取得更名或移除就會在檔案系統上更名或移除信箱"
 
-#: admin/app_settings.py:211 admin/models/domain.py:41
+#: admin/app_settings.py:211 admin/models/domain.py:67
 msgid "Default mailbox quota"
 msgstr "預設信箱配額"
 
@@ -459,6 +471,30 @@ msgstr ""
 msgid "Administration"
 msgstr "管理員"
 
+#: admin/checks.py:7
+msgid "Run `python manage.py modo repair --dry-run` for details."
+msgstr ""
+
+#: admin/checks.py:31
+msgid "Domain aliases using the name of a domain: {}"
+msgstr ""
+
+#: admin/checks.py:35
+msgid "Check who owns these domain aliases, then rename or delete them."
+msgstr ""
+
+#: admin/checks.py:45
+msgid ""
+"Internal aliases generated for domain aliases are orphaned or use the name "
+"of a domain: {}"
+msgstr ""
+
+#: admin/checks.py:56
+msgid ""
+"Internal aliases generated for domain aliases are missing or do not point to "
+"their target: {}"
+msgstr ""
+
 #: admin/constants.py:21
 msgid "Domain"
 msgstr "網域"
@@ -510,66 +546,66 @@ msgstr "[modoboa] 此網域的 MX 問題(s) {}"
 msgid "[modoboa] DNSBL issue(s) for domain {}"
 msgstr "[modoboa] 此網域的 DNSBL 問題(s) {}"
 
-#: admin/handlers.py:171
+#: admin/handlers.py:200
 msgid "domain alias"
 msgstr "網域別名"
 
-#: admin/handlers.py:219
+#: admin/handlers.py:248
 #, python-format
 msgid "Account import failed (%s): domain does not exist"
 msgstr "帳號匯入失敗 (%s): 網域不存在"
 
-#: admin/handlers.py:238
+#: admin/handlers.py:267
 #, python-format
 msgid "Account import failed (%s): wrong quota value"
 msgstr "帳號匯入失敗 (%s): 錯誤配額"
 
-#: admin/lib.py:126
+#: admin/lib.py:167
 msgid "You are not allowed to import domains"
 msgstr "您未允許匯入網域"
 
-#: admin/lib.py:135
+#: admin/lib.py:176
 msgid "You are not allowed to import domain aliases."
 msgstr "您未允許匯入網域別名。"
 
-#: admin/lib.py:227 admin/tests/test_mx.py:139 admin/tests/test_mx.py:152
+#: admin/lib.py:268 admin/tests/test_mx.py:139 admin/tests/test_mx.py:152
 #: admin/tests/test_mx.py:157
 #, fuzzy, python-format
 #| msgid "No DNS records found for %s"
 msgid "No DNS record found for %s"
 msgstr "沒有找到 %s 的 DNS 紀錄"
 
-#: admin/lib.py:230
+#: admin/lib.py:271
 #, fuzzy, python-format
 #| msgid "No MX record for %s"
 msgid "No %(type)s record for %(name)s"
 msgstr "沒有 %s 的 MX 紀錄"
 
-#: admin/lib.py:234 admin/tests/test_mx.py:142
+#: admin/lib.py:275 admin/tests/test_mx.py:142
 msgid "No working name servers found"
 msgstr "沒有找到執行中的名稱伺服器"
 
-#: admin/lib.py:237 admin/tests/test_mx.py:146
+#: admin/lib.py:278 admin/tests/test_mx.py:146
 #, python-format
 msgid "DNS resolution timeout, unable to query %s at the moment"
 msgstr "DNS 解析逾時，無法查詢 %s 在這個時間點"
 
-#: admin/lib.py:241
+#: admin/lib.py:282
 msgid "DNS name is too long: {}"
 msgstr ""
 
-#: admin/lib.py:272
+#: admin/lib.py:313
 #, fuzzy, python-brace-format
 #| msgid "Invalid IP address format for %(domain)s; %(addr)s"
 msgid "Invalid IP address format for {domain}; {addr}"
 msgstr "無效的 IP 位址格式 %(domain)s; %(addr)s"
 
-#: admin/lib.py:365
+#: admin/lib.py:406
 #, python-format
 msgid "Object already exists: %s"
 msgstr "元件已存在: %s"
 
-#: admin/lib.py:369
+#: admin/lib.py:410
 #, python-format
 msgid "%d objects imported successfully"
 msgstr "%d 元件已匯入成功"
@@ -609,7 +645,7 @@ msgstr "開啟 Modoboa 公用 API 的通訊"
 msgid "Domain not found."
 msgstr "網域不存在。"
 
-#: admin/models/alias.py:117 admin/models/mailbox.py:85
+#: admin/models/alias.py:117 admin/models/mailbox.py:86
 msgid "address"
 msgstr "地址"
 
@@ -617,7 +653,7 @@ msgstr "地址"
 msgid "The alias address."
 msgstr "別名位址。"
 
-#: admin/models/alias.py:123 admin/models/domain.py:50
+#: admin/models/alias.py:123 admin/models/domain.py:76
 #: admin/models/domain_alias.py:45 autoreply/models.py:37
 msgid "enabled"
 msgstr "已啟用"
@@ -658,83 +694,88 @@ msgstr "本機收件人 {}@{} 未找到"
 msgid "Invalid line: {}"
 msgstr "無效行: %s"
 
-#: admin/models/domain.py:32 admin/models/domain_alias.py:33
+#: admin/models/domain.py:50
+#, fuzzy
+msgid "A domain or domain alias named {} already exists"
+msgstr "這個名稱的別名已存在"
+
+#: admin/models/domain.py:58 admin/models/domain_alias.py:33
 msgid "name"
 msgstr "名稱"
 
-#: admin/models/domain.py:35
+#: admin/models/domain.py:61
 msgid "The domain name"
 msgstr "網域名稱"
 
-#: admin/models/domain.py:44 admin/models/mailbox.py:92
+#: admin/models/domain.py:70 admin/models/mailbox.py:93
 msgid "Message sending limit"
 msgstr ""
 
-#: admin/models/domain.py:47
+#: admin/models/domain.py:73
 msgid "Number of messages this domain can send per day"
 msgstr ""
 
-#: admin/models/domain.py:51
+#: admin/models/domain.py:77
 msgid "Check to activate this domain"
 msgstr "點擊啟用這個網域"
 
-#: admin/models/domain.py:56
+#: admin/models/domain.py:82
 msgid "Enable DNS checks"
 msgstr "啟用 DNS 檢查"
 
-#: admin/models/domain.py:58
+#: admin/models/domain.py:84
 msgid "Check to enable DNS checks for this domain"
 msgstr "點擊啟用這個網域的 DNS 檢查"
 
-#: admin/models/domain.py:67
+#: admin/models/domain.py:93
 msgid "Enable DKIM signing"
 msgstr "啟用 DKIM 簽署"
 
-#: admin/models/domain.py:69
+#: admin/models/domain.py:95
 msgid ""
 "If you activate this feature, a DKIM key will be generated for this domain."
 msgstr "假如您啟用這個功能，DKIM 金鑰將會產生給這個網域。"
 
-#: admin/models/domain.py:76
+#: admin/models/domain.py:102
 msgid "Key length"
 msgstr "金鑰長度"
 
-#: admin/models/domain.py:344 admin/models/domain_alias.py:70
-#: core/models.py:358 relaydomains/lib.py:13
+#: admin/models/domain.py:394 admin/models/domain_alias.py:104
+#: core/models.py:377 relaydomains/lib.py:21
 msgid "Invalid line"
 msgstr "無效的線"
 
-#: admin/models/domain.py:349
+#: admin/models/domain.py:399
 #, fuzzy
 #| msgid "Enter a valid domain name"
 msgid "Invalid domain name"
 msgstr "輸入有效的網域名稱"
 
-#: admin/models/domain.py:353
+#: admin/models/domain.py:403 relaydomains/lib.py:26
 #, fuzzy
 #| msgid "Enter a valid domain name"
 msgid "{}: invalid domain name"
 msgstr "輸入有效的網域名稱"
 
-#: admin/models/domain.py:362
+#: admin/models/domain.py:413
 #, fuzzy
 #| msgid "No authorized MX record found for domain {}"
 msgid "{}: no authorized MX record found for domain"
 msgstr "沒有找到這個網域已驗證過的 MX 紀錄 {}"
 
-#: admin/models/domain.py:368
+#: admin/models/domain.py:419
 #, fuzzy
 #| msgid "Invalid quota value for domain '{}'"
 msgid "{}: invalid quota value for domain"
 msgstr "此網域有無效的配額值 '{}'"
 
-#: admin/models/domain.py:374
+#: admin/models/domain.py:425
 #, fuzzy
 #| msgid "Invalid default mailbox quota value for domain '{}'"
 msgid "{}: invalid default mailbox quota value for domain"
 msgstr "此網域有無效的預設信箱配額值 '{}'"
 
-#: admin/models/domain.py:381
+#: admin/models/domain.py:432
 #, fuzzy
 #| msgid "Default mailbox quota cannot be greater than domain quota"
 msgid "{}: default mailbox quota cannot be greater than domain quota"
@@ -752,39 +793,39 @@ msgstr "目標"
 msgid "The domain this alias points to"
 msgstr "此網域的這個別名指到"
 
-#: admin/models/domain_alias.py:79
+#: admin/models/domain_alias.py:113
 #, python-format
 msgid "Unknown domain %s"
 msgstr "未知網域 %s"
 
-#: admin/models/mailbox.py:87
+#: admin/models/mailbox.py:88
 msgid "Mailbox address (without the @domain.tld part)"
 msgstr "信箱位址 (不要有 @domain.tld 這個部份)"
 
-#: admin/models/mailbox.py:95
+#: admin/models/mailbox.py:96
 msgid "Number of messages this mailbox can send per day"
 msgstr ""
 
-#: admin/models/mailbox.py:156
+#: admin/models/mailbox.py:157
 #, python-format
 msgid "Failed to retrieve mailbox location (%s)"
 msgstr "無法收回信箱位置 (%s)"
 
-#: admin/models/mailbox.py:257
+#: admin/models/mailbox.py:258
 msgid "A quota is required"
 msgstr "配額是必要的"
 
-#: admin/models/mailbox.py:264
+#: admin/models/mailbox.py:265
 #, fuzzy
 #| msgid "Domain quota exceeded"
 msgid "{}: domain quota exceeded"
 msgstr "網域配額已超過"
 
-#: admin/models/mailbox.py:318
+#: admin/models/mailbox.py:321
 msgid "Domain does not exist"
 msgstr "網域不存在"
 
-#: admin/models/mailbox.py:354
+#: admin/models/mailbox.py:357
 msgid "Mailbox {} already exists"
 msgstr "信箱 {} 已存在"
 
@@ -1064,7 +1105,7 @@ msgstr ""
 msgid "Try using PostgreSQL, MySQL or MariaDB."
 msgstr ""
 
-#: amavis/handlers.py:141
+#: amavis/handlers.py:160
 msgid "Pending requests"
 msgstr ""
 
@@ -1317,7 +1358,7 @@ msgstr "網域管理員"
 msgid "Allow domain administrators to manage user calendars (read and write)"
 msgstr "允許這個管理者來存取使用者信箱"
 
-#: calendars/app_settings.py:60 core/app_settings.py:714
+#: calendars/app_settings.py:60 core/app_settings.py:724
 #: rspamd/app_settings.py:45
 msgid "Miscellaneous"
 msgstr "雜項"
@@ -1497,7 +1538,7 @@ msgstr ""
 msgid "Failed TFA settings editing attempt from '%(addr)s' as user '%(user)s'"
 msgstr ""
 
-#: core/api/v1/serializers.py:93 core/api/v2/serializers.py:408
+#: core/api/v1/serializers.py:93 core/api/v2/serializers.py:409
 #, fuzzy
 #| msgid "Old password"
 msgid "Invalid password"
@@ -1511,16 +1552,16 @@ msgstr ""
 msgid "Local"
 msgstr "本機"
 
-#: core/api/v2/serializers.py:176 core/api/v2/serializers.py:184
-#: core/api/v2/serializers.py:191
+#: core/api/v2/serializers.py:177 core/api/v2/serializers.py:185
+#: core/api/v2/serializers.py:192
 msgid "Invalid syntax"
 msgstr "無效語法"
 
-#: core/api/v2/serializers.py:196
+#: core/api/v2/serializers.py:197
 msgid "Invalid rounds number"
 msgstr ""
 
-#: core/api/v2/serializers.py:396 core/forms.py:84
+#: core/api/v2/serializers.py:397 core/forms.py:84
 msgid "This code is invalid"
 msgstr ""
 
@@ -1553,7 +1594,7 @@ msgid "Calendar"
 msgstr ""
 
 #: core/api/v2/viewsets.py:215 core/api/v2/viewsets.py:217
-#: webmail/app_settings.py:317 webmail/app_settings.py:324
+#: webmail/app_settings.py:327 webmail/app_settings.py:334
 #, fuzzy
 #| msgid "E-mail"
 msgid "Webmail"
@@ -1954,193 +1995,203 @@ msgstr "隱藏功能物件"
 msgid "Hide features widget for resellers and domain administrators"
 msgstr "隱藏功能物件給經銷商和網域管理者"
 
-#: core/app_settings.py:519
+#: core/app_settings.py:515
+msgid "Hide Modoboa Pro promotion"
+msgstr ""
+
+#: core/app_settings.py:517
+msgid ""
+"Hide the Modoboa Pro menu entry and presentation when the plugin is not "
+"installed"
+msgstr ""
+
+#: core/app_settings.py:529
 msgid "Theme"
 msgstr ""
 
-#: core/app_settings.py:525
+#: core/app_settings.py:535
 msgid "Colors"
 msgstr ""
 
-#: core/app_settings.py:532
+#: core/app_settings.py:542
 msgid "Primary theme color"
 msgstr ""
 
-#: core/app_settings.py:534
+#: core/app_settings.py:544
 msgid ""
 "Primary color of the theme (hexadecimal code), used as the background color "
 "of the left menu for example"
 msgstr ""
 
-#: core/app_settings.py:543
+#: core/app_settings.py:553
 msgid "Primary theme color (lighter version)"
 msgstr ""
 
-#: core/app_settings.py:546 core/app_settings.py:558
+#: core/app_settings.py:556 core/app_settings.py:568
 msgid "Primary color of the theme (hexadecimal code)"
 msgstr ""
 
-#: core/app_settings.py:555
+#: core/app_settings.py:565
 msgid "Primary theme color (darker version)"
 msgstr ""
 
-#: core/app_settings.py:566
+#: core/app_settings.py:576
 #, fuzzy
 #| msgid "Secondary email"
 msgid "Secondary theme color"
 msgstr "次要電子郵件"
 
-#: core/app_settings.py:568
+#: core/app_settings.py:578
 msgid ""
 "Secondary color of the theme (hexadecimal code), used as the background "
 "color of some buttons for example"
 msgstr ""
 
-#: core/app_settings.py:576
+#: core/app_settings.py:586
 msgid "Labels theme color"
 msgstr ""
 
-#: core/app_settings.py:578
+#: core/app_settings.py:588
 msgid "Theme color for labels (hexadecimal code)"
 msgstr ""
 
-#: core/app_settings.py:586
+#: core/app_settings.py:596
 msgid "Logos"
 msgstr ""
 
-#: core/app_settings.py:593
+#: core/app_settings.py:603
 msgid "Login page logo"
 msgstr ""
 
-#: core/app_settings.py:595
+#: core/app_settings.py:605
 msgid ""
 "Logo displayed on the login and password-reset pages. Upload an image or "
 "clear it to use the default Modoboa logo."
 msgstr ""
 
-#: core/app_settings.py:605
+#: core/app_settings.py:615
 msgid "Menu logo"
 msgstr ""
 
-#: core/app_settings.py:607
+#: core/app_settings.py:617
 msgid ""
 "Logo displayed in the side menu and webmail. Upload an image or clear it to "
 "use the default Modoboa logo."
 msgstr ""
 
-#: core/app_settings.py:617
+#: core/app_settings.py:627
 msgid "Creation form logo"
 msgstr ""
 
-#: core/app_settings.py:619
+#: core/app_settings.py:629
 msgid ""
 "Logo displayed at the top of object creation forms. Upload an image or clear "
 "it to use the default Modoboa logo."
 msgstr ""
 
-#: core/app_settings.py:633
+#: core/app_settings.py:643
 msgid "Notifications"
 msgstr "通知"
 
-#: core/app_settings.py:639
+#: core/app_settings.py:649
 msgid "Sender address"
 msgstr "伺服器位址"
 
-#: core/app_settings.py:641
+#: core/app_settings.py:651
 msgid "Email address used to send notifications."
 msgstr "郵件地址用於寄送通知。"
 
-#: core/app_settings.py:652
+#: core/app_settings.py:662
 msgid "Public API"
 msgstr "公用 API"
 
-#: core/app_settings.py:658
+#: core/app_settings.py:668
 msgid "Enable communication"
 msgstr "啟用通訊"
 
-#: core/app_settings.py:660 core/app_settings.py:670
+#: core/app_settings.py:670 core/app_settings.py:680
 msgid "Automatically checks if a newer version is available"
 msgstr "假如有新的版本就自動檢查"
 
-#: core/app_settings.py:667
+#: core/app_settings.py:677
 msgid "Check new versions"
 msgstr "檢查新的版本"
 
-#: core/app_settings.py:678
+#: core/app_settings.py:688
 msgid "Send an email when new versions are found"
 msgstr ""
 
-#: core/app_settings.py:682
+#: core/app_settings.py:692
 msgid "Send an email to notify admins about new versions"
 msgstr ""
 
-#: core/app_settings.py:689 sievefilters/constants.py:30
+#: core/app_settings.py:699 sievefilters/constants.py:30
 msgid "Recipient"
 msgstr ""
 
-#: core/app_settings.py:692
+#: core/app_settings.py:702
 msgid "Recipient of new versions notification emails."
 msgstr ""
 
-#: core/app_settings.py:699
+#: core/app_settings.py:709
 msgid "Send statistics"
 msgstr "寄送狀態"
 
-#: core/app_settings.py:702
+#: core/app_settings.py:712
 msgid "Send statistics to Modoboa public API (counters and used extensions)"
 msgstr "寄送狀態到 Modoboa 公用 API (計數器及已使用的外掛)"
 
-#: core/app_settings.py:721
+#: core/app_settings.py:731
 #, fuzzy
 #| msgid "Inactive account threshold"
 msgid "Enable inactive account tracking"
 msgstr "未啟用帳號上限"
 
-#: core/app_settings.py:724
+#: core/app_settings.py:734
 msgid ""
 "Allow the administrator to set a threshold (in days) beyond which an account "
 "is considered inactive if the user hasn't logged in"
 msgstr ""
 
-#: core/app_settings.py:733
+#: core/app_settings.py:743
 msgid "Inactive account threshold"
 msgstr "未啟用帳號上限"
 
-#: core/app_settings.py:736
+#: core/app_settings.py:746
 msgid ""
 "An account with a last login date greater than this threshold (in days) will "
 "be considered as inactive"
 msgstr "這個帳號最後一次登錄日期超過這個上限 (在幾天) 將考慮停用"
 
-#: core/app_settings.py:745
+#: core/app_settings.py:755
 msgid "Top notifications check interval"
 msgstr "檢查提醒間隔"
 
-#: core/app_settings.py:748
+#: core/app_settings.py:758
 msgid "Interval between two top notification checks (in seconds)"
 msgstr "兩次檢查提醒間隔 (在幾秒)"
 
-#: core/app_settings.py:755
+#: core/app_settings.py:765
 msgid "Maximum log record age"
 msgstr "最大日誌紀錄時間"
 
-#: core/app_settings.py:757
+#: core/app_settings.py:767
 msgid "The maximum age in days of a log record"
 msgstr ""
 
-#: core/app_settings.py:765
+#: core/app_settings.py:775
 msgid "Retention time in message history"
 msgstr ""
 
-#: core/app_settings.py:768
+#: core/app_settings.py:778
 msgid "Retention time (in days) of a message in the message history section"
 msgstr ""
 
-#: core/app_settings.py:775
+#: core/app_settings.py:785
 msgid "Items per page"
 msgstr "每頁的條目數量"
 
-#: core/app_settings.py:777
+#: core/app_settings.py:787
 msgid "Number of displayed items per page"
 msgstr ""
 
@@ -2205,23 +2256,23 @@ msgstr "經銷商"
 msgid "Super administrator"
 msgstr "超級管理員"
 
-#: core/constants.py:53
+#: core/constants.py:60
 msgid "No"
 msgstr "否"
 
-#: core/constants.py:59
+#: core/constants.py:66
 msgid "Search and bind"
 msgstr "搜尋和 bind"
 
-#: core/constants.py:60
+#: core/constants.py:67
 msgid "Direct bind"
 msgstr "直接 bind"
 
-#: core/constants.py:109
+#: core/constants.py:116
 msgid "Choose a provider"
 msgstr ""
 
-#: core/constants.py:114
+#: core/constants.py:121
 msgid "Dummy"
 msgstr ""
 
@@ -2322,21 +2373,21 @@ msgstr "更新密碼失敗: LDAP 模組未安裝"
 msgid "account"
 msgstr "帳號"
 
-#: core/models.py:323
+#: core/models.py:342
 msgid "Unknown"
 msgstr "未知"
 
-#: core/models.py:366
+#: core/models.py:385
 msgid "You can't import an account with a role greater than yours"
 msgstr ""
 
-#: core/models.py:381
+#: core/models.py:400
 #, fuzzy
 #| msgid "Enter a valid email address."
 msgid "The simple user '{}' must have a valid email address"
 msgstr "輸入有效的電子郵件"
 
-#: core/models.py:389
+#: core/models.py:408
 msgid "username and email fields must not differ for '{}'"
 msgstr ""
 
@@ -3291,17 +3342,23 @@ msgstr "%s: 已達到上限"
 msgid "Daily limit of the following %(ltype)s has been reached: %(name)s."
 msgstr ""
 
-#: relaydomains/api/v1/serializers.py:24
+#: relaydomains/api/v1/serializers.py:26
 msgid "Unsupported service"
 msgstr "不支援的服務"
 
-#: relaydomains/lib.py:17
+#: relaydomains/lib.py:16
+#, fuzzy
+#| msgid "You are not allowed to import domains"
+msgid "You are not allowed to import relay domains"
+msgstr "您未允許匯入網域"
+
+#: relaydomains/lib.py:33
 #, fuzzy
 #| msgid "MX records of {}"
 msgid "Invalid port: {}"
 msgstr "MX 紀錄 {}"
 
-#: relaydomains/lib.py:29
+#: relaydomains/lib.py:45
 #, fuzzy
 #| msgid "Invalid line: %s"
 msgid "Invalid settings: {}"
@@ -3464,7 +3521,7 @@ msgstr ""
 msgid "is not"
 msgstr ""
 
-#: sievefilters/constants.py:28 webmail/lib/imapemail.py:400
+#: sievefilters/constants.py:28 webmail/lib/imapemail.py:470
 msgid "Subject"
 msgstr "主旨"
 
@@ -3886,6 +3943,16 @@ msgstr "簽名文字"
 msgid "User defined email signature"
 msgstr "使用者定義郵件簽名"
 
+#: webmail/app_settings.py:304
+#, fuzzy
+#| msgid "Signature text"
+msgid "Signature position"
+msgstr "簽名文字"
+
+#: webmail/app_settings.py:306
+msgid "Where the signature goes in replies and forwards"
+msgstr ""
+
 #: webmail/checks.py:18
 msgid ""
 "The webmail attachments cleanup job is not registered: unused attachment "
@@ -3910,11 +3977,23 @@ msgstr ""
 
 #: webmail/constants.py:75
 #, fuzzy
+#| msgid "bounced messages"
+msgid "Above the quoted message"
+msgstr "已退回郵件"
+
+#: webmail/constants.py:76
+#, fuzzy
+#| msgid "rejected messages"
+msgid "Below the quoted message"
+msgstr "已拒絕郵件"
+
+#: webmail/constants.py:86
+#, fuzzy
 #| msgid "sent messages"
 msgid "Messages"
 msgstr "已發訊息"
 
-#: webmail/constants.py:76
+#: webmail/constants.py:87
 #, fuzzy
 #| msgid "Check new versions"
 msgid "Conversations"
@@ -3939,31 +4018,37 @@ msgstr ""
 msgid "Failed to remove attachment: "
 msgstr "移除附件失敗:"
 
-#: webmail/lib/imapemail.py:366
-msgid "wrote:"
+#: webmail/lib/imapemail.py:420
+#, python-format
+msgid "On %(date)s, %(sender)s wrote:"
 msgstr ""
 
-#: webmail/lib/imapemail.py:402
+#: webmail/lib/imapemail.py:425
+#, python-format
+msgid "%(sender)s wrote:"
+msgstr ""
+
+#: webmail/lib/imapemail.py:473
 msgid "Date"
 msgstr "日期"
 
-#: webmail/lib/imapemail.py:418 webmail/lib/imapemail.py:421
+#: webmail/lib/imapemail.py:490 webmail/lib/imapemail.py:493
 #, fuzzy
 #| msgid "sent messages"
 msgid "Original message"
 msgstr "已發訊息"
 
-#: webmail/lib/imaputils.py:75 webmail/viewsets.py:26
+#: webmail/lib/imaputils.py:75 webmail/viewsets.py:27
 msgid "Invalid message identifier"
 msgstr ""
 
-#: webmail/lib/imaputils.py:82 webmail/viewsets.py:40
+#: webmail/lib/imaputils.py:82 webmail/viewsets.py:41
 #, fuzzy
 #| msgid "Invalid value"
 msgid "Invalid part number"
 msgstr "無效的值"
 
-#: webmail/lib/imaputils.py:95 webmail/viewsets.py:47
+#: webmail/lib/imaputils.py:95 webmail/viewsets.py:48
 msgid "Invalid search pattern"
 msgstr ""
 
@@ -4003,90 +4088,96 @@ msgstr ""
 msgid "Trash"
 msgstr "垃圾筒"
 
-#: webmail/lib/utils.py:177
+#: webmail/lib/utils.py:520
 msgid "The account has been disabled"
 msgstr ""
 
-#: webmail/lib/utils.py:180
+#: webmail/lib/utils.py:523
 #, fuzzy
 #| msgid "Mailbox {} already exists"
 msgid "The mailbox no longer exists"
 msgstr "信箱 {} 已存在"
 
-#: webmail/lib/utils.py:182
+#: webmail/lib/utils.py:525
 #, fuzzy
 #| msgid "The domain name"
 msgid "The domain has been disabled"
 msgstr "網域名稱"
 
-#: webmail/lib/utils.py:184
+#: webmail/lib/utils.py:527
 msgid "This address is no longer allowed for this account"
 msgstr ""
 
-#: webmail/serializers.py:302
+#: webmail/serializers.py:310
 msgid "Moving scheduled messages is forbidden"
 msgstr ""
 
-#: webmail/serializers.py:334
+#: webmail/serializers.py:342
 msgid "Only datetime in the future is allowed"
 msgstr ""
 
-#: webmail/serializers.py:339
+#: webmail/serializers.py:347
 msgid "Provived datetime must be one minute in the future at least"
 msgstr ""
 
-#: webmail/serializers.py:369
+#: webmail/serializers.py:378
 #, fuzzy
 #| msgid "You are not allowed to import domain aliases."
 msgid "You are not allowed to send from this address"
 msgstr "您未允許匯入網域別名。"
 
-#: webmail/serializers.py:410
+#: webmail/serializers.py:393
+#, fuzzy, python-format
+#| msgid "Invalid address"
+msgid "Invalid addresses: %s"
+msgstr "無效位址"
+
+#: webmail/serializers.py:434
 msgid ""
 "original_mailbox, original_mailid and original_action must be provided "
 "together"
 msgstr ""
 
-#: webmail/serializers.py:427
+#: webmail/serializers.py:451
 #, python-format
 msgid ""
 "Ensure this field has no more than %(max_length)s characters to schedule the "
 "message"
 msgstr ""
 
-#: webmail/serializers.py:484
+#: webmail/serializers.py:523
 msgid "forward_mailbox and forward_mailid must be provided together"
 msgstr ""
 
-#: webmail/serializers.py:488
+#: webmail/serializers.py:527
 msgid "A session can't start from a draft and a forwarded message"
 msgstr ""
 
-#: webmail/viewsets.py:33
+#: webmail/viewsets.py:34
 #, fuzzy
 #| msgid "Invalid value"
 msgid "Invalid page number"
 msgstr "無效的值"
 
-#: webmail/viewsets.py:168
+#: webmail/viewsets.py:169
 msgid "This mailbox is used by the webmail and can't be renamed"
 msgstr ""
 
-#: webmail/viewsets.py:209
+#: webmail/viewsets.py:210
 msgid "This mailbox is used by the webmail and can't be deleted"
 msgstr ""
 
-#: webmail/viewsets.py:630
+#: webmail/viewsets.py:650
 #, python-format
 msgid "A message cannot carry more than %s attachments"
 msgstr ""
 
-#: webmail/viewsets.py:642
+#: webmail/viewsets.py:662
 #, python-format
 msgid "Attachment is too big (limit: %s)"
 msgstr "附件太大 (限制: %s)"
 
-#: webmail/viewsets.py:647
+#: webmail/viewsets.py:667
 #, fuzzy, python-format
 #| msgid "Attachment is too big (limit: %s)"
 msgid "Attachments are too big (limit: %s for the whole message)"

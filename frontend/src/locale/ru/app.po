@@ -95,7 +95,7 @@ msgstr "Вы собираетесь удалить свой токен дост�
 #: src/components/admin/imap_migration/ProviderForm.vue:58
 #: src/components/calendars/RecurrenceScopeDialog.vue:14
 #: src/components/tools/ConfirmDialog.vue:55
-#: src/components/webmail/SubscriptionsDialog.vue:32
+#: src/components/webmail/SubscriptionsDialog.vue:77
 msgid "Cancel"
 msgstr "Отмена"
 
@@ -127,7 +127,7 @@ msgstr "Включено"
 #: src/components/account/AutoReplyForm.vue:12
 #: src/components/quarantine/QuarantineList.vue:49
 #: src/components/quarantine/QuarantineList.vue:235
-#: src/components/webmail/ComposeEmailForm.vue:193
+#: src/components/webmail/ComposeEmailForm.vue:196
 #: src/components/webmail/EmailList.vue:247
 msgid "Subject"
 msgstr "Тема"
@@ -151,7 +151,7 @@ msgstr ""
 #: src/components/calendars/EventForm.vue:32
 #: src/components/quarantine/QuarantineList.vue:234
 #: src/components/tools/TimeSerieChart.vue:19
-#: src/components/webmail/ComposeEmailForm.vue:83
+#: src/components/webmail/ComposeEmailForm.vue:86
 msgid "From"
 msgstr "От"
 
@@ -258,7 +258,7 @@ msgstr "название"
 #: src/components/contacts/CategoryForm.vue:10
 #: src/components/webmail/MailboxForm.vue:7
 #: src/views/account/FiltersView.vue:149
-#: src/views/admin/InformationView.vue:145
+#: src/views/admin/InformationView.vue:228
 msgid "Name"
 msgstr "Имя"
 
@@ -726,7 +726,7 @@ msgid "Alarm re-opened"
 msgstr "Напоминание снова открыто"
 
 #: src/components/admin/dashboard/GlobalStatisticsWidget.vue:2
-#: src/layouts/admin/AdminLayout.vue:80
+#: src/layouts/admin/AdminLayout.vue:106
 #: src/views/admin/domains/DomainView.vue:25
 #: src/views/admin/monitoring/StatisticsView.vue:3
 msgid "Statistics"
@@ -1053,6 +1053,7 @@ msgstr "Скопировать в буфер обмена"
 #: src/components/admin/imap_migration/ProviderCreationForm.vue:51
 #: src/components/admin/imap_migration/ProviderCreationForm.vue:71
 #: src/components/admin/imap_migration/ProviderForm.vue:7
+#: src/components/admin/information/ProPromotion.vue:95
 #: src/views/admin/domains/DomainView.vue:22
 msgid "General"
 msgstr "Общие"
@@ -1073,7 +1074,7 @@ msgstr "Ограничения"
 
 #: src/components/admin/domains/DomainCreationForm.vue:172
 #: src/components/admin/domains/DomainCreationForm.vue:298
-#: src/components/webmail/ComposeEmailForm.vue:42
+#: src/components/webmail/ComposeEmailForm.vue:43
 msgid "Options"
 msgstr "Параметры"
 
@@ -1309,7 +1310,7 @@ msgid "Edit"
 msgstr "Редактировать"
 
 #: src/components/admin/domains/DomainList.vue:414
-#: src/layouts/admin/AdminLayout.vue:66
+#: src/layouts/admin/AdminLayout.vue:92
 msgid "Alarms"
 msgstr "Напоминания"
 
@@ -1390,8 +1391,9 @@ msgstr "и выше — письмо отбрасывается"
 
 #: src/components/admin/domains/DomainPolicyForm.vue:96
 #: src/components/tools/ChooseColumnsForm.vue:19
+#: src/components/tools/HtmlEditor.vue:115
 #: src/components/tools/TimeSerieChart.vue:22
-#: src/components/webmail/SubscriptionsDialog.vue:38
+#: src/components/webmail/SubscriptionsDialog.vue:83
 msgid "Apply"
 msgstr "Применить"
 
@@ -1638,7 +1640,7 @@ msgstr "Истекает"
 #: src/components/admin/identities/form_steps/AliasGeneralForm.vue:58
 #: src/components/admin/identities/IdentityList.vue:261
 #: src/components/calendars/EventForm.vue:86
-#: src/views/admin/InformationView.vue:148
+#: src/views/admin/InformationView.vue:231
 msgid "Description"
 msgstr "Описание"
 
@@ -2008,6 +2010,91 @@ msgstr[3] "%{count} связанных доменов"
 msgid "No associated domain"
 msgstr "Нет связанных доменов"
 
+#: src/components/admin/information/ProPromotion.vue:11
+msgid "Host your customers' email under their own brand"
+msgstr ""
+
+#: src/components/admin/information/ProPromotion.vue:15
+msgid ""
+"Modoboa Pro adds features for hosting providers, agencies and MSPs that "
+"manage several organizations from a single Modoboa instance."
+msgstr ""
+
+#: src/components/admin/information/ProPromotion.vue:46
+msgid "More features will come in upcoming releases."
+msgstr ""
+
+#: src/components/admin/information/ProPromotion.vue:56
+msgid "Discover Modoboa Pro"
+msgstr ""
+
+#: src/components/admin/information/ProPromotion.vue:65
+msgid "Installation guide"
+msgstr ""
+
+#: src/components/admin/information/ProPromotion.vue:71
+msgid "Setup"
+msgstr ""
+
+#: src/components/admin/information/ProPromotion.vue:73
+msgid "Install the modoboa-pro package."
+msgstr ""
+
+#: src/components/admin/information/ProPromotion.vue:76
+msgid ""
+"Add the Modoboa Pro applications to MODOBOA_APPS and set "
+"MODOBOA_PRO_LICENSE_KEY in settings.py."
+msgstr ""
+
+#: src/components/admin/information/ProPromotion.vue:83
+msgid ""
+"Apply migrations and restart Modoboa: the installation registers itself "
+"automatically."
+msgstr ""
+
+#: src/components/admin/information/ProPromotion.vue:91
+msgid "You can hide this section in"
+msgstr ""
+
+#: src/components/admin/information/ProPromotion.vue:95
+#: src/layouts/account/AccountLayout.vue:30
+#: src/layouts/admin/AdminLayout.vue:161
+msgid "Settings"
+msgstr "Настройки"
+
+#: src/components/admin/information/ProPromotion.vue:114
+msgid "Virtual hosts"
+msgstr ""
+
+#: src/components/admin/information/ProPromotion.vue:115
+msgid "A public hostname per customer, served by the same instance."
+msgstr ""
+
+#: src/components/admin/information/ProPromotion.vue:121
+msgid "Automatic HTTPS"
+msgstr ""
+
+#: src/components/admin/information/ProPromotion.vue:122
+msgid "Let's Encrypt certificates issued and renewed automatically."
+msgstr ""
+
+#: src/components/admin/information/ProPromotion.vue:128
+msgid "Per-customer branding"
+msgstr ""
+
+#: src/components/admin/information/ProPromotion.vue:129
+msgid "Logos and colors specific to each hostname."
+msgstr ""
+
+#: src/components/admin/information/ProPromotion.vue:133
+#, fuzzy
+msgid "Customer isolation"
+msgstr "Подтверждение"
+
+#: src/components/admin/information/ProPromotion.vue:134
+msgid "Each portal only gives access to its customer's domains."
+msgstr ""
+
 #: src/components/admin/logs/AuditTrailList.vue:51
 #: src/components/admin/logs/MessageList.vue:47
 #: src/components/quarantine/QuarantineList.vue:236
@@ -2032,7 +2119,7 @@ msgstr "ID очереди"
 #: src/components/quarantine/QuarantineList.vue:52
 #: src/components/quarantine/QuarantineList.vue:233
 #: src/components/tools/TimeSerieChart.vue:20
-#: src/components/webmail/ComposeEmailForm.vue:100
+#: src/components/webmail/ComposeEmailForm.vue:103
 #: src/components/webmail/MessageHeader.vue:108
 msgid "To"
 msgstr "Кому"
@@ -2177,7 +2264,7 @@ msgid "Select an ICS file"
 msgstr "Выберите файл .ics"
 
 #: src/components/calendars/ImportEventsForm.vue:30
-#: src/components/webmail/ComposeEmailForm.vue:18
+#: src/components/webmail/ComposeEmailForm.vue:19
 msgid "Send"
 msgstr "Отправить"
 
@@ -2454,6 +2541,19 @@ msgstr "Изменить"
 msgid "Empty"
 msgstr "Пусто"
 
+#: src/components/tools/HtmlEditor.vue:89
+msgid "Link"
+msgstr ""
+
+#: src/components/tools/HtmlEditor.vue:97
+msgid "URL"
+msgstr ""
+
+#: src/components/tools/HtmlEditor.vue:109
+#, fuzzy
+msgid "Remove"
+msgstr "Удалить изображение"
+
 #: src/components/tools/ImageFieldWidget.vue:8
 msgid "No custom image, default will be used."
 msgstr ""
@@ -2586,7 +2686,7 @@ msgstr[2] "%{count} сообщений"
 msgstr[3] "%{count} сообщений"
 
 #: src/components/webmail/AttachmentsDialog.vue:3
-#: src/components/webmail/ComposeEmailForm.vue:67
+#: src/components/webmail/ComposeEmailForm.vue:69
 msgid "Attachments"
 msgstr "Вложения"
 
@@ -2594,53 +2694,73 @@ msgstr "Вложения"
 msgid "Attach"
 msgstr "Прикрепить"
 
-#: src/components/webmail/ComposeEmailForm.vue:28
+#: src/components/webmail/BodyEditor.vue:15
+#: src/components/webmail/BodyEditor.vue:76
+msgid "Switch to plain text"
+msgstr ""
+
+#: src/components/webmail/BodyEditor.vue:29
+msgid "Switch to HTML"
+msgstr ""
+
+#: src/components/webmail/BodyEditor.vue:77
+msgid ""
+"The formatting of the message (bold, links, images...) will be lost. "
+"Continue?"
+msgstr ""
+
+#: src/components/webmail/BodyEditor.vue:80
+#, fuzzy
+msgid "Continue"
+msgstr "Содержимое"
+
+#: src/components/webmail/ComposeEmailForm.vue:29
 msgid "Schedule sending"
 msgstr "Запланировать отправку"
 
-#: src/components/webmail/ComposeEmailForm.vue:49
+#: src/components/webmail/ComposeEmailForm.vue:50
 msgid "Request delivery status notification"
 msgstr "Уведомление о статусе доставки"
 
-#: src/components/webmail/ComposeEmailForm.vue:56
+#: src/components/webmail/ComposeEmailForm.vue:57
 msgid "Request read receipt"
 msgstr "Запросить отчёт о прочтении"
 
-#: src/components/webmail/ComposeEmailForm.vue:74
+#: src/components/webmail/ComposeEmailForm.vue:76
 msgid "Save as draft"
 msgstr "Сохранить как черновик"
 
-#: src/components/webmail/ComposeEmailForm.vue:108
-#: src/components/webmail/ComposeEmailForm.vue:153
-#: src/components/webmail/ComposeEmailForm.vue:180
+#: src/components/webmail/ComposeEmailForm.vue:111
+#: src/components/webmail/ComposeEmailForm.vue:156
+#: src/components/webmail/ComposeEmailForm.vue:183
 msgid "Provide one or more addresses"
 msgstr "Укажите один или несколько адресов"
 
-#: src/components/webmail/ComposeEmailForm.vue:121
-#: src/components/webmail/ComposeEmailForm.vue:139
+#: src/components/webmail/ComposeEmailForm.vue:124
+#: src/components/webmail/ComposeEmailForm.vue:142
 #: src/components/webmail/MessageHeader.vue:109
 msgid "Cc"
 msgstr "Копия"
 
-#: src/components/webmail/ComposeEmailForm.vue:129
-#: src/components/webmail/ComposeEmailForm.vue:166
+#: src/components/webmail/ComposeEmailForm.vue:132
+#: src/components/webmail/ComposeEmailForm.vue:169
 #: src/components/webmail/MessageHeader.vue:110
 msgid "Bcc"
 msgstr "Скрытая копия"
 
-#: src/components/webmail/ComposeEmailForm.vue:421
+#: src/components/webmail/ComposeEmailForm.vue:485
 msgid "Email scheduled"
 msgstr "Отправка электронной почты запланирована"
 
-#: src/components/webmail/ComposeEmailForm.vue:422
+#: src/components/webmail/ComposeEmailForm.vue:486
 msgid "Email sent"
 msgstr "Письмо отправлено"
 
-#: src/components/webmail/ComposeEmailForm.vue:510
+#: src/components/webmail/ComposeEmailForm.vue:520
 msgid "You must provide one recipient at least"
 msgstr "Необходимо указать хотя бы одного получателя"
 
-#: src/components/webmail/ComposeEmailForm.vue:534
+#: src/components/webmail/ComposeEmailForm.vue:544
 msgid "Draft saved"
 msgstr ""
 
@@ -2823,7 +2943,7 @@ msgstr "Выберите время"
 msgid "Schedule"
 msgstr "Расписание"
 
-#: src/components/webmail/EmailSchedulingForm.vue:68
+#: src/components/webmail/EmailSchedulingForm.vue:66
 msgid "Provided time must be one minute from now at least"
 msgstr "Указанное время должно быть не раньше чем через минуту"
 
@@ -2883,7 +3003,24 @@ msgid ""
 "displayed in the webmail."
 msgstr ""
 
-#: src/components/webmail/SubscriptionsDialog.vue:94
+#: src/components/webmail/SubscriptionsDialog.vue:18
+#, fuzzy
+msgid "Filter folders"
+msgstr "Фильтр добавлен"
+
+#: src/components/webmail/SubscriptionsDialog.vue:49
+msgid "Expand"
+msgstr ""
+
+#: src/components/webmail/SubscriptionsDialog.vue:50
+msgid "Collapse"
+msgstr ""
+
+#: src/components/webmail/SubscriptionsDialog.vue:70
+msgid "No folder found"
+msgstr ""
+
+#: src/components/webmail/SubscriptionsDialog.vue:217
 #, fuzzy
 msgid "Subscriptions updated"
 msgstr "Расписание обновлено"
@@ -2908,56 +3045,55 @@ msgstr "База данных домена"
 msgid "User's database"
 msgstr "База данных пользователя"
 
-#: src/layouts/account/AccountLayout.vue:30
-#: src/layouts/admin/AdminLayout.vue:130
-msgid "Settings"
-msgstr "Настройки"
-
 #: src/layouts/account/AccountLayout.vue:36
 msgid "Filters"
 msgstr "Фильтры"
 
-#: src/layouts/admin/AdminLayout.vue:40
+#: src/layouts/admin/AdminLayout.vue:51
+msgid "Discover"
+msgstr ""
+
+#: src/layouts/admin/AdminLayout.vue:66
 msgid "Dashboard"
 msgstr "Панель управления"
 
-#: src/layouts/admin/AdminLayout.vue:46
+#: src/layouts/admin/AdminLayout.vue:72
 #: src/views/admin/domains/DomainsView.vue:4
 msgid "Domains"
 msgstr "Домены"
 
-#: src/layouts/admin/AdminLayout.vue:56
+#: src/layouts/admin/AdminLayout.vue:82
 #: src/views/admin/identities/IdentitiesView.vue:4
 msgid "Identities"
 msgstr "Пользователи"
 
-#: src/layouts/admin/AdminLayout.vue:72
+#: src/layouts/admin/AdminLayout.vue:98
 msgid "Monitoring"
 msgstr "Мониторинг"
 
-#: src/layouts/admin/AdminLayout.vue:85
+#: src/layouts/admin/AdminLayout.vue:111
 #: src/views/admin/monitoring/AuditTrailView.vue:3
 msgid "Audit trail"
 msgstr "Журнал действий"
 
-#: src/layouts/admin/AdminLayout.vue:90
+#: src/layouts/admin/AdminLayout.vue:116
 msgid "Messages"
 msgstr "Письма"
 
-#: src/layouts/admin/AdminLayout.vue:102
+#: src/layouts/admin/AdminLayout.vue:128
 msgid "IMAP Migration"
 msgstr "Миграция IMAP"
 
-#: src/layouts/admin/AdminLayout.vue:107
+#: src/layouts/admin/AdminLayout.vue:133
 msgid "Email providers"
 msgstr "Почтовые провайдеры"
 
-#: src/layouts/admin/AdminLayout.vue:112
+#: src/layouts/admin/AdminLayout.vue:138
 #: src/views/admin/imap_migration/MigrationsView.vue:4
 msgid "Migrations"
 msgstr "Миграции"
 
-#: src/layouts/admin/AdminLayout.vue:143 src/views/admin/InformationView.vue:4
+#: src/layouts/admin/AdminLayout.vue:174 src/views/admin/InformationView.vue:4
 #: src/views/calendars/CalendarView.vue:224
 #: src/views/calendars/CalendarView.vue:260
 msgid "Information"
@@ -3224,7 +3360,7 @@ msgstr "Провайдеры"
 msgid "Important messages"
 msgstr "Важные письма"
 
-#: src/views/admin/InformationView.vue:22
+#: src/views/admin/InformationView.vue:24
 msgid ""
 "The password scheme you are using has been deprecated and will be removed in "
 "the next minor version. The procedure to upgrade to a stronger scheme is as "
@@ -3233,30 +3369,30 @@ msgstr ""
 "Используемая схема шифрования паролей устарела и будет удалена в следующей "
 "версии. Порядок перехода на более надёжную схему:"
 
-#: src/views/admin/InformationView.vue:29
+#: src/views/admin/InformationView.vue:31
 msgid "Go to <strong>Settings > General</strong> section"
 msgstr "Перейдите в раздел <strong>Настройки  > Общие</strong>"
 
-#: src/views/admin/InformationView.vue:37
+#: src/views/admin/InformationView.vue:39
 msgid "Change the value of <strong>Default password scheme</strong>"
 msgstr "Измените значение <strong>Схема пароля по умолчанию</strong>"
 
-#: src/views/admin/InformationView.vue:45
+#: src/views/admin/InformationView.vue:47
 msgid ""
 "Make sure <strong>Update password scheme at login</strong> option is enabled"
 msgstr ""
 "Убедитесь, что включена опция <strong>Обновлять схему пароля при входе</"
 "strong>"
 
-#: src/views/admin/InformationView.vue:51
+#: src/views/admin/InformationView.vue:53
 msgid "Save your changes"
 msgstr "Сохраните изменения"
 
-#: src/views/admin/InformationView.vue:54
+#: src/views/admin/InformationView.vue:56
 msgid "Logout / Login with your current account so its password gets updated"
 msgstr "Выйдите и зайдите снова, чтобы пароль обновился"
 
-#: src/views/admin/InformationView.vue:61
+#: src/views/admin/InformationView.vue:63
 msgid ""
 "Inform <strong>ALL</strong> your users that they must login to Modoboa to "
 "complete the operation"
@@ -3264,7 +3400,7 @@ msgstr ""
 "Сообщите <strong>ВСЕМ</strong> пользователям, что они должны зайти в "
 "Modoboa, чтобы завершить операцию"
 
-#: src/views/admin/InformationView.vue:71
+#: src/views/admin/InformationView.vue:73
 msgid ""
 "You must apply this procedure <strong>BEFORE</strong> you install a newest "
 "version of Modoboa, otherwise <strong>you will be unable to connect to the "
@@ -3273,7 +3409,7 @@ msgstr ""
 "Эту процедуру необходимо выполнить <strong>ДО</strong> обновления Modoboa, "
 "иначе <strong>вы больше не сможете войти в веб-интерфейс</strong>."
 
-#: src/views/admin/InformationView.vue:80
+#: src/views/admin/InformationView.vue:82
 msgid ""
 "Please note that you will see this message until <strong>ALL</strong> user "
 "passwords have been converted using the new scheme."
@@ -3281,25 +3417,42 @@ msgstr ""
 "Это сообщение будет показываться, пока <strong>ВСЕ</strong> пароли "
 "пользователей не будут переведены на новую схему."
 
-#: src/views/admin/InformationView.vue:92
+#: src/views/admin/InformationView.vue:100
 msgid "Installed components"
 msgstr "Установленные компоненты"
 
-#: src/views/admin/InformationView.vue:103
+#: src/views/admin/InformationView.vue:124
 msgid "One or more updates are available"
 msgstr "Доступны одно или более обновлений."
 
-#: src/views/admin/InformationView.vue:107
+#: src/views/admin/InformationView.vue:128
 msgid "Check out the following list to find related components"
 msgstr "Посмотрите список связанных компонентов ниже"
 
-#: src/views/admin/InformationView.vue:146
+#: src/views/admin/InformationView.vue:153
+#, fuzzy
+msgid "Not installed"
+msgstr "Не создан"
+
+#: src/views/admin/InformationView.vue:174
+msgid "Learn more"
+msgstr ""
+
+#: src/views/admin/InformationView.vue:192
+msgid "Modoboa Pro is installed."
+msgstr ""
+
+#: src/views/admin/InformationView.vue:229
 msgid "Installed version"
 msgstr "Установленная версия"
 
-#: src/views/admin/InformationView.vue:147
+#: src/views/admin/InformationView.vue:230
 msgid "Latest version"
 msgstr "Последняя версия"
+
+#: src/views/admin/InformationView.vue:258
+msgid "Virtual hosts, automatic HTTPS and per-customer branding"
+msgstr ""
 
 #: src/views/admin/monitoring/MessagesView.vue:3
 msgid "Message history"

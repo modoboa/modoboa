@@ -1,18 +1,19 @@
 # Translators:
 # Adrien spitfireap, 2026
 # Antoine Nguyen <tonio@ngyn.org>, 2026
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "PO-Revision-Date: 2024-08-01 12:26+0000\n"
 "Last-Translator: Antoine Nguyen <tonio@ngyn.org>, 2026\n"
 "Language-Team: French (https://app.transifex.com/tonio/teams/13749/fr/)\n"
+"Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: fr\n"
-"Plural-Forms: nplurals=3; plural=(n == 0 || n == 1) ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;\n"
+"Plural-Forms: nplurals=3; plural=(n == 0 || n == 1) ? 0 : n != 0 && n % "
+"1000000 == 0 ? 1 : 2;\n"
 
 #: src/api/repository.js:43
 msgid "Unable to reach the server, please check your connection"
@@ -88,7 +89,7 @@ msgstr "Vous êtes sur le point de supprimer votre jeton d'accès à l'API"
 #: src/components/admin/imap_migration/ProviderForm.vue:58
 #: src/components/calendars/RecurrenceScopeDialog.vue:14
 #: src/components/tools/ConfirmDialog.vue:55
-#: src/components/webmail/SubscriptionsDialog.vue:32
+#: src/components/webmail/SubscriptionsDialog.vue:77
 msgid "Cancel"
 msgstr "Annuler"
 
@@ -120,7 +121,7 @@ msgstr "Activé"
 #: src/components/account/AutoReplyForm.vue:12
 #: src/components/quarantine/QuarantineList.vue:49
 #: src/components/quarantine/QuarantineList.vue:235
-#: src/components/webmail/ComposeEmailForm.vue:193
+#: src/components/webmail/ComposeEmailForm.vue:196
 #: src/components/webmail/EmailList.vue:247
 msgid "Subject"
 msgstr "Sujet"
@@ -132,19 +133,19 @@ msgstr "Contenu"
 #: src/components/account/AutoReplyForm.vue:24
 msgid ""
 "The content of your answer. You can use the following variables, which will "
-"be automatically replaced by the appropriate value: %(name)s, %(fromdate)s, "
-"%(untildate)s"
+"be automatically replaced by the appropriate value: %(name)s, %(fromdate)s, %"
+"(untildate)s"
 msgstr ""
 "Le contenu de votre réponse. Vous pouvez utiliser les variables suivantes, "
-"qui seront automatiquement remplacées par les valeurs appropriées : "
-"%(name)s, %(fromdate)s, %(untildate)s"
+"qui seront automatiquement remplacées par les valeurs appropriées : %"
+"(name)s, %(fromdate)s, %(untildate)s"
 
 #: src/components/account/AutoReplyForm.vue:36
 #: src/components/admin/logs/MessageList.vue:50
 #: src/components/calendars/EventForm.vue:32
 #: src/components/quarantine/QuarantineList.vue:234
 #: src/components/tools/TimeSerieChart.vue:19
-#: src/components/webmail/ComposeEmailForm.vue:83
+#: src/components/webmail/ComposeEmailForm.vue:86
 msgid "From"
 msgstr "De"
 
@@ -254,7 +255,7 @@ msgstr "nom"
 #: src/components/contacts/CategoryForm.vue:10
 #: src/components/webmail/MailboxForm.vue:7
 #: src/views/account/FiltersView.vue:149
-#: src/views/admin/InformationView.vue:145
+#: src/views/admin/InformationView.vue:228
 msgid "Name"
 msgstr "Nom"
 
@@ -584,11 +585,12 @@ msgstr "Cliquer ici pour copier la clé"
 
 #: src/components/account/TotpAuthForm.vue:34
 msgid ""
-"Install a soft token authenticator like FreeOTP or Google Authenticator from"
-" your application repository and use that app to scan this QR code."
+"Install a soft token authenticator like FreeOTP or Google Authenticator from "
+"your application repository and use that app to scan this QR code."
 msgstr ""
 "Installez un logiciel d'authentification de jeton comme FreeOTP ou google\n"
-"                 Authentification depuis votre magasin d'applications et utilisez\n"
+"                 Authentification depuis votre magasin d'applications et "
+"utilisez\n"
 "                 cette application pour scanner ce QR code."
 
 #: src/components/account/TotpAuthForm.vue:39
@@ -727,7 +729,7 @@ msgid "Alarm re-opened"
 msgstr "Alarme ré-ouverte"
 
 #: src/components/admin/dashboard/GlobalStatisticsWidget.vue:2
-#: src/layouts/admin/AdminLayout.vue:80
+#: src/layouts/admin/AdminLayout.vue:106
 #: src/views/admin/domains/DomainView.vue:25
 #: src/views/admin/monitoring/StatisticsView.vue:3
 msgid "Statistics"
@@ -790,8 +792,8 @@ msgid ""
 "If you configured it recently, please wait for the first report to be "
 "received and processed."
 msgstr ""
-"Si vous l'avez récemment configuré, veuillez attendre que le premier rapport"
-" soit reçu et traité. "
+"Si vous l'avez récemment configuré, veuillez attendre que le premier rapport "
+"soit reçu et traité. "
 
 #: src/components/admin/dmarc/DmarcAligmentChart.vue:127
 #: src/components/admin/dmarc/DmarcAligmentChart.vue:143
@@ -824,8 +826,7 @@ msgstr "Synthèse DNSBL pour"
 
 #: src/components/admin/domains/DNSBLSummary.vue:10
 msgid ""
-"IP address %{ address } is currently listed by the following DNSBL "
-"providers:"
+"IP address %{ address } is currently listed by the following DNSBL providers:"
 msgstr ""
 "L'adresse IP %{ address } est actuellement listée par les fournisseurs de "
 "DNSBL suivants :"
@@ -948,12 +949,11 @@ msgid ""
 "DKIM key does not seem to be generated yet or has failed. Do you want to "
 "requeue the job?"
 msgstr ""
-"La génération de la clé DKIM ne semble pas avoir eu lieu ou a échoué. Voulez"
-" vous replanifier cette action ?"
+"La génération de la clé DKIM ne semble pas avoir eu lieu ou a échoué. Voulez "
+"vous replanifier cette action ?"
 
 #: src/components/admin/domains/DNSDetail.vue:291
-msgid ""
-"DKIM keys already exist for this domain. Do you want to overwrite them?"
+msgid "DKIM keys already exist for this domain. Do you want to overwrite them?"
 msgstr "Des clés DKIM existent déjà pour ce domaine. Voulez-vous les écraser?"
 
 #: src/components/admin/domains/DNSStatusChip.vue:18
@@ -1058,6 +1058,7 @@ msgstr "Copier dans le presse-papiers"
 #: src/components/admin/imap_migration/ProviderCreationForm.vue:51
 #: src/components/admin/imap_migration/ProviderCreationForm.vue:71
 #: src/components/admin/imap_migration/ProviderForm.vue:7
+#: src/components/admin/information/ProPromotion.vue:95
 #: src/views/admin/domains/DomainView.vue:22
 msgid "General"
 msgstr "Général"
@@ -1078,7 +1079,7 @@ msgstr "Limites"
 
 #: src/components/admin/domains/DomainCreationForm.vue:172
 #: src/components/admin/domains/DomainCreationForm.vue:298
-#: src/components/webmail/ComposeEmailForm.vue:42
+#: src/components/webmail/ComposeEmailForm.vue:43
 msgid "Options"
 msgstr "Options"
 
@@ -1313,7 +1314,7 @@ msgid "Edit"
 msgstr "Modifier"
 
 #: src/components/admin/domains/DomainList.vue:414
-#: src/layouts/admin/AdminLayout.vue:66
+#: src/layouts/admin/AdminLayout.vue:92
 msgid "Alarms"
 msgstr "Alarmes"
 
@@ -1394,8 +1395,9 @@ msgstr "ou plus rejette le spam"
 
 #: src/components/admin/domains/DomainPolicyForm.vue:96
 #: src/components/tools/ChooseColumnsForm.vue:19
+#: src/components/tools/HtmlEditor.vue:115
 #: src/components/tools/TimeSerieChart.vue:22
-#: src/components/webmail/SubscriptionsDialog.vue:38
+#: src/components/webmail/SubscriptionsDialog.vue:83
 msgid "Apply"
 msgstr "Appliquer"
 
@@ -1645,7 +1647,7 @@ msgstr "Expire le"
 #: src/components/admin/identities/form_steps/AliasGeneralForm.vue:58
 #: src/components/admin/identities/IdentityList.vue:261
 #: src/components/calendars/EventForm.vue:86
-#: src/views/admin/InformationView.vue:148
+#: src/views/admin/InformationView.vue:231
 msgid "Description"
 msgstr "Description"
 
@@ -1695,11 +1697,11 @@ msgstr "Commencer à saisir un nom ici..."
 #: src/components/admin/identities/form_steps/AccountAliasForm.vue:8
 #: src/components/admin/identities/form_steps/AliasRecipientForm.vue:8
 msgid ""
-"Alias(es) of this mailbox. To create a catchall alias, just enter the domain"
-" name (@domain.tld)."
+"Alias(es) of this mailbox. To create a catchall alias, just enter the domain "
+"name (@domain.tld)."
 msgstr ""
-"Alias(s) de cette boîte aux lettres. Pour créer un alias fourre-tout, entrer"
-" uniquement le nom du domaine (@domain.tld)."
+"Alias(s) de cette boîte aux lettres. Pour créer un alias fourre-tout, entrer "
+"uniquement le nom du domaine (@domain.tld)."
 
 #: src/components/admin/identities/form_steps/AccountAliasForm.vue:50
 msgid "Alias already added"
@@ -1724,9 +1726,9 @@ msgstr "Ex: 10MB. Laisser vide pour aucune limite"
 
 #: src/components/admin/identities/form_steps/AccountMailboxForm.vue:15
 msgid ""
-"Quota for this mailbox, can be expressed in KB, MB (default) or GB. Define a"
-" custom value or use domain's default one. Leave empty to define an "
-"unlimited value (not allowed for domain administrators)."
+"Quota for this mailbox, can be expressed in KB, MB (default) or GB. Define a "
+"custom value or use domain's default one. Leave empty to define an unlimited "
+"value (not allowed for domain administrators)."
 msgstr ""
 "Quota pour cette boite. Peut être exprimé en Ko, Mo (défaut) ou Go. Définir "
 "une valeur spécifique ou utiliser la valeur par défaut du domaine. Laisser "
@@ -1781,8 +1783,8 @@ msgid ""
 "A user with no privileges but with a mailbox. He will be allowed to use all "
 "end-user features: webmail, calendar, contacts, filters."
 msgstr ""
-"Un utilisateur sans privilèges mais ayant une boîte mail. Il sera autorisé à"
-" utiliser toutes les fonctionnalités de l'utilisateur final : webmail, "
+"Un utilisateur sans privilèges mais ayant une boîte mail. Il sera autorisé à "
+"utiliser toutes les fonctionnalités de l'utilisateur final : webmail, "
 "calendrier, contacts, filtres."
 
 #: src/components/admin/identities/form_steps/AccountRoleForm.vue:91
@@ -1808,8 +1810,8 @@ msgid ""
 "administrator, plus the possibility to create domains and to assign "
 "resources."
 msgstr ""
-"Un utilisateur intermédiaire qui a les mêmes privilèges qu'un administrateur"
-" de domaine, et la possibilité de créer des domaines et d'affecter des "
+"Un utilisateur intermédiaire qui a les mêmes privilèges qu'un administrateur "
+"de domaine, et la possibilité de créer des domaines et d'affecter des "
 "ressources."
 
 #: src/components/admin/identities/form_steps/AccountRoleForm.vue:109
@@ -1821,8 +1823,8 @@ msgid ""
 "A user with all privileges, can do anything. By default, such a user does "
 "not have a mailbox so he can't access end-user features."
 msgstr ""
-"Un utilisateur ayant tous les privilège, peut tout faire. Par défaut, il n'a"
-" pas de boîte mail et ne peut donc pas accéder aux fonctionnalités d'un "
+"Un utilisateur ayant tous les privilège, peut tout faire. Par défaut, il n'a "
+"pas de boîte mail et ne peut donc pas accéder aux fonctionnalités d'un "
 "utilisateur final."
 
 #: src/components/admin/identities/form_steps/AliasGeneralForm.vue:10
@@ -1944,8 +1946,7 @@ msgstr "Sécurisé"
 #: src/components/admin/imap_migration/form_steps/ProviderGeneralForm.vue:30
 msgid "Is the IMAP connection secured using SSL/TLS or StartTLS"
 msgstr ""
-"La connexion IMAP est-elle sécurisée via l'utilisation de SSL/TLS ou "
-"StartTLS"
+"La connexion IMAP est-elle sécurisée via l'utilisation de SSL/TLS ou StartTLS"
 
 #: src/components/admin/imap_migration/form_steps/ProviderGeneralForm.vue:36
 msgid "Check connection:"
@@ -2018,6 +2019,91 @@ msgstr[2] "%{count} domaines associés"
 msgid "No associated domain"
 msgstr "Aucun domaine associé"
 
+#: src/components/admin/information/ProPromotion.vue:11
+msgid "Host your customers' email under their own brand"
+msgstr ""
+
+#: src/components/admin/information/ProPromotion.vue:15
+msgid ""
+"Modoboa Pro adds features for hosting providers, agencies and MSPs that "
+"manage several organizations from a single Modoboa instance."
+msgstr ""
+
+#: src/components/admin/information/ProPromotion.vue:46
+msgid "More features will come in upcoming releases."
+msgstr ""
+
+#: src/components/admin/information/ProPromotion.vue:56
+msgid "Discover Modoboa Pro"
+msgstr ""
+
+#: src/components/admin/information/ProPromotion.vue:65
+msgid "Installation guide"
+msgstr ""
+
+#: src/components/admin/information/ProPromotion.vue:71
+msgid "Setup"
+msgstr ""
+
+#: src/components/admin/information/ProPromotion.vue:73
+msgid "Install the modoboa-pro package."
+msgstr ""
+
+#: src/components/admin/information/ProPromotion.vue:76
+msgid ""
+"Add the Modoboa Pro applications to MODOBOA_APPS and set "
+"MODOBOA_PRO_LICENSE_KEY in settings.py."
+msgstr ""
+
+#: src/components/admin/information/ProPromotion.vue:83
+msgid ""
+"Apply migrations and restart Modoboa: the installation registers itself "
+"automatically."
+msgstr ""
+
+#: src/components/admin/information/ProPromotion.vue:91
+msgid "You can hide this section in"
+msgstr ""
+
+#: src/components/admin/information/ProPromotion.vue:95
+#: src/layouts/account/AccountLayout.vue:30
+#: src/layouts/admin/AdminLayout.vue:161
+msgid "Settings"
+msgstr "Paramètres"
+
+#: src/components/admin/information/ProPromotion.vue:114
+msgid "Virtual hosts"
+msgstr ""
+
+#: src/components/admin/information/ProPromotion.vue:115
+msgid "A public hostname per customer, served by the same instance."
+msgstr ""
+
+#: src/components/admin/information/ProPromotion.vue:121
+msgid "Automatic HTTPS"
+msgstr ""
+
+#: src/components/admin/information/ProPromotion.vue:122
+msgid "Let's Encrypt certificates issued and renewed automatically."
+msgstr ""
+
+#: src/components/admin/information/ProPromotion.vue:128
+msgid "Per-customer branding"
+msgstr ""
+
+#: src/components/admin/information/ProPromotion.vue:129
+msgid "Logos and colors specific to each hostname."
+msgstr ""
+
+#: src/components/admin/information/ProPromotion.vue:133
+#, fuzzy
+msgid "Customer isolation"
+msgstr "Conversations"
+
+#: src/components/admin/information/ProPromotion.vue:134
+msgid "Each portal only gives access to its customer's domains."
+msgstr ""
+
 #: src/components/admin/logs/AuditTrailList.vue:51
 #: src/components/admin/logs/MessageList.vue:47
 #: src/components/quarantine/QuarantineList.vue:236
@@ -2042,7 +2128,7 @@ msgstr "ID de file"
 #: src/components/quarantine/QuarantineList.vue:52
 #: src/components/quarantine/QuarantineList.vue:233
 #: src/components/tools/TimeSerieChart.vue:20
-#: src/components/webmail/ComposeEmailForm.vue:100
+#: src/components/webmail/ComposeEmailForm.vue:103
 #: src/components/webmail/MessageHeader.vue:108
 msgid "To"
 msgstr "A"
@@ -2078,8 +2164,7 @@ msgstr ""
 
 #: src/components/calendars/CalendarDetail.vue:14
 msgid "This calendar is shared with you by %{ owner } in read-only mode."
-msgstr ""
-"Ce calendrier est partagé avec vous par %{owner} en lecture seulement."
+msgstr "Ce calendrier est partagé avec vous par %{owner} en lecture seulement."
 
 #: src/components/calendars/CalendarDetail.vue:22
 msgid ""
@@ -2192,7 +2277,7 @@ msgid "Select an ICS file"
 msgstr "Sélectionner un fichier ICS"
 
 #: src/components/calendars/ImportEventsForm.vue:30
-#: src/components/webmail/ComposeEmailForm.vue:18
+#: src/components/webmail/ComposeEmailForm.vue:19
 msgid "Send"
 msgstr "Envoyer"
 
@@ -2233,8 +2318,8 @@ msgstr "Information du carnet d'adresse"
 
 #: src/components/contacts/AddressBookInfo.vue:9
 msgid ""
-"To access this address book from the outside (such as Mozilla Thunderbird or"
-" your smartphone), use the following URL:"
+"To access this address book from the outside (such as Mozilla Thunderbird or "
+"your smartphone), use the following URL:"
 msgstr ""
 "Pour accéder à ce carnet d'adresse depuis l'extérieur (comme Mozilla "
 "Thunderbird ou votre smartphone), utilisez l'URL suivante :"
@@ -2467,6 +2552,19 @@ msgstr "Modifier"
 msgid "Empty"
 msgstr "Vide"
 
+#: src/components/tools/HtmlEditor.vue:89
+msgid "Link"
+msgstr ""
+
+#: src/components/tools/HtmlEditor.vue:97
+msgid "URL"
+msgstr ""
+
+#: src/components/tools/HtmlEditor.vue:109
+#, fuzzy
+msgid "Remove"
+msgstr "Supprimer l'image"
+
 #: src/components/tools/ImageFieldWidget.vue:8
 msgid "No custom image, default will be used."
 msgstr "Pas d'image personnalisée, celle par défaut sera utilisée"
@@ -2489,8 +2587,8 @@ msgid ""
 "The first element of each line is mandatory and must be equal to one of the "
 "previous values."
 msgstr ""
-"Le premier élément de chaque ligne est obligatoire et doit être égal à l'une"
-" des valeurs précédentes."
+"Le premier élément de chaque ligne est obligatoire et doit être égal à l'une "
+"des valeurs précédentes."
 
 #: src/components/tools/ImportForm.vue:20
 msgid "You can use a different character as separator."
@@ -2596,7 +2694,7 @@ msgstr[1] "%{count} pièces jointes"
 msgstr[2] "%{count} pièces jointes"
 
 #: src/components/webmail/AttachmentsDialog.vue:3
-#: src/components/webmail/ComposeEmailForm.vue:67
+#: src/components/webmail/ComposeEmailForm.vue:69
 msgid "Attachments"
 msgstr "Pièce jointes"
 
@@ -2604,53 +2702,73 @@ msgstr "Pièce jointes"
 msgid "Attach"
 msgstr "Joindre"
 
-#: src/components/webmail/ComposeEmailForm.vue:28
+#: src/components/webmail/BodyEditor.vue:15
+#: src/components/webmail/BodyEditor.vue:76
+msgid "Switch to plain text"
+msgstr ""
+
+#: src/components/webmail/BodyEditor.vue:29
+msgid "Switch to HTML"
+msgstr ""
+
+#: src/components/webmail/BodyEditor.vue:77
+msgid ""
+"The formatting of the message (bold, links, images...) will be lost. "
+"Continue?"
+msgstr ""
+
+#: src/components/webmail/BodyEditor.vue:80
+#, fuzzy
+msgid "Continue"
+msgstr "Contenu"
+
+#: src/components/webmail/ComposeEmailForm.vue:29
 msgid "Schedule sending"
 msgstr "Planifier l'envoi"
 
-#: src/components/webmail/ComposeEmailForm.vue:49
+#: src/components/webmail/ComposeEmailForm.vue:50
 msgid "Request delivery status notification"
 msgstr "Demander un accusé de réception"
 
-#: src/components/webmail/ComposeEmailForm.vue:56
+#: src/components/webmail/ComposeEmailForm.vue:57
 msgid "Request read receipt"
 msgstr "Demander un accusé de lecture"
 
-#: src/components/webmail/ComposeEmailForm.vue:74
+#: src/components/webmail/ComposeEmailForm.vue:76
 msgid "Save as draft"
 msgstr "Enregistrer en tant que brouillon"
 
-#: src/components/webmail/ComposeEmailForm.vue:108
-#: src/components/webmail/ComposeEmailForm.vue:153
-#: src/components/webmail/ComposeEmailForm.vue:180
+#: src/components/webmail/ComposeEmailForm.vue:111
+#: src/components/webmail/ComposeEmailForm.vue:156
+#: src/components/webmail/ComposeEmailForm.vue:183
 msgid "Provide one or more addresses"
 msgstr "Fournir une ou plusieurs adresses"
 
-#: src/components/webmail/ComposeEmailForm.vue:121
-#: src/components/webmail/ComposeEmailForm.vue:139
+#: src/components/webmail/ComposeEmailForm.vue:124
+#: src/components/webmail/ComposeEmailForm.vue:142
 #: src/components/webmail/MessageHeader.vue:109
 msgid "Cc"
 msgstr "Cc"
 
-#: src/components/webmail/ComposeEmailForm.vue:129
-#: src/components/webmail/ComposeEmailForm.vue:166
+#: src/components/webmail/ComposeEmailForm.vue:132
+#: src/components/webmail/ComposeEmailForm.vue:169
 #: src/components/webmail/MessageHeader.vue:110
 msgid "Bcc"
 msgstr "Cci"
 
-#: src/components/webmail/ComposeEmailForm.vue:421
+#: src/components/webmail/ComposeEmailForm.vue:485
 msgid "Email scheduled"
 msgstr "Email planifié"
 
-#: src/components/webmail/ComposeEmailForm.vue:422
+#: src/components/webmail/ComposeEmailForm.vue:486
 msgid "Email sent"
 msgstr "Message envoyé"
 
-#: src/components/webmail/ComposeEmailForm.vue:510
+#: src/components/webmail/ComposeEmailForm.vue:520
 msgid "You must provide one recipient at least"
 msgstr "Vous devez fournir au moins un destinataire"
 
-#: src/components/webmail/ComposeEmailForm.vue:534
+#: src/components/webmail/ComposeEmailForm.vue:544
 msgid "Draft saved"
 msgstr "Brouillon enregistré"
 
@@ -2819,7 +2937,7 @@ msgstr "Choisir une heure"
 msgid "Schedule"
 msgstr "Planifier"
 
-#: src/components/webmail/EmailSchedulingForm.vue:68
+#: src/components/webmail/EmailSchedulingForm.vue:66
 msgid "Provided time must be one minute from now at least"
 msgstr "L'heure fournie doit être au minimum une minute dans le futur"
 
@@ -2877,7 +2995,24 @@ msgstr ""
 "Vérifiez les dossiers auxquels vous voulez vous abonner. Seuls les dossiers "
 "abonnés sont affichés dans le webmail."
 
-#: src/components/webmail/SubscriptionsDialog.vue:94
+#: src/components/webmail/SubscriptionsDialog.vue:18
+#, fuzzy
+msgid "Filter folders"
+msgstr "Filtre ajouté"
+
+#: src/components/webmail/SubscriptionsDialog.vue:49
+msgid "Expand"
+msgstr ""
+
+#: src/components/webmail/SubscriptionsDialog.vue:50
+msgid "Collapse"
+msgstr ""
+
+#: src/components/webmail/SubscriptionsDialog.vue:70
+msgid "No folder found"
+msgstr ""
+
+#: src/components/webmail/SubscriptionsDialog.vue:217
 msgid "Subscriptions updated"
 msgstr "Abonnements mis à jour"
 
@@ -2901,56 +3036,55 @@ msgstr "Base du domaine"
 msgid "User's database"
 msgstr "Base de l'utilisateur"
 
-#: src/layouts/account/AccountLayout.vue:30
-#: src/layouts/admin/AdminLayout.vue:130
-msgid "Settings"
-msgstr "Paramètres"
-
 #: src/layouts/account/AccountLayout.vue:36
 msgid "Filters"
 msgstr "Filtres"
 
-#: src/layouts/admin/AdminLayout.vue:40
+#: src/layouts/admin/AdminLayout.vue:51
+msgid "Discover"
+msgstr ""
+
+#: src/layouts/admin/AdminLayout.vue:66
 msgid "Dashboard"
 msgstr "Tableau de bord"
 
-#: src/layouts/admin/AdminLayout.vue:46
+#: src/layouts/admin/AdminLayout.vue:72
 #: src/views/admin/domains/DomainsView.vue:4
 msgid "Domains"
 msgstr "Domaines"
 
-#: src/layouts/admin/AdminLayout.vue:56
+#: src/layouts/admin/AdminLayout.vue:82
 #: src/views/admin/identities/IdentitiesView.vue:4
 msgid "Identities"
 msgstr "Identités"
 
-#: src/layouts/admin/AdminLayout.vue:72
+#: src/layouts/admin/AdminLayout.vue:98
 msgid "Monitoring"
 msgstr "Supervision"
 
-#: src/layouts/admin/AdminLayout.vue:85
+#: src/layouts/admin/AdminLayout.vue:111
 #: src/views/admin/monitoring/AuditTrailView.vue:3
 msgid "Audit trail"
 msgstr "Journal des modifications"
 
-#: src/layouts/admin/AdminLayout.vue:90
+#: src/layouts/admin/AdminLayout.vue:116
 msgid "Messages"
 msgstr "Messages"
 
-#: src/layouts/admin/AdminLayout.vue:102
+#: src/layouts/admin/AdminLayout.vue:128
 msgid "IMAP Migration"
 msgstr "Migration IMAP"
 
-#: src/layouts/admin/AdminLayout.vue:107
+#: src/layouts/admin/AdminLayout.vue:133
 msgid "Email providers"
 msgstr "Fournisseurs de messagerie"
 
-#: src/layouts/admin/AdminLayout.vue:112
+#: src/layouts/admin/AdminLayout.vue:138
 #: src/views/admin/imap_migration/MigrationsView.vue:4
 msgid "Migrations"
 msgstr "Migrations"
 
-#: src/layouts/admin/AdminLayout.vue:143 src/views/admin/InformationView.vue:4
+#: src/layouts/admin/AdminLayout.vue:174 src/views/admin/InformationView.vue:4
 #: src/views/calendars/CalendarView.vue:224
 #: src/views/calendars/CalendarView.vue:260
 msgid "Information"
@@ -3204,8 +3338,8 @@ msgstr "Chiffrer les mots de passe"
 #: src/views/admin/identities/IdentitiesView.vue:95
 msgid "Check this option if passwords contained in your file are not crypted"
 msgstr ""
-"Cochez cette option si les mots de passe contenus dans votre fichier ne sont"
-" pas chiffrés"
+"Cochez cette option si les mots de passe contenus dans votre fichier ne sont "
+"pas chiffrés"
 
 #: src/views/admin/imap_migration/ProviderEditView.vue:3
 msgid "Edit provider"
@@ -3219,43 +3353,43 @@ msgstr "Fournisseurs"
 msgid "Important messages"
 msgstr "Messages importants"
 
-#: src/views/admin/InformationView.vue:22
+#: src/views/admin/InformationView.vue:24
 msgid ""
-"The password scheme you are using has been deprecated and will be removed in"
-" the next minor version. The procedure to upgrade to a stronger scheme is as"
-" follows:"
+"The password scheme you are using has been deprecated and will be removed in "
+"the next minor version. The procedure to upgrade to a stronger scheme is as "
+"follows:"
 msgstr ""
 "La méthode de chiffrement de mot de passe que vous utilisez a été rendue "
 "obsolète et sera retirée dans la prochaine version mineure. La procédure de "
 "mise à jour vers une méthode plus sûre est la suivante :"
 
-#: src/views/admin/InformationView.vue:29
+#: src/views/admin/InformationView.vue:31
 msgid "Go to <strong>Settings > General</strong> section"
 msgstr "Allez dans la section <strong>Paramètres > Général</strong>"
 
-#: src/views/admin/InformationView.vue:37
+#: src/views/admin/InformationView.vue:39
 msgid "Change the value of <strong>Default password scheme</strong>"
 msgstr ""
 "Changez la valeur de <strong>Méthode de chiffrement par défaut</strong>"
 
-#: src/views/admin/InformationView.vue:45
+#: src/views/admin/InformationView.vue:47
 msgid ""
 "Make sure <strong>Update password scheme at login</strong> option is enabled"
 msgstr ""
-"Assurez vous que l'option <strong>Mettre à jour la méthode de chiffrement du"
-" mot de passe à la connexion</strong> est activée"
+"Assurez vous que l'option <strong>Mettre à jour la méthode de chiffrement du "
+"mot de passe à la connexion</strong> est activée"
 
-#: src/views/admin/InformationView.vue:51
+#: src/views/admin/InformationView.vue:53
 msgid "Save your changes"
 msgstr "Sauvegardez vos changements"
 
-#: src/views/admin/InformationView.vue:54
+#: src/views/admin/InformationView.vue:56
 msgid "Logout / Login with your current account so its password gets updated"
 msgstr ""
 "Re-connectez vous avec votre compte courant pour que son mot de passe soit "
 "mis à jour"
 
-#: src/views/admin/InformationView.vue:61
+#: src/views/admin/InformationView.vue:63
 msgid ""
 "Inform <strong>ALL</strong> your users that they must login to Modoboa to "
 "complete the operation"
@@ -3263,7 +3397,7 @@ msgstr ""
 "Informez <strong>TOUS</strong> vos utilisateurs qu'ils doivent se connecter "
 "à Modoboa pour compléter cette opération"
 
-#: src/views/admin/InformationView.vue:71
+#: src/views/admin/InformationView.vue:73
 msgid ""
 "You must apply this procedure <strong>BEFORE</strong> you install a newest "
 "version of Modoboa, otherwise <strong>you will be unable to connect to the "
@@ -3273,34 +3407,51 @@ msgstr ""
 "nouvelle version de Modoboa, autrement <strong>vous ne pourrez plus vous "
 "connecter à l'interface web</strong>."
 
-#: src/views/admin/InformationView.vue:80
+#: src/views/admin/InformationView.vue:82
 msgid ""
 "Please note that you will see this message until <strong>ALL</strong> user "
 "passwords have been converted using the new scheme."
 msgstr ""
-"Veuillez noter que vous verrez ce message jusqu'à ce que "
-"<strong>TOUS</strong> les mots de passe de vos utilisateurs aient été "
-"convertis en utilisant la nouvelle méthode."
+"Veuillez noter que vous verrez ce message jusqu'à ce que <strong>TOUS</"
+"strong> les mots de passe de vos utilisateurs aient été convertis en "
+"utilisant la nouvelle méthode."
 
-#: src/views/admin/InformationView.vue:92
+#: src/views/admin/InformationView.vue:100
 msgid "Installed components"
 msgstr "Composants installés"
 
-#: src/views/admin/InformationView.vue:103
+#: src/views/admin/InformationView.vue:124
 msgid "One or more updates are available"
 msgstr "Une ou plusieurs mise à jour sont disponibles"
 
-#: src/views/admin/InformationView.vue:107
+#: src/views/admin/InformationView.vue:128
 msgid "Check out the following list to find related components"
 msgstr "Consulter la liste suivante pour trouver des composants associés"
 
-#: src/views/admin/InformationView.vue:146
+#: src/views/admin/InformationView.vue:153
+#, fuzzy
+msgid "Not installed"
+msgstr "Non générée"
+
+#: src/views/admin/InformationView.vue:174
+msgid "Learn more"
+msgstr ""
+
+#: src/views/admin/InformationView.vue:192
+msgid "Modoboa Pro is installed."
+msgstr ""
+
+#: src/views/admin/InformationView.vue:229
 msgid "Installed version"
 msgstr "Version installée"
 
-#: src/views/admin/InformationView.vue:147
+#: src/views/admin/InformationView.vue:230
 msgid "Latest version"
 msgstr "Dernière version"
+
+#: src/views/admin/InformationView.vue:258
+msgid "Virtual hosts, automatic HTTPS and per-customer branding"
+msgstr ""
 
 #: src/views/admin/monitoring/MessagesView.vue:3
 msgid "Message history"
@@ -3402,8 +3553,7 @@ msgstr "Voir l'intégralité des entêtes"
 msgid "Hide full headers"
 msgstr "Cacher l'intégralité des entêtes"
 
-#: src/views/quarantine/MessageView.vue:201
-#: src/views/webmail/EmailView.vue:253
+#: src/views/quarantine/MessageView.vue:201 src/views/webmail/EmailView.vue:253
 msgid "Message deleted"
 msgstr "Marquer comme supprimé"
 

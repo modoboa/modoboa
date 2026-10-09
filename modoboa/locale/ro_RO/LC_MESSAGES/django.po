@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-29 11:30+0200\n"
+"POT-Creation-Date: 2026-10-09 15:54+0200\n"
 "PO-Revision-Date: 2021-10-04 13:27+0000\n"
 "Last-Translator: Simona Iacob <s@zp1.net>\n"
 "Language-Team: Romanian (Romania) (http://www.transifex.com/tonio/modoboa/"
@@ -36,11 +36,12 @@ msgstr ""
 "Cota implicită exprimată în MB aplivată la cutiile poștale. O valuare 0 "
 "înseamnă fără cotă."
 
-#: admin/api/v1/serializers.py:98 lib/validators.py:13
+#: admin/api/v1/serializers.py:98 admin/api/v1/serializers.py:194
+#: lib/validators.py:13 relaydomains/api/v1/serializers.py:63
 msgid "Enter a valid domain name"
 msgstr "Introduceți un nume de domeniu valid"
 
-#: admin/api/v1/serializers.py:101
+#: admin/api/v1/serializers.py:101 relaydomains/api/v1/serializers.py:66
 #, fuzzy
 #| msgid "Alias with this name already exists"
 msgid "domain alias with this name already exists"
@@ -60,63 +61,76 @@ msgstr "Introduceți o adresă de email validă."
 msgid "Cannot be greater than domain quota"
 msgstr "Nu poate fi mai mare decat cota domeniului"
 
-#: admin/api/v1/serializers.py:185 admin/api/v1/serializers.py:381
-#: admin/api/v1/serializers.py:428 admin/api/v2/serializers.py:402
+#: admin/api/v1/serializers.py:185 admin/api/v1/serializers.py:405
+#: admin/api/v1/serializers.py:452 admin/api/v2/serializers.py:402
 #: admin/api/v2/serializers.py:652 admin/api/v2/serializers.py:705
 #: admin/models/alias.py:45 calendars/serializers.py:185
 msgid "Permission denied."
 msgstr "Permisiune refuzată."
 
-#: admin/api/v1/serializers.py:248 admin/api/v2/serializers.py:118
+#: admin/api/v1/serializers.py:196
+#, fuzzy
+#| msgid "Alias with this name already exists"
+msgid "domain with this name already exists"
+msgstr "Un alias cu acelasi nume deja există"
+
+#: admin/api/v1/serializers.py:209
+#, fuzzy
+#| msgid "Alias with this name already exists"
+msgid ""
+"domain with this name already exists, rename or delete this domain alias"
+msgstr "Un alias cu acelasi nume deja există"
+
+#: admin/api/v1/serializers.py:272 admin/api/v2/serializers.py:118
 #: admin/api/v2/serializers.py:573 amavis/serializers.py:39
-#: core/api/v2/serializers.py:218 core/api/v2/serializers.py:220
-#: core/api/v2/serializers.py:229 transport/backends.py:40
+#: core/api/v2/serializers.py:219 core/api/v2/serializers.py:221
+#: core/api/v2/serializers.py:230 transport/backends.py:40
 msgid "This field is required"
 msgstr "Acest câmp este necesar"
 
-#: admin/api/v1/serializers.py:260
+#: admin/api/v1/serializers.py:284
 msgid ""
 "List of administered domains (resellers and domain administrators only)."
 msgstr ""
 "Lista domenilor administrate (doar reselleri și administratori de domeniu)"
 
-#: admin/api/v1/serializers.py:354 admin/api/v2/serializers.py:634
+#: admin/api/v1/serializers.py:378 admin/api/v2/serializers.py:634
 msgid "Not allowed for this role."
 msgstr "Ne permis pentru acest rol."
 
-#: admin/api/v1/serializers.py:372
+#: admin/api/v1/serializers.py:396
 msgid "Must be equal to mailbox full_address"
 msgstr "Trebuie să fie egal cu mailbox full_address"
 
-#: admin/api/v1/serializers.py:414 admin/api/v2/serializers.py:686
+#: admin/api/v1/serializers.py:438 admin/api/v2/serializers.py:686
 #: calendars/serializers.py:264 calendars/serializers.py:333
 #: pdfcredentials/api/v2/serializers.py:91
 msgid "This field is required."
 msgstr "Acest câmp este necesar."
 
-#: admin/api/v1/serializers.py:425 admin/api/v2/serializers.py:702
+#: admin/api/v1/serializers.py:449 admin/api/v2/serializers.py:702
 msgid "Local domain {} does not exist"
 msgstr "Domeniu local {} nu există"
 
-#: admin/api/v1/serializers.py:518
+#: admin/api/v1/serializers.py:545
 msgid "A list of recipient"
 msgstr "O listă de destinatari"
 
-#: admin/api/v1/serializers.py:534 admin/api/v2/viewsets.py:436
+#: admin/api/v1/serializers.py:561 admin/api/v2/viewsets.py:438
 #, fuzzy
 #| msgid "User '%s' already exists"
 msgid "This alias already exists"
 msgstr "Utilizatorul '%s'  exista deja"
 
-#: admin/api/v1/serializers.py:570
+#: admin/api/v1/serializers.py:597
 msgid "You don't have access to this domain."
 msgstr "Nu ai acces la acest domeniu."
 
-#: admin/api/v1/serializers.py:579
+#: admin/api/v1/serializers.py:606
 msgid "You don't have access to this mailbox."
 msgstr "Nu ai acces la această cutie postală"
 
-#: admin/api/v1/viewsets.py:180
+#: admin/api/v1/viewsets.py:183
 msgid "Here is your new Modoboa password: {}"
 msgstr "Aici este noua ta parolă Modoboa: {}"
 
@@ -171,7 +185,7 @@ msgstr ""
 msgid "A mailbox is required to create aliases."
 msgstr "O căsuță poștală este necesară"
 
-#: admin/api/v2/serializers.py:902
+#: admin/api/v2/serializers.py:905
 #, fuzzy
 #| msgid "Unknown"
 msgid "Unknown status"
@@ -189,7 +203,7 @@ msgstr "Nu poți să îți ștergi propriul domeniu"
 msgid "DKIM signing is not enabled for this domain"
 msgstr ""
 
-#: admin/api/v2/viewsets.py:351 core/handlers.py:95
+#: admin/api/v2/viewsets.py:353 core/handlers.py:95
 msgid "You can't delete your own account"
 msgstr "Nu poți să îți ștergi propriul cont"
 
@@ -375,7 +389,7 @@ msgstr ""
 "Redenumește sau eliminează căsuțele poștale din sistemul de fișiere atunci "
 "când se redenumesc sau se elimină în Modoboa"
 
-#: admin/app_settings.py:211 admin/models/domain.py:41
+#: admin/app_settings.py:211 admin/models/domain.py:67
 msgid "Default mailbox quota"
 msgstr "Cota implicită pentru cutia poștală"
 
@@ -465,6 +479,30 @@ msgstr ""
 msgid "Administration"
 msgstr "Administrare"
 
+#: admin/checks.py:7
+msgid "Run `python manage.py modo repair --dry-run` for details."
+msgstr ""
+
+#: admin/checks.py:31
+msgid "Domain aliases using the name of a domain: {}"
+msgstr ""
+
+#: admin/checks.py:35
+msgid "Check who owns these domain aliases, then rename or delete them."
+msgstr ""
+
+#: admin/checks.py:45
+msgid ""
+"Internal aliases generated for domain aliases are orphaned or use the name "
+"of a domain: {}"
+msgstr ""
+
+#: admin/checks.py:56
+msgid ""
+"Internal aliases generated for domain aliases are missing or do not point to "
+"their target: {}"
+msgstr ""
+
 #: admin/constants.py:21
 msgid "Domain"
 msgstr "Domeniu"
@@ -510,65 +548,65 @@ msgstr "[modoboa] Problemă(e) MX pentru domeniul {}"
 msgid "[modoboa] DNSBL issue(s) for domain {}"
 msgstr "[modoboa] Problemă(e) DNSBL pentru domeniul {}  "
 
-#: admin/handlers.py:171
+#: admin/handlers.py:200
 msgid "domain alias"
 msgstr "alias domeniu"
 
-#: admin/handlers.py:219
+#: admin/handlers.py:248
 #, python-format
 msgid "Account import failed (%s): domain does not exist"
 msgstr "Importul de cont a esuat (%s): domeniul nu există"
 
-#: admin/handlers.py:238
+#: admin/handlers.py:267
 #, python-format
 msgid "Account import failed (%s): wrong quota value"
 msgstr "Importul de cont a esuat (%s): valuare de cotă incorectă"
 
-#: admin/lib.py:126
+#: admin/lib.py:167
 msgid "You are not allowed to import domains"
 msgstr "Nu ești autorizat să imporți domenii"
 
-#: admin/lib.py:135
+#: admin/lib.py:176
 msgid "You are not allowed to import domain aliases."
 msgstr "Nu ești autorizat să imporți aliasuri de domenii"
 
-#: admin/lib.py:227 admin/tests/test_mx.py:139 admin/tests/test_mx.py:152
+#: admin/lib.py:268 admin/tests/test_mx.py:139 admin/tests/test_mx.py:152
 #: admin/tests/test_mx.py:157
 #, python-format
 msgid "No DNS record found for %s"
 msgstr " Nu s-a găsit nicio înregistrare DNS pentru %s"
 
-#: admin/lib.py:230
+#: admin/lib.py:271
 #, python-format
 msgid "No %(type)s record for %(name)s"
 msgstr "Nu %(type)sînregistrati pentru  %(name)s"
 
-#: admin/lib.py:234 admin/tests/test_mx.py:142
+#: admin/lib.py:275 admin/tests/test_mx.py:142
 msgid "No working name servers found"
 msgstr "Nu s-au găsit NS-uri funcționale"
 
-#: admin/lib.py:237 admin/tests/test_mx.py:146
+#: admin/lib.py:278 admin/tests/test_mx.py:146
 #, python-format
 msgid "DNS resolution timeout, unable to query %s at the moment"
 msgstr ""
 "Timeout întâmpinat la rezolvarea cererii DNS, imposibilă de interogat %s în "
 "acest moment"
 
-#: admin/lib.py:241
+#: admin/lib.py:282
 msgid "DNS name is too long: {}"
 msgstr ""
 
-#: admin/lib.py:272
+#: admin/lib.py:313
 #, python-brace-format
 msgid "Invalid IP address format for {domain}; {addr}"
 msgstr "Adresă IP invalidă pentru {domain}; {addr}"
 
-#: admin/lib.py:365
+#: admin/lib.py:406
 #, python-format
 msgid "Object already exists: %s"
 msgstr "Obiectul deja există: %s"
 
-#: admin/lib.py:369
+#: admin/lib.py:410
 #, python-format
 msgid "%d objects imported successfully"
 msgstr "%d obiecte importate cu succes"
@@ -609,7 +647,7 @@ msgstr "Activați comunicarea cu API-ul public Modoboa"
 msgid "Domain not found."
 msgstr "Domeniu negăsit"
 
-#: admin/models/alias.py:117 admin/models/mailbox.py:85
+#: admin/models/alias.py:117 admin/models/mailbox.py:86
 msgid "address"
 msgstr "adresă"
 
@@ -617,7 +655,7 @@ msgstr "adresă"
 msgid "The alias address."
 msgstr "Adresă alias."
 
-#: admin/models/alias.py:123 admin/models/domain.py:50
+#: admin/models/alias.py:123 admin/models/domain.py:76
 #: admin/models/domain_alias.py:45 autoreply/models.py:37
 msgid "enabled"
 msgstr "activat"
@@ -658,85 +696,91 @@ msgstr "Destinatar local {}@{} nu poate fi găsit"
 msgid "Invalid line: {}"
 msgstr "Linie invalidă: %s"
 
-#: admin/models/domain.py:32 admin/models/domain_alias.py:33
+#: admin/models/domain.py:50
+#, fuzzy
+#| msgid "Alias with this name already exists"
+msgid "A domain or domain alias named {} already exists"
+msgstr "Un alias cu acelasi nume deja există"
+
+#: admin/models/domain.py:58 admin/models/domain_alias.py:33
 msgid "name"
 msgstr "nume"
 
-#: admin/models/domain.py:35
+#: admin/models/domain.py:61
 msgid "The domain name"
 msgstr "Numele domeniului"
 
-#: admin/models/domain.py:44 admin/models/mailbox.py:92
+#: admin/models/domain.py:70 admin/models/mailbox.py:93
 msgid "Message sending limit"
 msgstr "Limita de trimitere a mesajelor"
 
-#: admin/models/domain.py:47
+#: admin/models/domain.py:73
 msgid "Number of messages this domain can send per day"
 msgstr "Numărul de mesaje pe care acest domeniu le poate trimite pe zi"
 
-#: admin/models/domain.py:51
+#: admin/models/domain.py:77
 msgid "Check to activate this domain"
 msgstr "Bifează pentru a activa domeniul"
 
-#: admin/models/domain.py:56
+#: admin/models/domain.py:82
 msgid "Enable DNS checks"
 msgstr "Activează verificările DNS"
 
-#: admin/models/domain.py:58
+#: admin/models/domain.py:84
 msgid "Check to enable DNS checks for this domain"
 msgstr "Bifează pentru a activa verificările DNS pentru acest domeniu"
 
-#: admin/models/domain.py:67
+#: admin/models/domain.py:93
 msgid "Enable DKIM signing"
 msgstr "Activează semnarea DKIM"
 
-#: admin/models/domain.py:69
+#: admin/models/domain.py:95
 msgid ""
 "If you activate this feature, a DKIM key will be generated for this domain."
 msgstr ""
 "Dacă activezi această facilitate, o chieie DKIM se va genera pt acest "
 "domeniu."
 
-#: admin/models/domain.py:76
+#: admin/models/domain.py:102
 msgid "Key length"
 msgstr "Mărime cheie"
 
-#: admin/models/domain.py:344 admin/models/domain_alias.py:70
-#: core/models.py:358 relaydomains/lib.py:13
+#: admin/models/domain.py:394 admin/models/domain_alias.py:104
+#: core/models.py:377 relaydomains/lib.py:21
 msgid "Invalid line"
 msgstr "Linie invalidă"
 
-#: admin/models/domain.py:349
+#: admin/models/domain.py:399
 #, fuzzy
 #| msgid "Enter a valid domain name"
 msgid "Invalid domain name"
 msgstr "Introduceți un nume de domeniu valid"
 
-#: admin/models/domain.py:353
+#: admin/models/domain.py:403 relaydomains/lib.py:26
 #, fuzzy
 #| msgid "Enter a valid domain name"
 msgid "{}: invalid domain name"
 msgstr "Introduceți un nume de domeniu valid"
 
-#: admin/models/domain.py:362
+#: admin/models/domain.py:413
 #, fuzzy
 #| msgid "No authorized MX record found for domain {}"
 msgid "{}: no authorized MX record found for domain"
 msgstr "Nu s-au gasit înregistrări MX autorizate pentru acest domeniu {}"
 
-#: admin/models/domain.py:368
+#: admin/models/domain.py:419
 #, fuzzy
 #| msgid "Invalid quota value for domain '{}'"
 msgid "{}: invalid quota value for domain"
 msgstr "Valuare de cotă invalidă pentru domeniul '{}'"
 
-#: admin/models/domain.py:374
+#: admin/models/domain.py:425
 #, fuzzy
 #| msgid "Invalid default mailbox quota value for domain '{}'"
 msgid "{}: invalid default mailbox quota value for domain"
 msgstr "Valuare implicită de cotă invalidă pentru domeniul '{}'"
 
-#: admin/models/domain.py:381
+#: admin/models/domain.py:432
 #, fuzzy
 #| msgid "Default mailbox quota cannot be greater than domain quota"
 msgid "{}: default mailbox quota cannot be greater than domain quota"
@@ -756,40 +800,40 @@ msgstr "Țintă"
 msgid "The domain this alias points to"
 msgstr "Domeniul către care indică acest alias"
 
-#: admin/models/domain_alias.py:79
+#: admin/models/domain_alias.py:113
 #, python-format
 msgid "Unknown domain %s"
 msgstr "Domeniu necunoscut %s"
 
-#: admin/models/mailbox.py:87
+#: admin/models/mailbox.py:88
 msgid "Mailbox address (without the @domain.tld part)"
 msgstr "Adresa de email (fără partea @domeniu)"
 
-#: admin/models/mailbox.py:95
+#: admin/models/mailbox.py:96
 msgid "Number of messages this mailbox can send per day"
 msgstr ""
 "Numărul de mesaje pe care această căsuță poștală le poate trimite pe zi"
 
-#: admin/models/mailbox.py:156
+#: admin/models/mailbox.py:157
 #, python-format
 msgid "Failed to retrieve mailbox location (%s)"
 msgstr "Nu s-a reușit preluarea locației pentru cutia poștală (%s)"
 
-#: admin/models/mailbox.py:257
+#: admin/models/mailbox.py:258
 msgid "A quota is required"
 msgstr "O cotă este necesară"
 
-#: admin/models/mailbox.py:264
+#: admin/models/mailbox.py:265
 #, fuzzy
 #| msgid "Domain quota exceeded"
 msgid "{}: domain quota exceeded"
 msgstr "Cota pentru domeniu a fost depașită"
 
-#: admin/models/mailbox.py:318
+#: admin/models/mailbox.py:321
 msgid "Domain does not exist"
 msgstr "Domeniul nu există"
 
-#: admin/models/mailbox.py:354
+#: admin/models/mailbox.py:357
 msgid "Mailbox {} already exists"
 msgstr "Căsuța poștală {} deja există"
 
@@ -1082,7 +1126,7 @@ msgstr ""
 msgid "Try using PostgreSQL, MySQL or MariaDB."
 msgstr ""
 
-#: amavis/handlers.py:141
+#: amavis/handlers.py:160
 msgid "Pending requests"
 msgstr ""
 
@@ -1334,7 +1378,7 @@ msgstr ""
 "Permiteți acestui administrator să acceseze cutiile poștale ale "
 "utilizatorilor"
 
-#: calendars/app_settings.py:60 core/app_settings.py:714
+#: calendars/app_settings.py:60 core/app_settings.py:724
 #: rspamd/app_settings.py:45
 msgid "Miscellaneous"
 msgstr "Diverse"
@@ -1515,7 +1559,7 @@ msgstr "2FA este deja activat"
 msgid "Failed TFA settings editing attempt from '%(addr)s' as user '%(user)s'"
 msgstr ""
 
-#: core/api/v1/serializers.py:93 core/api/v2/serializers.py:408
+#: core/api/v1/serializers.py:93 core/api/v2/serializers.py:409
 #, fuzzy
 #| msgid "Old password"
 msgid "Invalid password"
@@ -1529,16 +1573,16 @@ msgstr "2FA nu este activat"
 msgid "Local"
 msgstr "Local"
 
-#: core/api/v2/serializers.py:176 core/api/v2/serializers.py:184
-#: core/api/v2/serializers.py:191
+#: core/api/v2/serializers.py:177 core/api/v2/serializers.py:185
+#: core/api/v2/serializers.py:192
 msgid "Invalid syntax"
 msgstr "Sintaxă invalidă"
 
-#: core/api/v2/serializers.py:196
+#: core/api/v2/serializers.py:197
 msgid "Invalid rounds number"
 msgstr "Număr invalid de iterații"
 
-#: core/api/v2/serializers.py:396 core/forms.py:84
+#: core/api/v2/serializers.py:397 core/forms.py:84
 msgid "This code is invalid"
 msgstr "Acest cod nu este valabil"
 
@@ -1571,7 +1615,7 @@ msgid "Calendar"
 msgstr ""
 
 #: core/api/v2/viewsets.py:215 core/api/v2/viewsets.py:217
-#: webmail/app_settings.py:317 webmail/app_settings.py:324
+#: webmail/app_settings.py:327 webmail/app_settings.py:334
 #, fuzzy
 #| msgid "E-mail"
 msgid "Webmail"
@@ -1982,162 +2026,172 @@ msgstr ""
 "Ascunde widgetul de caracteristici pentru reselleri și administratori de "
 "domeniu"
 
-#: core/app_settings.py:519
+#: core/app_settings.py:515
+msgid "Hide Modoboa Pro promotion"
+msgstr ""
+
+#: core/app_settings.py:517
+msgid ""
+"Hide the Modoboa Pro menu entry and presentation when the plugin is not "
+"installed"
+msgstr ""
+
+#: core/app_settings.py:529
 msgid "Theme"
 msgstr ""
 
-#: core/app_settings.py:525
+#: core/app_settings.py:535
 msgid "Colors"
 msgstr ""
 
-#: core/app_settings.py:532
+#: core/app_settings.py:542
 msgid "Primary theme color"
 msgstr ""
 
-#: core/app_settings.py:534
+#: core/app_settings.py:544
 msgid ""
 "Primary color of the theme (hexadecimal code), used as the background color "
 "of the left menu for example"
 msgstr ""
 
-#: core/app_settings.py:543
+#: core/app_settings.py:553
 msgid "Primary theme color (lighter version)"
 msgstr ""
 
-#: core/app_settings.py:546 core/app_settings.py:558
+#: core/app_settings.py:556 core/app_settings.py:568
 msgid "Primary color of the theme (hexadecimal code)"
 msgstr ""
 
-#: core/app_settings.py:555
+#: core/app_settings.py:565
 msgid "Primary theme color (darker version)"
 msgstr ""
 
-#: core/app_settings.py:566
+#: core/app_settings.py:576
 #, fuzzy
 #| msgid "Secondary email"
 msgid "Secondary theme color"
 msgstr "Email secundar"
 
-#: core/app_settings.py:568
+#: core/app_settings.py:578
 msgid ""
 "Secondary color of the theme (hexadecimal code), used as the background "
 "color of some buttons for example"
 msgstr ""
 
-#: core/app_settings.py:576
+#: core/app_settings.py:586
 msgid "Labels theme color"
 msgstr ""
 
-#: core/app_settings.py:578
+#: core/app_settings.py:588
 msgid "Theme color for labels (hexadecimal code)"
 msgstr ""
 
-#: core/app_settings.py:586
+#: core/app_settings.py:596
 msgid "Logos"
 msgstr ""
 
-#: core/app_settings.py:593
+#: core/app_settings.py:603
 msgid "Login page logo"
 msgstr ""
 
-#: core/app_settings.py:595
+#: core/app_settings.py:605
 msgid ""
 "Logo displayed on the login and password-reset pages. Upload an image or "
 "clear it to use the default Modoboa logo."
 msgstr ""
 
-#: core/app_settings.py:605
+#: core/app_settings.py:615
 msgid "Menu logo"
 msgstr ""
 
-#: core/app_settings.py:607
+#: core/app_settings.py:617
 msgid ""
 "Logo displayed in the side menu and webmail. Upload an image or clear it to "
 "use the default Modoboa logo."
 msgstr ""
 
-#: core/app_settings.py:617
+#: core/app_settings.py:627
 msgid "Creation form logo"
 msgstr ""
 
-#: core/app_settings.py:619
+#: core/app_settings.py:629
 msgid ""
 "Logo displayed at the top of object creation forms. Upload an image or clear "
 "it to use the default Modoboa logo."
 msgstr ""
 
-#: core/app_settings.py:633
+#: core/app_settings.py:643
 msgid "Notifications"
 msgstr "Notificări"
 
-#: core/app_settings.py:639
+#: core/app_settings.py:649
 msgid "Sender address"
 msgstr "Adresa expeditorului"
 
-#: core/app_settings.py:641
+#: core/app_settings.py:651
 msgid "Email address used to send notifications."
 msgstr "Adresa de email folosită pentru trimiterea notificărilor."
 
-#: core/app_settings.py:652
+#: core/app_settings.py:662
 msgid "Public API"
 msgstr "API public"
 
-#: core/app_settings.py:658
+#: core/app_settings.py:668
 msgid "Enable communication"
 msgstr "Activați comunicarea"
 
-#: core/app_settings.py:660 core/app_settings.py:670
+#: core/app_settings.py:670 core/app_settings.py:680
 msgid "Automatically checks if a newer version is available"
 msgstr "Verifică automat dacă este disponibilă o versiune mai nouă"
 
-#: core/app_settings.py:667
+#: core/app_settings.py:677
 msgid "Check new versions"
 msgstr "Verifică dacă există noi versiuni"
 
-#: core/app_settings.py:678
+#: core/app_settings.py:688
 msgid "Send an email when new versions are found"
 msgstr "Trimiteți un e-mail atunci când sunt găsite versiuni noi"
 
-#: core/app_settings.py:682
+#: core/app_settings.py:692
 msgid "Send an email to notify admins about new versions"
 msgstr ""
 "Trimiteți un e-mail pentru a notifica administratorii despre noile versiuni"
 
-#: core/app_settings.py:689 sievefilters/constants.py:30
+#: core/app_settings.py:699 sievefilters/constants.py:30
 msgid "Recipient"
 msgstr "Beneficiar"
 
-#: core/app_settings.py:692
+#: core/app_settings.py:702
 msgid "Recipient of new versions notification emails."
 msgstr "Destinatarul e-mailurilor de notificare a noilor versiuni."
 
-#: core/app_settings.py:699
+#: core/app_settings.py:709
 msgid "Send statistics"
 msgstr "Trimite statistici"
 
-#: core/app_settings.py:702
+#: core/app_settings.py:712
 msgid "Send statistics to Modoboa public API (counters and used extensions)"
 msgstr ""
 "Trimiteți statistici către API-ul public Modoboa (contoare și extensii "
 "utilizate)"
 
-#: core/app_settings.py:721
+#: core/app_settings.py:731
 #, fuzzy
 #| msgid "Inactive account threshold"
 msgid "Enable inactive account tracking"
 msgstr "Pragul pentru cont invalid"
 
-#: core/app_settings.py:724
+#: core/app_settings.py:734
 msgid ""
 "Allow the administrator to set a threshold (in days) beyond which an account "
 "is considered inactive if the user hasn't logged in"
 msgstr ""
 
-#: core/app_settings.py:733
+#: core/app_settings.py:743
 msgid "Inactive account threshold"
 msgstr "Pragul pentru cont invalid"
 
-#: core/app_settings.py:736
+#: core/app_settings.py:746
 msgid ""
 "An account with a last login date greater than this threshold (in days) will "
 "be considered as inactive"
@@ -2145,36 +2199,36 @@ msgstr ""
 "Un cont cu o ultima data de conectare mai mare decat acest prag (in zile) va "
 "fi considerat inactiv"
 
-#: core/app_settings.py:745
+#: core/app_settings.py:755
 msgid "Top notifications check interval"
 msgstr "Intervalul de verificare a notificărilor"
 
-#: core/app_settings.py:748
+#: core/app_settings.py:758
 msgid "Interval between two top notification checks (in seconds)"
 msgstr ""
 "Intervalul dintre două verificări de notificare principală (în secunde)"
 
-#: core/app_settings.py:755
+#: core/app_settings.py:765
 msgid "Maximum log record age"
 msgstr "Vechimea maximă a înregistrărilor log"
 
-#: core/app_settings.py:757
+#: core/app_settings.py:767
 msgid "The maximum age in days of a log record"
 msgstr "Vechimea maximă în zilele de înregistrare a intrărilor în jurnal"
 
-#: core/app_settings.py:765
+#: core/app_settings.py:775
 msgid "Retention time in message history"
 msgstr ""
 
-#: core/app_settings.py:768
+#: core/app_settings.py:778
 msgid "Retention time (in days) of a message in the message history section"
 msgstr ""
 
-#: core/app_settings.py:775
+#: core/app_settings.py:785
 msgid "Items per page"
 msgstr "Număr de itemi per pagină"
 
-#: core/app_settings.py:777
+#: core/app_settings.py:787
 msgid "Number of displayed items per page"
 msgstr "Numărul de itemi afișați pe o pagină"
 
@@ -2242,23 +2296,23 @@ msgstr "Reseller"
 msgid "Super administrator"
 msgstr "Super administrator"
 
-#: core/constants.py:53
+#: core/constants.py:60
 msgid "No"
 msgstr "Nu"
 
-#: core/constants.py:59
+#: core/constants.py:66
 msgid "Search and bind"
 msgstr "Căutare și atribuire"
 
-#: core/constants.py:60
+#: core/constants.py:67
 msgid "Direct bind"
 msgstr "Atribuire directă"
 
-#: core/constants.py:109
+#: core/constants.py:116
 msgid "Choose a provider"
 msgstr "Alegeți un furnizor"
 
-#: core/constants.py:114
+#: core/constants.py:121
 msgid "Dummy"
 msgstr "Manechin"
 
@@ -2355,21 +2409,21 @@ msgstr "Eroare la actualizarea parolei: modulul LDAP nu este instalat"
 msgid "account"
 msgstr "cont"
 
-#: core/models.py:323
+#: core/models.py:342
 msgid "Unknown"
 msgstr "Necunoscut"
 
-#: core/models.py:366
+#: core/models.py:385
 msgid "You can't import an account with a role greater than yours"
 msgstr "Nu puteți importa un cont cu un rol mai mare decât al dvs."
 
-#: core/models.py:381
+#: core/models.py:400
 #, fuzzy
 #| msgid "The simple user '%s' must have a valid email address"
 msgid "The simple user '{}' must have a valid email address"
 msgstr "Utilizatorul simplu '%s' trebuie să aibă o adresă de e-mail validă"
 
-#: core/models.py:389
+#: core/models.py:408
 #, fuzzy
 #| msgid "username and email fields must not differ for '%s'"
 msgid "username and email fields must not differ for '{}'"
@@ -3373,17 +3427,23 @@ msgstr "%s: s-a atins limita"
 msgid "Daily limit of the following %(ltype)s has been reached: %(name)s."
 msgstr ""
 
-#: relaydomains/api/v1/serializers.py:24
+#: relaydomains/api/v1/serializers.py:26
 msgid "Unsupported service"
 msgstr "Serviciu neacceptat"
 
-#: relaydomains/lib.py:17
+#: relaydomains/lib.py:16
+#, fuzzy
+#| msgid "You are not allowed to import domains"
+msgid "You are not allowed to import relay domains"
+msgstr "Nu ești autorizat să imporți domenii"
+
+#: relaydomains/lib.py:33
 #, fuzzy
 #| msgid "Invalid MX record: {}"
 msgid "Invalid port: {}"
 msgstr "Înregistrare MX invalidă: {}"
 
-#: relaydomains/lib.py:29
+#: relaydomains/lib.py:45
 #, fuzzy
 #| msgid "Invalid line: %s"
 msgid "Invalid settings: {}"
@@ -3547,7 +3607,7 @@ msgstr ""
 msgid "is not"
 msgstr ""
 
-#: sievefilters/constants.py:28 webmail/lib/imapemail.py:400
+#: sievefilters/constants.py:28 webmail/lib/imapemail.py:470
 msgid "Subject"
 msgstr "Subiect"
 
@@ -3989,6 +4049,14 @@ msgstr ""
 msgid "User defined email signature"
 msgstr ""
 
+#: webmail/app_settings.py:304
+msgid "Signature position"
+msgstr ""
+
+#: webmail/app_settings.py:306
+msgid "Where the signature goes in replies and forwards"
+msgstr ""
+
 #: webmail/checks.py:18
 msgid ""
 "The webmail attachments cleanup job is not registered: unused attachment "
@@ -4013,11 +4081,23 @@ msgstr ""
 
 #: webmail/constants.py:75
 #, fuzzy
+#| msgid "bounced messages"
+msgid "Above the quoted message"
+msgstr "mesaje returnate"
+
+#: webmail/constants.py:76
+#, fuzzy
+#| msgid "rejected messages"
+msgid "Below the quoted message"
+msgstr "mesaje rejectate"
+
+#: webmail/constants.py:86
+#, fuzzy
 #| msgid "sent messages"
 msgid "Messages"
 msgstr "mesaje trimise"
 
-#: webmail/constants.py:76
+#: webmail/constants.py:87
 #, fuzzy
 #| msgid "Check new versions"
 msgid "Conversations"
@@ -4043,31 +4123,37 @@ msgstr ""
 msgid "Failed to remove attachment: "
 msgstr "Nu s-a reușit crearea unui cont LDAP: {}"
 
-#: webmail/lib/imapemail.py:366
-msgid "wrote:"
+#: webmail/lib/imapemail.py:420
+#, python-format
+msgid "On %(date)s, %(sender)s wrote:"
 msgstr ""
 
-#: webmail/lib/imapemail.py:402
+#: webmail/lib/imapemail.py:425
+#, python-format
+msgid "%(sender)s wrote:"
+msgstr ""
+
+#: webmail/lib/imapemail.py:473
 msgid "Date"
 msgstr "Dată"
 
-#: webmail/lib/imapemail.py:418 webmail/lib/imapemail.py:421
+#: webmail/lib/imapemail.py:490 webmail/lib/imapemail.py:493
 #, fuzzy
 #| msgid "sent messages"
 msgid "Original message"
 msgstr "mesaje trimise"
 
-#: webmail/lib/imaputils.py:75 webmail/viewsets.py:26
+#: webmail/lib/imaputils.py:75 webmail/viewsets.py:27
 msgid "Invalid message identifier"
 msgstr ""
 
-#: webmail/lib/imaputils.py:82 webmail/viewsets.py:40
+#: webmail/lib/imaputils.py:82 webmail/viewsets.py:41
 #, fuzzy
 #| msgid "Invalid rounds number"
 msgid "Invalid part number"
 msgstr "Număr invalid de iterații"
 
-#: webmail/lib/imaputils.py:95 webmail/viewsets.py:47
+#: webmail/lib/imaputils.py:95 webmail/viewsets.py:48
 msgid "Invalid search pattern"
 msgstr ""
 
@@ -4107,90 +4193,96 @@ msgstr ""
 msgid "Trash"
 msgstr ""
 
-#: webmail/lib/utils.py:177
+#: webmail/lib/utils.py:520
 msgid "The account has been disabled"
 msgstr ""
 
-#: webmail/lib/utils.py:180
+#: webmail/lib/utils.py:523
 #, fuzzy
 #| msgid "Mailbox {} already exists"
 msgid "The mailbox no longer exists"
 msgstr "Căsuța poștală {} deja există"
 
-#: webmail/lib/utils.py:182
+#: webmail/lib/utils.py:525
 #, fuzzy
 #| msgid "The domain name"
 msgid "The domain has been disabled"
 msgstr "Numele domeniului"
 
-#: webmail/lib/utils.py:184
+#: webmail/lib/utils.py:527
 msgid "This address is no longer allowed for this account"
 msgstr ""
 
-#: webmail/serializers.py:302
+#: webmail/serializers.py:310
 msgid "Moving scheduled messages is forbidden"
 msgstr ""
 
-#: webmail/serializers.py:334
+#: webmail/serializers.py:342
 msgid "Only datetime in the future is allowed"
 msgstr ""
 
-#: webmail/serializers.py:339
+#: webmail/serializers.py:347
 msgid "Provived datetime must be one minute in the future at least"
 msgstr ""
 
-#: webmail/serializers.py:369
+#: webmail/serializers.py:378
 #, fuzzy
 #| msgid "You are not allowed to import domain aliases."
 msgid "You are not allowed to send from this address"
 msgstr "Nu ești autorizat să imporți aliasuri de domenii"
 
-#: webmail/serializers.py:410
+#: webmail/serializers.py:393
+#, fuzzy, python-format
+#| msgid "Invalid address"
+msgid "Invalid addresses: %s"
+msgstr "Adresă invalidă"
+
+#: webmail/serializers.py:434
 msgid ""
 "original_mailbox, original_mailid and original_action must be provided "
 "together"
 msgstr ""
 
-#: webmail/serializers.py:427
+#: webmail/serializers.py:451
 #, python-format
 msgid ""
 "Ensure this field has no more than %(max_length)s characters to schedule the "
 "message"
 msgstr ""
 
-#: webmail/serializers.py:484
+#: webmail/serializers.py:523
 msgid "forward_mailbox and forward_mailid must be provided together"
 msgstr ""
 
-#: webmail/serializers.py:488
+#: webmail/serializers.py:527
 msgid "A session can't start from a draft and a forwarded message"
 msgstr ""
 
-#: webmail/viewsets.py:33
+#: webmail/viewsets.py:34
 #, fuzzy
 #| msgid "Invalid rounds number"
 msgid "Invalid page number"
 msgstr "Număr invalid de iterații"
 
-#: webmail/viewsets.py:168
+#: webmail/viewsets.py:169
 msgid "This mailbox is used by the webmail and can't be renamed"
 msgstr ""
 
-#: webmail/viewsets.py:209
+#: webmail/viewsets.py:210
 msgid "This mailbox is used by the webmail and can't be deleted"
 msgstr ""
 
-#: webmail/viewsets.py:630
+#: webmail/viewsets.py:650
 #, python-format
 msgid "A message cannot carry more than %s attachments"
 msgstr ""
 
-#: webmail/viewsets.py:642
+#: webmail/viewsets.py:662
 #, python-format
 msgid "Attachment is too big (limit: %s)"
 msgstr ""
 
-#: webmail/viewsets.py:647
+#: webmail/viewsets.py:667
 #, python-format
 msgid "Attachments are too big (limit: %s for the whole message)"
 msgstr ""

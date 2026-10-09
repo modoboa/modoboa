@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-29 11:30+0200\n"
+"POT-Creation-Date: 2026-10-09 15:54+0200\n"
 "PO-Revision-Date: 2011-07-01 08:15+0000\n"
 "Last-Translator: Dariusz Koryto <dariusz@koryto.eu>, 2016,2026\n"
 "Language-Team: Polish (Poland) (http://app.transifex.com/tonio/modoboa/"
@@ -44,11 +44,12 @@ msgstr ""
 "Domyślny limit przydziału w MB zastosowany do skrzynek pocztowych. Wartość 0 "
 "oznacza brak ograniczenia."
 
-#: admin/api/v1/serializers.py:98 lib/validators.py:13
+#: admin/api/v1/serializers.py:98 admin/api/v1/serializers.py:194
+#: lib/validators.py:13 relaydomains/api/v1/serializers.py:63
 msgid "Enter a valid domain name"
 msgstr "Wprowadź prawidłową nazwę domeny"
 
-#: admin/api/v1/serializers.py:101
+#: admin/api/v1/serializers.py:101 relaydomains/api/v1/serializers.py:66
 msgid "domain alias with this name already exists"
 msgstr "alias domeny o tej nazwie już istnieje"
 
@@ -66,61 +67,74 @@ msgstr "Nie jest ważnym rekordem DKIMNie jest ważnym rekordem DKIM"
 msgid "Cannot be greater than domain quota"
 msgstr "Nie może być wyższa niż limit domeny"
 
-#: admin/api/v1/serializers.py:185 admin/api/v1/serializers.py:381
-#: admin/api/v1/serializers.py:428 admin/api/v2/serializers.py:402
+#: admin/api/v1/serializers.py:185 admin/api/v1/serializers.py:405
+#: admin/api/v1/serializers.py:452 admin/api/v2/serializers.py:402
 #: admin/api/v2/serializers.py:652 admin/api/v2/serializers.py:705
 #: admin/models/alias.py:45 calendars/serializers.py:185
 msgid "Permission denied."
 msgstr "Odmowa dostępu."
 
-#: admin/api/v1/serializers.py:248 admin/api/v2/serializers.py:118
+#: admin/api/v1/serializers.py:196
+#, fuzzy
+#| msgid "domain alias with this name already exists"
+msgid "domain with this name already exists"
+msgstr "alias domeny o tej nazwie już istnieje"
+
+#: admin/api/v1/serializers.py:209
+#, fuzzy
+#| msgid "domain alias with this name already exists"
+msgid ""
+"domain with this name already exists, rename or delete this domain alias"
+msgstr "alias domeny o tej nazwie już istnieje"
+
+#: admin/api/v1/serializers.py:272 admin/api/v2/serializers.py:118
 #: admin/api/v2/serializers.py:573 amavis/serializers.py:39
-#: core/api/v2/serializers.py:218 core/api/v2/serializers.py:220
-#: core/api/v2/serializers.py:229 transport/backends.py:40
+#: core/api/v2/serializers.py:219 core/api/v2/serializers.py:221
+#: core/api/v2/serializers.py:230 transport/backends.py:40
 msgid "This field is required"
 msgstr "To pole jest obowiązkowe"
 
-#: admin/api/v1/serializers.py:260
+#: admin/api/v1/serializers.py:284
 msgid ""
 "List of administered domains (resellers and domain administrators only)."
 msgstr ""
 "Lista administratorów domen (tylko resellerów i administratorów domen)."
 
-#: admin/api/v1/serializers.py:354 admin/api/v2/serializers.py:634
+#: admin/api/v1/serializers.py:378 admin/api/v2/serializers.py:634
 msgid "Not allowed for this role."
 msgstr "Niedozwolone dla tej roli."
 
-#: admin/api/v1/serializers.py:372
+#: admin/api/v1/serializers.py:396
 msgid "Must be equal to mailbox full_address"
 msgstr "Musi być równe z full_address skrzynki."
 
-#: admin/api/v1/serializers.py:414 admin/api/v2/serializers.py:686
+#: admin/api/v1/serializers.py:438 admin/api/v2/serializers.py:686
 #: calendars/serializers.py:264 calendars/serializers.py:333
 #: pdfcredentials/api/v2/serializers.py:91
 msgid "This field is required."
 msgstr "To pole jest wymagane"
 
-#: admin/api/v1/serializers.py:425 admin/api/v2/serializers.py:702
+#: admin/api/v1/serializers.py:449 admin/api/v2/serializers.py:702
 msgid "Local domain {} does not exist"
 msgstr "Lokalna domena {} nie istnieje"
 
-#: admin/api/v1/serializers.py:518
+#: admin/api/v1/serializers.py:545
 msgid "A list of recipient"
 msgstr "Lista odbiorców"
 
-#: admin/api/v1/serializers.py:534 admin/api/v2/viewsets.py:436
+#: admin/api/v1/serializers.py:561 admin/api/v2/viewsets.py:438
 msgid "This alias already exists"
 msgstr "Alias już istnieje"
 
-#: admin/api/v1/serializers.py:570
+#: admin/api/v1/serializers.py:597
 msgid "You don't have access to this domain."
 msgstr "Nie masz dostępu do tej domeny."
 
-#: admin/api/v1/serializers.py:579
+#: admin/api/v1/serializers.py:606
 msgid "You don't have access to this mailbox."
 msgstr "Nie masz dostępu do tej skrzynki."
 
-#: admin/api/v1/viewsets.py:180
+#: admin/api/v1/viewsets.py:183
 msgid "Here is your new Modoboa password: {}"
 msgstr "Twoje nowe hasło do Modoboa to: {}"
 
@@ -173,7 +187,7 @@ msgstr "Lewa część adresu e-mail nie może zawierać więcej niż 64 znaki."
 msgid "A mailbox is required to create aliases."
 msgstr "Skrzynka pocztowa jest wymagana do utworzenia aliasów."
 
-#: admin/api/v2/serializers.py:902
+#: admin/api/v2/serializers.py:905
 msgid "Unknown status"
 msgstr "Nieznany status"
 
@@ -189,7 +203,7 @@ msgstr "Nie możesz usunąć swoje własnej domeny"
 msgid "DKIM signing is not enabled for this domain"
 msgstr ""
 
-#: admin/api/v2/viewsets.py:351 core/handlers.py:95
+#: admin/api/v2/viewsets.py:353 core/handlers.py:95
 msgid "You can't delete your own account"
 msgstr "Nie możesz usunąć własnego konta"
 
@@ -372,7 +386,7 @@ msgstr ""
 "Zmieniaj lub usuwaj skrzynki na filesystemie jeśli zostały zmodyfikowane lub "
 "usuniętę przez Modoboa"
 
-#: admin/app_settings.py:211 admin/models/domain.py:41
+#: admin/app_settings.py:211 admin/models/domain.py:67
 msgid "Default mailbox quota"
 msgstr "Domyślna przestrzeń dla konta pocztowego"
 
@@ -453,6 +467,30 @@ msgstr "Lista domen, które aliasy mogą wskazywać (oddzielone przecinkami)."
 msgid "Administration"
 msgstr "Administracja"
 
+#: admin/checks.py:7
+msgid "Run `python manage.py modo repair --dry-run` for details."
+msgstr ""
+
+#: admin/checks.py:31
+msgid "Domain aliases using the name of a domain: {}"
+msgstr ""
+
+#: admin/checks.py:35
+msgid "Check who owns these domain aliases, then rename or delete them."
+msgstr ""
+
+#: admin/checks.py:45
+msgid ""
+"Internal aliases generated for domain aliases are orphaned or use the name "
+"of a domain: {}"
+msgstr ""
+
+#: admin/checks.py:56
+msgid ""
+"Internal aliases generated for domain aliases are missing or do not point to "
+"their target: {}"
+msgstr ""
+
 #: admin/constants.py:21
 msgid "Domain"
 msgstr "Domena"
@@ -498,65 +536,65 @@ msgstr "[modoboa] Wykryto problem(y) z MX dla domeny {}"
 msgid "[modoboa] DNSBL issue(s) for domain {}"
 msgstr "[modoboa] Problem(y) DNSBL dla domeny {}"
 
-#: admin/handlers.py:171
+#: admin/handlers.py:200
 msgid "domain alias"
 msgstr "alias domeny"
 
-#: admin/handlers.py:219
+#: admin/handlers.py:248
 #, python-format
 msgid "Account import failed (%s): domain does not exist"
 msgstr "Błąd importu (%s): domena nie istnieje"
 
-#: admin/handlers.py:238
+#: admin/handlers.py:267
 #, python-format
 msgid "Account import failed (%s): wrong quota value"
 msgstr "Błąd importu (%s): błędna wartość limitu"
 
-#: admin/lib.py:126
+#: admin/lib.py:167
 msgid "You are not allowed to import domains"
 msgstr "Nie masz uprawnień do importowania domen"
 
-#: admin/lib.py:135
+#: admin/lib.py:176
 msgid "You are not allowed to import domain aliases."
 msgstr "Nie masz uprawnień do importowania aliasów domen."
 
-#: admin/lib.py:227 admin/tests/test_mx.py:139 admin/tests/test_mx.py:152
+#: admin/lib.py:268 admin/tests/test_mx.py:139 admin/tests/test_mx.py:152
 #: admin/tests/test_mx.py:157
 #, python-format
 msgid "No DNS record found for %s"
 msgstr "Nie znaleziono rekordu DNS dla %s"
 
-#: admin/lib.py:230
+#: admin/lib.py:271
 #, python-format
 msgid "No %(type)s record for %(name)s"
 msgstr "Brak %(type)s zapisów dla  %(name)s"
 
-#: admin/lib.py:234 admin/tests/test_mx.py:142
+#: admin/lib.py:275 admin/tests/test_mx.py:142
 msgid "No working name servers found"
 msgstr "Znaleziono nie działające serwery nazw"
 
-#: admin/lib.py:237 admin/tests/test_mx.py:146
+#: admin/lib.py:278 admin/tests/test_mx.py:146
 #, python-format
 msgid "DNS resolution timeout, unable to query %s at the moment"
 msgstr ""
 "Upłynąć czas na rozwiązanie nazwy w DNS, w tym momencie nie potrafię odpytać "
 "%s"
 
-#: admin/lib.py:241
+#: admin/lib.py:282
 msgid "DNS name is too long: {}"
 msgstr "Nazwa DNS jest za długa: {}"
 
-#: admin/lib.py:272
+#: admin/lib.py:313
 #, python-brace-format
 msgid "Invalid IP address format for {domain}; {addr}"
 msgstr "Nieprawidłowy format adresu IP dla {domain}; {addr}"
 
-#: admin/lib.py:365
+#: admin/lib.py:406
 #, python-format
 msgid "Object already exists: %s"
 msgstr "Obiekt %s już istnieje"
 
-#: admin/lib.py:369
+#: admin/lib.py:410
 #, python-format
 msgid "%d objects imported successfully"
 msgstr "Zaimportowano %d obiektów z sukcesem"
@@ -596,7 +634,7 @@ msgstr "Nie udało się wygenerować publiczny klucz DKIM"
 msgid "Domain not found."
 msgstr "Domena nie znaleziona."
 
-#: admin/models/alias.py:117 admin/models/mailbox.py:85
+#: admin/models/alias.py:117 admin/models/mailbox.py:86
 msgid "address"
 msgstr "adres"
 
@@ -604,7 +642,7 @@ msgstr "adres"
 msgid "The alias address."
 msgstr "Adres aliasu."
 
-#: admin/models/alias.py:123 admin/models/domain.py:50
+#: admin/models/alias.py:123 admin/models/domain.py:76
 #: admin/models/domain_alias.py:45 autoreply/models.py:37
 msgid "enabled"
 msgstr "aktywny"
@@ -641,82 +679,88 @@ msgstr "Lokalny odbiorcy {} nie znaleziony"
 msgid "Invalid line: {}"
 msgstr "Niewłaściwa linia: []"
 
-#: admin/models/domain.py:32 admin/models/domain_alias.py:33
+#: admin/models/domain.py:50
+#, fuzzy
+#| msgid "Migrated domain with name {} already exists"
+msgid "A domain or domain alias named {} already exists"
+msgstr "Zmigrowana domena z nazwą {} już istnieje"
+
+#: admin/models/domain.py:58 admin/models/domain_alias.py:33
 msgid "name"
 msgstr "nazwa"
 
-#: admin/models/domain.py:35
+#: admin/models/domain.py:61
 msgid "The domain name"
 msgstr "Nazwa domeny"
 
-#: admin/models/domain.py:44 admin/models/mailbox.py:92
+#: admin/models/domain.py:70 admin/models/mailbox.py:93
 msgid "Message sending limit"
 msgstr "Limit wysyłania wiadomości"
 
-#: admin/models/domain.py:47
+#: admin/models/domain.py:73
 msgid "Number of messages this domain can send per day"
 msgstr "Liczba wiadomości, które ta domena może wysłać w ciągu jednego dnia"
 
-#: admin/models/domain.py:51
+#: admin/models/domain.py:77
 msgid "Check to activate this domain"
 msgstr "Zaznacz, aby aktywować tą domenę"
 
-#: admin/models/domain.py:56
+#: admin/models/domain.py:82
 msgid "Enable DNS checks"
 msgstr "Aktywuj sprawdzanie rekordów DNS"
 
-#: admin/models/domain.py:58
+#: admin/models/domain.py:84
 msgid "Check to enable DNS checks for this domain"
 msgstr "Zaznacz aby aktywować sprawdzanie DNS dla tej domeny"
 
-#: admin/models/domain.py:67
+#: admin/models/domain.py:93
 msgid "Enable DKIM signing"
 msgstr "Włącz podpisywanie DKIM"
 
-#: admin/models/domain.py:69
+#: admin/models/domain.py:95
 msgid ""
 "If you activate this feature, a DKIM key will be generated for this domain."
 msgstr ""
 "Jeśli włączysz tą funkcjonalność, dla tej domeny zostanie wygenerowany klucz "
 "DKIM"
 
-#: admin/models/domain.py:76
+#: admin/models/domain.py:102
 msgid "Key length"
 msgstr "Długość klucza"
 
-#: admin/models/domain.py:344 admin/models/domain_alias.py:70
-#: core/models.py:358 relaydomains/lib.py:13
+#: admin/models/domain.py:394 admin/models/domain_alias.py:104
+#: core/models.py:377 relaydomains/lib.py:21
 msgid "Invalid line"
 msgstr "Niepoprawna linia"
 
-#: admin/models/domain.py:349
+#: admin/models/domain.py:399
 #, fuzzy
 #| msgid "Enter a valid domain name"
 msgid "Invalid domain name"
 msgstr "Wprowadź prawidłową nazwę domeny"
 
-#: admin/models/domain.py:353
+#: admin/models/domain.py:403 relaydomains/lib.py:26
 #, fuzzy
 #| msgid "Enter a valid domain name"
 msgid "{}: invalid domain name"
 msgstr "Wprowadź prawidłową nazwę domeny"
 
-#: admin/models/domain.py:362
+#: admin/models/domain.py:413
 msgid "{}: no authorized MX record found for domain"
 msgstr ""
 "Niepoprawną linię: {}{}: nie znaleziono autoryzowanego rekordu MX dla domeny"
 
-#: admin/models/domain.py:368
+#: admin/models/domain.py:419
 msgid "{}: invalid quota value for domain"
 msgstr "{}: niepoprawna wartość limitu dla domeny"
 
-#: admin/models/domain.py:374
+#: admin/models/domain.py:425
 msgid "{}: invalid default mailbox quota value for domain"
 msgstr ""
 "{}: niepoprawn wartość limitu dla domeny{}: niepoprawn wartość domyślnego "
 "limitu skrzynki dla domeny"
 
-#: admin/models/domain.py:381
+#: admin/models/domain.py:432
 msgid "{}: default mailbox quota cannot be greater than domain quota"
 msgstr "{}: limit skrzynki nie może być większy niż limit domeny"
 
@@ -732,37 +776,37 @@ msgstr "cel"
 msgid "The domain this alias points to"
 msgstr "Alias domeny wskazuje na"
 
-#: admin/models/domain_alias.py:79
+#: admin/models/domain_alias.py:113
 #, python-format
 msgid "Unknown domain %s"
 msgstr "Nieznana domena \"%s\""
 
-#: admin/models/mailbox.py:87
+#: admin/models/mailbox.py:88
 msgid "Mailbox address (without the @domain.tld part)"
 msgstr "Adres skrzynki (bez części @domena.pl)"
 
-#: admin/models/mailbox.py:95
+#: admin/models/mailbox.py:96
 msgid "Number of messages this mailbox can send per day"
 msgstr "Liczba wiadomości, które ta skrzynka może wysłać w ciągu jednego dnia"
 
-#: admin/models/mailbox.py:156
+#: admin/models/mailbox.py:157
 #, python-format
 msgid "Failed to retrieve mailbox location (%s)"
 msgstr "Błąd - nie udało się odczytać lokalizacji skrzynki (%s)"
 
-#: admin/models/mailbox.py:257
+#: admin/models/mailbox.py:258
 msgid "A quota is required"
 msgstr "Limit jest wymagany"
 
-#: admin/models/mailbox.py:264
+#: admin/models/mailbox.py:265
 msgid "{}: domain quota exceeded"
 msgstr "Limit domeny przekroczony"
 
-#: admin/models/mailbox.py:318
+#: admin/models/mailbox.py:321
 msgid "Domain does not exist"
 msgstr "Domena nie istnieje"
 
-#: admin/models/mailbox.py:354
+#: admin/models/mailbox.py:357
 msgid "Mailbox {} already exists"
 msgstr "Skrzynka [] już istnieje"
 
@@ -1020,7 +1064,7 @@ msgstr "Modoboa Amavis nie był testowany z wybranym silnikiem bazodanowym."
 msgid "Try using PostgreSQL, MySQL or MariaDB."
 msgstr "Spróbuj użyć PostgreSQL, MySQL lub MariaDB."
 
-#: amavis/handlers.py:141
+#: amavis/handlers.py:160
 msgid "Pending requests"
 msgstr "Oczekujące żądania"
 
@@ -1246,7 +1290,7 @@ msgstr ""
 "Zezwól administratorom domeny na zarządzanie użytkownikami kalendarzy (zapis "
 "i odczyt)"
 
-#: calendars/app_settings.py:60 core/app_settings.py:714
+#: calendars/app_settings.py:60 core/app_settings.py:724
 #: rspamd/app_settings.py:45
 msgid "Miscellaneous"
 msgstr "Różne"
@@ -1424,7 +1468,7 @@ msgstr ""
 "Nie powodzieła się próba edycji ustawień autoryzacji dwuetapowej z "
 "'%(addr)s' jako użytkownik '%(user)s'"
 
-#: core/api/v1/serializers.py:93 core/api/v2/serializers.py:408
+#: core/api/v1/serializers.py:93 core/api/v2/serializers.py:409
 msgid "Invalid password"
 msgstr "Nieprawidłowe hasło"
 
@@ -1436,16 +1480,16 @@ msgstr "Uwierzytelnianie dwuskładnikowe (2FA) nie jest włączone"
 msgid "Local"
 msgstr "Lokalnie"
 
-#: core/api/v2/serializers.py:176 core/api/v2/serializers.py:184
-#: core/api/v2/serializers.py:191
+#: core/api/v2/serializers.py:177 core/api/v2/serializers.py:185
+#: core/api/v2/serializers.py:192
 msgid "Invalid syntax"
 msgstr "Nieprawidłowa składnia"
 
-#: core/api/v2/serializers.py:196
+#: core/api/v2/serializers.py:197
 msgid "Invalid rounds number"
 msgstr "Nieprawidłowa liczba rund"
 
-#: core/api/v2/serializers.py:396 core/forms.py:84
+#: core/api/v2/serializers.py:397 core/forms.py:84
 msgid "This code is invalid"
 msgstr "Ten kod jest nieprawidłowy"
 
@@ -1470,7 +1514,7 @@ msgid "Calendar"
 msgstr "Kalendarz"
 
 #: core/api/v2/viewsets.py:215 core/api/v2/viewsets.py:217
-#: webmail/app_settings.py:317 webmail/app_settings.py:324
+#: webmail/app_settings.py:327 webmail/app_settings.py:334
 msgid "Webmail"
 msgstr "Webmail"
 
@@ -1861,19 +1905,29 @@ msgstr "Ukryj kontrolki opcji"
 msgid "Hide features widget for resellers and domain administrators"
 msgstr "Ukryj kontrolki opcji dla administratorów domeny i resellerów"
 
-#: core/app_settings.py:519
+#: core/app_settings.py:515
+msgid "Hide Modoboa Pro promotion"
+msgstr ""
+
+#: core/app_settings.py:517
+msgid ""
+"Hide the Modoboa Pro menu entry and presentation when the plugin is not "
+"installed"
+msgstr ""
+
+#: core/app_settings.py:529
 msgid "Theme"
 msgstr "Motyw"
 
-#: core/app_settings.py:525
+#: core/app_settings.py:535
 msgid "Colors"
 msgstr ""
 
-#: core/app_settings.py:532
+#: core/app_settings.py:542
 msgid "Primary theme color"
 msgstr "Podstawowy kolor motywu"
 
-#: core/app_settings.py:534
+#: core/app_settings.py:544
 msgid ""
 "Primary color of the theme (hexadecimal code), used as the background color "
 "of the left menu for example"
@@ -1881,23 +1935,23 @@ msgstr ""
 "Podstawowy kolor motywu (kod szesnastkowy), używany jako kolor tła lewego "
 "menu na przykład"
 
-#: core/app_settings.py:543
+#: core/app_settings.py:553
 msgid "Primary theme color (lighter version)"
 msgstr "Podstawowy kolor motywu (wersja jaśniejsza)"
 
-#: core/app_settings.py:546 core/app_settings.py:558
+#: core/app_settings.py:556 core/app_settings.py:568
 msgid "Primary color of the theme (hexadecimal code)"
 msgstr "Podstawowy kolor motywu (kod szesnastkowy)"
 
-#: core/app_settings.py:555
+#: core/app_settings.py:565
 msgid "Primary theme color (darker version)"
 msgstr "Podstawowy kolor motywu (wersja ciemniejsza)"
 
-#: core/app_settings.py:566
+#: core/app_settings.py:576
 msgid "Secondary theme color"
 msgstr "Wtórny kolor motywu"
 
-#: core/app_settings.py:568
+#: core/app_settings.py:578
 msgid ""
 "Secondary color of the theme (hexadecimal code), used as the background "
 "color of some buttons for example"
@@ -1905,106 +1959,106 @@ msgstr ""
 "Wtórny kolor motywu (kod szesnastkowy), używany jako kolor tła niektórych "
 "przycisków na przykład"
 
-#: core/app_settings.py:576
+#: core/app_settings.py:586
 msgid "Labels theme color"
 msgstr "Kolor motywu etykiet"
 
-#: core/app_settings.py:578
+#: core/app_settings.py:588
 msgid "Theme color for labels (hexadecimal code)"
 msgstr "Kolor motywu etykiet (kod szesnastkowy)"
 
-#: core/app_settings.py:586
+#: core/app_settings.py:596
 msgid "Logos"
 msgstr ""
 
-#: core/app_settings.py:593
+#: core/app_settings.py:603
 msgid "Login page logo"
 msgstr ""
 
-#: core/app_settings.py:595
+#: core/app_settings.py:605
 msgid ""
 "Logo displayed on the login and password-reset pages. Upload an image or "
 "clear it to use the default Modoboa logo."
 msgstr ""
 
-#: core/app_settings.py:605
+#: core/app_settings.py:615
 msgid "Menu logo"
 msgstr ""
 
-#: core/app_settings.py:607
+#: core/app_settings.py:617
 msgid ""
 "Logo displayed in the side menu and webmail. Upload an image or clear it to "
 "use the default Modoboa logo."
 msgstr ""
 
-#: core/app_settings.py:617
+#: core/app_settings.py:627
 msgid "Creation form logo"
 msgstr ""
 
-#: core/app_settings.py:619
+#: core/app_settings.py:629
 msgid ""
 "Logo displayed at the top of object creation forms. Upload an image or clear "
 "it to use the default Modoboa logo."
 msgstr ""
 
-#: core/app_settings.py:633
+#: core/app_settings.py:643
 msgid "Notifications"
 msgstr "Powiadomienia"
 
-#: core/app_settings.py:639
+#: core/app_settings.py:649
 msgid "Sender address"
 msgstr "Adres nadawcy"
 
-#: core/app_settings.py:641
+#: core/app_settings.py:651
 msgid "Email address used to send notifications."
 msgstr "Adres e-mail używany do wysyłania powiadomień"
 
-#: core/app_settings.py:652
+#: core/app_settings.py:662
 msgid "Public API"
 msgstr "Publiczne API"
 
-#: core/app_settings.py:658
+#: core/app_settings.py:668
 msgid "Enable communication"
 msgstr "Włącz komunikację"
 
-#: core/app_settings.py:660 core/app_settings.py:670
+#: core/app_settings.py:670 core/app_settings.py:680
 msgid "Automatically checks if a newer version is available"
 msgstr "Automatycznie sprawdzaj czy nowa wersja jest dostępna"
 
-#: core/app_settings.py:667
+#: core/app_settings.py:677
 msgid "Check new versions"
 msgstr "Sprawdź nowe wersje"
 
-#: core/app_settings.py:678
+#: core/app_settings.py:688
 msgid "Send an email when new versions are found"
 msgstr "Wyślij email, jeżeli została znaleziona nowa wersja"
 
-#: core/app_settings.py:682
+#: core/app_settings.py:692
 msgid "Send an email to notify admins about new versions"
 msgstr "Wyślij email, by powiadomić aministratorów o nowej wersji"
 
-#: core/app_settings.py:689 sievefilters/constants.py:30
+#: core/app_settings.py:699 sievefilters/constants.py:30
 msgid "Recipient"
 msgstr "Odbiorca"
 
-#: core/app_settings.py:692
+#: core/app_settings.py:702
 msgid "Recipient of new versions notification emails."
 msgstr "Odbiorca emaili z powiadomieniem o nowej wersji"
 
-#: core/app_settings.py:699
+#: core/app_settings.py:709
 msgid "Send statistics"
 msgstr "Wyślij statystyki"
 
-#: core/app_settings.py:702
+#: core/app_settings.py:712
 msgid "Send statistics to Modoboa public API (counters and used extensions)"
 msgstr ""
 "Prześlij statystyki do publicznego API Modoboa (licznik i użyte rozszerzenia)"
 
-#: core/app_settings.py:721
+#: core/app_settings.py:731
 msgid "Enable inactive account tracking"
 msgstr "Włącz śledzenie nieaktywnych kont"
 
-#: core/app_settings.py:724
+#: core/app_settings.py:734
 msgid ""
 "Allow the administrator to set a threshold (in days) beyond which an account "
 "is considered inactive if the user hasn't logged in"
@@ -2012,11 +2066,11 @@ msgstr ""
 "Zezwól administratorowi na ustawienie progu (w dniach) powyżej którego konto "
 "jest uważane za nieaktywne, jeśli użytkownik się nie zalogował"
 
-#: core/app_settings.py:733
+#: core/app_settings.py:743
 msgid "Inactive account threshold"
 msgstr "Próg nieaktywności konta"
 
-#: core/app_settings.py:736
+#: core/app_settings.py:746
 msgid ""
 "An account with a last login date greater than this threshold (in days) will "
 "be considered as inactive"
@@ -2024,35 +2078,35 @@ msgstr ""
 "Konto z datą ostatniego logowania większą niż podany próg (w dniach) "
 "zostanie uznane za nieaktywne. "
 
-#: core/app_settings.py:745
+#: core/app_settings.py:755
 msgid "Top notifications check interval"
 msgstr "Odstęp pomiędzy powiadomieniami "
 
-#: core/app_settings.py:748
+#: core/app_settings.py:758
 msgid "Interval between two top notification checks (in seconds)"
 msgstr "Odstęp pomiędzy dwoma powiadomieniami (w sek.)"
 
-#: core/app_settings.py:755
+#: core/app_settings.py:765
 msgid "Maximum log record age"
 msgstr "Maksymalny wiek wpisu w logu"
 
-#: core/app_settings.py:757
+#: core/app_settings.py:767
 msgid "The maximum age in days of a log record"
 msgstr "Maksymalny wiek w dniach dla wpisu w logu"
 
-#: core/app_settings.py:765
+#: core/app_settings.py:775
 msgid "Retention time in message history"
 msgstr "Czas przechowywania w historii wiadomości"
 
-#: core/app_settings.py:768
+#: core/app_settings.py:778
 msgid "Retention time (in days) of a message in the message history section"
 msgstr "Czas przechowywania (w dniach) wiadomości w sekcji historii wiadomości"
 
-#: core/app_settings.py:775
+#: core/app_settings.py:785
 msgid "Items per page"
 msgstr "Liczba elementów na stronie"
 
-#: core/app_settings.py:777
+#: core/app_settings.py:787
 msgid "Number of displayed items per page"
 msgstr "Liczba wyświetlanych elementów na stronie"
 
@@ -2122,23 +2176,23 @@ msgstr "Reseller"
 msgid "Super administrator"
 msgstr "Super administrator"
 
-#: core/constants.py:53
+#: core/constants.py:60
 msgid "No"
 msgstr "Nie"
 
-#: core/constants.py:59
+#: core/constants.py:66
 msgid "Search and bind"
 msgstr "Wyszukaj i powiąż"
 
-#: core/constants.py:60
+#: core/constants.py:67
 msgid "Direct bind"
 msgstr "Bezpośrednie powiązanie"
 
-#: core/constants.py:109
+#: core/constants.py:116
 msgid "Choose a provider"
 msgstr "Wybierz usługodawcę"
 
-#: core/constants.py:114
+#: core/constants.py:121
 msgid "Dummy"
 msgstr "Atrapa"
 
@@ -2233,19 +2287,19 @@ msgstr "Nieudana zmiana hasła: moduł LDAP nie został zainstalowany"
 msgid "account"
 msgstr "konto"
 
-#: core/models.py:323
+#: core/models.py:342
 msgid "Unknown"
 msgstr "Nieznany"
 
-#: core/models.py:366
+#: core/models.py:385
 msgid "You can't import an account with a role greater than yours"
 msgstr "Nie możesz zaimportować konta z rolą wyższą od własnej"
 
-#: core/models.py:381
+#: core/models.py:400
 msgid "The simple user '{}' must have a valid email address"
 msgstr "Zwykły użytkownik '[]' musi posiadać prawidłowy adres email"
 
-#: core/models.py:389
+#: core/models.py:408
 msgid "username and email fields must not differ for '{}'"
 msgstr "pola nazwa użytkownika i email muszą się różnić dla '[]'"
 
@@ -3218,17 +3272,23 @@ msgstr "[modoboa] Osiągnięto limit wysyłania"
 msgid "Daily limit of the following %(ltype)s has been reached: %(name)s."
 msgstr "Osiągnięto dzienny limit %(ltype)s: %(name)s ."
 
-#: relaydomains/api/v1/serializers.py:24
+#: relaydomains/api/v1/serializers.py:26
 msgid "Unsupported service"
 msgstr "Nieobsługiwana usługa"
 
-#: relaydomains/lib.py:17
+#: relaydomains/lib.py:16
+#, fuzzy
+#| msgid "You are not allowed to import domains"
+msgid "You are not allowed to import relay domains"
+msgstr "Nie masz uprawnień do importowania domen"
+
+#: relaydomains/lib.py:33
 #, fuzzy
 #| msgid "Invalid tag {}"
 msgid "Invalid port: {}"
 msgstr "Nieprawidłowy tag {}"
 
-#: relaydomains/lib.py:29
+#: relaydomains/lib.py:45
 #, fuzzy
 #| msgid "Invalid line: {}"
 msgid "Invalid settings: {}"
@@ -3381,7 +3441,7 @@ msgstr "jest"
 msgid "is not"
 msgstr "nie jest"
 
-#: sievefilters/constants.py:28 webmail/lib/imapemail.py:400
+#: sievefilters/constants.py:28 webmail/lib/imapemail.py:470
 msgid "Subject"
 msgstr "Temat"
 
@@ -3768,6 +3828,16 @@ msgstr "Podpis"
 msgid "User defined email signature"
 msgstr "Domyślny podpis użytkownika"
 
+#: webmail/app_settings.py:304
+#, fuzzy
+#| msgid "Signature text"
+msgid "Signature position"
+msgstr "Podpis"
+
+#: webmail/app_settings.py:306
+msgid "Where the signature goes in replies and forwards"
+msgstr ""
+
 #: webmail/checks.py:18
 msgid ""
 "The webmail attachments cleanup job is not registered: unused attachment "
@@ -3792,11 +3862,23 @@ msgstr ""
 
 #: webmail/constants.py:75
 #, fuzzy
+#| msgid "bounced messages"
+msgid "Above the quoted message"
+msgstr "odesłane wiadomości"
+
+#: webmail/constants.py:76
+#, fuzzy
+#| msgid "rejected messages"
+msgid "Below the quoted message"
+msgstr "odrzucone wiadomości"
+
+#: webmail/constants.py:86
+#, fuzzy
 #| msgid "All messages"
 msgid "Messages"
 msgstr "Wszystkie wiadomości"
 
-#: webmail/constants.py:76
+#: webmail/constants.py:87
 #, fuzzy
 #| msgid "Check new versions"
 msgid "Conversations"
@@ -3818,29 +3900,35 @@ msgstr ""
 msgid "Failed to remove attachment: "
 msgstr "Niepowodzenie przy usuwaniu załącznika"
 
-#: webmail/lib/imapemail.py:366
-msgid "wrote:"
-msgstr "napisał"
+#: webmail/lib/imapemail.py:420
+#, python-format
+msgid "On %(date)s, %(sender)s wrote:"
+msgstr ""
 
-#: webmail/lib/imapemail.py:402
+#: webmail/lib/imapemail.py:425
+#, python-format
+msgid "%(sender)s wrote:"
+msgstr ""
+
+#: webmail/lib/imapemail.py:473
 msgid "Date"
 msgstr "Data"
 
-#: webmail/lib/imapemail.py:418 webmail/lib/imapemail.py:421
+#: webmail/lib/imapemail.py:490 webmail/lib/imapemail.py:493
 msgid "Original message"
 msgstr "Oryginalna wiadomość"
 
-#: webmail/lib/imaputils.py:75 webmail/viewsets.py:26
+#: webmail/lib/imaputils.py:75 webmail/viewsets.py:27
 msgid "Invalid message identifier"
 msgstr ""
 
-#: webmail/lib/imaputils.py:82 webmail/viewsets.py:40
+#: webmail/lib/imaputils.py:82 webmail/viewsets.py:41
 #, fuzzy
 #| msgid "Invalid rounds number"
 msgid "Invalid part number"
 msgstr "Nieprawidłowa liczba rund"
 
-#: webmail/lib/imaputils.py:95 webmail/viewsets.py:47
+#: webmail/lib/imaputils.py:95 webmail/viewsets.py:48
 msgid "Invalid search pattern"
 msgstr ""
 
@@ -3878,96 +3966,105 @@ msgstr "Zaplanowany"
 msgid "Trash"
 msgstr "Kosz"
 
-#: webmail/lib/utils.py:177
+#: webmail/lib/utils.py:520
 #, fuzzy
 #| msgid "The code has been sent again"
 msgid "The account has been disabled"
 msgstr "Kod został wysłany ponownie"
 
-#: webmail/lib/utils.py:180
+#: webmail/lib/utils.py:523
 #, fuzzy
 #| msgid "Mailbox {} already exists"
 msgid "The mailbox no longer exists"
 msgstr "Skrzynka [] już istnieje"
 
-#: webmail/lib/utils.py:182
+#: webmail/lib/utils.py:525
 #, fuzzy
 #| msgid "The domain name"
 msgid "The domain has been disabled"
 msgstr "Nazwa domeny"
 
-#: webmail/lib/utils.py:184
+#: webmail/lib/utils.py:527
 msgid "This address is no longer allowed for this account"
 msgstr ""
 
-#: webmail/serializers.py:302
+#: webmail/serializers.py:310
 msgid "Moving scheduled messages is forbidden"
 msgstr "Przesuwanie zaplanowanych wiadomości jest zabronione"
 
-#: webmail/serializers.py:334
+#: webmail/serializers.py:342
 msgid "Only datetime in the future is allowed"
 msgstr "Dozwolona jest tylko data i czas w przyszłości"
 
-#: webmail/serializers.py:339
+#: webmail/serializers.py:347
 msgid "Provived datetime must be one minute in the future at least"
 msgstr "Podany czas musi być co najmniej o minutę w przyszłości"
 
-#: webmail/serializers.py:369
+#: webmail/serializers.py:378
 #, fuzzy
 #| msgid "You are not allowed to import domain aliases."
 msgid "You are not allowed to send from this address"
 msgstr "Nie masz uprawnień do importowania aliasów domen."
 
-#: webmail/serializers.py:410
+#: webmail/serializers.py:393
+#, fuzzy, python-format
+#| msgid "Invalid address"
+msgid "Invalid addresses: %s"
+msgstr "Niepoprawny adres"
+
+#: webmail/serializers.py:434
 msgid ""
 "original_mailbox, original_mailid and original_action must be provided "
 "together"
 msgstr ""
 
-#: webmail/serializers.py:427
+#: webmail/serializers.py:451
 #, python-format
 msgid ""
 "Ensure this field has no more than %(max_length)s characters to schedule the "
 "message"
 msgstr ""
 
-#: webmail/serializers.py:484
+#: webmail/serializers.py:523
 msgid "forward_mailbox and forward_mailid must be provided together"
 msgstr ""
 
-#: webmail/serializers.py:488
+#: webmail/serializers.py:527
 msgid "A session can't start from a draft and a forwarded message"
 msgstr ""
 
-#: webmail/viewsets.py:33
+#: webmail/viewsets.py:34
 #, fuzzy
 #| msgid "Invalid rounds number"
 msgid "Invalid page number"
 msgstr "Nieprawidłowa liczba rund"
 
-#: webmail/viewsets.py:168
+#: webmail/viewsets.py:169
 msgid "This mailbox is used by the webmail and can't be renamed"
 msgstr ""
 
-#: webmail/viewsets.py:209
+#: webmail/viewsets.py:210
 msgid "This mailbox is used by the webmail and can't be deleted"
 msgstr ""
 
-#: webmail/viewsets.py:630
+#: webmail/viewsets.py:650
 #, python-format
 msgid "A message cannot carry more than %s attachments"
 msgstr ""
 
-#: webmail/viewsets.py:642
+#: webmail/viewsets.py:662
 #, python-format
 msgid "Attachment is too big (limit: %s)"
 msgstr "Załącznik jest zbyt duży (limit: %s)"
 
-#: webmail/viewsets.py:647
+#: webmail/viewsets.py:667
 #, fuzzy, python-format
 #| msgid "Attachment is too big (limit: %s)"
 msgid "Attachments are too big (limit: %s for the whole message)"
 msgstr "Załącznik jest zbyt duży (limit: %s)"
+
+#~ msgid "wrote:"
+#~ msgstr "napisał"
 
 #~ msgid "User '{}' successfully logged out"
 #~ msgstr "Użytkownik '{}' wylogowany pomyślnie"
