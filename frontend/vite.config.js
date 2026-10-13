@@ -111,6 +111,11 @@ export default defineConfig({
   ],
   base: '/',
   define: { 'process.env': {} },
+  // vue3-gettext, shared through module federation, is served unbundled in
+  // dev: its CommonJS dependency must be converted to get a default export
+  optimizeDeps: {
+    include: ['pofile'],
+  },
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),
