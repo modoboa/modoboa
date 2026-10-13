@@ -1,5 +1,9 @@
 <template>
-  <div class="position-relative h-100">
+  <div
+    class="position-relative h-100"
+    @dragenter="onDragEnter"
+    @paste.capture="onPaste"
+  >
     <div
       class="bg-white rounded-lg pa-4 position-relative h-100 d-flex flex-column"
     >
@@ -14,13 +18,13 @@
           <v-btn
             class="ml-2"
             prepend-icon="mdi-send"
-            :disabled="loading"
+            :disabled="loading || uploading"
             :loading="working"
             :text="$gettext('Send')"
             @click="submit()"
           >
           </v-btn>
-          <v-btn size="small" icon :disabled="loading">
+          <v-btn size="small" icon :disabled="loading || uploading">
             <v-icon icon="mdi-chevron-down" />
             <v-menu activator="parent">
               <v-list>
@@ -66,15 +70,22 @@
           variant="tonal"
           prepend-icon="mdi-paperclip"
           :disabled="loading"
-          :text="$gettext('Attachments') + ` (${attachmentCount})`"
-          @click="openAttachmentsDialog"
+          :text="$gettext('Attach')"
+          @click="fileInput.click()"
+        />
+        <input
+          ref="fileInput"
+          type="file"
+          multiple
+          hidden
+          @change="onFilesSelected"
         />
         <v-btn
           class="ml-2"
           icon="mdi-content-save-outline"
           size="small"
           :title="$gettext('Save as draft')"
-          :disabled="loading"
+          :disabled="loading || uploading"
           :loading="working"
           @click="saveDraft"
         />
@@ -204,30 +215,86 @@
               />
             </v-col>
           </v-row>
+          <v-row v-if="attachments.length" class="align-center">
+            <v-col cols="2">
+              <span>{{ $gettext('Attachments') }}</span>
+            </v-col>
+            <v-col cols="8">
+              <v-chip
+                v-for="attachment in attachments"
+                :key="attachment.tmpname || attachment.fname"
+                class="ma-1"
+                :closable="!isUploading(attachment)"
+                :close-label="$gettext('Remove')"
+                @click:close="removeAttachment(attachment)"
+              >
+                <template #prepend>
+                  <v-progress-circular
+                    v-if="isUploading(attachment)"
+                    class="mr-2"
+                    :model-value="attachment.progress"
+                    size="16"
+                    width="2"
+                  />
+                  <v-icon v-else icon="mdi-paperclip" start />
+                </template>
+                {{ attachment.fname }}
+                <span v-if="attachment.size" class="ml-1 text-medium-emphasis">
+                  ({{ $filesize(attachment.size) }})
+                </span>
+              </v-chip>
+            </v-col>
+          </v-row>
         </div>
-        <BodyEditor v-model="form.body" v-model:format="bodyFormat" />
+        <BodyEditor
+          ref="bodyEditor"
+          v-model="form.body"
+          v-model:format="bodyFormat"
+        />
       </v-form>
     </div>
-    <v-dialog v-model="showAttachmentsDialog" max-width="800">
-      <AttachmentsDialog
-        :session-uid="route.query.uid"
-        @close="closeAttachmentDialog"
-      />
-    </v-dialog>
+    <div
+      v-if="dragging"
+      class="drop-overlay d-flex ga-4 pa-4"
+      @dragover.prevent
+      @dragleave="onDragLeave"
+      @drop.prevent="dragging = false"
+    >
+      <div
+        class="drop-zone rounded-lg d-flex align-center justify-center text-h6"
+        :class="{ 'drop-zone-active': dropInline === false }"
+        @dragenter="dropInline = false"
+        @drop.prevent.stop="onDrop($event, false)"
+      >
+        <v-icon icon="mdi-paperclip" class="mr-2" />
+        {{ $gettext('Drop files to attach them') }}
+      </div>
+      <div
+        v-if="bodyFormat === 'html'"
+        class="drop-zone rounded-lg d-flex align-center justify-center text-h6"
+        :class="{ 'drop-zone-active': dropInline === true }"
+        @dragenter="dropInline = true"
+        @drop.prevent.stop="onDrop($event, true)"
+      >
+        <v-icon icon="mdi-image-outline" class="mr-2" />
+        {{ $gettext('Drop images to insert them in the message') }}
+      </div>
+    </div>
     <v-dialog v-model="showSchedulingForm" max-width="800">
       <EmailSchedulingForm @schedule="submit" @close="closeSchedulingForm" />
     </v-dialog>
+    <ConfirmDialog ref="confirmDialog" />
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useGettext } from 'vue3-gettext'
 import { useAuthStore, useBusStore } from '@/stores'
 import { useSpecialFolders } from '@/composables/webmail'
 import debounce from 'debounce'
-import AttachmentsDialog from '@/components/webmail/AttachmentsDialog'
+import ConfirmDialog from '@/components/tools/ConfirmDialog'
 import BodyEditor from '@/components/webmail/BodyEditor'
 import EmailSchedulingForm from '@/components/webmail/EmailSchedulingForm'
 import rules from '@/plugins/rules'
@@ -255,7 +322,7 @@ const props = defineProps({
 const route = useRoute()
 const router = useRouter()
 const { isDraftsFolder } = useSpecialFolders(() => route.query.mailbox)
-const { $gettext } = useGettext()
+const { $gettext, $pgettext } = useGettext()
 const { displayNotification, reloadData } = useBusStore()
 const authStore = useAuthStore()
 
@@ -273,14 +340,21 @@ const allowedSenders = ref([])
 const draftMailid = ref(
   route.query.draft || (isEditingDraft ? route.query.mailid : null)
 )
-const attachmentCount = ref(0)
+// Uploaded attachments, and the ones being uploaded (with a progress)
+const attachments = ref([])
 // Format of the message, decided once everything is loaded, then changed by
 // the user only
 const bodyFormat = ref('plain')
 const contacts = ref([])
 const form = ref({})
+const confirmDialog = ref()
+const bodyEditor = ref()
+const dragging = ref(false)
+// Zone of the overlay under the pointer: insert images in the message, or
+// attach the files
+const dropInline = ref(null)
+const fileInput = ref()
 const formRef = ref()
-const showAttachmentsDialog = ref(false)
 const showCcField = ref(false)
 const showBccField = ref(false)
 const showSchedulingForm = ref(false)
@@ -469,7 +543,7 @@ const prepareMessage = () => {
 // click on "Send" must not schedule the message
 const submit = async (scheduledDatetime = null) => {
   const { valid } = await formRef.value.validate()
-  if (!valid) {
+  if (!valid || !(await confirmSending())) {
     return
   }
   working.value = true
@@ -492,14 +566,161 @@ const submit = async (scheduledDatetime = null) => {
   }
 }
 
-const openAttachmentsDialog = () => {
-  showAttachmentsDialog.value = true
+// Words announcing an attachment, in English and in the user's language:
+// a word starting with one of them is enough
+const ATTACHMENT_WORDS = ['attach', 'enclos']
+
+const escapeRegExp = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+
+// Does the text written by the user (quoted messages excluded) mention an
+// attachment?
+const mentionsAttachment = () => {
+  let text = form.value.body || ''
+  if (bodyFormat.value === 'html') {
+    const doc = new DOMParser().parseFromString(text, 'text/html')
+    doc.querySelectorAll('blockquote').forEach((node) => node.remove())
+    text = doc.body.textContent
+  } else {
+    text = text
+      .split('\n')
+      .filter((line) => !line.startsWith('>'))
+      .join('\n')
+  }
+  const words = [
+    ...ATTACHMENT_WORDS,
+    ...$pgettext(
+      'Beginnings of words announcing an attachment, separated by commas',
+      'attach,enclos'
+    ).split(','),
+  ]
+    .map((word) => escapeRegExp(word.trim()))
+    .filter(Boolean)
+  return new RegExp(`(^|[^\\p{L}])(${words.join('|')})`, 'iu').test(text)
 }
 
-const closeAttachmentDialog = async () => {
-  showAttachmentsDialog.value = false
-  const resp = await api.getComposeSession(route.query.uid)
-  attachmentCount.value = resp.data.attachments.length
+const confirmSending = async () => {
+  const options = { agreeLabel: $gettext('Send anyway') }
+  if (
+    !form.value.subject?.trim() &&
+    !(await confirmDialog.value.open(
+      $gettext('Empty subject'),
+      $gettext('This message has no subject.'),
+      options
+    ))
+  ) {
+    return false
+  }
+  if (
+    !attachments.value.length &&
+    mentionsAttachment() &&
+    !(await confirmDialog.value.open(
+      $gettext('Forgotten attachment?'),
+      $gettext('The message mentions an attachment, but none is attached.'),
+      options
+    ))
+  ) {
+    return false
+  }
+  return true
+}
+
+const isUploading = (attachment) => attachment.progress !== undefined
+
+// Send and save wait for the uploads to complete
+const uploading = computed(() => attachments.value.some(isUploading))
+
+// One file at a time: the server rewrites the whole session for each one,
+// concurrent uploads would lose attachments
+const uploadFiles = async (files) => {
+  if (loading.value) {
+    return
+  }
+  for (const file of files) {
+    attachments.value.push({ fname: file.name, size: file.size, progress: 0 })
+    const attachment = attachments.value[attachments.value.length - 1]
+    const formData = new FormData()
+    formData.append('attachment', file)
+    try {
+      const resp = await api.uploadAttachment(
+        route.query.uid,
+        formData,
+        (event) => {
+          attachment.progress = event.total
+            ? (100 * event.loaded) / event.total
+            : 0
+        }
+      )
+      delete attachment.progress
+      Object.assign(attachment, resp.data)
+    } catch {
+      // Already displayed to the user by the API client
+      attachments.value.splice(attachments.value.indexOf(attachment), 1)
+    }
+  }
+}
+
+const removeAttachment = async (attachment) => {
+  try {
+    await api.removeAttachment(route.query.uid, attachment.tmpname)
+  } catch {
+    // Already displayed to the user by the API client
+    return
+  }
+  attachments.value.splice(attachments.value.indexOf(attachment), 1)
+}
+
+const onFilesSelected = (event) => {
+  // Copied: the list is emptied with the input, to select the same file again
+  const files = [...event.target.files]
+  event.target.value = ''
+  uploadFiles(files)
+}
+
+// Images most mail clients display within a message
+const isInlineImage = (file) => /^image\/(png|jpeg|gif|webp)$/.test(file.type)
+
+// Images go in the body of HTML messages when asked, other files are
+// attached
+const addFiles = (files, inline) => {
+  const images = inline ? files.filter(isInlineImage) : []
+  if (images.length) {
+    bodyEditor.value.insertImages(images)
+  }
+  uploadFiles(files.filter((file) => !images.includes(file)))
+}
+
+// Only files are dropped here: text dragged inside the editor is not
+const onDragEnter = (event) => {
+  if (!loading.value && event.dataTransfer?.types.includes('Files')) {
+    dragging.value = true
+  }
+}
+
+// Fired when the pointer moves from a zone to another one too
+const onDragLeave = (event) => {
+  if (!event.currentTarget.contains(event.relatedTarget)) {
+    dragging.value = false
+    dropInline.value = null
+  }
+}
+
+const onDrop = (event, inline) => {
+  dragging.value = false
+  dropInline.value = null
+  addFiles([...event.dataTransfer.files], inline)
+}
+
+// Captured before the editor gets them: pasted files are attached, except
+// images pasted in the editor of an HTML message
+const onPaste = (event) => {
+  const files = [...(event.clipboardData?.files || [])]
+  if (files.length) {
+    event.preventDefault()
+    event.stopPropagation()
+    const inline =
+      bodyFormat.value === 'html' && !!event.target.closest?.('.ProseMirror')
+    addFiles(files, inline)
+  }
 }
 
 const lookForContacts = debounce(async (search) => {
@@ -619,7 +840,7 @@ const load = async () => {
       draftRequest,
     ])
     allowedSenders.value = senders.data
-    attachmentCount.value = session.attachments?.length || 0
+    attachments.value = session.attachments || []
     if (draft) {
       initFormFromDraft(session, draft)
     } else {
@@ -633,3 +854,26 @@ const load = async () => {
 
 load()
 </script>
+
+<style scoped>
+.drop-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  background: rgba(var(--v-theme-surface), 0.9);
+}
+
+.drop-zone {
+  flex: 1;
+  border: 2px dashed rgb(var(--v-theme-primary));
+}
+
+.drop-zone-active {
+  background: rgba(var(--v-theme-primary), 0.12);
+}
+
+/* The drop events target the zone, not its icon or text */
+.drop-zone > * {
+  pointer-events: none;
+}
+</style>

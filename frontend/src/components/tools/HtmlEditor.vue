@@ -227,6 +227,25 @@ watch(
     editor.value.commands.setContent(value, false)
   }
 )
+
+const readAsDataURL = (file) =>
+  new Promise((resolve, reject) => {
+    const reader = new FileReader()
+    reader.onload = () => resolve(reader.result)
+    reader.onerror = () => reject(reader.error)
+    reader.readAsDataURL(file)
+  })
+
+// Inserted at the cursor as data: URIs, which the server turns into parts
+// of the message
+const insertImages = async (files) => {
+  for (const file of files) {
+    const src = await readAsDataURL(file)
+    editor.value.chain().focus().setImage({ src, alt: file.name }).run()
+  }
+}
+
+defineExpose({ insertImages })
 </script>
 
 <style lang="scss">

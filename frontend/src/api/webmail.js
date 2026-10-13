@@ -149,12 +149,13 @@ export default {
   getAllowedSenders() {
     return repository.get('/webmail/compose-sessions/allowed_senders/')
   },
-  uploadAttachment(sessionUid, body) {
+  uploadAttachment(sessionUid, body, onUploadProgress) {
     return repository.post(
       `/webmail/compose-sessions/${sessionUid}/attachments/`,
       body,
       {
         headers: { 'Content-Type': 'multipart/form-data' },
+        onUploadProgress,
       }
     )
   },

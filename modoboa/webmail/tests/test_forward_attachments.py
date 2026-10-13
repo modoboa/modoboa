@@ -52,7 +52,10 @@ class ForwardAttachmentsTestCase(WebmailTestCase):
         # Stored decoded, like the attachments of a draft
         tmpname = content["attachments"][0]["tmpname"]
         with open(f"{self.workdir}/attachments/{tmpname}", "rb") as fp:
-            self.assertTrue(fp.read().startswith(b"%PDF-1.4"))
+            data = fp.read()
+        self.assertTrue(data.startswith(b"%PDF-1.4"))
+        # The compose form displays the decoded size
+        self.assertEqual(response.json()["attachments"][0]["size"], len(data))
 
     def test_message_without_attachment(self):
         self.mock_imap4.return_value = IMAP4MockPlainMessage()
