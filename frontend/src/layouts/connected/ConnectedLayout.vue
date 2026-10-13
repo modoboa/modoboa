@@ -15,10 +15,19 @@
       v-model="snackbar"
       :color="notificationColor"
       :timeout="notificationTimeout"
+      :timer="!!notificationAction"
       location="top"
     >
       {{ notification }}
       <template #actions>
+        <v-btn
+          v-if="notificationAction"
+          color="white"
+          variant="text"
+          @click="runNotificationAction"
+        >
+          {{ notificationAction.text }}
+        </v-btn>
         <v-btn color="white" variant="text" @click="snackbar = false">
           {{ $gettext('Close') }}
         </v-btn>
@@ -60,7 +69,13 @@ const authUser = computed(() => authStore.authUser)
 const notificationColor = computed(() => busStore.notificationColor)
 const notificationTimeout = computed(() => busStore.notificationTimeout)
 const notification = computed(() => busStore.notification)
+const notificationAction = computed(() => busStore.notificationAction)
 const snackbar = ref(false)
+
+const runNotificationAction = () => {
+  snackbar.value = false
+  notificationAction.value.callback()
+}
 
 busStore.$onAction(({ name, after }) => {
   if (name === 'displayNotification') {

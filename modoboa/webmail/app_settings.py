@@ -308,6 +308,17 @@ USER_PREFERENCES_STRUCT = collections.OrderedDict(
                                 ),
                             },
                         ),
+                        (
+                            "undo_send_delay",
+                            {
+                                "label": gettext_lazy("Undo send delay"),
+                                "help_text": gettext_lazy(
+                                    "Number of seconds during which sending a "
+                                    "message can be cancelled (0 to send at once, "
+                                    "30 at most)"
+                                ),
+                            },
+                        ),
                     ]
                 ),
             },

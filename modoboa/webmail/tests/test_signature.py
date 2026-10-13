@@ -40,6 +40,14 @@ class SignatureTestCase(WebmailTestCase):
         response = self.client.post(reverse("v2:webmail-compose-session-list"))
         self.assertEqual(response.json()["signature_position"], "below")
 
+    def test_compose_session_undo_send_delay(self):
+        self.authenticate()
+        url = reverse("v2:webmail-compose-session-list")
+        self.assertEqual(self.client.post(url).json()["undo_send_delay"], 10)
+        self.user.parameters.set_value("undo_send_delay", 0)
+        self.user.save()
+        self.assertEqual(self.client.post(url).json()["undo_send_delay"], 0)
+
 
 class SignatureSeparatorTestCase(SimpleTestCase):
 

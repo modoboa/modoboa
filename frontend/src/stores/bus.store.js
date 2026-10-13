@@ -5,14 +5,18 @@ import { ref } from 'vue'
 export const useBusStore = defineStore('bus', () => {
   const notification = ref('')
   const notificationColor = ref('')
-  const notificationTimeout = ref(2000)
+  // In ms, -1 to keep the notification displayed
+  const notificationTimeout = ref(5000)
+  // Button displayed along the notification: { text, callback }
+  const notificationAction = ref(null)
   const dataKey = ref(1)
   const mbCounterKey = ref(1)
 
   async function $reset() {
     notification.value = ''
     notificationColor.value = ''
-    notificationTimeout.value = 2000
+    notificationTimeout.value = 5000
+    notificationAction.value = null
     dataKey.value = 1
     mbCounterKey.value = 1
   }
@@ -20,9 +24,9 @@ export const useBusStore = defineStore('bus', () => {
   function displayNotification(options) {
     notification.value = options.msg
     notificationColor.value = options.type ? options.type : 'success'
-    if (options.timeout !== undefined) {
-      notificationTimeout.value = options.timeout
-    }
+    // Not kept for the next notifications
+    notificationTimeout.value = options.timeout ?? 5000
+    notificationAction.value = options.action || null
   }
 
   function hideNotification() {
@@ -40,6 +44,8 @@ export const useBusStore = defineStore('bus', () => {
   return {
     notification,
     notificationColor,
+    notificationTimeout,
+    notificationAction,
     displayNotification,
     hideNotification,
     reloadMailboxCounters,

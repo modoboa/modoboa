@@ -130,6 +130,24 @@ export default {
   sendEmailFromComposeSession(uid, body) {
     return repository.post(`/webmail/compose-sessions/${uid}/send/`, body)
   },
+  // While the page is being closed: the request outlives it, but the access
+  // token can't be refreshed then
+  // ponytail: browsers refuse keepalive bodies over 64 KB (large HTML
+  // bodies, inline images); the user is warned before leaving anyway
+  sendEmailFromComposeSessionOnUnload(uid, body, accessToken) {
+    return fetch(
+      `${repository.defaults.baseURL}/webmail/compose-sessions/${uid}/send/`,
+      {
+        method: 'POST',
+        keepalive: true,
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(body),
+      }
+    )
+  },
   getComposeSession(uid) {
     return repository.get(`/webmail/compose-sessions/${uid}/`)
   },

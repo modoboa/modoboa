@@ -263,7 +263,7 @@
 import { computed, nextTick, onUnmounted, ref } from 'vue'
 import { onBeforeRouteLeave, useRoute, useRouter } from 'vue-router'
 import { useGettext } from 'vue3-gettext'
-import { useAuthStore, useBusStore } from '@/stores'
+import { useAuthStore, useBusStore, useWebmailStore } from '@/stores'
 import {
   formatRecipient,
   useRecentRecipients,
@@ -304,7 +304,15 @@ const { isDraftsFolder } = useSpecialFolders(() => route.query.mailbox)
 const { $gettext, $pgettext, current: currentLocale } = useGettext()
 const { displayNotification, reloadData } = useBusStore()
 const authStore = useAuthStore()
+const webmailStore = useWebmailStore()
 const recentRecipients = useRecentRecipients()
+
+// A message whose sending was cancelled is displayed again as it was
+const cancelled =
+  webmailStore.cancelledMessage?.uid === route.query.uid
+    ? webmailStore.cancelledMessage
+    : null
+webmailStore.cancelledMessage = null
 
 // Only the compose view opened from the drafts folder edits a draft: in
 // reply/forward views, route.query.mailid is the original message UID.
@@ -349,6 +357,8 @@ const lastSavedAt = ref(null)
 const savedSnapshot = ref(null)
 let saveRequest = null
 let unmounted = false
+// Seconds during which sending can be cancelled (user preference)
+const undoSendDelay = ref(0)
 
 const close = () => {
   router.push({
@@ -527,16 +537,16 @@ const submit = async (scheduledDatetime = null) => {
   const body = prepareMessage()
   if (scheduledDatetime) {
     body.scheduled_datetime = scheduledDatetime
+  } else if (undoSendDelay.value) {
+    await delaySending(body)
+    working.value = false
+    return
   }
   try {
     await api.sendEmailFromComposeSession(route.query.uid, body)
     // Nothing is left to save: leaving must not ask anything
     savedSnapshot.value = getSnapshot()
-    recentRecipients.remember([
-      ...(body.to || []),
-      ...(body.cc || []),
-      ...(body.bcc || []),
-    ])
+    rememberRecipients(body)
     router.push({ name: 'MailboxView' })
     reloadData()
     const msg = scheduledDatetime
@@ -548,6 +558,74 @@ const submit = async (scheduledDatetime = null) => {
   } finally {
     working.value = false
   }
+}
+
+const rememberRecipients = (body) => {
+  recentRecipients.remember([
+    ...(body.to || []),
+    ...(body.cc || []),
+    ...(body.bcc || []),
+  ])
+}
+
+// Displays a message whose sending was cancelled, or failed, again
+const reopen = (state) => {
+  webmailStore.cancelledMessage = state
+  router.push(state.route)
+}
+
+// The message is sent once the delay is over: the user can cancel until
+// then. This form is closed meanwhile, the functions below outlive it.
+const delaySending = async (body) => {
+  const uid = route.query.uid
+  const delay = undoSendDelay.value
+  const state = {
+    uid,
+    route: { name: route.name, query: { ...route.query } },
+    form: JSON.parse(JSON.stringify(form.value)),
+    bodyFormat: bodyFormat.value,
+    showCcField: showCcField.value,
+    showBccField: showBccField.value,
+    savedSnapshot: savedSnapshot.value,
+  }
+  // Refreshing the token is not possible while the page is being closed
+  const accessToken = await authStore.getAccessToken()
+  webmailStore.delaySending(uid, {
+    delay,
+    state,
+    send: async () => {
+      try {
+        await api.sendEmailFromComposeSession(uid, body)
+      } catch {
+        // Already displayed to the user by the API client: the message is
+        // displayed again so that it is not lost
+        reopen(state)
+        return
+      }
+      rememberRecipients(body)
+      reloadData()
+      displayNotification({ msg: $gettext('Email sent') })
+    },
+    flush: () =>
+      api.sendEmailFromComposeSessionOnUnload(uid, body, accessToken),
+  })
+  // Leaving must not ask anything: the message is about to be sent
+  savedSnapshot.value = getSnapshot()
+  router.push({ name: 'MailboxView' })
+  displayNotification({
+    msg: $gettext('Sending the message...'),
+    type: 'info',
+    timeout: delay * 1000,
+    action: {
+      text: $gettext('Undo'),
+      callback: () => {
+        const state = webmailStore.cancelSending(uid)
+        if (state) {
+          reopen(state)
+        }
+      },
+    },
+  })
 }
 
 // Words announcing an attachment, in English and in the user's language:
@@ -869,10 +947,11 @@ const getEmailContent = async (context) => {
 // message (or the draft) and on the preferences.
 const load = async () => {
   let originalRequest = null
-  if (props.reply || props.forward) {
+  if (!cancelled && (props.reply || props.forward)) {
     originalRequest = getEmailContent(props.forward ? 'forward' : 'reply')
   }
-  const draftRequest = isEditingDraft ? getEmailContent('edit') : null
+  const draftRequest =
+    !cancelled && isEditingDraft ? getEmailContent('edit') : null
   try {
     const [session, senders, originalEmail, draft] = await Promise.all([
       getComposeSession(),
@@ -882,7 +961,13 @@ const load = async () => {
     ])
     allowedSenders.value = senders.data
     attachments.value = session.attachments || []
-    if (draft) {
+    undoSendDelay.value = session.undo_send_delay || 0
+    if (cancelled) {
+      form.value = cancelled.form
+      bodyFormat.value = cancelled.bodyFormat
+      showCcField.value = cancelled.showCcField
+      showBccField.value = cancelled.showBccField
+    } else if (draft) {
       initFormFromDraft(session, draft)
     } else {
       await initForm(session, originalEmail)
@@ -890,7 +975,7 @@ const load = async () => {
     loading.value = false
     // Once the editor got the body: it may normalize it
     await nextTick()
-    savedSnapshot.value = getSnapshot()
+    savedSnapshot.value = cancelled ? cancelled.savedSnapshot : getSnapshot()
   } catch {
     // Already displayed to the user by the API client
   }
