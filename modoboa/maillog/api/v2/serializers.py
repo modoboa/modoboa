@@ -1,5 +1,7 @@
 """App. related serializers."""
 
+import os
+
 from django.utils.translation import gettext as _
 
 from rest_framework import serializers
@@ -89,3 +91,9 @@ class MaillogGlobalParemetersSerializer(serializers.Serializer):
     rrd_rootdir = serializers.CharField(default="/tmp/modoboa")
     greylist = serializers.BooleanField(default=False)
     enable_domain_limits = serializers.BooleanField(default=False)
+
+    def validate_rrd_rootdir(self, value):
+        """Check that directory exists."""
+        if value and not os.path.isdir(value):
+            raise serializers.ValidationError(_("Directory not found."))
+        return value

@@ -1,5 +1,24 @@
+import os
 import sys
 import time
+
+from django.core.management.base import CommandError
+
+
+def ensure_rrd_rootdir(path):
+    """Reject an RRD directory the current process cannot write into.
+
+    rrdtool creates a temporary file next to the destination archive, so a
+    missing or unwritable parent fails with ``Cannot create temporary file``.
+    The directory is not created here: the default lives under ``/tmp``, and
+    creating it would keep durable statistics on a volatile path.
+    """
+    if not path or not os.path.isdir(path) or not os.access(path, os.W_OK):
+        raise CommandError(
+            f"Directory to store RRD files ({path}) is missing, is not a "
+            "directory, or is not writable by the current process. Create "
+            "the directory or change the rrd_rootdir setting."
+        )
 
 
 def date_to_timestamp(timetuple):
