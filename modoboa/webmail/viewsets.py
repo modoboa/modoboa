@@ -11,6 +11,7 @@ from rest_framework.permissions import IsAuthenticated
 
 from modoboa.lib import exceptions
 from modoboa.lib.paginator import Paginator
+from modoboa.lib.web_utils import size2integer
 from modoboa.lib.viewsets import HasMailbox
 from modoboa.parameters import tools as param_tools
 from modoboa.webmail import constants, lib, models, serializers
@@ -533,19 +534,8 @@ class ComposeSessionViewSet(ImapConnectionMixin, viewsets.GenericViewSet):
     def initialize_request(self, request, *args, **kwargs):
         response = super().initialize_request(request, *args, **kwargs)
         if self.action == "attachments":
-            # The size already used is resolved when the first file is
-            # received: the request is not authenticated yet here.
-            uploader = attachments.AttachmentUploadHandler(
-                used_size=lambda: self._uploaded_size(response, kwargs.get("pk"))
-            )
-            request.upload_handlers.insert(0, uploader)
+            request.upload_handlers.insert(0, attachments.AttachmentUploadHandler())
         return response
-
-    @staticmethod
-    def _uploaded_size(request, session_uid) -> int:
-        """Total size of the attachments already saved in a session."""
-        manager = attachments.ComposeSessionManager(request.user.username)
-        return attachments.attachments_size(manager.get_content(session_uid))
 
     def get_serializer_class(self):
         if self.action == "create":
@@ -661,16 +651,27 @@ class ComposeSessionViewSet(ImapConnectionMixin, viewsets.GenericViewSet):
                 errors["attachment"] = [
                     _("Attachment is too big (limit: %s)") % handler.maxsize
                 ]
-                return response.Response(errors, status=400)
-            if handler.total_toobig:
-                errors["attachment"] = [
-                    _("Attachments are too big (limit: %s for the whole message)")
-                    % handler.max_total_size
-                ]
-                return response.Response(errors, status=400)
-        result = attachments.save_attachment_from_upload(
-            request, pk, serializer.validated_data["attachment"]
+            return response.Response(errors, status=400)
+        # Checked once the file is received: the size of the attachments
+        # already uploaded is only known once the user is authenticated
+        upload = serializer.validated_data["attachment"]
+        max_total_size = size2integer(
+            param_tools.get_global_parameter("max_attachments_total_size")
         )
+        if (
+            max_total_size
+            and attachments.attachments_size(session) + upload.size > max_total_size
+        ):
+            return response.Response(
+                {
+                    "attachment": [
+                        _("Attachments are too big (limit: %s for the whole message)")
+                        % max_total_size
+                    ]
+                },
+                status=400,
+            )
+        result = attachments.save_attachment_from_upload(request, pk, upload)
         return response.Response(result)
 
     @action(methods=["delete"], detail=True, url_path="attachments/(?P<name>[^/.]+)")

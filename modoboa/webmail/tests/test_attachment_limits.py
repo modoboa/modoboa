@@ -1,5 +1,6 @@
 """Tests for the limits applied to the attachments of a message."""
 
+from django.core.files.uploadedfile import SimpleUploadedFile
 from django.urls import reverse
 
 from modoboa.webmail.lib.attachments import ComposeSessionManager
@@ -57,3 +58,12 @@ class AttachmentLimitsTestCase(WebmailTestCase):
         response = self._upload()
         self.assertEqual(response.status_code, 400)
         self.assertIn("Attachment is too big", response.json()["attachment"][0])
+
+    def test_upload_larger_than_a_chunk(self):
+        # Several chunks are read while the user is authenticated
+        self.set_global_parameters({"max_attachment_size": "1M"})
+        data = SimpleUploadedFile("big.txt", b"a" * 200_000)
+        with self.settings(MEDIA_ROOT=self.workdir):
+            response = self.client.post(self.url, {"attachment": data})
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json()["size"], 200_000)
