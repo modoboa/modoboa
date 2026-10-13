@@ -538,8 +538,13 @@ const submit = async (scheduledDatetime = null) => {
   if (scheduledDatetime) {
     body.scheduled_datetime = scheduledDatetime
   } else if (undoSendDelay.value) {
-    await delaySending(body)
-    working.value = false
+    try {
+      await delaySending(body)
+    } catch {
+      // Already displayed to the user by the API client
+    } finally {
+      working.value = false
+    }
     return
   }
   try {
@@ -588,6 +593,8 @@ const delaySending = async (body) => {
     showBccField: showBccField.value,
     savedSnapshot: savedSnapshot.value,
   }
+  // Checked and kept by the server now: what is left to send is small
+  await api.prepareComposeSession(uid, body)
   // Refreshing the token is not possible while the page is being closed
   const accessToken = await authStore.getAccessToken()
   webmailStore.delaySending(uid, {
@@ -595,7 +602,7 @@ const delaySending = async (body) => {
     state,
     send: async () => {
       try {
-        await api.sendEmailFromComposeSession(uid, body)
+        await api.sendEmailFromComposeSession(uid, {})
       } catch {
         // Already displayed to the user by the API client: the message is
         // displayed again so that it is not lost
@@ -606,8 +613,7 @@ const delaySending = async (body) => {
       reloadData()
       displayNotification({ msg: $gettext('Email sent') })
     },
-    flush: () =>
-      api.sendEmailFromComposeSessionOnUnload(uid, body, accessToken),
+    flush: () => api.sendPreparedEmailOnUnload(uid, accessToken),
   })
   // Leaving must not ask anything: the message is about to be sent
   savedSnapshot.value = getSnapshot()

@@ -540,7 +540,7 @@ class ComposeSessionViewSet(ImapConnectionMixin, viewsets.GenericViewSet):
     def get_serializer_class(self):
         if self.action == "create":
             return serializers.CreateSessionSerializer
-        if self.action == "send":
+        if self.action in ("send", "prepare"):
             return serializers.SendEmailSerializer
         if self.action == "save":
             return serializers.SaveEmailSerializer
@@ -681,12 +681,29 @@ class ComposeSessionViewSet(ImapConnectionMixin, viewsets.GenericViewSet):
             return response.Response({"error": error}, status=400)
         return response.Response(status=204)
 
-    @action(methods=["post"], detail=True)
-    def send(self, request, pk):
-        """Send an email based on the given compose session."""
+    # Stored as is in the session: JSON only
+    @action(methods=["post"], detail=True, parser_classes=(parsers.JSONParser,))
+    def prepare(self, request, pk):
+        """Keep a message to send later in the compose session.
+
+        A send request without data sends it: it stays small enough to be
+        sent while the page of the user is being closed.
+        """
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         manager = attachments.ComposeSessionManager(request.user.username)
+        session = manager.get_content(pk)
+        session["prepared"] = request.data
+        manager.set_content(pk, session)
+        return response.Response(status=204)
+
+    @action(methods=["post"], detail=True)
+    def send(self, request, pk):
+        """Send an email based on the given compose session."""
+        manager = attachments.ComposeSessionManager(request.user.username)
+        data = request.data or manager.get_content(pk).get("prepared", {})
+        serializer = self.get_serializer(data=data)
+        serializer.is_valid(raise_exception=True)
         draft_mailid = serializer.validated_data.get("mailid")
         if serializer.validated_data.get("scheduled_datetime"):
             schedule_email(
