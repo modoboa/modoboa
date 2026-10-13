@@ -2,10 +2,11 @@
   <div
     class="position-relative h-100"
     @dragenter="onDragEnter"
+    @keydown.capture="onKeydown"
     @paste.capture="onPaste"
   >
     <div
-      class="bg-white rounded-lg pa-4 position-relative h-100 d-flex flex-column"
+      class="bg-white rounded-lg pa-2 pa-sm-4 position-relative h-100 d-flex flex-column"
     >
       <v-toolbar color="white">
         <v-btn
@@ -44,9 +45,11 @@
               class="ml-2"
               variant="tonal"
               prepend-icon="mdi-cog-outline"
-              :text="$gettext('Options')"
+              :title="$gettext('Options')"
               v-bind="menuProps"
-            />
+            >
+              <span class="d-none d-sm-inline">{{ $gettext('Options') }}</span>
+            </v-btn>
           </template>
           <v-card class="pa-4">
             <v-switch
@@ -70,9 +73,11 @@
           variant="tonal"
           prepend-icon="mdi-paperclip"
           :disabled="loading"
-          :text="$gettext('Attach')"
+          :title="$gettext('Attach')"
           @click="fileInput.click()"
-        />
+        >
+          <span class="d-none d-sm-inline">{{ $gettext('Attach') }}</span>
+        </v-btn>
         <input
           ref="fileInput"
           type="file"
@@ -85,18 +90,24 @@
           icon="mdi-content-save-outline"
           size="small"
           :title="$gettext('Save as draft')"
-          :disabled="loading || uploading"
-          :loading="working"
-          @click="saveDraft"
+          :disabled="loading || uploading || working"
+          :loading="saving"
+          @click="saveDraft()"
         />
+        <span
+          v-if="lastSavedAt"
+          class="ml-2 text-caption text-medium-emphasis d-none d-md-inline"
+        >
+          {{ $gettext('Draft saved at %{time}', { time: lastSavedAt }) }}
+        </span>
       </v-toolbar>
       <v-form ref="formRef" class="flex-grow-1 d-flex flex-column">
         <div>
           <v-row class="align-center">
-            <v-col cols="2">
+            <v-col cols="3" sm="2">
               <span>{{ $gettext('From') }}</span>
             </v-col>
-            <v-col cols="8">
+            <v-col cols="9" sm="8">
               <v-select
                 v-model="form.sender"
                 :items="allowedSenders"
@@ -110,13 +121,13 @@
             </v-col>
           </v-row>
           <v-row class="align-center">
-            <v-col cols="2">
+            <v-col cols="3" sm="2">
               <span>{{ $gettext('To') }}</span>
             </v-col>
-            <v-col cols="8">
+            <v-col cols="9" sm="8">
               <RecipientField v-model="form.to" :rules="[rules.required]" />
             </v-col>
-            <v-col cols="2">
+            <v-col cols="12" sm="2" class="pt-0 pt-sm-3 text-end text-sm-start">
               <v-btn
                 v-if="!showCcField"
                 :text="$gettext('Cc')"
@@ -136,7 +147,7 @@
             </v-col>
           </v-row>
           <v-row v-if="showCcField" class="align-center">
-            <v-col cols="2">
+            <v-col cols="3" sm="2">
               <span>{{ $gettext('Cc') }}</span>
               <v-btn
                 icon="mdi-close"
@@ -145,12 +156,12 @@
                 @click="hideCcField"
               />
             </v-col>
-            <v-col cols="8">
+            <v-col cols="9" sm="8">
               <RecipientField v-model="form.cc" />
             </v-col>
           </v-row>
           <v-row v-if="showBccField" class="align-center">
-            <v-col cols="2">
+            <v-col cols="3" sm="2">
               <span>{{ $gettext('Bcc') }}</span>
               <v-btn
                 icon="mdi-close"
@@ -159,15 +170,15 @@
                 @click="hideBccField"
               />
             </v-col>
-            <v-col cols="8">
+            <v-col cols="9" sm="8">
               <RecipientField v-model="form.bcc" />
             </v-col>
           </v-row>
           <v-row class="align-center">
-            <v-col cols="2">
+            <v-col cols="3" sm="2">
               <span>{{ $gettext('Subject') }}</span>
             </v-col>
-            <v-col cols="8">
+            <v-col cols="9" sm="8">
               <v-text-field
                 v-model="form.subject"
                 variant="outlined"
@@ -177,10 +188,10 @@
             </v-col>
           </v-row>
           <v-row v-if="attachments.length" class="align-center">
-            <v-col cols="2">
+            <v-col cols="3" sm="2">
               <span>{{ $gettext('Attachments') }}</span>
             </v-col>
-            <v-col cols="8">
+            <v-col cols="9" sm="8">
               <v-chip
                 v-for="attachment in attachments"
                 :key="attachment.tmpname || attachment.fname"
@@ -249,8 +260,8 @@
 </template>
 
 <script setup>
-import { computed, ref } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
+import { computed, nextTick, onUnmounted, ref } from 'vue'
+import { onBeforeRouteLeave, useRoute, useRouter } from 'vue-router'
 import { useGettext } from 'vue3-gettext'
 import { useAuthStore, useBusStore } from '@/stores'
 import {
@@ -264,6 +275,10 @@ import EmailSchedulingForm from '@/components/webmail/EmailSchedulingForm'
 import RecipientField from '@/components/webmail/RecipientField'
 import rules from '@/plugins/rules'
 import api from '@/api/webmail'
+import { localeToBCP47 } from '@/utils'
+
+// Unsaved changes are saved as a draft this often
+const AUTOSAVE_INTERVAL = 30 * 1000
 
 // In reply and forward modes, route.query.mailbox and route.query.mailid
 // designate the original message
@@ -286,7 +301,7 @@ const props = defineProps({
 const route = useRoute()
 const router = useRouter()
 const { isDraftsFolder } = useSpecialFolders(() => route.query.mailbox)
-const { $gettext, $pgettext } = useGettext()
+const { $gettext, $pgettext, current: currentLocale } = useGettext()
 const { displayNotification, reloadData } = useBusStore()
 const authStore = useAuthStore()
 const recentRecipients = useRecentRecipients()
@@ -324,7 +339,16 @@ const showBccField = ref(false)
 const showSchedulingForm = ref(false)
 // The form can't be submitted before its content is loaded
 const loading = ref(true)
+// Sending
 const working = ref(false)
+// Saving the draft
+const saving = ref(false)
+// Time of the last save, to tell the user
+const lastSavedAt = ref(null)
+// What was last saved (or loaded), to know whether there are changes
+const savedSnapshot = ref(null)
+let saveRequest = null
+let unmounted = false
 
 const close = () => {
   router.push({
@@ -497,12 +521,17 @@ const submit = async (scheduledDatetime = null) => {
     return
   }
   working.value = true
+  // The draft being saved is deleted once the message is sent: its UID must
+  // be known
+  await saveRequest
   const body = prepareMessage()
   if (scheduledDatetime) {
     body.scheduled_datetime = scheduledDatetime
   }
   try {
     await api.sendEmailFromComposeSession(route.query.uid, body)
+    // Nothing is left to save: leaving must not ask anything
+    savedSnapshot.value = getSnapshot()
     recentRecipients.remember([
       ...(body.to || []),
       ...(body.cc || []),
@@ -704,24 +733,106 @@ const closeSchedulingForm = () => {
   showSchedulingForm.value = false
 }
 
-const saveDraft = async () => {
-  working.value = true
+// The form, the format and the attachments, as saved in a draft
+const getSnapshot = () =>
+  JSON.stringify([
+    form.value,
+    bodyFormat.value,
+    attachments.value.map((attachment) => attachment.tmpname),
+  ])
+
+const hasUnsavedChanges = () =>
+  savedSnapshot.value !== null && savedSnapshot.value !== getSnapshot()
+
+const doSaveDraft = async (auto) => {
+  saving.value = true
+  // What the user changes during the request is saved next time
+  const snapshot = getSnapshot()
   const body = prepareMessage()
   try {
     const resp = await api.saveComposeSession(route.query.uid, body)
     draftMailid.value = resp.data.mailid
+    savedSnapshot.value = snapshot
+    lastSavedAt.value = new Date().toLocaleTimeString(
+      localeToBCP47(currentLocale),
+      { hour: '2-digit', minute: '2-digit' }
+    )
+    if (unmounted) {
+      // The user left: the URL is not the one of this form anymore
+      return
+    }
     const query = { ...route.query, draft: resp.data.mailid }
     if (isEditingDraft) {
       // The previous version is gone: reloading must open the new one
       query.mailid = resp.data.mailid
     }
     router.replace({ name: route.name, query })
-    displayNotification({ msg: $gettext('Draft saved') })
+    if (!auto) {
+      displayNotification({ msg: $gettext('Draft saved') })
+    }
   } catch {
     // Already displayed to the user by the API client
   } finally {
-    working.value = false
+    saving.value = false
   }
+}
+
+// One save at a time: a second one would create another draft
+const saveDraft = ({ auto = false } = {}) => {
+  saveRequest ??= doSaveDraft(auto).finally(() => {
+    saveRequest = null
+  })
+  return saveRequest
+}
+
+const autosaveTimer = setInterval(() => {
+  if (hasUnsavedChanges() && !uploading.value && !working.value) {
+    saveDraft({ auto: true })
+  }
+}, AUTOSAVE_INTERVAL)
+
+// Closing or reloading the page
+const onBeforeUnload = (event) => {
+  if (hasUnsavedChanges()) {
+    event.preventDefault()
+  }
+}
+window.addEventListener('beforeunload', onBeforeUnload)
+
+onUnmounted(() => {
+  unmounted = true
+  clearInterval(autosaveTimer)
+  window.removeEventListener('beforeunload', onBeforeUnload)
+})
+
+onBeforeRouteLeave(() => {
+  if (!hasUnsavedChanges()) {
+    return true
+  }
+  return confirmDialog.value.open(
+    $gettext('Unsaved changes'),
+    $gettext(
+      'The changes made since the draft was last saved will be lost. Leave anyway?'
+    ),
+    { agreeLabel: $gettext('Leave') }
+  )
+})
+
+// Ctrl+Enter (Cmd+Enter) sends the message, the editor must not get it
+const onKeydown = async (event) => {
+  if (event.key !== 'Enter' || !(event.ctrlKey || event.metaKey)) {
+    return
+  }
+  event.preventDefault()
+  event.stopPropagation()
+  if (loading.value || uploading.value || working.value) {
+    return
+  }
+  // An address being typed in a recipient field is added when it loses
+  // the focus
+  document.activeElement?.blur()
+  await nextTick()
+  submit()
 }
 
 const getComposeSession = async () => {
@@ -777,6 +888,9 @@ const load = async () => {
       await initForm(session, originalEmail)
     }
     loading.value = false
+    // Once the editor got the body: it may normalize it
+    await nextTick()
+    savedSnapshot.value = getSnapshot()
   } catch {
     // Already displayed to the user by the API client
   }
