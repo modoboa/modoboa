@@ -13,6 +13,10 @@ export default {
   getContacts(params) {
     return repository.get('/contacts/', { params })
   },
+  // One result per address, with the name of the contact
+  getEmailAddresses(params) {
+    return repository.get('/emails/', { params })
+  },
   createContact(data) {
     return repository.post('/contacts/', data)
   },

@@ -114,20 +114,7 @@
               <span>{{ $gettext('To') }}</span>
             </v-col>
             <v-col cols="8">
-              <v-combobox
-                v-model="form.to"
-                :items="contacts"
-                :item-title="(item) => getItemTitle(item)"
-                return-object
-                :placeholder="$gettext('Provide one or more addresses')"
-                variant="outlined"
-                density="compact"
-                hide-details="auto"
-                chips
-                multiple
-                :rules="[rules.required]"
-                @update:search="lookForContacts"
-              />
+              <RecipientField v-model="form.to" :rules="[rules.required]" />
             </v-col>
             <v-col cols="2">
               <v-btn
@@ -155,24 +142,11 @@
                 icon="mdi-close"
                 variant="flat"
                 size="x-small"
-                @click="showCcField = false"
+                @click="hideCcField"
               />
             </v-col>
             <v-col cols="8">
-              <v-combobox
-                v-model="form.cc"
-                :items="contacts"
-                :item-title="(item) => getItemTitle(item)"
-                return-object
-                :placeholder="$gettext('Provide one or more addresses')"
-                variant="outlined"
-                density="compact"
-                hide-details="auto"
-                chips
-                multiple
-                :hide-no-data="false"
-                @update:search="lookForContacts"
-              />
+              <RecipientField v-model="form.cc" />
             </v-col>
           </v-row>
           <v-row v-if="showBccField" class="align-center">
@@ -182,24 +156,11 @@
                 icon="mdi-close"
                 variant="flat"
                 size="x-small"
-                @click="showBccField = false"
+                @click="hideBccField"
               />
             </v-col>
             <v-col cols="8">
-              <v-combobox
-                v-model="form.bcc"
-                :items="contacts"
-                :item-title="(item) => getItemTitle(item)"
-                return-object
-                :placeholder="$gettext('Provide one or more addresses')"
-                variant="outlined"
-                density="compact"
-                hide-details="auto"
-                chips
-                multiple
-                :hide-no-data="false"
-                @update:search="lookForContacts"
-              />
+              <RecipientField v-model="form.bcc" />
             </v-col>
           </v-row>
           <v-row class="align-center">
@@ -292,14 +253,17 @@ import { computed, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useGettext } from 'vue3-gettext'
 import { useAuthStore, useBusStore } from '@/stores'
-import { useSpecialFolders } from '@/composables/webmail'
-import debounce from 'debounce'
+import {
+  formatRecipient,
+  useRecentRecipients,
+  useSpecialFolders,
+} from '@/composables/webmail'
 import ConfirmDialog from '@/components/tools/ConfirmDialog'
 import BodyEditor from '@/components/webmail/BodyEditor'
 import EmailSchedulingForm from '@/components/webmail/EmailSchedulingForm'
+import RecipientField from '@/components/webmail/RecipientField'
 import rules from '@/plugins/rules'
 import api from '@/api/webmail'
-import contactsApi from '@/api/contacts'
 
 // In reply and forward modes, route.query.mailbox and route.query.mailid
 // designate the original message
@@ -325,6 +289,7 @@ const { isDraftsFolder } = useSpecialFolders(() => route.query.mailbox)
 const { $gettext, $pgettext } = useGettext()
 const { displayNotification, reloadData } = useBusStore()
 const authStore = useAuthStore()
+const recentRecipients = useRecentRecipients()
 
 // Only the compose view opened from the drafts folder edits a draft: in
 // reply/forward views, route.query.mailid is the original message UID.
@@ -345,7 +310,6 @@ const attachments = ref([])
 // Format of the message, decided once everything is loaded, then changed by
 // the user only
 const bodyFormat = ref('plain')
-const contacts = ref([])
 const form = ref({})
 const confirmDialog = ref()
 const bodyEditor = ref()
@@ -366,14 +330,6 @@ const close = () => {
   router.push({
     name: 'MailboxView',
   })
-}
-
-// "Name <address>" when the name is known: the API keeps it
-const formatRecipient = (rcpt) => {
-  if (!rcpt.name) {
-    return rcpt.address
-  }
-  return `"${rcpt.name.replace(/(["\\])/g, '\\$1')}" <${rcpt.address}>`
 }
 
 // Is this one of the addresses the user can send from (aliases included)?
@@ -520,12 +476,6 @@ const initFormFromDraft = (session, draft) => {
 
 const prepareMessage = () => {
   const result = { ...form.value }
-
-  for (const field of ['to', 'cc', 'bcc']) {
-    if (result[field]?.length) {
-      result[field] = result[field].map(getRecipient).filter(Boolean)
-    }
-  }
   result.body_format = bodyFormat.value
   if (draftMailid.value) {
     result.mailid = draftMailid.value
@@ -553,6 +503,11 @@ const submit = async (scheduledDatetime = null) => {
   }
   try {
     await api.sendEmailFromComposeSession(route.query.uid, body)
+    recentRecipients.remember([
+      ...(body.to || []),
+      ...(body.cc || []),
+      ...(body.bcc || []),
+    ])
     router.push({ name: 'MailboxView' })
     reloadData()
     const msg = scheduledDatetime
@@ -723,17 +678,16 @@ const onPaste = (event) => {
   }
 }
 
-const lookForContacts = debounce(async (search) => {
-  if (search) {
-    const params = { search }
-    const resp = await contactsApi.getContacts(params)
-    if (resp.data.count > 0) {
-      contacts.value = resp.data.results
-    }
-  } else {
-    contacts.value = []
-  }
-}, 500)
+// A hidden field is not sent
+const hideCcField = () => {
+  showCcField.value = false
+  form.value.cc = []
+}
+
+const hideBccField = () => {
+  showBccField.value = false
+  form.value.bcc = []
+}
 
 const openSchedulingForm = () => {
   if (!form.value.to?.length) {
@@ -768,30 +722,6 @@ const saveDraft = async () => {
   } finally {
     working.value = false
   }
-}
-
-const getContactName = (contact) =>
-  contact.display_name ||
-  [contact.first_name, contact.last_name].filter(Boolean).join(' ')
-
-const getItemTitle = (item) => {
-  if (typeof item === 'string') {
-    // Without the quotes of the name: "John Doe" <john@example.com>
-    return item.replace(/^"(.*)"(\s*<)/, '$1$2').replace(/\\(["\\])/g, '$1')
-  }
-  return getContactName(item)
-}
-
-// A recipient typed by the user, or a contact picked in the list
-const getRecipient = (item) => {
-  if (typeof item === 'string') {
-    return item
-  }
-  const address = item.emails?.[0]?.address
-  if (!address) {
-    return null
-  }
-  return formatRecipient({ name: getContactName(item), address })
 }
 
 const getComposeSession = async () => {
