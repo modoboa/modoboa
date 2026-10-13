@@ -160,6 +160,7 @@ class AttachmentUploadSerializer(serializers.Serializer):
 class UploadedAttachmentSerializer(serializers.Serializer):
     tmpname = serializers.CharField()
     fname = serializers.CharField()
+    size = serializers.IntegerField(required=False)
 
 
 class EmailHeadersSerializer(serializers.Serializer):

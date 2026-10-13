@@ -1,6 +1,7 @@
 <template>
   <HtmlEditor
     v-if="format === 'html'"
+    ref="htmlEditor"
     v-model="model"
     class="d-flex flex-column flex-grow-1 mt-4"
   >
@@ -51,6 +52,11 @@ const format = defineModel('format', { type: String, default: 'plain' })
 
 const confirmDialog = ref()
 const converting = ref(false)
+const htmlEditor = ref()
+
+defineExpose({
+  insertImages: (files) => htmlEditor.value.insertImages(files),
+})
 
 // The conversion is made by the server: the text obtained is the one sent
 // as the text part of HTML messages
