@@ -146,7 +146,7 @@ class FilterSerializer(serializers.Serializer):
                 for argtpl in tpl.get("args", []):
                     if argtpl["name"] not in c:
                         continue
-                    value = c[argtpl["name"]].strip('"')
+                    value = tools.unquote(c[argtpl["name"]])
                     action["args"][argtpl["name"]] = value
                 item["actions"] += [action]
             result.append(item)

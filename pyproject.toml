@@ -76,7 +76,7 @@ dependencies = [
 	"rq>=2.7.0",
 	"django-rq>=4.2",
 	# Sieve
-	"sievelib>=1.4.1",
+	"sievelib>=1.6.0",
 	# User
 	"drf-nested-routers",
 	"vobject",
