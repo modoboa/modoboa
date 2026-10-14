@@ -3,6 +3,10 @@
 from unittest import mock
 from datetime import timedelta
 
+from sievelib.factory import FiltersSet
+from sievelib.parser import Parser
+
+from django.test import SimpleTestCase
 from django.urls import reverse
 from django.utils import timezone
 
@@ -12,6 +16,7 @@ from modoboa.admin import factories as admin_factories
 from modoboa.core import models as core_models
 from modoboa.lib.tests import ModoAPITestCase
 from modoboa.sievefilters import mocks
+from modoboa.sievefilters.api.v2.serializers import FilterSerializer
 from modoboa.webmail.mocks import IMAP4Mock
 
 Application = get_application_model()
@@ -337,3 +342,27 @@ class FilterSetViewSetTestCase(PatcherMixin, ModoAPITestCase):
         url = reverse("v2:filterset-move-filter-down", args=["main_script", "test2"])
         resp = self.client.post(url)
         self.assertEqual(resp.status_code, 204)
+
+
+class FilterSerializerTestCase(SimpleTestCase):
+    def test_quoted_values_round_trip(self):
+        """Values containing quotes must not gain backslashes on each save."""
+        data = {
+            "name": "test",
+            "match_type": "anyof",
+            "conditions": [{"name": "Subject", "operator": "contains", "value": 'a"b'}],
+            "actions": [{"name": "fileinto", "args": {"mailbox": 'Fold"er'}}],
+        }
+        for _ in range(2):
+            serializer = FilterSerializer(data=data)
+            serializer.is_valid(raise_exception=True)
+            match_type, conditions, actions = serializer.to_filter()
+            fset = FiltersSet("test")
+            fset.addfilter(data["name"], conditions, actions, match_type)
+            parser = Parser()
+            self.assertTrue(parser.parse(str(fset)))
+            fset = FiltersSet("test")
+            fset.from_parser_result(parser)
+            data = FilterSerializer.from_filters(fset.filters).data[0]
+            self.assertEqual(data["conditions"][0]["value"], 'a"b')
+            self.assertEqual(data["actions"][0]["args"]["mailbox"], 'Fold"er')
