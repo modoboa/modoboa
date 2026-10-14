@@ -1,6 +1,6 @@
 """Sievefilters serializers."""
 
-from sievelib import commands
+from sievelib import commands, tools
 from sievelib.factory import Filter
 
 from django.utils.translation import gettext as _
@@ -88,7 +88,11 @@ class FilterSerializer(serializers.Serializer):
                 ]
             else:
                 test_node = test["test"]
-                subtests = test_node["tests"] if "tests" in test_node.arguments else [test_node]
+                subtests = (
+                    test_node["tests"]
+                    if "tests" in test_node.arguments
+                    else [test_node]
+                )
                 for t in subtests:
                     if isinstance(t, commands.SizeCommand):
                         item["conditions"] += [
@@ -105,11 +109,11 @@ class FilterSerializer(serializers.Serializer):
                             operator_prefix = "not"
                         item["conditions"] += [
                             {
-                                "name": t["header-names"].strip('"'),
+                                "name": tools.unquote(t["header-names"]),
                                 "operator": "{}{}".format(
                                     operator_prefix, t["match-type"][1:]
                                 ),
-                                "value": t["key-list"].strip('"'),
+                                "value": tools.unquote(t["key-list"]),
                             }
                         ]
             for c in test.children:
@@ -118,7 +122,7 @@ class FilterSerializer(serializers.Serializer):
                 for argtpl in tpl.get("args", []):
                     if argtpl["name"] not in c:
                         continue
-                    value = c[argtpl["name"]].strip('"')
+                    value = tools.unquote(c[argtpl["name"]])
                     action["args"][argtpl["name"]] = value
                 item["actions"] += [action]
             result.append(item)

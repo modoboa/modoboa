@@ -45,6 +45,10 @@ class SieveRuleTestCase(ModoTestCase):
         self.assertNotIn('body"; discard', sieve)
         self.assertIn('\\"', sieve)
 
+    def test_subject_is_escaped_once(self):
+        sieve = self._build_rule(subject='Re: "x"', content="Back soon")
+        self.assertIn(':subject "Re: \\"x\\""', sieve)
+
     def test_legitimate_content_preserved(self):
         sieve = self._build_rule(subject="Absent", content="Back soon")
         self.assertIn("Absent", sieve)

@@ -10,17 +10,6 @@ from modoboa.lib.oauth2 import get_access_token
 from modoboa.sievefilters.lib import SieveClient
 
 
-def escape_sieve_string(value):
-    """Escape a value for a Sieve quoted string.
-
-    sievelib wraps string arguments in double quotes without escaping, so an
-    unescaped ``"`` or ``\\`` in the subject/content would let a user break
-    out of the string and inject arbitrary Sieve commands. Escaping the
-    backslash first (then the quote) neutralizes the break-out.
-    """
-    return value.replace("\\", "\\\\").replace('"', '\\"')
-
-
 class ARmessage(models.Model):
     """Auto reply messages."""
 
@@ -72,10 +61,10 @@ class ARmessage(models.Model):
             (
                 "vacation",
                 ":subject",
-                escape_sieve_string(self.subject),
+                self.subject,
                 ":days",
                 days,
-                escape_sieve_string(content),
+                content,
             )
         ]
         if not fset.getfilter(name):
