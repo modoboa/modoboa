@@ -26,6 +26,12 @@ export const useWebmailStore = defineStore('webmail', () => {
   // options. A message never changes for a given id; only the most
   // recent ones are kept.
   const contents = new Map()
+  // Messages whose sending is delayed so that the user can cancel it, by
+  // compose session: { timer, flush, state }
+  const pendingSends = new Map()
+  // State of the compose form of a message whose sending was cancelled,
+  // displayed again by the form
+  const cancelledMessage = ref(null)
 
   const $reset = async () => {
     selection.value = []
@@ -37,7 +43,57 @@ export const useWebmailStore = defineStore('webmail', () => {
     preferences.value = null
     unseenCounters.value = {}
     contents.clear()
+    cancelledMessage.value = null
   }
+
+  /**
+   * Send a message after a delay.
+   *
+   * @param {string} uid the compose session
+   * @param {number} delay in seconds
+   * @param {Function} send sends the message
+   * @param {Function} flush sends it when the page is closed (no promise
+   *   can be awaited then)
+   * @param {object} state what the compose form needs to display it again
+   */
+  const delaySending = (uid, { delay, send, flush, state }) => {
+    const timer = setTimeout(() => {
+      pendingSends.delete(uid)
+      send()
+    }, delay * 1000)
+    pendingSends.set(uid, { timer, flush, state })
+  }
+
+  /**
+   * Cancel a delayed sending.
+   *
+   * @return {object|null} the state of the compose form, null if the message
+   *   is already sent
+   */
+  const cancelSending = (uid) => {
+    const pending = pendingSends.get(uid)
+    if (!pending) {
+      return null
+    }
+    clearTimeout(pending.timer)
+    pendingSends.delete(uid)
+    return pending.state
+  }
+
+  // Closing or reloading the page: the browser asks first, the messages
+  // are sent if the user leaves anyway
+  window.addEventListener('beforeunload', (event) => {
+    if (pendingSends.size) {
+      event.preventDefault()
+    }
+  })
+  window.addEventListener('pagehide', () => {
+    for (const uid of [...pendingSends.keys()]) {
+      const { flush } = pendingSends.get(uid)
+      cancelSending(uid)
+      flush()
+    }
+  })
 
   function setMailboxes(mailboxes) {
     const folders = {}
@@ -175,6 +231,9 @@ export const useWebmailStore = defineStore('webmail', () => {
     removeFromListing,
     flagInListing,
     forgetPreferences,
+    cancelledMessage,
+    delaySending,
+    cancelSending,
     $reset,
   }
 })

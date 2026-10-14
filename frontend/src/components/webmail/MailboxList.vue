@@ -151,7 +151,7 @@ async function onDrop(mailbox) {
     busStore.displayNotification({
       msg: $gettext('Moving selection...'),
       type: 'info',
-      timeout: 0,
+      timeout: -1,
     })
     const resp = await api.moveSelection(
       route.query.mailbox || 'INBOX',

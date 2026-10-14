@@ -669,6 +669,36 @@ class ComposeSessionViewSetTestCase(WebmailTestCase):
             self.assertEqual(response.status_code, 204)
             delete_mail.assert_called_once_with("Drafts", 11)
 
+    def test_prepare_and_send(self):
+        self.authenticate()
+        uid = self._create_compose_session()
+        send_url = reverse("v2:webmail-compose-session-send", args=[uid])
+        # Nothing prepared: a send request without data is invalid
+        response = self.client.post(send_url, {}, format="json")
+        self.assertEqual(response.status_code, 400)
+
+        url = reverse("v2:webmail-compose-session-prepare", args=[uid])
+        # Checked before being kept
+        response = self.client.post(url, {"subject": "test"}, format="json")
+        self.assertEqual(response.status_code, 400)
+        response = self.client.post(
+            url,
+            {
+                "sender": self.user.email,
+                "to": ["test@example.test"],
+                "subject": "prepared",
+                "body": "Test",
+            },
+            format="json",
+        )
+        self.assertEqual(response.status_code, 204)
+        self.assertEqual(len(mail.outbox), 0)
+
+        response = self.client.post(send_url, {}, format="json")
+        self.assertEqual(response.status_code, 204)
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertEqual(mail.outbox[0].subject, "prepared")
+
     def test_send(self):
         self.authenticate()
         uid = self._create_compose_session()

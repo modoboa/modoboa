@@ -71,6 +71,8 @@ class UserPreferencesSerializer(serializers.Serializer):
         default=constants.SignaturePosition.ABOVE.value,
         choices=constants.SIGNATURE_POSITIONS,
     )
+    # Seconds during which sending can be cancelled, 0 to send at once
+    undo_send_delay = serializers.IntegerField(default=10, min_value=0, max_value=30)
 
 
 class UserMailboxSerializer(serializers.Serializer):
@@ -488,6 +490,10 @@ class ComposeSessionSerializer(serializers.Serializer):
     signature = serializers.SerializerMethodField()
     signature_position = serializers.SerializerMethodField()
     editor_format = serializers.SerializerMethodField()
+    undo_send_delay = serializers.SerializerMethodField()
+
+    def get_undo_send_delay(self, obj) -> int:
+        return self.context["request"].user.parameters.get_value("undo_send_delay")
 
     def get_editor_format(self, obj):
         return self.context["request"].user.parameters.get_value("editor")
