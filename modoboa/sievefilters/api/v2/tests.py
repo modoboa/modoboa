@@ -75,6 +75,16 @@ class FilterSetViewSetTestCase(PatcherMixin, ModoAPITestCase):
         resp = self.client.post(url, data, format="json")
         self.assertEqual(resp.status_code, 201)
 
+    def test_create_existing_name(self):
+        self.authenticate()
+        url = reverse("v2:filterset-list")
+        for name in ("main_script", "second_script"):
+            resp = self.client.post(url, {"name": name}, format="json")
+            self.assertEqual(resp.status_code, 400)
+            self.assertIn("name", resp.json())
+        sclient = self.mock_client.return_value
+        self.assertEqual(sclient.scripts["main_script"], mocks.SAMPLE_SIEVE_SCRIPT)
+
     def test_create_forbidden_characters(self):
         """Check that ManageSieve protocol injection is rejected."""
         self.authenticate()
