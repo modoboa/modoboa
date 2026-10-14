@@ -937,9 +937,12 @@ class ScheduledMessageViewSetTestCase(WebmailTestCase):
     def test_delete(self):
         self.authenticate()
         url = reverse("v2:webmail-scheduled-message-detail", args=[self.message.id])
-        response = self.client.delete(url)
+        with mock.patch("modoboa.lib.dovecot.get_dovecot_backend") as get_backend:
+            response = self.client.delete(url)
+        move_message = get_backend.return_value.move_message
         self.assertEqual(response.status_code, 204)
         self.assertEqual(models.ScheduledMessage.objects.count(), 0)
+        self.assertEqual(move_message.call_args.args[1], "Trash")
 
     def test_update(self):
         self.authenticate()
