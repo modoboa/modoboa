@@ -148,6 +148,33 @@ class FilterSetViewSetTestCase(PatcherMixin, ModoAPITestCase):
         self.assertEqual(len(actions), 4)
         self.assertIn("choices", actions[0]["args"][0])
 
+    def test_retrieve_action_templates_with_subfolders(self):
+        # Listing sub-folders needs the hierarchy delimiter
+        imap = self.mock_imap4.return_value
+        simple_command = imap._simple_command
+
+        def _simple_command(name, *args, **kwargs):
+            if name == "LIST":
+                imap.untagged_responses["LIST"] = (
+                    [b'() "/" "Test/Sub"']
+                    if "Test/%" in str(args)
+                    else [b'(\\HasChildren) "/" "Test"']
+                )
+                return "OK", None
+            return simple_command(name, *args, **kwargs)
+
+        imap._simple_command = _simple_command
+        self.authenticate()
+        resp = self.client.get(reverse("v2:filterset-action-templates"))
+        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(
+            resp.json()[0]["args"][0]["choices"][-2:],
+            [
+                {"name": "Test", "label": "Test"},
+                {"name": "Test/Sub", "label": "Sub"},
+            ],
+        )
+
     def test_get_filters(self):
         self.authenticate()
         url = reverse("v2:filterset-get-filters", args=["unknown"])
