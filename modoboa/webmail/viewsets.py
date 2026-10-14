@@ -774,5 +774,5 @@ class ScheduledMessageViewSet(
         return models.ScheduledMessage.objects.filter(account=self.request.user)
 
     def perform_destroy(self, instance):
-        if instance.delete_imap_copy():
+        if instance.delete_imap_copy("trash_folder"):
             instance.delete()

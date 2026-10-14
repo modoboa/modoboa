@@ -574,9 +574,20 @@ const rememberRecipients = (body) => {
 }
 
 // Displays a message whose sending was cancelled, or failed, again
-const reopen = (state) => {
+const reopen = async (state) => {
   webmailStore.cancelledMessage = state
-  router.push(state.route)
+  if (!(await router.push(state.route))) {
+    return
+  }
+  // The user stayed on the current page (a modified form for instance): the
+  // message must remain reachable
+  webmailStore.cancelledMessage = null
+  displayNotification({
+    msg: $gettext('Message not sent'),
+    type: 'warning',
+    timeout: -1,
+    action: { text: $gettext('Open'), callback: () => reopen(state) },
+  })
 }
 
 // The message is sent once the delay is over: the user can cancel until
