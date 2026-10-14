@@ -243,6 +243,103 @@ class FilterSetViewSetTestCase(PatcherMixin, ModoAPITestCase):
         resp = self.client.put(url, data, format="json")
         self.assertEqual(resp.status_code, 200)
 
+    def test_get_filters_unsupported(self):
+        self.authenticate()
+        scripts = self.mock_client.return_value.scripts
+        bodies = [
+            'if anyof (header :contains ["From", "To"] "x") { stop; }',
+            'if anyof (address :is "From" "x@y.com") { stop; }',
+            'if anyof (header :matches "From" "x*") { stop; }',
+            'if anyof (header :contains "From" "x") { discard; }',
+            "if {",
+        ]
+        for body in bodies:
+            scripts["custom"] = f"# Filter: custom\n{body}\n"
+            url = reverse("v2:filterset-get-filters", args=["custom"])
+            resp = self.client.get(url)
+            self.assertEqual(resp.status_code, 518, body)
+
+    def test_get_filters_single_test(self):
+        self.authenticate()
+        self.mock_client.return_value.scripts["custom"] = (
+            '# Filter: custom\nif header :is "From" "x" { stop; }\n'
+        )
+        url = reverse("v2:filterset-get-filters", args=["custom"])
+        resp = self.client.get(url)
+        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(resp.json()[0]["match_type"], "anyof")
+
+    def test_add_filter_invalid(self):
+        self.authenticate()
+        url = reverse("v2:filterset-get-filters", args=["main_script"])
+        data = {
+            "name": "New filter",
+            "match_type": "anyof",
+            "conditions": [{"name": "From", "operator": "is", "value": "x"}],
+            "actions": [{"name": "stop", "args": {}}],
+        }
+        for key, value in (
+            ("name", 'with "quote'),
+            ("name", "autoreply"),
+            ("actions", [{"name": "unknown", "args": {}}]),
+            ("conditions", [{"name": "From", "operator": "unknown", "value": "x"}]),
+        ):
+            resp = self.client.post(url, {**data, key: value}, format="json")
+            self.assertEqual(resp.status_code, 400, value)
+            self.assertIn(key, resp.json())
+
+    def test_add_filter_negated_operator(self):
+        self.authenticate()
+        url = reverse("v2:filterset-get-filters", args=["main_script"])
+        data = {
+            "name": "New filter",
+            "match_type": "anyof",
+            "conditions": [{"name": "From", "operator": "notis", "value": "x"}],
+            "actions": [{"name": "stop", "args": {}}],
+        }
+        resp = self.client.post(url, data, format="json")
+        self.assertEqual(resp.status_code, 201)
+        resp = self.client.get(url)
+        self.assertEqual(resp.json()[-1]["conditions"], data["conditions"])
+
+    def test_add_filter_unparsable_script(self):
+        self.authenticate()
+        self.mock_client.return_value.scripts["custom"] = "if {\n"
+        url = reverse("v2:filterset-get-filters", args=["custom"])
+        data = {
+            "name": "New filter",
+            "match_type": "anyof",
+            "conditions": [{"name": "From", "operator": "is", "value": "x"}],
+            "actions": [{"name": "stop", "args": {}}],
+        }
+        resp = self.client.post(url, data, format="json")
+        self.assertEqual(resp.status_code, 400)
+        self.assertIn("error", resp.json())
+
+    def test_update_filter_errors(self):
+        self.authenticate()
+        data = {
+            "name": "test2",
+            "match_type": "anyof",
+            "conditions": [{"name": "From", "operator": "is", "value": "x"}],
+            "actions": [{"name": "stop", "args": {}}],
+        }
+        url = reverse("v2:filterset-update-filter", args=["main_script", "test1"])
+        resp = self.client.put(url, data, format="json")
+        self.assertEqual(resp.status_code, 400)
+        self.assertIn("name", resp.json())
+        url = reverse("v2:filterset-update-filter", args=["main_script", "unknown"])
+        resp = self.client.put(url, data, format="json")
+        self.assertEqual(resp.status_code, 404)
+
+    def test_list_error(self):
+        self.authenticate()
+        with mock.patch.object(
+            self.mock_client.return_value, "listscripts", return_value=None
+        ):
+            resp = self.client.get(reverse("v2:filterset-list"))
+        self.assertEqual(resp.status_code, 400)
+
     def test_disable_filter(self):
         self.authenticate()
         url = reverse("v2:filterset-disable-filter", args=["unknown", "test1"])

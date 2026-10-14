@@ -49,13 +49,45 @@ class FilterSetContentSerializer(serializers.Serializer):
 
 class ConditionSerializer(serializers.Serializer):
     name = serializers.CharField()
-    operator = serializers.CharField()
+    operator = serializers.ChoiceField(choices=constants.CONDITION_OPERATORS)
     value = serializers.CharField()
 
 
 class ActionSerializer(serializers.Serializer):
-    name = serializers.CharField()
+    name = serializers.ChoiceField(
+        choices=[tpl["name"] for tpl in constants.ACTION_TEMPLATES]
+    )
     args = serializers.DictField(child=serializers.CharField())
+
+
+def condition_from_test(test: commands.Command) -> dict:
+    """Convert a sieve test to a condition, if supported."""
+    if isinstance(test, commands.SizeCommand):
+        return {
+            "name": "size",
+            "operator": test["comparator"][1:],
+            "value": test["limit"],
+        }
+    operator_prefix = ""
+    if isinstance(test, commands.NotCommand):
+        test = test["test"]
+        operator_prefix = "not"
+    args = test.arguments
+    if (
+        not isinstance(test, commands.HeaderCommand)
+        or "match-type" not in args
+        or not isinstance(args.get("header-names"), str)
+        or not isinstance(args.get("key-list"), str)
+    ):
+        raise lib.UnsupportedSieveFilter(f"unsupported test {test.name}")
+    operator = "{}{}".format(operator_prefix, test["match-type"][1:])
+    if operator not in constants.CONDITION_OPERATORS:
+        raise lib.UnsupportedSieveFilter(f"unsupported operator {operator}")
+    return {
+        "name": tools.unquote(test["header-names"]),
+        "operator": operator,
+        "value": tools.unquote(test["key-list"]),
+    }
 
 
 class FilterSerializer(serializers.Serializer):
@@ -65,8 +97,19 @@ class FilterSerializer(serializers.Serializer):
     conditions = ConditionSerializer(many=True)
     actions = ActionSerializer(many=True)
 
+    def validate_name(self, value: str):
+        if any(c in value for c in constants.FORBIDDEN_NAME_CHARS):
+            raise serializers.ValidationError(_("Name contains forbidden characters"))
+        if value == "autoreply":
+            raise serializers.ValidationError(_("This name is reserved"))
+        return value
+
     @staticmethod
     def from_filters(filters: list[Filter]) -> "FilterSerializer":
+        """Convert filters to serializer data.
+
+        Raise UnsupportedSieveFilter if a filter can't be represented.
+        """
         result = []
         for fobj in filters:
             if fobj["name"] == "autoreply":
@@ -74,48 +117,29 @@ class FilterSerializer(serializers.Serializer):
             test = (
                 fobj["content"].children[0] if not fobj["enabled"] else fobj["content"]
             )
+            test_node = test.arguments.get("test")
+            if test_node is None:
+                raise lib.UnsupportedSieveFilter(f"unsupported command {test.name}")
             item = {
                 "name": fobj["name"],
                 "enabled": fobj["enabled"],
-                "match_type": test["test"].name,
+                "match_type": test_node.name,
                 "conditions": [],
                 "actions": [],
             }
-            if isinstance(test["test"], commands.TrueCommand):
+            if isinstance(test_node, commands.TrueCommand):
                 item["match_type"] = "all"
                 item["conditions"] += [
                     {"name": "Subject", "operator": "contains", "value": ""}
                 ]
             else:
-                test_node = test["test"]
-                subtests = (
-                    test_node["tests"]
-                    if "tests" in test_node.arguments
-                    else [test_node]
-                )
-                for t in subtests:
-                    if isinstance(t, commands.SizeCommand):
-                        item["conditions"] += [
-                            {
-                                "name": "size",
-                                "operator": t["comparator"][1:],
-                                "value": t["limit"],
-                            }
-                        ]
-                    else:
-                        operator_prefix = ""
-                        if isinstance(t, commands.NotCommand):
-                            t = t["test"]
-                            operator_prefix = "not"
-                        item["conditions"] += [
-                            {
-                                "name": tools.unquote(t["header-names"]),
-                                "operator": "{}{}".format(
-                                    operator_prefix, t["match-type"][1:]
-                                ),
-                                "value": tools.unquote(t["key-list"]),
-                            }
-                        ]
+                if "tests" in test_node.arguments:
+                    subtests = test_node["tests"]
+                else:
+                    # A single test is equivalent to anyof (test)
+                    item["match_type"] = constants.MATCH_TYPE_ANYOF
+                    subtests = [test_node]
+                item["conditions"] = [condition_from_test(t) for t in subtests]
             for c in test.children:
                 action = {"name": c.name, "args": {}}
                 tpl = lib.find_action_template(c.name)
