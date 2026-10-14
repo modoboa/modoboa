@@ -16,7 +16,19 @@ class SieveClientError(ModoboaException):
     http_code = 400
 
 
-class SieveActionTemplateNotFound(Exception):
+class SieveScriptNotFound(SieveClientError):
+    http_code = 404
+
+
+class SieveScriptParseError(SieveClientError):
+    pass
+
+
+class UnsupportedSieveFilter(Exception):
+    """Filter that can't be represented with condition and action templates."""
+
+
+class SieveActionTemplateNotFound(UnsupportedSieveFilter):
     pass
 
 
@@ -54,19 +66,23 @@ class SieveClient:
         self.msc.logout()
         self.msc = None
 
-    def listscripts(self):
-        return self.msc.listscripts()
+    def listscripts(self) -> tuple[str | None, list[str]]:
+        result = self.msc.listscripts()
+        if result is None:
+            raise SieveClientError(self.msc.errmsg.decode())
+        return result
 
-    def getscript(self, name: str, format: str = "raw") -> FiltersSet | str | None:
+    def getscript(self, name: str, format: str = "raw") -> FiltersSet | str:
         content = self.msc.getscript(name)
         if content is None:
-            raise SieveClientError(self.msc.errmsg.decode())
+            raise SieveScriptNotFound(
+                self.msc.errmsg.decode() or _("Filter set %s not found") % name
+            )
         if format == "raw":
             return content
         p = Parser()
         if not p.parse(content):
-            print("Parse error????")
-            return None
+            raise SieveScriptParseError(p.error)
         fs = FiltersSet(name)
         fs.from_parser_result(p)
         return fs

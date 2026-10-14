@@ -21,7 +21,7 @@ HEADER_OPERATORS = [
     ("contains", _("contains"), "string"),
     ("notcontains", _("does not contain"), "string"),
     ("is", _("is"), "string"),
-    ("isnot", _("is not"), "string"),
+    ("notis", _("is not"), "string"),
 ]
 
 CONDITION_TEMPLATES = [
@@ -38,6 +38,10 @@ CONDITION_TEMPLATES = [
         ],
     },
 ]
+
+CONDITION_OPERATORS = sorted(
+    {operator[0] for tpl in CONDITION_TEMPLATES for operator in tpl["operators"]}
+)
 
 ACTION_TEMPLATES = [
     {
