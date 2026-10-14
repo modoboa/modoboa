@@ -181,18 +181,30 @@
           </v-expansion-panel-text>
         </v-expansion-panel>
       </v-expansion-panels>
+      <ComposeEmailForm
+        v-if="replyMailid"
+        :key="`${replyMailid}-${replyAll}`"
+        ref="replyForm"
+        reply
+        embedded
+        :reply-all="replyAll"
+        :mailid="replyMailid"
+        @close="closeReply"
+        @sent="closeReply"
+      />
     </template>
   </div>
 </template>
 
 <script setup>
-import { computed, onMounted, ref, watch } from 'vue'
+import { computed, nextTick, onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useGettext } from 'vue3-gettext'
 import { useBusStore, useWebmailStore } from '@/stores'
 import { useSpecialFolders } from '@/composables/webmail'
 import api from '@/api/webmail'
 import { downloadBlob } from '@/utils'
+import ComposeEmailForm from '@/components/webmail/ComposeEmailForm.vue'
 import EmailMessageBody from '@/components/webmail/EmailMessageBody.vue'
 import MessageHeader from '@/components/webmail/MessageHeader.vue'
 import RemoteContentBanner from '@/components/webmail/RemoteContentBanner.vue'
@@ -211,8 +223,13 @@ const messages = ref([])
 const contents = ref({})
 const openedPanels = ref([])
 const working = ref(false)
+const replyForm = ref()
 
 const mailbox = computed(() => route.query.mailbox)
+// The message answered below the thread, kept in the URL (with the compose
+// session) so that reloading the page keeps the reply
+const replyMailid = computed(() => route.query.reply)
+const replyAll = computed(() => route.query.all === 'true')
 
 // A collapsed message names its first file and counts the others:
 // enough to find what one came for without opening every message. The
@@ -338,12 +355,36 @@ const openMessage = (message) => {
   })
 }
 
-const replyTo = (message, all) => {
-  const query = { mailbox: mailbox.value, mailid: message.imapid }
-  if (all) {
-    query.all = all
+const scrollToReply = async () => {
+  await nextTick()
+  replyForm.value?.$el.scrollIntoView({ behavior: 'smooth' })
+}
+
+// Without the parameters of the reply, nor its compose session
+const threadQuery = () => ({
+  mailbox: mailbox.value,
+  mailid: route.query.mailid,
+})
+
+const replyTo = async (message, all = false) => {
+  if (replyMailid.value === String(message.imapid) && replyAll.value === all) {
+    scrollToReply()
+    return
   }
-  router.push({ name: 'ReplyEmailView', query })
+  // One reply at a time
+  if (replyForm.value && !(await replyForm.value.confirmLeaving())) {
+    return
+  }
+  const query = { ...threadQuery(), reply: message.imapid }
+  if (all) {
+    query.all = 'true'
+  }
+  // Replaced: going back leaves the thread, which the reply checks
+  router.replace({ name: route.name, query })
+}
+
+const closeReply = () => {
+  router.replace({ name: route.name, query: threadQuery() })
 }
 
 const replyToLatest = (all) => replyTo(latest.value, all)
@@ -388,6 +429,13 @@ watch(openedPanels, (imapids) => {
   imapids.forEach((imapid) =>
     loadContent(messages.value.find((message) => message.imapid === imapid))
   )
+})
+
+// Opened by the user, or again when the sending is cancelled
+watch([replyMailid, replyAll], ([value]) => {
+  if (value) {
+    scrollToReply()
+  }
 })
 
 onMounted(fetchThread)

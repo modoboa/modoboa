@@ -1,15 +1,18 @@
 <template>
   <div
-    class="position-relative h-100"
+    class="position-relative"
+    :class="embedded ? 'mt-4' : 'h-100'"
     @dragenter="onDragEnter"
     @keydown.capture="onKeydown"
     @paste.capture="onPaste"
   >
     <div
-      class="bg-white rounded-lg pa-2 pa-sm-4 position-relative h-100 d-flex flex-column"
+      class="bg-white rounded-lg pa-2 pa-sm-4 position-relative d-flex flex-column"
+      :class="embedded ? 'embedded border-sm' : 'h-100'"
     >
       <v-toolbar color="white">
         <v-btn
+          v-if="!embedded"
           icon="mdi-arrow-left"
           size="small"
           variant="flat"
@@ -100,6 +103,24 @@
         >
           {{ $gettext('Draft saved at %{time}', { time: lastSavedAt }) }}
         </span>
+        <template v-if="embedded">
+          <v-spacer />
+          <v-btn
+            icon="mdi-arrow-expand"
+            size="small"
+            variant="flat"
+            :title="$gettext('Open in full view')"
+            :disabled="loading || uploading || working"
+            @click="expand"
+          />
+          <v-btn
+            icon="mdi-close"
+            size="small"
+            variant="flat"
+            :title="$gettext('Close')"
+            @click="close"
+          />
+        </template>
       </v-toolbar>
       <v-form ref="formRef" class="flex-grow-1 d-flex flex-column">
         <div>
@@ -280,8 +301,8 @@ import { localeToBCP47 } from '@/utils'
 // Unsaved changes are saved as a draft this often
 const AUTOSAVE_INTERVAL = 30 * 1000
 
-// In reply and forward modes, route.query.mailbox and route.query.mailid
-// designate the original message
+// In reply and forward modes, route.query.mailbox and route.query.mailid (or
+// the mailid prop) designate the original message
 const props = defineProps({
   reply: {
     type: Boolean,
@@ -296,7 +317,18 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  // Displayed within another view (a thread): closing and sending let it
+  // know instead of leaving it
+  embedded: {
+    type: Boolean,
+    default: false,
+  },
+  mailid: {
+    type: [String, Number],
+    default: null,
+  },
 })
+const emit = defineEmits(['close', 'sent'])
 
 const route = useRoute()
 const router = useRouter()
@@ -320,6 +352,7 @@ const isEditingDraft =
   route.name === 'ComposeEmailView' &&
   isDraftsFolder.value &&
   !!route.query.mailid
+const originalMailid = props.mailid ?? route.query.mailid
 
 const allowedSenders = ref([])
 // UID of the draft being edited, updated on each save so the previous
@@ -360,10 +393,21 @@ let unmounted = false
 // Seconds during which sending can be cancelled (user preference)
 const undoSendDelay = ref(0)
 
-const close = () => {
-  router.push({
-    name: 'MailboxView',
-  })
+const close = async () => {
+  if (!props.embedded) {
+    router.push({ name: 'MailboxView' })
+  } else if (await confirmLeaving()) {
+    emit('close')
+  }
+}
+
+// Once the message is sent (or about to be)
+const leave = () => {
+  if (props.embedded) {
+    emit('sent')
+  } else {
+    router.push({ name: 'MailboxView' })
+  }
 }
 
 // Is this one of the addresses the user can send from (aliases included)?
@@ -514,10 +558,10 @@ const prepareMessage = () => {
   if (draftMailid.value) {
     result.mailid = draftMailid.value
   }
-  if ((props.reply || props.forward) && route.query.mailid) {
+  if ((props.reply || props.forward) && originalMailid) {
     // Let the server flag the original message (\Answered, $Forwarded)
     result.original_mailbox = route.query.mailbox
-    result.original_mailid = route.query.mailid
+    result.original_mailid = originalMailid
     result.original_action = props.forward ? 'forward' : 'reply'
   }
   return result
@@ -552,7 +596,7 @@ const submit = async (scheduledDatetime = null) => {
     // Nothing is left to save: leaving must not ask anything
     savedSnapshot.value = getSnapshot()
     rememberRecipients(body)
-    router.push({ name: 'MailboxView' })
+    leave()
     reloadData()
     const msg = scheduledDatetime
       ? $gettext('Email scheduled')
@@ -576,7 +620,14 @@ const rememberRecipients = (body) => {
 // Displays a message whose sending was cancelled, or failed, again
 const reopen = async (state) => {
   webmailStore.cancelledMessage = state
-  if (!(await router.push(state.route))) {
+  const current = router.currentRoute.value
+  // The view would be reused as it is, with another message or form: it is
+  // left first (the user confirms if a form has changes)
+  const reused =
+    current.name === state.route.name &&
+    (current.query.uid || current.query.mailid !== state.route.query.mailid)
+  const left = !reused || !(await router.push({ name: 'MailboxView' }))
+  if (left && !(await router.push(state.route))) {
     return
   }
   // The user stayed on the current page (a modified form for instance): the
@@ -590,20 +641,42 @@ const reopen = async (state) => {
   })
 }
 
+// What the form needs to display the message again, at the given route
+const getState = (targetRoute) => ({
+  uid: route.query.uid,
+  route: targetRoute,
+  form: JSON.parse(JSON.stringify(form.value)),
+  bodyFormat: bodyFormat.value,
+  showCcField: showCcField.value,
+  showBccField: showBccField.value,
+  savedSnapshot: savedSnapshot.value,
+})
+
+// The reply goes on in the reply view, as it is
+const expand = () => {
+  const query = {
+    mailbox: route.query.mailbox,
+    mailid: originalMailid,
+    uid: route.query.uid,
+  }
+  if (route.query.draft) {
+    query.draft = route.query.draft
+  }
+  if (props.replyAll) {
+    query.all = 'true'
+  }
+  const state = getState({ name: 'ReplyEmailView', query })
+  // Nothing is lost: leaving must not ask anything
+  savedSnapshot.value = getSnapshot()
+  reopen(state)
+}
+
 // The message is sent once the delay is over: the user can cancel until
 // then. This form is closed meanwhile, the functions below outlive it.
 const delaySending = async (body) => {
   const uid = route.query.uid
   const delay = undoSendDelay.value
-  const state = {
-    uid,
-    route: { name: route.name, query: { ...route.query } },
-    form: JSON.parse(JSON.stringify(form.value)),
-    bodyFormat: bodyFormat.value,
-    showCcField: showCcField.value,
-    showBccField: showBccField.value,
-    savedSnapshot: savedSnapshot.value,
-  }
+  const state = getState({ name: route.name, query: { ...route.query } })
   // Checked and kept by the server now: what is left to send is small
   await api.prepareComposeSession(uid, body)
   // Refreshing the token is not possible while the page is being closed
@@ -628,7 +701,7 @@ const delaySending = async (body) => {
   })
   // Leaving must not ask anything: the message is about to be sent
   savedSnapshot.value = getSnapshot()
-  router.push({ name: 'MailboxView' })
+  leave()
   displayNotification({
     msg: $gettext('Sending the message...'),
     type: 'info',
@@ -900,18 +973,19 @@ onUnmounted(() => {
   window.removeEventListener('beforeunload', onBeforeUnload)
 })
 
-onBeforeRouteLeave(() => {
-  if (!hasUnsavedChanges()) {
-    return true
-  }
-  return confirmDialog.value.open(
+const confirmLeaving = async () =>
+  !hasUnsavedChanges() ||
+  confirmDialog.value.open(
     $gettext('Unsaved changes'),
     $gettext(
       'The changes made since the draft was last saved will be lost. Leave anyway?'
     ),
     { agreeLabel: $gettext('Leave') }
   )
-})
+
+onBeforeRouteLeave(confirmLeaving)
+
+defineExpose({ confirmLeaving })
 
 // Ctrl+Enter (Cmd+Enter) sends the message, the editor must not get it
 const onKeydown = async (event) => {
@@ -937,10 +1011,10 @@ const getComposeSession = async () => {
   const data = {}
   if (isEditingDraft) {
     data.from_draft_message = route.query.mailid
-  } else if (props.forward && route.query.mailbox && route.query.mailid) {
+  } else if (props.forward && route.query.mailbox && originalMailid) {
     // The attachments of the forwarded message go along
     data.forward_mailbox = route.query.mailbox
-    data.forward_mailid = route.query.mailid
+    data.forward_mailid = originalMailid
   }
   const session = (await api.createComposeSession(data)).data
   router.replace({
@@ -951,11 +1025,9 @@ const getComposeSession = async () => {
 }
 
 const getEmailContent = async (context) => {
-  const resp = await api.getEmailContent(
-    route.query.mailbox,
-    route.query.mailid,
-    { context }
-  )
+  const resp = await api.getEmailContent(route.query.mailbox, originalMailid, {
+    context,
+  })
   return resp.data
 }
 
@@ -1002,6 +1074,11 @@ load()
 </script>
 
 <style scoped>
+/* Room to write, within a page that scrolls */
+.embedded {
+  min-height: 480px;
+}
+
 .drop-overlay {
   position: absolute;
   inset: 0;
