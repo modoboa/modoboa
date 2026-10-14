@@ -201,7 +201,7 @@ class FilterSetViewSetTestCase(PatcherMixin, ModoAPITestCase):
         self.assertEqual(len(resp.json()), 6)
         url = reverse("v2:filterset-get-filters", args=["complex_script"])
         resp = self.client.get(url)
-        self.assertEqual(resp.status_code, 518)
+        self.assertEqual(resp.status_code, 422)
 
     def test_add_filter(self):
         self.authenticate()
@@ -257,7 +257,8 @@ class FilterSetViewSetTestCase(PatcherMixin, ModoAPITestCase):
             scripts["custom"] = f"# Filter: custom\n{body}\n"
             url = reverse("v2:filterset-get-filters", args=["custom"])
             resp = self.client.get(url)
-            self.assertEqual(resp.status_code, 518, body)
+            self.assertEqual(resp.status_code, 422, body)
+            self.assertIn("error", resp.json())
 
     def test_get_filters_single_test(self):
         self.authenticate()
@@ -331,6 +332,16 @@ class FilterSetViewSetTestCase(PatcherMixin, ModoAPITestCase):
         url = reverse("v2:filterset-update-filter", args=["main_script", "unknown"])
         resp = self.client.put(url, data, format="json")
         self.assertEqual(resp.status_code, 404)
+
+    def test_list_no_active_script(self):
+        self.authenticate()
+        with mock.patch.object(
+            self.mock_client.return_value,
+            "listscripts",
+            return_value=(None, ["second_script"]),
+        ):
+            resp = self.client.get(reverse("v2:filterset-list"))
+        self.assertEqual(resp.json(), [{"name": "second_script", "active": False}])
 
     def test_list_error(self):
         self.authenticate()
