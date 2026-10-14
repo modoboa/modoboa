@@ -42,7 +42,7 @@ class FilterSetContentSerializer(serializers.Serializer):
     def validate_content(self, value: str):
         sclient = self.context["sclient"]
         if not sclient.msc.checkscript(value):
-            error = sclient.msc.errmsg.decode().strip().split("\r\n")[0]
+            error = sclient.errmsg.strip().split("\r\n")[0]
             raise serializers.ValidationError(error)
         return value
 

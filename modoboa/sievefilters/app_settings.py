@@ -32,7 +32,11 @@ SIEVEFILTERS_PARAMETERS_STRUCT = collections.OrderedDict(
                             "starttls",
                             {
                                 "label": _("Connect using STARTTLS"),
-                                "help_text": _("Use the STARTTLS extension"),
+                                "help_text": _(
+                                    "Use the STARTTLS extension. Without it, "
+                                    "credentials are sent in clear, which is "
+                                    "only acceptable when the server is local"
+                                ),
                             },
                         ),
                     ]
