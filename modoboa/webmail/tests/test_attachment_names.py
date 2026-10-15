@@ -1,7 +1,11 @@
 """Tests for the decoding of attachment file names."""
 
+from email import policy
+from email.parser import BytesParser
+
 from django.test import SimpleTestCase
 
+from modoboa.webmail.lib.attachments import create_mail_attachment
 from modoboa.webmail.lib.imaputils import BodyStructure, decode_mime_parameters
 
 
@@ -124,3 +128,16 @@ class AttachmentNameTestCase(SimpleTestCase):
     def test_part_without_a_name(self):
         attachment = self._attachment(params="NIL")
         self.assertEqual(attachment["name"], "part_2")
+
+
+class CreateMailAttachmentTestCase(SimpleTestCase):
+    """Names of outgoing attachments survive the MIME encoding."""
+
+    def test_filename(self):
+        for fname in ("report.pdf", "my report.pdf", 'a"b.txt', "Facture été.pdf"):
+            part = create_mail_attachment(
+                {"fname": fname, "content-type": "application/pdf"}, b"data"
+            )
+            parsed = BytesParser(policy=policy.default).parsebytes(part.as_bytes())
+            self.assertEqual(parsed.get_content_disposition(), "attachment")
+            self.assertEqual(parsed.get_filename(), fname)

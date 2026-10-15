@@ -478,7 +478,7 @@ class UserEmailViewSetTestCase(WebmailTestCase):
         response = self.client.get(f"{url}?mailbox=INBOX&mailid=3444&partnum=2")
         self.assertEqual(response.status_code, 200)
         self.assertEqual(
-            response.headers["Content-Disposition"], "attachment; filename=attachment"
+            response.headers["Content-Disposition"], 'attachment; filename="attachment"'
         )
 
 
