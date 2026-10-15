@@ -99,7 +99,7 @@ yarn gettext:compile   # -> src/locale/translations.json (committed, ALL langs)
   `doc-ng/**`) — frontend-only PRs do **not** run the Python matrix. CI matrix
   runs against `postgres` only on Python 3.12, with redis,
   openldap, and a redis-sentinel compose job for `modoboa.policyd`.
-- **`frontend.yml`** runs `yarn install` → `yarn test` → `yarn build` on Node 24
+- **`frontend.yml`** runs `yarn install` → `yarn lint-no-fix` → `yarn test` → `yarn build` on Node 24
   for `paths: frontend/**`.
 - **`release.yml`**: on `release: published` or `v*` tag → builds frontend,
   compiles `.mo`, runs `python -m build`, attaches the **wheel** to the GitHub
