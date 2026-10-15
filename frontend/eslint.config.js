@@ -2,6 +2,12 @@ import pluginVue from 'eslint-plugin-vue'
 import eslintConfigPrettier from 'eslint-config-prettier'
 
 export default [
+  // A config object holding only `ignores` applies to every file (global
+  // ignores); inside an object that also has rules it would only scope that
+  // object.
+  {
+    ignores: ['node_modules/**', 'dist/**', 'coverage/**', 'storybook-static/**'],
+  },
   ...pluginVue.configs['flat/recommended'],
   eslintConfigPrettier,
   {
@@ -15,23 +21,5 @@ export default [
         },
       ],
     },
-    ignores: [
-      '.DS_Store',
-      'node_modules',
-      '/dist',
-      '.env.local',
-      '.env.*.local',
-      'npm-debug.log*',
-      'yarn-debug.log*',
-      'yarn-error.log*',
-      'pnpm-debug.log*',
-      '.idea',
-      '.vscode',
-      '*.suo',
-      '*.ntvs*',
-      '*.njsproj',
-      '.sln',
-      '*.sw?',
-    ],
   },
 ]

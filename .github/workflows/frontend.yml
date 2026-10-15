@@ -24,6 +24,13 @@ jobs:
         working-directory: frontend
         run: yarn install
 
+      # Errors fail the job; warnings are only reported. The lint was broken
+      # for months (ESLint 10 ignored the old config file) without anyone
+      # noticing because CI didn't run it.
+      - name: Lint
+        working-directory: frontend
+        run: yarn lint-no-fix
+
       - name: Test
         working-directory: frontend
         run: yarn test
