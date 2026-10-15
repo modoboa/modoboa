@@ -254,7 +254,7 @@ class DomainAliasAPITestCase(ModoAPITestCase):
             )
             self.assertEqual(response.status_code, 400)
             self.assertEqual(
-                response.json()["name"][0], "domain with this name already exists"
+                response.json()["errors"]["name"][0], "domain with this name already exists"
             )
         self.assertFalse(models.DomainAlias.objects.filter(name="test2.com").exists())
         self.assertFalse(

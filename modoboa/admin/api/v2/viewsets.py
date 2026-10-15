@@ -21,6 +21,7 @@ from rest_framework.exceptions import PermissionDenied
 from modoboa.admin.api.v1 import viewsets as v1_viewsets
 from modoboa.core import constants as core_constants, models as core_models
 from modoboa.lib import pagination
+from modoboa.lib import permissions as lib_permissions
 from modoboa.lib import renderers as lib_renderers
 from modoboa.lib import signals as lib_signals
 from modoboa.lib import viewsets as lib_viewsets
