@@ -174,6 +174,45 @@
         </div>
       </v-toolbar>
 
+      <nav
+        v-if="thread.length > 1"
+        class="thread-list"
+        :aria-label="$gettext('Messages of the conversation')"
+      >
+        <div class="thread-list__title">
+          {{
+            $gettext('%{count} messages in this conversation', {
+              count: thread.length,
+            })
+          }}
+        </div>
+        <button
+          v-for="msg in thread"
+          :key="msg.imapid"
+          type="button"
+          class="thread-list__item"
+          :class="{
+            'thread-list__item--active':
+              String(msg.imapid) === String(currentMailid),
+            'thread-list__item--unseen': msg.style === 'unseen',
+          }"
+          :aria-current="
+            String(msg.imapid) === String(currentMailid) ? 'true' : undefined
+          "
+          @click="openThreadMessage(msg.imapid)"
+        >
+          <span class="thread-list__from">
+            {{ msg.from_address?.name || msg.from_address?.address }}
+          </span>
+          <v-icon
+            v-if="msg.attachments"
+            icon="mdi-paperclip"
+            size="x-small"
+            class="mx-1"
+          />
+          <span class="thread-list__date">{{ msg.date }}</span>
+        </button>
+      </nav>
       <div v-if="email" class="email-header">
         <h2>{{ email.subject }}</h2>
         <div class="d-flex">
@@ -240,6 +279,11 @@
         {{ $gettext('Message scheduled at:') }}
         {{ $date(email.scheduled_datetime) }}
       </v-alert>
+      <RemoteContentBanner
+        v-if="email?.remote_content_blocked && !enableImages"
+        class="mx-1 mt-2"
+        @show="enableImages = true"
+      />
       <div class="email-frame-wrap">
         <!--
           The message body is untrusted: sandboxed iframe (no
@@ -287,10 +331,11 @@ import { computed, nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { useDisplay } from 'vuetify'
 import { useGettext } from 'vue3-gettext'
-import { useBusStore, useProgressStore } from '@/stores'
+import { useBusStore, useProgressStore, useWebmailStore } from '@/stores'
 import { useSpecialFolders } from '@/composables/webmail'
 import api from '@/api/webmail'
 import ContactCard from '@/components/webmail/ContactCard.vue'
+import RemoteContentBanner from '@/components/webmail/RemoteContentBanner.vue'
 import { SCROLL_MESSAGE, buildEmailDocument } from './emailFrame'
 
 const props = defineProps({
@@ -315,14 +360,53 @@ const enableLinks = ref(false)
 // must not load tracking pixels.
 const enableImages = ref(false)
 const email = ref(null)
+const webmailStore = useWebmailStore()
+// In conversation mode, the messages of the conversation are listed above
+// the reader and the one clicked is displayed in it.
+const currentMailid = ref(props.mailid)
+const thread = ref([])
 const emailSource = ref(null)
 const emailFrame = ref(null)
 const loaded = ref(false)
 const showEmailSource = ref(false)
 const working = ref(false)
 
+const loadThread = async () => {
+  thread.value = []
+  if (
+    webmailStore.listingMode !== 'threaded' ||
+    webmailStore.threadingSupported === false
+  ) {
+    return
+  }
+  try {
+    const resp = await api.getThread(props.mailbox, props.mailid)
+    if (resp.data.threading_supported && resp.data.results.length > 1) {
+      thread.value = resp.data.results
+    }
+  } catch {
+    // The message itself is still displayed
+  }
+}
+
+// Display another message of the conversation in the reader
+const openThreadMessage = (mailid) => {
+  if (String(mailid) === String(currentMailid.value)) {
+    return
+  }
+  currentMailid.value = String(mailid)
+  emailSource.value = null
+  if (enableLinks.value || enableImages.value) {
+    enableLinks.value = false
+    enableImages.value = false
+  } else {
+    fetchMailContent()
+  }
+}
+
 onMounted(() => {
   fetchMailContent()
+  loadThread()
 })
 
 watch([enableLinks, enableImages], () => {
@@ -338,6 +422,8 @@ watch(
   () => {
     emailSource.value = null
     showEmailSource.value = false
+    currentMailid.value = props.mailid
+    loadThread()
     if (enableLinks.value || enableImages.value) {
       enableLinks.value = false
       enableImages.value = false
@@ -353,10 +439,17 @@ const fetchMailContent = () => {
     links: enableLinks.value ? '1' : '0',
     images: enableImages.value ? '1' : '0',
   }
-  api.getEmailContent(props.mailbox, props.mailid, options).then((resp) => {
+  api.getEmailContent(props.mailbox, currentMailid.value, options).then((resp) => {
     reloadMailboxCounters()
     // New key with the new body: one fresh iframe per message.
     email.value = resp.data
+    const item = thread.value.find(
+      (msg) => String(msg.imapid) === String(currentMailid.value)
+    )
+    if (item) {
+      // Opening a message marks it as read
+      item.style = ''
+    }
     nextTick(() => {
       // Reading progress for the global top bar: the sandboxed document
       // reports its scroll through postMessage (onFrameMessage).
@@ -469,7 +562,7 @@ onMounted(() => window.addEventListener('message', onFrameMessage))
 onUnmounted(() => window.removeEventListener('message', onFrameMessage))
 
 const downloadAttachment = (name, part) => {
-  api.getEmailAttachment(props.mailbox, props.mailid, part).then((resp) => {
+  api.getEmailAttachment(props.mailbox, currentMailid.value, part).then((resp) => {
     const blob = new Blob([resp.data], { type: resp.headers['Content-Type'] })
     const link = document.createElement('a')
     link.href = URL.createObjectURL(blob)
@@ -482,7 +575,7 @@ const downloadAttachment = (name, part) => {
 const deleteEmail = () => {
   working.value = true
   api
-    .deleteSelection(props.mailbox, [props.mailid])
+    .deleteSelection(props.mailbox, [currentMailid.value])
     .then(() => {
       displayNotification({ msg: $gettext('Message deleted') })
       reloadMailboxCounters()
@@ -496,7 +589,7 @@ const deleteEmail = () => {
 const restoreEmail = () => {
   working.value = true
   api
-    .moveSelection(props.mailbox, 'INBOX', [props.mailid])
+    .moveSelection(props.mailbox, 'INBOX', [currentMailid.value])
     .then(() => {
       displayNotification({ msg: $gettext('Message restored to Inbox') })
       reloadMailboxCounters()
@@ -510,7 +603,7 @@ const restoreEmail = () => {
 const markEmailAsJunk = () => {
   working.value = true
   api
-    .markSelectionAsJunk(props.mailbox, [props.mailid])
+    .markSelectionAsJunk(props.mailbox, [currentMailid.value])
     .then(() => {
       displayNotification({ msg: $gettext('Message marked as junk') })
       reloadMailboxCounters()
@@ -524,7 +617,7 @@ const markEmailAsJunk = () => {
 const markEmailAsNotJunk = () => {
   working.value = true
   api
-    .markSelectionAsNotJunk(props.mailbox, [props.mailid])
+    .markSelectionAsNotJunk(props.mailbox, [currentMailid.value])
     .then(() => {
       displayNotification({ msg: $gettext('Message marked as not junk') })
       reloadMailboxCounters()
@@ -537,14 +630,14 @@ const markEmailAsNotJunk = () => {
 
 const openEmailSourceDialog = async () => {
   if (!emailSource.value) {
-    const resp = await api.getEmailSource(props.mailbox, props.mailid)
+    const resp = await api.getEmailSource(props.mailbox, currentMailid.value)
     emailSource.value = resp.data.source
   }
   showEmailSource.value = true
 }
 
 const replyToEmail = (all) => {
-  const query = { mailbox: props.mailbox, mailid: props.mailid }
+  const query = { mailbox: props.mailbox, mailid: currentMailid.value }
   if (all) {
     query.all = all
   }
@@ -554,14 +647,14 @@ const replyToEmail = (all) => {
 const forwardEmail = () => {
   router.push({
     name: 'ForwardEmailView',
-    query: { mailbox: props.mailbox, mailid: props.mailid },
+    query: { mailbox: props.mailbox, mailid: currentMailid.value },
   })
 }
 
 const editDraft = () => {
   router.push({
     name: 'ComposeEmailView',
-    query: { mailbox: props.mailbox, mailid: props.mailid },
+    query: { mailbox: props.mailbox, mailid: currentMailid.value },
   })
 }
 </script>
@@ -647,6 +740,57 @@ const editDraft = () => {
 /* Message header is app chrome, not email content. Flush with the content
    edge (no side padding) so the subject lines up with the body below; a
    single bottom rule separates it from the rendered email. */
+/* Messages of the conversation: a compact list above the reader, capped so
+   the message body keeps most of the height. */
+.thread-list {
+  flex: 0 0 auto;
+  max-height: 30%;
+  overflow-y: auto;
+  margin-bottom: 8px;
+  border-bottom: 1px solid var(--line-2);
+}
+.thread-list__title {
+  padding: 4px 0;
+  font-size: 12px;
+  color: var(--fg-dim);
+}
+.thread-list__item {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-height: 36px;
+  padding: 4px 8px;
+  border-left: 3px solid transparent;
+  border-radius: 4px;
+  text-align: left;
+  color: inherit;
+  background: none;
+  cursor: pointer;
+}
+.thread-list__item:hover,
+.thread-list__item:focus-visible {
+  background: rgba(124, 92, 255, 0.08);
+}
+.thread-list__item--active {
+  border-left-color: var(--accent, #7c5cff);
+  background: rgba(124, 92, 255, 0.12);
+}
+.thread-list__item--unseen .thread-list__from {
+  font-weight: 700;
+}
+.thread-list__from {
+  flex: 1 1 auto;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.thread-list__date {
+  flex: 0 0 auto;
+  margin-left: 8px;
+  font-size: 12px;
+  color: var(--fg-dim);
+  font-variant-numeric: tabular-nums;
+}
 .email-header {
   padding: 4px 0 16px;
   border-bottom: 1px solid var(--line-2);

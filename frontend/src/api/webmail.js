@@ -39,6 +39,22 @@ export default {
     }
     return repository.get(`/webmail/emails/`, { params })
   },
+  // A page of conversations (IMAP THREAD)
+  getMailboxThreads(mailbox, options) {
+    const params = {
+      mailbox,
+      ...options,
+    }
+    return repository.get(`/webmail/emails/threads/`, { params })
+  },
+  // The messages of the conversation holding a message
+  getThread(mailbox, mailid) {
+    const params = {
+      mailbox,
+      mailid,
+    }
+    return repository.get(`/webmail/emails/thread/`, { params })
+  },
   getEmailContent(mailbox, mailid, options) {
     const params = {
       mailbox,

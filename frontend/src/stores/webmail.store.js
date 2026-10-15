@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 
 // Listing pages are considered fresh for this long; on remount within the
 // window (e.g. back from the reading view on mobile) we restore the cached
@@ -13,12 +13,17 @@ export const useWebmailStore = defineStore('webmail', () => {
   // the user preferences, indexed by type. Filled from the mailboxes list,
   // whose entries carry that type.
   const specialFolders = ref({})
+  // Listing mode preference: 'flat' (one row per message) or 'threaded'
+  // (one row per conversation). Loaded with the listing.
+  const listingMode = ref(null)
+  // False when the IMAP server can't group messages into conversations
+  const threadingSupported = ref(true)
 
   // ----- infinite-scroll listing state -----
   const emails = ref([]) // accumulated rows across pages
   const emailCount = ref(0) // total server-side count for current params
   const nextPage = ref(1) // null once exhausted
-  const listParams = ref({ mailbox: null, search: '' })
+  const listParams = ref({ mailbox: null, search: '', mode: null })
   const listScrollTop = ref(0)
   const listLoadedAt = ref(0)
 
@@ -26,7 +31,7 @@ export const useWebmailStore = defineStore('webmail', () => {
     emails.value = []
     emailCount.value = 0
     nextPage.value = 1
-    listParams.value = { mailbox, search }
+    listParams.value = { mailbox, search, mode: listingMode.value }
     listScrollTop.value = 0
     listLoadedAt.value = 0
     selection.value = []
@@ -54,6 +59,7 @@ export const useWebmailStore = defineStore('webmail', () => {
   const isListingFresh = (mailbox, search = '') =>
     listParams.value.mailbox === mailbox &&
     listParams.value.search === search &&
+    listParams.value.mode === listingMode.value &&
     emails.value.length > 0 &&
     Date.now() - listLoadedAt.value < LISTING_TTL_MS
 
@@ -100,6 +106,22 @@ export const useWebmailStore = defineStore('webmail', () => {
     specialFolders.value = folders
   }
 
+  // UIDs of the messages a row stands for: all the messages of a
+  // conversation, or the message itself.
+  const uidsOf = (row) => (row?.thread?.uids?.length ? row.thread.uids : [row.imapid])
+
+  // The selection, expanded to every message of the selected conversations:
+  // bulk actions apply to whole threads without any API change.
+  const selectionUids = computed(() => {
+    const rows = new Map(emails.value.map((e) => [String(e.imapid), e]))
+    const uids = []
+    for (const imapid of selection.value) {
+      const row = rows.get(String(imapid))
+      uids.push(...(row ? uidsOf(row) : [imapid]))
+    }
+    return [...new Set(uids.map(String))]
+  })
+
   // Is the given mailbox the special folder of this type?
   function isFolder(type, name) {
     return !!name && specialFolders.value[type] === name
@@ -107,7 +129,11 @@ export const useWebmailStore = defineStore('webmail', () => {
 
   return {
     selection,
+    selectionUids,
+    uidsOf,
     listingKey,
+    listingMode,
+    threadingSupported,
     emails,
     emailCount,
     nextPage,

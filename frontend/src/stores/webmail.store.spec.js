@@ -38,7 +38,38 @@ describe('webmail.store listing', () => {
     expect(store.emailCount).toBe(0)
     expect(store.nextPage).toBe(1)
     expect(store.selection).toEqual([])
-    expect(store.listParams).toEqual({ mailbox: 'Sent', search: 'foo' })
+    expect(store.listParams).toEqual({
+      mailbox: 'Sent',
+      search: 'foo',
+      mode: null,
+    })
+  })
+
+  it('a listing loaded in another mode is not fresh', () => {
+    const store = useWebmailStore()
+    store.listingMode = 'flat'
+    store.resetListing('INBOX')
+    store.appendPage(page([row(1)], 1, null))
+    expect(store.isListingFresh('INBOX')).toBe(true)
+    store.listingMode = 'threaded'
+    expect(store.isListingFresh('INBOX')).toBe(false)
+  })
+
+  it('selection expands to every message of the selected conversations', () => {
+    const store = useWebmailStore()
+    store.appendPage(
+      page(
+        [
+          { ...row(3), thread: { uids: ['1', '2', '3'] } },
+          row(5),
+        ],
+        2,
+        null
+      )
+    )
+    store.selection = ['3', '5']
+    expect(store.selectionUids).toEqual(['1', '2', '3', '5'])
+    expect(store.uidsOf(store.emails[1])).toEqual([store.emails[1].imapid])
   })
 
   it('isListingFresh only for matching params with rows and within TTL', () => {
