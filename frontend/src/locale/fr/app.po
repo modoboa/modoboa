@@ -1392,6 +1392,7 @@ msgstr "ou plus rejette le spam"
 
 #: src/components/admin/domains/DomainPolicyForm.vue:96
 #: src/components/tools/ChooseColumnsForm.vue:19
+#: src/components/tools/HtmlEditor.vue:115
 #: src/components/tools/TimeSerieChart.vue:22
 msgid "Apply"
 msgstr "Appliquer"
@@ -2435,6 +2436,20 @@ msgstr "Modifier"
 msgid "Empty"
 msgstr "Vide"
 
+#: src/components/tools/HtmlEditor.vue:89
+msgid "Link"
+msgstr ""
+
+#: src/components/tools/HtmlEditor.vue:97
+msgid "URL"
+msgstr ""
+
+#: src/components/tools/HtmlEditor.vue:109
+#: src/components/webmail/AttachmentsDialog.vue:75
+#, fuzzy
+msgid "Remove"
+msgstr "Supprimer l'image"
+
 #: src/components/tools/ImageFieldWidget.vue:8
 msgid "No custom image, default will be used."
 msgstr "Pas d'image personnalisée, celle par défaut sera utilisée"
@@ -2577,11 +2592,6 @@ msgstr ""
 msgid "Attached files"
 msgstr "Filtres banned"
 
-#: src/components/webmail/AttachmentsDialog.vue:75
-#, fuzzy
-msgid "Remove"
-msgstr "Supprimer l'image"
-
 #: src/components/webmail/AttachmentsDialog.vue:82
 #, fuzzy
 msgid "No attachments yet."
@@ -2661,15 +2671,15 @@ msgstr ""
 msgid "Continue"
 msgstr ""
 
-#: src/components/webmail/ComposeEmailForm.vue:601
+#: src/components/webmail/ComposeEmailForm.vue:622
 msgid "Email scheduled"
 msgstr "Email planifié"
 
-#: src/components/webmail/ComposeEmailForm.vue:602
+#: src/components/webmail/ComposeEmailForm.vue:623
 msgid "Email sent"
 msgstr "Message envoyé"
 
-#: src/components/webmail/ComposeEmailForm.vue:636
+#: src/components/webmail/ComposeEmailForm.vue:657
 msgid "You must provide one recipient at least"
 msgstr "Vous devez fournir au moins un destinataire"
 
