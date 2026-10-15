@@ -45,8 +45,8 @@ cd test_project && DB=sqlite DEBUG=1 python manage.py migrate --no-input && pyth
   is the default for `test_project/manage.py`.
 - **`tests.py` at the repo root is NOT the unit-test runner** — it is a
   `DeployTest` that shells out to `modoboa-admin.py deploy` and requires a
-  live Postgres **or** MySQL (picked via the `DB` env var: `postgres` | `mysql`).
-  CI runs it plus `manage.py test modoboa` against both DBs; locally prefer
+  live Postgres (`DB=postgres`; MySQL is no longer supported by this fork).
+  CI runs it plus `manage.py test modoboa` against Postgres; locally prefer
   the sqlite path above for unit tests.
 - Tox (`tox.ini`) re-runs the same flow under each Python; to exercise a
   specific env: `tox -e py312` (note `changedir = test_project`).
@@ -97,7 +97,7 @@ yarn gettext:compile   # -> src/locale/translations.json (committed, ALL langs)
 
 - **`modoboa.yml`** (Python) has `paths-ignore: frontend/**` (and `*.po`,
   `doc-ng/**`) — frontend-only PRs do **not** run the Python matrix. CI matrix
-  runs against `postgres` and `mysql` (MariaDB 11) on Python 3.12, with redis,
+  runs against `postgres` only on Python 3.12, with redis,
   openldap, and a redis-sentinel compose job for `modoboa.policyd`.
 - **`frontend.yml`** runs `yarn install` → `yarn test` → `yarn build` on Node 24
   for `paths: frontend/**`.

@@ -47,16 +47,6 @@ jobs:
           - 5432/tcp
         # needed because the postgres container does not provide a healthcheck
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
-      mysql:
-        image: mariadb:11
-        env:
-          MARIADB_ROOT_PASSWORD: root
-          MARIADB_USER: modoboa
-          MARIADB_PASSWORD: modoboa
-          MARIADB_DATABASE: modoboa
-        ports:
-          - 3306/tcp
-        options: --health-cmd="mariadb-admin ping" --health-interval=10s --health-timeout=5s --health-retries=3
       redis:
         image: redis
         ports:
@@ -79,7 +69,9 @@ jobs:
 
     strategy:
       matrix:
-        database: ["postgres", "mysql"]
+        # This fork only runs on PostgreSQL (production moved off MySQL on
+        # 2026-10-14), so MySQL/MariaDB is no longer tested.
+        database: ["postgres"]
         python-version: ["3.12"]
         # python-version: ['3.10', '3.11', '3.12', '3.13', '3.14']
       fail-fast: false
@@ -108,11 +100,6 @@ jobs:
           pip install -e .[postgresql]
           pip install coverage
           echo "DB=postgres" >> $GITHUB_ENV
-      - name: Install mysql requirements
-        if: ${{ matrix.database == 'mysql' }}
-        run: |
-          pip install -e .[mysql]
-          echo "DB=mysql" >> $GITHUB_ENV
       - name: Run tests
         if: ${{ matrix.python-version != '3.12' || matrix.database != 'postgres' }}
         run: |
@@ -123,9 +110,6 @@ jobs:
           # use localhost for the host here because we are running the job on the VM.
           # If we were running the job on in a container this would be postgres
           POSTGRES_PORT: ${{ job.services.postgres.ports[5432] }} # get randomly assigned published port
-          MYSQL_HOST: 127.0.0.1
-          MYSQL_PORT: ${{ job.services.mysql.ports[3306] }} # get randomly assigned published port
-          MYSQL_USER: root
           REDIS_HOST: localhost
           REDIS_PORT: ${{ job.services.redis.ports[6379] }}
           LDAP_SERVER_PORT: ${{ job.services.openldap.ports[389] }}
@@ -162,9 +146,6 @@ jobs:
           # use localhost for the host here because we are running the job on the VM.
           # If we were running the job on in a container this would be postgres
           POSTGRES_PORT: ${{ job.services.postgres.ports[5432] }} # get randomly assigned published port
-          MYSQL_HOST: 127.0.0.1
-          MYSQL_PORT: ${{ job.services.mysql.ports[3306] }} # get randomly assigned published port
-          MYSQL_USER: root
           REDIS_HOST: localhost
           REDIS_PORT: ${{ job.services.redis.ports[6379] }}
           LDAP_SERVER_PORT: ${{ job.services.openldap.ports[389] }}

@@ -7,9 +7,15 @@ re-descobertas/re-litigadas.
 ## O que é
 
 Fork pessoal do **Modoboa** (plataforma de e-mail em Django) rodando em
-produção em `mail.sintraffms.com` (~10 usuários, MariaDB/MySQL, uWSGI,
-Dovecot, nginx, layout do `modoboa-installer` em `/srv/modoboa/`). O foco do
-trabalho neste fork tem sido **performance** e **DX do frontend**.
+produção em `mail.sintraffms.com` (~10 usuários, **PostgreSQL 18** desde
+14/10/2026, uWSGI, Dovecot, nginx, layout do `modoboa-installer` em
+`/srv/modoboa/`). O foco do trabalho neste fork tem sido **performance** e
+**DX do frontend**.
+
+**Projeto próprio, não acompanha mais o upstream** (decisão de 14-15/10/2026):
+nada de merge/sync com `modoboa/modoboa` nem `modoboa-installer`. Mudanças do
+upstream que valham a pena entram por cherry-pick ou reescrita, uma a uma.
+Só PostgreSQL é suportado e testado (MySQL saiu do CI).
 
 ## Stack
 
@@ -97,6 +103,14 @@ cd frontend && yarn install && yarn dev:mock   # cross-env VITE_MOCK_API=true vi
   importadas/usadas de forma que o build de produção fique intacto.
 - **Testes:** backend `cd test_project && DB=sqlite python manage.py test <app>`;
   frontend `yarn test` (vitest).
+- **Testes na VPS de produção: nunca contra o Redis do e-mail.** A suíte usa o
+  Redis no DB 0 (`REDIS_PORT`, padrão 6379) e apaga/reescreve contadores do
+  policyd e cotas. Suba um Redis descartável
+  (`redis-server --port 6391 --save "" --daemonize yes`) e rode com
+  `REDIS_PORT=6391`.
+- Fora do CI, 3 testes do amavis (`test_mark_as_ham`, `test_mark_as_spam`,
+  `test_manual_learning_as_user`) falham sem o `sa-learn`/spamd configurado;
+  não é regressão.
 - **Commits:** trailer `Co-Authored-By: Claude ...` + `Claude-Session: ...`.
   PRs criados como **draft**; mergeados após CI verde.
 - **Idioma de commits/PRs:** títulos e mensagens sempre em **inglês**.

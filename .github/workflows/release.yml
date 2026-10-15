@@ -8,8 +8,8 @@ name: Build & Release wheel
 #   - pushing a tag matching v* (git push origin v2.9.1);
 #   - manual run (workflow_dispatch) — uploads the wheel as an artifact.
 #
-# Install on the server with (MySQL extra):
-#   <venv>/bin/pip install --upgrade "<url-to-wheel>[mysql]"
+# Install on the server with (PostgreSQL extra):
+#   <venv>/bin/pip install --upgrade "<url-to-wheel>[postgresql]"
 
 on:
   push:
