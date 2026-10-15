@@ -213,7 +213,7 @@ class ImapEmail(Email):
             if len(bodyc) != 0:
                 bodyc = getattr(self, f"_post_process_{self.mformat}")(bodyc)
                 self._body = getattr(self, f"viewmail_{self.mformat}")(
-                    bodyc, links=self.links
+                    bodyc, links=self.links, images=self.images
                 )
         return self._body
 
@@ -267,8 +267,8 @@ class ImapEmail(Email):
         publicly served directory leaked them to other users (message
         UIDs are only unique per mailbox).
         """
-        if not self.links:
-            # cid: references are only rewritten when links are enabled
+        if not self.images:
+            # cid: references are only rewritten when images are displayed
             return
         for params in self.bs.inlines.values():
             content_type = params.get("Content-Type", "")

@@ -21,9 +21,9 @@ describe('buildEmailDocument', () => {
     expect(doc).toContain("default-src 'none'")
   })
 
-  it('only loads remote content when links are enabled', () => {
+  it('only loads remote content when images are displayed', () => {
     expect(buildEmailDocument('x')).toContain('img-src data:;')
-    expect(buildEmailDocument('x', { enableLinks: true })).toContain(
+    expect(buildEmailDocument('x', { enableImages: true })).toContain(
       'img-src data: https: http:;'
     )
   })

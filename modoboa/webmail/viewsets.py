@@ -335,13 +335,17 @@ class UserEmailViewSet(viewsets.GenericViewSet):
         if context == "edit":
             # A draft is loaded in its own format unless one is requested
             dformat = request.GET.get("dformat")
+        # Links and images are two distinct choices of the reader
+        links = request.GET.get("links", "0") == "1"
+        images = request.GET.get("images", "0") == "1"
         if context and context in ["reply", "forward", "edit"]:
             modclass = getattr(lib, f"{context.capitalize()}Modifier")
             email = modclass(
                 request,
                 f"{mailbox}:{mailid}",
                 dformat=dformat,
-                links=request.GET.get("links", "0") == "1",
+                links=links,
+                images=images,
             )
             fetch_headers = False
         else:
@@ -349,7 +353,8 @@ class UserEmailViewSet(viewsets.GenericViewSet):
                 request,
                 f"{mailbox}:{mailid}",
                 dformat=dformat,
-                links=request.GET.get("links", "0") == "1",
+                links=links,
+                images=images,
             )
             fetch_headers = True
         # Release the IMAP connection as soon as the payload is built

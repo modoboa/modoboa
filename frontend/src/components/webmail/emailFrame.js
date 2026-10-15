@@ -24,15 +24,16 @@ export const SCROLL_SCRIPT_HASH =
 
 export function buildEmailDocument(
   body,
-  { enableLinks = false, style = '' } = {}
+  { enableImages = false, style = '' } = {}
 ) {
   if (!body) {
     return ''
   }
-  // Remote content (images, fonts...) only loads when links are enabled,
-  // which also keeps tracking pixels off by default. Inline images come
-  // embedded by the server as data: URIs.
-  const remoteSrc = enableLinks ? ' https: http:' : ''
+  // Remote content (images, fonts...) only loads once the reader asks for
+  // the images, which keeps tracking pixels off by default, whatever the
+  // links are set to. Inline images come embedded by the server as data:
+  // URIs.
+  const remoteSrc = enableImages ? ' https: http:' : ''
   const csp = [
     "default-src 'none'",
     `script-src '${SCROLL_SCRIPT_HASH}'`,
