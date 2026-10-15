@@ -8,7 +8,7 @@ from modoboa.core import jobs as core_jobs
 from modoboa.admin import jobs as admin_jobs
 from modoboa.maillog import jobs as maillog_jobs
 from modoboa.webmail import jobs as webmail_jobs
-
+from modoboa.webmail.lib import attachments as webmail_attachments
 
 register(core_jobs.clean_logs, queue_name="modoboa", cron="0 0 * * *")
 
@@ -28,6 +28,11 @@ register(maillog_jobs.update_statistics, queue_name="modoboa", cron="0 * * * *")
 register(calendars_jobs.generate_rights, queue_name="modoboa", cron="*/2 * * * *")
 
 register(webmail_jobs.send_scheduled_messages, queue_name="modoboa", cron="* * * * *")
+register(
+    webmail_attachments.cleanup_orphan_attachments,
+    queue_name="modoboa",
+    cron="17 * * * *",
+)
 
 if "modoboa.amavis" in settings.MODOBOA_APPS:
     register(amavis_jobs.qcleanup, queue_name="modoboa", cron="0 0 * * *")

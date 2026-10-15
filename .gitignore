@@ -45,6 +45,7 @@ test_project/cert.crt
 test_project/cert.key
 test_project/envfile
 test_project/media
+test_project/webmail_attachments
 
 # Docker
 docker/collections

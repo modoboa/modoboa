@@ -74,6 +74,11 @@ class WebmailTestCase(ModoAPITestCase):
         self.set_global_parameter("imap_port", 1435)
         self.workdir = tempfile.mkdtemp()
         os.mkdir(f"{self.workdir}/webmail")
+        attachments_root = self.settings(
+            WEBMAIL_ATTACHMENTS_ROOT=f"{self.workdir}/attachments"
+        )
+        attachments_root.enable()
+        self.addCleanup(attachments_root.disable)
         self.set_global_parameter("update_scheme", False, app="core")
 
     def tearDown(self):
@@ -347,6 +352,18 @@ class UserEmailViewSetTestCase(WebmailTestCase):
             # Deterministically back in the pool, ready for the next request.
             self.assertEqual(len(imap_pool._pool), 1)
 
+    def test_content_reply_escapes_sender_name(self):
+        """A sender name containing HTML must not be injected as markup."""
+        self.authenticate()
+        url = reverse("v2:webmail-email-content")
+        response = self.client.get(
+            f"{url}?mailbox=INBOX&mailid=46934&context=reply&dformat=html"
+        )
+        self.assertEqual(response.status_code, 200)
+        body = response.json()["body"]
+        self.assertIn("&lt;img src=x onerror=alert(1)&gt;", body)
+        self.assertNotIn("<img", body)
+
     def test_attachment(self):
         self.authenticate()
         url = reverse("v2:webmail-email-attachment")
@@ -439,7 +456,7 @@ class ComposeSessionViewSetTestCase(WebmailTestCase):
         content = manager.get_content(uid)
         self.assertEqual(len(content["attachments"]), 1)
         name = content["attachments"][0]["tmpname"]
-        path = f"{self.workdir}/webmail/{name}"
+        path = f"{self.workdir}/attachments/{name}"
         self.assertTrue(os.path.exists(path))
 
         url = reverse("v2:webmail-compose-session-delete-attachment", args=[uid, name])

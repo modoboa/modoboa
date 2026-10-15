@@ -230,8 +230,22 @@
         {{ $gettext('Message scheduled at:') }}
         {{ $date(email.scheduled_datetime) }}
       </v-alert>
-      <div ref="frameWrapper" class="email-frame-wrap">
-        <iframe class="email-frame" />
+      <div class="email-frame-wrap">
+        <!--
+          The message body is untrusted: sandboxed iframe (no
+          allow-same-origin, so an opaque origin that can't reach the app),
+          CSP that only runs our scroll script (see emailFrame.js). :key
+          gives every message a fresh document.
+        -->
+        <iframe
+          v-if="emailDocument"
+          :key="frameKey"
+          ref="emailFrame"
+          class="email-frame"
+          sandbox="allow-scripts allow-popups allow-popups-to-escape-sandbox"
+          referrerpolicy="no-referrer"
+          :srcdoc="emailDocument"
+        />
       </div>
     </div>
     <v-dialog
@@ -257,7 +271,7 @@
 </template>
 
 <script setup>
-import { nextTick, onMounted, ref, watch } from 'vue'
+import { computed, nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { useDisplay } from 'vuetify'
 import { useGettext } from 'vue3-gettext'
@@ -265,6 +279,7 @@ import { useBusStore, useProgressStore } from '@/stores'
 import constants from '@/constants.json'
 import api from '@/api/webmail'
 import ContactCard from '@/components/webmail/ContactCard.vue'
+import { SCROLL_MESSAGE, buildEmailDocument } from './emailFrame'
 
 const props = defineProps({
   mailbox: { type: String, required: true },
@@ -283,7 +298,8 @@ const router = useRouter()
 const enableLinks = ref(false)
 const email = ref(null)
 const emailSource = ref(null)
-const frameWrapper = ref(null)
+const emailFrame = ref(null)
+const frameKey = ref(0)
 const loaded = ref(false)
 const showEmailSource = ref(false)
 const working = ref(false)
@@ -319,23 +335,23 @@ const fetchMailContent = () => {
   }
   api.getEmailContent(props.mailbox, props.mailid, options).then((resp) => {
     reloadMailboxCounters()
+    // New key with the new body: one fresh iframe per message.
+    frameKey.value += 1
     email.value = resp.data
     nextTick(() => {
-      if (!frameWrapper.value) {
-        return
-      }
-      // Rebuild the iframe on every fetch: writing into a fresh document is
-      // the only reliable way to reset scripts/styles from the previous
-      // message. Scoped to this component's wrapper (never a global query).
-      const iframe = document.createElement('iframe')
-      iframe.classList.add('email-frame')
-      frameWrapper.value.replaceChildren(iframe)
-      if (email.value.body) {
-        const iframeDoc = iframe.contentDocument
-        iframeDoc.write(email.value.body)
-        // Add style to prevent content overflow inside iframe on small screens
-        const style = iframeDoc.createElement('style')
-        style.textContent = `
+      // Reading progress for the global top bar: the sandboxed document
+      // reports its scroll through postMessage (onFrameMessage).
+      progress.setScroll(0)
+      loaded.value = true
+      emit('loaded', email.value)
+    })
+  })
+}
+
+// Styles injected in every message document. Exactly one scroll container
+// (the iframe viewport), sane typography for unstyled mail, no overflow on
+// phones, and the app's scrollbar (the iframe is a separate document).
+const FRAME_STYLE = `
           /* Exactly ONE scroll container: the iframe viewport (html).
              Setting any overflow on <body> turns it into a second scroll
              container (overflow-x:hidden computes overflow-y:auto), and
@@ -406,42 +422,32 @@ const fetchMailContent = () => {
           ::-webkit-scrollbar-thumb:hover {
             background: #a594ff;
           }
-        `
-        iframeDoc.head.appendChild(style)
-        iframeDoc.close()
-      }
-      // Feed the global top bar with reading progress. The body lives in a
-      // separate iframe document, so its scroll never reaches the parent's
-      // capture-phase listener — bind it here (re-bound on every fetch since
-      // the iframe element is replaced above).
-      progress.setScroll(0)
-      bindIframeScroll(iframe)
-      loaded.value = true
-      emit('loaded', email.value)
-    })
-  })
-}
+`
 
-const bindIframeScroll = (iframe) => {
-  const win = iframe.contentWindow
-  if (!win) {
+const emailDocument = computed(() =>
+  buildEmailDocument(email.value?.body, {
+    enableLinks: enableLinks.value,
+    style: FRAME_STYLE,
+  })
+)
+
+const onFrameMessage = (event) => {
+  // Only trust our own frame: any other window can post messages too.
+  if (
+    !emailFrame.value ||
+    event.source !== emailFrame.value.contentWindow ||
+    event.data?.type !== SCROLL_MESSAGE
+  ) {
     return
   }
-  win.addEventListener(
-    'scroll',
-    () => {
-      const doc =
-        iframe.contentDocument?.scrollingElement ||
-        iframe.contentDocument?.documentElement
-      if (!doc) {
-        return
-      }
-      const max = doc.scrollHeight - doc.clientHeight
-      progress.setScroll(max > 0 ? doc.scrollTop / max : 0)
-    },
-    { passive: true }
+  const value = Number(event.data.value)
+  progress.setScroll(
+    Number.isFinite(value) ? Math.min(Math.max(value, 0), 1) : 0
   )
 }
+
+onMounted(() => window.addEventListener('message', onFrameMessage))
+onUnmounted(() => window.removeEventListener('message', onFrameMessage))
 
 const downloadAttachment = (name, part) => {
   api.getEmailAttachment(props.mailbox, props.mailid, part).then((resp) => {

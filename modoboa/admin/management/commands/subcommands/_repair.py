@@ -8,7 +8,7 @@ from django.db.models import Exists, OuterRef
 from django.utils.encoding import smart_str
 
 
-from modoboa.admin import models
+from modoboa.admin import lib, models
 from modoboa.core.models import ObjectAccess, User
 from modoboa.lib.permissions import grant_access_to_object
 
@@ -130,6 +130,31 @@ def sometimes_mailbox_have_no_alias(**options):
             f"{alias_created} alias created. {recipient_created} alias recipient created",
             **options,
         )
+
+
+@known_problem
+def sometimes_domain_aliases_are_not_routed_correctly(dry_run=False, **options):
+    """Sometime domain aliases are not routed correctly."""
+    collisions, orphans, wrong_routes = lib.find_domainalias_inconsistencies()
+    for name in sorted(collisions):
+        # Ownership must be checked by an administrator
+        log(
+            f"  Domain alias {name} uses the name of a domain, rename or delete it",
+            **options,
+        )
+    for name in sorted(orphans):
+        if dry_run:
+            log(f"  Internal alias @{name} matches no valid domain alias", **options)
+            continue
+        lib.get_domainalias_internal_aliases(name).delete()
+        log(f"  Internal alias @{name} removed", **options)
+    for name, target in sorted(wrong_routes.items()):
+        if dry_run:
+            log(f"  Internal alias @{name} does not point to @{target}", **options)
+            continue
+        lib.get_domainalias_internal_aliases(name).delete()
+        lib.create_domainalias_internal_alias(name, target)
+        log(f"  Internal alias @{name} now points to @{target}", **options)
 
 
 class Repair(BaseCommand):

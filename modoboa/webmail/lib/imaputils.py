@@ -144,6 +144,7 @@ class BodyStructure:
                 self.contents[subtype].append(params)
             return
         elif multisubtype in ["related"]:
+            params["Content-Type"] = ftype
             self.inlines[params["cid"].strip("<>")] = params
             return
 
