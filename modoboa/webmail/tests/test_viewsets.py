@@ -11,6 +11,7 @@ from freezegun import freeze_time
 from rq import SimpleWorker
 
 from django.core import mail
+from django.core.cache.backends.locmem import LocMemCache
 from django.test import override_settings
 from django.urls import reverse
 from django.utils import timezone
@@ -71,6 +72,13 @@ class WebmailTestCase(ModoAPITestCase):
         self.mock_imap4 = patcher.start()
         self.mock_imap4.return_value = IMAP4Mock()
         self.addCleanup(patcher.stop)
+        # What the server says about itself is cached, and every test
+        # fakes its own server
+        server_info = LocMemCache("webmail-tests", {})
+        server_info.clear()
+        cache_patcher = mock.patch("modoboa.webmail.lib.imaputils.cache", server_info)
+        cache_patcher.start()
+        self.addCleanup(cache_patcher.stop)
         self.set_global_parameter("imap_port", 1435)
         self.workdir = tempfile.mkdtemp()
         os.mkdir(f"{self.workdir}/webmail")
@@ -115,6 +123,29 @@ class UserMailboxViewSetTestCase(WebmailTestCase):
         response = self.client.get(f"{url}?mailbox=INBOX")
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json()["counter"], 10)
+
+    def test_status(self):
+        self.authenticate()
+        url = reverse("v2:webmail-mailbox-status")
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 404)
+        response = self.client.get(f"{url}?mailbox=INBOX")
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json()["unseen"], 10)
+        self.assertIn("state", response.json())
+
+    def test_listings_carry_the_mailbox_state(self):
+        """The state to compare with the status endpoint comes with the list."""
+        self.authenticate()
+        state = self.client.get(
+            f"{reverse('v2:webmail-mailbox-status')}?mailbox=INBOX"
+        ).json()["state"]
+        for name in ("v2:webmail-email-list", "v2:webmail-email-threads"):
+            response = self.client.get(f"{reverse(name)}?mailbox=INBOX")
+            self.assertEqual(response.status_code, 200)
+            self.assertEqual(response.json()["state"], state)
+            # The mailbox counter needs no request of its own
+            self.assertEqual(response.json()["unseen"], 10)
 
     def test_list_unseen_counters(self):
         """Unseen counters must be computed for every selectable mailbox.

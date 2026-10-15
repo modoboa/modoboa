@@ -1,5 +1,7 @@
 """Tests for IMAP argument validation (command injection protection)."""
 
+from unittest import mock
+
 from django.test import SimpleTestCase
 
 from modoboa.webmail.exceptions import ImapError
@@ -74,3 +76,68 @@ class QuoteMailboxNameTestCase(SimpleTestCase):
         for value in ["INBOX\r\nA1 DELETE Trash", "a\x00b", "a\tb", "a\x7fb"]:
             with self.assertRaises(ImapError):
                 imaputils.quote_mailbox_name(value)
+
+
+class FetchPartsTestCase(SimpleTestCase):
+    """Several parts of a message are retrieved with one command."""
+
+    def _connector(self, response):
+        connector = imaputils.IMAPconnector.__new__(imaputils.IMAPconnector)
+        connector.m = mock.Mock()
+        connector.m.uid.return_value = ("OK", response)
+        connector.select_mailbox = mock.Mock()
+        return connector
+
+    def test_single_fetch(self):
+        connector = self._connector(
+            [
+                (b"1 (UID 7 BODY[1] {5}", b"hello"),
+                (b" BODY[2] {5}", b"world"),
+                b")",
+            ]
+        )
+        parts = connector.fetch_parts("7", "INBOX", ["1", "2", "3"])
+        connector.m.uid.assert_called_once_with(
+            "FETCH", "7", "(BODY.PEEK[1] BODY.PEEK[2] BODY.PEEK[3])"
+        )
+        # The part the server didn't return is missing
+        self.assertEqual(parts, {"1": "hello", "2": "world"})
+
+    def test_nothing_to_fetch(self):
+        connector = self._connector([])
+        self.assertEqual(connector.fetch_parts("7", "INBOX", []), {})
+        connector.m.uid.assert_not_called()
+
+    def test_invalid_partnum(self):
+        connector = self._connector([])
+        with self.assertRaises(ImapError):
+            connector.fetch_parts("7", "INBOX", ["1)\r\nA1 LOGOUT"])
+
+
+class MailboxStateTestCase(SimpleTestCase):
+    """The state summarizes the mailbox content from one STATUS reply."""
+
+    def _connector(self, reply, capabilities):
+        connector = imaputils.IMAPconnector.__new__(imaputils.IMAPconnector)
+        connector.capabilities = capabilities
+        connector._cmd = mock.Mock(return_value=[reply])
+        return connector
+
+    def test_state(self):
+        connector = self._connector(
+            b'"A (b) c" (MESSAGES 3 UIDNEXT 12 UIDVALIDITY 99 UNSEEN 1)', []
+        )
+        result = connector.mailbox_state("A (b) c")
+        self.assertEqual(result, {"state": "3-12-99-1", "unseen": 1})
+        self.assertEqual(
+            connector._cmd.call_args[0][2], "(MESSAGES UIDNEXT UIDVALIDITY UNSEEN)"
+        )
+
+    def test_flag_changes_with_condstore(self):
+        connector = self._connector(
+            b"INBOX (MESSAGES 3 UIDNEXT 12 UIDVALIDITY 99 UNSEEN 0 "
+            b"HIGHESTMODSEQ 1234)",
+            ["CONDSTORE"],
+        )
+        result = connector.mailbox_state("INBOX")
+        self.assertEqual(result, {"state": "3-12-99-0-1234", "unseen": 0})
