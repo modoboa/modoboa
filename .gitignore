@@ -57,3 +57,5 @@ docker/mariadb
 
 # Projeto usa yarn; não versionar lockfile do npm
 frontend/package-lock.json
+
+*.djcache
