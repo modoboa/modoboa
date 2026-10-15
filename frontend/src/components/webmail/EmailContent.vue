@@ -686,6 +686,12 @@ const editDraft = () => {
     min-height: 44px;
   }
 }
+/* Vuetify alerts grow (flex: 1 1): in this column they would take the
+   height meant for the message (the remote content banner filled half of
+   the pane in a desktop-width window). */
+.email-view .v-alert {
+  flex: 0 0 auto;
+}
 /* Quiet toolbar actions (accent lives on the Reply anchor only). */
 .email-view .tb-quiet {
   color: var(--fg-dim);
