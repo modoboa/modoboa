@@ -563,26 +563,43 @@ const closeSchedulingForm = () => {
 // Snapshot of the last state written to the server; used to skip no-op saves
 // (including the initial form population / signature insertion).
 let lastSavedSnapshot = null
+// The save in flight, if any. A second call waits for it instead of
+// running alongside it (two concurrent saves would each create a draft
+// server-side) or being dropped (a manual "save" during an autosave would
+// lose whatever was typed meanwhile).
+let saveInFlight = null
 
 const draftSnapshot = () => JSON.stringify(prepareMessage())
 
 const formHasContent = () =>
   Boolean(
     form.value.subject ||
-      form.value.body ||
-      form.value.to?.length ||
-      form.value.cc?.length ||
-      form.value.bcc?.length
+    form.value.body ||
+    form.value.to?.length ||
+    form.value.cc?.length ||
+    form.value.bcc?.length
   )
 
 const persistDraft = async () => {
-  if (!route.query.uid || autosaving.value) {
+  if (!route.query.uid) {
     return
+  }
+  while (saveInFlight) {
+    await saveInFlight
   }
   const snapshot = draftSnapshot()
   if (snapshot === lastSavedSnapshot) {
     return
   }
+  saveInFlight = writeDraft(snapshot)
+  try {
+    await saveInFlight
+  } finally {
+    saveInFlight = null
+  }
+}
+
+const writeDraft = async (snapshot) => {
   autosaving.value = true
   try {
     const body = prepareMessage()

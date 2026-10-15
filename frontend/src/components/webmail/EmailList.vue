@@ -672,9 +672,11 @@ const commitDelete = (entry) => {
   }
   pendingDeletes.value.splice(i, 1)
   clearTimeout(entry.timer)
-  api.deleteSelection(entry.mailbox || currentMailbox.value, [entry.imapid]).then(() => {
-    reloadMailboxCounters()
-  })
+  api
+    .deleteSelection(entry.mailbox || currentMailbox.value, [entry.imapid])
+    .then(() => {
+      reloadMailboxCounters()
+    })
 }
 
 const undoDelete = (entry) => {
@@ -693,7 +695,12 @@ const swipeDelete = (email) => {
   if (index === -1) {
     return
   }
-  const entry = { mailbox: currentMailbox.value, imapid: email.imapid, row: email, index }
+  const entry = {
+    mailbox: currentMailbox.value,
+    imapid: email.imapid,
+    row: email,
+    index,
+  }
   store.removeEmails([email.imapid])
   entry.timer = setTimeout(() => commitDelete(entry), 5000)
   pendingDeletes.value.push(entry)
