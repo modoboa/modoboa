@@ -127,6 +127,22 @@ class Html2PlainTextTestCase(SimpleTestCase):
             "- a\n- b\n  1. c\n  2. d",
         )
 
+    def test_list_item_paragraphs(self):
+        """Rich text editors put the content of list items into paragraphs."""
+        self.assertEqual(
+            utils.html2plaintext(
+                "<ul><li><p>a</p></li><li><p>b</p><p>c</p>"
+                "<ul><li><p>d</p></li></ul></li></ul><p>End</p>"
+            ),
+            "- a\n- b\nc\n  - d\n\nEnd",
+        )
+
+    def test_non_breaking_spaces_are_kept(self):
+        self.assertEqual(
+            utils.html2plaintext("<p>&nbsp;&nbsp;indented&nbsp; text</p>"),
+            "  indented  text",
+        )
+
     def test_quotes(self):
         self.assertEqual(
             utils.html2plaintext(

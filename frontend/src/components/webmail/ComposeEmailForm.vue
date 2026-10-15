@@ -21,6 +21,7 @@
             :height="btnSize"
             :width="btnSize"
             :loading="working"
+            :disabled="loading || converting"
             :title="$gettext('Send')"
             :aria-label="$gettext('Send')"
             @click="submit()"
@@ -32,6 +33,7 @@
             color="primary"
             :height="btnSize"
             :loading="working"
+            :disabled="loading || converting"
             :text="$gettext('Send')"
             @click="submit()"
           >
@@ -81,6 +83,8 @@
               :title="$gettext('HTML mode')"
               :aria-label="$gettext('HTML mode')"
               :aria-pressed="htmlMode ? 'true' : 'false'"
+              :loading="converting"
+              :disabled="loading"
               @click="toggleHtmlMode"
             />
           </template>
@@ -134,6 +138,7 @@
               <template v-if="compact">
                 <v-switch
                   :model-value="htmlMode"
+                  :disabled="loading || converting"
                   :label="$gettext('HTML mode')"
                   density="compact"
                   hide-details
@@ -267,6 +272,7 @@
           />
         </div>
         <BodyEditor v-model="form.body" :html-mode="htmlMode" />
+        <ConfirmDialog ref="confirmDialog" />
       </v-form>
     </div>
     <v-dialog
@@ -300,6 +306,7 @@ import { useGettext } from 'vue3-gettext'
 import { useAuthStore, useBusStore, useWebmailStore } from '@/stores'
 import { useSpecialFolders } from '@/composables/webmail'
 import debounce from 'debounce'
+import ConfirmDialog from '@/components/tools/ConfirmDialog'
 import AttachmentsDialog from '@/components/webmail/AttachmentsDialog'
 import BodyEditor from '@/components/webmail/BodyEditor'
 import EmailSchedulingForm from '@/components/webmail/EmailSchedulingForm'
@@ -308,9 +315,10 @@ import api from '@/api/webmail'
 import contactsApi from '@/api/contacts'
 
 const props = defineProps({
-  originalEmail: {
-    type: Object,
-    default: null,
+  // Reply to the message given by the route (mailbox, mailid)
+  reply: {
+    type: Boolean,
+    default: false,
   },
   replyAll: {
     type: Boolean,
@@ -323,8 +331,6 @@ const props = defineProps({
     default: false,
   },
 })
-const emit = defineEmits(['onToggleHtmlMode'])
-
 const route = useRoute()
 const router = useRouter()
 // `mobile` (< lg by default) keeps driving touch sizing and fullscreen
@@ -360,15 +366,18 @@ const draftMailid = ref(
 )
 const draftSavedAt = ref(null)
 const autosaving = ref(false)
-const editorMode = ref('plain')
 // Mode actually used in the editor: it decides the format of the message
 const htmlMode = ref(false)
+const converting = ref(false)
+const confirmDialog = ref()
 const form = ref({})
 const formRef = ref()
 const showAttachmentsDialog = ref(false)
 const showCcField = ref(false)
 const showBccField = ref(false)
 const showSchedulingForm = ref(false)
+// The form can't be submitted before its content is loaded
+const loading = ref(true)
 const working = ref(false)
 
 const close = () => {
@@ -377,17 +386,47 @@ const close = () => {
   })
 }
 
-// The plain/HTML switch lives in the toolbar; reply/forward views listen to
-// the emit to refetch the quoted body in the matching format.
-const toggleHtmlMode = () => {
-  htmlMode.value = !htmlMode.value
-  emit('onToggleHtmlMode', htmlMode.value)
+// The conversion is made by the server: the text obtained is the one sent
+// as the text part of HTML messages
+const convertBody = async (body, source, target) => {
+  const resp = await api.convertBody(body, source, target)
+  return resp.data.body
 }
 
-// Initial mode comes from the user's editor preference (compose session).
-watch(editorMode, (value) => {
-  htmlMode.value = value === 'html'
-})
+// An empty editor holds an empty paragraph
+const bodyIsEmpty = () =>
+  !(form.value.body || '').replace(/<p><\/p>/g, '').trim()
+
+// The plain/HTML switch lives in the toolbar. The content is converted
+// (quoted lines become blockquotes and vice versa) instead of reloading the
+// original message, which dropped what was written.
+const toggleHtmlMode = async () => {
+  const source = htmlMode.value ? 'html' : 'plain'
+  const target = htmlMode.value ? 'plain' : 'html'
+  if (target === 'plain' && !bodyIsEmpty()) {
+    // Asked first: the content can't change between the conversion and the
+    // answer
+    const confirmed = await confirmDialog.value.open(
+      $gettext('Switch to plain text'),
+      $gettext(
+        'The formatting of the message (bold, links, images...) will be lost. Continue?'
+      ),
+      { agreeLabel: $gettext('Continue') }
+    )
+    if (!confirmed) {
+      return
+    }
+  }
+  converting.value = true
+  try {
+    form.value.body = await convertBody(form.value.body || '', source, target)
+    htmlMode.value = target === 'html'
+  } catch {
+    // Already displayed to the user by the API client
+  } finally {
+    converting.value = false
+  }
+}
 
 // Is this one of the addresses the user can send from (aliases included)?
 const isUserAddress = (address) => {
@@ -400,10 +439,10 @@ const isUserAddress = (address) => {
 
 // Reply from the address the original message was sent to, when it is one
 // of the user's addresses; from the main address otherwise.
-const getDefaultSender = () => {
+const getDefaultSender = (originalEmail) => {
   const recipients = [
-    ...(props.originalEmail?.to || []),
-    ...(props.originalEmail?.cc || []),
+    ...(originalEmail?.to || []),
+    ...(originalEmail?.cc || []),
   ]
   const sender = allowedSenders.value.find((item) =>
     recipients.some(
@@ -416,43 +455,86 @@ const getDefaultSender = () => {
   return allowedSenders.value[0]?.address || authStore.authUser.username
 }
 
-const initForm = () => {
+// A new message, a reply or a forward
+const initForm = async (session, originalEmail) => {
   form.value = {
-    sender: getDefaultSender(),
+    sender: getDefaultSender(originalEmail),
     request_dsn: false,
     request_mdn: false,
   }
-  if (props.originalEmail) {
+  // The body of the original message is in the format of the editor
+  const format = originalEmail?.body_format || session.editor_format
+  let body = ''
+  if (originalEmail) {
     if (!props.forward) {
       // Reply: address every Reply-To address if any, the sender otherwise
       // (recipients make no sense when forwarding — the whole point is
       // picking new ones).
-      form.value.to = props.originalEmail.reply_to?.length
-        ? props.originalEmail.reply_to.map((rcpt) => rcpt.address)
-        : [props.originalEmail.from_address.address]
+      form.value.to = originalEmail.reply_to?.length
+        ? originalEmail.reply_to.map((rcpt) => rcpt.address)
+        : [originalEmail.from_address.address]
       if (props.replyAll) {
         // Bare addresses only: the API rejects "Name <address>" values
         const excluded = new Set(form.value.to || [])
-        const addresses = [
-          ...props.originalEmail.to,
-          ...(props.originalEmail.cc || []),
-        ]
+        const addresses = [...originalEmail.to, ...(originalEmail.cc || [])]
           .map((rcpt) => rcpt.address)
           .filter((address) => !excluded.has(address) && !isUserAddress(address))
         form.value.cc = [...new Set(addresses)]
         showCcField.value = form.value.cc.length > 0
       }
-      if (props.originalEmail.message_id) {
-        form.value.in_reply_to = props.originalEmail.message_id
+      if (originalEmail.message_id) {
+        form.value.in_reply_to = originalEmail.message_id
         // Keep the whole thread, not only the parent message
-        if (props.originalEmail.references) {
-          form.value.references = props.originalEmail.references
+        if (originalEmail.references) {
+          form.value.references = originalEmail.references
         }
       }
     }
-    form.value.subject = props.originalEmail.subject
-    form.value.body = props.originalEmail.body
+    form.value.subject = originalEmail.subject
+    body = originalEmail.body || ''
   }
+  if (session.signature) {
+    // The signature is in the format of the editor preference
+    let signature = session.signature
+    if (session.editor_format !== format) {
+      signature = await convertBody(signature, session.editor_format, format)
+    }
+    body += signature
+  }
+  form.value.body = body
+  htmlMode.value = format === 'html'
+}
+
+// A draft, in the format it was written in
+const initFormFromDraft = (session, draft) => {
+  form.value = {
+    sender: draft.from_address.address,
+    request_dsn: false,
+    request_mdn: false,
+  }
+  if (draft.to?.length) {
+    form.value.to = draft.to.map((rcpt) => rcpt.address)
+  }
+  if (draft.cc?.length) {
+    form.value.cc = draft.cc.map((rcpt) => rcpt.address)
+    showCcField.value = true
+  }
+  if (draft.bcc?.length) {
+    form.value.bcc = draft.bcc.map((rcpt) => rcpt.address)
+    showBccField.value = true
+  }
+  if (draft.subject) {
+    form.value.subject = draft.subject
+  }
+  form.value.body = draft.body || ''
+  // A reply saved as draft stays in its thread
+  if (draft.in_reply_to) {
+    form.value.in_reply_to = draft.in_reply_to
+  }
+  if (draft.references) {
+    form.value.references = draft.references
+  }
+  htmlMode.value = (draft.body_format || session.editor_format) === 'html'
 }
 
 const prepareMessage = () => {
@@ -483,7 +565,7 @@ const prepareMessage = () => {
   if (draftMailid.value) {
     result.mailid = draftMailid.value
   }
-  if (props.originalEmail && route.query.mailbox && route.query.mailid) {
+  if ((props.reply || props.forward) && route.query.mailid) {
     // Let the server flag the original message (\Answered, $Forwarded)
     result.original_mailbox = route.query.mailbox
     result.original_mailid = route.query.mailid
@@ -547,56 +629,6 @@ const lookForContacts = debounce(async (search) => {
     contacts.value = []
   }
 }, 500)
-
-const initialize = async (body) => {
-  let mode = body.editor_format
-  if (isEditingDraft) {
-    // Load draft (raw body, ready for the editor) in the format it was
-    // written in
-    const draft = await api.getEmailContent(
-      route.query.mailbox,
-      route.query.mailid,
-      { context: 'edit' }
-    )
-    form.value.sender = draft.data.from_address.address
-    if (draft.data.to?.length) {
-      form.value.to = draft.data.to.map((rcpt) => rcpt.address)
-    }
-    if (draft.data.cc?.length) {
-      form.value.cc = draft.data.cc.map((rcpt) => rcpt.address)
-      showCcField.value = true
-    }
-    if (draft.data.bcc?.length) {
-      form.value.bcc = draft.data.bcc.map((rcpt) => rcpt.address)
-      showBccField.value = true
-    }
-    if (draft.data.subject) {
-      form.value.subject = draft.data.subject
-    }
-    if (draft.data.body) {
-      form.value.body = draft.data.body
-    }
-    // A reply saved as draft stays in its thread
-    if (draft.data.in_reply_to) {
-      form.value.in_reply_to = draft.data.in_reply_to
-    }
-    if (draft.data.references) {
-      form.value.references = draft.data.references
-    }
-    mode = draft.data.body_format || mode
-  } else if (body.signature) {
-    if (form.value.body) {
-      form.value.body += body.signature
-    } else {
-      form.value.body = body.signature
-    }
-  }
-  editorMode.value = mode
-  // Baseline for autosave: whatever the form holds after initial population
-  // (loaded draft, reply quote, signature) is "already saved" — only real
-  // user edits from here on trigger a save.
-  lastSavedSnapshot = draftSnapshot()
-}
 
 const openSchedulingForm = () => {
   if (!form.value.to?.length) {
@@ -716,15 +748,10 @@ const getItemTitle = (item) => {
   return item.display_name || `${item.first_name} ${item.last_name}`
 }
 
-watch(
-  () => props.originalEmail,
-  () => {
-    initForm()
-  },
-  { immediate: true }
-)
-
-if (!route.query.uid) {
+const getComposeSession = async () => {
+  if (route.query.uid) {
+    return (await api.getComposeSession(route.query.uid)).data
+  }
   const data = {}
   if (isEditingDraft) {
     data.from_draft_message = route.query.mailid
@@ -733,33 +760,58 @@ if (!route.query.uid) {
     data.forward_mailbox = route.query.mailbox
     data.forward_mailid = route.query.mailid
   }
-  api.createComposeSession(data).then((resp) => {
-    const query = { ...route.query, uid: resp.data.uid }
-    attachmentCount.value = resp.data.attachments?.length || 0
-    router.push({ name: route.name, query })
-    initialize(resp.data)
+  const session = (await api.createComposeSession(data)).data
+  router.replace({
+    name: route.name,
+    query: { ...route.query, uid: session.uid },
   })
-} else {
-  api.getComposeSession(route.query.uid).then((resp) => {
-    attachmentCount.value = resp.data.attachments.length
-    initialize(resp.data)
-  })
+  return session
 }
 
-api.getAllowedSenders().then((resp) => {
-  allowedSenders.value = resp.data
-  // The form may have been initialized before the addresses were known (the
-  // sender can't have been changed yet: the list was empty)
-  if (!isEditingDraft) {
-    form.value.sender = getDefaultSender()
+const getEmailContent = async (context) => {
+  const resp = await api.getEmailContent(
+    route.query.mailbox,
+    route.query.mailid,
+    { context }
+  )
+  return resp.data
+}
+
+// Everything is loaded before the form is filled: the sender depends on the
+// original message and on the allowed addresses, the format on the original
+// message (or the draft) and on the preferences. Filling the form as each
+// answer arrived lost the signature when the original message came last.
+const load = async () => {
+  let originalRequest = null
+  if ((props.reply || props.forward) && route.query.mailid) {
+    originalRequest = getEmailContent(props.forward ? 'forward' : 'reply')
   }
-  if (props.replyAll && form.value.cc?.length) {
-    form.value.cc = form.value.cc.filter(
-      (address) => typeof address !== 'string' || !isUserAddress(address)
-    )
-    showCcField.value = form.value.cc.length > 0
+  const draftRequest = isEditingDraft ? getEmailContent('edit') : null
+  try {
+    const [session, senders, originalEmail, draft] = await Promise.all([
+      getComposeSession(),
+      api.getAllowedSenders(),
+      originalRequest,
+      draftRequest,
+    ])
+    allowedSenders.value = senders.data
+    attachmentCount.value = session.attachments?.length || 0
+    if (draft) {
+      initFormFromDraft(session, draft)
+    } else {
+      await initForm(session, originalEmail)
+    }
+    // Baseline for autosave: whatever the form holds after initial population
+    // (loaded draft, reply quote, signature) is "already saved" — only real
+    // user edits from here on trigger a save.
+    lastSavedSnapshot = draftSnapshot()
+    loading.value = false
+  } catch {
+    // Already displayed to the user by the API client
   }
-})
+}
+
+load()
 </script>
 
 <style scoped>
