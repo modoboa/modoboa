@@ -196,6 +196,16 @@ USER_PREFERENCES_STRUCT = collections.OrderedDict(
                             },
                         ),
                         (
+                            "listing_mode",
+                            {
+                                "label": gettext_lazy("Messages list mode"),
+                                "help_text": gettext_lazy(
+                                    "Display messages one by one or grouped into "
+                                    "conversations"
+                                ),
+                            },
+                        ),
+                        (
                             "messages_per_page",
                             {
                                 "label": gettext_lazy(
