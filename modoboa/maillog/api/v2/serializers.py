@@ -1,6 +1,6 @@
 """App. related serializers."""
 
-import os
+from pathlib import Path
 
 from django.utils.translation import gettext as _
 
@@ -94,6 +94,6 @@ class MaillogGlobalParemetersSerializer(serializers.Serializer):
 
     def validate_rrd_rootdir(self, value):
         """Check that directory exists."""
-        if value and not os.path.isdir(value):
+        if value and not Path(value).is_dir():
             raise serializers.ValidationError(_("Directory not found."))
         return value

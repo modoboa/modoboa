@@ -1,6 +1,7 @@
 import os
 import sys
 import time
+from pathlib import Path
 
 from django.core.management.base import CommandError
 
@@ -13,7 +14,7 @@ def ensure_rrd_rootdir(path):
     The directory is not created here: the default lives under ``/tmp``, and
     creating it would keep durable statistics on a volatile path.
     """
-    if not path or not os.path.isdir(path) or not os.access(path, os.W_OK):
+    if not path or not Path(path).is_dir() or not os.access(path, os.W_OK):
         raise CommandError(
             f"Directory to store RRD files ({path}) is missing, is not a "
             "directory, or is not writable by the current process. Create "
