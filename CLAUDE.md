@@ -111,6 +111,9 @@ cd frontend && yarn install && yarn dev:mock   # cross-env VITE_MOCK_API=true vi
 - **Não rode a suíte como root fora de um contêiner.** `test_dkim_key_creation`
   conta que gravar em `/I_DONT_EXIST` falhe; como root a gravação funciona, cria
   a pasta na raiz do sistema e o teste passa a falhar nas execuções seguintes.
+- Os testes do policyd sobem o daemon em `POLICYD_TEST_PORT` (padrão 19999).
+  Antes usavam a 9999, a mesma do policyd de produção: o de teste não subia e
+  os testes conversavam com o policyd real (falhas "de ambiente" que eram isso).
 - Fora do CI, 3 testes do amavis (`test_mark_as_ham`, `test_mark_as_spam`,
   `test_manual_learning_as_user`) falham sem o `sa-learn`/spamd configurado;
   não é regressão.
