@@ -20,11 +20,6 @@ class SievefiltersSettingsSerializer(serializers.Serializer):
     port = serializers.IntegerField(default=4190)
     starttls = serializers.BooleanField(default=False)
 
-    # Imap Settings
-    imap_server = serializers.CharField(default="127.0.0.1")
-    imap_secured = serializers.BooleanField(default=False)
-    imap_port = serializers.IntegerField(default=143)
-
 
 class FilterSetSerializer(serializers.Serializer):
     name = serializers.CharField()

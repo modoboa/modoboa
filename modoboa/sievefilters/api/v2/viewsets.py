@@ -6,6 +6,7 @@ from sievelib.commands import BadArgument, BadValue
 from sievelib.factory import FilterAlreadyExists
 
 from django.http import HttpResponse
+from django.utils.http import content_disposition_header
 from django.utils.translation import gettext as _
 
 from drf_spectacular.types import OpenApiTypes
@@ -23,7 +24,6 @@ from modoboa.sievefilters.lib import (
     SieveScriptParseError,
     UnsupportedSieveFilter,
 )
-from modoboa.sievefilters.rfc6266 import build_header
 from modoboa.sievefilters.api.v2 import serializers
 
 
@@ -142,7 +142,7 @@ class FilterSetViewSet(viewsets.ViewSet):
         script = sclient.getscript(pk)
         resp = HttpResponse(script)
         resp["Content-Type"] = "text/plain; charset=utf-8"
-        resp["Content-Disposition"] = build_header(f"{pk}.txt")
+        resp["Content-Disposition"] = content_disposition_header(True, f"{pk}.txt")
         return resp
 
     def destroy(self, request, pk):

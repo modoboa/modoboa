@@ -28,7 +28,7 @@ def __build_folders_list(
         else:
             ret += [{"name": value, "label": fd["name"]}]
         if "sub" in fd:
-            submboxes = imapc.getmboxes(user, value)
+            submboxes = imapc.getmboxes(user, value, unseen_messages=False)
             ret += __build_folders_list(submboxes, user, imapc, value)
     return ret
 
@@ -36,6 +36,7 @@ def __build_folders_list(
 def user_mailboxes(request) -> list[UserMailbox]:
     """Retrieve list of available mailboxes for given user."""
     with imaputils.get_imapconnector(request) as mbc:
-        ret = mbc.getmboxes(request.user)
+        # Unseen counters are useless here and cost a STATUS per mailbox
+        ret = mbc.getmboxes(request.user, unseen_messages=False)
         folders = __build_folders_list(ret, request.user, mbc)
     return folders

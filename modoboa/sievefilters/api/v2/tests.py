@@ -136,6 +136,9 @@ class FilterSetViewSetTestCase(PatcherMixin, ModoAPITestCase):
         url = reverse("v2:filterset-download", args=["main_script"])
         resp = self.client.get(url)
         self.assertEqual(resp.status_code, 200)
+        self.assertEqual(
+            resp["Content-Disposition"], 'attachment; filename="main_script.txt"'
+        )
 
     def test_delete(self):
         self.authenticate()
