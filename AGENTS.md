@@ -7,9 +7,9 @@ gotchas; do **not** re-litigate anything decided there.
 
 ## Stack
 
-- **Backend:** Django 5.2, DRF, `oauth2_provider` (OIDC), Redis (cache + RQ),
+- **Backend:** Django 6.1, DRF 3.18, `oauth2_provider` (OIDC), Redis (cache + RQ),
   per-app "parameters registry" (`modoboa/parameters/tools.py`). Python
-  3.10–3.14 (`pyproject.toml`). Versioning via `setuptools_scm`
+  3.12–3.14 (`pyproject.toml`; CI and production on 3.14). Versioning via `setuptools_scm`
   (`modoboa/version.py`); local builds report something like `2.9.1+sintraN`.
 - **Frontend:** Vue 3 + Vuetify 4, Vite 8 (Rolldown), Module Federation
   (`@module-federation/vite`), `vue3-gettext`, Pinia, vue-router, axios, OIDC

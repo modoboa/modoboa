@@ -49,7 +49,12 @@ def send_mail(request, attributes: dict, attachments: list) -> tuple[bool, str |
                 connection.open()
                 from_email = msg.from_email
                 recipients = msg.recipients()
-                message_data = msg.message().as_bytes(linesep="\r\n")
+                # Django 6 returns a standard email.message.EmailMessage, whose
+                # as_bytes() takes the line separator through the policy.
+                message = msg.message()
+                message_data = message.as_bytes(
+                    policy=message.policy.clone(linesep="\r\n")
+                )
                 connection.connection.sendmail(
                     from_email,
                     recipients,
@@ -149,7 +154,12 @@ def send_scheduled_message(sched_msg: models.ScheduledMessage) -> bool:
                 connection.open()
                 from_email = msg.from_email
                 recipients = msg.recipients()
-                message_data = msg.message().as_bytes(linesep="\r\n")
+                # Django 6 returns a standard email.message.EmailMessage, whose
+                # as_bytes() takes the line separator through the policy.
+                message = msg.message()
+                message_data = message.as_bytes(
+                    policy=message.policy.clone(linesep="\r\n")
+                )
                 connection.connection.sendmail(
                     from_email,
                     recipients,
