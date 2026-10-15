@@ -4,6 +4,7 @@ import smtplib
 from django.conf import settings
 from django.core import mail
 
+from modoboa.lib.oauth2 import get_access_token
 from modoboa.parameters import tools as param_tools
 from modoboa.webmail import constants, models
 from modoboa.webmail.exceptions import WebmailInternalError
@@ -43,7 +44,7 @@ def send_mail(request, attributes: dict, attachments: list) -> tuple[bool, str |
                 {
                     "backend": "modoboa.lib.smtp_backend.OAuthBearerEmailBackend",
                     "username": request.user.email,
-                    "password": str(request.auth),
+                    "password": get_access_token(request),
                 }
             )
         else:

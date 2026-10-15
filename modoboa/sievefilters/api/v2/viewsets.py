@@ -14,12 +14,14 @@ from rest_framework import permissions, response, viewsets
 from rest_framework.decorators import action
 from rest_framework.exceptions import ValidationError as DRFValidationError
 
+from modoboa.lib.oauth2 import get_access_token
 from modoboa.lib.viewsets import HasMailbox
 from modoboa.sievefilters import constants
 from modoboa.sievefilters.lib import (
     SieveClient,
     SieveClientError,
-    SieveActionTemplateNotFound,
+    SieveScriptParseError,
+    UnsupportedSieveFilter,
 )
 from modoboa.sievefilters.rfc6266 import build_header
 from modoboa.sievefilters.api.v2 import serializers
@@ -53,7 +55,9 @@ class FilterSetViewSet(viewsets.ViewSet):
                 raise DRFValidationError({key: _("Name contains forbidden characters")})
 
     def get_sieve_client(self, request):
-        return SieveClient(user=request.user.username, password=str(request.auth))
+        return SieveClient(
+            user=request.user.username, password=get_access_token(request)
+        )
 
     def list(self, request):
         """Retrieve list of available filter sets."""
@@ -88,10 +92,7 @@ class FilterSetViewSet(viewsets.ViewSet):
     def update(self, request, pk):
         """Update filter set content."""
         sclient = self.get_sieve_client(request)
-        try:
-            sclient.getscript(pk)
-        except SieveClientError:
-            return response.Response(status=404)
+        sclient.getscript(pk)
         serializer = serializers.FilterSetContentSerializer(
             data=request.data, context={"sclient": sclient}
         )
@@ -107,10 +108,7 @@ class FilterSetViewSet(viewsets.ViewSet):
     def activate(self, request, pk):
         """Activate an existing filter set."""
         sclient = self.get_sieve_client(request)
-        try:
-            sclient.getscript(pk, format="fset")
-        except SieveClientError:
-            return response.Response(status=404)
+        sclient.getscript(pk)
         try:
             sclient.activatescript(pk)
         except SieveClientError as err:
@@ -131,10 +129,7 @@ class FilterSetViewSet(viewsets.ViewSet):
     def download(self, request, pk):
         """Download the content of an existing filter set."""
         sclient = self.get_sieve_client(request)
-        try:
-            script = sclient.getscript(pk)
-        except SieveClientError:
-            return response.Response(status=404)
+        script = sclient.getscript(pk)
         resp = HttpResponse(script)
         resp["Content-Type"] = "text/plain; charset=utf-8"
         resp["Content-Length"] = len(script)
@@ -144,10 +139,7 @@ class FilterSetViewSet(viewsets.ViewSet):
     def destroy(self, request, pk):
         """Delete an existing filter set."""
         sclient = self.get_sieve_client(request)
-        try:
-            sclient.getscript(pk, format="fset")
-        except SieveClientError:
-            return response.Response(status=404)
+        sclient.getscript(pk)
         sclient.deletescript(pk)
         return response.Response(status=204)
 
@@ -187,11 +179,9 @@ class FilterSetViewSet(viewsets.ViewSet):
         sclient = self.get_sieve_client(request)
         try:
             fset = sclient.getscript(pk, format="fset")
-        except SieveClientError:
-            return response.Response(status=404)
-        try:
             serializer = serializers.FilterSerializer.from_filters(fset.filters)
-        except SieveActionTemplateNotFound:
+        except (SieveScriptParseError, UnsupportedSieveFilter):
+            # Frontend falls back to raw mode
             return HttpResponse(status=518)
         return response.Response(serializer.data)
 
@@ -204,10 +194,7 @@ class FilterSetViewSet(viewsets.ViewSet):
     def filters(self, request, pk=None):
         """Create a new filter."""
         sclient = self.get_sieve_client(request)
-        try:
-            fset = sclient.getscript(pk, format="fset")
-        except SieveClientError:
-            return response.Response(status=404)
+        fset = sclient.getscript(pk, format="fset")
         serializer = serializers.FilterSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         match_type, conditions, actions = serializer.to_filter()
@@ -237,18 +224,21 @@ class FilterSetViewSet(viewsets.ViewSet):
     @action(methods=["PUT"], detail=True, url_path="filters/(?P<filter>[^/]+)")
     def update_filter(self, request, pk, filter: str):
         sclient = self.get_sieve_client(request)
-        try:
-            fset = sclient.getscript(pk, format="fset")
-        except SieveClientError:
-            return response.Response(status=404)
+        fset = sclient.getscript(pk, format="fset")
         serializer = serializers.FilterSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         match_type, conditions, actions = serializer.to_filter()
         name = serializer.validated_data["name"]
         try:
-            fset.updatefilter(filter, name, conditions, actions, match_type)
+            found = fset.updatefilter(filter, name, conditions, actions, match_type)
         except (BadArgument, BadValue) as inst:
             return response.Response(str(inst), status=400)
+        except FilterAlreadyExists:
+            raise DRFValidationError(
+                {"name": _("Filter %s already exists") % name}
+            ) from None
+        if not found:
+            return response.Response(status=404)
         sclient.pushscript(fset.name, str(fset))
         return response.Response(serializer.validated_data, status=200)
 
@@ -256,10 +246,7 @@ class FilterSetViewSet(viewsets.ViewSet):
     def disable_filter(self, request, pk, filter: str):
         """Disable an existing filter."""
         sclient = self.get_sieve_client(request)
-        try:
-            fset = sclient.getscript(pk, format="fset")
-        except SieveClientError:
-            return response.Response(status=404)
+        fset = sclient.getscript(pk, format="fset")
         if not fset.disablefilter(filter):
             return response.Response(status=404)
         sclient.pushscript(pk, str(fset))
@@ -269,10 +256,7 @@ class FilterSetViewSet(viewsets.ViewSet):
     def enable_filter(self, request, pk, filter: str):
         """Enable an existing filter."""
         sclient = self.get_sieve_client(request)
-        try:
-            fset = sclient.getscript(pk, format="fset")
-        except SieveClientError:
-            return response.Response(status=404)
+        fset = sclient.getscript(pk, format="fset")
         if not fset.enablefilter(filter):
             return response.Response(status=404)
         sclient.pushscript(pk, str(fset))
@@ -290,10 +274,7 @@ class FilterSetViewSet(viewsets.ViewSet):
     @update_filter.mapping.delete
     def delete_filter(self, request, pk, filter: str):
         sclient = self.get_sieve_client(request)
-        try:
-            fset = sclient.getscript(pk, format="fset")
-        except SieveClientError:
-            return response.Response(status=404)
+        fset = sclient.getscript(pk, format="fset")
         if fset.removefilter(filter):
             sclient.pushscript(fset.name, str(fset))
             return response.Response(status=204)
@@ -301,10 +282,7 @@ class FilterSetViewSet(viewsets.ViewSet):
 
     def move_filter(self, request, filterset: str, filter: str, direction: str):
         sclient = self.get_sieve_client(request)
-        try:
-            fset = sclient.getscript(filterset, format="fset")
-        except SieveClientError:
-            return response.Response(status=404)
+        fset = sclient.getscript(filterset, format="fset")
         fset.movefilter(filter, direction)
         sclient.pushscript(filterset, str(fset))
         return response.Response(status=204)
