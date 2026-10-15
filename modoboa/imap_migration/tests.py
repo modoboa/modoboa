@@ -20,6 +20,9 @@ from . import checks
 from . import factories
 from . import models
 
+# socket.getaddrinfo() answer for a publicly routable host.
+PUBLIC_ADDRINFO = [(None, None, None, "", ("93.184.215.14", 993))]
+
 
 class DataMixin:
     """A mixin to provide test data."""
@@ -261,13 +264,48 @@ class ViewSetTestCase(DataMixin, ModoAPITestCase):
         # A privileged user is still allowed.
         admin1 = core_models.User.objects.get(username="admin@test.com")
         self.authenticate_user(admin1)
-        with mock.patch("imaplib.IMAP4_SSL"):
+        with (
+            mock.patch("imaplib.IMAP4_SSL"),
+            mock.patch("socket.getaddrinfo", return_value=PUBLIC_ADDRINFO),
+        ):
             response = self.client.post(
                 check_url,
                 {"address": "imap.example.test", "port": 993, "secured": True},
                 format="json",
             )
         self.assertEqual(response.status_code, 200)
+
+    def test_check_connection_refuses_non_public_hosts(self):
+        """Even an admin can't point check_connection at loopback, private
+        or link-local addresses, nor at a host that doesn't resolve (SSRF)."""
+        check_url = reverse("v2:emailprovider-check-connection")
+        self.authenticate_user(core_models.User.objects.get(username="admin@test.com"))
+        for ip in ["127.0.0.1", "10.0.0.5", "192.168.1.1", "169.254.169.254", "::1"]:
+            addrinfo = [(None, None, None, "", (ip, 993))]
+            with (
+                self.subTest(ip=ip),
+                mock.patch("imaplib.IMAP4_SSL") as mock_imap,
+                mock.patch("socket.getaddrinfo", return_value=addrinfo),
+            ):
+                response = self.client.post(
+                    check_url,
+                    {"address": "imap.example.test", "port": 993, "secured": True},
+                    format="json",
+                )
+                self.assertEqual(response.status_code, 400)
+                mock_imap.assert_not_called()
+
+        with (
+            mock.patch("imaplib.IMAP4_SSL") as mock_imap,
+            mock.patch("socket.getaddrinfo", side_effect=OSError("no such host")),
+        ):
+            response = self.client.post(
+                check_url,
+                {"address": "imap.example.test", "port": 993, "secured": True},
+                format="json",
+            )
+        self.assertEqual(response.status_code, 400)
+        mock_imap.assert_not_called()
 
     def test_update_provider(self):
         provider_domain = factories.EmailProviderDomainFactory(name="outlook.com")

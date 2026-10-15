@@ -26,12 +26,15 @@ class SelfServiceAuthentication(authentication.BaseAuthentication):
     def authenticate(self, request):
         from .sql_connector import SQLconnector
 
+        # The message id comes from the URL (the self-service links in
+        # quarantine notifications and the frontend only put it there);
+        # QuarantineViewSet._check_message_access then pins the action to
+        # that same id.
+        mail_id = request._request.resolver_match.kwargs.get("pk")
         if request.method == "GET":
-            mail_id = request.GET.get("mail_id")
             rcpt = request.GET.get("rcpt")
             secret_id = request.GET.get("secret_id")
         else:
-            mail_id = request.data.get("mail_id")
             rcpt = request.data.get("rcpt")
             secret_id = request.data.get("secret_id")
         if not mail_id or not rcpt or not secret_id:
@@ -41,7 +44,9 @@ class SelfServiceAuthentication(authentication.BaseAuthentication):
             msgrcpt = connector.get_recipient_message(rcpt, mail_id)
         except Msgrcpt.DoesNotExist:
             raise exceptions.AuthenticationFailed("Invalid credentials") from None
-        if not hmac.compare_digest(smart_str(secret_id), smart_str(msgrcpt.mail.secret_id)):
+        if not hmac.compare_digest(
+            smart_str(secret_id), smart_str(msgrcpt.mail.secret_id)
+        ):
             raise exceptions.AuthenticationFailed("Invalid credentials")
         return (None, "selfservice")
 
