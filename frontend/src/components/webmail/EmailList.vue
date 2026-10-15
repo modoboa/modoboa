@@ -56,6 +56,23 @@
           >
           </v-btn>
           <v-btn
+            v-if="threadingAvailable"
+            class="tb-btn"
+            variant="text"
+            :icon="threadedMode ? 'mdi-forum' : 'mdi-forum-outline'"
+            :color="threadedMode ? 'primary' : undefined"
+            size="small"
+            :title="
+              threadedMode
+                ? $gettext('Show messages one by one')
+                : $gettext('Group messages into conversations')
+            "
+            :aria-label="$gettext('Group messages into conversations')"
+            :aria-pressed="threadedMode ? 'true' : 'false'"
+            @click="toggleListingMode"
+          >
+          </v-btn>
+          <v-btn
             v-if="isTrashFolder"
             class="tb-btn"
             variant="text"
@@ -304,6 +321,16 @@
                   >
                     <div class="email-row__subject">{{ email.subject }}</div>
                     <div class="email-row__from">
+                      <span
+                        v-if="email.thread?.count > 1"
+                        class="email-row__count"
+                        :title="
+                          $gettext('%{count} messages in this conversation', {
+                            count: email.thread.count,
+                          })
+                        "
+                        >{{ email.thread.count }}</span
+                      >
                       <EmailAddressList :addresses="getEmailAddresses(email)" />
                     </div>
                   </div>
@@ -500,7 +527,32 @@ const openComposeForm = () => {
 
 const inScheduledView = computed(() => props.mailbox === 'Scheduled')
 
-const { isJunkFolder, isTrashFolder } = useSpecialFolders(currentMailbox)
+const { isDraftsFolder, isJunkFolder, isTrashFolder } =
+  useSpecialFolders(currentMailbox)
+
+// Conversations make no sense where messages have no reply chain, and the
+// server may simply not support them
+const threadingAvailable = computed(
+  () =>
+    !inScheduledView.value &&
+    !isDraftsFolder.value &&
+    store.threadingSupported !== false
+)
+
+const threadedMode = computed(
+  () => store.listingMode === 'threaded' && threadingAvailable.value
+)
+
+// A conversation shown as a row of the list: its latest message, with the
+// state of the whole thread (unread, flagged, attachments, participants)
+const threadToRow = (thread) => ({
+  ...thread.latest,
+  subject: thread.subject || thread.latest.subject,
+  style: thread.unseen_count > 0 ? 'unseen' : '',
+  flagged: thread.flagged,
+  attachments: thread.attachments,
+  thread,
+})
 
 const getScheduledMessageActions = () => {
   return [
@@ -521,6 +573,10 @@ const getScheduledMessageActions = () => {
 const getEmailAddresses = (email) => {
   if (inScheduledView.value) {
     return email.recipients
+  }
+  if (email.thread?.count > 1) {
+    // The first participants of the conversation
+    return email.thread.participants.slice(0, 3)
   }
   return [email.from_address]
 }
@@ -680,7 +736,7 @@ const commitDelete = (entry) => {
   pendingDeletes.value.splice(i, 1)
   clearTimeout(entry.timer)
   api
-    .deleteSelection(entry.mailbox || currentMailbox.value, [entry.imapid])
+    .deleteSelection(entry.mailbox || currentMailbox.value, entry.uids)
     .then(() => {
       reloadMailboxCounters()
     })
@@ -705,6 +761,7 @@ const swipeDelete = (email) => {
   const entry = {
     mailbox: currentMailbox.value,
     imapid: email.imapid,
+    uids: store.uidsOf(email),
     row: email,
     index,
   }
@@ -727,7 +784,7 @@ const swipeToggleRead = (email) => {
   const status = email.style === 'unseen' ? 'read' : 'unread'
   store.patchEmail(email.imapid, { style: status === 'read' ? '' : 'unseen' })
   api
-    .flagSelection(currentMailbox.value, [email.imapid], status)
+    .flagSelection(currentMailbox.value, store.uidsOf(email), status)
     .then(() => reloadMailboxCounters())
 }
 
@@ -750,11 +807,24 @@ const loadMore = async () => {
   }
   loadingMore.value = true
   try {
-    const resp = await api.getMailboxEmails(props.mailbox, {
-      page: store.nextPage,
-      search: search.value,
-    })
-    store.appendPage(resp.data)
+    const params = { page: store.nextPage, search: search.value }
+    if (threadedMode.value) {
+      const resp = await api.getMailboxThreads(props.mailbox, params)
+      if (resp.data.threading_supported === false) {
+        // The server can't group messages: stay with the flat listing
+        store.threadingSupported = false
+        loadingMore.value = false
+        reloadListing()
+        return
+      }
+      store.appendPage({
+        ...resp.data,
+        results: resp.data.results.map(threadToRow),
+      })
+    } else {
+      const resp = await api.getMailboxEmails(props.mailbox, params)
+      store.appendPage(resp.data)
+    }
   } finally {
     loadingMore.value = false
   }
@@ -850,8 +920,12 @@ const deleteSelection = () => {
     return
   }
   working.value = true
-  const deletesActive = webmailStore.selection.includes(props.activeMailid)
-  api.deleteSelection(currentMailbox.value, webmailStore.selection).then(() => {
+  const deletesActive = webmailStore.selectionUids.includes(
+    String(props.activeMailid)
+  )
+  api
+    .deleteSelection(currentMailbox.value, webmailStore.selectionUids)
+    .then(() => {
     working.value = false
     webmailStore.selection = []
     displayNotification({ msg: $gettext('Message(s) deleted') })
@@ -869,7 +943,7 @@ const restoreSelection = () => {
   }
   working.value = true
   api
-    .moveSelection(currentMailbox.value, 'INBOX', webmailStore.selection)
+    .moveSelection(currentMailbox.value, 'INBOX', webmailStore.selectionUids)
     .then(() => {
       working.value = false
       webmailStore.selection = []
@@ -885,7 +959,7 @@ const markSelectionAsJunk = () => {
   }
   working.value = true
   api
-    .markSelectionAsJunk(currentMailbox.value, webmailStore.selection)
+    .markSelectionAsJunk(currentMailbox.value, webmailStore.selectionUids)
     .then(() => {
       working.value = false
       webmailStore.selection = []
@@ -901,7 +975,7 @@ const markSelectionAsNotJunk = () => {
   }
   working.value = true
   api
-    .markSelectionAsNotJunk(currentMailbox.value, webmailStore.selection)
+    .markSelectionAsNotJunk(currentMailbox.value, webmailStore.selectionUids)
     .then(() => {
       working.value = false
       webmailStore.selection = []
@@ -917,7 +991,7 @@ const flagSelection = (status) => {
   }
   working.value = true
   api
-    .flagSelection(currentMailbox.value, webmailStore.selection, status)
+    .flagSelection(currentMailbox.value, webmailStore.selectionUids, status)
     .then(() => {
       working.value = false
       webmailStore.selection = []
@@ -936,7 +1010,7 @@ const emptyMailbox = () => {
 
 const toggleFollowState = async (email) => {
   const flag = email.flagged ? 'unflagged' : 'flagged'
-  await api.flagSelection(currentMailbox.value, [email.imapid], flag)
+  await api.flagSelection(currentMailbox.value, store.uidsOf(email), flag)
   email.flagged = flag === 'flagged'
 }
 
@@ -963,25 +1037,62 @@ const onDragStart = (event, email) => {
   setTimeout(() => ghost.remove(), 0)
 }
 
-const getRefreshInterval = async () => {
+// The webmail preferences of the user, kept to save the listing mode
+const userPreferences = ref(null)
+
+const loadPreferences = async () => {
   try {
     const resp = await parametersApi.getUserApplication('webmail')
-    const value = Number(resp.data.params?.refresh_interval)
-    if (Number.isInteger(value) && value > 0) {
-      return value
-    }
+    userPreferences.value = resp.data.params || {}
   } catch {
-    // Keep refreshing with the default interval
+    userPreferences.value = null
   }
+  if (store.listingMode === null) {
+    store.listingMode =
+      userPreferences.value?.listing_mode === 'threaded' ? 'threaded' : 'flat'
+  }
+}
+
+const getRefreshInterval = () => {
+  const value = Number(userPreferences.value?.refresh_interval)
+  if (Number.isInteger(value) && value > 0) {
+    return value
+  }
+  // Keep refreshing with the default interval
   return DEFAULT_REFRESH_INTERVAL
 }
 
-onMounted(async () => {
-  initListing()
-  const interval = await getRefreshInterval()
-  if (!unmounted) {
-    intervalId = setInterval(autoRefreshContent, interval * 1000)
+const saveListingMode = async (mode) => {
+  if (!userPreferences.value) {
+    return
   }
+  try {
+    await parametersApi.saveUserApplication('webmail', {
+      ...userPreferences.value,
+      listing_mode: mode,
+    })
+    userPreferences.value.listing_mode = mode
+  } catch {
+    // The mode still applies to this session
+  }
+}
+
+const toggleListingMode = () => {
+  const mode = threadedMode.value ? 'flat' : 'threaded'
+  store.listingMode = mode
+  reloadListing()
+  saveListingMode(mode)
+}
+
+onMounted(async () => {
+  // The listing waits for the mode, instead of being fetched flat and
+  // fetched again as conversations
+  await loadPreferences()
+  if (unmounted) {
+    return
+  }
+  initListing()
+  intervalId = setInterval(autoRefreshContent, getRefreshInterval() * 1000)
 })
 
 onUnmounted(() => {
@@ -1215,6 +1326,21 @@ watch(
 }
 .email-row--unseen .email-row__subject {
   font-weight: 700;
+}
+/* Number of messages of a conversation, before its participants */
+.email-row__count {
+  display: inline-block;
+  min-width: 1.6em;
+  margin-right: 6px;
+  padding: 0 5px;
+  border-radius: 999px;
+  background: var(--accent, #7c5cff);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.5;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
 }
 .email-row__from {
   margin-top: 2px;

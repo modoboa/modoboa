@@ -24,7 +24,7 @@
           </span>
         </v-list-item-title>
 
-        <template #append v-if="!props.rail && mailbox.sub">
+        <template v-if="!props.rail && mailbox.sub" #append>
           <v-btn
             :icon="getMailboxState(mailbox) ? 'mdi-minus' : 'mdi-plus'"
             size="x-small"
@@ -40,7 +40,7 @@
         </template>
       </v-list-item>
 
-      <div class="pl-4" v-if="getMailboxState(mailbox) && mailbox.sub && mailbox.sub.length">
+      <div v-if="getMailboxState(mailbox) && mailbox.sub && mailbox.sub.length" class="pl-4">
         <MailboxList
           v-model="model"
           :mailboxes="mailbox.sub"
@@ -164,7 +164,8 @@ async function onDrop(mailbox) {
     const resp = await api.moveSelection(
       route.query.mailbox || 'INBOX',
       mailbox.name,
-      webmailStore.selection
+      // Every message of the selected conversations, if any
+      webmailStore.selectionUids
     )
     webmailStore.listingKey++
     webmailStore.selection = []
