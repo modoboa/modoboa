@@ -43,7 +43,7 @@
     "vue-router": "^5.1.0",
     "vue3-apexcharts": "^1.10.0",
     "vue3-gettext": "^4.0.1",
-    "vuetify": "^4.1.2"
+    "vuetify": "^4.2.6"
   },
   "devDependencies": {
     "@module-federation/runtime": "^2.6.0",

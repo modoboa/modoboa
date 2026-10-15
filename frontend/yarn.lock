@@ -1057,6 +1057,11 @@
   dependencies:
     upath "^2.0.1"
 
+"@vuetify/v0@^1.2.1":
+  version "1.2.3"
+  resolved "https://registry.yarnpkg.com/@vuetify/v0/-/v0-1.2.3.tgz#4502d0a668db380a326def5aa644cbfa0b67b3a4"
+  integrity sha512-8qpYa88KxKrvi4jQcz+Zg4WH04un48Lt7Tj0Qq+LqvbUvHi+H177vWqBn9tQWgpxBVs1RXrTz5zw0Cy6txJHlw==
+
 acorn-jsx@^5.3.2:
   version "5.3.2"
   resolved "https://registry.yarnpkg.com/acorn-jsx/-/acorn-jsx-5.3.2.tgz#7ed5bb55908b3b2f1bc55c6af1653bada7f07937"
@@ -3041,10 +3046,12 @@ vue@^3.5.39:
     "@vue/server-renderer" "3.5.39"
     "@vue/shared" "3.5.39"
 
-vuetify@^4.1.2:
-  version "4.1.2"
-  resolved "https://registry.yarnpkg.com/vuetify/-/vuetify-4.1.2.tgz#a2240e7b91e459d4b33a5cae59e28746341deda4"
-  integrity sha512-2SUzXt2Q71/cVmSZhU6kOmAo1ev3NZaI/ynj55TTcu6jXAc9kezoqZKY+Xm+0STnAOcCoTseF0qPSs01LjUaaA==
+vuetify@^4.2.6:
+  version "4.2.6"
+  resolved "https://registry.yarnpkg.com/vuetify/-/vuetify-4.2.6.tgz#29e88f02e0a689ec39bb44f4fc9f247ed2be40c0"
+  integrity sha512-W91vPxyJT7Br2wc3Iu2fUzC1YRZCTGxtrvywxnf7vGZF6Cfz2QvTvKvXmwMreie8oCHW6kA9yw7auCgQuwBUjQ==
+  dependencies:
+    "@vuetify/v0" "^1.2.1"
 
 w3c-keyname@^2.2.0:
   version "2.2.8"
