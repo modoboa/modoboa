@@ -429,6 +429,19 @@ class UserEmailViewSetTestCase(WebmailTestCase):
         )
         self.assertEqual(reply_to[0]["name"], "Support")
 
+    def test_content_edit_context(self):
+        """Drafts are returned with a raw body, ready for the editor."""
+        self.authenticate()
+        url = reverse("v2:webmail-email-content")
+        response = self.client.get(
+            f"{url}?mailbox=Drafts&mailid=46931&context=edit&dformat=plain"
+        )
+        self.assertEqual(response.status_code, 200)
+        body = response.json()["body"]
+        self.assertNotIn("<pre>", body)
+        self.assertEqual(body, "This is a test message.")
+
+
     def test_attachment(self):
         self.authenticate()
         url = reverse("v2:webmail-email-attachment")
@@ -579,6 +592,29 @@ class ComposeSessionViewSetTestCase(WebmailTestCase):
             format="json",
         )
         self.assertEqual(response.status_code, 200)
+
+    def test_save_keeps_bcc(self):
+        self.authenticate()
+        uid = self._create_compose_session()
+        url = reverse("v2:webmail-compose-session-save", args=[uid])
+        with mock.patch(
+            "modoboa.webmail.lib.imaputils.IMAPconnector.push_mail", return_value=12
+        ) as push_mail:
+            response = self.client.post(
+                url,
+                {
+                    "sender": self.user.email,
+                    "to": ["test@example.test"],
+                    "bcc": ["hidden@example.test"],
+                    "subject": "test",
+                    "body": "Test",
+                },
+                format="json",
+            )
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json()["mailid"], 12)
+        self.assertEqual(push_mail.call_args.args[1]["Bcc"], "hidden@example.test")
+
 
     def test_send(self):
         self.authenticate()
@@ -901,9 +937,12 @@ class ScheduledMessageViewSetTestCase(WebmailTestCase):
     def test_delete(self):
         self.authenticate()
         url = reverse("v2:webmail-scheduled-message-detail", args=[self.message.id])
-        response = self.client.delete(url)
+        with mock.patch("modoboa.lib.dovecot.get_dovecot_backend") as get_backend:
+            response = self.client.delete(url)
+        move_message = get_backend.return_value.move_message
         self.assertEqual(response.status_code, 204)
         self.assertEqual(models.ScheduledMessage.objects.count(), 0)
+        self.assertEqual(move_message.call_args.args[1], "Trash")
 
     def test_update(self):
         self.authenticate()

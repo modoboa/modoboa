@@ -246,7 +246,7 @@
                   'email-row--focus': index === activeIndex,
                 }"
                 draggable="true"
-                @dragstart="onDragStart(email)"
+                @dragstart="onDragStart($event, email)"
               >
                 <div class="email-row__actions">
                   <v-checkbox
@@ -422,6 +422,7 @@ import SwipeableRow from './SwipeableRow.vue'
 import MenuItems from '@/components/tools/MenuItems.vue'
 import { usePullToRefresh } from '@/composables/usePullToRefresh'
 import api from '@/api/webmail'
+import parametersApi from '@/api/parameters'
 
 const props = defineProps({
   mailbox: {
@@ -485,6 +486,9 @@ const clearSelection = () => {
 }
 
 let intervalId = null
+let unmounted = false
+// Used when the refresh_interval preference can't be read
+const DEFAULT_REFRESH_INTERVAL = 300
 
 const currentMailbox = computed(() => {
   return route.query.mailbox || 'INBOX'
@@ -936,7 +940,8 @@ const toggleFollowState = async (email) => {
   email.flagged = flag === 'flagged'
 }
 
-const onDragStart = (email) => {
+// The event is passed explicitly: window.event doesn't exist in Firefox
+const onDragStart = (event, email) => {
   if (!webmailStore.selection.includes(email.imapid)) {
     webmailStore.selection = [email.imapid]
   }
@@ -951,16 +956,36 @@ const onDragStart = (email) => {
     </div>
   `
   document.body.appendChild(ghost)
+  // Firefox doesn't start dragging when no data is set
+  event.dataTransfer.setData('text/plain', webmailStore.selection.join(','))
+  event.dataTransfer.effectAllowed = 'move'
   event.dataTransfer.setDragImage(ghost, -10, -10)
   setTimeout(() => ghost.remove(), 0)
 }
 
-onMounted(() => {
+const getRefreshInterval = async () => {
+  try {
+    const resp = await parametersApi.getUserApplication('webmail')
+    const value = Number(resp.data.params?.refresh_interval)
+    if (Number.isInteger(value) && value > 0) {
+      return value
+    }
+  } catch {
+    // Keep refreshing with the default interval
+  }
+  return DEFAULT_REFRESH_INTERVAL
+}
+
+onMounted(async () => {
   initListing()
-  intervalId = setInterval(autoRefreshContent, 300 * 1000)
+  const interval = await getRefreshInterval()
+  if (!unmounted) {
+    intervalId = setInterval(autoRefreshContent, interval * 1000)
+  }
 })
 
 onUnmounted(() => {
+  unmounted = true
   // Note: the scroll position is saved in openEmail() at click time, not
   // here — during route navigation the container can be scrolled/reset before
   // unmount, which would overwrite the position the user actually left from.

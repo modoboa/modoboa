@@ -72,14 +72,14 @@ class ScheduledMessage(models.Model):
                 result[hdr] = getattr(self, hdr).split(",")
         return result
 
-    def delete_imap_copy(self) -> bool:
-        """Move IMAP message to Sent folder using doveadm."""
-        sent_folder = self.account.parameters.get_value("sent_folder")
+    def delete_imap_copy(self, folder_param: str = "sent_folder") -> bool:
+        """Move IMAP message to the folder set in folder_param using doveadm."""
+        folder = self.account.parameters.get_value(folder_param)
         backend = dovecot.get_dovecot_backend()
         try:
             backend.move_message(
                 self.account.email,
-                sent_folder,
+                folder,
                 constants.MAILBOX_NAME_SCHEDULED,
                 constants.CUSTOM_HEADER_SCHEDULED_ID,
                 str(self.id),

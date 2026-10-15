@@ -16,7 +16,7 @@
         @dragover.prevent
         @dragenter="setHover(mailbox, true)"
         @dragleave="setHover(mailbox, false)"
-        @drop="onDrop(mailbox)"
+        @drop.prevent="onDrop(mailbox)"
       >
         <v-list-item-title v-if="!props.rail">
           <span :class="{ 'font-weight-bold': mailboxUnseen(mailbox) > 0 }">
