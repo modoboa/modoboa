@@ -448,6 +448,12 @@ export const handlers = [
       body,
       date: msg.date,
       attachments: msg.attachments ? [{ name: 'anexo.pdf', partnum: '2' }] : [],
+      // Como o backend: a newsletter traz imagens remotas, bloqueadas até o
+      // leitor pedir (images=1) — exercita o aviso no dev:mock.
+      remote_content_blocked:
+        /newsletter/i.test(msg.subject) &&
+        !context &&
+        url.searchParams.get('images') !== '1',
     })
   }),
   http.get('*/webmail/emails/source/', ({ request }) => {

@@ -1488,7 +1488,7 @@ msgstr ""
 
 #: src/components/admin/identities/AccountEditForm.vue:31
 #: src/components/calendars/CalendarAccessRulesForm.vue:42
-#: src/components/shared/TopMenu.vue:132
+#: src/components/shared/TopMenu.vue:134
 #: src/views/admin/identities/AccountView.vue:4
 #: src/views/admin/identities/IdentitiesView.vue:23
 msgid "Account"
@@ -2308,16 +2308,21 @@ msgstr ""
 msgid "Switch to Dark theme"
 msgstr ""
 
-#: src/components/shared/TopMenu.vue:47 src/components/shared/TopMenu.vue:139
+#: src/components/shared/TopMenu.vue:47 src/components/shared/TopMenu.vue:141
 msgid "Light mode"
 msgstr ""
 
-#: src/components/shared/TopMenu.vue:47 src/components/shared/TopMenu.vue:139
+#: src/components/shared/TopMenu.vue:47 src/components/shared/TopMenu.vue:141
 msgid "Dark mode"
 msgstr ""
 
-#: src/components/shared/TopMenu.vue:144
+#: src/components/shared/TopMenu.vue:146 src/components/shared/TopMenu.vue:161
+#: src/components/shared/TopMenu.vue:163
 msgid "Logout"
+msgstr ""
+
+#: src/components/shared/TopMenu.vue:162
+msgid "Do you really want to log out?"
 msgstr ""
 
 #: src/components/tools/ChooseColumnsForm.vue:2

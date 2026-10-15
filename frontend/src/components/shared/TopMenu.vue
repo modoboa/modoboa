@@ -79,14 +79,16 @@
         </v-card>
       </v-menu>
     </v-btn>
+    <ConfirmDialog ref="logoutDialog" />
   </div>
 </template>
 
 <script setup>
-import { computed, onMounted } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { getActivePinia } from 'pinia'
 import { useGettext } from 'vue3-gettext'
-import { useGlobalStore, useThemeStore } from '@/stores'
+import { useAuthStore, useGlobalStore, useThemeStore } from '@/stores'
+import ConfirmDialog from '@/components/tools/ConfirmDialog.vue'
 
 const props = defineProps({
   user: {
@@ -150,8 +152,26 @@ const userMenuItems = computed(() => {
   return items
 })
 
+const logoutDialog = ref()
+
+// Asked here, in the app: the provider's own confirmation page is skipped
+// (the logout request carries the ID token, see authStore.logout()).
 async function logout() {
-  getActivePinia()._s.forEach(async (store) => await store.$reset())
+  const confirmed = await logoutDialog.value.open(
+    $gettext('Logout'),
+    $gettext('Do you really want to log out?'),
+    { agreeLabel: $gettext('Logout') }
+  )
+  if (!confirmed) {
+    return
+  }
+  const authStore = useAuthStore()
+  for (const store of getActivePinia()._s.values()) {
+    if (store !== authStore) {
+      await store.$reset()
+    }
+  }
+  await authStore.logout()
 }
 
 onMounted(() => {
