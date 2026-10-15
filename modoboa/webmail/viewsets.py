@@ -502,13 +502,12 @@ class ComposeSessionViewSet(viewsets.GenericViewSet):
         session = manager.get_content(pk)
         max_count = param_tools.get_global_parameter("max_attachments_count")
         if len(session["attachments"]) >= max_count:
-            return response.Response(
+            raise ValidationError(
                 {
                     "attachment": [
                         _("A message cannot carry more than %s attachments") % max_count
                     ]
-                },
-                status=400,
+                }
             )
         # Accessing request.FILES runs the upload handlers
         serializer = serializers.AttachmentUploadSerializer(data=request.FILES)
@@ -519,13 +518,12 @@ class ComposeSessionViewSet(viewsets.GenericViewSet):
                 errors["attachment"] = [
                     _("Attachment is too big (limit: %s)") % handler.maxsize
                 ]
-                return response.Response(errors, status=400)
-            if handler.total_toobig:
+            elif handler.total_toobig:
                 errors["attachment"] = [
                     _("Attachments are too big (limit: %s for the whole message)")
                     % handler.max_total_size
                 ]
-                raise ValidationError(errors)
+            raise ValidationError(errors)
         result = attachments.save_attachment_from_upload(
             request, pk, serializer.validated_data["attachment"]
         )

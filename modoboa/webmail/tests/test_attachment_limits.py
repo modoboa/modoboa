@@ -30,7 +30,7 @@ class AttachmentLimitsTestCase(WebmailTestCase):
 
         response = self._upload()
         self.assertEqual(response.status_code, 400)
-        self.assertIn("more than 2", response.json()["attachment"][0])
+        self.assertIn("more than 2", response.json()["errors"]["attachment"][0])
         # The refused attachment was not saved
         self.assertEqual(len(self.manager.get_content(self.uid)["attachments"]), 2)
 
@@ -47,7 +47,7 @@ class AttachmentLimitsTestCase(WebmailTestCase):
 
         response = self._upload()
         self.assertEqual(response.status_code, 400)
-        self.assertIn("whole message", response.json()["attachment"][0])
+        self.assertIn("whole message", response.json()["errors"]["attachment"][0])
         self.assertEqual(len(self.manager.get_content(self.uid)["attachments"]), 1)
 
     def test_single_file_limit_still_applies(self):
@@ -56,4 +56,4 @@ class AttachmentLimitsTestCase(WebmailTestCase):
         )
         response = self._upload()
         self.assertEqual(response.status_code, 400)
-        self.assertIn("Attachment is too big", response.json()["attachment"][0])
+        self.assertIn("Attachment is too big", response.json()["errors"]["attachment"][0])
