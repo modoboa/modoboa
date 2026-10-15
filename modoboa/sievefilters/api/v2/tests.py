@@ -81,7 +81,7 @@ class FilterSetViewSetTestCase(PatcherMixin, ModoAPITestCase):
         for name in ("main_script", "second_script"):
             resp = self.client.post(url, {"name": name}, format="json")
             self.assertEqual(resp.status_code, 400)
-            self.assertIn("name", resp.json())
+            self.assertIn("name", resp.json()["errors"])
         sclient = self.mock_client.return_value
         self.assertEqual(sclient.scripts["main_script"], mocks.SAMPLE_SIEVE_SCRIPT)
 

@@ -100,10 +100,8 @@ class ReplyToOutlookSenderTestCase(WebmailTestCase):
 
         self.assertEqual(content["from_address"]["address"], "kidane@example.test")
         self.assertEqual(content["from_address"]["name"], OUTLOOK_NAME)
-        self.assertEqual(
-            [(rcpt["address"], rcpt.get("name")) for rcpt in content["reply_to"]],
-            [("kidane@example.test", OUTLOOK_NAME)],
-        )
+        # (upstream also checks the structured "reply_to" field, which comes
+        # with b6a89d065, not brought into the fork yet)
         self.assertEqual(
             [(rcpt["address"], rcpt.get("name")) for rcpt in content["to"]],
             [("user@test.com", None), ("jane@example.test", "Doe, Jane")],
