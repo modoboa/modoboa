@@ -2,6 +2,11 @@ import repository from './repository'
 
 const resource = 'account'
 
+const filterSetUrl = (name) =>
+  `${resource}/filtersets/${encodeURIComponent(name)}`
+const filterUrl = (filterSetName, name) =>
+  `${filterSetUrl(filterSetName)}/filters/${encodeURIComponent(name)}`
+
 export default {
   getMe() {
     return repository.get(`/${resource}/me/`)
@@ -62,22 +67,22 @@ export default {
     return repository.get(`${resource}/filtersets/`)
   },
   downloadFilterSet(filterSetName) {
-    return repository.get(`${resource}/filtersets/${filterSetName}/download/`)
+    return repository.get(`${filterSetUrl(filterSetName)}/download/`)
   },
   createFilterSet(data) {
     return repository.post(`${resource}/filtersets/`, data)
   },
   activateFilterSet(filterSetName) {
-    return repository.post(`${resource}/filtersets/${filterSetName}/activate/`)
+    return repository.post(`${filterSetUrl(filterSetName)}/activate/`)
   },
   deactivateActiveFilterSet() {
     return repository.post(`${resource}/filtersets/deactivate_active/`)
   },
   deleteFilterSet(filterSetName) {
-    return repository.delete(`${resource}/filtersets/${filterSetName}/`)
+    return repository.delete(`${filterSetUrl(filterSetName)}/`)
   },
   saveFilterSet(filterSetName, data) {
-    return repository.put(`${resource}/filtersets/${filterSetName}/`, data)
+    return repository.put(`${filterSetUrl(filterSetName)}/`, data)
   },
   getFilterConditionTemplates() {
     return repository.get(`${resource}/filtersets/condition_templates/`)
@@ -86,44 +91,28 @@ export default {
     return repository.get(`${resource}/filtersets/action_templates/`)
   },
   getFilters(filterSetName) {
-    return repository.get(`${resource}/filtersets/${filterSetName}/filters/`)
+    return repository.get(`${filterSetUrl(filterSetName)}/filters/`)
   },
   createFilter(filterSetName, data) {
-    return repository.post(
-      `${resource}/filtersets/${filterSetName}/filters/`,
-      data
-    )
+    return repository.post(`${filterSetUrl(filterSetName)}/filters/`, data)
   },
   updateFilter(filterSetName, filter, data) {
-    return repository.put(
-      `${resource}/filtersets/${filterSetName}/filters/${filter}/`,
-      data
-    )
+    return repository.put(`${filterUrl(filterSetName, filter)}/`, data)
   },
   disableFilter(filterSetName, filter) {
-    return repository.post(
-      `${resource}/filtersets/${filterSetName}/filters/${filter}/disable/`
-    )
+    return repository.post(`${filterUrl(filterSetName, filter)}/disable/`)
   },
   moveFilterDown(filterSetName, filter) {
-    return repository.post(
-      `${resource}/filtersets/${filterSetName}/filters/${filter}/move_down/`
-    )
+    return repository.post(`${filterUrl(filterSetName, filter)}/move_down/`)
   },
   moveFilterUp(filterSetName, filter) {
-    return repository.post(
-      `${resource}/filtersets/${filterSetName}/filters/${filter}/move_up/`
-    )
+    return repository.post(`${filterUrl(filterSetName, filter)}/move_up/`)
   },
   enableFilter(filterSetName, filter) {
-    return repository.post(
-      `${resource}/filtersets/${filterSetName}/filters/${filter}/enable/`
-    )
+    return repository.post(`${filterUrl(filterSetName, filter)}/enable/`)
   },
   deleteFilter(filterSetName, filter) {
-    return repository.delete(
-      `${resource}/filtersets/${filterSetName}/filters/${filter}/`
-    )
+    return repository.delete(`${filterUrl(filterSetName, filter)}/`)
   },
   getAvailableApplications() {
     return repository.get(`${resource}/available_applications/`)

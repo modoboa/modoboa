@@ -73,10 +73,10 @@ class FilterSetViewSet(viewsets.ViewSet):
         """Retrieve list of available filter sets."""
         sclient = self.get_sieve_client(request)
         active_script, scripts = sclient.listscripts()
-        scripts = [
-            {"name": active_script, "active": True},
-        ] + [{"name": script, "active": False} for script in scripts]
-        return response.Response(scripts)
+        result = [{"name": script, "active": False} for script in scripts]
+        if active_script:
+            result.insert(0, {"name": active_script, "active": True})
+        return response.Response(result)
 
     def create(self, request):
         """Create a new filter set."""
@@ -189,9 +189,9 @@ class FilterSetViewSet(viewsets.ViewSet):
         try:
             fset = sclient.getscript(pk, format="fset")
             serializer = serializers.FilterSerializer.from_filters(fset.filters)
-        except (SieveScriptParseError, UnsupportedSieveFilter):
+        except (SieveScriptParseError, UnsupportedSieveFilter) as err:
             # Frontend falls back to raw mode
-            return HttpResponse(status=518)
+            return response.Response({"error": str(err)}, status=422)
         return response.Response(serializer.data)
 
     @extend_schema(
