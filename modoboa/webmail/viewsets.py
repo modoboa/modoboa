@@ -3,6 +3,7 @@
 from django import forms
 from django.core.validators import validate_email
 from django.http import Http404, HttpResponse
+from django.utils.http import content_disposition_header
 from django.utils.translation import gettext as _
 
 from rest_framework import mixins, parsers, response, viewsets
@@ -522,7 +523,7 @@ class UserEmailViewSet(ImapConnectionMixin, viewsets.GenericViewSet):
         content = lib.decode_payload(partdef["encoding"], payload)
         resp = HttpResponse(content)
         resp["Content-Type"] = partdef["Content-Type"]
-        resp["Content-Disposition"] = lib.rfc6266.build_header("attachment")
+        resp["Content-Disposition"] = content_disposition_header(True, "attachment")
         # The size given by the server is the one of the encoded part
         resp["Content-Length"] = len(resp.content)
         return resp
