@@ -23,7 +23,7 @@
             :loading="working"
             :title="$gettext('Send')"
             :aria-label="$gettext('Send')"
-            @click="submit"
+            @click="submit()"
           />
           <v-btn
             v-else
@@ -33,7 +33,7 @@
             :height="btnSize"
             :loading="working"
             :text="$gettext('Send')"
-            @click="submit"
+            @click="submit()"
           >
           </v-btn>
           <v-btn
@@ -287,10 +287,7 @@
       :max-width="mobile ? undefined : 800"
       :transition="mobile ? 'dialog-bottom-transition' : undefined"
     >
-      <EmailSchedulingForm
-        @schedule="scheduleAndSubmit"
-        @close="closeSchedulingForm"
-      />
+      <EmailSchedulingForm @schedule="submit" @close="closeSchedulingForm" />
     </v-dialog>
   </div>
 </template>
@@ -300,8 +297,8 @@ import { computed, onUnmounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useDisplay } from 'vuetify'
 import { useGettext } from 'vue3-gettext'
-import { useAuthStore, useBusStore } from '@/stores'
-import constants from '@/constants.json'
+import { useAuthStore, useBusStore, useWebmailStore } from '@/stores'
+import { useSpecialFolders } from '@/composables/webmail'
 import debounce from 'debounce'
 import AttachmentsDialog from '@/components/webmail/AttachmentsDialog'
 import BodyEditor from '@/components/webmail/BodyEditor'
@@ -335,12 +332,21 @@ const router = useRouter()
 // Send, overflow kebab). Keying the collapse on `mobile` shrank the toolbar
 // on any half-width desktop window — way too early.
 const { mobile, xs: compact } = useDisplay()
+const { isDraftsFolder } = useSpecialFolders(() => route.query.mailbox)
 const { $gettext } = useGettext()
 const { displayNotification, reloadData } = useBusStore()
 const authStore = useAuthStore()
+const webmailStore = useWebmailStore()
 
 // 44px touch targets on mobile (WCAG 2.5.8), compact 36px on desktop.
 const btnSize = computed(() => (mobile.value ? 44 : 36))
+
+// Only the compose view opened from the drafts folder edits a draft: in
+// reply/forward views, route.query.mailid is the original message UID.
+const isEditingDraft =
+  route.name === 'ComposeEmailView' &&
+  isDraftsFolder.value &&
+  !!route.query.mailid
 
 const allowedSenders = ref([])
 const attachmentCount = ref(0)
@@ -349,13 +355,11 @@ const contacts = ref([])
 // deletes the previous draft and pushes a new one, returning the NEW uid —
 // it must be threaded into every subsequent save or each save duplicates
 // the draft.
-const isDraftRoute =
-  route.query.mailbox === constants.DRAFTS_FOLDER ||
-  route.params.mailbox === constants.DRAFTS_FOLDER
-const draftMailid = ref(isDraftRoute ? route.query.mailid : null)
+const draftMailid = ref(isEditingDraft ? route.query.mailid : null)
 const draftSavedAt = ref(null)
 const autosaving = ref(false)
 const editorMode = ref('plain')
+// Mode actually used in the editor: it decides the format of the message
 const htmlMode = ref(false)
 const form = ref({})
 const formRef = ref()
@@ -383,33 +387,65 @@ watch(editorMode, (value) => {
   htmlMode.value = value === 'html'
 })
 
+// Is this one of the addresses the user can send from (aliases included)?
+const isUserAddress = (address) => {
+  const value = address.toLowerCase()
+  return (
+    value === authStore.authUser.username.toLowerCase() ||
+    allowedSenders.value.some((item) => item.address.toLowerCase() === value)
+  )
+}
+
+// Reply from the address the original message was sent to, when it is one
+// of the user's addresses; from the main address otherwise.
+const getDefaultSender = () => {
+  const recipients = [
+    ...(props.originalEmail?.to || []),
+    ...(props.originalEmail?.cc || []),
+  ]
+  const sender = allowedSenders.value.find((item) =>
+    recipients.some(
+      (rcpt) => rcpt.address.toLowerCase() === item.address.toLowerCase()
+    )
+  )
+  if (sender) {
+    return sender.address
+  }
+  return allowedSenders.value[0]?.address || authStore.authUser.username
+}
+
 const initForm = () => {
   form.value = {
-    sender: authStore.authUser.username,
+    sender: getDefaultSender(),
     request_dsn: false,
     request_mdn: false,
   }
   if (props.originalEmail) {
     if (!props.forward) {
-      // Reply: address the original sender (recipients make no sense when
-      // forwarding — the whole point is picking new ones).
-      form.value.to = props.originalEmail.reply_to
-        ? [props.originalEmail.reply_to]
+      // Reply: address every Reply-To address if any, the sender otherwise
+      // (recipients make no sense when forwarding — the whole point is
+      // picking new ones).
+      form.value.to = props.originalEmail.reply_to?.length
+        ? props.originalEmail.reply_to.map((rcpt) => rcpt.address)
         : [props.originalEmail.from_address.address]
       if (props.replyAll) {
-        let addresses = props.originalEmail.to
-          .filter((rcpt) => rcpt.address !== authStore.authUser.username)
-          .map((rcpt) => rcpt.fulladdress)
-        if (props.originalEmail.cc && props.originalEmail.cc.length) {
-          addresses = addresses.concat(
-            props.originalEmail.cc.map((rcpt) => rcpt.fulladdress)
-          )
-        }
-        form.value.cc = addresses
-        showCcField.value = true
+        // Bare addresses only: the API rejects "Name <address>" values
+        const excluded = new Set(form.value.to || [])
+        const addresses = [
+          ...props.originalEmail.to,
+          ...(props.originalEmail.cc || []),
+        ]
+          .map((rcpt) => rcpt.address)
+          .filter((address) => !excluded.has(address) && !isUserAddress(address))
+        form.value.cc = [...new Set(addresses)]
+        showCcField.value = form.value.cc.length > 0
       }
       if (props.originalEmail.message_id) {
         form.value.in_reply_to = props.originalEmail.message_id
+        // Keep the whole thread, not only the parent message
+        if (props.originalEmail.references) {
+          form.value.references = props.originalEmail.references
+        }
       }
     }
     form.value.subject = props.originalEmail.subject
@@ -441,46 +477,51 @@ const prepareMessage = () => {
     }
     result.bcc = bcc
   }
+  result.body_format = htmlMode.value ? 'html' : 'plain'
   if (draftMailid.value) {
     result.mailid = draftMailid.value
+  }
+  if (props.originalEmail && route.query.mailbox && route.query.mailid) {
+    // Let the server flag the original message (\Answered, $Forwarded)
+    result.original_mailbox = route.query.mailbox
+    result.original_mailid = route.query.mailid
+    result.original_action = props.forward ? 'forward' : 'reply'
   }
   return result
 }
 
-const submit = async (reload) => {
+// The sending date is only given to this attempt: if it fails, the next
+// click on "Send" must not schedule the message
+const submit = async (scheduledDatetime = null) => {
   const { valid } = await formRef.value.validate()
   if (!valid) {
     return
   }
   working.value = true
   const body = prepareMessage()
+  if (scheduledDatetime) {
+    body.scheduled_datetime = scheduledDatetime
+  }
   try {
     await api.sendEmailFromComposeSession(route.query.uid, body)
     // The message went out: drop the backing draft (autosaved or manually
     // saved), otherwise every sent email leaves a stale copy in Drafts.
     if (draftMailid.value) {
       api
-        .deleteSelection(constants.DRAFTS_FOLDER, [draftMailid.value])
+        .deleteSelection(webmailStore.specialFolders.draft, [draftMailid.value])
         .catch(() => {})
     }
     router.push({ name: 'MailboxView' })
-    const msg = body.scheduled_datetime
+    reloadData()
+    const msg = scheduledDatetime
       ? $gettext('Email scheduled')
       : $gettext('Email sent')
-    if (reload) {
-      reloadData()
-    }
     displayNotification({ msg })
-  } catch (error) {
-    console.log(error)
+  } catch {
+    // Already displayed to the user by the API client
   } finally {
     working.value = false
   }
-}
-
-const scheduleAndSubmit = async (datetime) => {
-  form.value.scheduled_datetime = datetime
-  await submit(true)
 }
 
 const openAttachmentsDialog = () => {
@@ -506,11 +547,14 @@ const lookForContacts = debounce(async (search) => {
 }, 500)
 
 const initialize = async (body) => {
-  if (route.params.mailbox === constants.DRAFTS_FOLDER && route.query.mailid) {
-    // Load draft
+  let mode = body.editor_format
+  if (isEditingDraft) {
+    // Load draft (raw body, ready for the editor) in the format it was
+    // written in
     const draft = await api.getEmailContent(
-      constants.DRAFTS_FOLDER,
-      route.query.mailid
+      route.query.mailbox,
+      route.query.mailid,
+      { context: 'edit' }
     )
     form.value.sender = draft.data.from_address.address
     if (draft.data.to?.length) {
@@ -530,6 +574,14 @@ const initialize = async (body) => {
     if (draft.data.body) {
       form.value.body = draft.data.body
     }
+    // A reply saved as draft stays in its thread
+    if (draft.data.in_reply_to) {
+      form.value.in_reply_to = draft.data.in_reply_to
+    }
+    if (draft.data.references) {
+      form.value.references = draft.data.references
+    }
+    mode = draft.data.body_format || mode
   } else if (body.signature) {
     if (form.value.body) {
       form.value.body += body.signature
@@ -537,7 +589,7 @@ const initialize = async (body) => {
       form.value.body = body.signature
     }
   }
-  editorMode.value = body.editor_format
+  editorMode.value = mode
   // Baseline for autosave: whatever the form holds after initial population
   // (loaded draft, reply quote, signature) is "already saved" — only real
   // user edits from here on trigger a save.
@@ -614,8 +666,8 @@ const writeDraft = async (snapshot) => {
       hour: '2-digit',
       minute: '2-digit',
     })
-  } catch (error) {
-    console.log(error)
+  } catch {
+    // Already displayed to the user by the API client
   } finally {
     autosaving.value = false
   }
@@ -663,9 +715,15 @@ watch(
 )
 
 if (!route.query.uid) {
-  const args =
-    route.query.mailbox === constants.DRAFTS_FOLDER ? [route.query.mailid] : []
-  api.createComposeSession(...args).then((resp) => {
+  const data = {}
+  if (isEditingDraft) {
+    data.from_draft_message = route.query.mailid
+  } else if (props.forward && route.query.mailbox && route.query.mailid) {
+    // The attachments of the forwarded message go along
+    data.forward_mailbox = route.query.mailbox
+    data.forward_mailid = route.query.mailid
+  }
+  api.createComposeSession(data).then((resp) => {
     const query = { ...route.query, uid: resp.data.uid }
     attachmentCount.value = resp.data.attachments?.length || 0
     router.push({ name: route.name, query })
@@ -680,6 +738,17 @@ if (!route.query.uid) {
 
 api.getAllowedSenders().then((resp) => {
   allowedSenders.value = resp.data
+  // The form may have been initialized before the addresses were known (the
+  // sender can't have been changed yet: the list was empty)
+  if (!isEditingDraft) {
+    form.value.sender = getDefaultSender()
+  }
+  if (props.replyAll && form.value.cc?.length) {
+    form.value.cc = form.value.cc.filter(
+      (address) => typeof address !== 'string' || !isUserAddress(address)
+    )
+    showCcField.value = form.value.cc.length > 0
+  }
 })
 </script>
 

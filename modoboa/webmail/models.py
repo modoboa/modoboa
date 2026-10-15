@@ -24,6 +24,7 @@ class ScheduledMessage(models.Model):
     cc = models.TextField(blank=True, null=True)
     bcc = models.TextField(blank=True, null=True)
     in_reply_to = models.CharField(max_length=200, blank=True, null=True)
+    references = models.TextField(blank=True, default="")
     scheduled_datetime = models.DateTimeField()
     imap_uid = models.IntegerField(blank=True, null=True)
     status = models.CharField(
@@ -35,6 +36,14 @@ class ScheduledMessage(models.Model):
     error = models.CharField(max_length=255, null=True, blank=True)
     request_dsn = models.BooleanField(default=False)
     request_mdn = models.BooleanField(default=False)
+    # Format chosen in the editor, reused when the message is sent. Empty for
+    # messages scheduled before it was recorded: the preference applies.
+    body_format = models.CharField(
+        max_length=5, choices=constants.DISPLAY_MODES, blank=True, default=""
+    )
+    # Shared by the copy kept in the Scheduled folder and the message sent.
+    # Empty for messages scheduled before it was recorded.
+    message_id = models.CharField(max_length=255, blank=True, default="")
 
     def __str__(self):
         return f"{self.subject} - {self.sender} - {self.scheduled_datetime}"
@@ -42,15 +51,22 @@ class ScheduledMessage(models.Model):
     def to_dict(self) -> dict:
         result = {
             "in_reply_to": self.in_reply_to,
+            "references": self.references,
             "sender": self.sender,
             "to": self.to.split(","),
             "request_dsn": self.request_dsn,
             "request_mdn": self.request_mdn,
+            # The copy and the message sent must be identical
+            "date": self.scheduled_datetime,
         }
+        if self.message_id:
+            result["message_id"] = self.message_id
         if self.subject:
             result["subject"] = self.subject
         if self.body:
             result["body"] = self.body
+        if self.body_format:
+            result["body_format"] = self.body_format
         for hdr in ["cc", "bcc"]:
             if getattr(self, hdr):
                 result[hdr] = getattr(self, hdr).split(",")
@@ -84,10 +100,16 @@ class ScheduledMessage(models.Model):
 
         return True
 
-    def to_email_message(self) -> EmailMessage:
-        """Convert this scheduled message to an EmailMessage instance."""
+    def to_email_message(self, scheduling_headers: bool = True) -> EmailMessage:
+        """Convert this scheduled message to an EmailMessage instance.
+
+        :param scheduling_headers: add the headers identifying the copy kept
+            in the Scheduled folder. They must not reach the recipients.
+        """
         attachments = [attachment.to_dict() for attachment in self.attachments.all()]
         result = create_message(self.account, self.to_dict(), attachments)
+        if not scheduling_headers:
+            return result
         result.extra_headers.update(
             {
                 # Header values must be strings (Django 6 rejects an int).

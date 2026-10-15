@@ -3,6 +3,7 @@ Set of classes to manipulate/display emails inside the webmail.
 """
 
 import base64
+import html
 import re
 import email
 from urllib.parse import unquote
@@ -20,7 +21,7 @@ from modoboa.webmail import constants
 
 from . import imapheader
 from .imaputils import get_imapconnector, validate_imap_uid, BodyStructure
-from .utils import decode_payload
+from .utils import decode_payload, html2plaintext
 
 # Headers holding addresses, parsed from their raw value
 ADDRESS_HEADERS = ("From", "To", "Cc", "Bcc", "Reply-To")
@@ -89,7 +90,11 @@ class ImapEmail(Email):
         msg = self.imapc.fetchmail(
             self.mbox, self.mailid, readonly=False, what=" ".join(header_names)
         )
-        headers = msg[f"BODY[HEADER.FIELDS ({' '.join(header_names)})]"]
+        # Servers may return the requested fields in a different order,
+        # so don't rely on the exact data item name.
+        headers = next(
+            value for key, value in msg.items() if key.startswith("BODY[HEADER.FIELDS")
+        )
         self.fetch_body_structure(msg)
         msg = email.message_from_string(headers)
         for hdr in requested_headers:
@@ -161,7 +166,9 @@ class ImapEmail(Email):
                 {
                     "filename": filename,
                     "content_type": attdef["Content-Type"],
-                    "content": content,
+                    # Store the decoded payload: it is encoded again when
+                    # the message is built.
+                    "content": decode_payload(attdef["encoding"], content),
                 }
             )
         return result
@@ -297,9 +304,31 @@ class Modifier(ImapEmail):
         self.fetch_headers(raw_addresses=True)
         self._inject_textheader()
         getattr(self, f"_modify_{self.dformat}")()
+        # The body is now in the requested format, whatever the parts of
+        # the message
+        self.mformat = self.dformat
+
+    def _post_process_plain(self, content):
+        if self.dformat == "html":
+            # Turned into HTML by _modify_html: escaping is required
+            return super()._post_process_plain(content)
+        # Raw text for the editor: the base class escapes it for display
+        return html.unescape(super()._post_process_plain(content))
+
+    def _post_process_html(self, content):
+        if self.dformat == "plain":
+            # No text part: write the reply or the forward from the text of
+            # the HTML one
+            return html2plaintext(content)
+        return super()._post_process_html(content)
+
+    def viewmail_plain(self, contents=None, **kwargs):
+        if self.dformat == "plain":
+            return contents
+        return super().viewmail_plain(contents, **kwargs)
 
     def _modify_plain(self):
-        self.body = re.sub("</?pre>", "", self.body)
+        pass
 
     def _modify_html(self):
         if self.dformat == "html" and self.mformat != self.dformat:
@@ -310,7 +339,11 @@ class Modifier(ImapEmail):
 class ReplyModifier(Modifier):
     """Modify a message to reply to it."""
 
-    headernames = ImapEmail.headernames + [("Reply-To", True), ("Message-ID", False)]
+    headernames = ImapEmail.headernames + [
+        ("Reply-To", True),
+        ("Message-ID", False),
+        ("References", False),
+    ]
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -395,3 +428,37 @@ class ForwardModifier(Modifier):
 
     def _header_end_html(self):
         return ""
+
+
+class EditModifier(ImapEmail):
+    """Load a draft message so it can be edited.
+
+    The body is returned as raw content for the editor: plain text is
+    neither escaped nor wrapped in a <pre> block.
+    """
+
+    headernames = ImapEmail.headernames + [
+        ("Bcc", True),
+        ("In-Reply-To", False),
+        ("References", False),
+    ]
+
+    def __init__(self, request, *args, dformat=None, **kwargs):
+        # Without an explicit format, the draft is loaded in the format it
+        # was written in, whatever the user preferences.
+        self.detect_format = dformat is None
+        super().__init__(request, *args, dformat=dformat or "plain", **kwargs)
+        self.fetch_headers()
+
+    def fetch_body_structure(self, msg=None):
+        super().fetch_body_structure(msg)
+        if self.detect_format:
+            self.dformat = self.mformat = (
+                "html" if "html" in self.bs.contents else "plain"
+            )
+
+    def _post_process_plain(self, content):
+        return content.strip()
+
+    def viewmail_plain(self, contents=None, **kwargs):
+        return contents

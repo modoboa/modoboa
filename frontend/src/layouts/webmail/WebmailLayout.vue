@@ -107,7 +107,7 @@ import { computed, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useGettext } from 'vue3-gettext'
 import { filesize } from 'filesize'
-import { useBusStore } from '@/stores'
+import { useBusStore, useWebmailStore } from '@/stores'
 import { localeToBCP47 } from '@/utils'
 import gettext from '@/plugins/gettext'
 import ConnectedLayout from '@/layouts/connected/ConnectedLayout.vue'
@@ -119,6 +119,7 @@ const { $gettext } = useGettext()
 const route = useRoute()
 const router = useRouter()
 const busStore = useBusStore()
+const webmailStore = useWebmailStore()
 
 const { mobile } = useDisplay()
 const drawer = ref(!mobile.value)
@@ -235,6 +236,29 @@ const mailboxQuotaTitle = computed(() => {
 
 const dataKey = computed(() => busStore.dataKey)
 
+function updateMailboxUnseen(mailboxes, name, counter) {
+  for (const mailbox of mailboxes) {
+    if (mailbox.name === name) {
+      mailbox.unseen = counter
+      return true
+    }
+    if (
+      mailbox.sub &&
+      mailbox.sub.length &&
+      updateMailboxUnseen(mailbox.sub, name, counter)
+    ) {
+      return true
+    }
+  }
+  return false
+}
+
+function refreshMailboxUnseen(mailbox) {
+  api.getUserMailboxUnseen(mailbox).then((resp) => {
+    updateMailboxUnseen(userMailboxes.value, mailbox, resp.data.counter)
+  })
+}
+
 function openMailbox(mailbox) {
   router.push({
     name: 'MailboxView',
@@ -246,11 +270,16 @@ function openMailbox(mailbox) {
   if (mobile.value) {
     drawer.value = false
   }
+  // A message may have arrived since the tree was loaded: refresh the
+  // selected mailbox counter so it reflects the current unseen count.
+  refreshMailboxUnseen(mailbox)
 }
 
 const fetchUserMailboxes = async () => {
   const resp = await api.getUserMailboxes()
   userMailboxes.value = resp.data.mailboxes
+  // Let child views recognize special folders whatever their names
+  webmailStore.setMailboxes(resp.data.mailboxes)
   hdelimiter.value = resp.data.hdelimiter
 }
 

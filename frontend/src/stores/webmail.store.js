@@ -9,6 +9,10 @@ const LISTING_TTL_MS = 5 * 60 * 1000
 export const useWebmailStore = defineStore('webmail', () => {
   const selection = ref([])
   const listingKey = ref(0)
+  // Names of the special folders (draft, junk, trash...) as configured in
+  // the user preferences, indexed by type. Filled from the mailboxes list,
+  // whose entries carry that type.
+  const specialFolders = ref({})
 
   // ----- infinite-scroll listing state -----
   const emails = ref([]) // accumulated rows across pages
@@ -83,6 +87,22 @@ export const useWebmailStore = defineStore('webmail', () => {
     listParams.value = { mailbox: null, search: '' }
     listScrollTop.value = 0
     listLoadedAt.value = 0
+    specialFolders.value = {}
+  }
+
+  function setMailboxes(mailboxes) {
+    const folders = {}
+    for (const mailbox of mailboxes || []) {
+      if (mailbox.type && mailbox.type !== 'normal') {
+        folders[mailbox.type] = mailbox.name
+      }
+    }
+    specialFolders.value = folders
+  }
+
+  // Is the given mailbox the special folder of this type?
+  function isFolder(type, name) {
+    return !!name && specialFolders.value[type] === name
   }
 
   return {
@@ -100,6 +120,9 @@ export const useWebmailStore = defineStore('webmail', () => {
     removeEmails,
     restoreEmails,
     patchEmail,
+    specialFolders,
+    setMailboxes,
+    isFolder,
     $reset,
   }
 })

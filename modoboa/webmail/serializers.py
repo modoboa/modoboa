@@ -1,5 +1,7 @@
 """Webmail serializers."""
 
+import logging
+
 from django.utils.translation import gettext as _
 from django.utils import timezone
 
@@ -7,9 +9,12 @@ from rest_framework import serializers
 
 from modoboa.lib import email_utils
 from modoboa.webmail import constants, models
+from modoboa.webmail.exceptions import ImapError
 from modoboa.webmail.lib import imapheader, signature
 from modoboa.webmail.lib.imaputils import get_imapconnector
 from modoboa.webmail.lib.utils import allowed_sender_addresses, create_message
+
+logger = logging.getLogger("modoboa.webmail")
 
 
 class GlobalParametersSerializer(serializers.Serializer):
@@ -191,9 +196,14 @@ class EmailSerializer(serializers.Serializer):
     to = EmailAddressSerializer(source="To", many=True)
     cc = EmailAddressSerializer(source="Cc", many=True, required=False)
     body = serializers.CharField()
+    # Format of the returned body (plain or html)
+    body_format = serializers.CharField(source="mformat", required=False)
     date = serializers.CharField(source="Date")
     message_id = serializers.CharField(source="Message_ID", required=False)
-    reply_to = serializers.EmailField(source="Reply_To", required=False)
+    in_reply_to = serializers.CharField(source="In_Reply_To", required=False)
+    references = serializers.CharField(source="References", required=False)
+    # Reply-To may contain several addresses (parsed as a list)
+    reply_to = EmailAddressSerializer(source="Reply_To", many=True, required=False)
     attachments = serializers.SerializerMethodField()
 
     scheduled_datetime = serializers.DateTimeField(
@@ -270,6 +280,14 @@ class BaseEmailSerializer(serializers.Serializer):
     to = serializers.ListField(child=serializers.EmailField(), required=False)
     cc = serializers.ListField(child=serializers.EmailField(), required=False)
     bcc = serializers.ListField(child=serializers.EmailField(), required=False)
+    # Message this one replies to, kept in drafts
+    in_reply_to = serializers.CharField(required=False)
+    # References of the message this one replies to
+    references = serializers.CharField(required=False)
+    # Format chosen in the editor; the "editor" preference applies otherwise
+    body_format = serializers.ChoiceField(
+        choices=constants.DISPLAY_MODES, required=False
+    )
 
     def validate_sender(self, value):
         """Ensure the sender is an address the user is allowed to use.
@@ -296,14 +314,52 @@ class BaseEmailSerializer(serializers.Serializer):
 
 class SendEmailSerializer(ScheduledDatetimeMixin, BaseEmailSerializer):
 
-    in_reply_to = serializers.CharField(required=False)
     scheduled_datetime = serializers.DateTimeField(required=False)
     request_dsn = serializers.BooleanField(required=False, default=False)
     request_mdn = serializers.BooleanField(required=False, default=False)
+    # Message this one replies to or forwards (flagged once sent)
+    original_mailbox = serializers.CharField(required=False)
+    original_mailid = serializers.IntegerField(required=False, min_value=1)
+    original_action = serializers.ChoiceField(
+        choices=["reply", "forward"], required=False
+    )
+
+    ORIGINAL_MESSAGE_FIELDS = ("original_mailbox", "original_mailid", "original_action")
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields["to"].required = True
+
+    def validate(self, data):
+        data = super().validate(data)
+        if data.get("scheduled_datetime"):
+            self.validate_scheduled_message_lengths(data)
+        provided = [name for name in self.ORIGINAL_MESSAGE_FIELDS if name in data]
+        if provided and len(provided) != len(self.ORIGINAL_MESSAGE_FIELDS):
+            raise serializers.ValidationError(
+                _(
+                    "original_mailbox, original_mailid and original_action "
+                    "must be provided together"
+                )
+            )
+        return data
+
+    def validate_scheduled_message_lengths(self, data):
+        """Ensure a scheduled message fits in the database columns.
+
+        A message sent right away has no such limit, but a scheduled one is
+        stored first: a too long value would make the database fail.
+        """
+        errors = {}
+        for name in ("subject", "in_reply_to"):
+            max_length = models.ScheduledMessage._meta.get_field(name).max_length
+            if len(data.get(name) or "") > max_length:
+                errors[name] = _(
+                    "Ensure this field has no more than %(max_length)s "
+                    "characters to schedule the message"
+                ) % {"max_length": max_length}
+        if errors:
+            raise serializers.ValidationError(errors)
 
 
 class SaveEmailSerializer(BaseEmailSerializer):
@@ -317,11 +373,22 @@ class SaveEmailSerializer(BaseEmailSerializer):
         drafts_folder = self.context["request"].user.parameters.get_value(
             "drafts_folder"
         )
+        mime_message = message.message()
+        if validated_data.get("bcc"):
+            # Django never writes Bcc into the MIME message: keep it in
+            # the draft so it is not lost when the draft is reopened.
+            mime_message["Bcc"] = ", ".join(validated_data["bcc"])
         with get_imapconnector(self.context["request"]) as imapc:
-            if "mailid" in validated_data:
-                imapc.delete_mail(drafts_folder, validated_data["mailid"])
-            mailid = imapc.push_mail(drafts_folder, message.message())
+            mailid = imapc.push_mail(drafts_folder, mime_message)
             imapc.mark_messages_unread(drafts_folder, [str(mailid)])
+            # The previous version goes only once the new one is stored: a
+            # failure must not lose the draft
+            if "mailid" in validated_data:
+                try:
+                    imapc.delete_mail(drafts_folder, validated_data["mailid"])
+                except ImapError:
+                    # A leftover copy is better than a lost draft
+                    logger.exception("Failed to remove the previous draft version")
             return mailid
 
 
@@ -341,7 +408,26 @@ class ComposeSessionSerializer(serializers.Serializer):
 
 class CreateSessionSerializer(serializers.Serializer):
 
+    # Draft being edited: its attachments are copied into the session
     from_draft_message = serializers.IntegerField(required=False)
+    # Message being forwarded: its attachments are copied too
+    forward_mailbox = serializers.CharField(required=False)
+    forward_mailid = serializers.IntegerField(required=False, min_value=1)
+
+    def validate(self, data):
+        data = super().validate(data)
+        forward_fields = [
+            name for name in ("forward_mailbox", "forward_mailid") if name in data
+        ]
+        if len(forward_fields) == 1:
+            raise serializers.ValidationError(
+                _("forward_mailbox and forward_mailid must be provided together")
+            )
+        if forward_fields and "from_draft_message" in data:
+            raise serializers.ValidationError(
+                _("A session can't start from a draft and a forwarded message")
+            )
+        return data
 
 
 class AllowedSenderSerializer(serializers.Serializer):
@@ -357,10 +443,17 @@ class ScheduledMessageSerializer(ScheduledDatetimeMixin, serializers.ModelSerial
         read_only_fields = ["error"]
 
     def update(self, instance, validated_data):
+        if instance.status == constants.SchedulingState.SEND_ERROR.value:
+            # Rescheduling a failed message gives it another try
+            instance.status = constants.SchedulingState.SCHEDULED.value
+            instance.error = None
         instance = super().update(instance, validated_data)
         message = instance.to_email_message()
         with get_imapconnector(self.context["request"]) as imapc:
-            imapc.delete_mail(constants.MAILBOX_NAME_SCHEDULED, instance.imap_uid)
+            if instance.imap_uid:
+                # No IMAP copy (it failed, or the folder was cleaned up):
+                # rescheduling must still work.
+                imapc.delete_mail(constants.MAILBOX_NAME_SCHEDULED, instance.imap_uid)
             instance.imap_uid = imapc.push_mail(
                 constants.MAILBOX_NAME_SCHEDULED, message.message()
             )

@@ -56,7 +56,7 @@
           >
           </v-btn>
           <v-btn
-            v-if="currentMailbox === 'Trash'"
+            v-if="isTrashFolder"
             class="tb-btn"
             variant="text"
             icon
@@ -99,7 +99,7 @@
           </v-btn>
           <template v-if="!inScheduledView">
             <v-btn
-              v-if="currentMailbox === 'Trash'"
+              v-if="isTrashFolder"
               class="ml-1"
               color="primary"
               variant="tonal"
@@ -112,7 +112,7 @@
             >
             </v-btn>
             <v-btn
-              v-else-if="currentMailbox === 'Junk'"
+              v-else-if="isJunkFolder"
               class="ml-1"
               color="success"
               variant="tonal"
@@ -413,6 +413,7 @@ import { useRouter, useRoute } from 'vue-router'
 import { useDisplay } from 'vuetify'
 import { useGettext } from 'vue3-gettext'
 import { useBusStore, useWebmailStore } from '@/stores'
+import { useSpecialFolders } from '@/composables/webmail'
 import { DateTime } from 'luxon'
 import EmailAddressList from './EmailAddressList.vue'
 import EmailSchedulingForm from './EmailSchedulingForm.vue'
@@ -494,6 +495,8 @@ const openComposeForm = () => {
 }
 
 const inScheduledView = computed(() => props.mailbox === 'Scheduled')
+
+const { isJunkFolder, isTrashFolder } = useSpecialFolders(currentMailbox)
 
 const getScheduledMessageActions = () => {
   return [
@@ -815,10 +818,11 @@ const initListing = () => {
 
 const autoRefreshContent = () => {
   // Don't yank the user's position: only refresh when the tab is visible and
-  // they're near the top of the list.
+  // they're near the top of the list. Counters are refreshed either way.
   if (document.visibilityState !== 'visible') {
     return
   }
+  reloadMailboxCounters()
   if (scroller.value && scroller.value.scrollTop > 200) {
     return
   }

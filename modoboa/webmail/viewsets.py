@@ -14,6 +14,7 @@ from modoboa.lib import exceptions
 from modoboa.lib.paginator import Paginator
 from modoboa.lib.viewsets import HasMailbox
 from modoboa.webmail import constants, lib, models, serializers
+from modoboa.webmail.exceptions import ImapError, WebmailInternalError
 from modoboa.webmail.lib import attachments
 from modoboa.webmail.lib.imaputils import UID_RE, PARTNUM_RE
 from modoboa.webmail.lib.sendmail import send_mail, schedule_email
@@ -197,7 +198,9 @@ class UserEmailViewSet(viewsets.GenericViewSet):
         search = _validate_search(request.GET.get("search"))
         with lib.get_imapconnector(request) as imapc:
             if search:
-                imapc.parse_search_parameters("both", search)
+                # The single search field of the interface looks for the
+                # pattern in the headers and in the body
+                imapc.parse_search_parameters("all", search)
             total = imapc.messages_count(mbox=mailbox)
             messages_per_page = request.user.parameters.get_value("messages_per_page")
             paginator = Paginator(total, messages_per_page)
@@ -323,7 +326,10 @@ class UserEmailViewSet(viewsets.GenericViewSet):
         if "dformat" in request.GET:
             dformat = request.GET.get("dformat")
         context = self.request.GET.get("context")
-        if context and context in ["reply", "forward"]:
+        if context == "edit":
+            # A draft is loaded in its own format unless one is requested
+            dformat = request.GET.get("dformat")
+        if context and context in ["reply", "forward", "edit"]:
             modclass = getattr(lib, f"{context.capitalize()}Modifier")
             email = modclass(
                 request,
@@ -427,14 +433,19 @@ class ComposeSessionViewSet(viewsets.GenericViewSet):
         serializer.is_valid(raise_exception=True)
         manager = attachments.ComposeSessionManager(request.user.username)
         uid = manager.create()
-        from_draft_message = serializer.validated_data.get("from_draft_message")
+        data = serializer.validated_data
         response_attrs = {"uid": uid}
-        if from_draft_message:
-            mailbox = request.user.parameters.get_value("drafts_folder")
-            email = lib.ImapEmail(
-                request,
-                f"{mailbox}:{from_draft_message}",
-            )
+        # The attachments of a draft being edited, or of a forwarded
+        # message, are copied into the session
+        source = None
+        if data.get("from_draft_message"):
+            drafts_folder = request.user.parameters.get_value("drafts_folder")
+            source = (drafts_folder, data["from_draft_message"])
+        elif data.get("forward_mailid"):
+            source = (data["forward_mailbox"], data["forward_mailid"])
+        if source:
+            mailbox, mailid = source
+            email = lib.ImapEmail(request, f"{mailbox}:{mailid}")
             email.fetch_body_structure()
             for attachment in email.fetch_attachments():
                 attachments.save_attachment(request, uid, **attachment)
@@ -512,6 +523,9 @@ class ComposeSessionViewSet(viewsets.GenericViewSet):
             # The files now belong to the scheduled message: only drop the
             # compose session.
             manager.delete(pk)
+            # The sending job can't reach the mailbox of the user: the
+            # original message is flagged as soon as the answer is scheduled
+            self._flag_original_message(request, serializer.validated_data)
             return response.Response(status=204)
 
         status, error = send_mail(
@@ -521,8 +535,24 @@ class ComposeSessionViewSet(viewsets.GenericViewSet):
         )
         if status:
             attachments.remove_attachments_and_session(manager, pk)
+            self._flag_original_message(request, serializer.validated_data)
             return response.Response(status=204)
         return response.Response({"detail": error, "errors": {}}, status=400)
+
+    def _flag_original_message(self, request, data: dict) -> None:
+        """Flag the message this one replies to or forwards, once sent."""
+        if "original_mailid" not in data:
+            return
+        try:
+            with lib.get_imapconnector(request) as imapc:
+                if data["original_action"] == "reply":
+                    flag_message = imapc.msg_answered
+                else:
+                    flag_message = imapc.msg_forwarded
+                flag_message(data["original_mailbox"], str(data["original_mailid"]))
+        except (ImapError, WebmailInternalError):
+            # The message is already sent: a missing flag is not an error
+            pass
 
 
 class ScheduledMessageViewSet(

@@ -7,6 +7,8 @@ from modoboa.webmail.tests import data as tests_data
 class IMAP4Mock:
     """Fake IMAP4 client."""
 
+    capabilities = (b"QUOTA", b"SORT")
+
     def __init__(self, *args, **kwargs):
         self.untagged_responses = {}
 
@@ -21,7 +23,7 @@ class IMAP4Mock:
 
     def _simple_command(self, name, *args, **kwargs):
         if name == "CAPABILITY":
-            self.untagged_responses["CAPABILITY"] = [b"QUOTA"]
+            self.untagged_responses["CAPABILITY"] = [b" ".join(self.capabilities)]
         elif name == "LIST":
             self.untagged_responses["LIST"] = [b'() "." "INBOX"']
         elif name == "NAMESPACE":
@@ -29,6 +31,9 @@ class IMAP4Mock:
         elif name == "STATUS":
             self.untagged_responses["STATUS"] = [b"STATUS INBOX (UNSEEN 10)"]
         return "OK", None
+
+    def shutdown(self):
+        return None
 
     def append(self, *args, **kwargs):
         return "OK", [b"[APPENDUID 1234 11] ..."]  # noqa
@@ -101,5 +106,5 @@ class IMAP4Mock:
             elif uid == 133872:
                 data = tests_data.COMPLETE_MAIL
             return "OK", data
-        elif command in ["COPY", "STORE"]:
+        elif command in ["COPY", "STORE", "MOVE", "EXPUNGE"]:
             return "OK", []

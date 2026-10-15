@@ -116,6 +116,58 @@ class UserMailboxViewSetTestCase(WebmailTestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json()["counter"], 10)
 
+    def test_list_unseen_counters(self):
+        """Unseen counters must be computed for every selectable mailbox.
+
+        Even a mailbox flagged \\UnMarked (no *recent* activity since the
+        last SELECT) can hold unseen messages and must expose its counter.
+        \\Noselect mailboxes cannot be queried with STATUS and must be
+        skipped.
+        """
+
+        class IMAP4MockWithFolders(IMAP4Mock):
+            def _simple_command(self, name, *args, **kwargs):
+                if name == "LIST":
+                    self.untagged_responses["LIST"] = [
+                        b'(\\Subscribed \\HasNoChildren) "." "INBOX"',
+                        b'(\\Subscribed \\UnMarked \\HasNoChildren) "." "Archive"',
+                        # Unsubscribed but kept because it has children; its
+                        # \\Noselect flag means it must not be queried.
+                        b'(\\Noselect \\HasChildren) "." "Parent"',
+                    ]
+                    return "OK", None
+                if name in ("SELECT", "EXAMINE"):
+                    target = args[0]
+                    if isinstance(target, bytes):
+                        target = target.decode()
+                    self.selected = target
+                    return "OK", [b"1"]
+                return super()._simple_command(name, *args, **kwargs)
+
+            def uid(self, command, *args):
+                # The fork counts with SEARCH (excluding \\Deleted messages)
+                # in the selected mailbox, not with STATUS.
+                if command == "SEARCH":
+                    unseen = 10 if "INBOX" in self.selected else 3
+                    count = unseen if "UNSEEN" in args else unseen + 2
+                    return "OK", [" ".join(str(i) for i in range(1, count + 1)).encode()]
+                return super().uid(command, *args)
+
+        self.mock_imap4.return_value = IMAP4MockWithFolders()
+        self.authenticate()
+        url = reverse("v2:webmail-mailbox-list")
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        mailboxes = {mb["name"]: mb for mb in response.json()["mailboxes"]}
+        # \\UnMarked mailbox with unseen messages: counter must be present
+        # (the previous heuristic skipped it).
+        self.assertEqual(mailboxes["Archive"]["unseen"], 3)
+        self.assertEqual(mailboxes["INBOX"]["unseen"], 10)
+        self.assertEqual(mailboxes["Archive"]["nbmessages"], 5)
+        # \\Noselect mailbox: not queried, counters stay 0.
+        self.assertEqual(mailboxes["Parent"]["unseen"], 0)
+        self.assertEqual(mailboxes["Parent"]["nbmessages"], 0)
+
     def test_create(self):
         self.authenticate()
         url = reverse("v2:webmail-mailbox-list")
@@ -363,6 +415,19 @@ class UserEmailViewSetTestCase(WebmailTestCase):
         body = response.json()["body"]
         self.assertIn("&lt;img src=x onerror=alert(1)&gt;", body)
         self.assertNotIn("<img", body)
+
+    def test_content_reply_to(self):
+        """Every Reply-To address is returned as a structured address."""
+        self.authenticate()
+        url = reverse("v2:webmail-email-content")
+        response = self.client.get(f"{url}?mailbox=INBOX&mailid=46933&context=reply")
+        self.assertEqual(response.status_code, 200)
+        reply_to = response.json()["reply_to"]
+        self.assertEqual(
+            [rcpt["address"] for rcpt in reply_to],
+            ["support@example.test", "other@example.test"],
+        )
+        self.assertEqual(reply_to[0]["name"], "Support")
 
     def test_attachment(self):
         self.authenticate()
@@ -708,6 +773,30 @@ class ComposeSessionViewSetTestCase(WebmailTestCase):
             self.assertEqual(len(mail.outbox), 1)
             self.assertEqual(models.ScheduledMessage.objects.count(), 0)
             self.assertEqual(models.MessageAttachment.objects.count(), 0)
+
+    def test_schedule_with_too_long_values(self):
+        self.authenticate()
+        uid = self._create_compose_session()
+        url = reverse("v2:webmail-compose-session-send", args=[uid])
+        data = {
+            "sender": self.user.email,
+            "to": ["test@example.test"],
+            "subject": "s" * 256,
+            "in_reply_to": f"<{'i' * 199}@example.test>",
+            "body": "Test",
+            "scheduled_datetime": (timezone.now() + relativedelta(hours=1)).isoformat(),
+        }
+        response = self.client.post(url, data, format="json")
+        self.assertEqual(response.status_code, 400)
+        self.assertIn("subject", response.json()["errors"])
+        self.assertIn("in_reply_to", response.json()["errors"])
+        self.assertEqual(models.ScheduledMessage.objects.count(), 0)
+
+        # Sent right away, the message has no such limit
+        del data["scheduled_datetime"]
+        response = self.client.post(url, data, format="json")
+        self.assertEqual(response.status_code, 204)
+        self.assertEqual(len(mail.outbox), 1)
 
     @override_settings(
         DOVEADM_LOOKUP_PATH=[DOVEADM_TEST_PATH], DOVECOT_USER=DOVECOT_USER

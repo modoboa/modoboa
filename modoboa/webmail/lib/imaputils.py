@@ -16,7 +16,12 @@ from modoboa.lib.exceptions import InternalError
 from modoboa.parameters import tools as param_tools
 from modoboa.webmail import constants
 
-from ..exceptions import ImapError, WebmailInternalError
+from ..exceptions import (
+    ImapError,
+    InvalidImapArgument,
+    MailboxOperationError,
+    WebmailInternalError,
+)
 from . import imap_pool
 from .fetch_parser import FetchResponseParser
 
@@ -24,11 +29,19 @@ logger = logging.getLogger("modoboa.webmail")
 
 # imaplib.Debug = 4
 
+# Default timeout (in seconds) of IMAP socket operations. Without it, a
+# server that never answers blocks the worker forever.
+DEFAULT_IMAP_TIMEOUT = 30
+
 # workaround for the "got more than 10000 bytes" exception. MAXLINE
 # value set to 1M, as on latest python versions.
 MAXLINE = 1000000
 if hasattr(imaplib, "_MAXLINE") and imaplib._MAXLINE < MAXLINE:
     imaplib._MAXLINE = MAXLINE
+
+# Keep a reference to the real exception class: tests replace
+# imaplib.IMAP4 with a mock, which would also replace IMAP4.error.
+IMAP4Error = imaplib.IMAP4.error
 
 # A message UID set: one or more positive integers separated by commas.
 UID_RE = re.compile(r"^[0-9]+(?:,[0-9]+)*$")
@@ -44,14 +57,14 @@ def validate_imap_uid(value):
     reaching a command must be strictly validated first.
     """
     if value is None or not UID_RE.match(str(value)):
-        raise ImapError(_("Invalid message identifier"))
+        raise InvalidImapArgument(_("Invalid message identifier"))
     return str(value)
 
 
 def validate_imap_partnum(value):
     """Ensure a MIME part number is safe to pass to imaplib."""
     if value is None or not PARTNUM_RE.match(str(value)):
-        raise ImapError(_("Invalid part number"))
+        raise InvalidImapArgument(_("Invalid part number"))
     return str(value)
 
 
@@ -64,7 +77,7 @@ def escape_search_pattern(pattern: str) -> str:
     required by RFC 3501.
     """
     if any(ord(c) < 0x20 or ord(c) == 0x7F for c in pattern):
-        raise ImapError(_("Invalid search pattern"))
+        raise InvalidImapArgument(_("Invalid search pattern"))
     return pattern.replace("\\", "\\\\").replace('"', '\\"')
 
 
@@ -77,7 +90,7 @@ def quote_mailbox_name(name: str) -> bytes:
     arguments. Control characters are rejected.
     """
     if any(ord(c) < 0x20 or ord(c) == 0x7F for c in name):
-        raise ImapError(_("Invalid mailbox name"))
+        raise InvalidImapArgument(_("Invalid mailbox name"))
     encoded = name.encode("imap4-utf-7")
     return b'"' + encoded.replace(b"\\", b"\\\\").replace(b'"', b'\\"') + b'"'
 
@@ -188,6 +201,24 @@ class BodyStructure:
         return None
 
 
+# Search criteria understood by parse_search_parameters, mapped to their
+# IMAP key
+SEARCH_KEYS = {
+    "from_addr": "FROM",
+    "to": "TO",
+    "cc": "CC",
+    "subject": "SUBJECT",
+    "body": "BODY",
+}
+
+SEARCH_CRITERION_ALIASES = {
+    # Kept for compatibility
+    "both": "from_addr,subject",
+    # What the single search field of the interface looks for
+    "all": "from_addr,to,cc,subject,body",
+}
+
+
 class IMAPconnector:
     """The IMAPv4 connector."""
 
@@ -277,10 +308,10 @@ class IMAPconnector:
         :param name: the command's name
         :return: the command's result
         """
-        if name in ["FETCH", "SORT", "STORE", "COPY", "SEARCH"]:
+        if name in ["FETCH", "SORT", "STORE", "COPY", "SEARCH", "MOVE"]:
             try:
                 typ, data = self.m.uid(name, *args)
-            except imaplib.IMAP4.error as e:
+            except (IMAP4Error, OSError) as e:
                 raise ImapError(e) from None
             if typ == "NO":
                 raise ImapError(data)
@@ -290,7 +321,7 @@ class IMAPconnector:
 
         try:
             typ, data = self.m._simple_command(name, *args)
-        except imaplib.IMAP4.error as e:
+        except (IMAP4Error, OSError) as e:
             raise ImapError(e) from None
         if typ == "NO":
             raise ImapError(data)
@@ -325,12 +356,13 @@ class IMAPconnector:
         :param user: username
         :param passwd: password
         """
+        timeout = getattr(settings, "WEBMAIL_IMAP_TIMEOUT", DEFAULT_IMAP_TIMEOUT)
         try:
             if self.conf["imap_secured"]:
-                self.m = imaplib.IMAP4_SSL(self.address, self.port)
+                self.m = imaplib.IMAP4_SSL(self.address, self.port, timeout=timeout)
             else:
-                self.m = imaplib.IMAP4(self.address, self.port)
-        except (OSError, imaplib.IMAP4.error, ssl.SSLError) as error:
+                self.m = imaplib.IMAP4(self.address, self.port, timeout=timeout)
+        except (OSError, IMAP4Error, ssl.SSLError) as error:
             raise ImapError(_(f"Connection to IMAP server failed: {error}")) from None
 
         dev_mode = getattr(settings, "WEBMAIL_DEV_MODE", False)
@@ -354,16 +386,29 @@ class IMAPconnector:
             self.capabilities = data[0].decode().split()
 
     def logout(self) -> None:
-        """Logout from server."""
+        """Logout from server.
+
+        The connection may already be gone (server timeout or restart):
+        the commands below then fail for no useful reason, since the
+        connection is dropped anyway. The socket is always closed, even
+        when the server never answered our LOGOUT.
+        """
+        if getattr(self, "m", None) is None:
+            # Already logged out
+            return
         try:
             self._cmd("CHECK")
-        except ImapError:
+            self._cmd("LOGOUT")
+        except (ImapError, OSError):
             pass
-        self._cmd("LOGOUT")
-        del self.m
-        self.m = None
-        if hasattr(self, "current_mailbox"):
-            del self.current_mailbox
+        finally:
+            try:
+                self.m.shutdown()
+            except (IMAP4Error, OSError):
+                pass
+            self.m = None
+            if hasattr(self, "current_mailbox"):
+                del self.current_mailbox
 
     def load_namespaces(self) -> None:
         """Load available namespaces."""
@@ -388,8 +433,7 @@ class IMAPconnector:
                 return c
             return f"OR {old} {c}"
 
-        if criterion == "both":
-            criterion = "from_addr,subject"
+        criterion = SEARCH_CRITERION_ALIASES.get(criterion, criterion)
 
         if not pattern:
             criterions = "ALL"
@@ -397,15 +441,21 @@ class IMAPconnector:
             pattern = escape_search_pattern(pattern)
             criterions = ""
             for c in criterion.split(","):
-                if c == "from_addr":
-                    key = "FROM"
-                elif c == "subject":
-                    key = "SUBJECT"
-                else:
+                key = SEARCH_KEYS.get(c.strip())
+                if key is None:
                     continue
                 criterions = or_criterion(criterions, f'({key} "{pattern}")')
+            if criterions == "":
+                # None of the given criteria is known: search everywhere
+                # rather than sending an empty, invalid command.
+                criterions = f'(TEXT "{pattern}")'
 
         self.criterions = [bytearray(criterions, "utf8")]
+
+    @property
+    def has_sort(self) -> bool:
+        """Does the server support the SORT extension (RFC 5256)?"""
+        return "SORT" in getattr(self, "capabilities", [])
 
     def messages_count(self, **kwargs) -> int:
         """An enhanced version of messages_count.
@@ -431,17 +481,40 @@ class IMAPconnector:
         # mailbox state. It works now that select_mailbox resets the untagged
         # responses correctly (was forced to SELECT before — see git history).
         self.select_mailbox(mbox, readonly=True)
-        cmdname = "SORT"
+        if self.has_sort:
+            data = self._cmd(
+                "SORT",
+                f"({criterion})",
+                b"UTF-8",
+                b"(NOT DELETED)",
+                *self.criterions,
+            )
+            self.messages = data[0].decode().split()
+        else:
+            self.messages = self._search_messages(
+                reverse=criterion.startswith("REVERSE")
+            )
+        self.getquota(mbox)
+        return len(self.messages)
+
+    def _search_messages(self, reverse: bool = True) -> list:
+        """List the messages of the selected mailbox without SORT.
+
+        SORT is an extension: servers that lack it only answer SEARCH,
+        which returns UIDs in ascending order. Messages are then ordered
+        by arrival instead of by their Date header, which is the closest
+        approximation we can give without fetching every date.
+        """
         data = self._cmd(
-            cmdname,
-            f"({criterion})",
+            "SEARCH",
+            b"CHARSET",
             b"UTF-8",
             b"(NOT DELETED)",
             *self.criterions,
         )
-        self.messages = data[0].decode().split()
-        self.getquota(mbox)
-        return len(self.messages)
+        messages = data[0].decode().split()
+        messages.sort(key=int, reverse=reverse)
+        return messages
 
     def select_mailbox(
         self, name: str, readonly: bool = True, force: bool = False
@@ -565,8 +638,8 @@ class IMAPconnector:
             # The folder was returned by LIST, so it actually exists on the
             # server (used to decide whether to query its counters).
             descr["_exists"] = True
-            if "\\Marked" in flags or "\\UnMarked" not in flags:
-                descr["send_status"] = True
+            # \Noselect mailboxes cannot be selected to count messages.
+            descr["selectable"] = "\\Noselect" not in flags
             if r"\NonExistent" in flags:
                 descr["removed"] = True
             if "\\HasChildren" in flags:
@@ -639,25 +712,30 @@ class IMAPconnector:
             if parent:
                 until_mailbox = parent
         self._listmboxes(topmailbox, md_mailboxes, until_mailbox)
-
-        if unseen_messages:
-            for mb in md_mailboxes:
-                # ``send_status`` is an internal LIST flag; never expose it.
-                mb.pop("send_status", None)
-                exists = mb.pop("_exists", False)
-                # Only query counters for folders that actually exist (a
-                # hardcoded special folder may not have been created yet). This
-                # also avoids the previous bug where folders flagged
-                # ``\UnMarked`` (e.g. Sent/Junk with no recent activity) were
-                # skipped and reported a count of 0.
-                if not exists or mb.get("removed", False):
-                    continue
-                key = "path" if "path" in mb else "name"
-                total, unseen = self.folder_counters(mb[key])
-                mb["nbmessages"] = total
-                if unseen:
-                    mb["unseen"] = unseen
+        self._set_counters(md_mailboxes, unseen_messages)
         return md_mailboxes
+
+    def _set_counters(self, mailboxes: list, compute: bool = True) -> None:
+        """Compute the counters of each mailbox, subfolders included.
+
+        Only folders that actually exist (a hardcoded special folder may not
+        have been created yet) and can be selected are queried. Every folder
+        is counted, not only the ones flagged ``\\Marked``: that flag only
+        tracks *recent* activity, so folders with old unseen messages showed
+        no counter. The internal markers are always removed.
+        """
+        for mb in mailboxes:
+            exists = mb.pop("_exists", False)
+            selectable = mb.pop("selectable", True)
+            if mb.get("sub"):
+                self._set_counters(mb["sub"], compute)
+            if not compute or not exists or not selectable or mb.get("removed", False):
+                continue
+            key = "path" if "path" in mb else "name"
+            total, unseen = self.folder_counters(mb[key])
+            mb["nbmessages"] = total
+            if unseen:
+                mb["unseen"] = unseen
 
     def _add_flag(self, mbox: str, msgset: list[str], flag: str) -> None:
         """Add flag to a messages set.
@@ -712,35 +790,70 @@ class IMAPconnector:
         self._remove_flag(mbox, msgset, r"(\Flagged)")
 
     def msg_forwarded(self, mailbox: str, mailid: str) -> None:
-        self._add_flag(mailbox, mailid, "($Forwarded)")
+        """Add the $Forwarded flag to this email."""
+        # _add_flag expects a list: joining a plain string would flag
+        # the messages 1, 2, 3 for UID "123".
+        self._add_flag(mailbox, [validate_imap_uid(mailid)], "($Forwarded)")
 
     def msg_answered(self, mailbox: str, mailid: str) -> None:
-        """Add the \Answered flag to this email."""
-        self._add_flag(mailbox, mailid, r"(\Answered)")
+        """Add the \\Answered flag to this email."""
+        self._add_flag(mailbox, [validate_imap_uid(mailid)], r"(\Answered)")
+
+    @property
+    def has_move(self) -> bool:
+        """Does the server support the MOVE extension (RFC 6851)?"""
+        return "MOVE" in getattr(self, "capabilities", [])
+
+    @property
+    def has_uidplus(self) -> bool:
+        """Does the server support the UIDPLUS extension (RFC 4315)?"""
+        return "UIDPLUS" in getattr(self, "capabilities", [])
+
+    def _uid_expunge(self, msgset) -> None:
+        """Expunge the given messages, and only them (RFC 4315).
+
+        A plain EXPUNGE would also remove every other message flagged as
+        deleted in the mailbox, including those another client of the
+        user flagged without wanting to erase them yet.
+        """
+        try:
+            typ, data = self.m.uid("EXPUNGE", msgset)
+        except IMAP4Error as e:
+            raise ImapError(e) from None
+        if typ == "NO":
+            raise ImapError(data)
 
     def move(self, msgset, oldmailbox: str, newmailbox: str) -> None:
         """Move messages between mailboxes.
 
-        Copy the messages to the destination, flag the originals as
-        ``\\Deleted`` and EXPUNGE them so the source folder doesn't keep
-        ghost messages around. Without the EXPUNGE the originals linger
-        until the server compacts and STATUS (MESSAGES) over-counts them.
+        MOVE does it with a single atomic command. Without it, messages
+        are copied, flagged as deleted, then expunged by UID: leaving
+        them behind would keep them visible in other mail clients and
+        counted in the user quota.
         """
         self.select_mailbox(oldmailbox, False)
+        if self.has_move:
+            self._cmd("MOVE", msgset, self._encode_mbox_name(newmailbox))
+            return
         self._cmd("COPY", msgset, self._encode_mbox_name(newmailbox))
         self._cmd("STORE", msgset, "+FLAGS", r"(\Deleted \Seen)")
-        self._cmd("EXPUNGE")
+        if self.has_uidplus:
+            self._uid_expunge(msgset)
 
     def delete_messages(self, mbox: str, msgset) -> None:
         """Permanently delete a set of messages (set \\Deleted and expunge).
 
         Used when deleting from the trash folder itself: there is nowhere
         left to move to, so the messages are removed for good instead of
-        being copied back into the same mailbox.
+        being copied back into the same mailbox. Only these messages are
+        expunged when the server supports UIDPLUS.
         """
         self.select_mailbox(mbox, False)
         self._cmd("STORE", msgset, "+FLAGS", r"(\Deleted)")
-        self._cmd("EXPUNGE")
+        if self.has_uidplus:
+            self._uid_expunge(msgset)
+        else:
+            self._cmd("EXPUNGE")
 
     def push_mail(self, mbox: str, msg) -> int:
         """
@@ -763,9 +876,13 @@ class IMAPconnector:
 
         Do not use directly.
         """
+        uid = validate_imap_uid(uid)
         self.select_mailbox(mbox, False)
-        self._cmd("STORE", f"{uid}".encode(), "+FLAGS", r"(\Deleted)")
-        self._cmd("EXPUNGE")
+        self._cmd("STORE", uid.encode(), "+FLAGS", r"(\Deleted)")
+        if self.has_uidplus:
+            self._uid_expunge(uid)
+        else:
+            self._cmd("EXPUNGE")
 
     def empty(self, mbox: str):
         self.select_mailbox(mbox, False)
@@ -786,26 +903,33 @@ class IMAPconnector:
         self.select_mailbox(mbox, False)
         self._cmd("EXPUNGE")
 
+    def _mailbox_command(self, command: str, *args) -> None:
+        """Run a mailbox management command (create, rename, delete...).
+
+        The server refusing the operation (NO response) is reported with
+        its message; imaplib raises an exception on BAD responses.
+        """
+        try:
+            typ, data = getattr(self.m, command)(*args)
+        except IMAP4Error as error:
+            raise MailboxOperationError(str(error)) from None
+        if typ == "NO":
+            raise MailboxOperationError(data[0])
+
     def create_folder(self, name: str, parent: str | None = None) -> bool:
         if parent is not None:
             name = f"{parent}{self.hdelimiter}{name}"
-        typ, data = self.m.create(self._encode_mbox_name(name))
-        if typ == "NO":
-            raise WebmailInternalError(str(data[0]))
+        self._mailbox_command("create", self._encode_mbox_name(name))
         return True
 
     def rename_folder(self, oldname: str, newname: str) -> bool:
-        typ, data = self.m.rename(
-            self._encode_mbox_name(oldname), self._encode_mbox_name(newname)
+        self._mailbox_command(
+            "rename", self._encode_mbox_name(oldname), self._encode_mbox_name(newname)
         )
-        if typ == "NO":
-            raise WebmailInternalError(data[0], ajax=True)
         return True
 
     def delete_folder(self, name: str) -> bool:
-        typ, data = self.m.delete(self._encode_mbox_name(name))
-        if typ == "NO":
-            raise WebmailInternalError(data[0])
+        self._mailbox_command("delete", self._encode_mbox_name(name))
         return True
 
     def getquota(self, mailbox: str) -> None:
