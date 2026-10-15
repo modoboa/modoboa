@@ -73,94 +73,94 @@
         <!-- Single flex group: the quiet actions wrap to the next row as one
              unit instead of leaving orphans behind. -->
         <div class="d-flex align-center flex-shrink-0">
-        <template v-if="mailbox !== 'Scheduled'">
+          <template v-if="mailbox !== 'Scheduled'">
+            <v-btn
+              v-if="mailbox === constants.DRAFTS_FOLDER"
+              class="ml-1 tb-quiet"
+              variant="text"
+              icon="mdi-pencil"
+              size="small"
+              :title="$gettext('Edit draft')"
+              :aria-label="$gettext('Edit draft')"
+              @click="editDraft"
+            >
+            </v-btn>
+            <v-btn
+              v-if="mailbox === 'Trash'"
+              class="ml-1 tb-quiet"
+              variant="text"
+              icon="mdi-backup-restore"
+              size="small"
+              :title="$gettext('Restore to Inbox')"
+              :aria-label="$gettext('Restore to Inbox')"
+              :loading="working"
+              @click="restoreEmail"
+            >
+            </v-btn>
+            <v-btn
+              v-else-if="mailbox === 'Junk'"
+              class="ml-1 tb-quiet"
+              variant="text"
+              icon="mdi-thumb-up"
+              size="small"
+              :title="$gettext('Mark as not junk')"
+              :aria-label="$gettext('Mark as not junk')"
+              :loading="working"
+              @click="markEmailAsNotJunk"
+            >
+            </v-btn>
+            <v-btn
+              v-else
+              class="ml-1 tb-quiet"
+              variant="text"
+              icon="mdi-alert-octagon-outline"
+              size="small"
+              :title="$gettext('Mark as junk')"
+              :aria-label="$gettext('Mark as junk')"
+              :loading="working"
+              @click="markEmailAsJunk"
+            >
+            </v-btn>
+            <v-btn
+              class="ml-1 tb-quiet"
+              variant="text"
+              icon="mdi-trash-can"
+              size="small"
+              :title="$gettext('Delete')"
+              :aria-label="$gettext('Delete')"
+              :loading="working"
+              @click="deleteEmail"
+            >
+            </v-btn>
+          </template>
           <v-btn
-            v-if="mailbox === constants.DRAFTS_FOLDER"
             class="ml-1 tb-quiet"
             variant="text"
-            icon="mdi-pencil"
+            icon
             size="small"
-            :title="$gettext('Edit draft')"
-            :aria-label="$gettext('Edit draft')"
-            @click="editDraft"
+            :title="$gettext('More actions')"
+            :aria-label="$gettext('More actions')"
           >
+            <v-icon icon="mdi-cog" />
+            <v-menu activator="parent">
+              <v-list density="compact">
+                <v-list-item
+                  v-if="!enableLinks"
+                  :title="$gettext('Enable links')"
+                  @click="enableLinks = true"
+                />
+                <v-list-item
+                  v-else
+                  :title="$gettext('Disable links')"
+                  @click="enableLinks = false"
+                />
+                <v-list-item
+                  :title="$gettext('Display source')"
+                  @click="openEmailSourceDialog"
+                />
+              </v-list>
+            </v-menu>
           </v-btn>
-          <v-btn
-            v-if="mailbox === 'Trash'"
-            class="ml-1 tb-quiet"
-            variant="text"
-            icon="mdi-backup-restore"
-            size="small"
-            :title="$gettext('Restore to Inbox')"
-            :aria-label="$gettext('Restore to Inbox')"
-            :loading="working"
-            @click="restoreEmail"
-          >
-          </v-btn>
-          <v-btn
-            v-else-if="mailbox === 'Junk'"
-            class="ml-1 tb-quiet"
-            variant="text"
-            icon="mdi-thumb-up"
-            size="small"
-            :title="$gettext('Mark as not junk')"
-            :aria-label="$gettext('Mark as not junk')"
-            :loading="working"
-            @click="markEmailAsNotJunk"
-          >
-          </v-btn>
-          <v-btn
-            v-else
-            class="ml-1 tb-quiet"
-            variant="text"
-            icon="mdi-alert-octagon-outline"
-            size="small"
-            :title="$gettext('Mark as junk')"
-            :aria-label="$gettext('Mark as junk')"
-            :loading="working"
-            @click="markEmailAsJunk"
-          >
-          </v-btn>
-          <v-btn
-            class="ml-1 tb-quiet"
-            variant="text"
-            icon="mdi-trash-can"
-            size="small"
-            :title="$gettext('Delete')"
-            :aria-label="$gettext('Delete')"
-            :loading="working"
-            @click="deleteEmail"
-          >
-          </v-btn>
-        </template>
-        <v-btn
-          class="ml-1 tb-quiet"
-          variant="text"
-          icon
-          size="small"
-          :title="$gettext('More actions')"
-          :aria-label="$gettext('More actions')"
-        >
-          <v-icon icon="mdi-cog" />
-          <v-menu activator="parent">
-            <v-list density="compact">
-              <v-list-item
-                v-if="!enableLinks"
-                :title="$gettext('Enable links')"
-                @click="enableLinks = true"
-              />
-              <v-list-item
-                v-else
-                :title="$gettext('Disable links')"
-                @click="enableLinks = false"
-              />
-              <v-list-item
-                :title="$gettext('Display source')"
-                @click="openEmailSourceDialog"
-              />
-            </v-list>
-          </v-menu>
-        </v-btn>
         </div>
       </v-toolbar>
 

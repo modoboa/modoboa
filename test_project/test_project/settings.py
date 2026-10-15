@@ -208,7 +208,26 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 # oAuth2 settings
 
-OIDC_RSA_PRIVATE_KEY = os.environ.get("OIDC_RSA_PRIVATE_KEY", "")
+
+def _throwaway_oidc_key():
+    """A fresh RSA key for test runs that don't provide one.
+
+    Keeps the private key out of the repository (it used to be hardcoded
+    here) while still letting OIDC-dependent tests and load_initial_data
+    create the frontend application.
+    """
+    from cryptography.hazmat.primitives import serialization
+    from cryptography.hazmat.primitives.asymmetric import rsa
+
+    key = rsa.generate_private_key(public_exponent=65537, key_size=2048)
+    return key.private_bytes(
+        serialization.Encoding.PEM,
+        serialization.PrivateFormat.PKCS8,
+        serialization.NoEncryption(),
+    ).decode()
+
+
+OIDC_RSA_PRIVATE_KEY = os.environ.get("OIDC_RSA_PRIVATE_KEY") or _throwaway_oidc_key()
 
 OAUTH2_PROVIDER = {
     "OIDC_ENABLED": True,

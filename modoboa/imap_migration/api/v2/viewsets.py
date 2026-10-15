@@ -1,6 +1,8 @@
 """Viewsets for API V2 for imap_migration."""
 
 import imaplib
+import ipaddress
+import socket
 import ssl
 
 from rest_framework import response, filters, mixins, permissions, viewsets
@@ -12,6 +14,25 @@ from modoboa.lib.throttle import GetThrottleViewsetMixin
 
 from ... import models
 from . import serializers
+
+
+def resolves_to_public_address(address: str, port: int) -> bool:
+    """Tell if every address ``address`` resolves to is publicly routable.
+
+    check_connection opens a connection to a user-supplied host: without
+    this, a domain admin could use the server to probe services that only
+    listen on loopback or on the private network (SSRF). A host that does
+    not resolve counts as not public.
+    """
+    try:
+        infos = socket.getaddrinfo(address, port, type=socket.SOCK_STREAM)
+    except (OSError, UnicodeError):
+        return False
+    for info in infos:
+        ip = ipaddress.ip_address(info[4][0])
+        if not ip.is_global:
+            return False
+    return bool(infos)
 
 
 class EmailProviderViewSet(GetThrottleViewsetMixin, viewsets.ModelViewSet):
@@ -47,21 +68,12 @@ class EmailProviderViewSet(GetThrottleViewsetMixin, viewsets.ModelViewSet):
     @action(methods=["post"], detail=False)
     def check_connection(self, request, **kwargs):
         """check that provided information allow connection to imap server."""
-        import ipaddress
-        import socket
-
         serializer = serializers.CheckProviderSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         secured = serializer.data["secured"]
         address = serializer.data["address"]
         port = serializer.data["port"]
-        try:
-            infos = socket.getaddrinfo(address, port, socket.AF_UNSPEC, socket.SOCK_STREAM)
-            for info in infos:
-                ip = ipaddress.ip_address(info[4][0])
-                if ip.is_private or ip.is_loopback or ip.is_link_local or ip.is_reserved or ip.is_multicast:
-                    return response.Response({"status": "failed"}, 400)
-        except Exception:
+        if not resolves_to_public_address(address, port):
             return response.Response({"status": "failed"}, 400)
         try:
             if secured:
