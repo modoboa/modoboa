@@ -339,6 +339,8 @@ class FilterSetViewSetTestCase(PatcherMixin, ModoAPITestCase):
         ):
             resp = self.client.get(reverse("v2:filterset-list"))
         self.assertEqual(resp.status_code, 400)
+        # Empty errmsg is replaced by a generic message
+        self.assertTrue(resp.json()["error"])
 
     def test_disable_filter(self):
         self.authenticate()
@@ -360,18 +362,67 @@ class FilterSetViewSetTestCase(PatcherMixin, ModoAPITestCase):
         url = reverse("v2:filterset-enable-filter", args=["main_script", "unknown"])
         resp = self.client.post(url)
         self.assertEqual(resp.status_code, 404)
-        # We can't enable a filter which is not disabled
-        url = reverse("v2:filterset-enable-filter", args=["main_script", "test2"])
+        sclient = self.mock_client.return_value
+        enable_url = reverse(
+            "v2:filterset-enable-filter", args=["main_script", "test2"]
+        )
+        disable_url = reverse(
+            "v2:filterset-disable-filter", args=["main_script", "test2"]
+        )
+        # Already enabled: nothing to do
+        with mock.patch.object(sclient, "putscript") as putscript:
+            resp = self.client.post(enable_url)
+        self.assertEqual(resp.status_code, 204)
+        putscript.assert_not_called()
+        resp = self.client.post(disable_url)
+        self.assertEqual(resp.status_code, 204)
+        # Already disabled: nothing to do
+        with mock.patch.object(sclient, "putscript") as putscript:
+            resp = self.client.post(disable_url)
+        self.assertEqual(resp.status_code, 204)
+        putscript.assert_not_called()
+        resp = self.client.post(enable_url)
+        self.assertEqual(resp.status_code, 204)
+        self.assertIn("# Filter: test2\nif anyof", sclient.scripts["main_script"])
+
+    def test_move_filter(self):
+        self.authenticate()
+        sclient = self.mock_client.return_value
+        url = reverse("v2:filterset-move-filter-up", args=["main_script", "unknown"])
         resp = self.client.post(url)
         self.assertEqual(resp.status_code, 404)
-        # So we disable it
-        url = reverse("v2:filterset-disable-filter", args=["main_script", "test2"])
+        # First filter can't go up
+        url = reverse("v2:filterset-move-filter-up", args=["main_script", "test1"])
+        with mock.patch.object(sclient, "putscript") as putscript:
+            resp = self.client.post(url)
+        self.assertEqual(resp.status_code, 204)
+        putscript.assert_not_called()
+        url = reverse("v2:filterset-move-filter-down", args=["main_script", "test1"])
         resp = self.client.post(url)
         self.assertEqual(resp.status_code, 204)
-        # And we enable it again
-        url = reverse("v2:filterset-enable-filter", args=["main_script", "test2"])
-        resp = self.client.post(url)
-        self.assertEqual(resp.status_code, 204)
+        script = sclient.scripts["main_script"]
+        self.assertLess(script.index("Filter: test2"), script.index("Filter: test1"))
+
+    def test_sieve_client_logout(self):
+        self.authenticate()
+        sclient = self.mock_client.return_value
+        with mock.patch.object(sclient, "logout") as logout:
+            self.client.get(reverse("v2:filterset-list"))
+            logout.assert_called_once()
+            logout.reset_mock()
+            url = reverse("v2:filterset-get-filters", args=["unknown"])
+            resp = self.client.get(url)
+            self.assertEqual(resp.status_code, 404)
+            logout.assert_called_once()
+
+    def test_pushscript_size_in_bytes(self):
+        self.authenticate()
+        sclient = self.mock_client.return_value
+        url = reverse("v2:filterset-detail", args=["main_script"])
+        with mock.patch.object(sclient, "havespace", return_value=True) as havespace:
+            resp = self.client.put(url, {"content": "# é\nkeep;"}, format="json")
+        self.assertEqual(resp.status_code, 200)
+        havespace.assert_called_once_with("main_script", len(b"# \xc3\xa9\r\nkeep;"))
 
     def test_delete_filter(self):
         self.authenticate()
