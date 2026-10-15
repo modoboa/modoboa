@@ -9,6 +9,7 @@ from django.db.models.manager import Manager
 from django.utils.encoding import smart_str
 from django.utils.translation import gettext as _, gettext_lazy
 
+from modoboa.core import constants as core_constants
 from modoboa.core.models import User
 from modoboa.lib import exceptions as lib_exceptions
 from modoboa.lib import dovecot
@@ -284,9 +285,11 @@ class Mailbox(mixins.MessageLimitMixin, AdminObject):
         from modoboa.lib.permissions import grant_access_to_object
 
         super().post_create(creator)
+        # Rely on the role and not on permissions: the latter are
+        # cached on the user instance and could be outdated.
         conditions = (
             creator.has_perm("admin.add_mailbox"),
-            not self.user.has_perm("admin.add_domain"),
+            self.user.role not in core_constants.PRIVILEGED_ROLES,
         )
         if all(conditions):
             # An admin is creating a new mailbox. Give

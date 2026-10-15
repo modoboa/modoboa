@@ -15,6 +15,13 @@ ROLES = (
     SUPERADMINS_ROLE,
 )
 
+# Roles ordered by importance: an account must never be able to
+# manage another account with a higher rank.
+ROLE_RANKS = {role[0]: rank for rank, role in enumerate(ROLES)}
+
+# Accounts with these roles are never managed by domain administrators.
+PRIVILEGED_ROLES = ["SuperAdmins", "Resellers"]
+
 ADMIN_GROUPS = [
     "SuperAdmins",
     "Resellers",

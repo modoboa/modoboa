@@ -56,7 +56,7 @@ def get_account_roles(user, account=None):
     return sorted(result, key=lambda role: role[1])
 
 
-def grant_access_to_object(user, obj, is_owner=False):
+def grant_access_to_object(user, obj, is_owner=False, superusers=None):
     """Grant access to an object for a given user
 
     There are two different cases where we want to grant access to an
@@ -71,19 +71,28 @@ def grant_access_to_object(user, obj, is_owner=False):
     :param user: a ``User`` object
     :param obj: an admin. object (Domain, Mailbox, ...)
     :param is_owner: the user is the unique object's owner
+    :param superusers: pre-fetched super users, to avoid querying them
+                       again on each call when granting access in bulk
     """
     ct = ContentType.objects.get_for_model(obj)
     entry, created = ObjectAccess.objects.get_or_create(
-        user=user, content_type=ct, object_id=obj.id
+        user=user, content_type=ct, object_id=obj.id, defaults={"is_owner": is_owner}
     )
-    entry.is_owner = is_owner
-    entry.save()
+    if entry.is_owner != is_owner:
+        entry.is_owner = is_owner
+        entry.save(update_fields=["is_owner"])
     if not created or not is_owner:
         return
-    for su in User.objects.filter(is_superuser=True):
-        if su == user:
-            continue
-        ObjectAccess.objects.get_or_create(user=su, content_type=ct, object_id=obj.id)
+    if superusers is None:
+        superusers = User.objects.filter(is_superuser=True)
+    ObjectAccess.objects.bulk_create(
+        [
+            ObjectAccess(user=su, content_type=ct, object_id=obj.id)
+            for su in superusers
+            if su != user
+        ],
+        ignore_conflicts=True,
+    )
 
 
 def grant_access_to_objects(user, objects, ct):
@@ -98,6 +107,60 @@ def grant_access_to_objects(user, objects, ct):
     """
     for obj in objects:
         ObjectAccess.objects.get_or_create(user=user, content_type=ct, object_id=obj.id)
+
+
+def revoke_access_from_lower_roles(account):
+    """Revoke the access held on an account by accounts with a lower role.
+
+    The access held on the account's mailbox (if any) is also
+    revoked. If one of the revoked entries was the owner, ownership
+    is given to the first active super admin found.
+
+    :param account: a ``User`` instance
+    """
+    objects = [account]
+    mailbox = getattr(account, "mailbox", None)
+    if mailbox is not None:
+        objects.append(mailbox)
+    for obj in objects:
+        ct = ContentType.objects.get_for_model(obj)
+        entries = (
+            ObjectAccess.objects.filter(
+                content_type=ct, object_id=obj.pk, user__is_superuser=False
+            )
+            .exclude(user=account)
+            .select_related("user")
+        )
+        revoked = [entry for entry in entries if entry.user.is_outranked_by(account)]
+        if not revoked:
+            continue
+        ObjectAccess.objects.filter(pk__in=[entry.pk for entry in revoked]).delete()
+        if not any(entry.is_owner for entry in revoked):
+            continue
+        new_owner = (
+            User.objects.filter(is_superuser=True, is_active=True)
+            .exclude(pk=account.pk)
+            .first()
+        )
+        if new_owner is not None:
+            grant_access_to_object(new_owner, obj, is_owner=True)
+
+
+def exclude_higher_roles(user, queryset):
+    """Remove the accounts with a higher role than user's from queryset.
+
+    :param user: a ``User`` instance
+    :param queryset: a ``User`` queryset
+    :return: the filtered queryset
+    """
+    if user.is_superuser:
+        return queryset
+    higher_roles = [
+        role
+        for role, rank in core_constants.ROLE_RANKS.items()
+        if rank > user.role_rank
+    ]
+    return queryset.exclude(is_superuser=True).exclude(groups__name__in=higher_roles)
 
 
 def ungrant_access_to_object(obj, user=None):

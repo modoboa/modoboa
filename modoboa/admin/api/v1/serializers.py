@@ -187,8 +187,15 @@ class DomainAliasSerializer(serializers.ModelSerializer):
         return value
 
     def validate_name(self, value):
-        """Lower case name."""
-        return value.lower()
+        """Check name constraints."""
+        value = value.lower()
+        try:
+            validators.validate_hostname(value)
+        except ValidationError:
+            raise serializers.ValidationError(_("Enter a valid domain name")) from None
+        if models.Domain.objects.filter(name=value).exists():
+            raise serializers.ValidationError(_("domain with this name already exists"))
+        return value
 
     def create(self, validated_data):
         """Custom creation."""
@@ -479,9 +486,12 @@ class WritableAccountSerializer(AccountSerializer):
             password = validated_data.pop("password")
         user.set_password(password)
         user.save(creator=creator)
+        # The role must be set before the mailbox is created since it
+        # decides which administrators get access to the account.
+        user.role = role
         if mailbox_data:
             self._create_mailbox(creator, user, mailbox_data)
-        user.role = role
+            user.save(update_fields=["email"])
         self.set_permissions(user, domains)
         return user
 

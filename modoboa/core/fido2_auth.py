@@ -25,7 +25,7 @@ def get_creds_from_user(user_id: int) -> dict:
 
 
 def begin_registration(request):
-    server = create_fido2_server(request.localconfig.site.domain)
+    server = create_fido2_server(request.get_host())
     options, state = server.register_begin(
         PublicKeyCredentialUserEntity(
             id=request.user.pk,
@@ -40,7 +40,7 @@ def begin_registration(request):
 
 
 def end_registration(request):
-    server = create_fido2_server(request.localconfig.site.domain)
+    server = create_fido2_server(request.get_host())
     auth_data = server.register_complete(
         request.session.pop("fido2_state"), request.data
     )
@@ -48,7 +48,7 @@ def end_registration(request):
 
 
 def begin_authentication(request, user_id: int):
-    server = create_fido2_server(request.localconfig.site.domain)
+    server = create_fido2_server(request.get_host())
     return server.authenticate_begin(list(get_creds_from_user(user_id).values()))
 
 

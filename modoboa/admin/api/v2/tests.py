@@ -260,6 +260,22 @@ domainalias; domalias1.com; domain1.com; True
         self.assertFalse(dom.enabled)
         self.assertTrue(admin.is_owner(dom))
 
+    def test_domain_alias_rejects_domain_name(self):
+        """A domain alias can't take the name of an existing domain."""
+        target = models.Domain.objects.get(name="test.com")
+        url = reverse("v2:domain_alias-list")
+        resp = self.client.post(
+            url, {"name": "test2.com", "target": target.pk}, format="json"
+        )
+        self.assertEqual(resp.status_code, 400)
+        resp = self.client.post(
+            url, {"name": "parked.example", "target": target.pk}, format="json"
+        )
+        self.assertEqual(resp.status_code, 201)
+        url = reverse("v2:domain_alias-detail", args=[resp.json()["pk"]])
+        resp = self.client.patch(url, {"name": "test2.com"}, format="json")
+        self.assertEqual(resp.status_code, 400)
+
     def test_domains_import_rejects_invalid_name(self):
         """CSV import must enforce hostname validation like the API path."""
         f = ContentFile(
@@ -905,6 +921,59 @@ dlist; dlist@test.com; True; user1@test.com; user@extdomain.com
             dlist.aliasrecipient_set.filter(address="user@extdomain.com").exists()
         )
         self.assertTrue(admin.is_owner(dlist))
+
+    def test_import_domainadmin_non_owned_domain(self):
+        """A reseller must not grant admin rights on a domain it cannot access.
+
+        Regression test for cross-tenant privilege escalation: the extra
+        administered domains columns of an account row were only checked
+        for existence.
+        """
+        self.set_global_parameter("enable_admin_limits", False, app="limits")
+        reseller = core_factories.UserFactory(
+            username="reseller", groups=("Resellers",)
+        )
+        # The reseller owns test.com but not test2.com.
+        grant_access_to_object(
+            reseller, models.Domain.objects.get(name="test.com"), is_owner=True
+        )
+        token = Token.objects.create(user=reseller)
+        self.client.credentials(HTTP_AUTHORIZATION="Token " + token.key)
+        url = reverse("v2:identities-import-from-csv")
+        test2 = models.Domain.objects.get(name="test2.com")
+        rows = [
+            # With a mailbox in an owned domain
+            "account;pwn@test.com;Toto12345;P;W;True;DomainAdmins;pwn@test.com;0;test2.com",
+            # Without any mailbox
+            "account;pwn2;Toto12345;P;W;True;DomainAdmins;;0;test2.com",
+        ]
+        for row in rows:
+            f = ContentFile(row, name="identities.csv")
+            resp = self.client.post(
+                url, {"sourcefile": f, "sepchar": ";", "crypt_passwords": True}
+            )
+            self.assertEqual(resp.status_code, 200)
+            self.assertFalse(resp.json()["status"])
+        self.assertFalse(
+            core_models.User.objects.filter(
+                username__in=["pwn@test.com", "pwn2"]
+            ).exists()
+        )
+        self.assertEqual(
+            [admin.username for admin in test2.admins], ["admin@test2.com"]
+        )
+
+        # An owned domain is still accepted.
+        f = ContentFile(
+            "account;pwn@test.com;Toto12345;P;W;True;DomainAdmins;pwn@test.com;0;test.com",
+            name="identities.csv",
+        )
+        resp = self.client.post(
+            url, {"sourcefile": f, "sepchar": ";", "crypt_passwords": True}
+        )
+        self.assertTrue(resp.json()["status"])
+        da = core_models.User.objects.get(username="pwn@test.com")
+        self.assertIn(da, models.Domain.objects.get(name="test.com").admins)
 
     def test_export(self):
         response = self.client.get(reverse("v2:identities-export"))

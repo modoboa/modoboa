@@ -21,6 +21,7 @@ from rest_framework.exceptions import PermissionDenied
 from modoboa.admin.api.v1 import viewsets as v1_viewsets
 from modoboa.core import constants as core_constants, models as core_models
 from modoboa.lib import pagination
+from modoboa.lib import permissions as lib_permissions
 from modoboa.lib import renderers as lib_renderers
 from modoboa.lib import signals as lib_signals
 from modoboa.lib import viewsets as lib_viewsets
@@ -217,7 +218,9 @@ class AccountViewSet(v1_viewsets.AccountViewSet):
             content_type=ContentType.objects.get_for_model(user)
         ).values_list("object_id", flat=True)
         return (
-            core_models.User.objects.filter(pk__in=ids)
+            lib_permissions.exclude_higher_roles(
+                user, core_models.User.objects.filter(pk__in=ids)
+            )
             .select_related("mailbox", "mailbox__domain")
             .prefetch_related(
                 "groups", "mailbox__aliasrecipient_set__alias", "userobjectlimit_set"

@@ -6,6 +6,7 @@ import httmock
 from rq import SimpleWorker
 
 from django.core import management
+from django.test import TestCase
 from django.urls import reverse
 from django.utils import timezone
 
@@ -18,6 +19,7 @@ from modoboa.lib.tests import ModoAPITestCase
 from . import factories
 from . import mocks
 from . import models
+from .lib.carddav import _safe_xml
 
 
 class TestDataMixin:
@@ -393,3 +395,25 @@ class ImportTestCase(TestDataMixin, ModoAPITestCase):
         self.assertEqual(address.contact.first_name, "Toto Tata")
         self.assertEqual(address.contact.addressbook.user.email, "user@test.com")
         self.assertEqual(address.contact.address, "Street 1 Street 2")
+
+
+class CardDavSecurityTestCase(TestCase):
+    """Verify that the CardDAV XML parser is hardened against XML attacks (#1556)."""
+
+    def test_safe_xml_rejects_entity_expansion(self):
+        """Entity definitions must not be resolved."""
+        payload = (
+            b'<?xml version="1.0"?>'
+            b'<!DOCTYPE foo [<!ENTITY xxe "INJECTED">]>'
+            b"<root>&xxe;</root>"
+        )
+        element = _safe_xml(payload)
+        self.assertIsNone(element.text)
+
+    def test_safe_xml_parses_valid_document(self):
+        """Valid XML must still parse correctly."""
+        payload = b'<d:multistatus xmlns:d="DAV:"><d:response><d:href>/x</d:href></d:response></d:multistatus>'
+        element = _safe_xml(payload)
+        children = list(element.iterchildren())
+        self.assertEqual(len(children), 1)
+        self.assertEqual(children[0].tag, "{DAV:}response")
