@@ -75,6 +75,8 @@ class DAVClientMock:
     """Mock class for DAVClient instance."""
 
     url = URL.objectify("http://localhost")
+    #: caldav >= 3.4 reads client.features before PROPPATCH (None = no settle delay)
+    features = None
 
     def mkcalendar(self, url):
         return True
