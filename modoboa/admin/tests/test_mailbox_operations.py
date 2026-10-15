@@ -124,6 +124,81 @@ class MailboxOperationTestCase(ModoAPITestCase):
         )
         self.assertIn("Permission denied", alarm.title)
 
+    @staticmethod
+    def _make_unreadable(target):
+        """Mock os.stat to raise PermissionError for target only (portable:
+
+        a chmod-based fixture would not fail for root, under which tests
+        commonly run).
+        """
+        real_stat = os.stat
+
+        def fake_stat(path, *args, **kwargs):
+            if os.fspath(path) == target:
+                raise PermissionError(13, "Permission denied")
+            return real_stat(path, *args, **kwargs)
+
+        return mock.patch("os.stat", side_effect=fake_stat)
+
+    @mock.patch("modoboa.admin.models.Mailbox.mail_home")
+    def test_rename_account_source_unreadable_keeps_operation(self, mail_home_mock):
+        """Unreadable (not missing) source: operation stays queued, no alarm."""
+        mb, new_path = self._rename_admin(mail_home_mock)
+        source = models.MailboxOperation.objects.get().argument
+        with self._make_unreadable(source):
+            jobs.handle_mailbox_operations()
+        self.assertTrue(models.MailboxOperation.objects.exists())
+        self.assertTrue(os.path.exists(source))
+        self.assertFalse(
+            models.Alarm.objects.filter(
+                mailbox=mb, internal_name="mailbox_rename_failed"
+            ).exists()
+        )
+
+    @mock.patch("modoboa.admin.models.Mailbox.mail_home")
+    def test_delete_account_source_unreadable_keeps_operation(self, mail_home_mock):
+        """Unreadable (not missing) folder: delete stays queued for retry."""
+        path = f"{self.workdir}/test.com/admin"
+        mail_home_mock.__get__ = mock.Mock(return_value=path)
+        mb = models.Mailbox.objects.select_related("user").get(
+            address="admin", domain__name="test.com"
+        )
+        self.client.post(
+            reverse("v2:account-delete", args=[mb.user.pk]), {}, format="json"
+        )
+        source = models.MailboxOperation.objects.get().argument
+        with self._make_unreadable(source):
+            jobs.handle_mailbox_operations()
+        self.assertTrue(models.MailboxOperation.objects.exists())
+        self.assertTrue(os.path.exists(path))
+
+    @mock.patch("modoboa.admin.models.Mailbox.mail_home")
+    def test_delete_account_rmtree_failure_keeps_operation(self, mail_home_mock):
+        """Failed rmtree: operation stays queued instead of being dropped."""
+        path = f"{self.workdir}/test.com/admin"
+        mail_home_mock.__get__ = mock.Mock(return_value=path)
+        mb = models.Mailbox.objects.select_related("user").get(
+            address="admin", domain__name="test.com"
+        )
+        self.client.post(
+            reverse("v2:account-delete", args=[mb.user.pk]), {}, format="json"
+        )
+
+        def fake_rmtree(target, ignore_errors=False, onerror=None):
+            # Like the real rmtree with an onerror handler: report through the
+            # callback instead of raising.
+            if onerror is not None:
+                onerror(
+                    os.rmdir,
+                    target,
+                    (OSError, OSError(13, "Permission denied"), None),
+                )
+
+        with mock.patch("shutil.rmtree", side_effect=fake_rmtree):
+            jobs.handle_mailbox_operations()
+        self.assertTrue(models.MailboxOperation.objects.exists())
+        self.assertTrue(os.path.exists(path))
+
     @mock.patch("modoboa.admin.models.Mailbox.mail_home")
     def test_pending_operations_purged_when_disabled(self, mail_home_mock):
         """Disabling handle_mailboxes drops pending operations."""
