@@ -64,3 +64,14 @@ DISPLAY_MODES = [
     (DisplayMode.PLAIN.value, "text"),
     (DisplayMode.HTML.value, "html"),
 ]
+
+
+class ListingMode(Enum):
+    FLAT = "flat"
+    THREADED = "threaded"
+
+
+LISTING_MODES = [
+    (ListingMode.FLAT.value, _("Messages")),
+    (ListingMode.THREADED.value, _("Conversations")),
+]
