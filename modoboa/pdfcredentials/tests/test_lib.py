@@ -46,12 +46,20 @@ class PDFCredentialsLibTestCase(ModoAPITestCase):
 
     def test_storage_dir_setting(self):
         """Test multiple possibilities with storage_dir setup"""
-        self.set_global_parameter("storage_dir", "/I_DONT_EXIST")
+        # A directory that can't be created, even by root (who could create
+        # "/I_DONT_EXIST" and left it behind): a path under a regular file.
+        blocker = os.path.join(self.workdir, "not-a-directory")
+        with open(blocker, "w"):
+            pass
+        self.set_global_parameter("storage_dir", os.path.join(blocker, "pdf"))
         with self.assertRaises(InternalError):
             lib.init_storage_dir()
-        self.set_global_parameter("storage_dir", "/root")
-        with self.assertRaises(InternalError):
-            lib.init_storage_dir()
+        if os.geteuid() != 0:
+            # Root can write anywhere: an unwritable directory only exists
+            # for a regular user (CI)
+            self.set_global_parameter("storage_dir", "/root")
+            with self.assertRaises(InternalError):
+                lib.init_storage_dir()
         self.set_global_parameter("storage_dir", self.workdir)
         self.assertIsNone(lib.init_storage_dir())
 
