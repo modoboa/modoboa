@@ -157,16 +157,35 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
-  async function $reset() {
+  // Set once the logout has started: requests still in flight answer 401
+  // and call $reset() again (api/repository.js). A second signoutRedirect()
+  // would find the user already removed, go out without id_token_hint and
+  // make the provider ask for a confirmation the user already gave.
+  let loggingOut = false
+
+  async function logout() {
+    if (loggingOut) {
+      return
+    }
+    loggingOut = true
+    // Read before anything is cleared: the ID token lets the provider end
+    // the session without asking again (OIDC RP-Initiated Logout).
+    const user = await manager.getUser().catch(() => null)
     delete repository.defaults.headers.common.Authorization
     authUser.value = {}
     isAuthenticated.value = false
     if (import.meta.env.VITE_MOCK_API || globalThis.__MODOBOA_MOCK_API__) {
+      loggingOut = false
       router.push({ name: 'Login' })
       return
     }
-    //TODO: Call the logout callback of OIDC and log out from the IdP
-    manager.signoutRedirect()
+    await manager.signoutRedirect(
+      user?.id_token ? { id_token_hint: user.id_token } : {}
+    )
+  }
+
+  async function $reset() {
+    await logout()
   }
 
   async function updateAccount(data) {
@@ -196,6 +215,7 @@ export const useAuthStore = defineStore('auth', () => {
     authUser,
     accountLanguage,
     completeLogin,
+    logout,
     isAuthenticated,
     userHasMailbox,
     fidoCreds,
