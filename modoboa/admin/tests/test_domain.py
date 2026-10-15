@@ -151,8 +151,16 @@ class DKIMTestCase(ModoAPITestCase):
         response = self.client.post(url, values, format="json")
         self.assertEqual(response.status_code, 201)
 
-        # Try generating a key to a protected directory
-        self.set_global_parameter("dkim_keys_storage_dir", "/I_DONT_EXIST")
+        # Try generating a key to a directory that can't be written. Not
+        # "/I_DONT_EXIST": run as root, the test created it at the root of
+        # the filesystem and left a key there. A path under a regular file
+        # fails for root too (ENOTDIR) and stays inside the work directory.
+        blocker = os.path.join(self.workdir, "not-a-directory")
+        with open(blocker, "w"):
+            pass
+        self.set_global_parameter(
+            "dkim_keys_storage_dir", os.path.join(blocker, "keys")
+        )
         call_command("modo", "manage_dkim_keys")
         domain = Domain.objects.get(name=values["name"])
 
