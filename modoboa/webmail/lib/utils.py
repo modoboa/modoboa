@@ -1,9 +1,12 @@
 """Misc. utilities."""
 
+import base64
+import binascii
 from email.header import Header
 from email.mime.image import MIMEImage
-from email.utils import formatdate, make_msgid
+from email.utils import formatdate, getaddresses, make_msgid
 from importlib.metadata import version
+import hashlib
 import os
 import re
 from pathlib import Path
@@ -14,11 +17,15 @@ import lxml.html
 
 from django.conf import settings
 from django.core.mail import EmailMessage, EmailMultiAlternatives
+from django.core.exceptions import ValidationError
 from django.core.mail.utils import DNS_NAME
+from django.core.validators import validate_email
 from django.utils.html import escape
 from django.utils.translation import gettext as _
 
 from modoboa.core import models as core_models
+from modoboa.webmail import constants
+from modoboa.webmail.lib import flowed
 from modoboa.webmail.lib.attachments import (
     create_mail_attachment,
     get_attachments_dir,
@@ -67,7 +74,8 @@ class _PlainTextWriter:
         self.pending_blank: int | None = None
 
     def _prefix(self, depth: int) -> str:
-        return "> " * depth
+        # ">>" for nested quotes, as RFC 3676 (format=flowed) wants it
+        return ">" * depth + " " if depth else ""
 
     def write(self, text: str, preformatted: bool = False) -> None:
         if not preformatted:
@@ -90,8 +98,14 @@ class _PlainTextWriter:
     def end_line(self, force: bool = False) -> None:
         if not self.current and not force:
             return
-        line = self._prefix(self.quote_depth) + self.current.rstrip()
-        self.lines.append(line.rstrip())
+        content = self.current.rstrip()
+        line = self._prefix(self.quote_depth) + content
+        if content == "--":
+            # The signature separator keeps its trailing space (RFC 3676)
+            line += " "
+        else:
+            line = line.rstrip()
+        self.lines.append(line)
         self.current = ""
 
     def end_paragraph(self) -> None:
@@ -122,7 +136,7 @@ def html2plaintext(content: str) -> str:
     """HTML to plain text translation.
 
     The text keeps the layout of the document: paragraphs, line breaks,
-    lists and quotes ("> " prefix). Link targets follow their text.
+    lists and quotes (">" prefix). Link targets follow their text.
 
     :param content: some HTML content
     """
@@ -286,6 +300,43 @@ def decode_payload(encoding, payload):
     return payload
 
 
+# An image embedded into the HTML content
+_DATA_URI_RE = re.compile(r"data:(image/[\w.+-]+);base64,(.*)", re.I | re.S)
+
+
+def _data_uri_image(src: str, parts: dict) -> str | None:
+    """Turn an image given as a data: URI into a part of the message.
+
+    The editor shows the embedded images of replies, forwards and drafts
+    as data: URIs, that many clients refuse to display.
+
+    :param parts: the parts already created, by Content-ID (the same image
+        is attached once)
+    :return: the Content-ID of the part, None if the URI is not a valid image
+    """
+    match = _DATA_URI_RE.match(src)
+    if not match:
+        return None
+    content_type = match.group(1).lower()
+    if content_type not in constants.INLINE_IMAGE_MIME_TYPES:
+        return None
+    try:
+        payload = base64.b64decode(match.group(2), validate=False)
+    except (binascii.Error, ValueError):
+        return None
+    if not payload:
+        return None
+    subtype = content_type.split("/")[1]
+    cid = f"{hashlib.sha256(payload).hexdigest()[:24]}@modoboa"
+    if cid not in parts:
+        part = MIMEImage(payload, _subtype=subtype)
+        part["Content-ID"] = f"<{cid}>"
+        part.set_param("name", f"{cid.split('@')[0]}.{subtype}")
+        part["Content-Disposition"] = "inline"
+        parts[cid] = part
+    return cid
+
+
 def make_body_images_inline(body: str) -> tuple[str, list]:
     """Look for images inside the body and make them inline.
 
@@ -300,6 +351,7 @@ def make_body_images_inline(body: str) -> tuple[str, list]:
     """
     html = lxml.html.fromstring(body)
     parts = []
+    embedded: dict = {}
     root = Path(settings.BASE_DIR).resolve()
     # Never embed private files: attachments of any user, and the legacy
     # webmail media directory (inline images and uploads of other users).
@@ -310,6 +362,11 @@ def make_body_images_inline(body: str) -> tuple[str, list]:
     for tag in html.iter("img"):
         src = tag.get("src")
         if src is None:
+            continue
+        if src[:5].lower() == "data:":
+            cid = _data_uri_image(src, embedded)
+            if cid is not None:
+                tag.set("src", f"cid:{cid}")
             continue
         o = urlparse(src)
         # Only handle local references, never remote URLs.
@@ -341,7 +398,36 @@ def make_body_images_inline(body: str) -> tuple[str, list]:
         part.replace_header("Content-Type", f'{part["Content-Type"]}; name="{fname}"')
         part["Content-Disposition"] = "inline"
         parts.append(part)
+    parts += embedded.values()
     return lxml.html.tostring(html, encoding="unicode"), parts
+
+
+def _set_flowed(msg) -> None:
+    """Declare the text part of a MIME message as format=flowed."""
+    for part in msg.walk():
+        if part.get_content_type() == "text/plain" and not part.get(
+            "Content-Disposition"
+        ):
+            part.set_param("format", "flowed")
+            return
+
+
+class FlowedEmailMessage(EmailMessage):
+    """A message whose text is sent as format=flowed (RFC 3676)."""
+
+    def message(self, *args, **kwargs):
+        msg = super().message(*args, **kwargs)
+        _set_flowed(msg)
+        return msg
+
+
+class FlowedEmailMultiAlternatives(EmailMultiAlternatives):
+    """A message whose text alternative is sent as format=flowed."""
+
+    def message(self, *args, **kwargs):
+        msg = super().message(*args, **kwargs)
+        _set_flowed(msg)
+        return msg
 
 
 def html_msg(body: str) -> EmailMultiAlternatives:
@@ -357,8 +443,8 @@ def html_msg(body: str) -> EmailMultiAlternatives:
     else:
         tbody = ""
         images = []
-    msg = EmailMultiAlternatives()
-    msg.body = tbody
+    msg = FlowedEmailMultiAlternatives()
+    msg.body = flowed.encode(tbody)
     msg.attach_alternative(body, "text/html")
     for img in images:
         msg.attach(img)
@@ -367,9 +453,42 @@ def html_msg(body: str) -> EmailMultiAlternatives:
 
 def plain_msg(body: str) -> EmailMessage:
     """Create a simple text message."""
-    msg = EmailMessage()
-    msg.body = body
+    msg = FlowedEmailMessage()
+    msg.body = flowed.encode(body)
     return msg
+
+
+def format_address(name: str, address: str) -> str:
+    """Format a recipient for a header, its name quoted."""
+    if not name:
+        return address
+    name = name.replace("\\", "\\\\").replace('"', '\\"')
+    return f'"{name}" <{address}>'
+
+
+def parse_recipient(value: str) -> str | None:
+    """Normalize a recipient given as "address" or "Name <address>".
+
+    :return: the formatted recipient, None if it is not a valid one
+    """
+    pairs = getaddresses([value])
+    if len(pairs) != 1:
+        return None
+    name, address = pairs[0]
+    try:
+        validate_email(address)
+    except ValidationError:
+        return None
+    return format_address(name.strip(), address)
+
+
+def split_recipients(value: str) -> list[str]:
+    """Split recipients stored as a header value."""
+    return [
+        format_address(name, address)
+        for name, address in getaddresses([value])
+        if address
+    ]
 
 
 def format_sender_address(user: core_models.User, address: str) -> str:
@@ -430,6 +549,18 @@ def build_message_id(sender: str) -> str:
     except UnicodeError:
         domain = ""
     return make_msgid(domain=domain or str(DNS_NAME))
+
+
+def message_copy(msg: EmailMessage):
+    """Return the MIME message to store into a folder of the user.
+
+    Django never writes Bcc into the MIME message, as it is sent: the copy
+    keeps it, so that the user knows who received the message.
+    """
+    result = msg.message()
+    if msg.bcc:
+        result["Bcc"] = ", ".join(msg.bcc)
+    return result
 
 
 def create_message(

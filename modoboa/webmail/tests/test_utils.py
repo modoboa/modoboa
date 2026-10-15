@@ -184,3 +184,37 @@ class ParseBccTestCase(SimpleTestCase):
             [rcpt["address"] for rcpt in result],
             ["hidden@example.test", "other@example.test"],
         )
+
+
+class DataUriImagesTestCase(SimpleTestCase):
+    """Images of the editor given as data: URIs become parts of the message."""
+
+    def _uri(self, content_type="image/png", payload=PNG_BYTES):
+        return f"data:{content_type};base64,{base64.b64encode(payload).decode()}"
+
+    def test_data_uri_becomes_a_part(self):
+        body = f'<p><img src="{self._uri()}"></p>'
+        html, parts = utils.make_body_images_inline(body)
+        self.assertEqual(len(parts), 1)
+        cid = parts[0]["Content-ID"].strip("<>")
+        self.assertIn(f'src="cid:{cid}"', html)
+        self.assertNotIn("data:", html)
+        self.assertEqual(parts[0].get_content_type(), "image/png")
+        self.assertEqual(parts[0].get_payload(decode=True), PNG_BYTES)
+
+    def test_same_image_attached_once(self):
+        uri = self._uri()
+        html, parts = utils.make_body_images_inline(
+            f'<p><img src="{uri}"><img src="{uri}"></p>'
+        )
+        self.assertEqual(len(parts), 1)
+
+    def test_invalid_images_are_ignored(self):
+        for uri in (
+            self._uri("image/svg+xml", b"<svg/>"),
+            self._uri("text/html", b"<p>x</p>"),
+            "data:image/png;base64,",
+        ):
+            with self.subTest(uri=uri[:30]):
+                html, parts = utils.make_body_images_inline(f'<p><img src="{uri}"></p>')
+                self.assertEqual(parts, [])

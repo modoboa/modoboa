@@ -66,6 +66,17 @@ DISPLAY_MODES = [
 ]
 
 
+class SignaturePosition(Enum):
+    ABOVE = "above"
+    BELOW = "below"
+
+
+SIGNATURE_POSITIONS = [
+    (SignaturePosition.ABOVE.value, _("Above the quoted message")),
+    (SignaturePosition.BELOW.value, _("Below the quoted message")),
+]
+
+
 class ListingMode(Enum):
     FLAT = "flat"
     THREADED = "threaded"

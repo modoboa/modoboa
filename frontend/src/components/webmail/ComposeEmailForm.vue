@@ -226,7 +226,7 @@
             v-if="showCcField"
             v-model="form.cc"
             :items="contacts"
-            item-title="display_name"
+            :item-title="(item) => getItemTitle(item)"
             return-object
             :label="$gettext('Cc')"
             :placeholder="$gettext('Provide one or more addresses')"
@@ -246,7 +246,7 @@
             v-if="showBccField"
             v-model="form.bcc"
             :items="contacts"
-            item-title="display_name"
+            :item-title="(item) => getItemTitle(item)"
             return-object
             :label="$gettext('Bcc')"
             :placeholder="$gettext('Provide one or more addresses')"
@@ -428,6 +428,14 @@ const toggleHtmlMode = async () => {
   }
 }
 
+// "Name <address>" when the name is known: the API keeps it
+const formatRecipient = (rcpt) => {
+  if (!rcpt.name) {
+    return rcpt.address
+  }
+  return `"${rcpt.name.replace(/(["\\])/g, '\\$1')}" <${rcpt.address}>`
+}
+
 // Is this one of the addresses the user can send from (aliases included)?
 const isUserAddress = (address) => {
   const value = address.toLowerCase()
@@ -455,6 +463,20 @@ const getDefaultSender = (originalEmail) => {
   return allowedSenders.value[0]?.address || authStore.authUser.username
 }
 
+// Leave room to write before the signature, and before or after the
+// quoted message
+const addSignature = (body, signature, format, above) => {
+  const space = format === 'html' ? '<p></p>' : '\n\n'
+  if (!body) {
+    return space + signature
+  }
+  if (above) {
+    // Paragraphs separate the signature from the quoted message in HTML
+    return space + signature + (format === 'html' ? '' : '\n\n') + body
+  }
+  return body + space + signature
+}
+
 // A new message, a reply or a forward
 const initForm = async (session, originalEmail) => {
   form.value = {
@@ -466,21 +488,31 @@ const initForm = async (session, originalEmail) => {
   const format = originalEmail?.body_format || session.editor_format
   let body = ''
   if (originalEmail) {
+    let to = []
     if (!props.forward) {
-      // Reply: address every Reply-To address if any, the sender otherwise
-      // (recipients make no sense when forwarding — the whole point is
-      // picking new ones).
-      form.value.to = originalEmail.reply_to?.length
-        ? originalEmail.reply_to.map((rcpt) => rcpt.address)
-        : [originalEmail.from_address.address]
+      if (originalEmail.reply_to?.length) {
+        // Reply to every Reply-To address
+        to = originalEmail.reply_to
+      } else if (isUserAddress(originalEmail.from_address.address)) {
+        // One's own message: reply to its recipients, not to oneself
+        to = originalEmail.to
+      } else {
+        to = [originalEmail.from_address]
+      }
+      // "Name <address>" values are kept by the API
+      form.value.to = to.map(formatRecipient)
       if (props.replyAll) {
-        // Bare addresses only: the API rejects "Name <address>" values
-        const excluded = new Set(form.value.to || [])
-        const addresses = [...originalEmail.to, ...(originalEmail.cc || [])]
-          .map((rcpt) => rcpt.address)
-          .filter((address) => !excluded.has(address) && !isUserAddress(address))
-        form.value.cc = [...new Set(addresses)]
-        showCcField.value = form.value.cc.length > 0
+        const excluded = new Set(to.map((rcpt) => rcpt.address.toLowerCase()))
+        const cc = []
+        for (const rcpt of [...originalEmail.to, ...(originalEmail.cc || [])]) {
+          const address = rcpt.address.toLowerCase()
+          if (!excluded.has(address) && !isUserAddress(address)) {
+            excluded.add(address)
+            cc.push(formatRecipient(rcpt))
+          }
+        }
+        form.value.cc = cc
+        showCcField.value = cc.length > 0
       }
       if (originalEmail.message_id) {
         form.value.in_reply_to = originalEmail.message_id
@@ -499,7 +531,12 @@ const initForm = async (session, originalEmail) => {
     if (session.editor_format !== format) {
       signature = await convertBody(signature, session.editor_format, format)
     }
-    body += signature
+    body = addSignature(
+      body,
+      signature,
+      format,
+      session.signature_position !== 'below'
+    )
   }
   form.value.body = body
   htmlMode.value = format === 'html'
@@ -513,14 +550,14 @@ const initFormFromDraft = (session, draft) => {
     request_mdn: false,
   }
   if (draft.to?.length) {
-    form.value.to = draft.to.map((rcpt) => rcpt.address)
+    form.value.to = draft.to.map(formatRecipient)
   }
   if (draft.cc?.length) {
-    form.value.cc = draft.cc.map((rcpt) => rcpt.address)
+    form.value.cc = draft.cc.map(formatRecipient)
     showCcField.value = true
   }
   if (draft.bcc?.length) {
-    form.value.bcc = draft.bcc.map((rcpt) => rcpt.address)
+    form.value.bcc = draft.bcc.map(formatRecipient)
     showBccField.value = true
   }
   if (draft.subject) {
@@ -540,26 +577,10 @@ const initFormFromDraft = (session, draft) => {
 const prepareMessage = () => {
   const result = { ...form.value }
 
-  if (result.to?.length) {
-    const to = []
-    for (const rcpt of result.to) {
-      to.push(typeof rcpt === 'string' ? rcpt : rcpt.emails[0].address)
+  for (const field of ['to', 'cc', 'bcc']) {
+    if (result[field]?.length) {
+      result[field] = result[field].map(getRecipient).filter(Boolean)
     }
-    result.to = to
-  }
-  if (result.cc?.length) {
-    const cc = []
-    for (const rcpt of result.cc) {
-      cc.push(typeof rcpt === 'string' ? rcpt : rcpt.emails[0].address)
-    }
-    result.cc = cc
-  }
-  if (result.bcc?.length) {
-    const bcc = []
-    for (const rcpt of result.bcc) {
-      bcc.push(typeof rcpt === 'string' ? rcpt : rcpt.emails[0].address)
-    }
-    result.bcc = bcc
   }
   result.body_format = htmlMode.value ? 'html' : 'plain'
   if (draftMailid.value) {
@@ -741,11 +762,28 @@ onUnmounted(() => {
   autosave.clear?.()
 })
 
+const getContactName = (contact) =>
+  contact.display_name ||
+  [contact.first_name, contact.last_name].filter(Boolean).join(' ')
+
 const getItemTitle = (item) => {
+  if (typeof item === 'string') {
+    // Without the quotes of the name: "John Doe" <john@example.com>
+    return item.replace(/^"(.*)"(\s*<)/, '$1$2').replace(/\\(["\\])/g, '$1')
+  }
+  return getContactName(item)
+}
+
+// A recipient typed by the user, or a contact picked in the list
+const getRecipient = (item) => {
   if (typeof item === 'string') {
     return item
   }
-  return item.display_name || `${item.first_name} ${item.last_name}`
+  const address = item.emails?.[0]?.address
+  if (!address) {
+    return null
+  }
+  return formatRecipient({ name: getContactName(item), address })
 }
 
 const getComposeSession = async () => {

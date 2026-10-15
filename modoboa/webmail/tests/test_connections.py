@@ -10,6 +10,18 @@ from modoboa.webmail.mocks import IMAP4Mock
 from modoboa.webmail.tests.test_viewsets import WebmailTestCase
 
 
+class RecordingIMAP4Mock(IMAP4Mock):
+    """Fake IMAP4 client recording the commands it receives."""
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.commands = []
+
+    def _simple_command(self, name, *args, **kwargs):
+        self.commands.append(name)
+        return super()._simple_command(name, *args, **kwargs)
+
+
 class QuietLogoutTestCase(SimpleTestCase):
     """Closing a connection the server already dropped stays silent."""
 
@@ -110,3 +122,45 @@ class TimeoutTestCase(WebmailTestCase):
         url = reverse("v2:webmail-email-list")
         response = self.client.get(f"{url}?mailbox=INBOX")
         self.assertEqual(response.status_code, 500)
+
+
+class ServerInfoCacheTestCase(WebmailTestCase):
+    """What the server says about itself is asked once, not on every request."""
+
+    def setUp(self):
+        super().setUp()
+        self.authenticate()
+
+    def _request(self):
+        imap = RecordingIMAP4Mock()
+        self.mock_imap4.return_value = imap
+        url = reverse("v2:webmail-mailbox-list")
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json()["hdelimiter"], "/")
+        return imap.commands
+
+    def test_namespaces_and_capabilities_are_cached(self):
+        commands = self._request()
+        self.assertIn("NAMESPACE", commands)
+        self.assertIn("CAPABILITY", commands)
+        commands = self._request()
+        self.assertNotIn("NAMESPACE", commands)
+        self.assertNotIn("CAPABILITY", commands)
+
+    def test_capabilities_sent_with_the_login_are_used(self):
+        """They are free, and fresher than the cached ones."""
+
+        class CapabilitiesOnLoginMock(RecordingIMAP4Mock):
+            # The webmail authenticates with AUTHENTICATE, or with LOGIN
+            # in development mode
+            def _simple_command(self, name, *args, **kwargs):
+                result = super()._simple_command(name, *args, **kwargs)
+                if name in ("AUTHENTICATE", "LOGIN"):
+                    self.untagged_responses["CAPABILITY"] = [b"IMAP4rev1 MOVE"]
+                return result
+
+        imap = CapabilitiesOnLoginMock()
+        self.mock_imap4.return_value = imap
+        self.client.get(reverse("v2:webmail-mailbox-list"))
+        self.assertNotIn("CAPABILITY", imap.commands)

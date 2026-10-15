@@ -31,7 +31,7 @@ class PlainText2HtmlTestCase(SimpleTestCase):
     def test_round_trip(self):
         self.assertEqual(
             utils.html2plaintext(utils.plaintext2html(REPLY)),
-            "> John Doe wrote:\n> L'equipe <dev> & co\n> Second line\n>\n> > deeper"
+            "> John Doe wrote:\n> L'equipe <dev> & co\n> Second line\n>\n>> deeper"
             "\n\nMy answer\n  indented\n\n---\nSig line",
         )
 
