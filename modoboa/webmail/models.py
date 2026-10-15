@@ -85,7 +85,8 @@ class ScheduledMessage(models.Model):
         result = create_message(self.account, self.to_dict(), attachments)
         result.extra_headers.update(
             {
-                constants.CUSTOM_HEADER_SCHEDULED_ID: self.id,
+                # Header values must be strings (Django 6 rejects an int).
+                constants.CUSTOM_HEADER_SCHEDULED_ID: str(self.id),
                 constants.CUSTOM_HEADER_SCHEDULED_DATETIME: self.scheduled_datetime.isoformat(),
             }
         )

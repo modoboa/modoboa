@@ -19,7 +19,7 @@ Só PostgreSQL é suportado e testado (MySQL saiu do CI).
 
 ## Stack
 
-- **Backend:** Django, Django REST Framework, `oauth2_provider` (OIDC), Redis
+- **Backend:** Django 6.1 (Python 3.12+, produção em 3.14), Django REST Framework 3.18, `oauth2_provider` (OIDC), Redis
   (cache + RQ), per-app "parameters registry" (`modoboa/parameters/tools.py`).
 - **Frontend** (`frontend/`): Vue 3 + Vuetify 4, **Vite 8 (Rolldown)**,
   **Module Federation** (`@module-federation/vite`), `vue3-gettext`, Pinia,
@@ -108,6 +108,9 @@ cd frontend && yarn install && yarn dev:mock   # cross-env VITE_MOCK_API=true vi
   policyd e cotas. Suba um Redis descartável
   (`redis-server --port 6391 --save "" --daemonize yes`) e rode com
   `REDIS_PORT=6391`.
+- **Não rode a suíte como root fora de um contêiner.** `test_dkim_key_creation`
+  conta que gravar em `/I_DONT_EXIST` falhe; como root a gravação funciona, cria
+  a pasta na raiz do sistema e o teste passa a falhar nas execuções seguintes.
 - Fora do CI, 3 testes do amavis (`test_mark_as_ham`, `test_mark_as_spam`,
   `test_manual_learning_as_user`) falham sem o `sa-learn`/spamd configurado;
   não é regressão.

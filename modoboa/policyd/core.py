@@ -175,7 +175,7 @@ async def apply_policies(attributes):
         await decrement_limit(rclient, "domain", domain)
     if decr_user:
         await decrement_limit(rclient, "account", sasl_username)
-    await rclient.close()
+    await rclient.aclose()
     logger.debug("Let it pass")
     return SUCCESS_ACTION
 
@@ -268,7 +268,7 @@ async def reset_counters():
         await rclient.hset(constants.REDIS_HASHNAME, domain.name, domain.message_limit)
     for mb in await get_mailboxes_to_reset():
         await rclient.hset(constants.REDIS_HASHNAME, mb.full_address, mb.message_limit)
-    await rclient.close()
+    await rclient.aclose()
     # reschedule
     asyncio.ensure_future(run_at(get_next_execution_dt(), reset_counters))
 

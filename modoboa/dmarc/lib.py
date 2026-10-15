@@ -82,7 +82,8 @@ def import_record(xml_node, report):
     record.dkim_result = policy_evaluated.find("dkim").text
     record.spf_result = policy_evaluated.find("spf").text
     reason = policy_evaluated.find("reason")
-    if reason:
+    # An Element's truth value means "has children" and is deprecated.
+    if reason is not None and len(reason):
         record.reason_type = smart_str(reason.find("type").text)[:14]
         if record.reason_type not in constants.ALLOWED_REASON_TYPES:
             record.reason_type = "other"
@@ -106,7 +107,7 @@ def import_record(xml_node, report):
     auth_results = xml_node.find("auth_results")
     for rtype in ["spf", "dkim"]:
         rnode = auth_results.find(rtype)
-        if not rnode:
+        if rnode is None or not len(rnode):
             continue
         domain = (rnode.findtext("domain") or "").strip()
         if not domain:
