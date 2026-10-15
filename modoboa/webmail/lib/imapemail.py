@@ -22,6 +22,9 @@ from . import imapheader
 from .imaputils import get_imapconnector, validate_imap_uid, BodyStructure
 from .utils import decode_payload
 
+# Headers holding addresses, parsed from their raw value
+ADDRESS_HEADERS = ("From", "To", "Cc", "Bcc", "Reply-To")
+
 
 class ImapEmail(Email):
     """
@@ -119,6 +122,10 @@ class ImapEmail(Email):
             setattr(self, f"original_{header.replace('-', '')}", hdrvalue)
         if not hdrvalue:
             return ""
+        if header in ADDRESS_HEADERS:
+            # Parse the raw value: decoding encoded-words first could turn
+            # an encoded comma of a display name into an address separator.
+            hdrvalue = str(msg[header])
         try:
             key = re.sub("-", "_", header).lower()
             hdrvalue = getattr(imapheader, f"parse_{key}")(hdrvalue)
@@ -173,9 +180,12 @@ class ImapEmail(Email):
                 data = self.imapc._cmd("FETCH", self.mailid, f"(BODY.PEEK[{pnum}])")
                 if not data or int(self.mailid) not in data:
                     continue
-                content = decode_payload(
-                    part["encoding"], data[int(self.mailid)][f"BODY[{pnum}]"]
-                )
+                raw = data[int(self.mailid)].get(f"BODY[{pnum}]")
+                if raw is None:
+                    # The server answered with another part than the one
+                    # we asked for: skip it instead of failing.
+                    continue
+                content = decode_payload(part["encoding"], raw)
                 if not isinstance(content, str):
                     charset = self._find_content_charset(part)
                     if charset is not None:

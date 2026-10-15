@@ -75,7 +75,7 @@ def create_domain_limits(sender, instance, **kwargs):
 def move_resource(sender, user, **kwargs):
     """Move remaining resource to another user."""
     owner = permissions.get_object_owner(user)
-    if owner.is_superuser or owner.role != "Resellers":
+    if not owner or owner.is_superuser or owner.role != "Resellers":
         return
     utils.move_pool_resource(owner, user)
 

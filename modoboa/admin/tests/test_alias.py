@@ -28,6 +28,22 @@ class AliasTestCase(ModoAPITestCase):
         alias = Alias.objects.get(address="badalias@test.com")
         self.assertEqual(alias.recipients_count, 1)
 
+    def test_alias_with_base_and_extension_recipient(self):
+        """A base address and its +extension resolve to the same mailbox.
+
+        They must be deduplicated instead of raising an IntegrityError on the
+        (alias, r_mailbox) unique constraint.
+        """
+        from ..models import Domain
+
+        alias = factories.AliasFactory.create(
+            address="plusalias@test.com", domain=Domain.objects.get(name="test.com")
+        )
+        alias.add_recipients(["user@test.com", "user+ext@test.com"])
+        self.assertEqual(alias.recipients_count, 1)
+        recipient = AliasRecipient.objects.get(alias=alias)
+        self.assertEqual(recipient.r_mailbox.full_address, "user@test.com")
+
     def test_upper_case_alias(self):
         """Try to create an upper case alias."""
         user = User.objects.get(username="user@test.com")

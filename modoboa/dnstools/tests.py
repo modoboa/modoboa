@@ -159,3 +159,27 @@ class DomainTestCase(ModoTestCase):
             type="autodiscover", value="1.2.3.4", is_valid=True, domain__name="test.com"
         )
         self.assertEqual(domain.dns_global_status, "ok")
+
+    def test_dmarc_check_is_critical(self):
+        admin_factories.MXRecordFactory.create(
+            domain__name="test.com", name="mail.test.com", updated=timezone.now()
+        )
+        domain = admin_models.Domain.objects.get(name="test.com")
+        # Isolate the DMARC check from the other ones.
+        self.set_global_parameters(
+            {
+                "enable_mx_checks": False,
+                "enable_spf_checks": False,
+                "enable_dkim_checks": False,
+                "enable_autoconfig_checks": False,
+                "enable_dnsbl_checks": False,
+            },
+            app="admin",
+        )
+
+        # By default a missing DMARC record is considered critical.
+        self.assertEqual(domain.dns_global_status, "critical")
+
+        # When the check is not critical anymore, the domain is fine.
+        self.set_global_parameter("dmarc_check_is_critical", False, app="admin")
+        self.assertEqual(domain.dns_global_status, "ok")

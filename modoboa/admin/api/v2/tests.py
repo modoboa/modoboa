@@ -92,6 +92,17 @@ class DomainViewSetTestCase(ModoAPITestCase):
         resp = self.client.put(url, data, format="json")
         self.assertEqual(resp.status_code, 200)
 
+    def test_update_enable_dns_checks(self):
+        """The enable_dns_checks flag must be writable through the API."""
+        domain = models.Domain.objects.get(name="test.com")
+        domain.enable_dns_checks = True
+        domain.save()
+        url = reverse("v2:domain-detail", args=[domain.pk])
+        resp = self.client.patch(url, {"enable_dns_checks": False}, format="json")
+        self.assertEqual(resp.status_code, 200)
+        domain.refresh_from_db()
+        self.assertFalse(domain.enable_dns_checks)
+
     def test_update_resources(self):
         self.set_global_parameter("enable_domain_limits", True, app="limits")
         domain = models.Domain.objects.get(name="test2.com")
@@ -619,6 +630,47 @@ class AccountViewSetTestCase(ModoAPITestCase):
         resp = self.client.patch(url, data, format="json")
         self.assertEqual(resp.status_code, 200)
         self.assertEqual(account.mailbox.quota, data["mailbox"]["quota"])
+
+    def test_update_unchanged_quota_when_domain_full(self):
+        """A domain admin must be able to edit an account (e.g. change the
+        password) even when the domain quota is fully allocated, as long as the
+        mailbox quota itself is not increased.
+        """
+        account = core_models.User.objects.get(username="user@test.com")
+        # Over-allocate the domain (cap is 50): user=50 + admin=10 -> 60.
+        account.mailbox.quota = 50
+        account.mailbox.save()
+        self.authenticate_user(core_models.User.objects.get(username="admin@test.com"))
+        url = reverse("v2:account-detail", args=[account.pk])
+        # The frontend resends every field, including the unchanged quota.
+        data = {
+            "username": "user@test.com",
+            "role": "SimpleUsers",
+            "password": "Toto12345",
+            "mailbox": {"quota": 50},
+        }
+        resp = self.client.patch(url, data, format="json")
+        self.assertEqual(resp.status_code, 200)
+        account.mailbox.refresh_from_db()
+        self.assertEqual(account.mailbox.quota, 50)
+
+    def test_update_quota_increase_rejected_when_domain_full(self):
+        """Increasing a mailbox quota beyond the domain cap must still fail."""
+        account = core_models.User.objects.get(username="user@test.com")
+        account.mailbox.quota = 50
+        account.mailbox.save()
+        self.authenticate_user(core_models.User.objects.get(username="admin@test.com"))
+        url = reverse("v2:account-detail", args=[account.pk])
+        data = {
+            "username": "user@test.com",
+            "role": "SimpleUsers",
+            "password": "Toto12345",
+            "mailbox": {"quota": 100},
+        }
+        resp = self.client.patch(url, data, format="json")
+        self.assertEqual(resp.status_code, 400)
+        account.mailbox.refresh_from_db()
+        self.assertEqual(account.mailbox.quota, 50)
 
     def test_user_updates_password(self):
         account = core_models.User.objects.get(username="user@test.com")

@@ -75,6 +75,16 @@ class FilterSetViewSetTestCase(PatcherMixin, ModoAPITestCase):
         resp = self.client.post(url, data, format="json")
         self.assertEqual(resp.status_code, 201)
 
+    def test_create_existing_name(self):
+        self.authenticate()
+        url = reverse("v2:filterset-list")
+        for name in ("main_script", "second_script"):
+            resp = self.client.post(url, {"name": name}, format="json")
+            self.assertEqual(resp.status_code, 400)
+            self.assertIn("name", resp.json()["errors"])
+        sclient = self.mock_client.return_value
+        self.assertEqual(sclient.scripts["main_script"], mocks.SAMPLE_SIEVE_SCRIPT)
+
     def test_create_forbidden_characters(self):
         """Check that ManageSieve protocol injection is rejected."""
         self.authenticate()
@@ -147,6 +157,33 @@ class FilterSetViewSetTestCase(PatcherMixin, ModoAPITestCase):
         actions = resp.json()
         self.assertEqual(len(actions), 4)
         self.assertIn("choices", actions[0]["args"][0])
+
+    def test_retrieve_action_templates_with_subfolders(self):
+        # Listing sub-folders needs the hierarchy delimiter
+        imap = self.mock_imap4.return_value
+        simple_command = imap._simple_command
+
+        def _simple_command(name, *args, **kwargs):
+            if name == "LIST":
+                imap.untagged_responses["LIST"] = (
+                    [b'() "/" "Test/Sub"']
+                    if "Test/%" in str(args)
+                    else [b'(\\HasChildren) "/" "Test"']
+                )
+                return "OK", None
+            return simple_command(name, *args, **kwargs)
+
+        imap._simple_command = _simple_command
+        self.authenticate()
+        resp = self.client.get(reverse("v2:filterset-action-templates"))
+        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(
+            resp.json()[0]["args"][0]["choices"][-2:],
+            [
+                {"name": "Test", "label": "Test"},
+                {"name": "Test/Sub", "label": "Sub"},
+            ],
+        )
 
     def test_get_filters(self):
         self.authenticate()

@@ -69,6 +69,11 @@ class FilterSetViewSet(viewsets.ViewSet):
         serializer = serializers.FilterSetSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         sclient = self.get_sieve_client(request)
+        active_script, scripts = sclient.listscripts()
+        if serializer.validated_data["name"] in [active_script, *scripts]:
+            raise DRFValidationError(
+                {"name": _("A filter set with this name already exists")}
+            )
         sclient.pushscript(
             serializer.validated_data["name"],
             "# Empty script",

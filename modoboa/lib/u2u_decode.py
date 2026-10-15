@@ -13,8 +13,10 @@ from django.utils.encoding import smart_str
 
 # check spaces between encoded_words (and strip them)
 sre = re.compile(r"\?=[ \t]+=\?")
-# re pat for MIME encoded_word (without trailing spaces)
-mre = re.compile(r"=\?[^?]*?\?[bq]\?[^?\t]*?\?=", re.I)
+# re pat for a run of adjacent MIME encoded_words (without trailing spaces).
+# They are decoded together since a multibyte character can be split
+# across two of them.
+mre = re.compile(r"(?:=\?[^?]*?\?[bq]\?[^?\t]*?\?=)+", re.I)
 # re do detect encoded ASCII characters
 ascii_re = re.compile(r"=[\dA-F]{2,3}", re.I)
 
@@ -37,7 +39,7 @@ def clean_non_printable_char(m):
 
 
 def decode_mime(m):
-    """Substitute matching encoded_word with unicode equiv."""
+    """Substitute matching encoded_words with unicode equiv."""
     h = decode_header(clean_spaces(m))
     try:
         u = smart_str(make_header(h))
