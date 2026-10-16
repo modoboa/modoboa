@@ -635,6 +635,8 @@ class Command(BaseCommand):
         return True
 
     def handle(self, *args, **options):
+        rrd_rootdir = param_tools.get_global_parameter("rrd_rootdir")
+        lib.ensure_rrd_rootdir(rrd_rootdir)
         if not self.can_start():
             print("Another process is already running, cannot start")
             sys.exit(2)
@@ -643,9 +645,7 @@ class Command(BaseCommand):
                 "logfile", app="maillog"
             )
         greylist = param_tools.get_global_parameter("greylist", raise_exception=False)
-        p = LogParser(
-            options, param_tools.get_global_parameter("rrd_rootdir"), None, greylist
-        )
+        p = LogParser(options, rrd_rootdir, None, greylist)
         p.process()
         if options["post_cmd"] is not None:
             sysutils.exec_cmd(options["post_cmd"])

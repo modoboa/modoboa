@@ -4,9 +4,11 @@ import datetime
 import os
 import shutil
 import tempfile
+from unittest import mock
 
 from django.conf import settings
 from django.core.management import call_command
+from django.core.management.base import CommandError
 from django.test import override_settings
 
 from modoboa.admin import factories as admin_factories
@@ -80,13 +82,59 @@ class ManagementCommandsTestCase(RunCommandsMixin, SimpleModoTestCase):
         self.run_update_statistics(rebuild=True)
         self.assertTrue(os.path.exists(path))
 
+    def test_update_statistics_missing_rrd_rootdir(self):
+        """A missing RRD directory must fail before rrdtool runs."""
+        missing = os.path.join(self.workdir, "missing")
+        self.set_global_parameter("rrd_rootdir", missing)
+        with self.assertRaises(CommandError) as ctx:
+            self.run_update_statistics()
+        message = str(ctx.exception)
+        self.assertIn(missing, message)
+        self.assertIn("rrd_rootdir", message)
+        self.assertFalse(os.path.exists(os.path.join(missing, "new_accounts.rrd")))
+
+    def test_logparser_missing_rrd_rootdir(self):
+        """A missing RRD directory must fail before the pid file is written."""
+        missing = os.path.join(self.workdir, "missing")
+        self.set_global_parameter("rrd_rootdir", missing)
+        pid_file = f"{settings.PID_FILE_STORAGE_PATH}/modoboa_logparser.pid"
+        with self.assertRaises(CommandError) as ctx:
+            self.run_logparser()
+        message = str(ctx.exception)
+        self.assertIn(missing, message)
+        self.assertIn("rrd_rootdir", message)
+        self.assertFalse(os.path.exists(pid_file))
+
+    def test_update_statistics_rrd_rootdir_is_file(self):
+        """A file path must not be used as the RRD directory."""
+        path = os.path.join(self.workdir, "not-a-directory")
+        with open(path, "w") as fp:
+            fp.write("")
+        self.set_global_parameter("rrd_rootdir", path)
+        with self.assertRaises(CommandError):
+            self.run_update_statistics()
+        self.assertFalse(os.path.exists(os.path.join(self.workdir, "new_accounts.rrd")))
+
+    def test_update_statistics_rrd_rootdir_not_writable(self):
+        """An unwritable RRD directory must be rejected."""
+        if os.geteuid() == 0:
+            with mock.patch("modoboa.maillog.lib.os.access", return_value=False):
+                with self.assertRaises(CommandError):
+                    self.run_update_statistics()
+            return
+        os.chmod(self.workdir, 0o555)
+        try:
+            with self.assertRaises(CommandError):
+                self.run_update_statistics()
+        finally:
+            os.chmod(self.workdir, 0o755)
+
     def test_locking(self):
         with open(f"{settings.PID_FILE_STORAGE_PATH}/modoboa_logparser.pid", "w") as fp:
             fp.write(f"{os.getpid()}\n")
         with self.assertRaises(SystemExit) as inst:
             self.run_logparser()
         self.assertEqual(inst.exception.code, 2)
-
 
     def test_logparser_post_cmd(self):
         """Test logparser command."""
