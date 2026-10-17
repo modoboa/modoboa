@@ -6,6 +6,7 @@ from datetime import timedelta
 from sievelib.factory import FiltersSet
 from sievelib.parser import Parser
 
+from django.core.cache import cache
 from django.test import SimpleTestCase
 from django.urls import reverse
 from django.utils import timezone
@@ -167,16 +168,20 @@ class FilterSetViewSetTestCase(PatcherMixin, ModoAPITestCase):
         self.assertIn("choices", actions[0]["args"][0])
 
     def test_retrieve_action_templates_with_subfolders(self):
-        # Listing sub-folders needs the hierarchy delimiter
+        # Sub-folders must be handled with the server hierarchy delimiter
+        cache.clear()  # the delimiter announced by NAMESPACE is cached
         imap = self.mock_imap4.return_value
         simple_command = imap._simple_command
 
         def _simple_command(name, *args, **kwargs):
+            if name == "NAMESPACE":
+                imap.untagged_responses["NAMESPACE"] = [b'(("" ".")) NIL NIL']
+                return "OK", None
             if name == "LIST":
                 imap.untagged_responses["LIST"] = (
-                    [b'() "/" "Test/Sub"']
-                    if "Test/%" in str(args)
-                    else [b'(\\HasChildren) "/" "Test"']
+                    [b'() "." "Test.Sub"']
+                    if "Test.%" in str(args)
+                    else [b'(\\HasChildren) "." "Test"']
                 )
                 return "OK", None
             return simple_command(name, *args, **kwargs)
@@ -188,8 +193,8 @@ class FilterSetViewSetTestCase(PatcherMixin, ModoAPITestCase):
         self.assertEqual(
             resp.json()[0]["args"][0]["choices"][-2:],
             [
-                {"name": "Test", "label": "Test"},
-                {"name": "Test/Sub", "label": "Sub"},
+                {"name": "Test", "label": "Test", "level": 0},
+                {"name": "Test.Sub", "label": "Sub", "level": 1},
             ],
         )
 

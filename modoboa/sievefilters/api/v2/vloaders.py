@@ -10,26 +10,28 @@ class UserMailbox(TypedDict):
 
     name: str
     label: str
+    level: int
 
 
 def __build_folders_list(
-    folders: list, user, imapc: imaputils.IMAPconnector, parentmb: str | None = None
+    folders: list,
+    user,
+    imapc: imaputils.IMAPconnector,
+    parentmb: str | None = None,
+    level: int = 0,
 ) -> list[UserMailbox]:
     ret: list[UserMailbox] = []
     for fd in folders:
         value = fd["path"] if "path" in fd else fd["name"]
-        if parentmb:
-            ret += [
-                {
-                    "name": value,
-                    "label": fd["name"].replace(f"{parentmb}{imapc.hdelimiter}", ""),
-                }
-            ]
-        else:
-            ret += [{"name": value, "label": fd["name"]}]
+        label = (
+            fd["name"].removeprefix(f"{parentmb}{imapc.hdelimiter}")
+            if parentmb
+            else fd["name"]
+        )
+        ret += [{"name": value, "label": label, "level": level}]
         if "sub" in fd:
             submboxes = imapc.getmboxes(user, value, unseen_messages=False)
-            ret += __build_folders_list(submboxes, user, imapc, value)
+            ret += __build_folders_list(submboxes, user, imapc, value, level + 1)
     return ret
 
 
