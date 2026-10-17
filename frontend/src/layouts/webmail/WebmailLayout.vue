@@ -42,6 +42,7 @@
         <MailboxList
           v-model="selectedMailbox"
           :mailboxes="userMailboxes"
+          :hdelimiter="hdelimiter"
           class="mr-2"
           :rail="rail"
           @update:model-value="openMailbox"
