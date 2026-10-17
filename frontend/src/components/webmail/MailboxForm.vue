@@ -15,6 +15,7 @@
             v-model="form.parent_mailbox"
             :active-mailbox="props.parent"
             :mailboxes="props.userMailboxes"
+            :hdelimiter="props.hdelimiter"
             light-mode
             compact
             :unseen-counters="false"
