@@ -35,31 +35,20 @@ def rename_failed(operation, reason):
     operation.delete()
 
 
-def stat_source(path):
-    """Stat path, returning None when it stats cleanly, else the OSError.
-
-    os.path.exists() folds "missing" and "not permitted" into one False, which
-    previously made us delete a queued operation (and desync the database) when
-    the maildir was merely unreadable. Probe explicitly instead.
-    """
-    try:
-        os.stat(path)
-    except OSError as exc:
-        return exc
-    return None
-
-
 def rename_mailbox(operation):
     """Rename the mailbox folder through a RQ Job."""
-    access_error = stat_source(operation.argument)
-    if isinstance(access_error, FileNotFoundError):
+    try:
+        os.stat(operation.argument)
+    except FileNotFoundError:
         logger.error(f"Failed to rename {operation.argument}, folder not found")
         operation.delete()
         return
-    if access_error is not None:
+    except OSError as exc:
+        # Not missing but unreadable (e.g. wrong ownership): keep the operation
+        # queued for retry instead of silently desyncing database and disk.
         logger.error(
             f"Failed to rename {operation.argument}, folder not accessible "
-            f"({access_error}); keeping operation queued"
+            f"({exc}); keeping operation queued"
         )
         return
     new_mail_home = operation.mailbox.mail_home
@@ -83,15 +72,18 @@ def rename_mailbox(operation):
 
 def delete_mailbox(operation):
     """Delete the mailbox folder through a RQ Job."""
-    access_error = stat_source(operation.argument)
-    if isinstance(access_error, FileNotFoundError):
+    try:
+        os.stat(operation.argument)
+    except FileNotFoundError:
         logger.error(f"Failed to delete {operation.argument}, folder not found")
         operation.delete()
         return
-    if access_error is not None:
+    except OSError as exc:
+        # Not missing but unreadable (e.g. wrong ownership): keep the operation
+        # queued for retry instead of silently desyncing database and disk.
         logger.error(
             f"Failed to delete {operation.argument}, folder not accessible "
-            f"({access_error}); keeping operation queued"
+            f"({exc}); keeping operation queued"
         )
         return
 
