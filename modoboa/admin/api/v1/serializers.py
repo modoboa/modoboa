@@ -360,7 +360,14 @@ class WritableAccountSerializer(AccountSerializer):
 
     def validate_username(self, value):
         """Lower case username."""
-        return value.lower()
+        value = value.lower()
+        # The unique validator runs before lower casing
+        qset = core_models.User.objects.filter(username__iexact=value)
+        if self.instance:
+            qset = qset.exclude(pk=self.instance.pk)
+        if qset.exists():
+            raise serializers.ValidationError(_("This username is already used."))
+        return value
 
     def validate_role(self, value):
         user = self.context["request"].user
@@ -395,7 +402,13 @@ class WritableAccountSerializer(AccountSerializer):
                 raise serializers.ValidationError(
                     {"username": _("Must be equal to mailbox full_address")}
                 )
-        if "mailbox" in data:
+        creates_mailbox = not self.instance or not hasattr(self.instance, "mailbox")
+        if data.get("mailbox") and "full_address" not in data["mailbox"]:
+            if creates_mailbox:
+                raise serializers.ValidationError(
+                    {"mailbox": {"full_address": _("This field is required.")}}
+                )
+        elif data.get("mailbox"):
             self.address, domain_name = email_utils.split_mailbox(
                 data["mailbox"]["full_address"]
             )
@@ -403,7 +416,8 @@ class WritableAccountSerializer(AccountSerializer):
             creator = self.context["request"].user
             if not creator.can_access(self.domain):
                 raise serializers.ValidationError({"mailbox": _("Permission denied.")})
-            if not self.instance:
+            # update() also creates the mailbox when the account has none
+            if creates_mailbox:
                 try:
                     core_signals.can_create_object.send(
                         sender=self.__class__,
@@ -522,13 +536,16 @@ class WritableAccountSerializer(AccountSerializer):
             instance.set_password(password)
         if mailbox_data:
             creator = self.context["request"].user
-            if instance.mailbox:
+            if hasattr(instance, "mailbox"):
                 if "full_address" in mailbox_data:
                     # FIXME: compat, to remove ASAP.
                     mailbox_data["email"] = mailbox_data["full_address"]
                     instance.email = mailbox_data["full_address"]
                 instance.mailbox.update_from_dict(creator, mailbox_data)
             else:
+                if "quota" not in mailbox_data:
+                    # Same default as account creation, not an unlimited quota
+                    mailbox_data.setdefault("use_domain_quota", True)
                 self._create_mailbox(creator, instance, mailbox_data)
         instance.save()
         self.set_permissions(instance, domains)

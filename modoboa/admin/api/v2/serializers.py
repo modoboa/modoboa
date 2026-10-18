@@ -613,7 +613,9 @@ class WritableAccountSerializer(v1_serializers.WritableAccountSerializer):
         """Check if required domains are locals and user can access them."""
         aliases = []
         existing_aliases = (
-            self.instance.mailbox.alias_addresses if self.instance else []
+            self.instance.mailbox.alias_addresses
+            if self.instance and hasattr(self.instance, "mailbox")
+            else []
         )
         for alias in value:
             localpart, domain = models.validate_alias_address(
@@ -644,13 +646,35 @@ class WritableAccountSerializer(v1_serializers.WritableAccountSerializer):
             if mailbox is None:
                 if not self.instance:
                     data["mailbox"] = {"use_domain_quota": True}
-        if "mailbox" in data and "username" in data:
-            self.address, domain_name = email_utils.split_mailbox(data["username"])
+        username = data.get("username")
+        has_mailbox = self.instance is not None and hasattr(self.instance, "mailbox")
+        if has_mailbox:
+            # update() renames the mailbox after the username
+            check_mailbox = (
+                username is not None and username != self.instance.mailbox.full_address
+            )
+        else:
+            # create() and update() create a mailbox
+            check_mailbox = (
+                username is not None
+                and "mailbox" in data
+                and (not self.instance or bool(data["mailbox"]))
+            )
+        if check_mailbox:
+            self.address, domain_name = email_utils.split_mailbox(username)
+            if not domain_name:
+                raise serializers.ValidationError(
+                    {
+                        "username": _(
+                            "An account with a mailbox must use an email address as username."
+                        )
+                    }
+                )
             self.domain = get_object_or_404(models.Domain, name=domain_name)
             creator = self.context["request"].user
             if not creator.can_access(self.domain):
                 raise serializers.ValidationError({"mailbox": _("Permission denied.")})
-            if not self.instance:
+            if not has_mailbox:
                 try:
                     core_signals.can_create_object.send(
                         sender=self.__class__, context=creator, klass=models.Mailbox
@@ -740,6 +764,7 @@ class WritableAccountSerializer(v1_serializers.WritableAccountSerializer):
 
     def update(self, instance, validated_data):
         """Update account and associated objects."""
+        creator = self.context["request"].user
         mailbox_data = validated_data.pop("mailbox", None)
         password = validated_data.pop("password", None)
         aliases = validated_data.pop("aliases", None)
@@ -747,25 +772,30 @@ class WritableAccountSerializer(v1_serializers.WritableAccountSerializer):
             setattr(instance, key, value)
         if password:
             instance.set_password(password)
-        if mailbox_data:
-            creator = self.context["request"].user
-            if hasattr(instance, "mailbox"):
-                if "username" in validated_data:
-                    mailbox_data["email"] = validated_data["username"]
-                    instance.email = validated_data["username"]
-                instance.mailbox.update_from_dict(creator, mailbox_data)
-            elif "username" in validated_data:
-                mailbox_data["full_address"] = validated_data["username"]
+        if hasattr(instance, "mailbox"):
+            # The mailbox follows the username, even if no mailbox data is sent
+            mailbox_data = mailbox_data or {}
+            if "username" in validated_data:
+                mailbox_data["email"] = validated_data["username"]
                 instance.email = validated_data["username"]
-                self._create_mailbox(creator, instance, mailbox_data)
-        if aliases is not None and "username" in validated_data:
+            if mailbox_data:
+                instance.mailbox.update_from_dict(creator, mailbox_data)
+        elif mailbox_data and "username" in validated_data:
+            if "quota" not in mailbox_data:
+                # Same default as account creation, not an unlimited quota
+                mailbox_data.setdefault("use_domain_quota", True)
+            mailbox_data["full_address"] = validated_data["username"]
+            instance.email = validated_data["username"]
+            self._create_mailbox(creator, instance, mailbox_data)
+        if aliases is not None and hasattr(instance, "mailbox"):
+            recipient = instance.mailbox.full_address
             # We create a list to keep track of alias we need to delete
             alias_recipients = instance.mailbox.alias_addresses
             for alias in aliases:
                 address = "{}@{}".format(alias["localpart"], alias["domain"])
                 models.Alias.objects.modify_or_create(
                     address=address,
-                    recipients=[validated_data["username"]],
+                    recipients=[recipient],
                     creator=creator,
                     domain=alias["domain"],
                 )
@@ -778,7 +808,7 @@ class WritableAccountSerializer(v1_serializers.WritableAccountSerializer):
                     address=alias_address, internal=False
                 )
                 if alias.exists():
-                    alias.first().remove_recipient_or_delete(validated_data["username"])
+                    alias.first().remove_recipient_or_delete(recipient)
         instance.save()
         resources = validated_data.get("resources")
         if resources:
