@@ -842,6 +842,77 @@ class AccountViewSetTestCase(ModoAPITestCase):
             .exists()
         )
 
+    def _create_domain_admin_without_mailbox(self):
+        domain = models.Domain.objects.get(name="test.com")
+        account = core_factories.UserFactory(
+            username="nombox", groups=("DomainAdmins",), password="{PLAIN}toto"
+        )
+        domain.add_admin(account)
+        return account, domain
+
+    def test_rename_to_email_creates_mailbox_with_domain_quota(self):
+        account, domain = self._create_domain_admin_without_mailbox()
+        url = reverse("v2:account-detail", args=[account.pk])
+        data = {
+            "username": "nombox@test.com",
+            "role": "DomainAdmins",
+            "mailbox": {"message_limit": None},
+        }
+        resp = self.client.patch(url, data, format="json")
+        self.assertEqual(resp.status_code, 200)
+        account.refresh_from_db()
+        self.assertTrue(account.mailbox.use_domain_quota)
+        self.assertEqual(account.mailbox.quota, domain.default_mailbox_quota)
+
+    def test_rename_to_email_respects_mailbox_limit(self):
+        account, domain = self._create_domain_admin_without_mailbox()
+        self.set_global_parameter("enable_domain_limits", True, app="limits")
+        limit = domain.domainobjectlimit_set.get(name="mailboxes")
+        limit.max_value = domain.mailbox_set.count()
+        limit.save()
+        url = reverse("v2:account-detail", args=[account.pk])
+        data = {
+            "username": "nombox@test.com",
+            "role": "DomainAdmins",
+            "mailbox": {"message_limit": None},
+        }
+        resp = self.client.patch(url, data, format="json")
+        self.assertEqual(resp.status_code, 400)
+        self.assertFalse(models.Mailbox.objects.filter(user=account).exists())
+
+    def test_update_aliases_without_mailbox(self):
+        account, domain = self._create_domain_admin_without_mailbox()
+        url = reverse("v2:account-detail", args=[account.pk])
+        data = {"username": "nombox2", "role": "DomainAdmins", "aliases": []}
+        resp = self.client.patch(url, data, format="json")
+        self.assertEqual(resp.status_code, 200)
+
+    def test_rename_mailbox_owner_to_non_email(self):
+        account = core_models.User.objects.get(username="admin@test.com")
+        url = reverse("v2:account-detail", args=[account.pk])
+        data = {"username": "plainadmin", "role": "DomainAdmins"}
+        resp = self.client.patch(url, data, format="json")
+        self.assertEqual(resp.status_code, 400)
+        self.assertIn("username", resp.json())
+
+    def test_rename_to_existing_username_other_case(self):
+        account, domain = self._create_domain_admin_without_mailbox()
+        url = reverse("v2:account-detail", args=[account.pk])
+        data = {"username": "USER@test.com", "role": "DomainAdmins"}
+        resp = self.client.patch(url, data, format="json")
+        self.assertEqual(resp.status_code, 400)
+        self.assertIn("username", resp.json())
+
+    def test_rename_without_mailbox_data_renames_mailbox(self):
+        account = core_models.User.objects.get(username="admin@test.com")
+        url = reverse("v2:account-detail", args=[account.pk])
+        data = {"username": "boss@test.com", "role": "DomainAdmins"}
+        resp = self.client.patch(url, data, format="json")
+        self.assertEqual(resp.status_code, 200)
+        account.refresh_from_db()
+        self.assertEqual(account.email, "boss@test.com")
+        self.assertEqual(account.mailbox.full_address, "boss@test.com")
+
     def test_mailbox_options_update(self):
         account = core_models.User.objects.get(username="user@test.com")
         url = reverse("v2:account-detail", args=[account.pk])

@@ -630,6 +630,47 @@ class AccountAPITestCase(ModoAPITestCase):
         response = self.client.put(url, data, format="json")
         self.assertEqual(response.status_code, 200)
 
+    def _create_domain_admin_without_mailbox(self):
+        domain = models.Domain.objects.get(name="test.com")
+        account = core_factories.UserFactory(
+            username="nombox", groups=("DomainAdmins",), password="{PLAIN}toto"
+        )
+        domain.add_admin(account)
+        return account, domain
+
+    def test_patch_account_creates_mailbox_with_domain_quota(self):
+        account, domain = self._create_domain_admin_without_mailbox()
+        url = reverse("v1:account-detail", args=[account.pk])
+        data = {"mailbox": {"full_address": "nombox@test.com"}}
+        response = self.client.patch(url, data, format="json")
+        self.assertEqual(response.status_code, 200)
+        account.refresh_from_db()
+        self.assertTrue(account.mailbox.use_domain_quota)
+        self.assertEqual(account.mailbox.quota, domain.default_mailbox_quota)
+
+    def test_patch_account_creating_mailbox_respects_limit(self):
+        account, domain = self._create_domain_admin_without_mailbox()
+        self.set_global_parameter("enable_domain_limits", True, app="limits")
+        limit = domain.domainobjectlimit_set.get(name="mailboxes")
+        limit.max_value = domain.mailbox_set.count()
+        limit.save()
+        url = reverse("v1:account-detail", args=[account.pk])
+        data = {"mailbox": {"full_address": "nombox@test.com"}}
+        response = self.client.patch(url, data, format="json")
+        self.assertEqual(response.status_code, 400)
+        self.assertFalse(models.Mailbox.objects.filter(user=account).exists())
+
+    def test_patch_account_mailbox_without_full_address(self):
+        account = core_models.User.objects.get(username="user@test.com")
+        url = reverse("v1:account-detail", args=[account.pk])
+        for mailbox in ({}, {"quota": 20}):
+            response = self.client.patch(url, {"mailbox": mailbox}, format="json")
+            self.assertEqual(response.status_code, 200)
+        account, domain = self._create_domain_admin_without_mailbox()
+        url = reverse("v1:account-detail", args=[account.pk])
+        response = self.client.patch(url, {"mailbox": {"quota": 20}}, format="json")
+        self.assertEqual(response.status_code, 400)
+
     def test_patch_account(self):
         """Try to patch an account."""
         account = core_models.User.objects.get(username="user@test.com")
