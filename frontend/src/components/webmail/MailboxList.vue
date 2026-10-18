@@ -40,6 +40,7 @@
         v-if="getMailboxState(mailbox) && mailbox.sub && mailbox.sub.length"
         v-model="model"
         :mailboxes="mailbox.sub"
+        :hdelimiter="props.hdelimiter"
         class="mt-1"
         :light-mode="props.lightMode"
         :compact="props.compact"
@@ -80,6 +81,10 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  hdelimiter: {
+    type: String,
+    default: '/',
+  },
 })
 const model = defineModel()
 const emit = defineEmits(['update:modelValue'])
@@ -103,7 +108,7 @@ const hoverStates = ref({})
 const mailboxStates = ref({})
 
 function getMailboxLabel(mailbox) {
-  return mailbox.label.split('/').pop()
+  return mailbox.label.split(props.hdelimiter).pop()
 }
 
 function setHover(mailbox, value) {

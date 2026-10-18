@@ -56,11 +56,7 @@ _axios.interceptors.response.use(
       return Promise.reject(error)
     }
     if (error.response.status !== 401 || router.currentRoute.name === 'Login') {
-      if (
-        error.response.status !== 518 &&
-        error.config &&
-        !error.config.ignoreErrors
-      ) {
+      if (error.config && !error.config.ignoreErrors) {
         const busStore = useBusStore()
         const msg =
           getErrorMessage(error.response.data) ||

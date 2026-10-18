@@ -1,4 +1,4 @@
-"""Sieve filters forms."""
+"""Sieve filters settings."""
 
 import collections
 
@@ -32,40 +32,11 @@ SIEVEFILTERS_PARAMETERS_STRUCT = collections.OrderedDict(
                             "starttls",
                             {
                                 "label": _("Connect using STARTTLS"),
-                                "help_text": _("Use the STARTTLS extension"),
-                            },
-                        ),
-                    ]
-                ),
-            },
-        ),
-        (
-            "imap_settings",
-            {
-                "label": _("IMAP settings"),
-                "params": collections.OrderedDict(
-                    [
-                        (
-                            "imap_server",
-                            {
-                                "label": _("Server address"),
-                                "help_text": _("Address of your IMAP server"),
-                            },
-                        ),
-                        (
-                            "imap_secured",
-                            {
-                                "label": _("Use a secured connection"),
                                 "help_text": _(
-                                    "Use a secured connection to access IMAP server"
+                                    "Use the STARTTLS extension. Without it, "
+                                    "credentials are sent in clear, which is "
+                                    "only acceptable when the server is local"
                                 ),
-                            },
-                        ),
-                        (
-                            "imap_port",
-                            {
-                                "label": _("Server port"),
-                                "help_text": _("Listening port of your IMAP server"),
                             },
                         ),
                     ]

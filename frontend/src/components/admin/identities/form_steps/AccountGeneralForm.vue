@@ -84,7 +84,8 @@ const usernameInputType = computed(() => {
 })
 
 function updateUsername() {
-  if (account.value.username.indexOf('@') !== -1) {
+  // mailbox is undefined until the mailbox form is displayed
+  if (account.value.mailbox && account.value.username.indexOf('@') !== -1) {
     account.value.mailbox.full_address = account.value.username
     account.value.mailbox.message_limit = null
   }

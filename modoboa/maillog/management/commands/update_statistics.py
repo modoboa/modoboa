@@ -9,6 +9,7 @@ from django.core.management.base import BaseCommand
 from django.utils import timezone
 
 from modoboa.core import models as core_models
+from modoboa.maillog.lib import ensure_rrd_rootdir
 from modoboa.parameters import tools as param_tools
 
 
@@ -81,4 +82,5 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         """Entry point."""
         self.rootdir = param_tools.get_global_parameter("rrd_rootdir")
+        ensure_rrd_rootdir(self.rootdir)
         self.update_account_creation_stats(options["rebuild"])

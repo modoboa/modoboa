@@ -21,7 +21,6 @@ from modoboa.lib.redis import get_redis_connection
 from modoboa.lib.web_utils import size2integer
 from modoboa.parameters import tools as param_tools
 
-from .rfc6266 import build_header
 
 Attachment = TypedDict(
     "Attachment", {"fname": str, "content-type": str, "size": int, "tmpname": str}
@@ -296,11 +295,7 @@ def create_mail_attachment(attdef, payload=None):
     encoders.encode_base64(res)
     if isinstance(attdef["fname"], bytes):
         attdef["fname"] = attdef["fname"].decode("utf-8")
-    content_disposition = build_header(attdef["fname"])
-    if isinstance(content_disposition, bytes):
-        res["Content-Disposition"] = content_disposition.decode("utf-8")
-    else:
-        res["Content-Disposition"] = content_disposition
+    res.add_header("Content-Disposition", "attachment", filename=attdef["fname"])
     return res
 
 

@@ -78,16 +78,16 @@ class ARmessage(models.Model):
                 )
 
     def manage_sieve_rule(self, request):
-        client = SieveClient(
+        with SieveClient(
             user=request.user.username, password=get_access_token(request)
-        )
-        active_script, scripts = client.listscripts()
-        if not active_script:
-            active_script = "DefaultScript"
-            client.pushscript(active_script, "# Empty script", True)
-        fset = client.getscript(active_script, format="fset")
-        if self.enabled:
-            self.update_sieve_rule(request, fset)
-        else:
-            fset.removefilter("autoreply")
-        client.pushscript(fset.name, str(fset))
+        ) as client:
+            active_script, scripts = client.listscripts()
+            if not active_script:
+                active_script = "DefaultScript"
+                client.pushscript(active_script, "# Empty script", True)
+            fset = client.getscript(active_script, format="fset")
+            if self.enabled:
+                self.update_sieve_rule(request, fset)
+            else:
+                fset.removefilter("autoreply")
+            client.pushscript(fset.name, str(fset))

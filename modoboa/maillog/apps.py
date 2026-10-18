@@ -28,7 +28,10 @@ GLOBAL_PARAMETERS_STRUCT = collections.OrderedDict(
                             {
                                 "label": _("Directory to store RRD files"),
                                 "help_text": _(
-                                    "Path to directory where RRD files are stored"
+                                    "Path to an existing directory where persistent "
+                                    "RRD archives are stored. The directory must "
+                                    "already exist and be writable by the process "
+                                    "that runs logparser and update_statistics."
                                 ),
                             },
                         ),

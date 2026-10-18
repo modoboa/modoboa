@@ -204,16 +204,7 @@ function closeFilterForm() {
 
 async function fetchFilterSets() {
   const resp = await accountApi.getFilterSets()
-  if (
-    resp.data.length > 0 &&
-    resp.data[0].active &&
-    resp.data[0].name === null
-  ) {
-    // No filter is active
-    filterSets.value = resp.data.slice(1)
-  } else {
-    filterSets.value = resp.data
-  }
+  filterSets.value = resp.data
   if (route.params.filterset) {
     for (const filterSet of filterSets.value) {
       if (filterSet.name === route.params.filterset) {
@@ -241,8 +232,8 @@ function fetchFilters(filterSetName) {
       loadingFilters.value = false
     })
     .catch((error) => {
-      if (error.response.status === 518) {
-        // Server is a teapot (sieve file contains custom code or is broken)
+      if (error.response?.status === 422) {
+        // Sieve file contains custom code or is broken
         // Let the user see with rawmode
         rawMode.value = true
         busStore.displayNotification({

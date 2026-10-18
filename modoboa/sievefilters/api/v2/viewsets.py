@@ -6,6 +6,7 @@ from sievelib.commands import BadArgument, BadValue
 from sievelib.factory import FilterAlreadyExists
 
 from django.http import HttpResponse
+from django.utils.http import content_disposition_header
 from django.utils.translation import gettext as _
 
 from drf_spectacular.types import OpenApiTypes
@@ -23,7 +24,6 @@ from modoboa.sievefilters.lib import (
     SieveScriptParseError,
     UnsupportedSieveFilter,
 )
-from modoboa.sievefilters.rfc6266 import build_header
 from modoboa.sievefilters.api.v2 import serializers
 
 
@@ -54,19 +54,29 @@ class FilterSetViewSet(viewsets.ViewSet):
             if any(c in value for c in self.FORBIDDEN_NAME_CHARS):
                 raise DRFValidationError({key: _("Name contains forbidden characters")})
 
+    sclient: SieveClient | None = None
+
+    def dispatch(self, request, *args, **kwargs):
+        try:
+            return super().dispatch(request, *args, **kwargs)
+        finally:
+            if self.sclient:
+                self.sclient.logout()
+
     def get_sieve_client(self, request):
-        return SieveClient(
+        self.sclient = SieveClient(
             user=request.user.username, password=get_access_token(request)
         )
+        return self.sclient
 
     def list(self, request):
         """Retrieve list of available filter sets."""
         sclient = self.get_sieve_client(request)
         active_script, scripts = sclient.listscripts()
-        scripts = [
-            {"name": active_script, "active": True},
-        ] + [{"name": script, "active": False} for script in scripts]
-        return response.Response(scripts)
+        result = [{"name": script, "active": False} for script in scripts]
+        if active_script:
+            result.insert(0, {"name": active_script, "active": True})
+        return response.Response(result)
 
     def create(self, request):
         """Create a new filter set."""
@@ -132,8 +142,7 @@ class FilterSetViewSet(viewsets.ViewSet):
         script = sclient.getscript(pk)
         resp = HttpResponse(script)
         resp["Content-Type"] = "text/plain; charset=utf-8"
-        resp["Content-Length"] = len(script)
-        resp["Content-Disposition"] = build_header(f"{pk}.txt")
+        resp["Content-Disposition"] = content_disposition_header(True, f"{pk}.txt")
         return resp
 
     def destroy(self, request, pk):
@@ -180,9 +189,9 @@ class FilterSetViewSet(viewsets.ViewSet):
         try:
             fset = sclient.getscript(pk, format="fset")
             serializer = serializers.FilterSerializer.from_filters(fset.filters)
-        except (SieveScriptParseError, UnsupportedSieveFilter):
+        except (SieveScriptParseError, UnsupportedSieveFilter) as err:
             # Frontend falls back to raw mode
-            return HttpResponse(status=518)
+            return response.Response({"error": str(err)}, status=422)
         return response.Response(serializer.data)
 
     @extend_schema(
@@ -247,9 +256,11 @@ class FilterSetViewSet(viewsets.ViewSet):
         """Disable an existing filter."""
         sclient = self.get_sieve_client(request)
         fset = sclient.getscript(pk, format="fset")
-        if not fset.disablefilter(filter):
+        if fset.getfilter(filter) is None:
             return response.Response(status=404)
-        sclient.pushscript(pk, str(fset))
+        # False means the filter is already disabled
+        if fset.disablefilter(filter):
+            sclient.pushscript(pk, str(fset))
         return response.Response(status=204)
 
     @action(methods=["post"], detail=True, url_path="filters/(?P<filter>[^/]+)/enable")
@@ -257,9 +268,11 @@ class FilterSetViewSet(viewsets.ViewSet):
         """Enable an existing filter."""
         sclient = self.get_sieve_client(request)
         fset = sclient.getscript(pk, format="fset")
-        if not fset.enablefilter(filter):
+        if fset.getfilter(filter) is None:
             return response.Response(status=404)
-        sclient.pushscript(pk, str(fset))
+        # False means the filter is already enabled
+        if fset.enablefilter(filter):
+            sclient.pushscript(pk, str(fset))
         return response.Response(status=204)
 
     @extend_schema(
@@ -283,8 +296,11 @@ class FilterSetViewSet(viewsets.ViewSet):
     def move_filter(self, request, filterset: str, filter: str, direction: str):
         sclient = self.get_sieve_client(request)
         fset = sclient.getscript(filterset, format="fset")
-        fset.movefilter(filter, direction)
-        sclient.pushscript(filterset, str(fset))
+        if fset.getfilter(filter) is None:
+            return response.Response(status=404)
+        # False means the filter is already at the top or bottom of the list
+        if fset.movefilter(filter, direction):
+            sclient.pushscript(filterset, str(fset))
         return response.Response(status=204)
 
     @action(methods=["post"], detail=True, url_path="filters/(?P<filter>[^/]+)/move_up")

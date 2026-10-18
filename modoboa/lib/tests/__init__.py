@@ -158,9 +158,6 @@ SETTINGS_SAMPLE = {
         "port": 4190,
         "starttls": False,
         "authentication_mech": "AUTO",
-        "imap_server": "127.0.0.1",
-        "imap_secured": False,
-        "imap_port": 143,
     },
 }
 

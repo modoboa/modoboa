@@ -320,8 +320,9 @@ async function save() {
     const data = { ...editedAccount.value }
     if (usernameIsEmail.value) {
       data.mailbox.full_address = data.username
-    } else if (data.mailbox) {
-      delete data.mailbox.full_address
+    } else {
+      // Only an email username can own a mailbox
+      delete data.mailbox
     }
     if (data.new_password) {
       data.password = data.new_password

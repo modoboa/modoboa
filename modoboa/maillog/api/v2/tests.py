@@ -1,5 +1,7 @@
 """API v2 tests."""
 
+import os
+
 from dateutil.relativedelta import relativedelta
 
 from django.urls import reverse
@@ -52,6 +54,26 @@ class StatisticsViewSetTestCase(ModoAPITestCase):
             url + "?gset=mailtraffic&period=day&searchquery=test2.com"
         )
         self.assertEqual(resp.status_code, 403)
+
+
+class MaillogGlobalParametersTestCase(ModoAPITestCase):
+    """Global maillog parameter validation."""
+
+    def test_rrd_rootdir(self):
+        url = reverse("v2:parameter-global-detail", args=["maillog"])
+        data = {
+            "logfile": "/var/log/mail.log",
+            "rrd_rootdir": os.path.join(self.workdir, "missing"),
+            "greylist": False,
+            "enable_domain_limits": False,
+        }
+        resp = self.client.put(url, data, format="json")
+        self.assertEqual(resp.status_code, 400)
+        self.assertEqual(resp.json()["rrd_rootdir"], ["Directory not found."])
+
+        data["rrd_rootdir"] = self.workdir
+        resp = self.client.put(url, data, format="json")
+        self.assertEqual(resp.status_code, 200)
 
 
 class MaillogViewSetTestCase(ModoAPITestCase):

@@ -252,12 +252,8 @@ function buildItemTitle(argName, item) {
   if (argName !== 'mailbox') {
     return item.label
   }
-  const name = item.name
-  if (!name.includes('/')) {
-    return name
-  }
-  const parts = name.split('/')
-  return '\u00A0'.repeat((parts.length - 1) * 4) + parts[parts.length - 1]
+  // The hierarchy delimiter is server specific, the backend computes the level
+  return '\u00A0'.repeat(item.level * 4) + item.label
 }
 
 function getActionArguments(action) {
