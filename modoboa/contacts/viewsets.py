@@ -33,6 +33,8 @@ class AddressBookViewSet(viewsets.GenericViewSet):
     def sync_to_cdav(self, request):
         """Synchronize address book with CardDAV collection."""
         abook = request.user.addressbook_set.first()
+        if not abook:
+            return response.Response(status=404)
         if request.user.parameters.get_value("enable_carddav_sync", app="contacts"):
             tasks.push_addressbook_to_carddav(request, abook)
         return response.Response({})
@@ -41,6 +43,8 @@ class AddressBookViewSet(viewsets.GenericViewSet):
     def sync_from_cdav(self, request):
         """Synchronize from CardDAV address book."""
         abook = request.user.addressbook_set.first()
+        if not abook:
+            return response.Response(status=404)
         if not abook.last_sync:
             return response.Response()
         if request.user.parameters.get_value("enable_carddav_sync", app="contacts"):

@@ -151,6 +151,12 @@ class AddressBookViewSetTestCase(TestDataMixin, ModoAPITestCase):
         addressbook.refresh_from_db()
         self.assertNotEqual(addressbook.sync_token, "")
 
+    def test_sync_without_addressbook(self):
+        self.client.force_authenticate(core_models.User.objects.get(username="admin"))
+        for name in ["api:addressbook-sync-to-cdav", "api:addressbook-sync-from-cdav"]:
+            response = self.client.get(reverse(name))
+            self.assertEqual(response.status_code, 404)
+
 
 class CategoryViewSetTestCase(TestDataMixin, ModoAPITestCase):
     """Category ViewSet tests."""
@@ -261,6 +267,35 @@ class ContactViewSetTestCase(TestDataMixin, ModoAPITestCase):
         contact = models.Contact.objects.get(pk=response.data["pk"])
         self.assertEqual(contact.categories.first(), self.category)
 
+    def test_create_contact_with_foreign_category(self):
+        """Categories of other users are refused."""
+        user = core_models.User.objects.get(username="user@test2.com")
+        category = factories.CategoryFactory(user=user, name="Other")
+        data = {
+            "display_name": "Magie Simpson",
+            "emails": [{"address": "magie@simpson.com", "type": "home"}],
+            "categories": [category.pk],
+        }
+        response = self.client.post(reverse("api:contact-list"), data, format="json")
+        self.assertEqual(response.status_code, 400)
+        self.assertIn("categories", response.data)
+
+    def test_create_contact_without_addressbook(self):
+        self.client.force_authenticate(core_models.User.objects.get(username="admin"))
+        data = {
+            "display_name": "Magie Simpson",
+            "emails": [{"address": "magie@simpson.com", "type": "home"}],
+        }
+        response = self.client.post(reverse("api:contact-list"), data, format="json")
+        self.assertEqual(response.status_code, 400)
+
+    def test_partial_update_keeps_categories(self):
+        contact = models.Contact.objects.get(first_name="Marge")
+        url = reverse("api:contact-detail", args=[contact.pk])
+        response = self.client.patch(url, {"note": "Blue hair"}, format="json")
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(list(contact.categories.all()), [self.category])
+
     def test_update_contact(self):
         """Update existing contact."""
         data = {"username": self.user.username, "password": "toto"}
@@ -339,7 +374,6 @@ class EmailAddressViewSetTestCase(TestDataMixin, ModoAPITestCase):
 
 
 class ImportTestCase(TestDataMixin, ModoAPITestCase):
-
     def setUp(self):
         super().setUp()
         self.path = os.path.join(
