@@ -127,6 +127,7 @@ class PyCardDAV:
         verify=True,
         write_support=False,
         auth="basic",
+        timeout=10,
     ):
         # shutup urllib3
         urllog = logging.getLogger("requests.packages.urllib3.connectionpool")
@@ -150,7 +151,7 @@ class PyCardDAV:
         self.debug = debug
         self.session = requests.session()
         self.write_support = write_support
-        self._settings = {"verify": verify}
+        self._settings = {"verify": verify, "timeout": timeout}
         if auth == "basic":
             self._settings["auth"] = (
                 user,

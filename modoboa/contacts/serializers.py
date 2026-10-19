@@ -91,6 +91,13 @@ class ContactSerializer(serializers.ModelSerializer):
             "display_name",
         )
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        request = self.context.get("request")
+        if request:
+            field = self.fields["categories"].child_relation
+            field.queryset = models.Category.objects.filter(user=request.user)
+
     def validate(self, data):
         """Make sure display name or first/last names are set."""
         condition = (
@@ -115,6 +122,8 @@ class ContactSerializer(serializers.ModelSerializer):
         """Use current user."""
         request = self.context["request"]
         addressbook = request.user.addressbook_set.first()
+        if not addressbook:
+            raise serializers.ValidationError(_("No address book found"))
         categories = validated_data.pop("categories", [])
         emails = validated_data.pop("emails")
         phone_numbers = validated_data.pop("phone_numbers", [])
@@ -202,10 +211,11 @@ class ContactSerializer(serializers.ModelSerializer):
         """Update contact."""
         emails = validated_data.pop("emails", None)
         phone_numbers = validated_data.pop("phone_numbers", None)
-        categories = validated_data.pop("categories", [])
+        categories = validated_data.pop("categories", None)
         for key, value in validated_data.items():
             setattr(instance, key, value)
-        instance.categories.set(categories)
+        if categories is not None:
+            instance.categories.set(categories)
         instance.save()
 
         if emails is not None:
@@ -238,6 +248,8 @@ class UserPreferencesSerializer(serializers.Serializer):
     def post_save(self, request):
         """Create remote cal if necessary."""
         abook = request.user.addressbook_set.first()
+        if not abook:
+            return
         if not self.validated_data["enable_carddav_sync"]:
             abook.last_sync = None
             abook.sync_token = ""
