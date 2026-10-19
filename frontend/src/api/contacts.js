@@ -5,10 +5,10 @@ export default {
     return repository.get('/address-books/default/')
   },
   synchronizeToAddressBook() {
-    return repository.get('/address-books/sync_to_cdav/')
+    return repository.post('/address-books/sync_to_cdav/')
   },
   synchronizeFromAddressBook() {
-    return repository.get('/address-books/sync_from_cdav/')
+    return repository.post('/address-books/sync_from_cdav/')
   },
   getContacts(params) {
     return repository.get('/contacts/', { params })

@@ -1,5 +1,6 @@
 """Async tasks."""
 
+import contextlib
 from urllib.parse import unquote
 
 import vobject
@@ -40,30 +41,51 @@ def create_cdav_addressbook(addressbook, password):
     clt.create_abook()
 
 
-def push_addressbook_to_carddav(request, addressbook):
+@contextlib.contextmanager
+def sync_lock(addressbook_id: int):
+    """Atomic lock: only one sync at a time per address book.
+
+    Yield False if a sync is already running.
+    """
+    locked = models.AddressBook.objects.filter(pk=addressbook_id, syncing=False).update(
+        syncing=True
+    )
+    try:
+        yield bool(locked)
+    finally:
+        if locked:
+            models.AddressBook.objects.filter(pk=addressbook_id).update(syncing=False)
+
+
+def push_addressbook_to_carddav(addressbook_id: int, access_token: str):
     """Push every addressbook item to carddav collection.
 
-    Use only once.
+    Use only once. Contacts already pushed by an interrupted run (they
+    have an etag) are skipped.
     """
-    clt = get_cdav_client_from_request(request, addressbook, write_support=True)
-    for contact in addressbook.contact_set.all():
-        href, etag = clt.upload_new_card(contact.filename, contact.to_vcard())
-        contact.etag = etag
-        contact.save(update_fields=["etag"])
-    addressbook.last_sync = timezone.now()
-    addressbook.sync_token = clt.get_sync_token()
-    addressbook.save(update_fields=["last_sync", "sync_token"])
+    with sync_lock(addressbook_id) as locked:
+        if not locked:
+            return
+        addressbook = models.AddressBook.objects.get(pk=addressbook_id)
+        if addressbook.last_sync:
+            return
+        clt = get_cdav_client(
+            addressbook, addressbook.user.username, access_token, write_support=True
+        )
+        for contact in addressbook.contact_set.filter(etag=""):
+            href, etag = clt.upload_new_card(contact.filename, contact.to_vcard())
+            contact.etag = etag
+            contact.save(update_fields=["etag"])
+        addressbook.last_sync = timezone.now()
+        addressbook.sync_token = clt.get_sync_token()
+        addressbook.save(update_fields=["last_sync", "sync_token"])
 
 
 def sync_addressbook_from_cdav(addressbook_id: int, access_token: str):
     """Fetch changes from CardDAV server."""
-    # Atomic lock: only one sync at a time per address book
-    locked = models.AddressBook.objects.filter(pk=addressbook_id, syncing=False).update(
-        syncing=True
-    )
-    if not locked:
-        return
-    try:
+    with sync_lock(addressbook_id) as locked:
+        if not locked:
+            return
         addressbook = models.AddressBook.objects.get(pk=addressbook_id)
         clt = get_cdav_client(addressbook, addressbook.user.email, access_token)
         changes = clt.sync_vcards(addressbook.sync_token)
@@ -91,8 +113,6 @@ def sync_addressbook_from_cdav(addressbook_id: int, access_token: str):
         addressbook.last_sync = timezone.now()
         addressbook.sync_token = changes["token"]
         addressbook.save(update_fields=["last_sync", "sync_token"])
-    finally:
-        models.AddressBook.objects.filter(pk=addressbook_id).update(syncing=False)
 
 
 def push_contact_to_cdav(request, contact):

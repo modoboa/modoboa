@@ -29,17 +29,22 @@ class AddressBookViewSet(viewsets.GenericViewSet):
         serializer = serializers.AddressBookSerializer(abook)
         return response.Response(serializer.data)
 
-    @action(methods=["get"], detail=False)
+    @action(methods=["post"], detail=False)
     def sync_to_cdav(self, request):
-        """Synchronize address book with CardDAV collection."""
+        """Push address book to CardDAV collection (initial sync)."""
         abook = request.user.addressbook_set.first()
         if not abook:
             return response.Response(status=404)
-        if request.user.parameters.get_value("enable_carddav_sync", app="contacts"):
-            tasks.push_addressbook_to_carddav(request, abook)
+        if not abook.last_sync and request.user.parameters.get_value(
+            "enable_carddav_sync", app="contacts"
+        ):
+            queue = django_rq.get_queue("modoboa")
+            queue.enqueue(
+                tasks.push_addressbook_to_carddav, abook.pk, get_access_token(request)
+            )
         return response.Response({})
 
-    @action(methods=["get"], detail=False)
+    @action(methods=["post"], detail=False)
     def sync_from_cdav(self, request):
         """Synchronize from CardDAV address book."""
         abook = request.user.addressbook_set.first()
