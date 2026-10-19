@@ -7,6 +7,7 @@ from dateutil.parser import parse
 import vobject
 
 from django.db import models
+from django.utils import timezone
 from django.utils.translation import gettext as _
 
 from modoboa.lib import exceptions as lib_exceptions
@@ -40,12 +41,20 @@ class AddressBook(models.Model):
     name = models.CharField(max_length=50)
     sync_token = models.TextField(blank=True)
     last_sync = models.DateTimeField(null=True)
-    syncing = models.BooleanField(default=False)
+    # Set while a sync is running (see tasks.sync_lock)
+    sync_started = models.DateTimeField(null=True)
     user = models.ForeignKey("core.User", on_delete=models.CASCADE)
     _path = models.TextField()
 
     class Meta:
         db_table = "modoboa_contacts_addressbook"
+
+    @property
+    def syncing(self):
+        return (
+            self.sync_started is not None
+            and self.sync_started > timezone.now() - constants.SYNC_LOCK_TIMEOUT
+        )
 
     @property
     def url(self):
