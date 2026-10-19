@@ -94,7 +94,7 @@ class ContactViewSet(viewsets.ModelViewSet):
 
     def perform_destroy(self, instance):
         """Also remove cdav contact."""
-        if self.request.user.parameters.get_value(
+        if instance.addressbook.last_sync and self.request.user.parameters.get_value(
             "enable_carddav_sync", app="contacts"
         ):
             tasks.delete_contact_cdav(self.request, instance)

@@ -273,15 +273,15 @@ class PyCardDAV:
         """
         pushes changed vcard to the server
         card: vcard as unicode string
-        etag: str or None, if this is set to a string, card is only updated if
-              remote etag matches. If etag = None the update is forced anyway
+        etag: str or None, if this is set to a non-empty string, card is only
+              updated if remote etag matches. Otherwise the update is forced
         """
         # TODO what happens if etag does not match?
         self._check_write_support()
         remotepath = str(self.url.resource + "/" + uid)
         headers = self.headers
         headers["content-type"] = "text/vcard"
-        if etag is not None:
+        if etag:
             headers["If-Match"] = etag
         response = self.session.put(
             remotepath, data=card, headers=headers, **self._settings
@@ -304,7 +304,7 @@ class PyCardDAV:
         if etag=None delete anyway
         :param uid: UID of card to be deleted
         :type uid: str()
-        :param etag: etag of that card, if None card is always deleted
+        :param etag: etag of that card, if empty card is always deleted
         :type href: str()
         :returns: nothing
         """
@@ -313,10 +313,12 @@ class PyCardDAV:
         remotepath = str(self.url.resource + "/" + uid)
         headers = self.headers
         headers["content-type"] = "text/vcard"
-        if etag is not None:
+        if etag:
             headers["If-Match"] = etag
         response = self.session.delete(remotepath, headers=headers, **self._settings)
-        response.raise_for_status()
+        # Card already gone on the server: nothing left to delete
+        if response.status_code != 404:
+            response.raise_for_status()
 
     def upload_new_card(self, uid, card):
         """

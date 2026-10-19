@@ -55,7 +55,7 @@ class Contact(models.Model):
     """A contact."""
 
     addressbook = models.ForeignKey(AddressBook, on_delete=models.CASCADE)
-    uid = models.CharField(max_length=100, unique=True, null=True, db_index=True)
+    uid = models.CharField(max_length=100, null=True, db_index=True)
     # Can't define an index on etag field because of MySQL...
     etag = models.TextField(blank=True)
     first_name = models.CharField(max_length=30, blank=True)
@@ -78,6 +78,11 @@ class Contact(models.Model):
 
     class Meta:
         db_table = "modoboa_contacts_contact"
+        constraints = [
+            models.UniqueConstraint(
+                fields=["addressbook", "uid"], name="unique_contact_uid_per_addressbook"
+            )
+        ]
 
     def __init__(self, *args, **kwargs):
         """Set uid for new object."""

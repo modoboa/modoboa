@@ -3,6 +3,7 @@
 import os
 
 import httmock
+import requests
 from rq import SimpleWorker
 
 from django.core import management
@@ -19,6 +20,7 @@ from modoboa.lib.tests import ModoAPITestCase
 from . import factories
 from . import mocks
 from . import models
+from . import tasks
 from .lib.carddav import _safe_xml
 
 
@@ -150,6 +152,45 @@ class AddressBookViewSetTestCase(TestDataMixin, ModoAPITestCase):
         self.assertEqual(response.status_code, 200)
         addressbook.refresh_from_db()
         self.assertNotEqual(addressbook.sync_token, "")
+
+
+class SyncFromCDAVTestCase(TestDataMixin, ModoAPITestCase):
+    """Check sync_addressbook_from_cdav task."""
+
+    def test_sync_does_not_touch_other_addressbooks(self):
+        other_abook = core_models.User.objects.get(
+            username="user@test2.com"
+        ).addressbook_set.first()
+        # Contact.__init__ overrides uid, so set it afterwards
+        updated = factories.ContactFactory(addressbook=other_abook, first_name="Lisa")
+        deleted = factories.ContactFactory(addressbook=other_abook)
+        models.Contact.objects.filter(pk=updated.pk).update(uid="newcard.vcf")
+        models.Contact.objects.filter(pk=deleted.pk).update(uid="deletedcard.vcf")
+        with httmock.HTTMock(mocks.options_mock, mocks.report_mock, mocks.get_mock):
+            tasks.sync_addressbook_from_cdav(self.addressbook.pk, "token")
+        updated.refresh_from_db()
+        self.assertEqual(updated.first_name, "Lisa")
+        self.assertTrue(models.Contact.objects.filter(pk=deleted.pk).exists())
+        self.assertTrue(self.addressbook.contact_set.filter(uid="newcard.vcf").exists())
+
+    def test_sync_releases_lock_on_error(self):
+        @httmock.urlmatch(method="REPORT")
+        def report_error_mock(url, request):
+            return {"status_code": 500}
+
+        with httmock.HTTMock(mocks.options_mock, report_error_mock):
+            with self.assertRaises(requests.exceptions.HTTPError):
+                tasks.sync_addressbook_from_cdav(self.addressbook.pk, "token")
+        self.addressbook.refresh_from_db()
+        self.assertFalse(self.addressbook.syncing)
+
+    def test_sync_skipped_when_locked(self):
+        self.user.addressbook_set.update(syncing=True)
+        # No HTTP mock: any request would fail
+        tasks.sync_addressbook_from_cdav(self.addressbook.pk, "token")
+        self.addressbook.refresh_from_db()
+        self.assertTrue(self.addressbook.syncing)
+        self.assertEqual(self.addressbook.sync_token, "")
 
 
 class CategoryViewSetTestCase(TestDataMixin, ModoAPITestCase):
@@ -314,6 +355,26 @@ class ContactViewSetTestCase(TestDataMixin, ModoAPITestCase):
         with self.assertRaises(models.Contact.DoesNotExist):
             self.contact.refresh_from_db()
 
+    def test_delete_contact_missing_on_server(self):
+        """Contact never pushed (no etag) and unknown remotely."""
+        data = {"username": self.user.username, "password": "toto"}
+        self.client.post(reverse("core:login"), data)
+        self.enable_cdav_sync()
+        self.user.addressbook_set.update(last_sync=timezone.now())
+        headers = {}
+
+        @httmock.urlmatch(method="DELETE")
+        def delete_404_mock(url, request):
+            headers.update(request.headers)
+            return {"status_code": 404}
+
+        url = reverse("api:contact-detail", args=[self.contact.pk])
+        with httmock.HTTMock(mocks.options_mock, delete_404_mock):
+            response = self.client.delete(url)
+        self.assertEqual(response.status_code, 204)
+        self.assertNotIn("If-Match", headers)
+        self.assertFalse(models.Contact.objects.filter(pk=self.contact.pk).exists())
+
 
 class EmailAddressViewSetTestCase(TestDataMixin, ModoAPITestCase):
     """EmailAddressViewSet tests."""
@@ -339,7 +400,6 @@ class EmailAddressViewSetTestCase(TestDataMixin, ModoAPITestCase):
 
 
 class ImportTestCase(TestDataMixin, ModoAPITestCase):
-
     def setUp(self):
         super().setUp()
         self.path = os.path.join(
