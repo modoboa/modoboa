@@ -1,11 +1,14 @@
 """Contacts backend tests."""
 
+import importlib
 import os
 
 import httmock
 import requests
+import vobject
 from rq import SimpleWorker
 
+from django.apps import apps as django_apps
 from django.core import management
 from django.test import TestCase
 from django.urls import reverse
@@ -167,17 +170,42 @@ class SyncFromCDAVTestCase(TestDataMixin, ModoAPITestCase):
         other_abook = core_models.User.objects.get(
             username="user@test2.com"
         ).addressbook_set.first()
-        # Contact.__init__ overrides uid, so set it afterwards
-        updated = factories.ContactFactory(addressbook=other_abook, first_name="Lisa")
-        deleted = factories.ContactFactory(addressbook=other_abook)
-        models.Contact.objects.filter(pk=updated.pk).update(uid="newcard.vcf")
-        models.Contact.objects.filter(pk=deleted.pk).update(uid="deletedcard.vcf")
+        updated = factories.ContactFactory(
+            addressbook=other_abook, first_name="Lisa", filename="newcard.vcf"
+        )
+        deleted = factories.ContactFactory(
+            addressbook=other_abook, filename="deletedcard.vcf"
+        )
         with httmock.HTTMock(mocks.options_mock, mocks.report_mock, mocks.get_mock):
             tasks.sync_addressbook_from_cdav(self.addressbook.pk, "token")
         updated.refresh_from_db()
         self.assertEqual(updated.first_name, "Lisa")
         self.assertTrue(models.Contact.objects.filter(pk=deleted.pk).exists())
-        self.assertTrue(self.addressbook.contact_set.filter(uid="newcard.vcf").exists())
+        self.assertTrue(
+            self.addressbook.contact_set.filter(filename="newcard.vcf").exists()
+        )
+
+    def test_sync_deletes_by_filename(self):
+        contact = factories.ContactFactory(
+            addressbook=self.addressbook, filename="deletedcard.vcf"
+        )
+        with httmock.HTTMock(mocks.options_mock, mocks.report_mock, mocks.get_mock):
+            tasks.sync_addressbook_from_cdav(self.addressbook.pk, "token")
+        self.assertFalse(models.Contact.objects.filter(pk=contact.pk).exists())
+
+    def test_sync_matches_legacy_contact_by_uid(self):
+        """Contact whose filename differs from the remote one."""
+        legacy = factories.ContactFactory(
+            addressbook=self.addressbook, uid="newcard.vcf", filename="legacy.vcf"
+        )
+        with httmock.HTTMock(mocks.options_mock, mocks.report_mock, mocks.get_mock):
+            tasks.sync_addressbook_from_cdav(self.addressbook.pk, "token")
+        legacy.refresh_from_db()
+        self.assertEqual(legacy.filename, "newcard.vcf")
+        self.assertEqual(legacy.display_name, "Forrest Gump")
+        self.assertEqual(
+            self.addressbook.contact_set.filter(uid="newcard.vcf").count(), 1
+        )
 
     def test_sync_releases_lock_on_error(self):
         @httmock.urlmatch(method="REPORT")
@@ -197,6 +225,85 @@ class SyncFromCDAVTestCase(TestDataMixin, ModoAPITestCase):
         self.addressbook.refresh_from_db()
         self.assertTrue(self.addressbook.syncing)
         self.assertEqual(self.addressbook.sync_token, "")
+
+
+class VCardTestCase(TestDataMixin, ModoAPITestCase):
+    """Check vCard conversions."""
+
+    def test_new_contact_filename(self):
+        contact = factories.ContactFactory(addressbook=self.addressbook)
+        self.assertFalse(contact.uid.endswith(".vcf"))
+        self.assertEqual(contact.filename, f"{contact.uid}.vcf")
+
+    def test_set_filename_migration(self):
+        migration = importlib.import_module(
+            "modoboa.contacts.migrations.0010_contact_filename"
+        )
+        with_ext = factories.ContactFactory(addressbook=self.addressbook)
+        without_ext = factories.ContactFactory(addressbook=self.addressbook)
+        models.Contact.objects.filter(pk=with_ext.pk).update(uid="a.vcf", filename="")
+        models.Contact.objects.filter(pk=without_ext.pk).update(uid="b", filename="")
+        migration.set_filename(django_apps, None)
+        with_ext.refresh_from_db()
+        without_ext.refresh_from_db()
+        self.assertEqual(with_ext.filename, "a.vcf")
+        self.assertEqual(without_ext.filename, "b.vcf")
+
+    def test_update_from_vcard(self):
+        contact = self.contact
+        contact.company = "Springfield Nuclear Plant"
+        contact.note = "D'oh"
+        contact.save()
+        uid = contact.uid
+        vcard = vobject.readOne(
+            "BEGIN:VCARD\r\n"
+            "VERSION:3.0\r\n"
+            "N:Gump;Forrest,Alexander;;;\r\n"
+            "FN:Forrest Gump\r\n"
+            "BDAY:--0415\r\n"
+            "CATEGORIES:Family,Shrimp\r\n"
+            "TEL;TYPE=WORK;VOICE:(111) 555-1212\r\n"
+            "EMAIL;TYPE=PREF,INTERNET:F@example.com\r\n"
+            "END:VCARD\r\n"
+        )
+        contact.update_from_vcard(vcard)
+        contact.refresh_from_db()
+        self.assertEqual(contact.uid, uid)
+        self.assertEqual(contact.first_name, "Forrest Alexander")
+        self.assertEqual(contact.display_name, "Forrest Gump")
+        self.assertEqual(contact.company, "")
+        self.assertEqual(contact.note, "")
+        self.assertIsNone(contact.birth_date)
+        self.assertEqual(
+            sorted(contact.categories.values_list("name", flat=True)),
+            ["Family", "Shrimp"],
+        )
+        self.assertIn(self.category, contact.categories.all())
+        self.assertEqual(
+            list(contact.emails.values_list("address", "type")),
+            [("f@example.com", "other")],
+        )
+        self.assertEqual(
+            list(contact.phone_numbers.values_list("number", "type")),
+            [("(111) 555-1212", "work")],
+        )
+
+    def test_update_from_vcard_truncates_long_values(self):
+        vcard = vobject.readOne(
+            "BEGIN:VCARD\r\n"
+            "VERSION:3.0\r\n"
+            f"N:Gump;{'x' * 50};;;\r\n"
+            "FN:Forrest Gump\r\n"
+            "END:VCARD\r\n"
+        )
+        self.contact.update_from_vcard(vcard)
+        self.contact.refresh_from_db()
+        self.assertEqual(self.contact.first_name, "x" * 30)
+
+    def test_to_vcard_exports_categories(self):
+        contact = models.Contact.objects.get(first_name="Marge")
+        vcard = vobject.readOne(contact.to_vcard())
+        self.assertEqual(vcard.categories.value, ["Family"])
 
 
 class CategoryViewSetTestCase(TestDataMixin, ModoAPITestCase):

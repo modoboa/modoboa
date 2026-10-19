@@ -19,7 +19,16 @@ PHONE_TYPES = (
 )
 
 CDAV_TO_MODEL_FIELDS_MAP = {
+    "fn": "display_name",
     "org": "company",
     "title": "position",
     "note": "note",
+}
+
+CDAV_ADDRESS_TO_MODEL_FIELDS_MAP = {
+    "address": "street",
+    "zipcode": "code",
+    "city": "city",
+    "state": "region",
+    "country": "country",
 }

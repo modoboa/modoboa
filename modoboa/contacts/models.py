@@ -16,6 +16,24 @@ from . import constants
 from .. import __version__
 
 
+def generate_uid():
+    return str(uuid.uuid4())
+
+
+def _to_str(value):
+    """vobject returns a list when a component holds several values."""
+    return " ".join(value) if isinstance(value, list) else value
+
+
+def _get_type(prop, choices):
+    """Return the first TYPE parameter known by the model, "other" otherwise."""
+    known = {choice for choice, _label in choices}
+    for value in prop.params.get("TYPE", []) + prop.singletonparams:
+        if value.lower() in known:
+            return value.lower()
+    return "other"
+
+
 class AddressBook(models.Model):
     """An address book."""
 
@@ -55,7 +73,11 @@ class Contact(models.Model):
     """A contact."""
 
     addressbook = models.ForeignKey(AddressBook, on_delete=models.CASCADE)
-    uid = models.CharField(max_length=100, null=True, db_index=True)
+    uid = models.CharField(
+        max_length=100, null=True, db_index=True, default=generate_uid
+    )
+    # Name of the vCard resource on the CardDAV server (last segment of its href)
+    filename = models.CharField(max_length=255, blank=True)
     # Can't define an index on etag field because of MySQL...
     etag = models.TextField(blank=True)
     first_name = models.CharField(max_length=30, blank=True)
@@ -84,15 +106,10 @@ class Contact(models.Model):
             )
         ]
 
-    def __init__(self, *args, **kwargs):
-        """Set uid for new object."""
-        super().__init__(*args, **kwargs)
-        if not self.pk:
-            self.uid = f"{uuid.uuid4()}.vcf"
-
-    @property
-    def url(self):
-        return f"{self.addressbook.url}/{self.uid}.vcf"
+    def save(self, *args, **kwargs):
+        if not self.filename:
+            self.filename = f"{self.uid}.vcf"
+        super().save(*args, **kwargs)
 
     def to_vcard(self):
         """Convert this contact to a vCard."""
@@ -115,6 +132,9 @@ class Contact(models.Model):
         if self.birth_date:
             card.add("bday").value = self.birth_date.isoformat()
         card.add("note").value = self.note
+        categories = [category.name for category in self.categories.all()]
+        if categories:
+            card.add("categories").value = categories
         for email in EmailAddress.objects.filter(contact=self):
             attr = card.add("email")
             attr.value = email.address
@@ -125,50 +145,71 @@ class Contact(models.Model):
             attr.type_param = phone.type
         return card.serialize()
 
-    def update_from_vcard(self, content):
-        """Update this contact according to given vcard."""
-        vcard = vobject.readOne(content)
-        self.uid = vcard.uid.value
+    def update_from_vcard(self, vcard):
+        """Update this contact according to given vcard.
+
+        Fields missing from the vcard are emptied.
+        """
+        if hasattr(vcard, "uid"):
+            self.uid = vcard.uid.value
         name = getattr(vcard, "n", None)
-        if name:
-            self.first_name = name.value.given
-            self.last_name = name.value.family
+        self.first_name = _to_str(name.value.given) if name else ""
+        self.last_name = _to_str(name.value.family) if name else ""
         address = getattr(vcard, "adr", None)
-        if address:
-            self.address = address.value.street
-            self.zipcode = address.value.code
-            self.city = address.value.city
-            self.state = address.value.region
-            self.country = address.value.country
+        for mfield, cfield in constants.CDAV_ADDRESS_TO_MODEL_FIELDS_MAP.items():
+            value = getattr(address.value, cfield) if address else ""
+            setattr(self, mfield, _to_str(value))
+        self.birth_date = None
         birth_date = getattr(vcard, "bday", None)
-        if birth_date:
-            self.birth_date = parse(birth_date.value)
+        # Dates without year (--MMDD) can't be stored
+        if birth_date and not birth_date.value.startswith("--"):
+            try:
+                self.birth_date = parse(birth_date.value).date()
+            except (ValueError, OverflowError):
+                pass
         for cfield, mfield in constants.CDAV_TO_MODEL_FIELDS_MAP.items():
             value = getattr(vcard, cfield, None)
-            if value:
-                if isinstance(value.value, list):
-                    setattr(self, mfield, value.value[0])
-                else:
-                    setattr(self, mfield, value.value)
+            if not value:
+                setattr(self, mfield, "")
+            elif isinstance(value.value, list):
+                setattr(self, mfield, value.value[0])
+            else:
+                setattr(self, mfield, value.value)
+        # Remote values may be longer than what the database accepts
+        for field in self._meta.concrete_fields:
+            value = getattr(self, field.attname)
+            if isinstance(field, models.CharField) and isinstance(value, str):
+                setattr(self, field.attname, value[: field.max_length])
         self.save()
-        email_list = getattr(vcard, "email_list", [])
+        names = vcard.categories.value if hasattr(vcard, "categories") else []
+        max_length = Category._meta.get_field("name").max_length
+        user = self.addressbook.user
+        categories = []
+        for category_name in filter(None, names):
+            category_name = category_name[:max_length]
+            category = Category.objects.filter(user=user, name=category_name).first()
+            if not category:
+                category = Category.objects.create(user=user, name=category_name)
+            categories.append(category)
+        self.categories.set(categories)
         EmailAddress.objects.filter(contact=self).delete()
-        to_create = []
-        for email in email_list:
-            addr = EmailAddress(contact=self, address=email.value.lower())
-            if hasattr(email, "type_param"):
-                addr.type = email.type_param.lower()
-            to_create.append(addr)
-        EmailAddress.objects.bulk_create(to_create)
+        EmailAddress.objects.bulk_create(
+            EmailAddress(
+                contact=self,
+                address=email.value.lower(),
+                type=_get_type(email, constants.EMAIL_TYPES),
+            )
+            for email in getattr(vcard, "email_list", [])
+        )
         PhoneNumber.objects.filter(contact=self).delete()
-        to_create = []
-        phone_list = getattr(vcard, "tel_list", [])
-        for tel in phone_list:
-            pnum = PhoneNumber(contact=self, number=tel.value.lower())
-            if hasattr(tel, "type_param"):
-                pnum.type = tel.type_param.lower()
-            to_create.append(pnum)
-        PhoneNumber.objects.bulk_create(to_create)
+        PhoneNumber.objects.bulk_create(
+            PhoneNumber(
+                contact=self,
+                number=tel.value[: PhoneNumber._meta.get_field("number").max_length],
+                type=_get_type(tel, constants.PHONE_TYPES),
+            )
+            for tel in getattr(vcard, "tel_list", [])
+        )
 
 
 class EmailAddress(models.Model):
