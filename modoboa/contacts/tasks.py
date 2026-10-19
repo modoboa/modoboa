@@ -53,35 +53,38 @@ def push_addressbook_to_carddav(request, addressbook):
 
 def sync_addressbook_from_cdav(addressbook_id: int, access_token: str):
     """Fetch changes from CardDAV server."""
-    addressbook = models.AddressBook.objects.get(id=addressbook_id)
-    if addressbook.syncing:
+    # Atomic lock: only one sync at a time per address book
+    locked = models.AddressBook.objects.filter(pk=addressbook_id, syncing=False).update(
+        syncing=True
+    )
+    if not locked:
         return
-    clt = get_cdav_client(addressbook, addressbook.user.email, access_token)
-    changes = clt.sync_vcards(addressbook.sync_token)
-    if not len(changes["cards"]):
-        return
-    addressbook.syncing = True
-    addressbook.save()
-    for card in changes["cards"]:
-        # UID sometimes embded .vcf extension, sometimes not...
-        long_uid = card["href"].split("/")[-1]
-        short_uid = long_uid.split(".")[0]
-        if "200" in card["status"]:
-            content = clt.get_vcard(card["href"]).decode()
-            contact = models.Contact.objects.filter(
-                uid__in=[long_uid, short_uid]
-            ).first()
-            if not contact:
-                contact = models.Contact(addressbook=addressbook)
-            if contact.etag != card["etag"]:
-                contact.etag = card["etag"]
-                contact.update_from_vcard(content)
-        elif "404" in card["status"]:
-            models.Contact.objects.filter(uid__in=[long_uid, short_uid]).delete()
-    addressbook.last_sync = timezone.now()
-    addressbook.sync_token = changes["token"]
-    addressbook.syncing = False
-    addressbook.save(update_fields=["last_sync", "sync_token", "syncing"])
+    try:
+        addressbook = models.AddressBook.objects.get(pk=addressbook_id)
+        clt = get_cdav_client(addressbook, addressbook.user.email, access_token)
+        changes = clt.sync_vcards(addressbook.sync_token)
+        if not len(changes["cards"]):
+            return
+        for card in changes["cards"]:
+            # UID sometimes embded .vcf extension, sometimes not...
+            long_uid = card["href"].split("/")[-1]
+            short_uid = long_uid.split(".")[0]
+            contacts = addressbook.contact_set.filter(uid__in=[long_uid, short_uid])
+            if "200" in card["status"]:
+                content = clt.get_vcard(card["href"]).decode()
+                contact = contacts.first()
+                if not contact:
+                    contact = models.Contact(addressbook=addressbook)
+                if contact.etag != card["etag"]:
+                    contact.etag = card["etag"]
+                    contact.update_from_vcard(content)
+            elif "404" in card["status"]:
+                contacts.delete()
+        addressbook.last_sync = timezone.now()
+        addressbook.sync_token = changes["token"]
+        addressbook.save(update_fields=["last_sync", "sync_token"])
+    finally:
+        models.AddressBook.objects.filter(pk=addressbook_id).update(syncing=False)
 
 
 def push_contact_to_cdav(request, contact):
