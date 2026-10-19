@@ -1,5 +1,9 @@
 """Async tasks."""
 
+from urllib.parse import unquote
+
+import vobject
+
 from django.utils import timezone
 
 from modoboa.lib.oauth2 import get_access_token
@@ -43,7 +47,7 @@ def push_addressbook_to_carddav(request, addressbook):
     """
     clt = get_cdav_client_from_request(request, addressbook, write_support=True)
     for contact in addressbook.contact_set.all():
-        href, etag = clt.upload_new_card(contact.uid, contact.to_vcard())
+        href, etag = clt.upload_new_card(contact.filename, contact.to_vcard())
         contact.etag = etag
         contact.save(update_fields=["etag"])
     addressbook.last_sync = timezone.now()
@@ -66,18 +70,22 @@ def sync_addressbook_from_cdav(addressbook_id: int, access_token: str):
         if not len(changes["cards"]):
             return
         for card in changes["cards"]:
-            # UID sometimes embded .vcf extension, sometimes not...
-            long_uid = card["href"].split("/")[-1]
-            short_uid = long_uid.split(".")[0]
-            contacts = addressbook.contact_set.filter(uid__in=[long_uid, short_uid])
+            filename = unquote(card["href"].rstrip("/").split("/")[-1])
+            contacts = addressbook.contact_set.filter(filename=filename)
             if "200" in card["status"]:
-                content = clt.get_vcard(card["href"]).decode()
+                vcard = vobject.readOne(clt.get_vcard(card["href"]).decode())
                 contact = contacts.first()
+                if not contact and hasattr(vcard, "uid"):
+                    # Contacts synced before filenames were stored
+                    contact = addressbook.contact_set.filter(
+                        uid=vcard.uid.value
+                    ).first()
                 if not contact:
                     contact = models.Contact(addressbook=addressbook)
                 if contact.etag != card["etag"]:
                     contact.etag = card["etag"]
-                    contact.update_from_vcard(content)
+                    contact.filename = filename
+                    contact.update_from_vcard(vcard)
             elif "404" in card["status"]:
                 contacts.delete()
         addressbook.last_sync = timezone.now()
@@ -90,7 +98,7 @@ def sync_addressbook_from_cdav(addressbook_id: int, access_token: str):
 def push_contact_to_cdav(request, contact):
     """Upload new contact to cdav collection."""
     clt = get_cdav_client_from_request(request, contact.addressbook, write_support=True)
-    path, etag = clt.upload_new_card(contact.uid, contact.to_vcard())
+    path, etag = clt.upload_new_card(contact.filename, contact.to_vcard())
     contact.etag = etag
     contact.save(update_fields=["etag"])
 
@@ -98,10 +106,7 @@ def push_contact_to_cdav(request, contact):
 def update_contact_cdav(request, contact):
     """Update existing contact."""
     clt = get_cdav_client_from_request(request, contact.addressbook, write_support=True)
-    uid = contact.uid
-    if not uid.endswith(".vcf"):
-        uid += ".vcf"
-    result = clt.update_vcard(contact.to_vcard(), uid, contact.etag)
+    result = clt.update_vcard(contact.to_vcard(), contact.filename, contact.etag)
     contact.etag = result["cards"][0]["etag"]
     contact.save(update_fields=["etag"])
 
@@ -109,7 +114,4 @@ def update_contact_cdav(request, contact):
 def delete_contact_cdav(request, contact):
     """Delete a contact."""
     clt = get_cdav_client_from_request(request, contact.addressbook, write_support=True)
-    uid = contact.uid
-    if not uid.endswith(".vcf"):
-        uid += ".vcf"
-    clt.delete_vcard(uid, contact.etag)
+    clt.delete_vcard(contact.filename, contact.etag)

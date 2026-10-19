@@ -53,6 +53,6 @@ class ImporterBackend:
                     carddav_password,
                     True,
                 )
-                path, etag = clt.upload_new_card(contact.uid, contact.to_vcard())
+                path, etag = clt.upload_new_card(contact.filename, contact.to_vcard())
                 contact.etag = etag
                 contact.save(update_fields=["etag"])

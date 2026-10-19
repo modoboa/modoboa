@@ -270,7 +270,7 @@ class PyCardDAV:
         response.raise_for_status()
         return self.__process_report_result(response.content)
 
-    def update_vcard(self, card, uid, etag):
+    def update_vcard(self, card, filename, etag):
         """
         pushes changed vcard to the server
         card: vcard as unicode string
@@ -279,7 +279,7 @@ class PyCardDAV:
         """
         # TODO what happens if etag does not match?
         self._check_write_support()
-        remotepath = str(self.url.resource + "/" + uid)
+        remotepath = str(self.url.resource + "/" + filename)
         headers = self.headers
         headers["content-type"] = "text/vcard"
         if etag:
@@ -298,20 +298,20 @@ class PyCardDAV:
         response.raise_for_status()
         return self.__process_report_result(response.content)
 
-    def delete_vcard(self, uid, etag):
+    def delete_vcard(self, filename, etag):
         """deletes vcard from server
 
         deletes the resource at href if etag matches,
         if etag=None delete anyway
-        :param uid: UID of card to be deleted
-        :type uid: str()
+        :param filename: name of the card resource to be deleted
+        :type filename: str()
         :param etag: etag of that card, if empty card is always deleted
         :type href: str()
         :returns: nothing
         """
         # TODO: what happens if etag does not match, url does not exist etc ?
         self._check_write_support()
-        remotepath = str(self.url.resource + "/" + uid)
+        remotepath = str(self.url.resource + "/" + filename)
         headers = self.headers
         headers["content-type"] = "text/vcard"
         if etag:
@@ -321,7 +321,7 @@ class PyCardDAV:
         if response.status_code != 404:
             response.raise_for_status()
 
-    def upload_new_card(self, uid, card):
+    def upload_new_card(self, filename, card):
         """
         upload new card to the server
 
@@ -332,7 +332,7 @@ class PyCardDAV:
         """
         self._check_write_support()
         card = card.encode("utf-8")
-        remotepath = str(self.url.resource + "/" + uid)
+        remotepath = str(self.url.resource + "/" + filename)
         headers = self.headers
         headers["content-type"] = "text/vcard"  # TODO perhaps this should
         # be set to the value this carddav server uses itself
