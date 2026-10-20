@@ -708,6 +708,22 @@ class ImportTestCase(TestDataMixin, ModoAPITestCase):
         address = models.EmailAddress.objects.get(address="toto@titi.com")
         self.assertEqual(address.contact.first_name, "Toto Tata")
 
+    def test_import_long_values(self):
+        """Values longer than database columns are truncated."""
+        with open(self.path, encoding="utf-8") as fp:
+            content = fp.read()
+        content = content.replace("Toto,Tata", f"{'x' * 50},Tata").replace(
+            ",12345678,", f",{'1' * 50},"
+        )
+        with tempfile.TemporaryDirectory() as tmpdir:
+            path = os.path.join(tmpdir, "export.csv")
+            with open(path, "w", encoding="utf-8") as fp:
+                fp.write(content)
+            management.call_command("import_contacts", "user@test.com", path)
+        address = models.EmailAddress.objects.get(address="toto@titi.com")
+        self.assertEqual(address.contact.first_name, "x" * 30)
+        self.assertEqual(address.contact.phone_numbers.first().number, "1" * 40)
+
     def test_import_from_outlook(self):
         management.call_command(
             "import_contacts",

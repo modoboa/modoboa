@@ -120,6 +120,13 @@ class Contact(models.Model):
             self.filename = f"{self.uid}.vcf"
         super().save(*args, **kwargs)
 
+    def truncate_fields(self):
+        """Cut external values longer than what the database accepts."""
+        for field in self._meta.concrete_fields:
+            value = getattr(self, field.attname)
+            if isinstance(field, models.CharField) and isinstance(value, str):
+                setattr(self, field.attname, value[: field.max_length])
+
     def to_vcard(self):
         """Convert this contact to a vCard."""
         card = vobject.vCard()
@@ -184,11 +191,7 @@ class Contact(models.Model):
                 setattr(self, mfield, value.value[0])
             else:
                 setattr(self, mfield, value.value)
-        # Remote values may be longer than what the database accepts
-        for field in self._meta.concrete_fields:
-            value = getattr(self, field.attname)
-            if isinstance(field, models.CharField) and isinstance(value, str):
-                setattr(self, field.attname, value[: field.max_length])
+        self.truncate_fields()
         self.save()
         names = vcard.categories.value if hasattr(vcard, "categories") else []
         max_length = Category._meta.get_field("name").max_length
