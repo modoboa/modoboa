@@ -321,9 +321,7 @@ async function fetchContacts(options) {
 }
 
 function syncToAddressBook() {
-  contactsApi.synchronizeToAddressBook().then(() => {
-    displayNotification({ msg: $gettext('Synchronization started') })
-  })
+  return runSync(contactsApi.synchronizeToAddressBook, true)
 }
 
 async function monitorAddressBook() {
@@ -336,12 +334,17 @@ async function monitorAddressBook() {
   }
 }
 
-async function syncFromAddressBook(withNotification) {
+function syncFromAddressBook(withNotification) {
+  return runSync(contactsApi.synchronizeFromAddressBook, withNotification)
+}
+
+// Start a sync job then poll the address book until it is over
+async function runSync(request, withNotification) {
   if (intervalId) {
     // Stop automatic sync for now.
     clearInterval(intervalId)
   }
-  await contactsApi.synchronizeFromAddressBook()
+  await request()
   if (withNotification) {
     displayNotification({ msg: $gettext('Synchronization started') })
   }

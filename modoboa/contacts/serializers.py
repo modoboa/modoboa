@@ -254,6 +254,8 @@ class UserPreferencesSerializer(serializers.Serializer):
             abook.last_sync = None
             abook.sync_token = ""
             abook.save(update_fields=["last_sync", "sync_token"])
+            # Contacts will have to be pushed again
+            abook.contact_set.update(etag="")
             return
         if abook.last_sync:
             return

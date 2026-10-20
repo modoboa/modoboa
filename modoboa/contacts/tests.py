@@ -74,6 +74,10 @@ class TestDataMixin:
             )
         self.assertEqual(response.status_code, 200)
 
+    def run_worker(self):
+        queue = django_rq.get_queue("modoboa")
+        SimpleWorker([queue], connection=queue.connection).work(burst=True)
+
     def disable_cdav_sync(self):
         url = reverse("v2:parameter-user-detail", args=["contacts"])
         response = self.client.put(
@@ -97,6 +101,10 @@ class ViewsTestCase(TestDataMixin, ModoAPITestCase):
         self.enable_cdav_sync()
         self.addressbook.refresh_from_db()
         self.assertIs(self.addressbook.last_sync, None)
+        self.addressbook.contact_set.update(etag='"1"')
+        self.disable_cdav_sync()
+        self.assertFalse(self.addressbook.contact_set.exclude(etag="").exists())
+        self.enable_cdav_sync()
 
         # 2. Addressbook with no contacts can be considered synced
         user = core_models.User.objects.get(username="user@test2.com")
@@ -128,15 +136,33 @@ class AddressBookViewSetTestCase(TestDataMixin, ModoAPITestCase):
         data = {"username": self.user.username, "password": "toto"}
         response = self.client.post(reverse("core:login"), data)
         self.enable_cdav_sync()
+        # Already pushed by a previous, interrupted run
+        self.addressbook.contact_set.filter(pk=self.contact.pk).update(etag='"1"')
+        put_paths = []
+
+        @httmock.urlmatch(method="PUT")
+        def put_mock(url, request):
+            put_paths.append(url.path)
+            return mocks.put_mock(url, request)
+
         with httmock.HTTMock(
-            mocks.options_mock, mocks.mkcol_mock, mocks.put_mock, mocks.propfind_mock
+            mocks.options_mock, mocks.mkcol_mock, put_mock, mocks.propfind_mock
         ):
-            response = self.client.get(reverse("api:addressbook-sync-to-cdav"))
+            response = self.client.post(reverse("api:addressbook-sync-to-cdav"))
+            self.run_worker()
         self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(put_paths), 2)
+        self.assertFalse(any(self.contact.filename in path for path in put_paths))
         abook = self.user.addressbook_set.first()
-        self.assertIsNot(abook.sync_token, None)
-        contact = abook.contact_set.first()
-        self.assertIsNot(contact.etag, None)
+        self.assertIsNotNone(abook.last_sync)
+        self.assertNotEqual(abook.sync_token, "")
+        self.assertFalse(abook.syncing)
+        self.assertFalse(abook.contact_set.filter(etag="").exists())
+
+        # Initial push can only happen once
+        response = self.client.post(reverse("api:addressbook-sync-to-cdav"))
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(django_rq.get_queue("modoboa").count, 0)
 
     def test_sync_from_cdav(self):
         """Test sync from CardDAV endpoint."""
@@ -148,10 +174,8 @@ class AddressBookViewSetTestCase(TestDataMixin, ModoAPITestCase):
         addressbook = self.user.addressbook_set.first()
         self.assertEqual(addressbook.sync_token, "")
         with httmock.HTTMock(mocks.options_mock, mocks.report_mock, mocks.get_mock):
-            response = self.client.get(reverse("api:addressbook-sync-from-cdav"))
-            queue = django_rq.get_queue("modoboa")
-            worker = SimpleWorker([queue], connection=queue.connection)
-            worker.work(burst=True)
+            response = self.client.post(reverse("api:addressbook-sync-from-cdav"))
+            self.run_worker()
         self.assertEqual(response.status_code, 200)
         addressbook.refresh_from_db()
         self.assertNotEqual(addressbook.sync_token, "")
@@ -159,7 +183,7 @@ class AddressBookViewSetTestCase(TestDataMixin, ModoAPITestCase):
     def test_sync_without_addressbook(self):
         self.client.force_authenticate(core_models.User.objects.get(username="admin"))
         for name in ["api:addressbook-sync-to-cdav", "api:addressbook-sync-from-cdav"]:
-            response = self.client.get(reverse(name))
+            response = self.client.post(reverse(name))
             self.assertEqual(response.status_code, 404)
 
 
