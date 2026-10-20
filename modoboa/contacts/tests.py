@@ -147,9 +147,7 @@ class AddressBookViewSetTestCase(TestDataMixin, ModoAPITestCase):
             put_paths.append(url.path)
             return mocks.put_mock(url, request)
 
-        with httmock.HTTMock(
-            mocks.options_mock, mocks.mkcol_mock, put_mock, mocks.propfind_mock
-        ):
+        with httmock.HTTMock(mocks.options_mock, mocks.mkcol_mock, put_mock):
             response = self.client.post(reverse("api:addressbook-sync-to-cdav"))
             self.run_worker()
         self.assertEqual(response.status_code, 200)
@@ -157,7 +155,8 @@ class AddressBookViewSetTestCase(TestDataMixin, ModoAPITestCase):
         self.assertFalse(any(self.contact.filename in path for path in put_paths))
         abook = self.user.addressbook_set.first()
         self.assertIsNotNone(abook.last_sync)
-        self.assertNotEqual(abook.sync_token, "")
+        # Next sync from the server will be a full one
+        self.assertEqual(abook.sync_token, "")
         self.assertFalse(abook.syncing)
         self.assertFalse(abook.contact_set.filter(etag="").exists())
 
@@ -181,6 +180,37 @@ class AddressBookViewSetTestCase(TestDataMixin, ModoAPITestCase):
         self.assertEqual(response.status_code, 200)
         addressbook.refresh_from_db()
         self.assertNotEqual(addressbook.sync_token, "")
+
+    def test_reenable_sync(self):
+        """Collection and cards are still on the server."""
+        self.client.post(
+            reverse("core:login"), {"username": self.user.username, "password": "toto"}
+        )
+
+        @httmock.urlmatch(method="MKCOL")
+        def mkcol_exists_mock(url, request):
+            return {"status_code": 405}
+
+        @httmock.urlmatch(method="PUT")
+        def put_exists_mock(url, request):
+            if request.headers.get("If-None-Match") == "*":
+                return {"status_code": 412}
+            return mocks.put_mock(url, request)
+
+        url = reverse("v2:parameter-user-detail", args=["contacts"])
+        data = {"enable_carddav_sync": True, "sync_frequency": 300}
+        with httmock.HTTMock(mocks.options_mock, mkcol_exists_mock):
+            response = self.client.put(url, data, format="json")
+        self.assertEqual(response.status_code, 200)
+
+        with httmock.HTTMock(mocks.options_mock, put_exists_mock, mocks.report_mock):
+            self.client.post(reverse("api:addressbook-sync-to-cdav"))
+            self.run_worker()
+        abook = self.user.addressbook_set.first()
+        self.assertIsNotNone(abook.last_sync)
+        self.assertEqual(
+            set(abook.contact_set.values_list("etag", flat=True)), {'"33441-34321"'}
+        )
 
     def test_sync_without_addressbook(self):
         self.client.force_authenticate(core_models.User.objects.get(username="admin"))

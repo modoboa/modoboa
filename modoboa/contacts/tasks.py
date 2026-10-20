@@ -45,7 +45,12 @@ def create_cdav_addressbook(addressbook, password):
         passwd=password,
         write_support=True,
     )
-    clt.create_abook()
+    try:
+        clt.create_abook()
+    except requests.HTTPError as err:
+        # Collection kept from a previous activation
+        if err.response.status_code != 405:
+            raise
 
 
 @contextlib.contextmanager
@@ -77,7 +82,8 @@ def push_addressbook_to_carddav(addressbook_id: int, access_token: str):
     """Push every addressbook item to carddav collection.
 
     Use only once. Contacts already pushed by an interrupted run (they
-    have an etag) are skipped.
+    have an etag) are skipped. The sync token is left empty so the next
+    sync from the server is a full one, importing cards it already held.
     """
     with sync_lock(addressbook_id) as locked:
         if not locked:
@@ -89,12 +95,19 @@ def push_addressbook_to_carddav(addressbook_id: int, access_token: str):
             addressbook, addressbook.user.username, access_token, write_support=True
         )
         for contact in addressbook.contact_set.filter(etag=""):
-            href, etag = clt.upload_new_card(contact.filename, contact.to_vcard())
+            vcard = contact.to_vcard()
+            try:
+                href, etag = clt.upload_new_card(contact.filename, vcard)
+            except requests.HTTPError as err:
+                # Card kept on the server from a previous activation
+                if err.response.status_code != 412:
+                    raise
+                result = clt.update_vcard(vcard, contact.filename, None)
+                etag = result["cards"][0]["etag"]
             contact.etag = etag
             contact.save(update_fields=["etag"])
         addressbook.last_sync = timezone.now()
-        addressbook.sync_token = clt.get_sync_token()
-        addressbook.save(update_fields=["last_sync", "sync_token"])
+        addressbook.save(update_fields=["last_sync"])
 
 
 def sync_card(clt, addressbook, card: dict, filename: str):
