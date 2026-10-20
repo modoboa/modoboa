@@ -32,14 +32,18 @@ class ImporterBackend:
             else:
                 value = row[row_name]
             setattr(contact, local_name, value)
+        contact.truncate_fields()
         contact.save()
         if self.get_email(row):
             models.EmailAddress.objects.create(
                 contact=contact, address=self.get_email(row), type="work"
             )
         if self.get_phone_number(row):
+            max_length = models.PhoneNumber._meta.get_field("number").max_length
             models.PhoneNumber.objects.create(
-                contact=contact, number=self.get_phone_number(row), type="work"
+                contact=contact,
+                number=self.get_phone_number(row)[:max_length],
+                type="work",
             )
         return contact
 
