@@ -1,6 +1,9 @@
 """Mocks to test the contacts plugin."""
 
+from xml.sax.saxutils import escape
+
 import httmock
+from lxml import etree
 
 
 @httmock.urlmatch(method="OPTIONS")
@@ -30,6 +33,8 @@ def put_mock(url, request):
 @httmock.urlmatch(method="REPORT")
 def report_mock(url, request):
     """Simulate a REPORT request."""
+    if b"addressbook-multiget" in request.body:
+        return multiget_response(request.body)
     content = b"""
 <d:multistatus xmlns:d="DAV:">
     <d:response>
@@ -60,14 +65,11 @@ def report_mock(url, request):
     return {"status_code": 200, "content": content}
 
 
-@httmock.urlmatch(method="GET")
-def get_mock(url, request):
-    """Simulate a GET request."""
-    uid = url.path.split("/")[-1]
-    content = f"""
-BEGIN:VCARD
+def vcard(filename):
+    """Return the vCard stored under filename."""
+    return f"""BEGIN:VCARD
 VERSION:3.0
-UID:{uid}
+UID:{filename}
 N:Gump;Forrest
 FN:Forrest Gump
 ORG:Bubba Gump Shrimp Co.
@@ -78,4 +80,26 @@ ADR;TYPE=HOME:;;42 Plantation St.;Baytown;LA;30314;United States of America
 EMAIL;TYPE=PREF,INTERNET:forrestgump@example.com
 END:VCARD
 """
-    return {"status_code": 200, "content": content}
+
+
+def multiget_response(body, content=vcard):
+    """Answer an addressbook-multiget REPORT, content(filename) gives each card."""
+    hrefs = [element.text for element in etree.fromstring(body).iter("{DAV:}href")]
+    responses = "".join(
+        f"""<d:response>
+    <d:href>{href}</d:href>
+    <d:propstat>
+        <d:prop>
+            <d:getetag>"1"</d:getetag>
+            <card:address-data>{escape(content(href.split("/")[-1]))}</card:address-data>
+        </d:prop>
+        <d:status>HTTP/1.1 200 OK</d:status>
+    </d:propstat>
+</d:response>"""
+        for href in hrefs
+    )
+    content = (
+        '<d:multistatus xmlns:d="DAV:" xmlns:card="urn:ietf:params:xml:ns:carddav">'
+        f"{responses}</d:multistatus>"
+    )
+    return {"status_code": 207, "content": content.encode()}

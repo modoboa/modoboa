@@ -4,6 +4,9 @@ import datetime
 
 from django.utils.translation import gettext_lazy
 
+# Number of cards downloaded per addressbook-multiget request
+MULTIGET_BATCH_SIZE = 100
+
 # A sync lock older than this is considered stale (worker killed)
 SYNC_LOCK_TIMEOUT = datetime.timedelta(minutes=30)
 
