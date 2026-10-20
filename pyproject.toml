@@ -82,7 +82,7 @@ dependencies = [
 	# User
 	"drf-nested-routers",
 	"vobject",
-	"caldav==3.4.0",
+	"caldav==3.5.0",
 	# Amavis
 	"html2text",
 	"idna",
