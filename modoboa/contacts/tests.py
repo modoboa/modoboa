@@ -1,5 +1,6 @@
 """Contacts backend tests."""
 
+import datetime
 import importlib
 import os
 
@@ -20,6 +21,7 @@ from modoboa.admin import factories as admin_factories
 from modoboa.core import models as core_models
 from modoboa.lib.tests import ModoAPITestCase
 
+from . import constants
 from . import factories
 from . import mocks
 from . import models
@@ -243,12 +245,80 @@ class SyncFromCDAVTestCase(TestDataMixin, ModoAPITestCase):
         self.assertFalse(self.addressbook.syncing)
 
     def test_sync_skipped_when_locked(self):
-        self.user.addressbook_set.update(syncing=True)
+        self.user.addressbook_set.update(sync_started=timezone.now())
         # No HTTP mock: any request would fail
         tasks.sync_addressbook_from_cdav(self.addressbook.pk, "token")
         self.addressbook.refresh_from_db()
         self.assertTrue(self.addressbook.syncing)
         self.assertEqual(self.addressbook.sync_token, "")
+
+
+class SyncResilienceTestCase(TestDataMixin, ModoAPITestCase):
+    """Check sync recovers from failures."""
+
+    def sync(self, *extra_mocks):
+        with httmock.HTTMock(
+            mocks.options_mock, *extra_mocks, mocks.report_mock, mocks.get_mock
+        ):
+            tasks.sync_addressbook_from_cdav(self.addressbook.pk, "token")
+        self.addressbook.refresh_from_db()
+
+    def test_sync_with_stale_lock(self):
+        self.user.addressbook_set.update(
+            sync_started=timezone.now()
+            - constants.SYNC_LOCK_TIMEOUT
+            - datetime.timedelta(minutes=1)
+        )
+        self.addressbook.refresh_from_db()
+        self.assertFalse(self.addressbook.syncing)
+        self.sync()
+        self.assertEqual(self.addressbook.sync_token, "http://modoboa.org/ns/sync/5001")
+        self.assertIsNone(self.addressbook.sync_started)
+
+    def test_sync_skips_bad_card(self):
+        @httmock.urlmatch(method="GET", path=r".*/updatedcard\.vcf$")
+        def bad_get_mock(url, request):
+            return {"status_code": 200, "content": "garbage"}
+
+        with self.assertLogs("modoboa.contacts", "ERROR"):
+            self.sync(bad_get_mock)
+        self.assertEqual(self.addressbook.sync_token, "http://modoboa.org/ns/sync/5001")
+        contacts = self.addressbook.contact_set
+        self.assertTrue(contacts.filter(filename="newcard.vcf").exists())
+        self.assertFalse(contacts.filter(filename="updatedcard.vcf").exists())
+
+    def test_sync_aborts_on_server_error(self):
+        @httmock.urlmatch(method="GET")
+        def get_error_mock(url, request):
+            return {"status_code": 500}
+
+        with self.assertRaises(requests.exceptions.HTTPError):
+            self.sync(get_error_mock)
+        self.assertEqual(self.addressbook.sync_token, "")
+        self.assertFalse(self.addressbook.syncing)
+
+    def test_sync_with_refused_token(self):
+        self.user.addressbook_set.update(sync_token="expired")
+        gone = factories.ContactFactory(
+            addressbook=self.addressbook, filename="gone.vcf", etag='"1"'
+        )
+        not_pushed = factories.ContactFactory(
+            addressbook=self.addressbook, filename="local.vcf"
+        )
+
+        @httmock.urlmatch(method="REPORT")
+        def refused_token_mock(url, request):
+            if b"expired" in request.body:
+                return {"status_code": 403}
+            return None
+
+        self.sync(refused_token_mock)
+        self.assertEqual(self.addressbook.sync_token, "http://modoboa.org/ns/sync/5001")
+        self.assertFalse(models.Contact.objects.filter(pk=gone.pk).exists())
+        self.assertTrue(models.Contact.objects.filter(pk=not_pushed.pk).exists())
+        self.assertTrue(
+            self.addressbook.contact_set.filter(filename="newcard.vcf").exists()
+        )
 
 
 class VCardTestCase(TestDataMixin, ModoAPITestCase):

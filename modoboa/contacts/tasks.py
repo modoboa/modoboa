@@ -1,16 +1,23 @@
 """Async tasks."""
 
 import contextlib
+import logging
 from urllib.parse import unquote
 
+import requests
 import vobject
 
+from django.db import OperationalError
+from django.db.models import Q
 from django.utils import timezone
 
 from modoboa.lib.oauth2 import get_access_token
 
 from .lib import carddav
+from . import constants
 from . import models
+
+logger = logging.getLogger("modoboa.contacts")
 
 
 def get_cdav_client(addressbook, user: str, passwd: str, write_support=False):
@@ -45,16 +52,25 @@ def create_cdav_addressbook(addressbook, password):
 def sync_lock(addressbook_id: int):
     """Atomic lock: only one sync at a time per address book.
 
+    The lock expires after SYNC_LOCK_TIMEOUT in case the worker was killed.
     Yield False if a sync is already running.
     """
-    locked = models.AddressBook.objects.filter(pk=addressbook_id, syncing=False).update(
-        syncing=True
+    now = timezone.now()
+    locked = (
+        models.AddressBook.objects.filter(pk=addressbook_id)
+        .filter(
+            Q(sync_started=None) | Q(sync_started__lt=now - constants.SYNC_LOCK_TIMEOUT)
+        )
+        .update(sync_started=now)
     )
     try:
         yield bool(locked)
     finally:
         if locked:
-            models.AddressBook.objects.filter(pk=addressbook_id).update(syncing=False)
+            # Don't release a lock taken by another sync after ours expired
+            models.AddressBook.objects.filter(
+                pk=addressbook_id, sync_started=now
+            ).update(sync_started=None)
 
 
 def push_addressbook_to_carddav(addressbook_id: int, access_token: str):
@@ -81,6 +97,28 @@ def push_addressbook_to_carddav(addressbook_id: int, access_token: str):
         addressbook.save(update_fields=["last_sync", "sync_token"])
 
 
+def sync_card(clt, addressbook, card: dict, filename: str):
+    """Apply a change reported by the CardDAV server."""
+    contacts = addressbook.contact_set.filter(filename=filename)
+    if "404" in card["status"]:
+        contacts.delete()
+        return
+    if "200" not in card["status"]:
+        return
+    contact = contacts.first()
+    if contact and contact.etag == card["etag"]:
+        return
+    vcard = vobject.readOne(clt.get_vcard(card["href"]).decode())
+    if not contact and hasattr(vcard, "uid"):
+        # Contacts synced before filenames were stored
+        contact = addressbook.contact_set.filter(uid=vcard.uid.value).first()
+    if not contact:
+        contact = models.Contact(addressbook=addressbook)
+    contact.etag = card["etag"]
+    contact.filename = filename
+    contact.update_from_vcard(vcard)
+
+
 def sync_addressbook_from_cdav(addressbook_id: int, access_token: str):
     """Fetch changes from CardDAV server."""
     with sync_lock(addressbook_id) as locked:
@@ -88,28 +126,39 @@ def sync_addressbook_from_cdav(addressbook_id: int, access_token: str):
             return
         addressbook = models.AddressBook.objects.get(pk=addressbook_id)
         clt = get_cdav_client(addressbook, addressbook.user.email, access_token)
-        changes = clt.sync_vcards(addressbook.sync_token)
-        if not len(changes["cards"]):
+        full_sync = not addressbook.sync_token
+        try:
+            changes = clt.sync_vcards(addressbook.sync_token)
+        except requests.HTTPError as err:
+            # Token refused by the server (RFC 6578 valid-sync-token)
+            if full_sync or err.response.status_code not in (403, 409):
+                raise
+            full_sync = True
+            changes = clt.sync_vcards("")
+        if not len(changes["cards"]) and not full_sync:
             return
+        remote_filenames = set()
         for card in changes["cards"]:
             filename = unquote(card["href"].rstrip("/").split("/")[-1])
-            contacts = addressbook.contact_set.filter(filename=filename)
-            if "200" in card["status"]:
-                vcard = vobject.readOne(clt.get_vcard(card["href"]).decode())
-                contact = contacts.first()
-                if not contact and hasattr(vcard, "uid"):
-                    # Contacts synced before filenames were stored
-                    contact = addressbook.contact_set.filter(
-                        uid=vcard.uid.value
-                    ).first()
-                if not contact:
-                    contact = models.Contact(addressbook=addressbook)
-                if contact.etag != card["etag"]:
-                    contact.etag = card["etag"]
-                    contact.filename = filename
-                    contact.update_from_vcard(vcard)
-            elif "404" in card["status"]:
-                contacts.delete()
+            if "200" in card.get("status", ""):
+                remote_filenames.add(filename)
+            try:
+                sync_card(clt, addressbook, card, filename)
+            except (requests.RequestException, OperationalError):
+                # Server or database unavailable: retry the whole sync later
+                raise
+            except Exception:
+                # A single bad card must not block the sync forever
+                logger.exception(
+                    "Failed to sync card %s of address book %s",
+                    card["href"],
+                    addressbook.pk,
+                )
+        if full_sync:
+            # Pushed contacts missing from the server were deleted remotely
+            addressbook.contact_set.exclude(etag="").exclude(
+                filename__in=remote_filenames
+            ).delete()
         addressbook.last_sync = timezone.now()
         addressbook.sync_token = changes["token"]
         addressbook.save(update_fields=["last_sync", "sync_token"])
