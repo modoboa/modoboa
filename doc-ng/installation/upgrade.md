@@ -131,6 +131,54 @@ If you need to rebuild you virtualenv, you can check this [part of the documenta
 
 The section below containt specific migration steps to upgrade Modoboa instance.
 
+## Version 2.12.0
+
+### IMAP hierarchy separator
+
+Folder sharing requires Dovecot to use `/` as IMAP hierarchy separator
+(shared folders are listed as `shared/<owner address>/<folder>`, and
+addresses contain dots). Existing installations use `.`, so the switch
+is not automatic: the installer keeps `enable_sharing = false` in the
+`[dovecot]` section when it updates an existing configuration file.
+
+Folders are not renamed on disk, and IMAP clients pick up the new
+separator by themselves. However, folder names stored elsewhere must be
+converted: Sieve filters (`fileinto "Archives.2024"` must become
+`fileinto "Archives/2024"`) and the special folders chosen in the
+webmail settings. The `migrate_imap_separator` command takes care of
+it.
+
+1. Backup everything, then list what will be converted:
+
+   ```shell
+   $ python manage.py migrate_imap_separator --dry-run
+   ```
+
+2. Switch Dovecot to `/`. With the installer, set `enable_sharing = true`
+   in the `[dovecot]` section of `installer.cfg` and run it in upgrade
+   mode. Otherwise, add `separator = /` to the `inbox` namespace and
+   reload Dovecot.
+
+3. Right after, convert the stored folder names:
+
+   ```shell
+   $ python manage.py migrate_imap_separator
+   ```
+
+   It can be run again safely if it reports errors.
+
+Between steps 2 and 3, filters can't find their target folders:
+messages are delivered to the inbox instead, nothing is lost.
+
+::: warning
+* The command needs doveadm: run it on the mail server, or configure the
+  doveadm HTTP API (`DOVECOT_OPERATION_MODE = "rest"`).
+* Only `fileinto` commands are converted: review the scripts written by
+  hand that use folder names elsewhere (`mailboxexists` for example), as
+  well as filters defined in mail clients.
+* Folder names can't contain `.` anymore.
+:::
+
 ## Version 2.11.1
 
 ::: warning

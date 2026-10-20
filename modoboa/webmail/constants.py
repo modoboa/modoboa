@@ -9,6 +9,14 @@ MAILBOX_TYPES = ["inbox", "draft", "sent", "scheduled", "junk", "trash", "normal
 
 MAILBOX_NAME_SCHEDULED = "Scheduled"
 
+# User parameters holding the name of a folder the webmail relies on
+SPECIAL_MAILBOX_PARAMETERS = (
+    "drafts_folder",
+    "sent_folder",
+    "junk_folder",
+    "trash_folder",
+)
+
 CUSTOM_HEADER_SCHEDULED_ID = "X-Scheduled-ID"
 CUSTOM_HEADER_SCHEDULED_DATETIME = "X-Scheduled-Datetime"
 

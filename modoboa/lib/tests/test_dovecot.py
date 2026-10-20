@@ -97,6 +97,42 @@ class DoveadmCmdBackendTestCase(SimpleTestCase):
         self.assertEqual(self.backend.list_password_schemes(), "SHA512-CRYPT PLAIN")
         doveadm_cmd_mock.assert_called_with(["pw", "-l"])
 
+    @mock.patch("modoboa.lib.dovecot.doveadm_cmd")
+    def test_list_sieve_scripts(self, doveadm_cmd_mock):
+        doveadm_cmd_mock.return_value = (
+            0,
+            b'[{"script":"modoboa","active":"ACTIVE"},{"script":"old","active":""}]',
+        )
+        self.assertEqual(
+            self.backend.list_sieve_scripts("user@domain"), ["modoboa", "old"]
+        )
+        doveadm_cmd_mock.assert_called_with(
+            ["-f", "json", "sieve", "list", "-u", "user@domain"], pinput=None
+        )
+        doveadm_cmd_mock.return_value = (0, b"Warning: something\n[]")
+        with self.assertRaises(dovecot.DoveadmError):
+            self.backend.list_sieve_scripts("user@domain")
+
+    @mock.patch("modoboa.lib.dovecot.doveadm_cmd")
+    def test_get_sieve_script(self, doveadm_cmd_mock):
+        doveadm_cmd_mock.return_value = (0, b'[{"sieve script":"keep;\\n"}]')
+        self.assertEqual(self.backend.get_sieve_script("user@domain", "s"), "keep;\n")
+        doveadm_cmd_mock.return_value = (0, b"[]")
+        with self.assertRaises(dovecot.DoveadmError):
+            self.backend.get_sieve_script("user@domain", "s")
+
+    @mock.patch("modoboa.lib.dovecot.doveadm_cmd")
+    def test_put_sieve_script(self, doveadm_cmd_mock):
+        doveadm_cmd_mock.return_value = (0, b"")
+        self.backend.put_sieve_script("user@domain", "s", "keep;\n")
+        doveadm_cmd_mock.assert_called_with(
+            ["-f", "json", "sieve", "put", "-u", "user@domain", "s"],
+            pinput=b"keep;\n",
+        )
+        doveadm_cmd_mock.return_value = (65, b"parse failed")
+        with self.assertRaises(dovecot.DoveadmError):
+            self.backend.put_sieve_script("user@domain", "s", "keep;\n")
+
 
 @override_settings(**REST_SETTINGS)
 class DoveadmHTTPBackendTestCase(SimpleTestCase):
@@ -200,6 +236,38 @@ class DoveadmHTTPBackendTestCase(SimpleTestCase):
         backend = dovecot.DoveadmHTTPBackend()
         with self.assertRaises(dovecot.DoveadmError):
             backend.list_password_schemes()
+
+    @mock.patch("modoboa.lib.dovecot.requests.post")
+    def test_sieve_scripts(self, post_mock):
+        backend = dovecot.DoveadmHTTPBackend()
+        post_mock.return_value = http_response(
+            [["doveadmResponse", [{"script": "modoboa", "active": "ACTIVE"}], "c1"]]
+        )
+        self.assertEqual(backend.list_sieve_scripts("user@domain"), ["modoboa"])
+        self.assertEqual(
+            post_mock.call_args.kwargs["json"],
+            [["sieveList", {"user": "user@domain"}, "c1"]],
+        )
+        post_mock.return_value = http_response(
+            [["doveadmResponse", [{"sieve script": "keep;\n"}], "c1"]]
+        )
+        self.assertEqual(backend.get_sieve_script("user@domain", "modoboa"), "keep;\n")
+        self.assertEqual(
+            post_mock.call_args.kwargs["json"],
+            [["sieveGet", {"user": "user@domain", "scriptname": "modoboa"}, "c1"]],
+        )
+        post_mock.return_value = http_response([["doveadmResponse", [], "c1"]])
+        backend.put_sieve_script("user@domain", "modoboa", "keep;\n")
+        self.assertEqual(
+            post_mock.call_args.kwargs["json"],
+            [
+                [
+                    "sievePut",
+                    {"user": "user@domain", "scriptname": "modoboa", "file": "keep;\n"},
+                    "c1",
+                ]
+            ],
+        )
 
 
 class RestModeStructureTestCase(SimpleTestCase):
