@@ -15,7 +15,7 @@ USER_PREFERENCES_STRUCT = collections.OrderedDict(
                             "enable_carddav_sync",
                             {
                                 "label": gettext_lazy(
-                                    "Synchonize address book using CardDAV"
+                                    "Synchronize address book using CardDAV"
                                 ),
                                 "help_text": gettext_lazy(
                                     "Choose to synchronize or not your address book using CardDAV. "
@@ -41,7 +41,7 @@ USER_PREFERENCES_STRUCT = collections.OrderedDict(
 
 
 def load_settings():
-    """Load calendars settings."""
+    """Load contacts settings."""
     from modoboa.parameters import tools as param_tools
     from modoboa.contacts import serializers
 

@@ -246,7 +246,7 @@ class UserPreferencesSerializer(serializers.Serializer):
         return value
 
     def post_save(self, request):
-        """Create remote cal if necessary."""
+        """Create remote address book if necessary."""
         abook = request.user.addressbook_set.first()
         if not abook:
             return

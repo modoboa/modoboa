@@ -21,7 +21,7 @@ class Command(BaseCommand):
             default=None,
             help=(
                 "Password associated to email. If provided, imported "
-                "contacts will be synced to CardDAV servert too"
+                "contacts will be synced to CardDAV server too"
             ),
         )
         parser.add_argument(
@@ -56,4 +56,4 @@ class Command(BaseCommand):
             )
         except RuntimeError as err:
             raise CommandError(err) from None
-        self.stdout.write(self.style.SUCCESS("File was imported successfuly"))
+        self.stdout.write(self.style.SUCCESS("File was imported successfully"))

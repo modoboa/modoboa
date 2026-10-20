@@ -27,44 +27,10 @@ def put_mock(url, request):
     return {"status_code": 200, "headers": {"etag": '"12345"'}}
 
 
-@httmock.urlmatch(method="PROPFIND")
-def propfind_mock(url, request):
-    """Simulate a PROPFIND request."""
-    content = b"""
-<d:multistatus xmlns:d="DAV:" xmlns:cs="http://calendarserver.org/ns/">
-    <d:response>
-        <d:href>/radicale/user@test.com/contacts/</d:href>
-        <d:propstat>
-            <d:prop>
-                <d:sync-token>http://modoboa.org/ns/sync-token/3145</d:sync-token>
-            </d:prop>
-            <d:status>HTTP/1.1 200 OK</d:status>
-        </d:propstat>
-    </d:response>
-</d:multistatus>
-"""
-    return {"status_code": 200, "content": content}
-
-
 @httmock.urlmatch(method="REPORT")
 def report_mock(url, request):
     """Simulate a REPORT request."""
-    if url.path.endswith(".vcf"):
-        content = b"""
-<d:multistatus xmlns:d="DAV:">
-    <d:response>
-        <d:href>/radicale/user@test.com/contacts/newcard.vcf</d:href>
-        <d:propstat>
-            <d:prop>
-                <d:getetag>"33441-34321"</d:getetag>
-            </d:prop>
-            <d:status>HTTP/1.1 200 OK</d:status>
-        </d:propstat>
-    </d:response>
- </d:multistatus>
-"""
-    else:
-        content = b"""
+    content = b"""
 <d:multistatus xmlns:d="DAV:">
     <d:response>
         <d:href>/radicale/user@test.com/contacts/newcard.vcf</d:href>

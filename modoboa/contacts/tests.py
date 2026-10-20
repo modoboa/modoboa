@@ -3,6 +3,7 @@
 import datetime
 import importlib
 import os
+import tempfile
 
 import httmock
 import requests
@@ -203,13 +204,13 @@ class AddressBookViewSetTestCase(TestDataMixin, ModoAPITestCase):
             response = self.client.put(url, data, format="json")
         self.assertEqual(response.status_code, 200)
 
-        with httmock.HTTMock(mocks.options_mock, put_exists_mock, mocks.report_mock):
+        with httmock.HTTMock(mocks.options_mock, put_exists_mock):
             self.client.post(reverse("api:addressbook-sync-to-cdav"))
             self.run_worker()
         abook = self.user.addressbook_set.first()
         self.assertIsNotNone(abook.last_sync)
         self.assertEqual(
-            set(abook.contact_set.values_list("etag", flat=True)), {'"33441-34321"'}
+            set(abook.contact_set.values_list("etag", flat=True)), {'"12345"'}
         )
 
     def test_sync_without_addressbook(self):
@@ -589,7 +590,7 @@ class ContactViewSetTestCase(TestDataMixin, ModoAPITestCase):
             ],
             "categories": [self.category.pk],
         }
-        with httmock.HTTMock(mocks.options_mock, mocks.put_mock, mocks.report_mock):
+        with httmock.HTTMock(mocks.options_mock, mocks.put_mock):
             response = self.client.put(url, data, format="json")
         self.assertEqual(response.status_code, 200)
 
@@ -603,7 +604,7 @@ class ContactViewSetTestCase(TestDataMixin, ModoAPITestCase):
 
         data["emails"].pop(1)
         data["phone_numbers"].pop(1)
-        with httmock.HTTMock(mocks.options_mock, mocks.put_mock, mocks.report_mock):
+        with httmock.HTTMock(mocks.options_mock, mocks.put_mock):
             response = self.client.put(url, data, format="json")
         self.assertEqual(response.status_code, 200)
         self.assertEqual(self.contact.emails.count(), 1)
@@ -694,6 +695,18 @@ class ImportTestCase(TestDataMixin, ModoAPITestCase):
         self.assertEqual(address.contact.first_name, "Toto Tata")
         self.assertEqual(address.contact.addressbook.user.email, "user@test.com")
         self.assertEqual(address.contact.address, "Street 1 Street 2")
+
+    def test_import_with_bom(self):
+        """Some exports start with a UTF-8 BOM."""
+        with open(self.path, encoding="utf-8") as fp:
+            content = fp.read()
+        with tempfile.TemporaryDirectory() as tmpdir:
+            path = os.path.join(tmpdir, "export.csv")
+            with open(path, "w", encoding="utf-8-sig") as fp:
+                fp.write(content)
+            management.call_command("import_contacts", "user@test.com", path)
+        address = models.EmailAddress.objects.get(address="toto@titi.com")
+        self.assertEqual(address.contact.first_name, "Toto Tata")
 
     def test_import_from_outlook(self):
         management.call_command(
