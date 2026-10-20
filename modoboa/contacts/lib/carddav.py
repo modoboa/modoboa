@@ -25,28 +25,21 @@ contains the class PyCardDAv and some associated functions and definitions
 """
 
 from collections import namedtuple
-import logging
-
-from six.moves import urllib
+from urllib.parse import urlparse
 
 from caldav.elements import base as elements_base, dav as elements_dav
 import lxml.etree as ET
 import requests
 
-# Secure parser to protect against XML-based attacks (billion laughs, XXE, etc.).
-# See https://pypi.org/project/defusedxml/ for rationale.
-_SECURE_PARSER = ET.XMLParser(resolve_entities=False, no_network=True)
-
 
 def _safe_xml(xml):
-    """Parse XML with a hardened parser that disables entity resolution."""
-    return ET.XML(xml, parser=_SECURE_PARSER)
+    """Parse XML with a hardened parser that disables entity resolution.
 
-
-class UploadFailed(Exception):
-    """uploading the card failed"""
-
-    pass
+    Protects against XML-based attacks (billion laughs, XXE, etc.). A new
+    parser is created for each call since lxml parsers are not thread-safe.
+    """
+    parser = ET.XMLParser(resolve_entities=False, no_network=True)
+    return ET.XML(xml, parser=parser)
 
 
 class NoWriteSupport(Exception):
@@ -76,14 +69,6 @@ class AddressBook(elements_base.BaseElement):
     tag = ns("CARD", "addressbook")
 
 
-class AddressBookQuery(elements_base.BaseElement):
-    tag = ns("CARD", "addressbook-query")
-
-
-class AddressData(elements_base.BaseElement):
-    tag = ns("CARD", "address-data")
-
-
 class Etag(elements_base.BaseElement):
     tag = ns("D", "getetag")
 
@@ -103,25 +88,16 @@ class SyncCollectionQuery(elements_base.BaseElement):
 class PyCardDAV:
     """class for interacting with a CardDAV server
 
-    Since PyCardDAV relies heavily on Requests [1] its SSL verification is also
-    shared by PyCardDAV [2]. For now, only the *verify* keyword is exposed
-    through PyCardDAV.
-
-    [1] http://docs.python-requests.org/
-    [2] http://docs.python-requests.org/en/latest/user/advanced/
-
     raises:
         requests.exceptions.SSLError
         requests.exceptions.ConnectionError
         more requests.exceptions depending on the actual error
-        Exception (shame on me)
-
+        Exception if the URL is not a CardDAV resource
     """
 
     def __init__(
         self,
         resource,
-        debug="",
         user="",
         passwd="",
         verify=True,
@@ -129,26 +105,11 @@ class PyCardDAV:
         auth="basic",
         timeout=10,
     ):
-        # shutup urllib3
-        urllog = logging.getLogger("requests.packages.urllib3.connectionpool")
-        urllog.setLevel(logging.CRITICAL)
-        urllog = logging.getLogger("urllib3.connectionpool")
-        urllog.setLevel(logging.CRITICAL)
-
-        # activate pyopenssl if available
-        try:
-            import urllib3.contrib.pyopenssl
-        except ImportError:
-            pass
-        else:
-            urllib3.contrib.pyopenssl.inject_into_urllib3()
-
-        split_url = urllib.parse.urlparse(resource)
+        split_url = urlparse(resource)
         url_tuple = namedtuple("url", "resource base path")
         self.url = url_tuple(
             resource, split_url.scheme + "://" + split_url.netloc, split_url.path
         )
-        self.debug = debug
         self.session = requests.session()
         self.write_support = write_support
         self._settings = {"verify": verify, "timeout": timeout}
@@ -171,16 +132,6 @@ class PyCardDAV:
         response.raise_for_status()  # raises error on not 2XX HTTP status code
         if "addressbook" not in response.headers.get("DAV", ""):
             raise Exception("URL is not a CardDAV resource")
-
-    @property
-    def verify(self):
-        """gets verify from settings dict"""
-        return self._settings["verify"]
-
-    @verify.setter
-    def verify(self, verify):
-        """set verify"""
-        self._settings["verify"] = verify
 
     @property
     def headers(self):
@@ -216,15 +167,6 @@ class PyCardDAV:
         )
         response.raise_for_status()
 
-    def get_abook(self):
-        """does the propfind and processes what it returns
-
-        :rtype: list of hrefs to vcards
-        """
-        xml = self._get_xml_props()
-        abook = self._process_xml_props(xml)
-        return abook
-
     def get_vcard(self, href):
         """
         pulls vcard from server
@@ -237,19 +179,6 @@ class PyCardDAV:
         )
         response.raise_for_status()
         return response.content
-
-    def get_sync_token(self):
-        """Retrieve the current sync token."""
-        headers = self.headers
-        headers["Depth"] = "0"
-        data = elements_dav.Propfind() + [elements_dav.Prop() + SyncToken()]
-        body = ET.tostring(data.xmlelement(), encoding="utf-8", xml_declaration=True)
-        response = self.session.request(
-            "PROPFIND", self.url.resource, data=body, headers=headers, **self._settings
-        )
-        response.raise_for_status()
-        abook = self._process_xml_props(response.content)
-        return abook["sync-token"]
 
     def sync_vcards(self, sync_token=None):
         """Synchronize vcards using webdav sync."""
@@ -276,8 +205,8 @@ class PyCardDAV:
         card: vcard as unicode string
         etag: str or None, if this is set to a non-empty string, card is only
               updated if remote etag matches. Otherwise the update is forced
+        :returns: the new etag, empty if the server did not return it
         """
-        # TODO what happens if etag does not match?
         self._check_write_support()
         remotepath = str(self.url.resource + "/" + filename)
         headers = self.headers
@@ -287,16 +216,8 @@ class PyCardDAV:
         response = self.session.put(
             remotepath, data=card, headers=headers, **self._settings
         )
-        if not response.ok:
-            response.raise_for_status()
-        # Now retrieve the new etag
-        data = AddressBookQuery() + [elements_dav.Prop() + Etag()]
-        body = ET.tostring(data.xmlelement(), encoding="utf-8", xml_declaration=True)
-        response = self.session.request(
-            "REPORT", remotepath, data=body, headers=self.headers, **self._settings
-        )
         response.raise_for_status()
-        return self.__process_report_result(response.content)
+        return response.headers.get("etag", "")
 
     def delete_vcard(self, filename, etag):
         """deletes vcard from server
@@ -309,7 +230,6 @@ class PyCardDAV:
         :type href: str()
         :returns: nothing
         """
-        # TODO: what happens if etag does not match, url does not exist etc ?
         self._check_write_support()
         remotepath = str(self.url.resource + "/" + filename)
         headers = self.headers
@@ -334,17 +254,14 @@ class PyCardDAV:
         card = card.encode("utf-8")
         remotepath = str(self.url.resource + "/" + filename)
         headers = self.headers
-        headers["content-type"] = "text/vcard"  # TODO perhaps this should
-        # be set to the value this carddav server uses itself
+        headers["content-type"] = "text/vcard"
         headers["If-None-Match"] = "*"
-        response = requests.put(
+        response = self.session.put(
             remotepath, data=card, headers=headers, **self._settings
         )
-        if response.ok:
-            parsed_url = urllib.parse.urlparse(remotepath)
-            etag = response.headers.get("etag", "")
-            return (parsed_url.path, etag)
         response.raise_for_status()
+        etag = response.headers.get("etag", "")
+        return (urlparse(remotepath).path, etag)
 
     def __process_report_result(self, xml):
         """Parse REPORT query result and return a dict."""
@@ -365,71 +282,3 @@ class PyCardDAV:
                     card["etag"] = d.text
             result["cards"].append(card)
         return result
-
-    def _get_xml_props(self):
-        """PROPFIND method
-
-        gets the xml file with all vcard hrefs
-
-        :rtype: str() (an xml file)
-        """
-        headers = self.headers
-        headers["Depth"] = "0"
-        response = self.session.request(
-            "PROPFIND", self.url.resource, headers=headers, **self._settings
-        )
-        response.raise_for_status()
-        return response.content
-
-    @classmethod
-    def _process_xml_props(cls, xml):
-        """processes the xml from PROPFIND, listing all vcard hrefs
-
-        :param xml: the xml file
-        :type xml: str()
-        :rtype: dict() key: href, value: etag
-        """
-        namespace = "{DAV:}"
-
-        element = _safe_xml(xml)
-        abook = dict()
-        for response in element.iterchildren():
-            if response.tag != namespace + "response":
-                continue
-            href = ""
-            etag = ""
-            insert = False
-            for refprop in response.iterchildren():
-                if refprop.tag == namespace + "href":
-                    href = refprop.text
-                for prop in refprop.iterchildren():
-                    for props in prop.iterchildren():
-                        # different servers give different getcontenttypes:
-                        # e.g.:
-                        #  "text/vcard"
-                        #  "text/x-vcard"
-                        #  "text/x-vcard; charset=utf-8"
-                        #  "text/directory;profile=vCard"
-                        #  "text/directory"
-                        #  "text/vcard; charset=utf-8"  CalendarServer
-                        if (
-                            props.tag == namespace + "getcontenttype"
-                            and props.text.split(";")[0].strip()
-                            in ["text/vcard", "text/x-vcard"]
-                        ):
-                            insert = True
-                        if (
-                            props.tag == namespace + "resourcetype"
-                            and namespace + "collection"
-                            in [c.tag for c in props.iterchildren()]
-                        ):
-                            insert = False
-                            break
-                        if props.tag == namespace + "getetag":
-                            etag = props.text
-                            break
-                        if props.tag == namespace + "sync-token":
-                            abook["sync-token"] = props.text
-                    if insert:
-                        abook[href] = etag
-        return abook

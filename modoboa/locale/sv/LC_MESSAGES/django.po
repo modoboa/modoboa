@@ -1427,8 +1427,8 @@ msgid "Synchronization"
 msgstr "Synkronisering"
 
 #: contacts/app_settings.py:18
-msgid "Synchonize address book using CardDAV"
-msgstr "Synchonize address book using CardDAV"
+msgid "Synchronize address book using CardDAV"
+msgstr "Synchronize address book using CardDAV"
 
 #: contacts/app_settings.py:21
 msgid ""

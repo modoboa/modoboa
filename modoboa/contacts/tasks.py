@@ -102,8 +102,7 @@ def push_addressbook_to_carddav(addressbook_id: int, access_token: str):
                 # Card kept on the server from a previous activation
                 if err.response.status_code != 412:
                     raise
-                result = clt.update_vcard(vcard, contact.filename, None)
-                etag = result["cards"][0]["etag"]
+                etag = clt.update_vcard(vcard, contact.filename, None)
             contact.etag = etag
             contact.save(update_fields=["etag"])
         addressbook.last_sync = timezone.now()
@@ -138,7 +137,7 @@ def sync_addressbook_from_cdav(addressbook_id: int, access_token: str):
         if not locked:
             return
         addressbook = models.AddressBook.objects.get(pk=addressbook_id)
-        clt = get_cdav_client(addressbook, addressbook.user.email, access_token)
+        clt = get_cdav_client(addressbook, addressbook.user.username, access_token)
         full_sync = not addressbook.sync_token
         try:
             changes = clt.sync_vcards(addressbook.sync_token)
@@ -188,8 +187,7 @@ def push_contact_to_cdav(request, contact):
 def update_contact_cdav(request, contact):
     """Update existing contact."""
     clt = get_cdav_client_from_request(request, contact.addressbook, write_support=True)
-    result = clt.update_vcard(contact.to_vcard(), contact.filename, contact.etag)
-    contact.etag = result["cards"][0]["etag"]
+    contact.etag = clt.update_vcard(contact.to_vcard(), contact.filename, contact.etag)
     contact.save(update_fields=["etag"])
 
 

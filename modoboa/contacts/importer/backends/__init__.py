@@ -1,3 +1,5 @@
+from django.db import transaction
+
 from modoboa.contacts import models, tasks
 
 
@@ -42,17 +44,17 @@ class ImporterBackend:
         return contact
 
     def proceed(self, rows: list, carddav_password: str = None):
-        for row in rows:
-            contact = self.import_contact(row)
-            if carddav_password:
-                # FIXME: refactor CDAV tasks to allow connection from
-                # credentials and not only request
-                clt = tasks.get_cdav_client(
-                    self.addressbook,
-                    self.addressbook.user.email,
-                    carddav_password,
-                    True,
-                )
-                path, etag = clt.upload_new_card(contact.filename, contact.to_vcard())
-                contact.etag = etag
-                contact.save(update_fields=["etag"])
+        with transaction.atomic():
+            contacts = [self.import_contact(row) for row in rows]
+        if not carddav_password:
+            return
+        clt = tasks.get_cdav_client(
+            self.addressbook,
+            self.addressbook.user.username,
+            carddav_password,
+            True,
+        )
+        for contact in contacts:
+            path, etag = clt.upload_new_card(contact.filename, contact.to_vcard())
+            contact.etag = etag
+            contact.save(update_fields=["etag"])

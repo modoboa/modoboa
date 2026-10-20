@@ -30,6 +30,7 @@ def import_csv_file(
     delimiter: str,
     carddav_password: str | None = None,
 ):
-    with open(csv_filename) as fp:
+    # utf-8-sig skips the BOM added by some exports (Outlook)
+    with open(csv_filename, encoding="utf-8-sig") as fp:
         backend, rows = get_import_backend(fp, delimiter, backend_name)
         backend(addressbook).proceed(rows, carddav_password)
