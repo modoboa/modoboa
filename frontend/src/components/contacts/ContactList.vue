@@ -213,9 +213,10 @@ const preferences = ref({})
 const loading = ref(false)
 const currentPage = ref(1)
 const itemsPerPage = ref(10)
-const sortBy = ref([{ key: 'first_name', order: 'asc' }])
+const sortBy = ref([{ key: 'display_name', order: 'asc' }])
 
 const headers = [
+  { key: 'display_name', title: $gettext('Display name') },
   { key: 'first_name', title: $gettext('First name') },
   { key: 'last_name', title: $gettext('Last name') },
   { width: 1, key: 'data-table-expand' },

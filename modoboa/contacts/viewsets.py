@@ -93,7 +93,12 @@ class ContactViewSet(viewsets.ModelViewSet):
     filterset_class = ContactFilter
     pagination_class = pagination.CustomPageNumberPagination
     permission_classes = [IsAuthenticated]
-    search_fields = ("^first_name", "^last_name", "^emails__address")
+    search_fields = (
+        "^display_name",
+        "^first_name",
+        "^last_name",
+        "^emails__address",
+    )
     serializer_class = serializers.ContactSerializer
 
     def get_queryset(self):
