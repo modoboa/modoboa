@@ -1,3 +1,6 @@
+import copy
+
+from django.conf import settings
 from django.test import TestCase
 from django.urls import reverse
 
@@ -38,6 +41,19 @@ class ViewsTestCase(TestCase):
         self.assertEqual(resp.status_code, 200)
 
         self.assertIn(b"<LoginName>test@test.com", resp.content)
+
+    def test_autodiscover_with_server_placeholders(self):
+        url = reverse("autoconfig:autodiscover")
+
+        conn_settings = copy.deepcopy(settings.EMAIL_CLIENT_CONNECTION_SETTINGS)
+        conn_settings["imap"]["HOSTNAME"] = "mail.%EMAILDOMAIN%"
+        conn_settings["smtp"]["HOSTNAME"] = "smtp.%EMAILDOMAIN%"
+        with self.settings(EMAIL_CLIENT_CONNECTION_SETTINGS=conn_settings):
+            resp = self.client.post(url, {"EmailAddress": "test@test.example"})
+            self.assertEqual(resp.status_code, 200)
+
+            self.assertIn(b"<Server>mail.test.example</Server>", resp.content)
+            self.assertIn(b"<Server>smtp.test.example</Server>", resp.content)
 
     def test_autodiscover_real_outlook_xml_body(self):
         """Real Outlook clients POST an XML body, not form data."""
@@ -83,6 +99,19 @@ class ViewsTestCase(TestCase):
 
         resp = self.client.get(f"{url}?emailaddress=test@test.com")
         self.assertEqual(resp.status_code, 200)
+
+    def test_mobileconfig_with_server_placeholders(self):
+        url = reverse("autoconfig:mobileconfig")
+
+        conn_settings = copy.deepcopy(settings.EMAIL_CLIENT_CONNECTION_SETTINGS)
+        conn_settings["imap"]["HOSTNAME"] = "mail.%EMAILDOMAIN%"
+        conn_settings["smtp"]["HOSTNAME"] = "smtp.%EMAILDOMAIN%"
+        with self.settings(EMAIL_CLIENT_CONNECTION_SETTINGS=conn_settings):
+            resp = self.client.get(f"{url}?emailaddress=test@test.example")
+            self.assertEqual(resp.status_code, 200)
+
+            self.assertIn(b"<string>mail.test.example</string>", resp.content)
+            self.assertIn(b"<string>smtp.test.example</string>", resp.content)
 
     def test_autodiscover_xxe_entity_not_resolved(self):
         """Ensure XXE entity expansion is blocked by defusedxml (#1556)."""
