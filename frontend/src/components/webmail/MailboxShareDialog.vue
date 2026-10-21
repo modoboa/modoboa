@@ -75,6 +75,7 @@
                 size="x-small"
                 variant="flat"
                 :title="$gettext('Stop sharing')"
+                :disabled="working"
                 @click="deleteShare(share)"
               />
             </td>
@@ -144,32 +145,38 @@ function editShare(share) {
 }
 
 // Errors are notified by the API client
+/**
+ * Run a change of the shares, then display them again.
+ *
+ * @return {Error|null} the error of the request, already notified by the
+ *   API client
+ */
 async function run(request) {
   working.value = true
   try {
     await request()
-    await fetchShares()
-    return true
+    return null
   } catch (err) {
-    formErrors.value = err.response?.data || {}
-    return false
+    return err
   } finally {
+    // Even after a failure: the subfolders may have been partly updated
+    await fetchShares().catch(() => {})
     working.value = false
   }
 }
 
 async function submit() {
-  const done = await run(() =>
+  const err = await run(() =>
     api.shareMailbox({ mailbox: props.mailbox, ...currentShare.value })
   )
-  if (done) {
+  formErrors.value = err?.response?.data || {}
+  if (!err) {
     currentShare.value = { level: 'read' }
-    formErrors.value = {}
   }
 }
 
-function deleteShare(share) {
-  run(() =>
+async function deleteShare(share) {
+  await run(() =>
     api.unshareMailbox({ mailbox: props.mailbox, grantee: share.grantee })
   )
 }
