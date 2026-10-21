@@ -5,7 +5,16 @@ from enum import Enum
 
 from django.utils.translation import gettext_lazy as _
 
-MAILBOX_TYPES = ["inbox", "draft", "sent", "scheduled", "junk", "trash", "normal"]
+MAILBOX_TYPES = [
+    "inbox",
+    "draft",
+    "sent",
+    "scheduled",
+    "junk",
+    "trash",
+    "normal",
+    "shared",
+]
 
 MAILBOX_NAME_SCHEDULED = "Scheduled"
 
@@ -16,6 +25,27 @@ SPECIAL_MAILBOX_PARAMETERS = (
     "junk_folder",
     "trash_folder",
 )
+
+# Rights (RFC 4314) given by each folder sharing level. Never "a": the
+# recipient could share the folder again, with anyone.
+SHARING_LEVELS = {
+    "read": "lrs",
+    "write": "lrswipte",
+    "manage": "lrswipktex",
+}
+# Rights set by another client, matching no level
+SHARING_LEVEL_CUSTOM = "custom"
+
+
+def get_sharing_level(rights: str) -> str:
+    """Return the sharing level matching the given rights."""
+    # Servers add the obsolete c and d rights (RFC 4314, section 2.1.1)
+    current = set(rights) - set("cd")
+    for level, letters in SHARING_LEVELS.items():
+        if set(letters) == current:
+            return level
+    return SHARING_LEVEL_CUSTOM
+
 
 CUSTOM_HEADER_SCHEDULED_ID = "X-Scheduled-ID"
 CUSTOM_HEADER_SCHEDULED_DATETIME = "X-Scheduled-Datetime"

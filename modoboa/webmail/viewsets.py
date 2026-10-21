@@ -10,6 +10,7 @@ from rest_framework import mixins, parsers, response, viewsets
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
 
+from modoboa.admin import models as admin_models
 from modoboa.lib import exceptions
 from modoboa.lib.paginator import Paginator
 from modoboa.lib.web_utils import size2integer
@@ -97,6 +98,16 @@ class UserMailboxViewSet(ImapConnectionMixin, viewsets.GenericViewSet):
             if self.request.method == "POST":
                 return serializers.SubscriptionUpdateSerializer
             return serializers.SubscriptionsSerializer
+        if self.action == "acl":
+            if self.request.method == "PUT":
+                return serializers.MailboxShareInputSerializer
+            if self.request.method == "DELETE":
+                return serializers.MailboxShareDeleteSerializer
+            return serializers.MailboxSharesSerializer
+        if self.action == "rights":
+            return serializers.MailboxRightsSerializer
+        if self.action == "share_candidates":
+            return serializers.ShareCandidateSerializer
         return serializers.UserMailboxesSerializer
 
     def list(self, request):
@@ -104,7 +115,11 @@ class UserMailboxViewSet(ImapConnectionMixin, viewsets.GenericViewSet):
         with lib.get_imapconnector(request) as imapc:
             mboxes = imapc.getmboxes(request.user, parent_mailbox, subscribed_only=True)
         serializer = self.get_serializer(
-            {"mailboxes": mboxes, "hdelimiter": imapc.hdelimiter}
+            {
+                "mailboxes": mboxes,
+                "hdelimiter": imapc.hdelimiter,
+                "sharing_enabled": imapc.sharing_enabled,
+            }
         )
         return response.Response(serializer.data)
 
@@ -228,6 +243,66 @@ class UserMailboxViewSet(ImapConnectionMixin, viewsets.GenericViewSet):
                 else:
                     imapc.unsubscribe_folder(change["name"])
         return response.Response(status=204)
+
+    def _check_sharing(self, imapc) -> None:
+        if not imapc.sharing_enabled:
+            raise exceptions.BadRequest(_("Folder sharing is not available"))
+
+    @action(methods=["get", "put", "delete"], detail=False)
+    def acl(self, request):
+        """List, set or remove the shares of a folder.
+
+        Shares apply to the existing subfolders too: new ones inherit
+        the rights of their parent.
+        """
+        with lib.get_imapconnector(request) as imapc:
+            self._check_sharing(imapc)
+            if request.method == "GET":
+                mailbox = request.GET.get("mailbox")
+                if mailbox is None:
+                    raise Http404
+                shares = [
+                    {
+                        "grantee": grantee,
+                        "level": constants.get_sharing_level(rights),
+                        "rights": rights,
+                    }
+                    for grantee, rights in imapc.get_acl(mailbox).items()
+                    if grantee != request.user.username
+                ]
+                serializer = self.get_serializer({"mailbox": mailbox, "shares": shares})
+                return response.Response(serializer.data)
+            serializer = self.get_serializer(data=request.data)
+            serializer.is_valid(raise_exception=True)
+            mailbox = serializer.validated_data["mailbox"]
+            grantee = serializer.validated_data["grantee"]
+            for name in [mailbox] + imapc.get_subfolders(mailbox):
+                if request.method == "PUT":
+                    level = serializer.validated_data["level"]
+                    imapc.set_acl(name, grantee, constants.SHARING_LEVELS[level])
+                else:
+                    imapc.delete_acl(name, grantee)
+        return response.Response(status=204)
+
+    @action(methods=["get"], detail=False)
+    def rights(self, request):
+        """Rights of the current user on a folder (RFC 4314 letters)."""
+        mailbox = request.GET.get("mailbox")
+        if mailbox is None:
+            raise Http404
+        with lib.get_imapconnector(request) as imapc:
+            self._check_sharing(imapc)
+            serializer = self.get_serializer({"rights": imapc.get_my_rights(mailbox)})
+        return response.Response(serializer.data)
+
+    @action(methods=["get"], detail=False, url_path="share-candidates")
+    def share_candidates(self, request):
+        """Accounts the current user can share folders with."""
+        candidates = admin_models.Mailbox.objects.get_share_candidates(
+            request.user.mailbox
+        ).select_related("user", "domain")
+        serializer = self.get_serializer(candidates, many=True)
+        return response.Response(serializer.data)
 
 
 class UserEmailViewSet(ImapConnectionMixin, viewsets.GenericViewSet):

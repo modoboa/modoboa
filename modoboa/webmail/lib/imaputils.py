@@ -15,6 +15,7 @@ from django.core.cache import cache
 from django.utils.encoding import smart_str
 from django.utils.translation import gettext as _
 
+from modoboa.core.models import User
 from modoboa.lib import imap_utf7  # noqa
 from modoboa.lib import oauth2
 from modoboa.lib import u2u_decode
@@ -105,6 +106,51 @@ def escape_search_pattern(pattern: str) -> str:
     if any(ord(c) < 0x20 or ord(c) == 0x7F for c in pattern):
         raise InvalidImapArgument(_("Invalid search pattern"))
     return pattern.replace("\\", "\\\\").replace('"', '\\"')
+
+
+# A quoted string or an atom of an ACL/MYRIGHTS response
+ACL_TOKEN_RE = re.compile(rb'"((?:[^"\\]|\\.)*)"|([^\s"]+)')
+# Announces a literal, sent by imaplib along the text that precedes it
+LITERAL_SIZE_RE = re.compile(rb"\{\d+\}$")
+
+
+def parse_acl_response(data: list) -> list[str]:
+    """Split an untagged ACL or MYRIGHTS response into its tokens.
+
+    Identifiers with 8-bit characters are sent as literals: imaplib
+    returns them as (preceding text, literal) tuples.
+    """
+    tokens = []
+    for item in data or []:
+        literal = None
+        if isinstance(item, tuple):
+            item, literal = item
+            item = LITERAL_SIZE_RE.sub(b"", item)
+        if not isinstance(item, bytes):
+            continue
+        for match in ACL_TOKEN_RE.finditer(item):
+            quoted, atom = match.groups()
+            if quoted is not None:
+                atom = re.sub(rb"\\(.)", rb"\1", quoted)
+            tokens.append(atom.decode())
+        if literal is not None:
+            tokens.append(literal.decode())
+    if not tokens:
+        raise ImapError(_("Unexpected response from the IMAP server"))
+    return tokens
+
+
+def quote_string(value: str) -> bytes:
+    """Return a value as an IMAP quoted string (RFC 3501).
+
+    Backslashes and double quotes are escaped, so that a crafted value
+    can't break out of the string and inject extra command arguments.
+    Control characters can't be quoted: they are rejected.
+    """
+    if any(ord(c) < 0x20 or ord(c) == 0x7F for c in value):
+        raise InvalidImapArgument(_("Invalid IMAP argument"))
+    encoded = value.encode()
+    return b'"' + encoded.replace(b"\\", b"\\\\").replace(b'"', b'\\"') + b'"'
 
 
 def quote_mailbox_name(name: str) -> bytes:
@@ -524,6 +570,33 @@ class IMAPconnector:
             raise InternalError(_("Failed to retrieve hierarchy delimiter"))
         return self.__hdelimiter
 
+    @property
+    def shared_prefix(self) -> str | None:
+        """Prefix of the folders shared by other users (eg. "shared/")."""
+        prefixes = self.__ns_prefixes.get("others")
+        return prefixes[0] if prefixes else None
+
+    @property
+    def sharing_enabled(self) -> bool:
+        """Can users share their folders (RFC 4314)?"""
+        # With '.', the owner addresses would be split into several levels
+        return (
+            "ACL" in getattr(self, "capabilities", [])
+            and self.shared_prefix is not None
+            and self.hdelimiter != "."
+        )
+
+    def get_shared_mailbox_owner(self, name: str) -> str | None:
+        """Return the owner of a shared folder.
+
+        The root of the shared namespace has no owner (""), and personal
+        folders return None.
+        """
+        prefix = self.shared_prefix
+        if prefix is None or not f"{name}{self.hdelimiter}".startswith(prefix):
+            return None
+        return name[len(prefix) :].split(self.hdelimiter)[0]
+
     def login(self, user: str, rawtoken: str) -> None:
         """Custom login method
 
@@ -925,16 +998,24 @@ class IMAPconnector:
         if self.has_list_status:
             self._collect_unseen_counters()
         newmboxes = []
-        for mb in resp:
+        # No untagged response at all when nothing matches
+        for mb in resp or []:
             parsed = self._parse_list_response(mb)
             if parsed is None:
                 continue
             flags, name = parsed
             has_children = "\\HasChildren" in flags
+            owner = self.get_shared_mailbox_owner(name)
             # When only subscribed mailboxes are requested, skip folders the
             # user is not subscribed to. Unsubscribed folders that still have
             # children are kept so subscribed descendants remain reachable.
-            if subscribed_only and "\\Subscribed" not in flags and not has_children:
+            # Shared folders are always listed: nobody subscribes to them.
+            if (
+                subscribed_only
+                and owner is None
+                and "\\Subscribed" not in flags
+                and not has_children
+            ):
                 continue
             mdm_found = False
             for idx, mdm in enumerate(mailboxes):
@@ -944,6 +1025,12 @@ class IMAPconnector:
                     break
             if not mdm_found:
                 descr = {"name": name, "label": name, "type": "normal"}
+                if owner is not None:
+                    descr["type"] = "shared"
+                    if owner:
+                        descr["owner"] = owner
+                    else:
+                        descr["label"] = _("Shared with me")
                 newmboxes += [descr]
 
             # A mailbox can hold unseen messages without being flagged
@@ -951,8 +1038,11 @@ class IMAPconnector:
             # last SELECT). To display accurate counters we compute the unseen
             # count for every selectable mailbox instead of relying on that
             # heuristic. \Noselect mailboxes cannot be queried with STATUS.
-            descr["selectable"] = "\\Noselect" not in flags
-            if r"\NonExistent" in flags:
+            descr["selectable"] = (
+                "\\Noselect" not in flags and r"\NonExistent" not in flags
+            )
+            # The levels of the shared namespace (root, owners) don't exist
+            if r"\NonExistent" in flags and owner is None:
                 descr["removed"] = True
             if has_children:
                 descr["path"] = name
@@ -1028,7 +1118,30 @@ class IMAPconnector:
                 until_mailbox = parent
         self._listmboxes(topmailbox, md_mailboxes, until_mailbox, subscribed_only)
         self._set_unseen_counters(md_mailboxes, unseen_messages)
+        self._set_shared_owner_labels(md_mailboxes)
         return md_mailboxes
+
+    def _set_shared_owner_labels(self, mailboxes: list) -> None:
+        """Show the name of the users sharing folders, not their address."""
+
+        def owner_nodes(items):
+            for item in items:
+                owner = item.get("owner")
+                if owner and item["name"] == f"{self.shared_prefix}{owner}":
+                    yield item
+                yield from owner_nodes(item.get("sub") or [])
+
+        nodes = list(owner_nodes(mailboxes))
+        if not nodes:
+            return
+        names = {
+            user.username: user.fullname
+            for user in User.objects.filter(
+                username__in={node["owner"] for node in nodes}
+            )
+        }
+        for node in nodes:
+            node["label"] = names.get(node["owner"], node["owner"])
 
     def _set_unseen_counters(self, mailboxes: list, compute: bool = True) -> None:
         """Compute the unseen messages counter of each selectable mailbox.
@@ -1201,7 +1314,7 @@ class IMAPconnector:
         self.select_mailbox(mbox, False)
         self._cmd("EXPUNGE")
 
-    def _mailbox_command(self, command: str, *args) -> None:
+    def _mailbox_command(self, command: str, *args) -> list:
         """Run a mailbox management command (create, rename, delete...).
 
         The server refusing the operation (NO response) is reported with
@@ -1213,6 +1326,7 @@ class IMAPconnector:
             raise MailboxOperationError(str(error)) from None
         if typ == "NO":
             raise MailboxOperationError(data[0])
+        return data
 
     def create_folder(self, name: str, parent: str | None = None) -> bool:
         if parent is not None:
@@ -1229,6 +1343,41 @@ class IMAPconnector:
     def delete_folder(self, name: str) -> bool:
         self._mailbox_command("delete", self._encode_mbox_name(name))
         return True
+
+    def get_subfolders(self, name: str) -> list[str]:
+        """Return the names of all the folders below the given one."""
+        pattern = quote_mailbox_name(f"{name}{self.hdelimiter}*")
+        names = []
+        for mb in self._cmd("LIST", '""', pattern) or []:
+            parsed = self._parse_list_response(mb)
+            if parsed is not None:
+                names.append(parsed[1])
+        return names
+
+    def get_acl(self, name: str) -> dict[str, str]:
+        """Return the rights (RFC 4314 letters) of each identifier."""
+        tokens = parse_acl_response(
+            self._mailbox_command("getacl", self._encode_mbox_name(name))
+        )
+        # The mailbox name comes first, then identifier/rights pairs
+        return dict(zip(tokens[1::2], tokens[2::2], strict=True))
+
+    def get_my_rights(self, name: str) -> str:
+        """Return the rights of the current user on a mailbox."""
+        tokens = parse_acl_response(
+            self._mailbox_command("myrights", self._encode_mbox_name(name))
+        )
+        return tokens[-1]
+
+    def set_acl(self, name: str, identifier: str, rights: str) -> None:
+        self._mailbox_command(
+            "setacl", self._encode_mbox_name(name), quote_string(identifier), rights
+        )
+
+    def delete_acl(self, name: str, identifier: str) -> None:
+        self._mailbox_command(
+            "deleteacl", self._encode_mbox_name(name), quote_string(identifier)
+        )
 
     def get_subscriptions(self) -> list[dict]:
         """Return every mailbox with its subscription status.

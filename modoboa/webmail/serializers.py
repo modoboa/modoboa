@@ -8,6 +8,7 @@ from django.utils import timezone
 from drf_spectacular.utils import extend_schema_field
 from rest_framework import serializers
 
+from modoboa.admin import models as admin_models
 from modoboa.webmail import constants, models
 from modoboa.webmail.exceptions import ImapError
 from modoboa.webmail.lib import imapheader, signature
@@ -80,6 +81,8 @@ class UserMailboxSerializer(serializers.Serializer):
     path = serializers.CharField(required=False)
     label = serializers.CharField()
     type = serializers.ChoiceField(choices=constants.MAILBOX_TYPES)
+    # Address of the user sharing the folder
+    owner = serializers.CharField(required=False)
     unseen = serializers.IntegerField(default=0)
     removed = serializers.BooleanField(default=False)
     sub = serializers.SerializerMethodField()
@@ -127,6 +130,55 @@ class UserMailboxStatusSerializer(serializers.Serializer):
 class UserMailboxesSerializer(serializers.Serializer):
     mailboxes = UserMailboxSerializer(many=True)
     hdelimiter = serializers.CharField()
+    sharing_enabled = serializers.BooleanField()
+
+
+class MailboxShareSerializer(serializers.Serializer):
+    grantee = serializers.CharField()
+    # A key of SHARING_LEVELS, or "custom" for rights set by another client
+    level = serializers.CharField()
+    rights = serializers.CharField()
+
+
+class MailboxSharesSerializer(serializers.Serializer):
+    mailbox = serializers.CharField()
+    shares = MailboxShareSerializer(many=True)
+
+
+class MailboxShareInputSerializer(serializers.Serializer):
+    mailbox = serializers.CharField()
+    grantee = serializers.CharField()
+    level = serializers.ChoiceField(choices=list(constants.SHARING_LEVELS))
+
+    def validate_grantee(self, value):
+        mailbox = self.context["request"].user.mailbox
+        candidates = admin_models.Mailbox.objects.get_share_candidates(mailbox)
+        if not candidates.filter(user__username=value).exists():
+            raise serializers.ValidationError(_("Unknown account"))
+        return value
+
+
+class MailboxShareDeleteSerializer(serializers.Serializer):
+    mailbox = serializers.CharField()
+    # Any identifier of the ACL, as returned by GET: it may have been set
+    # by another client. It is sent as a quoted string.
+    grantee = serializers.CharField(trim_whitespace=False)
+
+    def validate_grantee(self, value):
+        if any(ord(c) < 0x20 or ord(c) == 0x7F for c in value):
+            raise serializers.ValidationError(_("Invalid identifier"))
+        if value == self.context["request"].user.username:
+            raise serializers.ValidationError(_("You can't remove your own rights"))
+        return value
+
+
+class MailboxRightsSerializer(serializers.Serializer):
+    rights = serializers.CharField()
+
+
+class ShareCandidateSerializer(serializers.Serializer):
+    address = serializers.CharField(source="full_address")
+    name = serializers.CharField(source="user.fullname")
 
 
 class UserMailboxInputSerializer(serializers.Serializer):
