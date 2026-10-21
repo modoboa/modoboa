@@ -38,6 +38,21 @@ class DoveadmError(Exception):
     """Raised when a doveadm operation fails, whatever the backend."""
 
 
+def parse_acl(data: list) -> dict[str, list[str]]:
+    """Return the rights by identifier from an 'acl get' result.
+
+    Global entries are left out: doveadm can't change them.
+    """
+    try:
+        return {
+            entry["id"]: entry["rights"].split()
+            for entry in data
+            if not entry.get("global")
+        }
+    except (AttributeError, KeyError, TypeError) as err:
+        raise DoveadmError(f"unexpected doveadm output: {data}") from err
+
+
 class DoveadmCmdBackend:
     """Talk to Dovecot using the doveadm command line tool."""
 
@@ -130,6 +145,27 @@ class DoveadmCmdBackend:
     def put_sieve_script(self, user: str, name: str, content: str) -> None:
         """Create or replace a Sieve script. An active one stays active."""
         self._run_json(["sieve", "put", "-u", user, name], pinput=content.encode())
+
+    def list_mailboxes(self, user: str) -> list[str]:
+        """Return the names of the mailboxes a user can see."""
+        return [
+            entry["mailbox"]
+            for entry in self._run_json(["mailbox", "list", "-u", user])
+        ]
+
+    def acl_get(self, user: str, mailbox: str) -> dict[str, list[str]]:
+        """Return the ACL of a mailbox: rights by identifier."""
+        return parse_acl(self._run_json(["acl", "get", "-u", user, mailbox]))
+
+    def acl_set(
+        self, user: str, mailbox: str, identifier: str, rights: list[str]
+    ) -> None:
+        """Replace the rights of an identifier (names, not RFC 4314 letters)."""
+        self._run_json(["acl", "set", "-u", user, mailbox, identifier] + rights)
+
+    def acl_delete(self, user: str, mailbox: str, identifier: str) -> None:
+        """Remove the rights of an identifier."""
+        self._run_json(["acl", "delete", "-u", user, mailbox, identifier])
 
 
 class DoveadmHTTPBackend:
@@ -251,6 +287,28 @@ class DoveadmHTTPBackend:
     def put_sieve_script(self, user: str, name: str, content: str) -> None:
         self._run_command(
             "sievePut", {"user": user, "scriptname": name, "file": content}
+        )
+
+    def list_mailboxes(self, user: str) -> list[str]:
+        data = self._run_command("mailboxList", {"user": user})
+        return [entry["mailbox"] for entry in data]
+
+    def acl_get(self, user: str, mailbox: str) -> dict[str, list[str]]:
+        return parse_acl(
+            self._run_command("aclGet", {"user": user, "mailbox": mailbox})
+        )
+
+    def acl_set(
+        self, user: str, mailbox: str, identifier: str, rights: list[str]
+    ) -> None:
+        self._run_command(
+            "aclSet",
+            {"user": user, "mailbox": mailbox, "id": identifier, "right": rights},
+        )
+
+    def acl_delete(self, user: str, mailbox: str, identifier: str) -> None:
+        self._run_command(
+            "aclDelete", {"user": user, "mailbox": mailbox, "id": identifier}
         )
 
 

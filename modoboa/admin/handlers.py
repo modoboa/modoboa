@@ -6,11 +6,13 @@ from django.db.models import signals
 from django.dispatch import receiver
 from django.utils.translation import gettext as _
 
+import django_rq
+
 from modoboa.core import models as core_models, signals as core_signals
 from modoboa.lib import exceptions, permissions, signals as lib_signals
 from modoboa.lib.email_utils import split_mailbox
 from modoboa.parameters import tools as param_tools
-from . import lib, models, postfix_maps, signals as admin_signals
+from . import jobs, lib, models, postfix_maps, signals as admin_signals
 
 
 @receiver(signals.post_save, sender=models.Domain)
@@ -170,6 +172,65 @@ def mailbox_deleted_handler(sender, **kwargs):
 def remove_alias_for_mailbox(sender, instance, **kwargs):
     """Remove "self alias" for this mailbox."""
     models.Alias.objects.filter(address=instance.full_address).delete()
+
+
+def replace_acl_identifier(address: str, new_address: str | None = None) -> None:
+    """Update the folders shared with an address, once the change is saved.
+
+    Left as is, a new account created with this address would get the
+    access.
+    """
+    owners = list(
+        models.UserShare.objects.filter(to_user=address).values_list(
+            "from_user", flat=True
+        )
+    )
+    if not owners:
+        return
+    new = f"user={new_address}" if new_address else None
+    transaction.on_commit(
+        lambda: django_rq.get_queue("dovecot").enqueue(
+            jobs.replace_acl_identifier, owners, f"user={address}", new
+        )
+    )
+
+
+@receiver(signals.pre_delete, sender=models.Mailbox)
+def remove_mailbox_shares(sender, instance, **kwargs):
+    """Remove the shares made by or with a deleted mailbox."""
+    address = instance.full_address
+    # Dovecot can't update them anymore: the owner is gone
+    models.UserShare.objects.filter(from_user=address).delete()
+    models.AnyoneShare.objects.filter(from_user=address).delete()
+    replace_acl_identifier(address)
+
+
+def rename_shares(old_address: str, address: str) -> None:
+    """Follow the address change of a mailbox in the shares."""
+    # Entries left by a former owner of the new address
+    models.UserShare.objects.filter(from_user=address).delete()
+    models.AnyoneShare.objects.filter(from_user=address).delete()
+    # ACL files are stored with the mailbox, only the dictionary changes
+    models.UserShare.objects.filter(from_user=old_address).update(from_user=address)
+    models.AnyoneShare.objects.filter(from_user=old_address).update(from_user=address)
+    replace_acl_identifier(old_address, address)
+
+
+@receiver(signals.post_save, sender=models.Mailbox)
+def rename_mailbox_shares(sender, instance, created, **kwargs):
+    old_address = getattr(instance, "old_full_address", None)
+    if created or old_address is None or old_address == instance.full_address:
+        return
+    rename_shares(old_address, instance.full_address)
+
+
+@receiver(signals.post_save, sender=models.Domain)
+def rename_domain_shares(sender, instance, created, **kwargs):
+    """Mailboxes are not saved when their domain is renamed."""
+    if created or instance.old_mail_homes is None:
+        return
+    for mailbox in instance.mailbox_set.all():
+        rename_shares(f"{mailbox.address}@{instance.oldname}", mailbox.full_address)
 
 
 @receiver(core_signals.register_postfix_maps)
