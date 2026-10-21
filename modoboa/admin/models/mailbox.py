@@ -77,6 +77,15 @@ class AnyoneShare(models.Model):
 class MailboxManager(Manager):
     """Custom manager for Mailbox."""
 
+    def get_share_candidates(self, owner):
+        """Return the mailboxes a user can share data with (calendars, folders).
+
+        :param owner: the ``Mailbox`` sharing its data
+        """
+        return self.filter(
+            domain_id=owner.domain_id, domain__enabled=True, user__is_active=True
+        ).exclude(pk=owner.pk)
+
     def get_for_admin(self, admin, squery=None):
         """Return the mailboxes that belong to this admin.
 

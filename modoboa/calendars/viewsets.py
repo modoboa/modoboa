@@ -354,7 +354,9 @@ class MailboxViewSet(viewsets.ReadOnlyModelViewSet):
 
     def get_queryset(self):
         """Filter queryset based on current user."""
-        return models.get_share_candidates(self.request.user.mailbox)
+        return admin_models.Mailbox.objects.get_share_candidates(
+            self.request.user.mailbox
+        )
 
 
 class AccessRuleViewSet(viewsets.ModelViewSet):

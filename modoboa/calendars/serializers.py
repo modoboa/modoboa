@@ -365,7 +365,9 @@ class AccessRuleSerializer(serializers.ModelSerializer):
     def validate_mailbox(self, value):
         calendar = self.context["calendar"]
         mailbox = (
-            models.get_share_candidates(calendar.mailbox).filter(pk=value["pk"]).first()
+            admin_models.Mailbox.objects.get_share_candidates(calendar.mailbox)
+            .filter(pk=value["pk"])
+            .first()
         )
         if mailbox is None:
             raise serializers.ValidationError(_("Mailbox not found"))
