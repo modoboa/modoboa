@@ -59,6 +59,7 @@
             variant="text"
             size="small"
             :loading="working"
+            :disabled="!webmailStore.hasRights('te')"
             :title="$gettext('Delete')"
             @click="deleteEmail"
           />
@@ -69,6 +70,7 @@
             variant="text"
             size="small"
             :loading="working"
+            :disabled="!webmailStore.hasRights('te')"
             :title="$gettext('Mark as junk')"
             @click="markEmailAsJunk"
           />
@@ -79,6 +81,7 @@
             variant="text"
             size="small"
             :loading="working"
+            :disabled="!webmailStore.hasRights('te')"
             :title="$gettext('Mark as not junk')"
             @click="markEmailAsNotJunk"
           />

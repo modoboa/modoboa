@@ -71,8 +71,16 @@
                     @click="deleteMailbox"
                   />
                   <v-list-item
+                    v-if="webmailStore.sharingEnabled"
+                    :title="$gettext('Share this mailbox')"
+                    prepend-icon="mdi-share-variant-outline"
+                    :disabled="webmailStore.isShared(currentMailbox)"
+                    @click="showShareDialog = true"
+                  />
+                  <v-list-item
                     :title="$gettext('Compress this mailbox')"
                     prepend-icon="mdi-folder-zip-outline"
+                    :disabled="!webmailStore.hasRights('e')"
                     @click="compressMailbox"
                   />
                   <v-list-item
@@ -112,6 +120,13 @@
       @close="closeMailboxForm()"
     />
   </v-dialog>
+  <v-dialog v-model="showShareDialog" max-width="800">
+    <MailboxShareDialog
+      v-if="showShareDialog"
+      :mailbox="currentMailbox"
+      @close="showShareDialog = false"
+    />
+  </v-dialog>
   <v-dialog v-model="showSubscriptions" max-width="600">
     <SubscriptionsDialog
       @close="showSubscriptions = false"
@@ -131,6 +146,7 @@ import ConfirmDialog from '@/components/tools/ConfirmDialog.vue'
 import ConnectedLayout from '@/layouts/connected/ConnectedLayout.vue'
 import MailboxForm from '@/components/webmail/MailboxForm.vue'
 import MailboxList from '@/components/webmail/MailboxList.vue'
+import MailboxShareDialog from '@/components/webmail/MailboxShareDialog.vue'
 import SubscriptionsDialog from '@/components/webmail/SubscriptionsDialog.vue'
 import api from '@/api/webmail'
 
@@ -168,19 +184,24 @@ const mailboxQuota = ref(null)
 const selectedMailbox = ref(route.query.mailbox || 'INBOX')
 const showMailboxForm = ref(false)
 const showSubscriptions = ref(false)
+const showShareDialog = ref(false)
 const userMailboxes = ref([])
+
+const currentMailbox = computed(() => route.query.mailbox || 'INBOX')
 
 // The webmail relies on INBOX and on special folders (drafts, sent, junk,
 // trash...): they can't be renamed nor deleted. Their names are user
 // preferences, so they are recognized by the type the API gives them in the
 // mailboxes list.
+// A folder shared by someone else can only be changed with the "x" right.
 const readOnlyMailbox = computed(() => {
-  const name = route.query.mailbox || 'INBOX'
+  const name = currentMailbox.value
   return (
     name.toUpperCase() === 'INBOX' ||
     userMailboxes.value.some(
       (mailbox) => mailbox.name === name && mailbox.type !== 'normal'
-    )
+    ) ||
+    (webmailStore.isShared(name) && !webmailStore.hasRights('x'))
   )
 })
 
@@ -238,8 +259,24 @@ const fetchUserMailboxes = async () => {
   const resp = await api.getUserMailboxes()
   userMailboxes.value = resp.data.mailboxes
   // Let child views recognize special folders whatever their names
-  webmailStore.setMailboxes(resp.data.mailboxes)
+  webmailStore.setMailboxes(resp.data.mailboxes, {
+    sharingEnabled: resp.data.sharing_enabled,
+    hdelimiter: resp.data.hdelimiter,
+  })
   hdelimiter.value = resp.data.hdelimiter
+}
+
+// The actions offered in a shared folder depend on the rights of the user
+async function fetchMailboxRights(mailbox) {
+  webmailStore.mailboxRights = null
+  if (!webmailStore.sharingEnabled || !webmailStore.isShared(mailbox)) {
+    return
+  }
+  const resp = await api.getMailboxRights(mailbox)
+  // Another mailbox may have been opened meanwhile
+  if (mailbox === currentMailbox.value) {
+    webmailStore.mailboxRights = resp.data.rights
+  }
 }
 
 const openComposeForm = () => {
@@ -296,6 +333,8 @@ watch(dataKey, () => {
   fetchUserMailboxes()
 })
 
+watch(currentMailbox, fetchMailboxRights)
+
 // Counters received along the listings
 watch(
   () => webmailStore.unseenCounters,
@@ -315,6 +354,7 @@ watch(
 )
 
 await fetchUserMailboxes()
+fetchMailboxRights(currentMailbox.value)
 const resp = await api.getUserMailboxQuota(route.query.mailbox || 'INBOX')
 mailboxQuota.value = resp.data
 </script>

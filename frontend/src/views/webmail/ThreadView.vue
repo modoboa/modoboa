@@ -48,6 +48,7 @@
           variant="text"
           size="small"
           :loading="working"
+          :disabled="!webmailStore.hasRights('te')"
           :title="$gettext('Delete the whole conversation')"
           @click="deleteThread"
         />
@@ -58,6 +59,7 @@
           variant="text"
           size="small"
           :loading="working"
+          :disabled="!webmailStore.hasRights('te')"
           :title="$gettext('Mark the conversation as junk')"
           @click="markThreadAsJunk"
         />
@@ -68,6 +70,7 @@
           variant="text"
           size="small"
           :loading="working"
+          :disabled="!webmailStore.hasRights('te')"
           :title="$gettext('Mark the conversation as not junk')"
           @click="markThreadAsNotJunk"
         />

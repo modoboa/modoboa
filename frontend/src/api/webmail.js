@@ -43,6 +43,25 @@ export default {
     const body = { name: mailbox }
     return repository.post('/webmail/mailboxes/empty/', body)
   },
+  getMailboxShares(mailbox) {
+    const params = { mailbox }
+    return repository.get('/webmail/mailboxes/acl/', { params })
+  },
+  // body: { mailbox, grantee, level }
+  shareMailbox(body) {
+    return repository.put('/webmail/mailboxes/acl/', body)
+  },
+  // body: { mailbox, grantee }
+  unshareMailbox(body) {
+    return repository.delete('/webmail/mailboxes/acl/', { data: body })
+  },
+  getMailboxRights(mailbox) {
+    const params = { mailbox }
+    return repository.get('/webmail/mailboxes/rights/', { params })
+  },
+  getShareCandidates() {
+    return repository.get('/webmail/mailboxes/share-candidates/')
+  },
   getMailboxEmails(mailbox, options) {
     const params = {
       mailbox,
