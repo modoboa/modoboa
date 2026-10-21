@@ -13,10 +13,15 @@ import django_rq
 from modoboa.admin import models
 from modoboa.admin.app_settings import load_admin_settings
 from modoboa.admin.dns_checker import DNSChecker
+from modoboa.lib.dovecot import DoveadmError, get_dovecot_backend
 from modoboa.lib.sysutils import exec_cmd
 from modoboa.parameters import tools as param_tools
 
 logger = logging.getLogger("modoboa.jobs")
+
+# ponytail: prefix of the shared namespace set up by modoboa-installer;
+# make it a setting if another one has to be supported.
+SHARED_NAMESPACE_PREFIX = "shared/"
 
 
 def rename_failed(operation, reason):
@@ -133,3 +138,36 @@ def handle_dns_checks():
         if domain.uses_a_reserved_tld:
             continue
         queue.enqueue(launch_domain_dns_checks, domain.id)
+
+
+def replace_acl_identifier(owners: list[str], old: str, new: str | None = None):
+    """Replace an ACL identifier in the folders of the given owners.
+
+    The rights of ``old`` are given to ``new``, or simply removed when
+    ``new`` is None. Dovecot updates the sharing dictionary along.
+    """
+    backend = get_dovecot_backend()
+    failures = []
+    for owner in owners:
+        try:
+            mailboxes = backend.list_mailboxes(owner)
+        except DoveadmError as err:
+            failures.append(f"{owner}: {err}")
+            continue
+        for mailbox in mailboxes:
+            # Folders shared with the owner belong to someone else
+            if f"{mailbox}/".startswith(SHARED_NAMESPACE_PREFIX):
+                continue
+            try:
+                rights = backend.acl_get(owner, mailbox).get(old)
+                if rights is None:
+                    continue
+                if new:
+                    backend.acl_set(owner, mailbox, new, rights)
+                backend.acl_delete(owner, mailbox, old)
+            except DoveadmError as err:
+                failures.append(f"{owner}/{mailbox}: {err}")
+    if failures:
+        # Left behind entries would give access to whoever gets the address
+        logger.critical(f"failed to update ACL entries of {old}: {failures}")
+        raise DoveadmError(f"failed to update ACL entries of {old}")

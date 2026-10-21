@@ -134,6 +134,58 @@ class DoveadmCmdBackendTestCase(SimpleTestCase):
             self.backend.put_sieve_script("user@domain", "s", "keep;\n")
 
 
+class DoveadmCmdBackendAclTestCase(SimpleTestCase):
+    def setUp(self):
+        self.backend = dovecot.DoveadmCmdBackend()
+
+    @mock.patch("modoboa.lib.dovecot.doveadm_cmd")
+    def test_list_mailboxes(self, doveadm_cmd_mock):
+        doveadm_cmd_mock.return_value = (
+            0,
+            '[{"mailbox":"Été"},{"mailbox":"INBOX"}]'.encode(),
+        )
+        self.assertEqual(self.backend.list_mailboxes("u@d"), ["Été", "INBOX"])
+        doveadm_cmd_mock.assert_called_with(
+            ["-f", "json", "mailbox", "list", "-u", "u@d"], pinput=None
+        )
+
+    @mock.patch("modoboa.lib.dovecot.doveadm_cmd")
+    def test_acl_get(self, doveadm_cmd_mock):
+        doveadm_cmd_mock.return_value = (
+            0,
+            b'[{"id":"user=b@d","global":"","rights":"lookup read write-seen"},'
+            b'{"id":"user=c@d","global":"global","rights":"lookup"}]',
+        )
+        self.assertEqual(
+            self.backend.acl_get("u@d", "Projets"),
+            {"user=b@d": ["lookup", "read", "write-seen"]},
+        )
+        doveadm_cmd_mock.assert_called_with(
+            ["-f", "json", "acl", "get", "-u", "u@d", "Projets"], pinput=None
+        )
+        doveadm_cmd_mock.return_value = (68, b"Mailbox doesn't exist: Nope\n[]")
+        with self.assertRaises(dovecot.DoveadmError):
+            self.backend.acl_get("u@d", "Nope")
+        doveadm_cmd_mock.return_value = (0, b'[{"rights":"lookup"}]')
+        with self.assertRaises(dovecot.DoveadmError):
+            self.backend.acl_get("u@d", "Projets")
+
+    @mock.patch("modoboa.lib.dovecot.doveadm_cmd")
+    def test_acl_set_and_delete(self, doveadm_cmd_mock):
+        doveadm_cmd_mock.return_value = (0, b"[]")
+        self.backend.acl_set("u@d", "Projets", "user=b@d", ["lookup", "read"])
+        doveadm_cmd_mock.assert_called_with(
+            ["-f", "json", "acl", "set", "-u", "u@d", "Projets", "user=b@d"]
+            + ["lookup", "read"],
+            pinput=None,
+        )
+        self.backend.acl_delete("u@d", "Projets", "user=b@d")
+        doveadm_cmd_mock.assert_called_with(
+            ["-f", "json", "acl", "delete", "-u", "u@d", "Projets", "user=b@d"],
+            pinput=None,
+        )
+
+
 @override_settings(**REST_SETTINGS)
 class DoveadmHTTPBackendTestCase(SimpleTestCase):
     @mock.patch("modoboa.lib.dovecot.requests.post")
@@ -236,6 +288,62 @@ class DoveadmHTTPBackendTestCase(SimpleTestCase):
         backend = dovecot.DoveadmHTTPBackend()
         with self.assertRaises(dovecot.DoveadmError):
             backend.list_password_schemes()
+
+    @mock.patch("modoboa.lib.dovecot.requests.post")
+    def test_acl(self, post_mock):
+        backend = dovecot.DoveadmHTTPBackend()
+        post_mock.return_value = http_response(
+            [["doveadmResponse", [{"mailbox": "Projets"}], "c1"]]
+        )
+        self.assertEqual(backend.list_mailboxes("u@d"), ["Projets"])
+        self.assertEqual(
+            post_mock.call_args.kwargs["json"],
+            [["mailboxList", {"user": "u@d"}, "c1"]],
+        )
+        post_mock.return_value = http_response(
+            [
+                [
+                    "doveadmResponse",
+                    [{"id": "user=b@d", "global": "", "rights": "lookup read"}],
+                    "c1",
+                ]
+            ]
+        )
+        self.assertEqual(
+            backend.acl_get("u@d", "Projets"), {"user=b@d": ["lookup", "read"]}
+        )
+        self.assertEqual(
+            post_mock.call_args.kwargs["json"],
+            [["aclGet", {"user": "u@d", "mailbox": "Projets"}, "c1"]],
+        )
+        post_mock.return_value = http_response([["doveadmResponse", [], "c1"]])
+        backend.acl_set("u@d", "Projets", "user=b@d", ["lookup"])
+        self.assertEqual(
+            post_mock.call_args.kwargs["json"],
+            [
+                [
+                    "aclSet",
+                    {
+                        "user": "u@d",
+                        "mailbox": "Projets",
+                        "id": "user=b@d",
+                        "right": ["lookup"],
+                    },
+                    "c1",
+                ]
+            ],
+        )
+        backend.acl_delete("u@d", "Projets", "user=b@d")
+        self.assertEqual(
+            post_mock.call_args.kwargs["json"],
+            [
+                [
+                    "aclDelete",
+                    {"user": "u@d", "mailbox": "Projets", "id": "user=b@d"},
+                    "c1",
+                ]
+            ],
+        )
 
     @mock.patch("modoboa.lib.dovecot.requests.post")
     def test_sieve_scripts(self, post_mock):

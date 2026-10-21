@@ -46,6 +46,34 @@ class Quota(models.Model):
         app_label = "admin"
 
 
+class UserShare(models.Model):
+    """from_user shares folders with to_user.
+
+    Written by Dovecot (acl_sharing_map) when ACLs change, whatever the
+    client used to share.
+    """
+
+    pk = models.CompositePrimaryKey("from_user", "to_user")
+    from_user = models.CharField(max_length=254)
+    to_user = models.CharField(max_length=254)
+    dummy = models.CharField(max_length=1, db_default="1")
+
+    class Meta:
+        app_label = "admin"
+        # Dovecot looks the shares up by recipient on every LIST
+        indexes = [models.Index(fields=["to_user"])]
+
+
+class AnyoneShare(models.Model):
+    """from_user shares folders with anyone. Written by Dovecot."""
+
+    from_user = models.CharField(max_length=254, primary_key=True)
+    dummy = models.CharField(max_length=1, db_default="1")
+
+    class Meta:
+        app_label = "admin"
+
+
 class MailboxManager(Manager):
     """Custom manager for Mailbox."""
 

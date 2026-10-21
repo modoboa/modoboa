@@ -37,6 +37,10 @@ services:
       REDIS_HOST: redis
       PYTHONPATH: ".."
       PYTHONUNBUFFERED: 1
+      # Talk to the dovecot container instead of the fake doveadm binary
+      DOVECOT_OPERATION_MODE: rest
+      DOVEADM_API_URL: http://dovecot:8080/doveadm/v1
+      DOVEADM_API_KEY: dev-doveadm-api-key
     command: >
       sh -c "cd test_project; python3 manage.py rqworker dkim modoboa dovecot"
     volumes:
@@ -151,6 +155,8 @@ services:
       - api
     volumes:
       - ./docker/dovecot_config:/etc/dovecot/conf.d
+      # Sharing dictionary (admin_usershare table)
+      - ./test_project:/modoboa
 
   radicale:
     container_name: modoboa_radicale

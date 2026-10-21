@@ -5,7 +5,14 @@ from .alias import Alias, AliasRecipient, validate_alias_address
 from .base import AdminObject
 from .domain import Domain
 from .domain_alias import DomainAlias
-from .mailbox import Mailbox, MailboxOperation, Quota, SenderAddress
+from .mailbox import (
+    AnyoneShare,
+    Mailbox,
+    MailboxOperation,
+    Quota,
+    SenderAddress,
+    UserShare,
+)
 from .mxrecord import DNSBLResult, MXRecord
 
 __all__ = [
@@ -13,6 +20,7 @@ __all__ = [
     "AdminObject",
     "Alias",
     "AliasRecipient",
+    "AnyoneShare",
     "DNSBLResult",
     "Domain",
     "DomainAlias",
@@ -21,5 +29,6 @@ __all__ = [
     "MXRecord",
     "Quota",
     "SenderAddress",
+    "UserShare",
     "validate_alias_address",
 ]

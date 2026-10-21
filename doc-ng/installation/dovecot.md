@@ -639,6 +639,95 @@ $ doveadm quota recalc -A
 
 Be carefull, it can take a while to execute.
 
+## Shared folders
+
+Users can share their folders with each other (IMAP ACL, RFC 4314).
+Dovecot stores the rights next to the folders, and keeps track of who
+shares with whom in a SQL dictionary: Modoboa reads it to remove the
+rights given to an account when it is deleted or renamed.
+
+::: warning
+The hierarchy separator must be `/`: shared folders are listed as
+`shared/<owner address>/<folder>`. Existing installations must follow
+the [upgrade instructions](upgrade.md#imap-hierarchy-separator) first.
+:::
+
+The following example uses Dovecot 2.3 syntax: the
+[installer](https://github.com/modoboa/modoboa-installer) provides a
+configuration for both 2.3 and 2.4 (`conf.d/15-acl.conf`).
+
+Create `conf.d/15-acl.conf` (it must be loaded before `20-imap.conf`):
+
+```txt
+mail_plugins = $mail_plugins acl
+protocol imap {
+  mail_plugins = $mail_plugins imap_acl
+}
+
+namespace inbox {
+  separator = /
+}
+
+namespace shared {
+  type = shared
+  separator = /
+  prefix = shared/%%u/
+  location = maildir:%%h/Maildir:INDEXPVT=~/Maildir/shared/%%u
+  subscriptions = no
+  list = children
+}
+
+dict {
+  acl = <driver>:/etc/dovecot/dovecot-dict-sql.conf.ext
+}
+
+plugin {
+  acl = vfile
+  # Otherwise, master users lose access to the mailboxes
+  acl_user = %u
+  acl_shared_dict = proxy::acl
+}
+```
+
+Then, add the following maps to `dovecot-dict-sql.conf.ext` (the
+tables are created by Modoboa):
+
+```txt
+map {
+  pattern = shared/shared-boxes/user/$to/$from
+  table = admin_usershare
+  value_field = dummy
+
+  fields {
+    from_user = $from
+    to_user = $to
+  }
+}
+
+map {
+  pattern = shared/shared-user-boxes-rev/$from/$to
+  table = admin_usershare
+  value_field = dummy
+
+  fields {
+    from_user = $from
+    to_user = $to
+  }
+}
+
+map {
+  pattern = shared/shared-boxes/anyone/$from
+  table = admin_anyoneshare
+  value_field = dummy
+
+  fields {
+    from_user = $from
+  }
+}
+```
+
+The cleanup is done by a job of the `dovecot` queue, through doveadm.
+
 ## ManageSieve/Sieve
 
 Modoboa lets users define filtering rules from the web interface. 
