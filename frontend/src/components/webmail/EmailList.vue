@@ -32,6 +32,7 @@
           variant="text"
           size="small"
           :loading="working"
+          :disabled="!webmailStore.hasRights('te')"
           :title="$gettext('Delete')"
           @click="deleteSelection"
         />
@@ -43,6 +44,7 @@
             variant="text"
             size="small"
             :loading="working"
+            :disabled="!webmailStore.hasRights('te')"
             :title="$gettext('Mark as junk')"
             @click="markSelectionAsJunk"
           />
@@ -53,6 +55,7 @@
             variant="text"
             size="small"
             :loading="working"
+            :disabled="!webmailStore.hasRights('te')"
             :title="$gettext('Mark as not junk')"
             @click="markSelectionAsNotJunk"
           />
@@ -69,21 +72,25 @@
               <v-list-item
                 :title="$gettext('Mark as read')"
                 prepend-icon="mdi-eye"
+                :disabled="!webmailStore.hasRights('s')"
                 @click="() => flagSelection('read')"
               />
               <v-list-item
                 :title="$gettext('Mark as unread')"
                 prepend-icon="mdi-eye-outline"
+                :disabled="!webmailStore.hasRights('s')"
                 @click="() => flagSelection('unread')"
               />
               <v-list-item
                 :title="$gettext('Mark as followed')"
                 prepend-icon="mdi-star"
+                :disabled="!webmailStore.hasRights('w')"
                 @click="() => flagSelection('flagged')"
               />
               <v-list-item
                 :title="$gettext('Mark as unfollowed')"
                 prepend-icon="mdi-star-outline"
+                :disabled="!webmailStore.hasRights('w')"
                 @click="() => flagSelection('unflagged')"
               />
             </v-list>

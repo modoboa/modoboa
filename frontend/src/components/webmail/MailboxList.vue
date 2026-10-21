@@ -9,7 +9,7 @@
       <div
         :class="getBackgroundColorClass(mailbox)"
         class="d-flex mailbox pa-1 align-center"
-        @click="updateSelection(mailbox.name)"
+        @click="onClick(mailbox)"
         @mouseover="setHover(mailbox, true)"
         @mouseleave="setHover(mailbox, false)"
         @dragover.prevent
@@ -17,7 +17,7 @@
         @dragleave="setHover(mailbox, false)"
         @drop.prevent="onDrop(mailbox)"
       >
-        <v-icon :icon="iconByMailboxType[mailbox.type]" class="mr-4" />
+        <v-icon :icon="getMailboxIcon(mailbox)" class="mr-4" />
         <template v-if="!props.rail">
           <span v-if="mailbox.unseen > 0" class="font-weight-bold">
             {{ getMailboxLabel(mailbox) }} ({{ mailbox.unseen }})
@@ -102,6 +102,27 @@ const iconByMailboxType = {
   scheduled: 'mdi-send-clock-outline',
   trash: 'mdi-trash-can-outline',
   normal: 'mdi-folder-outline',
+  shared: 'mdi-folder-account-outline',
+}
+
+// The levels of the shared namespace (root, then one per owner) hold no
+// messages: they only group the shared folders.
+// ponytail: assumes a one-level prefix ("shared/"), as modoboa-installer
+// configures it.
+function isSharedContainer(mailbox) {
+  return (
+    mailbox.type === 'shared' &&
+    mailbox.name.split(props.hdelimiter).length <= 2
+  )
+}
+
+function getMailboxIcon(mailbox) {
+  if (isSharedContainer(mailbox)) {
+    return mailbox.owner
+      ? 'mdi-account-outline'
+      : 'mdi-account-multiple-outline'
+  }
+  return iconByMailboxType[mailbox.type]
 }
 
 const hoverStates = ref({})
@@ -143,6 +164,14 @@ function toggleMailbox(mailbox) {
   }
 }
 
+function onClick(mailbox) {
+  if (isSharedContainer(mailbox)) {
+    toggleMailbox(mailbox)
+  } else {
+    updateSelection(mailbox.name)
+  }
+}
+
 function updateSelection(value) {
   if (props.allowUnselect && value === model.value) {
     emit('update:modelValue', null)
@@ -152,6 +181,9 @@ function updateSelection(value) {
 }
 
 async function onDrop(mailbox) {
+  if (isSharedContainer(mailbox)) {
+    return
+  }
   try {
     busStore.displayNotification({
       msg: $gettext('Moving selection...'),

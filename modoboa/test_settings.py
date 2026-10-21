@@ -42,6 +42,10 @@ elif DB == "sqlite":
             "NAME": "modoboa.db",
             "PORT": "",
             "ATOMIC_REQUESTS": True,
+            # Dovecot writes the sharing dictionary into this database
+            # while requests are running: in the default journal mode,
+            # what a request has read blocks it until the request ends.
+            "OPTIONS": {"init_command": "PRAGMA journal_mode=WAL;"},
         },
     }
 else:

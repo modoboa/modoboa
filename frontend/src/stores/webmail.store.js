@@ -15,6 +15,13 @@ export const useWebmailStore = defineStore('webmail', () => {
   // the user preferences, indexed by type. Filled from the mailboxes list,
   // whose entries carry that type.
   const specialFolders = ref({})
+  // Can the user share folders, and the hierarchy separator, as told by
+  // the mailboxes list
+  const sharingEnabled = ref(false)
+  const hdelimiter = ref('/')
+  // Rights (RFC 4314 letters) of the user on the displayed folder when
+  // someone else shares it, null for the user's own folders
+  const mailboxRights = ref(null)
   // The last listing displayed, with what it was asked for: coming back
   // from a message shows it at once instead of requesting it again
   const lastListing = ref(null)
@@ -39,6 +46,9 @@ export const useWebmailStore = defineStore('webmail', () => {
     listingMode.value = 'flat'
     listingModeLoaded.value = false
     specialFolders.value = {}
+    sharingEnabled.value = false
+    hdelimiter.value = '/'
+    mailboxRights.value = null
     lastListing.value = null
     preferences.value = null
     unseenCounters.value = {}
@@ -95,14 +105,33 @@ export const useWebmailStore = defineStore('webmail', () => {
     }
   })
 
-  function setMailboxes(mailboxes) {
+  function setMailboxes(mailboxes, options = {}) {
     const folders = {}
     for (const mailbox of mailboxes || []) {
+      // The root of the shared folders comes as the "shared" one
       if (mailbox.type && mailbox.type !== 'normal') {
         folders[mailbox.type] = mailbox.name
       }
     }
     specialFolders.value = folders
+    sharingEnabled.value = !!options.sharingEnabled
+    hdelimiter.value = options.hdelimiter || '/'
+  }
+
+  // Is the given mailbox shared by someone else?
+  function isShared(name) {
+    const root = specialFolders.value.shared
+    return (
+      !!root &&
+      !!name &&
+      (name === root || name.startsWith(`${root}${hdelimiter.value}`))
+    )
+  }
+
+  // Does the user have all the given rights on the displayed folder?
+  function hasRights(letters) {
+    const rights = mailboxRights.value
+    return rights === null || [...letters].every((l) => rights.includes(l))
   }
 
   // Is the given mailbox the special folder of this type?
@@ -221,6 +250,11 @@ export const useWebmailStore = defineStore('webmail', () => {
     specialFolders,
     setMailboxes,
     isFolder,
+    sharingEnabled,
+    hdelimiter,
+    isShared,
+    mailboxRights,
+    hasRights,
     lastListing,
     preferences,
     unseenCounters,
