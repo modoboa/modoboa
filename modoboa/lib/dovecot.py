@@ -21,6 +21,7 @@ additional settings:
 """
 
 import base64
+import json
 
 from django.conf import settings
 from django.utils.encoding import force_str
@@ -94,6 +95,41 @@ class DoveadmCmdBackend:
         if code:
             raise DoveadmError(force_str(output))
         return force_str(output)
+
+    def _run_json(self, params: list[str], pinput: bytes | None = None) -> list:
+        """Run a doveadm command and decode its JSON output."""
+        try:
+            code, output = doveadm_cmd(["-f", "json"] + params, pinput=pinput)
+        except OSError as err:
+            raise DoveadmError(str(err)) from err
+        if code:
+            raise DoveadmError(force_str(output))
+        output = force_str(output)
+        if not output.strip():
+            # Commands without result print nothing, even in JSON mode
+            return []
+        try:
+            return json.loads(output)
+        except ValueError as err:
+            raise DoveadmError(f"unexpected doveadm output: {output}") from err
+
+    def list_sieve_scripts(self, user: str) -> list[str]:
+        """Return the names of the user's Sieve scripts."""
+        return [
+            entry["script"] for entry in self._run_json(["sieve", "list", "-u", user])
+        ]
+
+    def get_sieve_script(self, user: str, name: str) -> str:
+        """Return the content of a Sieve script."""
+        data = self._run_json(["sieve", "get", "-u", user, name])
+        try:
+            return data[0]["sieve script"]
+        except (IndexError, KeyError, TypeError) as err:
+            raise DoveadmError(f"unexpected doveadm output: {data}") from err
+
+    def put_sieve_script(self, user: str, name: str, content: str) -> None:
+        """Create or replace a Sieve script. An active one stays active."""
+        self._run_json(["sieve", "put", "-u", user, name], pinput=content.encode())
 
 
 class DoveadmHTTPBackend:
@@ -199,6 +235,22 @@ class DoveadmHTTPBackend:
         # API. Use the DOVECOT_SUPPORTED_SCHEMES setting instead.
         raise DoveadmError(
             "listing password schemes is not supported by the doveadm HTTP API"
+        )
+
+    def list_sieve_scripts(self, user: str) -> list[str]:
+        data = self._run_command("sieveList", {"user": user})
+        return [entry["script"] for entry in data]
+
+    def get_sieve_script(self, user: str, name: str) -> str:
+        data = self._run_command("sieveGet", {"user": user, "scriptname": name})
+        try:
+            return data[0]["sieve script"]
+        except (IndexError, KeyError, TypeError) as err:
+            raise DoveadmError(f"unexpected doveadm output: {data}") from err
+
+    def put_sieve_script(self, user: str, name: str, content: str) -> None:
+        self._run_command(
+            "sievePut", {"user": user, "scriptname": name, "file": content}
         )
 
 

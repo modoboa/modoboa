@@ -51,14 +51,6 @@ def _validate_search(value):
     return value
 
 
-SPECIAL_MAILBOX_PARAMETERS = (
-    "drafts_folder",
-    "sent_folder",
-    "junk_folder",
-    "trash_folder",
-)
-
-
 def is_special_mailbox(user, name: str) -> bool:
     """Is the given mailbox one the webmail relies on?
 
@@ -68,7 +60,8 @@ def is_special_mailbox(user, name: str) -> bool:
     if name.upper() == "INBOX" or name == constants.MAILBOX_NAME_SCHEDULED:
         return True
     return name in {
-        user.parameters.get_value(parameter) for parameter in SPECIAL_MAILBOX_PARAMETERS
+        user.parameters.get_value(parameter)
+        for parameter in constants.SPECIAL_MAILBOX_PARAMETERS
     }
 
 

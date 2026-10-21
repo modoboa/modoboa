@@ -54,6 +54,17 @@ IMAP4Error = imaplib.IMAP4.error
 # every request.
 SERVER_INFO_CACHE_TIMEOUT = 3600
 
+
+def server_info_key(address: str, port: int, user: str, name: str) -> str:
+    """Cache key of an information the server gives about a user.
+
+    The name is hashed: cache backends restrict the characters and
+    the length of keys.
+    """
+    digest = hashlib.sha256(f"{address}:{port}:{user}".encode()).hexdigest()
+    return f"modoboa.webmail.{name}.{digest}"
+
+
 # A message UID set: one or more positive integers separated by commas.
 UID_RE = re.compile(r"^[0-9]+(?:,[0-9]+)*$")
 # A MIME part number: dot-separated positive integers (e.g. "1", "2.1").
@@ -584,15 +595,7 @@ class IMAPconnector:
                 del self.current_mailbox
 
     def _server_info_key(self, name: str) -> str:
-        """Cache key of an information the server gives about a user.
-
-        The name is hashed: cache backends restrict the characters and
-        the length of keys.
-        """
-        digest = hashlib.sha256(
-            f"{self.address}:{self.port}:{self.user}".encode()
-        ).hexdigest()
-        return f"modoboa.webmail.{name}.{digest}"
+        return server_info_key(self.address, self.port, self.user, name)
 
     def load_namespaces(self) -> None:
         """Load available namespaces.
