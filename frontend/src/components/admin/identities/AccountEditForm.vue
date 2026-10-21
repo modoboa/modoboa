@@ -206,6 +206,28 @@
           />
         </v-expansion-panel-text>
       </v-expansion-panel>
+      <v-expansion-panel
+        v-for="panelDef in pluginPanels"
+        :key="panelDef.name"
+        :value="panelDef.name"
+        eager
+      >
+        <v-expansion-panel-title>
+          <v-row no-gutters>
+            <v-col cols="4">
+              {{ panelDef.title }}
+            </v-col>
+          </v-row>
+        </v-expansion-panel-title>
+        <v-expansion-panel-text>
+          <component
+            :is="panelDef.component"
+            v-bind="panelDef.props || {}"
+            :ref="(el) => setPluginPanelRef(panelDef.name, el)"
+            v-model="editedAccount"
+          />
+        </v-expansion-panel-text>
+      </v-expansion-panel>
     </v-expansion-panels>
     <div class="mt-4 d-flex justify-end">
       <v-btn :loading="working" variant="outlined" @click="$router.go(-1)">
@@ -225,7 +247,12 @@
 </template>
 
 <script setup>
-import { useAuthStore, useBusStore, useLanguageStore } from '@/stores'
+import {
+  useAuthStore,
+  useBusStore,
+  useLanguageStore,
+  usePluginsStore,
+} from '@/stores'
 import AccountGeneralForm from './form_steps/AccountGeneralForm.vue'
 import AccountMailboxForm from './form_steps/AccountMailboxForm.vue'
 import AccountAliasForm from './form_steps/AccountAliasForm.vue'
@@ -248,6 +275,9 @@ const languageStore = useLanguageStore()
 const route = useRoute()
 const router = useRouter()
 const { canSetRole } = usePermissions()
+const pluginsStore = usePluginsStore()
+
+const PLUGIN_EXTENSION_POINT = 'account.edit_form.panels'
 
 const editedAccount = ref({ pk: route.params.id })
 
@@ -283,6 +313,20 @@ const aliasForm = ref()
 const resourcesForm = ref()
 const profileForm = ref()
 
+const pluginPanelRefs = ref({})
+
+function setPluginPanelRef(name, el) {
+  if (el) {
+    pluginPanelRefs.value[name] = el
+  } else {
+    delete pluginPanelRefs.value[name]
+  }
+}
+
+const pluginPanels = computed(() =>
+  pluginsStore.uiExtensions(PLUGIN_EXTENSION_POINT)
+)
+
 //formMap
 const formMap = computed(() => {
   const map = {
@@ -296,6 +340,12 @@ const formMap = computed(() => {
   }
   if (needsResources.value) {
     map.resourcesForm = resourcesForm
+  }
+  for (const panelDef of pluginPanels.value) {
+    const el = pluginPanelRefs.value[panelDef.name]
+    if (el && el.vFormRef) {
+      map[panelDef.name] = { value: el }
+    }
   }
   return map
 })

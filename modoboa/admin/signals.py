@@ -17,3 +17,14 @@ extra_domain_serializer_data = django.dispatch.Signal()
 domain_post_create_via_api = django.dispatch.Signal()
 # Provides domain, plugin_data, request
 domain_post_update_via_api = django.dispatch.Signal()
+# Sent by WritableAccountSerializer. Receivers must return a dict of
+# {field_name: serializer_field_instance}
+extra_account_serializer_fields = django.dispatch.Signal()
+# Sent by AccountSerializer (list, retrieve). Provides account. Receivers
+# must return a dict of {field_name: value} merged into the serialized
+# representation.
+extra_account_serializer_data = django.dispatch.Signal()
+# Sent by WritableAccountSerializer. Provides account, plugin_data, request
+account_post_create_via_api = django.dispatch.Signal()
+# Sent by WritableAccountSerializer. Provides account, plugin_data, request
+account_post_update_via_api = django.dispatch.Signal()

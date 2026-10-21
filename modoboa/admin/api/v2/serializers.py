@@ -517,6 +517,12 @@ class AccountSerializer(v1_serializers.AccountSerializer):
         # the SerializerMethodField (get_quota_in_percent) when unannotated.
         if data.get("mailbox") is not None and hasattr(instance, "quota_usage"):
             data["mailbox"]["quota_usage"] = int(instance.quota_usage or 0)
+        responses = admin_signals.extra_account_serializer_data.send(
+            sender=self.__class__, account=instance
+        )
+        for _receiver, extra in responses:
+            if extra:
+                data.update(extra)
         return data
 
     def get_possible_actions(self, identity) -> list[IdPossibleActionsSerializer]:
@@ -600,6 +606,14 @@ class WritableAccountSerializer(v1_serializers.WritableAccountSerializer):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self._plugin_field_names: set[str] = set()
+        responses = admin_signals.extra_account_serializer_fields.send(
+            sender=self.__class__
+        )
+        for _receiver, fields in responses:
+            for name, field in (fields or {}).items():
+                self.fields[name] = field
+                self._plugin_field_names.add(name)
         if not param_tools.get_global_parameter("enable_admin_limits", app="limits"):
             return
         del self.fields["domains"]
@@ -731,9 +745,17 @@ class WritableAccountSerializer(v1_serializers.WritableAccountSerializer):
         data["domains"] = domains
         return data
 
+    def _pop_plugin_data(self, validated_data: dict) -> dict:
+        return {
+            name: validated_data.pop(name)
+            for name in self._plugin_field_names
+            if name in validated_data
+        }
+
     def create(self, validated_data):
         """Create account, mailbox and aliases."""
         creator = self.context["request"].user
+        plugin_data = self._pop_plugin_data(validated_data)
         mailbox_data = validated_data.pop("mailbox", None)
         role = validated_data.pop("role")
         domains = validated_data.pop("domains", [])
@@ -760,11 +782,19 @@ class WritableAccountSerializer(v1_serializers.WritableAccountSerializer):
                     creator=creator,
                     domain=alias["domain"],
                 )
+        admin_signals.account_post_create_via_api.send(
+            sender=self.__class__,
+            account=user,
+            plugin_data=plugin_data,
+            request=self.context.get("request"),
+        )
         return user
 
     def update(self, instance, validated_data):
         """Update account and associated objects."""
         creator = self.context["request"].user
+        # Popped first: the other values are set on the account
+        plugin_data = self._pop_plugin_data(validated_data)
         mailbox_data = validated_data.pop("mailbox", None)
         password = validated_data.pop("password", None)
         aliases = validated_data.pop("aliases", None)
@@ -819,6 +849,12 @@ class WritableAccountSerializer(v1_serializers.WritableAccountSerializer):
                     allocate_resources_from_user(limit, owner, resource["max_value"])
                 limit.max_value = resource["max_value"]
                 limit.save()
+        admin_signals.account_post_update_via_api.send(
+            sender=self.__class__,
+            account=instance,
+            plugin_data=plugin_data,
+            request=self.context.get("request"),
+        )
         return instance
 
 
