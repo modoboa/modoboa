@@ -6,9 +6,12 @@ from django.core.files.base import ContentFile
 from django.urls import reverse
 from django.utils.encoding import force_str
 
+from rest_framework import serializers as drf_serializers
 from rest_framework.authtoken.models import Token
 
 from modoboa.admin import factories, models, constants
+from modoboa.admin import signals as admin_signals
+from modoboa.admin.api.v2 import serializers
 from modoboa.core import factories as core_factories, models as core_models
 from modoboa.lib.permissions import grant_access_to_object
 from modoboa.lib.tests import ModoAPITestCase
@@ -1501,3 +1504,99 @@ class AlarmViewSetTestCase(ModoAPITestCase):
             alarm1.refresh_from_db()
         with self.assertRaises(models.Alarm.DoesNotExist):
             alarm2.refresh_from_db()
+
+
+class AccountSerializerSignalsTestCase(ModoAPITestCase):
+    """Plugins can extend the account serializers, like the domain one."""
+
+    @classmethod
+    def setUpTestData(cls):  # NOQA:N802
+        super().setUpTestData()
+        factories.populate_database()
+
+    def setUp(self):
+        super().setUp()
+        self.create_calls = []
+        self.update_calls = []
+
+        def add_field(sender, **kwargs):
+            return {
+                "extra_field": drf_serializers.CharField(
+                    required=False, allow_blank=True, write_only=True
+                )
+            }
+
+        def add_data(sender, account, **kwargs):
+            return {"extra_field": f"data-for-{account.username}"}
+
+        def on_create(sender, account, plugin_data, request, **kwargs):
+            self.create_calls.append((account.username, dict(plugin_data)))
+
+        def on_update(sender, account, plugin_data, request, **kwargs):
+            self.update_calls.append((account.username, dict(plugin_data)))
+
+        for signal, receiver, sender in [
+            (
+                admin_signals.extra_account_serializer_fields,
+                add_field,
+                serializers.WritableAccountSerializer,
+            ),
+            (
+                admin_signals.extra_account_serializer_data,
+                add_data,
+                serializers.AccountSerializer,
+            ),
+            (
+                admin_signals.account_post_create_via_api,
+                on_create,
+                serializers.WritableAccountSerializer,
+            ),
+            (
+                admin_signals.account_post_update_via_api,
+                on_update,
+                serializers.WritableAccountSerializer,
+            ),
+        ]:
+            signal.connect(receiver, sender=sender)
+            self.addCleanup(signal.disconnect, receiver, sender=sender)
+
+    def test_extra_data_in_list_and_retrieve(self):
+        response = self.client.get(reverse("v2:account-list"))
+        for entry in response.json()["results"]:
+            self.assertEqual(entry["extra_field"], f"data-for-{entry['username']}")
+        account = core_models.User.objects.get(username="user@test.com")
+        response = self.client.get(reverse("v2:account-detail", args=[account.pk]))
+        self.assertEqual(response.json()["extra_field"], "data-for-user@test.com")
+
+    def test_create_signal_receives_plugin_data(self):
+        data = {
+            "username": "plugin@test.com",
+            "role": "SimpleUsers",
+            "mailbox": {"use_domain_quota": True},
+            "password": "Toto12345",
+            "extra_field": "hello",
+        }
+        response = self.client.post(reverse("v2:account-list"), data, format="json")
+        self.assertEqual(response.status_code, 201)
+        self.assertEqual(
+            self.create_calls, [("plugin@test.com", {"extra_field": "hello"})]
+        )
+
+    def test_update_signal_receives_plugin_data(self):
+        account = core_models.User.objects.get(username="user@test.com")
+        url = reverse("v2:account-detail", args=[account.pk])
+        for limits in [True, False]:
+            self.set_global_parameter("enable_admin_limits", limits, app="limits")
+            self.update_calls = []
+            response = self.client.patch(url, {"extra_field": "bye"}, format="json")
+            self.assertEqual(response.status_code, 200)
+            # Never set on the account itself
+            self.assertFalse(
+                hasattr(core_models.User.objects.get(pk=account.pk), "extra_field")
+            )
+            self.assertEqual(
+                self.update_calls, [("user@test.com", {"extra_field": "bye"})]
+            )
+            response = self.client.patch(url, {"first_name": "Jo"}, format="json")
+            self.assertEqual(response.status_code, 200)
+            self.assertEqual(self.update_calls[-1], ("user@test.com", {}))

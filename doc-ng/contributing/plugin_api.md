@@ -214,6 +214,19 @@ def save_billing_reference(sender, domain, plugin_data, request, **kwargs):
     )
 ```
 
+## Extending the account serializers
+
+Accounts work the same way, with four signals. The read side (list and
+detail) uses `AccountSerializer` and the write side (create and update)
+`WritableAccountSerializer`: connect each receiver to the right sender.
+
+| Signal | Sender | Provides | Receivers return |
+|---|---|---|---|
+| `extra_account_serializer_fields` | `WritableAccountSerializer` | (nothing) | `dict[str, serializers.Field]` (typically `write_only=True`). |
+| `extra_account_serializer_data` | `AccountSerializer` | `account` | `dict[str, Any]` merged into the JSON representation. |
+| `account_post_create_via_api` | `WritableAccountSerializer` | `account`, `plugin_data`, `request` | — (side-effects only). |
+| `account_post_update_via_api` | `WritableAccountSerializer` | `account`, `plugin_data`, `request` | — (side-effects only). |
+
 ## Frontend extension points
 
 A plugin extends the Vue 3 frontend by declaring its UI contribution on
@@ -321,6 +334,8 @@ The extension points currently exposed by the host:
 | `domain.edit_form.panels` | Extra panels in the domain edit form. |
 | `domain.detail.general.blocks` | Blocks added to the *General* tab of the domain detail view (set `column: "left"` or `"right"`). |
 | `domain.detail.tabs` | Top-level tabs added to the domain detail view. |
+| `account.edit_form.panels` | Extra panels in the account edit form (bound to the account with `v-model`). |
+| `account.detail.tabs` | Tabs added to the account detail view (the component receives `account` and can emit `refresh`). |
 | `admin.information.pro` | Content of the *Modoboa Pro* tab of the *Information* page, reserved to the Modoboa Pro plugin. |
 
 Example:
