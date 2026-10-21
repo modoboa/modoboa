@@ -110,19 +110,47 @@ def escape_search_pattern(pattern: str) -> str:
 
 # A quoted string or an atom of an ACL/MYRIGHTS response
 ACL_TOKEN_RE = re.compile(rb'"((?:[^"\\]|\\.)*)"|([^\s"]+)')
+# Announces a literal, sent by imaplib along the text that precedes it
+LITERAL_SIZE_RE = re.compile(rb"\{\d+\}$")
 
 
 def parse_acl_response(data: list) -> list[str]:
-    """Split an untagged ACL or MYRIGHTS response into its tokens."""
-    if not data or not isinstance(data[0], bytes):
-        raise ImapError(_("Unexpected response from the IMAP server"))
+    """Split an untagged ACL or MYRIGHTS response into its tokens.
+
+    Identifiers with 8-bit characters are sent as literals: imaplib
+    returns them as (preceding text, literal) tuples.
+    """
     tokens = []
-    for match in ACL_TOKEN_RE.finditer(data[0]):
-        quoted, atom = match.groups()
-        if quoted is not None:
-            atom = re.sub(rb"\\(.)", rb"\1", quoted)
-        tokens.append(atom.decode())
+    for item in data or []:
+        literal = None
+        if isinstance(item, tuple):
+            item, literal = item
+            item = LITERAL_SIZE_RE.sub(b"", item)
+        if not isinstance(item, bytes):
+            continue
+        for match in ACL_TOKEN_RE.finditer(item):
+            quoted, atom = match.groups()
+            if quoted is not None:
+                atom = re.sub(rb"\\(.)", rb"\1", quoted)
+            tokens.append(atom.decode())
+        if literal is not None:
+            tokens.append(literal.decode())
+    if not tokens:
+        raise ImapError(_("Unexpected response from the IMAP server"))
     return tokens
+
+
+def quote_string(value: str) -> bytes:
+    """Return a value as an IMAP quoted string (RFC 3501).
+
+    Backslashes and double quotes are escaped, so that a crafted value
+    can't break out of the string and inject extra command arguments.
+    Control characters can't be quoted: they are rejected.
+    """
+    if any(ord(c) < 0x20 or ord(c) == 0x7F for c in value):
+        raise InvalidImapArgument(_("Invalid IMAP argument"))
+    encoded = value.encode()
+    return b'"' + encoded.replace(b"\\", b"\\\\").replace(b'"', b'\\"') + b'"'
 
 
 def quote_mailbox_name(name: str) -> bytes:
@@ -1343,11 +1371,13 @@ class IMAPconnector:
 
     def set_acl(self, name: str, identifier: str, rights: str) -> None:
         self._mailbox_command(
-            "setacl", self._encode_mbox_name(name), identifier, rights
+            "setacl", self._encode_mbox_name(name), quote_string(identifier), rights
         )
 
     def delete_acl(self, name: str, identifier: str) -> None:
-        self._mailbox_command("deleteacl", self._encode_mbox_name(name), identifier)
+        self._mailbox_command(
+            "deleteacl", self._encode_mbox_name(name), quote_string(identifier)
+        )
 
     def get_subscriptions(self) -> list[dict]:
         """Return every mailbox with its subscription status.

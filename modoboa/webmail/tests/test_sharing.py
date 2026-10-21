@@ -72,6 +72,13 @@ class SharingLevelTestCase(SimpleTestCase):
             parse_acl_response([b'"Mon \\"dossier\\"" bob@test.com lrs']),
             ['Mon "dossier"', "bob@test.com", "lrs"],
         )
+        # 8-bit identifiers come as literals
+        self.assertEqual(
+            parse_acl_response(
+                [(b"Projets {16}", "élodie@test.com".encode()), b" lrs a@test.com lr"]
+            ),
+            ["Projets", "élodie@test.com", "lrs", "a@test.com", "lr"],
+        )
 
 
 class FolderSharingTestCase(WebmailTestCase):
@@ -143,7 +150,7 @@ class FolderSharingTestCase(WebmailTestCase):
         )
         self.assertEqual(
             {call[2:] for call in self.imap.acl_calls},
-            {("admin@test.com", "lrswipte")},
+            {(b'"admin@test.com"', "lrswipte")},
         )
 
     def test_share_with_unknown_account(self):
@@ -170,8 +177,19 @@ class FolderSharingTestCase(WebmailTestCase):
         )
         self.assertEqual(response.status_code, 204)
         self.assertEqual(len(self.imap.acl_calls), 3)
-        self.assertEqual(self.imap.acl_calls[0][0], "deleteacl")
-        for grantee in ["user@test.com", "bad grantee", 'bad"grantee']:
+        self.assertEqual(
+            self.imap.acl_calls[0], ("deleteacl", b'"Projets"', b'"someone@other.org"')
+        )
+        # Identifiers set by other clients are not limited to addresses
+        self.imap.acl_calls.clear()
+        response = self.client.delete(
+            self.acl_url,
+            {"mailbox": "Projets", "grantee": ' Team "Sales" \\ '},
+            format="json",
+        )
+        self.assertEqual(response.status_code, 204)
+        self.assertEqual(self.imap.acl_calls[0][2], b'" Team \\"Sales\\" \\\\ "')
+        for grantee in ["user@test.com", "bad\r\ngrantee", ""]:
             response = self.client.delete(
                 self.acl_url, {"mailbox": "Projets", "grantee": grantee}, format="json"
             )

@@ -160,10 +160,13 @@ class MailboxShareInputSerializer(serializers.Serializer):
 
 class MailboxShareDeleteSerializer(serializers.Serializer):
     mailbox = serializers.CharField()
-    # Any identifier of the ACL: it may have been set by another client
-    grantee = serializers.RegexField(r'^[^\s"\\]+$')
+    # Any identifier of the ACL, as returned by GET: it may have been set
+    # by another client. It is sent as a quoted string.
+    grantee = serializers.CharField(trim_whitespace=False)
 
     def validate_grantee(self, value):
+        if any(ord(c) < 0x20 or ord(c) == 0x7F for c in value):
+            raise serializers.ValidationError(_("Invalid identifier"))
         if value == self.context["request"].user.username:
             raise serializers.ValidationError(_("You can't remove your own rights"))
         return value
