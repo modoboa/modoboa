@@ -372,6 +372,7 @@ watch(preferences, (value) => {
 watch(
   () => route.params.category,
   () => {
+    currentPage.value = 1
     fetchContacts()
   }
 )
