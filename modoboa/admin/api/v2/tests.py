@@ -3,6 +3,7 @@
 from unittest import mock
 
 from django.core.files.base import ContentFile
+from django.db.models import Q
 from django.urls import reverse
 from django.utils.encoding import force_str
 
@@ -1559,6 +1560,64 @@ class AccountSerializerSignalsTestCase(ModoAPITestCase):
         ]:
             signal.connect(receiver, sender=sender)
             self.addCleanup(signal.disconnect, receiver, sender=sender)
+
+    def test_badges(self):
+        def add_badges(sender, **kwargs):
+            return [
+                {
+                    "name": "myplugin.user",
+                    "label": "User",
+                    "icon": "mdi-account",
+                    "filter": Q(username="user@test.com"),
+                }
+            ]
+
+        def add_other_badge(sender, **kwargs):
+            return [
+                {
+                    "name": "otherplugin.test2",
+                    "label": "Test2",
+                    "color": "warning",
+                    "title": "Why",
+                    "filter": Q(mailbox__domain__name="test2.com"),
+                }
+            ]
+
+        for receiver in (add_badges, add_other_badge):
+            admin_signals.extra_account_badges.connect(receiver)
+            self.addCleanup(admin_signals.extra_account_badges.disconnect, receiver)
+        url = reverse("v2:account-list")
+        response = self.client.get(url)
+        badges = {
+            entry["username"]: entry["badges"] for entry in response.json()["results"]
+        }
+        self.assertEqual(
+            badges["user@test.com"],
+            [
+                {
+                    "name": "myplugin.user",
+                    "label": "User",
+                    "color": "default",
+                    "icon": "mdi-account",
+                }
+            ],
+        )
+        self.assertEqual(
+            [badge["label"] for badge in badges["user@test2.com"]], ["Test2"]
+        )
+        self.assertEqual(badges["admin@test.com"], [])
+        # Filtered by badge
+        response = self.client.get(url, {"badge": "otherplugin.test2"})
+        self.assertCountEqual(
+            [entry["username"] for entry in response.json()["results"]],
+            ["admin@test2.com", "user@test2.com"],
+        )
+        response = self.client.get(url, {"badge": "unknown"})
+        self.assertEqual(response.json()["results"], [])
+        # Detail
+        account = core_models.User.objects.get(username="user@test.com")
+        response = self.client.get(reverse("v2:account-detail", args=[account.pk]))
+        self.assertEqual(response.json()["badges"][0]["name"], "myplugin.user")
 
     def test_extra_data_in_list_and_retrieve(self):
         response = self.client.get(reverse("v2:account-list"))

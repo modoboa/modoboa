@@ -24,6 +24,11 @@ extra_account_serializer_fields = django.dispatch.Signal()
 # must return a dict of {field_name: value} merged into the serialized
 # representation.
 extra_account_serializer_data = django.dispatch.Signal()
+# Sent without sender, once per request. Receivers must return a list of
+# badges displayed next to accounts in the accounts list, which can be
+# filtered by badge: {name, label, filter, color, icon, title}, where
+# filter is a Q object matching the accounts with this badge.
+extra_account_badges = django.dispatch.Signal()
 # Sent by WritableAccountSerializer. Provides account, plugin_data, request
 account_post_create_via_api = django.dispatch.Signal()
 # Sent by WritableAccountSerializer. Provides account, plugin_data, request

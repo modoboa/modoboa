@@ -5,6 +5,7 @@ from django.utils.translation import gettext as _
 from django.contrib.contenttypes.models import ContentType
 from django.db.models import (
     Case,
+    Exists,
     ExpressionWrapper,
     F,
     FloatField,
@@ -14,6 +15,7 @@ from django.db.models import (
     When,
 )
 from django.db.models.functions import Concat
+from django.utils.functional import cached_property
 
 from django_filters import rest_framework as dj_filters
 from drf_spectacular.utils import extend_schema, extend_schema_view
@@ -235,8 +237,19 @@ class AccountFilterSet(dj_filters.FilterSet):
         model = core_models.User
         fields = ["domain", "role"]
 
+    badge = dj_filters.CharFilter(method="filter_badge")
+
     def filter_role(self, queryset, name, value):
         return queryset.filter(groups__name__in=value)
+
+    def filter_badge(self, queryset, name, value):
+        for badge in lib.get_account_badges():
+            if badge["name"] == value:
+                # A subquery: the filter may follow multi-valued relations
+                return queryset.filter(
+                    pk__in=core_models.User.objects.filter(badge["filter"])
+                )
+        return queryset.none()
 
 
 class AccountViewSet(v1_viewsets.AccountViewSet):
@@ -290,7 +303,7 @@ class AccountViewSet(v1_viewsets.AccountViewSet):
         )
         # Mirror Mailbox.get_quota_in_percent() at the DB level so results can
         # be ordered by quota usage and served without a per-row Quota query.
-        return (
+        queryset = (
             lib_permissions.exclude_higher_roles(
                 user, core_models.User.objects.filter(pk__in=ids)
             )
@@ -311,6 +324,24 @@ class AccountViewSet(v1_viewsets.AccountViewSet):
                 )
             )
         )
+        # Which accounts of the page have each badge, in the same query
+        return queryset.annotate(
+            **{
+                f"_badge_{index}": Exists(
+                    core_models.User.objects.filter(badge["filter"], pk=OuterRef("pk"))
+                )
+                for index, badge in enumerate(self.badges)
+            }
+        )
+
+    @cached_property
+    def badges(self) -> list[dict]:
+        return lib.get_account_badges()
+
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context["badges"] = self.badges
+        return context
 
     @action(methods=["post"], detail=False)
     def validate(self, request, **kwargs):

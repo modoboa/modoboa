@@ -81,6 +81,14 @@ def get_identities(
     return chain(accounts, aliases)
 
 
+def get_account_badges() -> list[dict]:
+    """Return the badges plugins give to accounts (see the signal)."""
+    badges = []
+    for _receiver, items in signals.extra_account_badges.send(sender=None):
+        badges += items or []
+    return badges
+
+
 def get_domains(user, domfilter=None, searchquery=None, **extrafilters):
     """Return all the domains the user can access.
 
