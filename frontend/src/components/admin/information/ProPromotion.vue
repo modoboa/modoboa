@@ -135,6 +135,13 @@ const features = [
       "Each portal only gives access to its customer's domains."
     ),
   },
+  {
+    icon: 'mdi-inbox-multiple-outline',
+    title: $gettext('Shared mailboxes'),
+    description: $gettext(
+      'Team mailboxes (support@, contact@) used by several accounts, with access levels.'
+    ),
+  },
 ]
 </script>
 
