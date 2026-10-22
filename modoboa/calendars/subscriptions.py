@@ -115,7 +115,8 @@ def get_events(subscription, start, end):
         occurrences = recurring_ical_events.of(get_feed(subscription.url)).between(
             start, end
         )
-    except (ValueError, recurring_ical_events.InvalidCalendar) as exc:
+    # KeyError: an event without DTSTART (mandatory, but some feeds omit it)
+    except (KeyError, ValueError, recurring_ical_events.InvalidCalendar) as exc:
         raise FeedError(_("The calendar is not a valid iCalendar file")) from exc
     events = []
     for occurrence in occurrences:

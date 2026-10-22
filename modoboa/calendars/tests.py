@@ -2152,6 +2152,21 @@ class CalendarSubscriptionViewSetTestCase(TestDataMixin, ModoAPITestCase):
             )
         self.assertEqual(response.status_code, 502)
 
+    def test_events_without_start(self):
+        subscription = factories.CalendarSubscriptionFactory(
+            mailbox=self.account.mailbox
+        )
+        url = reverse("v2:calendar-subscription-events", args=[subscription.pk])
+        feed = SUBSCRIPTION_FEED.replace(b"DTSTART;VALUE=DATE:20261011\n", b"")
+        with self.feed_mock(content=feed):
+            response = self.client.get(
+                url, {"start": "2026-10-01", "end": "2026-10-20"}
+            )
+        self.assertEqual(response.status_code, 502)
+        self.assertEqual(
+            response.json()["detail"], "The calendar is not a valid iCalendar file"
+        )
+
 
 class FeedDownloadTestCase(SimpleTestCase):
     """Feeds are not downloaded from non public addresses."""
