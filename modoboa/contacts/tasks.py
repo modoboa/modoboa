@@ -94,7 +94,10 @@ def push_addressbook_to_carddav(addressbook_id: int, access_token: str):
         clt = get_cdav_client(
             addressbook, addressbook.user.username, access_token, write_support=True
         )
-        for contact in addressbook.contact_set.filter(etag=""):
+        contacts = addressbook.contact_set.filter(etag="").prefetch_related(
+            "categories", "emails", "phone_numbers"
+        )
+        for contact in contacts:
             vcard = contact.to_vcard()
             try:
                 href, etag = clt.upload_new_card(contact.filename, vcard)
@@ -109,25 +112,20 @@ def push_addressbook_to_carddav(addressbook_id: int, access_token: str):
         addressbook.save(update_fields=["last_sync"])
 
 
-def sync_card(clt, addressbook, card: dict, filename: str):
-    """Apply a change reported by the CardDAV server."""
-    contacts = addressbook.contact_set.filter(filename=filename)
-    if "404" in card["status"]:
-        contacts.delete()
-        return
-    if "200" not in card["status"]:
-        return
-    contact = contacts.first()
-    if contact and contact.etag == card["etag"]:
-        return
-    vcard = vobject.readOne(clt.get_vcard(card["href"]).decode())
+def card_filename(href: str) -> str:
+    return unquote(href.rstrip("/").split("/")[-1])
+
+
+def sync_card(addressbook, card: dict, contact, content: str):
+    """Apply a card created or updated on the CardDAV server."""
+    vcard = vobject.readOne(content)
     if not contact and hasattr(vcard, "uid"):
         # Contacts synced before filenames were stored
         contact = addressbook.contact_set.filter(uid=vcard.uid.value).first()
     if not contact:
         contact = models.Contact(addressbook=addressbook)
     contact.etag = card["etag"]
-    contact.filename = filename
+    contact.filename = card["filename"]
     contact.update_from_vcard(vcard)
 
 
@@ -149,15 +147,43 @@ def sync_addressbook_from_cdav(addressbook_id: int, access_token: str):
             changes = clt.sync_vcards("")
         if not len(changes["cards"]) and not full_sync:
             return
-        remote_filenames = set()
         for card in changes["cards"]:
-            filename = unquote(card["href"].rstrip("/").split("/")[-1])
-            if "200" in card.get("status", ""):
-                remote_filenames.add(filename)
+            card["filename"] = card_filename(card["href"])
+        present = [card for card in changes["cards"] if "200" in card.get("status", "")]
+        deleted = [
+            card["filename"]
+            for card in changes["cards"]
+            if "404" in card.get("status", "")
+        ]
+        local = {
+            contact.filename: contact
+            for contact in addressbook.contact_set.filter(
+                filename__in=[card["filename"] for card in present]
+            )
+        }
+        # Only download cards whose content changed
+        changed = [
+            card
+            for card in present
+            if card["filename"] not in local
+            or local[card["filename"]].etag != card.get("etag")
+        ]
+        hrefs = [card["href"] for card in changed]
+        contents = {}
+        for start in range(0, len(hrefs), constants.MULTIGET_BATCH_SIZE):
+            batch = hrefs[start : start + constants.MULTIGET_BATCH_SIZE]
+            for href, content in clt.get_vcards(batch).items():
+                contents[card_filename(href)] = content
+        addressbook.contact_set.filter(filename__in=deleted).delete()
+        for card in changed:
+            content = contents.get(card["filename"])
+            if content is None:
+                # Deleted since the sync report, next sync will tell
+                continue
             try:
-                sync_card(clt, addressbook, card, filename)
-            except (requests.RequestException, OperationalError):
-                # Server or database unavailable: retry the whole sync later
+                sync_card(addressbook, card, local.get(card["filename"]), content)
+            except OperationalError:
+                # Database unavailable: retry the whole sync later
                 raise
             except Exception:
                 # A single bad card must not block the sync forever
@@ -169,7 +195,7 @@ def sync_addressbook_from_cdav(addressbook_id: int, access_token: str):
         if full_sync:
             # Pushed contacts missing from the server were deleted remotely
             addressbook.contact_set.exclude(etag="").exclude(
-                filename__in=remote_filenames
+                filename__in=[card["filename"] for card in present]
             ).delete()
         addressbook.last_sync = timezone.now()
         addressbook.sync_token = changes["token"]

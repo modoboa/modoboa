@@ -4,6 +4,7 @@ import datetime
 import importlib
 import os
 import tempfile
+from unittest import mock
 
 import httmock
 import requests
@@ -175,7 +176,7 @@ class AddressBookViewSetTestCase(TestDataMixin, ModoAPITestCase):
         self.user.addressbook_set.update(last_sync=last_sync)
         addressbook = self.user.addressbook_set.first()
         self.assertEqual(addressbook.sync_token, "")
-        with httmock.HTTMock(mocks.options_mock, mocks.report_mock, mocks.get_mock):
+        with httmock.HTTMock(mocks.options_mock, mocks.report_mock):
             response = self.client.post(reverse("api:addressbook-sync-from-cdav"))
             self.run_worker()
         self.assertEqual(response.status_code, 200)
@@ -233,7 +234,7 @@ class SyncFromCDAVTestCase(TestDataMixin, ModoAPITestCase):
         deleted = factories.ContactFactory(
             addressbook=other_abook, filename="deletedcard.vcf"
         )
-        with httmock.HTTMock(mocks.options_mock, mocks.report_mock, mocks.get_mock):
+        with httmock.HTTMock(mocks.options_mock, mocks.report_mock):
             tasks.sync_addressbook_from_cdav(self.addressbook.pk, "token")
         updated.refresh_from_db()
         self.assertEqual(updated.first_name, "Lisa")
@@ -246,7 +247,7 @@ class SyncFromCDAVTestCase(TestDataMixin, ModoAPITestCase):
         contact = factories.ContactFactory(
             addressbook=self.addressbook, filename="deletedcard.vcf"
         )
-        with httmock.HTTMock(mocks.options_mock, mocks.report_mock, mocks.get_mock):
+        with httmock.HTTMock(mocks.options_mock, mocks.report_mock):
             tasks.sync_addressbook_from_cdav(self.addressbook.pk, "token")
         self.assertFalse(models.Contact.objects.filter(pk=contact.pk).exists())
 
@@ -255,7 +256,7 @@ class SyncFromCDAVTestCase(TestDataMixin, ModoAPITestCase):
         legacy = factories.ContactFactory(
             addressbook=self.addressbook, uid="newcard.vcf", filename="legacy.vcf"
         )
-        with httmock.HTTMock(mocks.options_mock, mocks.report_mock, mocks.get_mock):
+        with httmock.HTTMock(mocks.options_mock, mocks.report_mock):
             tasks.sync_addressbook_from_cdav(self.addressbook.pk, "token")
         legacy.refresh_from_db()
         self.assertEqual(legacy.filename, "newcard.vcf")
@@ -288,11 +289,47 @@ class SyncResilienceTestCase(TestDataMixin, ModoAPITestCase):
     """Check sync recovers from failures."""
 
     def sync(self, *extra_mocks):
-        with httmock.HTTMock(
-            mocks.options_mock, *extra_mocks, mocks.report_mock, mocks.get_mock
-        ):
+        with httmock.HTTMock(mocks.options_mock, *extra_mocks, mocks.report_mock):
             tasks.sync_addressbook_from_cdav(self.addressbook.pk, "token")
         self.addressbook.refresh_from_db()
+
+    def spy_multiget(self):
+        """Record the body of each addressbook-multiget request."""
+        requested = []
+
+        @httmock.urlmatch(method="REPORT")
+        def multiget_spy_mock(url, request):
+            if b"addressbook-multiget" in request.body:
+                requested.append(request.body)
+            return None
+
+        return requested, multiget_spy_mock
+
+    def test_sync_downloads_cards_by_batch(self):
+        requested, spy = self.spy_multiget()
+        with mock.patch.object(constants, "MULTIGET_BATCH_SIZE", 1):
+            self.sync(spy)
+        self.assertEqual(len(requested), 2)
+        contacts = self.addressbook.contact_set
+        self.assertTrue(contacts.filter(filename="newcard.vcf").exists())
+        self.assertTrue(contacts.filter(filename="updatedcard.vcf").exists())
+
+    def test_sync_skips_unchanged_cards(self):
+        factories.ContactFactory(
+            addressbook=self.addressbook,
+            filename="newcard.vcf",
+            etag='"33441-34321"',
+            first_name="Unchanged",
+        )
+        requested, spy = self.spy_multiget()
+        self.sync(spy)
+        self.assertEqual(len(requested), 1)
+        self.assertNotIn(b"newcard.vcf", requested[0])
+        contacts = self.addressbook.contact_set
+        self.assertEqual(contacts.get(filename="newcard.vcf").first_name, "Unchanged")
+        self.assertEqual(
+            contacts.get(filename="updatedcard.vcf").display_name, "Forrest Gump"
+        )
 
     def test_sync_with_stale_lock(self):
         self.user.addressbook_set.update(
@@ -307,24 +344,33 @@ class SyncResilienceTestCase(TestDataMixin, ModoAPITestCase):
         self.assertIsNone(self.addressbook.sync_started)
 
     def test_sync_skips_bad_card(self):
-        @httmock.urlmatch(method="GET", path=r".*/updatedcard\.vcf$")
-        def bad_get_mock(url, request):
-            return {"status_code": 200, "content": "garbage"}
+        @httmock.urlmatch(method="REPORT")
+        def bad_card_mock(url, request):
+            if b"addressbook-multiget" not in request.body:
+                return None
+            return mocks.multiget_response(
+                request.body,
+                lambda name: (
+                    "garbage" if name == "updatedcard.vcf" else mocks.vcard(name)
+                ),
+            )
 
         with self.assertLogs("modoboa.contacts", "ERROR"):
-            self.sync(bad_get_mock)
+            self.sync(bad_card_mock)
         self.assertEqual(self.addressbook.sync_token, "http://modoboa.org/ns/sync/5001")
         contacts = self.addressbook.contact_set
         self.assertTrue(contacts.filter(filename="newcard.vcf").exists())
         self.assertFalse(contacts.filter(filename="updatedcard.vcf").exists())
 
     def test_sync_aborts_on_server_error(self):
-        @httmock.urlmatch(method="GET")
-        def get_error_mock(url, request):
-            return {"status_code": 500}
+        @httmock.urlmatch(method="REPORT")
+        def multiget_error_mock(url, request):
+            if b"addressbook-multiget" in request.body:
+                return {"status_code": 500}
+            return None
 
         with self.assertRaises(requests.exceptions.HTTPError):
-            self.sync(get_error_mock)
+            self.sync(multiget_error_mock)
         self.assertEqual(self.addressbook.sync_token, "")
         self.assertFalse(self.addressbook.syncing)
 

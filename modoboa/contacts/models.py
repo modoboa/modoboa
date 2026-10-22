@@ -151,11 +151,11 @@ class Contact(models.Model):
         categories = [category.name for category in self.categories.all()]
         if categories:
             card.add("categories").value = categories
-        for email in EmailAddress.objects.filter(contact=self):
+        for email in self.emails.all():
             attr = card.add("email")
             attr.value = email.address
             attr.type_param = email.type
-        for phone in PhoneNumber.objects.filter(contact=self):
+        for phone in self.phone_numbers.all():
             attr = card.add("tel")
             attr.value = phone.number
             attr.type_param = phone.type

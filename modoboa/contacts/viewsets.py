@@ -127,4 +127,4 @@ class EmailAddressViewSet(viewsets.ReadOnlyModelViewSet):
         """Filter based on current user."""
         return models.EmailAddress.objects.filter(
             contact__addressbook__user=self.request.user
-        )
+        ).select_related("contact")

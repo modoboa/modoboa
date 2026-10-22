@@ -69,6 +69,14 @@ class AddressBook(elements_base.BaseElement):
     tag = ns("CARD", "addressbook")
 
 
+class AddressBookMultiget(elements_base.BaseElement):
+    tag = ns("CARD", "addressbook-multiget")
+
+
+class AddressData(elements_base.BaseElement):
+    tag = ns("CARD", "address-data")
+
+
 class Etag(elements_base.BaseElement):
     tag = ns("D", "getetag")
 
@@ -167,18 +175,30 @@ class PyCardDAV:
         )
         response.raise_for_status()
 
-    def get_vcard(self, href):
-        """
-        pulls vcard from server
+    def get_vcards(self, hrefs):
+        """Fetch several vcards with one addressbook-multiget REPORT.
 
-        :returns: vcard
-        :rtype: string
+        :returns: dict href -> vcard, cards missing on the server are omitted
         """
-        response = self.session.get(
-            self.url.base + href, headers=self.headers, **self._settings
+        data = (
+            AddressBookMultiget()
+            + [elements_dav.Prop() + [Etag(), AddressData()]]
+            + [elements_dav.Href(value=href) for href in hrefs]
+        )
+        body = ET.tostring(data.xmlelement(), encoding="utf-8", xml_declaration=True)
+        headers = self.headers
+        headers["Depth"] = "1"
+        response = self.session.request(
+            "REPORT", self.url.resource, data=body, headers=headers, **self._settings
         )
         response.raise_for_status()
-        return response.content
+        result = {}
+        for item in _safe_xml(response.content).iterchildren(ns("D", "response")):
+            href = item.findtext(ns("D", "href"))
+            content = item.findtext(f".//{ns('CARD', 'address-data')}")
+            if href and content:
+                result[href] = content
+        return result
 
     def sync_vcards(self, sync_token=None):
         """Synchronize vcards using webdav sync."""
