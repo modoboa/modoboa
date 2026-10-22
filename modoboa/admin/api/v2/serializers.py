@@ -30,7 +30,7 @@ from modoboa.limits.lib import allocate_resources_from_user
 from modoboa.transport import models as transport_models
 from modoboa.transport.api.v2 import serializers as transport_serializers
 
-from ... import constants, models
+from ... import constants, lib, models
 
 
 class CreateDomainAdminSerializer(serializers.Serializer):
@@ -490,6 +490,16 @@ class AccountMeUpdateSerializer(serializers.ModelSerializer):
         )
 
 
+class AccountBadgeSerializer(serializers.Serializer):
+    """A badge displayed next to an account, provided by a plugin."""
+
+    name = serializers.CharField()
+    label = serializers.CharField()
+    color = serializers.CharField(default="default")
+    icon = serializers.CharField(required=False)
+    title = serializers.CharField(required=False)
+
+
 class AccountSerializer(v1_serializers.AccountSerializer):
     """Add support for user resources."""
 
@@ -497,11 +507,13 @@ class AccountSerializer(v1_serializers.AccountSerializer):
         child=lib_fields.DRFEmailFieldUTF8(), source="mailbox.alias_addresses"
     )
     possible_actions = serializers.SerializerMethodField()
+    badges = serializers.SerializerMethodField()
 
     class Meta(v1_serializers.AccountSerializer.Meta):
         fields = v1_serializers.AccountSerializer.Meta.fields + (
             "aliases",
             "possible_actions",
+            "badges",
         )
 
     def __init__(self, *args, **kwargs):
@@ -537,6 +549,22 @@ class AccountSerializer(v1_serializers.AccountSerializer):
             except (ValidationError, AttributeError):
                 continue
         return cleaned_actions
+
+    def get_badges(self, account) -> list[AccountBadgeSerializer]:
+        badges = self.context.get("badges")
+        if badges is None:
+            badges = lib.get_account_badges()
+        result = []
+        for index, badge in enumerate(badges):
+            # Annotated by the accounts viewset, in the same order
+            present = getattr(account, f"_badge_{index}", None)
+            if present is None:
+                present = core_models.User.objects.filter(
+                    badge["filter"], pk=account.pk
+                ).exists()
+            if present:
+                result.append(badge)
+        return AccountBadgeSerializer(result, many=True).data
 
     def get_resources(self, account) -> list[AccountResourceSerializer]:
         if account.role == "SimpleUsers":

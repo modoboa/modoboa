@@ -77,6 +77,20 @@
                 :label="$gettext('Alias')"
                 value="alias"
               ></v-radio>
+              <!-- Set by clicking on the badge of an account; inside the
+                   group to stay next to the radios -->
+              <v-chip
+                v-if="badgeFilter"
+                :color="badgeFilter.color"
+                :prepend-icon="badgeFilter.icon"
+                class="ml-4 align-self-center"
+                label
+                size="small"
+                closable
+                @click:close="filterByBadge(null)"
+              >
+                {{ badgeFilter.label }}
+              </v-chip>
             </v-radio-group>
           </template>
         </v-toolbar>
@@ -85,6 +99,19 @@
         <router-link :to="{ name: 'AccountDetail', params: { id: item.pk } }">
           {{ item.username }}
         </router-link>
+        <!-- Provided by plugins (shared mailbox...) -->
+        <v-chip
+          v-for="badge in item.badges || []"
+          :key="badge.name"
+          :color="badge.color"
+          :prepend-icon="badge.icon"
+          :title="badge.title"
+          size="x-small"
+          class="ml-2"
+          @click="filterByBadge(badge)"
+        >
+          {{ badge.label }}
+        </v-chip>
       </template>
       <template #[`item.address`]="{ item }">
         <router-link :to="{ name: 'AliasDetail', params: { id: item.pk } }">
@@ -353,6 +380,8 @@ const itemsPerPageR = ref(10)
 const sortByR = ref([])
 const columns = ref(defaultAccountsColumns)
 const showColumnsForm = ref(false)
+// Badge (provided by a plugin) the accounts are filtered by
+const badgeFilter = ref(null)
 const deletingIds = ref([])
 
 const headers = computed(() => {
@@ -386,6 +415,7 @@ async function updateType(value) {
   loading.value = true
   identities.value = []
   sortByR.value = []
+  badgeFilter.value = null
   if (value === 'account') {
     columns.value = defaultAccountsColumns
   } else {
@@ -414,6 +444,9 @@ async function fetchIdentities() {
   }
   if (search.value !== '') {
     params.search = search.value
+  }
+  if (identityType.value === 'account' && badgeFilter.value) {
+    params.badge = badgeFilter.value.name
   }
   try {
     const resp =
@@ -619,6 +652,12 @@ function displayRecipients(alias) {
     return ''
   }
   return alias.recipients.join(', ')
+}
+
+function filterByBadge(badge) {
+  badgeFilter.value = badge
+  currentPage.value = 1
+  fetchIdentities()
 }
 
 onMounted(() => {
