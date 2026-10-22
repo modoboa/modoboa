@@ -16,6 +16,11 @@ router.register(
     viewsets.CalendarSharedWithMeViewSet,
     basename="calendar-shared-with-me",
 )
+router.register(
+    r"calendar-subscriptions",
+    viewsets.CalendarSubscriptionViewSet,
+    basename="calendar-subscription",
+)
 router.register(r"attendees", viewsets.AttendeeViewSet, basename="attendee")
 router.register(r"mailboxes", viewsets.MailboxViewSet, basename="mailbox")
 router.register(r"calendar-rights", viewsets.RightsViewSet, basename="calendar-rights")

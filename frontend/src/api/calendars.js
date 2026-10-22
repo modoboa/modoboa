@@ -23,6 +23,25 @@ export default {
     return repository.patch(`/calendars-shared-with-me/${pk}/`, data)
   },
 
+  getCalendarSubscriptions() {
+    return repository.get('/calendar-subscriptions/')
+  },
+  createCalendarSubscription(data) {
+    return repository.post('/calendar-subscriptions/', data)
+  },
+  updateCalendarSubscription(pk, data) {
+    return repository.put(`/calendar-subscriptions/${pk}/`, data)
+  },
+  deleteCalendarSubscription(pk) {
+    return repository.delete(`/calendar-subscriptions/${pk}/`)
+  },
+  getCalendarSubscriptionEvents(pk, params, config = {}) {
+    return repository.get(`/calendar-subscriptions/${pk}/events/`, {
+      params,
+      ...config,
+    })
+  },
+
   getAccessRules(calendarPk) {
     return repository.get(`/user-calendars/${calendarPk}/accessrules/`)
   },

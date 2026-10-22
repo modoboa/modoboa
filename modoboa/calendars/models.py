@@ -181,6 +181,24 @@ class SharedCalendar(Calendar):
         return self.domain
 
 
+class CalendarSubscription(models.Model):
+    """External iCalendar feed a user subscribes to (read-only).
+
+    Events are fetched by Modoboa and are not stored in Radicale.
+    """
+
+    mailbox = models.ForeignKey(Mailbox, on_delete=models.CASCADE)
+    name = models.CharField(max_length=200)
+    url = models.URLField(max_length=2048)
+    color = models.CharField(max_length=7, default="#3a87ad")
+
+    class Meta:
+        db_table = "radicale_calendarsubscription"
+
+    def __str__(self):
+        return smart_str(self.name)
+
+
 def get_free_path(model, path):
     """Return a collection path not used by any calendar of model.
 

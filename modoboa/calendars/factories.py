@@ -32,3 +32,13 @@ class AccessRuleFactory(factory.django.DjangoModelFactory):
 
     mailbox = factory.SubFactory(admin_factories.MailboxFactory)
     calendar = factory.SubFactory(UserCalendarFactory)
+
+
+class CalendarSubscriptionFactory(factory.django.DjangoModelFactory):
+
+    class Meta:
+        model = models.CalendarSubscription
+
+    name = factory.Sequence(lambda n: f"Subscription {n}")
+    url = "https://example.org/feed.ics"
+    mailbox = factory.SubFactory(admin_factories.MailboxFactory)

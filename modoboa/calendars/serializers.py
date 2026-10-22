@@ -2,6 +2,7 @@
 
 import re
 
+from django.core.validators import URLValidator
 from django.db.models import Q
 from django.utils.translation import gettext as _
 
@@ -13,6 +14,7 @@ from modoboa.lib import fields as lib_fields
 from . import backends
 from . import models
 from . import rights
+from . import subscriptions
 
 #: Scope of a modification made on an occurrence of a recurring event
 RECURRENCE_SCOPES = ("occurrence", "series")
@@ -130,6 +132,36 @@ class SharedWithMeCalendarSerializer(serializers.ModelSerializer):
         data = super().to_representation(instance)
         data["color"] = instance.color or instance.calendar.color
         return data
+
+
+class CalendarSubscriptionSerializer(serializers.ModelSerializer):
+    """Subscription to an external iCalendar feed."""
+
+    url = serializers.CharField(max_length=2048)
+
+    class Meta:
+        model = models.CalendarSubscription
+        fields = ("pk", "name", "url", "color")
+
+    def validate_color(self, value):
+        return check_color(value)
+
+    def validate_url(self, value):
+        """Accept webcal:// URLs, and make sure the feed can be read."""
+        if value.lower().startswith("webcal://"):
+            value = "https://" + value[len("webcal://") :]
+        URLValidator(schemes=["http", "https"])(value)
+        if not self.instance or self.instance.url != value:
+            try:
+                subscriptions.get_feed(value)
+            except subscriptions.FeedError as exc:
+                raise serializers.ValidationError(str(exc)) from exc
+        return value
+
+    def create(self, validated_data):
+        return models.CalendarSubscription.objects.create(
+            mailbox=self.context["request"].user.mailbox, **validated_data
+        )
 
 
 class EventCalendarSerializer(serializers.ModelSerializer):

@@ -126,6 +126,13 @@
         @close="closeSharedWithMeColorForm"
       />
     </v-dialog>
+    <v-dialog v-model="showSubscriptionForm" persistent max-width="800px">
+      <CalendarSubscriptionForm
+        v-if="showSubscriptionForm"
+        :initial-subscription="selectedSubscription"
+        @close="closeSubscriptionForm"
+      />
+    </v-dialog>
     <v-dialog v-model="showImportEventsForm" persistent max-width="800px">
       <ImportEventsForm
         v-if="selectedCalendar"
@@ -149,6 +156,7 @@ import api from '@/api/calendars'
 import parametersApi from '@/api/parameters'
 import CalendarAccessRulesForm from '@/components/calendars/CalendarAccessRulesForm'
 import CalendarForm from '@/components/calendars/CalendarForm'
+import CalendarSubscriptionForm from '@/components/calendars/CalendarSubscriptionForm'
 import CalendarDetail from '@/components/calendars/CalendarDetail'
 import ConfirmDialog from '@/components/tools/ConfirmDialog'
 import EventForm from '@/components/calendars/EventForm'
@@ -173,6 +181,9 @@ const selectedCalendar = ref(null)
 const selectedEvent = ref(null)
 const userCalendars = ref([])
 const sharedWithMeCalendars = ref([])
+const subscriptions = ref([])
+const selectedSubscription = ref(null)
+const showSubscriptionForm = ref(false)
 const showAccessRulesForm = ref(false)
 const showCalendarForm = ref(false)
 const showInformation = ref(false)
@@ -201,6 +212,13 @@ const typeToLabel = {
 const calendars = computed(() => [
   ...userCalendars.value.map((calendar) => ({ ...calendar, write: true })),
   ...sharedWithMeCalendars.value,
+  // Subscriptions don't share the pk space of calendars, hence the prefix
+  ...subscriptions.value.map((subscription) => ({
+    ...subscription,
+    pk: `subscription-${subscription.pk}`,
+    subscription: subscription.pk,
+    write: false,
+  })),
 ])
 
 const leftMenuItems = computed(() => {
@@ -209,6 +227,11 @@ const leftMenuItems = computed(() => {
       icon: 'mdi-plus',
       text: $gettext('New calendar'),
       action: openCalendarForm,
+    },
+    {
+      icon: 'mdi-calendar-sync-outline',
+      text: $gettext('Subscribe to a calendar'),
+      action: () => openSubscriptionForm(null),
     },
     {
       text: $gettext('My calendars'),
@@ -294,6 +317,30 @@ const leftMenuItems = computed(() => {
       children,
     })
   }
+  if (subscriptions.value.length) {
+    result.push({
+      text: $gettext('Subscriptions'),
+      subheader: true,
+    })
+  }
+  for (const subscription of subscriptions.value) {
+    result.push({
+      key: `subscription-${subscription.pk}`,
+      text: subscription.name,
+      children: [
+        {
+          text: $gettext('Edit'),
+          icon: 'mdi-pencil',
+          action: () => openSubscriptionForm(subscription),
+        },
+        {
+          text: $gettext('Delete'),
+          icon: 'mdi-trash-can-outline',
+          action: () => deleteSubscription(subscription.pk),
+        },
+      ],
+    })
+  }
   return result
 })
 
@@ -308,11 +355,17 @@ async function fetchUserEvents({ start, end }) {
   // without preventing the display of the others
   const results = await Promise.allSettled(
     fetchedCalendars.map((calendar) =>
-      api.getUserCalendarEvents(
-        calendar.pk,
-        { start: start.date, end: end.date },
-        { ignoreErrors: true }
-      )
+      calendar.subscription
+        ? api.getCalendarSubscriptionEvents(
+            calendar.subscription,
+            { start: start.date, end: end.date },
+            { ignoreErrors: true }
+          )
+        : api.getUserCalendarEvents(
+            calendar.pk,
+            { start: start.date, end: end.date },
+            { ignoreErrors: true }
+          )
     )
   )
   if (fetchId !== fetchEventsCounter) {
@@ -337,6 +390,10 @@ async function fetchUserEvents({ start, end }) {
         timed: !event.allDay,
         editable: calendar.write,
         owner: calendar.owner,
+        ...(calendar.subscription && {
+          calendar: { pk: calendar.pk },
+          subscription: true,
+        }),
       })
     }
   })
@@ -428,12 +485,39 @@ function closeImportEventsForm() {
 }
 
 async function fetchUserCalendars() {
-  const [resp, sharedWithMeResp] = await Promise.all([
+  const [resp, sharedWithMeResp, subscriptionsResp] = await Promise.all([
     api.getUserCalendars(),
     api.getCalendarsSharedWithMe(),
+    api.getCalendarSubscriptions(),
   ])
   userCalendars.value = resp.data
   sharedWithMeCalendars.value = sharedWithMeResp.data
+  subscriptions.value = subscriptionsResp.data
+}
+
+function openSubscriptionForm(subscription) {
+  selectedSubscription.value = subscription
+  showSubscriptionForm.value = true
+}
+
+function closeSubscriptionForm() {
+  selectedSubscription.value = null
+  showSubscriptionForm.value = false
+  refreshCalendars()
+}
+
+async function deleteSubscription(pk) {
+  const result = await confirm.value.open(
+    $gettext('Warning'),
+    $gettext('Do you really want to delete this subscription?'),
+    { color: 'warning' }
+  )
+  if (!result) {
+    return
+  }
+  await api.deleteCalendarSubscription(pk)
+  await refreshCalendars()
+  busStore.displayNotification({ msg: $gettext('Subscription deleted') })
 }
 
 function openSharedWithMeColorForm(calendar) {

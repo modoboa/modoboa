@@ -83,6 +83,9 @@ dependencies = [
 	"drf-nested-routers",
 	"vobject",
 	"caldav==3.5.0",
+	# Calendar subscriptions (already required by caldav)
+	"icalendar",
+	"recurring-ical-events",
 	# Amavis
 	"html2text",
 	"idna",
