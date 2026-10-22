@@ -1580,7 +1580,13 @@ class AccountSerializerSignalsTestCase(ModoAPITestCase):
                     "color": "warning",
                     "title": "Why",
                     "filter": Q(mailbox__domain__name="test2.com"),
-                }
+                },
+                # Duplicate name: ignored, the first badge wins
+                {
+                    "name": "myplugin.user",
+                    "label": "Duplicate",
+                    "filter": Q(mailbox__domain__name="test2.com"),
+                },
             ]
 
         for receiver in (add_badges, add_other_badge):
@@ -1611,6 +1617,11 @@ class AccountSerializerSignalsTestCase(ModoAPITestCase):
         self.assertCountEqual(
             [entry["username"] for entry in response.json()["results"]],
             ["admin@test2.com", "user@test2.com"],
+        )
+        response = self.client.get(url, {"badge": "myplugin.user"})
+        self.assertEqual(
+            [entry["username"] for entry in response.json()["results"]],
+            ["user@test.com"],
         )
         response = self.client.get(url, {"badge": "unknown"})
         self.assertEqual(response.json()["results"], [])

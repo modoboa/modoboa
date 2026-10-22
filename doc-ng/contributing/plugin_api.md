@@ -227,7 +227,7 @@ the right sender.
 | `extra_account_serializer_data` | `AccountSerializer` | `account` | `dict[str, Any]` merged into the JSON representation. |
 | `account_post_create_via_api` | `WritableAccountSerializer` | `account`, `plugin_data`, `request` | — (side-effects only). |
 | `account_post_update_via_api` | `WritableAccountSerializer` | `account`, `plugin_data`, `request` | — (side-effects only). |
-| `extra_account_badges` | (none, connect without sender) | (nothing) | `list[dict]` of badges displayed next to accounts in the accounts list, which can be filtered by badge: `name` (unique, prefix it with your plugin), `label`, `filter` (a `Q` object matching the accounts with this badge), and optionally `color` (a Vuetify color, `default` otherwise), `icon` (`mdi-…`) and `title` (tooltip). |
+| `extra_account_badges` | (none, connect without sender) | (nothing) | `list[dict]` of badges displayed next to accounts in the accounts list, which can be filtered by badge: `name` (unique, prefix it with your plugin: a badge reusing a name already given is ignored), `label`, `filter` (a `Q` object matching the accounts with this badge), and optionally `color` (a Vuetify color, `default` otherwise), `icon` (`mdi-…`) and `title` (tooltip). |
 
 ## Frontend extension points
 
