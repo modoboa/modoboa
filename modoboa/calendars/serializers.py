@@ -1,5 +1,6 @@
 """Calendar serializers."""
 
+import datetime
 import re
 
 from django.core.validators import URLValidator
@@ -259,6 +260,24 @@ class AttendeeSerializer(serializers.Serializer):
     email = serializers.EmailField()
 
 
+class RecurrenceRuleSerializer(serializers.Serializer):
+    """Recurrence rule of an event."""
+
+    frequency = serializers.ChoiceField(choices=backends.RECURRENCE_FREQUENCIES)
+    # A date for all day events, the end of the last day for the other ones
+    until = serializers.CharField(required=False, allow_null=True)
+    # Rule the API cannot represent (COUNT, BYDAY...), clients must not edit it
+    custom = serializers.BooleanField(read_only=True)
+
+    def validate_until(self, value):
+        if not value:
+            return None
+        try:
+            return backends.parse_recurrence_id(value)
+        except ValueError as exc:
+            raise serializers.ValidationError(_("Invalid date")) from exc
+
+
 class EventSerializer(serializers.Serializer):
     """Base event serializer (fullcalendar output)."""
 
@@ -272,6 +291,7 @@ class EventSerializer(serializers.Serializer):
 
     attendees = AttendeeSerializer(many=True, required=False)
     recurrence_id = serializers.CharField(required=False, allow_null=True)
+    recurrence = RecurrenceRuleSerializer(required=False, allow_null=True)
 
 
 class RecurrenceSerializer(serializers.Serializer):
@@ -363,6 +383,23 @@ class WritableEventSerializer(EventSerializer):
         for field in mandatory_fields:
             if not data.get(field):
                 errors[field] = _("This field is required.")
+        if "recurrence" in data and data.get("scope") == "occurrence":
+            errors["recurrence"] = _(
+                "The recurrence can only be changed for the whole series"
+            )
+        until = (data.get("recurrence") or {}).get("until")
+        start = data.get(mandatory_fields[0])
+        if until and start:
+            if not (
+                isinstance(until, datetime.datetime)
+                and isinstance(start, datetime.datetime)
+            ):
+                until = until.date() if isinstance(until, datetime.datetime) else until
+                start = start.date() if isinstance(start, datetime.datetime) else start
+            if until < start:
+                errors["recurrence"] = {
+                    "until": [_("The end of the recurrence must be after the start")]
+                }
         if errors:
             raise serializers.ValidationError(errors)
         return data
