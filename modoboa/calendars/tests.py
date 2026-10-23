@@ -2,21 +2,26 @@
 
 import base64
 import datetime
+import http.server
 import os
 import tempfile
+import threading
 from unittest import mock
 
 from caldav import Event
 from caldav.lib import error as caldav_error
+import httmock
+import requests
 
 from configparser import ConfigParser
 
 from django.urls import reverse
 from django.core import management
+from django.core.cache import cache
 from django.core.exceptions import ValidationError
 from django.db import connection
 from django.db.migrations.executor import MigrationExecutor
-from django.test import TransactionTestCase
+from django.test import SimpleTestCase, TransactionTestCase
 from django.utils import timezone
 
 from oauth2_provider.models import get_access_token_model, get_application_model
@@ -34,6 +39,7 @@ from . import jobs
 from . import models
 from . import mocks
 from . import rights
+from . import subscriptions
 
 
 class TestDataMixin:
@@ -1974,3 +1980,216 @@ class UserPreferencesTestCase(ModoAPITestCase):
         )
         self.assertEqual(response.status_code, 400)
         self.assertIn("working_hours_start", response.json())
+
+
+SUBSCRIPTION_FEED = b"""BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Test//EN
+BEGIN:VEVENT
+UID:weekly@example.org
+SUMMARY:Weekly meeting
+DTSTART;TZID=Europe/Paris:20261005T100000
+DURATION:PT1H
+RRULE:FREQ=WEEKLY;COUNT=4
+EXDATE;TZID=Europe/Paris:20261012T100000
+ATTENDEE;CN=Bob:mailto:bob@example.org
+END:VEVENT
+BEGIN:VEVENT
+UID:holiday@example.org
+SUMMARY:Holiday
+DTSTART;VALUE=DATE:20261011
+DTEND;VALUE=DATE:20261012
+END:VEVENT
+END:VCALENDAR
+"""
+
+
+class CalendarSubscriptionViewSetTestCase(TestDataMixin, ModoAPITestCase):
+    """Calendar subscription viewset tests."""
+
+    def setUp(self):
+        super().setUp()
+        self.client.force_authenticate(self.account)
+        cache.clear()
+        self.fetched_urls = []
+
+    def feed_mock(self, content=SUBSCRIPTION_FEED, status_code=200):
+        @httmock.all_requests
+        def mock(url, request):
+            self.fetched_urls.append(request.url)
+            return httmock.response(status_code, content)
+
+        return httmock.HTTMock(mock)
+
+    def test_create(self):
+        url = reverse("v2:calendar-subscription-list")
+        data = {
+            "name": "Holidays",
+            "url": "webcal://example.org/feed.ics",
+            "color": "#ff0000",
+        }
+        with self.feed_mock():
+            response = self.client.post(url, data, format="json")
+        self.assertEqual(response.status_code, 201)
+        self.assertEqual(response.json()["url"], "https://example.org/feed.ics")
+        self.assertEqual(self.fetched_urls, ["https://example.org/feed.ics"])
+        subscription = models.CalendarSubscription.objects.get(pk=response.json()["pk"])
+        self.assertEqual(subscription.mailbox, self.account.mailbox)
+
+    def test_create_invalid(self):
+        url = reverse("v2:calendar-subscription-list")
+        data = {"name": "Feed", "url": "ftp://example.org/feed.ics", "color": "#ff0000"}
+        response = self.client.post(url, data, format="json")
+        self.assertEqual(response.status_code, 400)
+        self.assertIn("url", response.json())
+
+        data["url"] = "https://example.org/feed.ics"
+        data["color"] = "red"
+        with self.feed_mock():
+            response = self.client.post(url, data, format="json")
+        self.assertEqual(response.status_code, 400)
+        self.assertIn("color", response.json())
+
+    def test_create_unreadable_feed(self):
+        url = reverse("v2:calendar-subscription-list")
+        data = {
+            "name": "Feed",
+            "url": "https://example.org/feed.ics",
+            "color": "#ff0000",
+        }
+        with self.feed_mock(status_code=404):
+            response = self.client.post(url, data, format="json")
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.json()["url"], ["Unable to fetch the calendar"])
+
+        with self.feed_mock(content=b"<html></html>"):
+            response = self.client.post(url, data, format="json")
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(
+            response.json()["url"], ["The calendar is not a valid iCalendar file"]
+        )
+        self.assertFalse(models.CalendarSubscription.objects.exists())
+
+    def test_update_without_url_change(self):
+        subscription = factories.CalendarSubscriptionFactory(
+            mailbox=self.account.mailbox
+        )
+        url = reverse("v2:calendar-subscription-detail", args=[subscription.pk])
+        with self.feed_mock():
+            response = self.client.put(
+                url,
+                {"name": "New name", "url": subscription.url, "color": "#00ff00"},
+                format="json",
+            )
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(self.fetched_urls, [])
+        subscription.refresh_from_db()
+        self.assertEqual(subscription.name, "New name")
+
+    def test_list_and_access(self):
+        subscription = factories.CalendarSubscriptionFactory(
+            mailbox=self.account.mailbox
+        )
+        other = factories.CalendarSubscriptionFactory(
+            mailbox=self.admin_account.mailbox
+        )
+        response = self.client.get(reverse("v2:calendar-subscription-list"))
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual([item["pk"] for item in response.json()], [subscription.pk])
+
+        url = reverse("v2:calendar-subscription-events", args=[other.pk])
+        response = self.client.get(url, {"start": "2026-10-01", "end": "2026-11-01"})
+        self.assertEqual(response.status_code, 404)
+        url = reverse("v2:calendar-subscription-detail", args=[other.pk])
+        response = self.client.delete(url)
+        self.assertEqual(response.status_code, 404)
+
+    def test_events(self):
+        subscription = factories.CalendarSubscriptionFactory(
+            mailbox=self.account.mailbox, color="#123456"
+        )
+        url = reverse("v2:calendar-subscription-events", args=[subscription.pk])
+        with self.feed_mock():
+            response = self.client.get(
+                url, {"start": "2026-10-01", "end": "2026-10-20"}
+            )
+            self.assertEqual(response.status_code, 200)
+            events = sorted(response.json(), key=lambda event: event["start"])
+            # 2 occurrences (one excluded) and the all day event
+            self.assertEqual(
+                [event["title"] for event in events],
+                ["Weekly meeting", "Holiday", "Weekly meeting"],
+            )
+            self.assertEqual(events[0]["start"], "2026-10-05T08:00:00Z")
+            self.assertEqual(events[0]["end"], "2026-10-05T09:00:00Z")
+            self.assertEqual(
+                events[0]["attendees"],
+                [{"display_name": "Bob", "email": "bob@example.org"}],
+            )
+            self.assertTrue(events[1]["allDay"])
+            self.assertEqual(events[1]["start"][:10], "2026-10-11")
+            self.assertEqual(events[1]["end"][:10], "2026-10-11")
+            self.assertEqual(events[0]["color"], "#123456")
+            self.assertEqual(events[0]["calendar"]["pk"], subscription.pk)
+
+            # The feed is cached, and reading it does not extend its lifetime
+            with mock.patch.object(subscriptions.cache, "set") as cache_set:
+                response = self.client.get(
+                    url, {"start": "2026-10-20", "end": "2026-11-01"}
+                )
+            self.assertEqual(len(response.json()), 1)
+            cache_set.assert_not_called()
+        self.assertEqual(len(self.fetched_urls), 1)
+
+    def test_events_unavailable_feed(self):
+        subscription = factories.CalendarSubscriptionFactory(
+            mailbox=self.account.mailbox
+        )
+        url = reverse("v2:calendar-subscription-events", args=[subscription.pk])
+        with self.feed_mock(status_code=500):
+            response = self.client.get(
+                url, {"start": "2026-10-01", "end": "2026-10-20"}
+            )
+        self.assertEqual(response.status_code, 502)
+
+    def test_events_without_start(self):
+        subscription = factories.CalendarSubscriptionFactory(
+            mailbox=self.account.mailbox
+        )
+        url = reverse("v2:calendar-subscription-events", args=[subscription.pk])
+        feed = SUBSCRIPTION_FEED.replace(b"DTSTART;VALUE=DATE:20261011\n", b"")
+        with self.feed_mock(content=feed):
+            response = self.client.get(
+                url, {"start": "2026-10-01", "end": "2026-10-20"}
+            )
+        self.assertEqual(response.status_code, 502)
+        self.assertEqual(
+            response.json()["detail"], "The calendar is not a valid iCalendar file"
+        )
+
+
+class FeedDownloadTestCase(SimpleTestCase):
+    """Feeds are not downloaded from non public addresses."""
+
+    def test_local_address_refused(self):
+        class Handler(http.server.BaseHTTPRequestHandler):
+            def do_GET(self):
+                self.send_response(200)
+                self.end_headers()
+                self.wfile.write(SUBSCRIPTION_FEED)
+
+            def log_message(self, *args):
+                pass
+
+        server = http.server.HTTPServer(("127.0.0.1", 0), Handler)
+        thread = threading.Thread(target=server.serve_forever)
+        thread.start()
+        self.addCleanup(thread.join)
+        self.addCleanup(server.server_close)
+        self.addCleanup(server.shutdown)
+        url = f"http://127.0.0.1:{server.server_port}/feed.ics"
+        # The server works...
+        self.assertEqual(requests.get(url, timeout=5).content, SUBSCRIPTION_FEED)
+        # ...but is refused
+        with self.assertRaises(subscriptions.FeedError):
+            subscriptions.download_feed(url)

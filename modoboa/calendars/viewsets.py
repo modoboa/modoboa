@@ -20,6 +20,7 @@ from . import backends
 from . import models
 from . import rights
 from . import serializers
+from . import subscriptions
 from .permissions import IsRadicale
 
 
@@ -94,6 +95,42 @@ class CalendarSharedWithMeViewSet(
                 "calendar__mailbox__address",
             )
         )
+
+
+class CalendarSubscriptionViewSet(viewsets.ModelViewSet):
+    """Subscriptions of the current user to external iCalendar feeds."""
+
+    permission_classes = [permissions.IsAuthenticated]
+    serializer_class = serializers.CalendarSubscriptionSerializer
+
+    def get_queryset(self):
+        return models.CalendarSubscription.objects.filter(
+            mailbox__user=self.request.user
+        )
+
+    @extend_schema(responses=serializers.ROEventSerializer(many=True))
+    @action(detail=True, methods=["get"])
+    def events(self, request, pk):
+        """Return the events of the feed (read-only)."""
+        start = request.GET.get("start")
+        end = request.GET.get("end")
+        if not start or not end:
+            return response.Response()
+        subscription = self.get_object()
+        try:
+            events = subscriptions.get_events(
+                subscription, parse_date_from_iso(start), parse_date_from_iso(end)
+            )
+        except subscriptions.FeedError as exc:
+            raise FeedUnavailable(str(exc)) from exc
+        serializer = serializers.ROEventSerializer(
+            events, many=True, calendar_type="user"
+        )
+        return response.Response(serializer.data)
+
+
+class FeedUnavailable(exceptions.APIException):
+    status_code = 502
 
 
 class SharedCalendarViewSet(CheckTokenMixin, viewsets.ModelViewSet):

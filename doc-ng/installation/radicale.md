@@ -190,3 +190,17 @@ Then, restart both `modoboa` and `radicale` to enjoy managing calendars (ICS typ
 At this stage, no encryption is provided, and you may use a reverse proxy as described in
 
 [Radicale's documentation](https://radicale.org/v3.html#reverse-proxy).
+## Calendar subscriptions
+
+Users can subscribe to external iCalendar feeds (`.ics` or `webcal://`
+URLs) from the calendar page. These feeds are read-only and are not
+stored in Radicale: the Modoboa API server downloads them itself, so it
+must be allowed to make outgoing HTTP(S) requests.
+
+A feed is downloaded again at most every 15 minutes and must not exceed
+10 MB. For security reasons, feeds hosted on non public addresses
+(private networks, localhost...) are refused, and proxy environment
+variables (`HTTP_PROXY`, `HTTPS_PROXY`) are ignored.
+
+Subscriptions are only displayed in the Modoboa web interface: CalDAV
+clients don't see them.

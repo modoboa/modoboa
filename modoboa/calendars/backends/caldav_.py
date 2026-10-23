@@ -54,6 +54,22 @@ def get_vevent_end(vevent):
     return vevent.dtstart.value + datetime.timedelta(days=1)
 
 
+def get_event_dates(start, end):
+    """Return the allDay, start and end values expected by the calendar view."""
+    if isinstance(start, datetime.datetime):
+        return {"allDay": False, "start": start, "end": end}
+    tz = timezone.get_current_timezone()
+    return {
+        "allDay": True,
+        "start": datetime.datetime.combine(start, datetime.time.min).replace(tzinfo=tz),
+        # Small back to make vuetify calendar happy. 'All day' events are generally
+        # created from one day to the day after (even for a 1 day duration...)
+        "end": datetime.datetime.combine(
+            end - relativedelta(days=1), datetime.time.min
+        ).replace(tzinfo=tz),
+    }
+
+
 def set_vevent_dates(vevent, start=None, end=None):
     """Replace the dates of a vevent."""
     if start is not None:
@@ -135,23 +151,7 @@ class Caldav_Backend(CalendarBackend):
             "attendees": [],
             "recurrence_id": recurrence_id,
         }
-        dtend = get_vevent_end(vevent)
-        if isinstance(vevent.dtstart.value, datetime.datetime):
-            all_day = False
-            start = vevent.dtstart.value
-            end = dtend
-        else:
-            tz = timezone.get_current_timezone()
-            all_day = True
-            start = datetime.datetime.combine(
-                vevent.dtstart.value, datetime.time.min
-            ).replace(tzinfo=tz)
-            # Small back to make vuetify calendar happy. 'All day' events are generally
-            # created from one day to the day after (even for a 1 day duration...)
-            end = datetime.datetime.combine(
-                dtend - relativedelta(days=1), datetime.time.min
-            ).replace(tzinfo=tz)
-        result.update({"allDay": all_day, "start": start, "end": end})
+        result.update(get_event_dates(vevent.dtstart.value, get_vevent_end(vevent)))
         if "attendee" in vevent.contents:
             for attendee in vevent.contents["attendee"]:
                 email = attendee.value.replace("mailto:", "").replace("MAILTO:", "")

@@ -7,9 +7,13 @@
       <v-card-text class="py-4">
         <v-alert v-if="readOnly" type="info" variant="tonal" class="mb-4">
           {{
-            $gettext(
-              'This event belongs to a calendar shared with you in read-only mode.'
-            )
+            event.subscription
+              ? $gettext(
+                  'This event belongs to a calendar you subscribed to, it cannot be modified.'
+                )
+              : $gettext(
+                  'This event belongs to a calendar shared with you in read-only mode.'
+                )
           }}
         </v-alert>
         <v-row class="mb-2">
