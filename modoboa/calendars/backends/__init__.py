@@ -7,6 +7,9 @@ from dateutil.parser import isoparse
 
 from modoboa.lib.oauth2 import get_access_token
 
+#: Recurrence frequencies (RRULE FREQ values) supported by the API
+RECURRENCE_FREQUENCIES = ("DAILY", "WEEKLY", "MONTHLY", "YEARLY")
+
 
 def parse_recurrence_id(value):
     """Parse a recurrence id (ISO date or datetime) sent by a client."""
