@@ -8,7 +8,7 @@
     <incomingServer type="imap">
       <hostname>{{ connection_settings.imap.HOSTNAME }}</hostname>
       <port>{{ connection_settings.imap.PORT }}</port>
-      <socketType>{{ connection_settings.imap.SOCKET_TYPE }}</socketType>
+      <socketType>{% if connection_settings.imap.SOCKET_TYPE|upper == "SSL" %}SSL{% elif connection_settings.imap.SOCKET_TYPE|upper == "STARTTLS" %}STARTTLS{% else %}plain{% endif %}</socketType>
       <authentication>password-cleartext</authentication>
       <username>{{ emailaddress }}</username>
     </incomingServer>
@@ -16,7 +16,7 @@
     <outgoingServer type="smtp">
       <hostname>{{ connection_settings.smtp.HOSTNAME }}</hostname>
       <port>{{ connection_settings.smtp.PORT }}</port>
-      <socketType>{{ connection_settings.smtp.SOCKET_TYPE }}</socketType>
+      <socketType>{% if connection_settings.smtp.SOCKET_TYPE|upper == "SSL" %}SSL{% elif connection_settings.smtp.SOCKET_TYPE|upper == "STARTTLS" %}STARTTLS{% else %}plain{% endif %}</socketType>
       <authentication>password-cleartext</authentication>
       <username>{{ emailaddress }}</username>
     </outgoingServer>

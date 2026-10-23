@@ -31,6 +31,28 @@ class ViewsTestCase(TestCase):
 
         self.assertIn(b'<emailProvider id="test.com">', resp.content)
 
+    def test_autoconfig_domain_from_host(self):
+        """Thunderbird Android never sends the emailaddress parameter."""
+        url = reverse("autoconfig:autoconfig")
+
+        with self.settings(ALLOWED_HOSTS=["autoconfig.example.co.uk"]):
+            resp = self.client.get(url, HTTP_HOST="autoconfig.example.co.uk")
+        self.assertEqual(resp.status_code, 200)
+        self.assertIn(b'<emailProvider id="example.co.uk">', resp.content)
+        self.assertIn(b"<domain>example.co.uk</domain>", resp.content)
+
+    def test_autoconfig_socket_type_case(self):
+        """Thunderbird only accepts SSL, STARTTLS and plain (case-sensitive)."""
+        url = reverse("autoconfig:autoconfig")
+
+        conn_settings = copy.deepcopy(settings.EMAIL_CLIENT_CONNECTION_SETTINGS)
+        conn_settings["imap"]["SOCKET_TYPE"] = "ssl"
+        conn_settings["smtp"]["SOCKET_TYPE"] = "starttls"
+        with self.settings(EMAIL_CLIENT_CONNECTION_SETTINGS=conn_settings):
+            resp = self.client.get(url)
+        self.assertIn(b"<socketType>SSL</socketType>", resp.content)
+        self.assertIn(b"<socketType>STARTTLS</socketType>", resp.content)
+
     def test_autodiscover(self):
         url = reverse("autoconfig:autodiscover")
 
