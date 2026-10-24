@@ -192,30 +192,7 @@ server {
 `modoboa_instance_path` and `ssl...` must be replaced by the value
 you used when `you deployed your instance deployment`
 
-In case you want to use enable auto-configuration functionality, 
-
-create a second virtualhost configuration the hostname should look like `autoconfig.your domain here`
-
-```txt
-    server {
-      listen 80;
-      listen [::]:80;
-      server_name autoconfig.<your_domain>;
-      root  {{ modoboa_instance_path }};
-
-      access_log /var/log/nginx/autoconfig-access.log;
-      error_log /var/log/nginx/autoconfig-error.log;
-
-      location ~ ^/(mail/config-v1.1.xml|mobileconfig) {
-          include uwsgi_params;
-      uwsgi_param UWSGI_SCRIPT instance.wsgi:application;
-          uwsgi_pass modoboa;
-      }
-}
-```
-
-`{{ modoboa_instance_path }}` and `your_domain` must be replaced by the
-value you used when `you deployed your instance <deployment>`{.interpreted-text role="ref"}.
+To enable mail client auto-configuration, see [below](#autoconfig).
 
 If you do not plan to use SSL then change the listen directive to `listen 80;` and delete each of the following directives:
 
@@ -397,5 +374,142 @@ socket, with a dedicated `upstream` and an exact match
 `location = /api/o/introspect/` block. Otherwise, gunicorn can lock up
 when all its workers wait for Dovecot.
 :::
+
+## Mail client auto-configuration {#autoconfig}
+
+Modoboa can tell mail clients which servers to use, so users only have
+to type their email address and password:
+
+* `/mail/config-v1.1.xml`: Thunderbird (desktop and Android) and
+  other clients supporting the Mozilla format,
+* `/autodiscover/autodiscover.xml`: Outlook,
+* `/mobileconfig?emailaddress=<address>`: profile for Apple Mail (iOS
+  and macOS), to download manually.
+
+### Connection settings
+
+The returned values come from the `EMAIL_CLIENT_CONNECTION_SETTINGS`
+variable of your `settings.py` file. By default, the same hostname is
+used for IMAP and SMTP, so adjust it if your SMTP server has its own
+name:
+
+``` python
+EMAIL_CLIENT_CONNECTION_SETTINGS = {
+    "imap": {"HOSTNAME": "imap.example.net", "SOCKET_TYPE": "SSL", "PORT": 993},
+    "smtp": {"HOSTNAME": "smtp.example.net", "SOCKET_TYPE": "STARTTLS", "PORT": 587},
+}
+```
+
+`HOSTNAME` accepts the `%EMAILDOMAIN%`, `%EMAILLOCALPART%` and
+`%EMAILADDRESS%` placeholders (for example `mail.%EMAILDOMAIN%`).
+`SOCKET_TYPE` must be `SSL`, `STARTTLS` or `plain`.
+
+::: warning
+Thunderbird for Android rejects the whole configuration when
+`SOCKET_TYPE` is `plain`.
+:::
+
+The configuration announces `password-cleartext` authentication: it
+means the password is sent inside the TLS connection, which is the
+expected setting for Modoboa.
+
+### DNS records
+
+For each domain, mail clients look for the following names, which must
+point to your Modoboa server:
+
+``` txt
+autoconfig.example.net.    IN CNAME mail.example.net.
+autodiscover.example.net.  IN CNAME mail.example.net.
+```
+
+Instead of `autodiscover.<domain>`, Outlook also accepts an SRV record:
+
+``` txt
+_autodiscover._tcp.example.net. IN SRV 0 0 443 mail.example.net.
+```
+
+Modoboa checks the `autoconfig` and `autodiscover` records when the
+*Enable autoconfig checks* parameter is set.
+
+### Allowed hosts
+
+Django rejects (HTTP 400) the requests whose host is not listed in
+`ALLOWED_HOSTS`. Add each auto-configuration hostname to your
+`settings.py` file:
+
+``` python
+ALLOWED_HOSTS = [
+    "mail.example.net",
+    "autoconfig.example.net",
+    "autodiscover.example.net",
+]
+```
+
+### Virtual host
+
+Thunderbird tries HTTPS first and only trusts a configuration fully
+retrieved over HTTPS: the auto-configuration hostnames must be covered
+by a valid certificate. With Let's Encrypt, for example:
+
+``` shell
+$ certbot certonly --expand -d mail.example.net -d autoconfig.example.net -d autodiscover.example.net
+```
+
+Then create a dedicated virtual host. With uWSGI:
+
+``` nginx
+server {
+    listen 80;
+    listen [::]:80;
+    server_name autoconfig.example.net autodiscover.example.net;
+    rewrite ^ https://$host$request_uri? permanent;
+}
+
+server {
+    listen 443 ssl;
+    listen [::]:443 ssl;
+    server_name autoconfig.example.net autodiscover.example.net;
+    root {{ modoboa_instance_path }};
+
+    ssl_certificate  <ssl certificate for your site>;
+    ssl_certificate_key  <ssl certificate key for your site>;
+
+    access_log /var/log/nginx/autoconfig-access.log;
+    error_log /var/log/nginx/autoconfig-error.log;
+
+    location ~ ^/(mail/config-v1.1.xml|mobileconfig|autodiscover/autodiscover.xml) {
+        include uwsgi_params;
+        uwsgi_param UWSGI_SCRIPT instance.wsgi:application;
+        uwsgi_pass modoboa;
+    }
+}
+```
+
+With Green Unicorn, replace the `location` content by:
+
+``` nginx
+        proxy_set_header Host $http_host;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_pass http://modoboa;
+```
+
+Repeat the `server_name` entries, the certificate names and the
+`ALLOWED_HOSTS` entries for each domain you host.
+
+### Testing
+
+Thunderbird for Android does not send the email address, so test
+without it too:
+
+``` shell
+$ curl -v https://autoconfig.example.net/mail/config-v1.1.xml
+$ curl -v "https://autoconfig.example.net/mail/config-v1.1.xml?emailaddress=user@example.net"
+```
+
+Both must return HTTP 200 and an XML document whose `emailProvider`
+`id` attribute is your domain. If Thunderbird for Android still reports
+that it found no settings, the reason is written in its debug logs
+(enable debug logging in the app settings, then use `adb logcat`).
 
 Now, you can go the [Dovecot](./dovecot) section to continue the installation.

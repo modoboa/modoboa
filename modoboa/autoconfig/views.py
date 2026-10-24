@@ -14,7 +14,7 @@ from modoboa.lib.email_utils import split_address
 
 def gen_subst_conn_settings(emailaddress: str, local_part: str, domain: str):
     conn_settings = copy.deepcopy(settings.EMAIL_CLIENT_CONNECTION_SETTINGS)
-    for proto, proto_settings in conn_settings.items():
+    for proto_settings in conn_settings.values():
         for name, value in proto_settings.items():
             if isinstance(value, str):
                 value = value.replace("%EMAILADDRESS%", emailaddress)
@@ -54,14 +54,17 @@ class ConfigBaseMixin:
         local_part, domain = split_address(emailaddress)
 
         if domain is None:
-            parts = self.request.get_host().split(':')[0].split('.')
-            domain = '.'.join(parts[-2:])
+            # Clients query autoconfig.<domain> or <domain> itself
+            domain = self.request.get_host().split(":")[0].removeprefix("autoconfig.")
 
         return {
             "emailaddress": emailaddress,
             "domain": domain,
-            "connection_settings": gen_subst_conn_settings(emailaddress, local_part, domain)
-            if do_subst else settings.EMAIL_CLIENT_CONNECTION_SETTINGS,
+            "connection_settings": (
+                gen_subst_conn_settings(emailaddress, local_part, domain)
+                if do_subst
+                else settings.EMAIL_CLIENT_CONNECTION_SETTINGS
+            ),
         }
 
 
@@ -149,14 +152,18 @@ class MobileConfigView(generic.View):
                     "IncomingMailServerAuthentication": "EmailAuthPassword",
                     "IncomingMailServerHostName": conn_settings["imap"]["HOSTNAME"],
                     "IncomingMailServerPortNumber": conn_settings["imap"]["PORT"],
-                    "IncomingMailServerUseSSL": conn_settings["imap"]["SOCKET_TYPE"].upper()
+                    "IncomingMailServerUseSSL": conn_settings["imap"][
+                        "SOCKET_TYPE"
+                    ].upper()
                     == "SSL",  # `false` means StartTLS
                     "IncomingMailServerUsername": emailaddress,
                     # outgoing
                     "OutgoingMailServerAuthentication": "EmailAuthPassword",
                     "OutgoingMailServerHostName": conn_settings["smtp"]["HOSTNAME"],
                     "OutgoingMailServerPortNumber": conn_settings["smtp"]["PORT"],
-                    "OutgoingMailServerUseSSL": conn_settings["smtp"]["SOCKET_TYPE"].upper()
+                    "OutgoingMailServerUseSSL": conn_settings["smtp"][
+                        "SOCKET_TYPE"
+                    ].upper()
                     == "SSL",  # `false` means StartTLS,
                     "OutgoingMailServerUsername": emailaddress,
                     "OutgoingPasswordSameAsIncomingPassword": True,
