@@ -7,6 +7,7 @@ import caldav
 from caldav.elements import dav, ical
 from caldav import Calendar
 from dateutil.relativedelta import relativedelta
+import icalendar
 import vobject
 
 from django.utils import timezone
@@ -14,7 +15,7 @@ from django.utils.encoding import smart_str
 
 from modoboa.parameters import tools as param_tools
 
-from . import CalendarBackend
+from . import CalendarBackend, RECURRENCE_FREQUENCIES
 
 
 def same_date(value1, value2):
@@ -110,6 +111,77 @@ def find_override(vcal, recurrence_id):
     return None
 
 
+def get_recurrence(vevent):
+    """Return the recurrence rule of a vevent, as exposed by the API."""
+    rrules = vevent.contents.get("rrule", [])
+    if not rrules:
+        return None
+    rule = icalendar.vRecur.from_ical(rrules[0].value)
+    frequency = rule["FREQ"][0]
+    until = rule.get("UNTIL", [None])[0]
+    return {
+        "frequency": frequency,
+        "until": until.isoformat() if until else None,
+        # Rules the API cannot represent must not be overwritten by clients
+        "custom": (
+            len(rrules) > 1
+            or "rdate" in vevent.contents
+            or frequency not in RECURRENCE_FREQUENCIES
+            or bool(set(rule) - {"FREQ", "UNTIL"})
+        ),
+    }
+
+
+def get_until(until, dtstart):
+    """Return the UNTIL value matching the type of DTSTART (RFC 5545)."""
+    if not isinstance(dtstart, datetime.datetime):
+        return until.date() if isinstance(until, datetime.datetime) else until
+    if not isinstance(until, datetime.datetime):
+        until = datetime.datetime.combine(
+            until, datetime.time(23, 59, 59), tzinfo=dtstart.tzinfo
+        )
+    if dtstart.tzinfo is None:
+        return until.replace(tzinfo=None)
+    return until.astimezone(datetime.timezone.utc)
+
+
+def build_rrule(recurrence, dtstart):
+    """Return the RRULE (as a dict) of an API recurrence rule."""
+    rule = {"FREQ": recurrence["frequency"]}
+    if recurrence.get("until"):
+        rule["UNTIL"] = get_until(recurrence["until"], dtstart)
+    return rule
+
+
+def set_recurrence(vcal, recurrence):
+    """Replace the recurrence rule of an event (None removes it)."""
+    master = get_master(vcal)
+    old = get_recurrence(master)
+    master.contents.pop("rrule", None)
+    master.contents.pop("rdate", None)
+    until = None
+    if recurrence:
+        rule = build_rrule(recurrence, master.dtstart.value)
+        master.add("rrule").value = icalendar.vRecur(rule).to_ical().decode()
+        if old and old["frequency"] == recurrence["frequency"]:
+            until = rule.get("UNTIL")
+            if until is None:
+                return
+    # Exceptions no longer match an occurrence: drop them
+    for vevent in get_overrides(vcal):
+        if until is None or convert_date(vevent.recurrence_id.value, until) > until:
+            vcal.remove(vevent)
+    exdates = master.contents.pop("exdate", [])
+    if until is None:
+        return
+    for exdate in exdates:
+        exdate.value = [
+            value for value in exdate.value if convert_date(value, until) <= until
+        ]
+        if exdate.value:
+            master.add(exdate)
+
+
 class Caldav_Backend(CalendarBackend):
     """CalDAV calendar backend."""
 
@@ -130,9 +202,8 @@ class Caldav_Backend(CalendarBackend):
         """Return the URL of an event in the current calendar."""
         return f"{self.remote_cal.url.geturl()}/{uid}.ics"
 
-    def _serialize_event(self, event):
+    def _serialize_event(self, vevent):
         """Convert a vevent to a dictionary."""
-        vevent = event.vobject_instance.vevent
         description = (
             vevent.description.value if "description" in vevent.contents else ""
         )
@@ -182,8 +253,11 @@ class Caldav_Backend(CalendarBackend):
             dtstart = data["start_date"]
             # Ensure consistent behavior with other calendar clients (like TB.)
             dtend = data["end_date"] + relativedelta(days=1)
+        rrule = (
+            build_rrule(data["recurrence"], dtstart) if data.get("recurrence") else None
+        )
         self.remote_cal.save_event(
-            uid=uid, dtstart=dtstart, dtend=dtend, summary=data["title"]
+            uid=uid, dtstart=dtstart, dtend=dtend, summary=data["title"], rrule=rrule
         )
         return uid
 
@@ -269,6 +343,8 @@ class Caldav_Backend(CalendarBackend):
         scope = data.pop("scope", None)
         recurrence_id = data.pop("recurrence_id", None)
         new_calendar = data.pop("calendar", None)
+        update_rule = "recurrence" in data
+        recurrence = data.pop("recurrence", None)
         url = self._event_url(uid)
         cal = self.remote_cal.event_by_url(url)
         vcal = cal.vobject_instance
@@ -280,6 +356,8 @@ class Caldav_Backend(CalendarBackend):
                 for field in ("start", "end", "start_date", "end_date", "allDay"):
                     data.pop(field, None)
             self._update_vevent(get_master(vcal), data)
+            if update_rule:
+                set_recurrence(vcal, recurrence)
         if new_calendar and self.calendar.pk != new_calendar.pk:
             # Save the event in the new calendar before removing the old one,
             # so it is never lost.
@@ -292,7 +370,11 @@ class Caldav_Backend(CalendarBackend):
     def get_event(self, uid):
         """Retrieve and event using its uid."""
         event = self.remote_cal.event_by_url(self._event_url(uid))
-        return self._serialize_event(event)
+        # Not expanded: return the series itself, with its recurrence rule
+        master = get_master(event.vobject_instance)
+        result = self._serialize_event(master)
+        result["recurrence"] = get_recurrence(master)
+        return result
 
     def get_events(self, start, end):
         """Retrieve a list of events (recurring events are expanded)."""
@@ -301,7 +383,7 @@ class Caldav_Backend(CalendarBackend):
         )
         events = []
         for event in orig_events:
-            events.append(self._serialize_event(event))
+            events.append(self._serialize_event(event.vobject_instance.vevent))
         return events
 
     def delete_event(self, uid, recurrence_id=None, scope=None):

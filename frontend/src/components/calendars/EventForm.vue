@@ -16,7 +16,44 @@
                 )
           }}
         </v-alert>
-        <v-row class="mb-2">
+        <v-row density="compact">
+          <v-col cols="12">
+            <v-select
+              v-model="form.calendar"
+              :items="calendarItems"
+              item-title="title"
+              item-value="pk"
+              :label="$gettext('Calendar')"
+              :rules="[rules.required]"
+              :error-messages="formErrors.calendar"
+              :readonly="readOnly"
+              prepend-icon="mdi-calendar"
+              hide-details="auto"
+              density="compact"
+              variant="outlined"
+            >
+              <template #selection="{ item }">
+                <v-icon
+                  icon="mdi-circle"
+                  :color="item.color"
+                  size="x-small"
+                  class="mr-2"
+                />
+                {{ item.title }}
+              </template>
+              <template #item="{ props: itemProps, item }">
+                <v-list-item v-bind="itemProps">
+                  <template #prepend>
+                    <v-icon
+                      icon="mdi-circle"
+                      :color="item.color"
+                      size="x-small"
+                    />
+                  </template>
+                </v-list-item>
+              </template>
+            </v-select>
+          </v-col>
           <v-col cols="12">
             <v-text-field
               v-model="form.title"
@@ -24,84 +61,122 @@
               :rules="[rules.required]"
               :error-messages="formErrors.title"
               :readonly="readOnly"
+              prepend-icon="mdi-format-title"
+              hide-details="auto"
               density="compact"
               variant="outlined"
             />
           </v-col>
-        </v-row>
-        <div class="d-flex mb-3">
-          <v-icon icon="mdi-clock-outline" class="mr-4" />
-          <v-text-field
-            v-model="form.start"
-            :label="$gettext('From')"
-            :rules="[rules.required]"
-            :error-messages="formErrors.start"
-            :readonly="readOnly"
-            density="compact"
-            variant="outlined"
-            :type="dateType"
-            class="mr-4"
-          />
-          <v-text-field
-            v-model="form.end"
-            :label="$gettext('To')"
-            :rules="[rules.required]"
-            :error-messages="formErrors.end"
-            :readonly="readOnly"
-            density="compact"
-            variant="outlined"
-            :type="dateType"
-          />
-        </div>
-        <div class="d-flex mb-3">
-          <v-icon icon="mdi-calendar" class="mr-4" />
-          <v-select
-            v-model="form.calendar"
-            :items="calendarItems"
-            item-title="title"
-            item-value="pk"
-            :label="$gettext('Calendar')"
-            :rules="[rules.required]"
-            :error-messages="formErrors.calendar"
-            :readonly="readOnly"
-            density="compact"
-            variant="outlined"
-          />
-        </div>
-        <template v-if="event">
-          <div class="d-flex mb-3">
-            <v-icon icon="mdi-account-multiple-outline" class="mr-4" />
-            <v-select
-              v-model="form.attendees"
-              :label="$gettext('Attendees')"
-              :items="attendees"
-              item-title="display_name"
-              item-value="email"
-              return-object
+          <v-col cols="12" sm="6">
+            <v-text-field
+              v-model="form.start"
+              :label="$gettext('From')"
+              :rules="[rules.required]"
+              :error-messages="formErrors.start"
               :readonly="readOnly"
-              variant="outlined"
+              :type="dateType"
+              prepend-icon="mdi-clock-outline"
+              hide-details="auto"
               density="compact"
-              multiple
-              chips
+              variant="outlined"
             />
-          </div>
-          <v-textarea
-            v-model="form.description"
-            :label="$gettext('Description')"
-            auto-grow
-            rows="2"
-            :readonly="readOnly"
-            variant="outlined"
-            density="compact"
-            class="mb-3"
-          />
-        </template>
+          </v-col>
+          <!-- Aligned with the fields having an icon once stacked -->
+          <v-col cols="12" sm="6" class="pl-10 pl-sm-1">
+            <v-text-field
+              v-model="form.end"
+              :label="$gettext('To')"
+              :rules="[rules.required]"
+              :error-messages="formErrors.end"
+              :readonly="readOnly"
+              :type="dateType"
+              hide-details="auto"
+              density="compact"
+              variant="outlined"
+            />
+          </v-col>
+          <v-col cols="12" sm="6">
+            <v-select
+              v-model="form.frequency"
+              :items="frequencies"
+              :label="$gettext('Repeat')"
+              :readonly="readOnly"
+              :disabled="recurrenceCustom"
+              :loading="loadingRecurrence"
+              :hint="
+                recurrenceCustom
+                  ? $gettext('Custom recurrence, it cannot be modified here')
+                  : ''
+              "
+              :persistent-hint="recurrenceCustom"
+              prepend-icon="mdi-repeat"
+              hide-details="auto"
+              density="compact"
+              variant="outlined"
+            />
+          </v-col>
+          <v-col
+            v-if="form.frequency !== 'NONE'"
+            cols="12"
+            sm="6"
+            class="pl-10 pl-sm-1"
+          >
+            <v-text-field
+              v-model="form.until"
+              :label="$gettext('Until')"
+              :error-messages="
+                formErrors.recurrence?.until || formErrors.recurrence
+              "
+              :readonly="readOnly"
+              :disabled="recurrenceCustom"
+              :clearable="!readOnly && !recurrenceCustom"
+              type="date"
+              hide-details="auto"
+              density="compact"
+              variant="outlined"
+            />
+          </v-col>
+          <template v-if="event">
+            <v-col cols="12">
+              <v-select
+                v-model="form.attendees"
+                :label="$gettext('Attendees')"
+                :items="attendees"
+                item-title="display_name"
+                item-value="email"
+                return-object
+                :readonly="readOnly"
+                prepend-icon="mdi-account-multiple-outline"
+                hide-details="auto"
+                variant="outlined"
+                density="compact"
+                multiple
+                chips
+                closable-chips
+              />
+            </v-col>
+            <v-col cols="12">
+              <v-textarea
+                v-model="form.description"
+                :label="$gettext('Description')"
+                :readonly="readOnly"
+                prepend-icon="mdi-text"
+                hide-details="auto"
+                auto-grow
+                rows="2"
+                variant="outlined"
+                density="compact"
+              />
+            </v-col>
+          </template>
+        </v-row>
       </v-card-text>
       <v-card-actions>
         <v-btn
           v-if="props.event && !readOnly"
           :loading="working"
           color="error"
+          prepend-icon="mdi-delete-outline"
           @click="deleteEvent"
         >
           {{ $gettext('Delete') }}
@@ -157,6 +232,18 @@ const formErrors = ref({})
 const formRef = ref()
 const scopeDialog = ref()
 const working = ref(false)
+const loadingRecurrence = ref(false)
+const recurrenceCustom = ref(false)
+// Recurrence as loaded, to only send it when the user changed it
+const initialRecurrence = ref('null')
+
+const frequencies = [
+  { title: $gettext('Never'), value: 'NONE' },
+  { title: $gettext('Every day'), value: 'DAILY' },
+  { title: $gettext('Every week'), value: 'WEEKLY' },
+  { title: $gettext('Every month'), value: 'MONTHLY' },
+  { title: $gettext('Every year'), value: 'YEARLY' },
+]
 
 const readOnly = computed(() => props.event?.editable === false)
 
@@ -173,6 +260,7 @@ const calendarItems = computed(() =>
     .filter((calendar) => calendar.write || calendar.pk === form.value.calendar)
     .map((calendar) => ({
       pk: calendar.pk,
+      color: calendar.color,
       title: calendar.owner
         ? `${calendar.name} (${calendar.owner})`
         : calendar.name,
@@ -200,7 +288,12 @@ watch(
         start: start.toFormat(format),
         end: end.toFormat(format),
         allDay: !value.timed,
+        // Own calendars come first
+        calendar: props.calendars.find((calendar) => calendar.write)?.pk,
+        frequency: 'NONE',
       }
+      recurrenceCustom.value = false
+      initialRecurrence.value = 'null'
     }
   },
   { immediate: true }
@@ -215,13 +308,50 @@ watch(
       const format = form.value.timed ? 'yyyy-MM-dd HH:mm' : 'yyyy-MM-dd'
       form.value.start = DateTime.fromMillis(value.start).toFormat(format)
       form.value.end = DateTime.fromMillis(value.end).toFormat(format)
+      form.value.frequency = 'NONE'
+      recurrenceCustom.value = false
+      initialRecurrence.value = 'null'
       api.getAttendees().then((resp) => {
         attendees.value = resp.data
       })
+      if (value.recurrence_id) {
+        loadRecurrence()
+      }
     }
   },
   { immediate: true }
 )
+
+async function loadRecurrence() {
+  loadingRecurrence.value = true
+  try {
+    // Listed events are expanded occurrences, the rule is on the series
+    const resp = await api.getUserEvent(props.event.calendar.pk, props.event.id)
+    const recurrence = resp.data.recurrence
+    if (recurrence) {
+      form.value.frequency = recurrence.frequency
+      form.value.until = recurrence.until
+        ? DateTime.fromISO(recurrence.until).toISODate()
+        : null
+      recurrenceCustom.value = recurrence.custom
+    }
+    initialRecurrence.value = JSON.stringify(getRecurrence())
+  } finally {
+    loadingRecurrence.value = false
+  }
+}
+
+function getRecurrence() {
+  if (form.value.frequency === 'NONE') {
+    return null
+  }
+  let until = form.value.until || null
+  if (until && !form.value.allDay) {
+    // Include the occurrence of the last day, in the user's timezone
+    until = DateTime.fromISO(until).endOf('day').toISO()
+  }
+  return { frequency: form.value.frequency, until }
+}
 
 function close() {
   formErrors.value = {}
@@ -248,7 +378,14 @@ async function saveEvent() {
   if (!valid) {
     return
   }
-  const recurrenceParams = await getRecurrenceParams($gettext('Edit event'))
+  const recurrence = getRecurrence()
+  const recurrenceChanged =
+    JSON.stringify(recurrence) !== initialRecurrence.value
+  // A recurrence rule always applies to the whole series
+  const recurrenceParams =
+    recurrenceChanged && props.event?.recurrence_id
+      ? { recurrence_id: props.event.recurrence_id, scope: 'series' }
+      : await getRecurrenceParams($gettext('Edit event'))
   if (recurrenceParams === null) {
     return
   }
@@ -261,6 +398,9 @@ async function saveEvent() {
       attendees: form.value.attendees,
       calendar: form.value.calendar,
       ...recurrenceParams,
+    }
+    if (recurrenceChanged) {
+      data.recurrence = recurrence
     }
 
     if (data.allDay) {
@@ -280,6 +420,8 @@ async function saveEvent() {
     }
     emit('refreshCalendar', data.calendar)
     close()
+  } catch (error) {
+    formErrors.value = error.response?.data || {}
   } finally {
     working.value = false
   }
