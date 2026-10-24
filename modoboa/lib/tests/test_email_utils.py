@@ -103,6 +103,17 @@ class EmailTests(SimpleTestCase):
         """display the text/html part of a multipart message without links"""
         self._test_email("multipart", dformat="html", links=False)
 
+    def test_email_style_with_several_urls(self):
+        """drop a style attribute holding several remote URLs only once"""
+        email = EmailTestImplementation("style_urls", dformat="html", images=False)
+        self.assertIn("Hello", email.body)
+        self.assertNotIn("example.net", email.body)
+        self.assertTrue(email.remote_content_blocked)
+
+        email = EmailTestImplementation("style_urls", dformat="html", images=True)
+        self.assertIn("https://example.net/a.png", email.body)
+        self.assertIn("https://example.net/b.png", email.body)
+
 
 class EmailAddressParserTests(SimpleTestCase):
     """Tests for split_address() and split_local_part()."""
