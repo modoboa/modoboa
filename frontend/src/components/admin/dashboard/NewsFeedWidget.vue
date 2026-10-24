@@ -8,7 +8,21 @@
         hide-default-footer
       >
         <template #[`item.title`]="{ item }">
-          <a :href="item.link" target="_blank">{{ item.title }}</a>
+          <a
+            :href="item.link"
+            target="_blank"
+            :class="{ 'font-weight-bold': isRecent(item) }"
+            >{{ item.title }}</a
+          >
+          <v-chip
+            v-if="isRecent(item)"
+            size="x-small"
+            color="primary"
+            variant="flat"
+            class="ml-2"
+          >
+            {{ $gettext('New') }}
+          </v-chip>
         </template>
         <template #[`item.published`]="{ item }">
           {{ $date(item.published) }}
@@ -35,6 +49,13 @@ const headers = [
   { title: '', key: 'title' },
   { title: '', key: 'published', align: 'end' },
 ]
+
+// ponytail: fixed window, not per-user "unread" tracking; add that if the badge feels stale
+const RECENT_DAYS = 30
+
+function isRecent(item) {
+  return Date.now() - new Date(item.published) < RECENT_DAYS * 24 * 3600 * 1000
+}
 
 const resp = await adminApi.getNewsFeed()
 news.value = resp.data
