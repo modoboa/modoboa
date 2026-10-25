@@ -8,6 +8,7 @@ import feedparser
 
 from django.conf import settings
 
+from django.contrib.contenttypes.models import ContentType
 from django.core.files.storage import default_storage
 
 from drf_spectacular.utils import extend_schema
@@ -18,7 +19,11 @@ from modoboa.admin import models as admin_models
 from modoboa.core import models, signals
 from modoboa.core.extensions import exts_pool
 from modoboa.core.utils import check_for_updates, get_capabilities
-from modoboa.lib.permissions import IsSuperUser, IsPrivilegedUser
+from modoboa.lib.permissions import (
+    IsPrivilegedUser,
+    IsSuperUser,
+    exclude_higher_roles,
+)
 from modoboa.lib.throttle import UserLesserDdosUser
 
 from . import serializers
@@ -189,16 +194,31 @@ class FrontendPluginsAPIView(APIView):
 class StatisticsAPIView(APIView):
     """Return some statistics about this modoboa instance."""
 
-    permission_classes = [permissions.IsAuthenticated, IsSuperUser]
+    permission_classes = [permissions.IsAuthenticated, IsPrivilegedUser]
     throttle_classes = [UserLesserDdosUser]
 
     @extend_schema(responses=serializers.StatisticsSerializer())
     def get(self, request, *args, **kwargs):
+        user = request.user
+        # Same scoping as the account and alias list endpoints
+        accesses = user.objectaccess_set.values_list("object_id", flat=True)
+        account_ids = accesses.filter(
+            content_type=ContentType.objects.get_for_model(models.User)
+        )
+        alias_ids = accesses.filter(
+            content_type=ContentType.objects.get_for_model(admin_models.Alias)
+        )
         data = {
-            "domain_count": admin_models.Domain.objects.count(),
-            "domain_alias_count": admin_models.DomainAlias.objects.count(),
-            "account_count": models.User.objects.count(),
-            "alias_count": admin_models.Alias.objects.filter(internal=False).count(),
+            "domain_count": admin_models.Domain.objects.get_for_admin(user).count(),
+            "domain_alias_count": admin_models.DomainAlias.objects.get_for_admin(
+                user
+            ).count(),
+            "account_count": exclude_higher_roles(
+                user, models.User.objects.filter(pk__in=account_ids)
+            ).count(),
+            "alias_count": admin_models.Alias.objects.filter(
+                pk__in=alias_ids, internal=False
+            ).count(),
         }
         serializer = serializers.StatisticsSerializer(data)
         return response.Response(serializer.data)

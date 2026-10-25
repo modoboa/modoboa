@@ -1,27 +1,29 @@
 <template>
-  <div>
-    <v-toolbar flat>
+  <div class="dashboard">
+    <v-toolbar flat color="transparent">
       <v-toolbar-title>{{ welcomeMsg }}</v-toolbar-title>
     </v-toolbar>
 
-    <v-row>
-      <v-col sm="12" md="6">
-        <NewsFeedWidget />
-        <GlobalStatisticsWidget
-          v-if="authStore.authUser.role === constants.SUPER_ADMIN"
-          class="mt-4"
-        />
-      </v-col>
-      <v-col sm="12" md="6"> </v-col>
-    </v-row>
+    <template v-if="isAdmin">
+      <GlobalStatisticsWidget />
+      <v-row>
+        <v-col cols="12" md="6">
+          <ActionItemsWidget />
+        </v-col>
+        <v-col cols="12" md="6">
+          <NewsFeedWidget />
+        </v-col>
+      </v-row>
+    </template>
   </div>
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { useGettext } from 'vue3-gettext'
 import { useAuthStore } from '@/stores'
 
+import ActionItemsWidget from '@/components/admin/dashboard/ActionItemsWidget'
 import GlobalStatisticsWidget from '@/components/admin/dashboard/GlobalStatisticsWidget'
 import NewsFeedWidget from '@/components/admin/dashboard/NewsFeedWidget'
 import parametersApi from '@/api/parameters'
@@ -31,6 +33,7 @@ const { $gettext } = useGettext()
 const authStore = useAuthStore()
 
 const welcomeMsg = ref('')
+const isAdmin = computed(() => authStore.authUser.role !== constants.USER)
 
 onMounted(async () => {
   const response = await parametersApi.getGlobalApplication('core')
@@ -43,11 +46,7 @@ onMounted(async () => {
 </script>
 
 <style scoped>
-.v-toolbar {
-  background-color: #f7f8fa !important;
-}
-
-.v-tabs-items {
-  background-color: #f7f8fa !important;
+.dashboard :deep(.v-card) {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08) !important;
 }
 </style>

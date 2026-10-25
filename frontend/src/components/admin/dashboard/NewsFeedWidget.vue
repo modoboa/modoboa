@@ -1,5 +1,5 @@
 <template>
-  <v-card :title="$gettext('Latest news')">
+  <v-card v-if="news.length" :title="$gettext('Latest news')">
     <v-card-text>
       <v-data-table
         :headers="headers"
