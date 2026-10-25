@@ -5,7 +5,7 @@ import time
 from django.db.models import Q
 
 from drf_spectacular.utils import extend_schema
-from rest_framework import filters, permissions, response, viewsets
+from rest_framework import exceptions, filters, permissions, response, viewsets
 
 from modoboa.admin import models as admin_models
 from modoboa.lib import pagination
@@ -32,6 +32,8 @@ class StatisticsViewSet(GetThrottleViewsetMixin, viewsets.ViewSet):
         for result in signals.get_graph_sets.send(sender="index", user=request.user):
             graph_sets.update(result[1])
         gset = serializer.validated_data["gset"]
+        if gset not in graph_sets:
+            raise exceptions.NotFound()
         fname = graph_sets[gset].get_file_name(
             request.user, serializer.validated_data.get("searchquery")
         )
