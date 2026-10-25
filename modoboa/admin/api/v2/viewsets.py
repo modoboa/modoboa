@@ -94,14 +94,18 @@ class DomainViewSet(
         return models.Domain.objects.none()
 
     def get_permissions(self):
-        if self.action == "bulk_delete":
+        if self.action in ["delete", "bulk_delete"]:
             # DjangoModelPermissions maps POST to the "add" permission, which
             # is not what a deletion endpoint must require.
             return [
                 permissions.IsAuthenticated(),
                 lib_permissions.CanDeleteDomain(),
             ]
-        if self.action == "generate_dkim_key":
+        if self.action in [
+            "generate_dkim_key",
+            "add_administrator",
+            "remove_administrator",
+        ]:
             return [
                 permissions.IsAuthenticated(),
                 lib_permissions.CanChangeDomain(),
@@ -333,6 +337,15 @@ class AccountViewSet(v1_viewsets.AccountViewSet):
                 for index, badge in enumerate(self.badges)
             }
         )
+
+    def get_permissions(self):
+        if self.action in ["delete", "bulk_delete"]:
+            # DjangoModelPermissions maps POST to the "add" permission.
+            return [
+                permissions.IsAuthenticated(),
+                lib_permissions.CanDeleteUser(),
+            ]
+        return super().get_permissions()
 
     @cached_property
     def badges(self) -> list[dict]:

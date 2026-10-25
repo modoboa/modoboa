@@ -863,6 +863,52 @@ class AccountAPITestCase(ModoAPITestCase):
         response = self.client.post(url, data, format="json")
         self.assertEqual(response.status_code, 200)
 
+    @mock.patch("ovh.Client.get")
+    @mock.patch("ovh.Client.post")
+    def test_reset_password_unmanaged_account(self, client_post, client_get):
+        """A domain admin can't reset the password of an account it can't access."""
+        self.set_global_parameters(
+            {
+                "sms_password_recovery": True,
+                "sms_provider": "ovh",
+                "sms_ovh_application_key": "key",
+                "sms_ovh_application_secret": "secret",
+                "sms_ovh_consumer_key": "consumer",
+            },
+            app="core",
+        )
+        client_get.return_value = ["service"]
+        client_post.return_value = {"totalCreditsRemoved": 1}
+        self.sadmin.email = "sadmin@test.com"
+        self.sadmin.save()
+        url = reverse("v1:account-reset-password")
+        self.client.credentials(HTTP_AUTHORIZATION="Token " + self.da_token.key)
+        for username in ["admin", "user@test2.com"]:
+            account = core_models.User.objects.get(username=username)
+            account.phone_number = "+33612345678"
+            account.save()
+            response = self.client.post(url, {"email": account.email}, format="json")
+            self.assertEqual(response.status_code, 404)
+            self.assertEqual(
+                core_models.User.objects.get(pk=account.pk).password, account.password
+            )
+        client_post.assert_not_called()
+
+    def test_account_exists_unmanaged_account(self):
+        """/exists/ only reports accounts the admin can access."""
+        self.sadmin.email = "sadmin@test.com"
+        self.sadmin.save()
+        url = reverse("v1:account-exists")
+        self.client.credentials(HTTP_AUTHORIZATION="Token " + self.da_token.key)
+        for email, exists in [
+            ("user@test.com", True),
+            ("user@test2.com", False),
+            ("sadmin@test.com", False),
+        ]:
+            response = self.client.get(url, {"email": email})
+            self.assertEqual(response.status_code, 200)
+            self.assertEqual(response.json()["exists"], exists)
+
 
 class AliasAPITestCase(ModoAPITestCase):
     """Check Alias API."""

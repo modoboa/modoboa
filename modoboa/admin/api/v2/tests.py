@@ -2,6 +2,7 @@
 
 from unittest import mock
 
+from django.contrib.auth.models import Group, Permission
 from django.core.files.base import ContentFile
 from django.db.models import Q
 from django.urls import reverse
@@ -295,6 +296,28 @@ class DomainViewSetTestCase(ModoAPITestCase):
         resp = self.client.get(url)
         self.assertEqual(resp.status_code, 200)
         self.assertEqual(len(resp.json()), 1)
+
+    def test_actions_require_matching_permission(self):
+        """Custom POST actions must not fall back to the add_domain permission."""
+        self.set_global_parameter("enable_admin_limits", False, app="limits")
+        Group.objects.get(name="Resellers").permissions.remove(
+            *Permission.objects.filter(
+                content_type__app_label="admin",
+                codename__in=["change_domain", "delete_domain"],
+            )
+        )
+        reseller = core_factories.UserFactory(
+            username="reseller", groups=("Resellers",)
+        )
+        domain = models.Domain.objects.get(name="test.com")
+        grant_access_to_object(reseller, domain, is_owner=True)
+        self.authenticate_user(reseller)
+        account = core_models.User.objects.get(username="user@test.com")
+        for name in ["delete", "add-administrator", "remove-administrator"]:
+            url = reverse(f"v2:domain-{name}", args=[domain.pk])
+            resp = self.client.post(url, {"account": account.pk}, format="json")
+            self.assertEqual(resp.status_code, 403, name)
+        self.assertTrue(models.Domain.objects.filter(pk=domain.pk).exists())
 
     def test_administrator(self):
         domain = models.Domain.objects.get(name="test.com")
@@ -719,6 +742,23 @@ class AccountViewSetTestCase(ModoAPITestCase):
         resp = self.client.post(url, {"ids": [sadmin.pk, account.pk]}, format="json")
         self.assertEqual(resp.status_code, 400)
         # No account must have been deleted
+        self.assertTrue(core_models.User.objects.filter(pk=account.pk).exists())
+
+    def test_delete_requires_delete_user_permission(self):
+        """Delete actions must not fall back to the add_user permission."""
+        Group.objects.get(name="DomainAdmins").permissions.remove(
+            Permission.objects.get(
+                content_type__app_label="core", codename="delete_user"
+            )
+        )
+        self.authenticate_user(core_models.User.objects.get(username="admin@test.com"))
+        account = core_models.User.objects.get(username="user@test.com")
+        resp = self.client.post(reverse("v2:account-delete", args=[account.pk]))
+        self.assertEqual(resp.status_code, 403)
+        resp = self.client.post(
+            reverse("v2:account-bulk-delete"), {"ids": [account.pk]}, format="json"
+        )
+        self.assertEqual(resp.status_code, 403)
         self.assertTrue(core_models.User.objects.filter(pk=account.pk).exists())
 
     def test_bulk_delete_permissions(self):
