@@ -5,13 +5,19 @@
     </v-toolbar>
 
     <template v-if="isAdmin">
-      <GlobalStatisticsWidget />
+      <DashboardWidget skeleton="heading">
+        <GlobalStatisticsWidget />
+      </DashboardWidget>
       <v-row>
         <v-col cols="12" md="6">
-          <ActionItemsWidget />
+          <DashboardWidget>
+            <ActionItemsWidget />
+          </DashboardWidget>
         </v-col>
         <v-col cols="12" md="6">
-          <NewsFeedWidget />
+          <DashboardWidget>
+            <NewsFeedWidget />
+          </DashboardWidget>
         </v-col>
       </v-row>
     </template>
@@ -24,6 +30,7 @@ import { useGettext } from 'vue3-gettext'
 import { useAuthStore } from '@/stores'
 
 import ActionItemsWidget from '@/components/admin/dashboard/ActionItemsWidget'
+import DashboardWidget from '@/components/admin/dashboard/DashboardWidget'
 import GlobalStatisticsWidget from '@/components/admin/dashboard/GlobalStatisticsWidget'
 import NewsFeedWidget from '@/components/admin/dashboard/NewsFeedWidget'
 import parametersApi from '@/api/parameters'
