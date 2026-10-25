@@ -1,0 +1,9 @@
+From: Someone <someone@example.net>
+To: Me <me@example.net>
+Date: Fri, 23 Oct 2026 13:00:00 +0000
+Subject: Style with two URLs
+MIME-Version: 1.0
+Content-Type: text/html; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+<html><body><div style="background: url(https://example.net/a.png) no-repeat; border-image: url(https://example.net/b.png) 30">Hello</div></body></html>

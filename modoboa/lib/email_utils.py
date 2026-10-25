@@ -245,7 +245,7 @@ class Email:
         else:
             for anchor in html.iter("a"):
                 anchor.attrib.pop("href", None)
-        # rewrite_links() gives no element context: set the links of the
+        # _rewrite_url() gets no element context: set the links of the
         # message aside while the other remote URLs are dropped.
         anchors = []
         if not self.images:
@@ -253,7 +253,7 @@ class Email:
             for anchor, _href in anchors:
                 del anchor.attrib["href"]
         self.remote_content_blocked = False
-        html.rewrite_links(self._rewrite_url)
+        self._rewrite_links(html)
         for anchor, href in anchors:
             anchor.set("href", href)
         safe_attrs = list(defs.safe_attrs) + ["class", "style"]
@@ -269,6 +269,32 @@ class Email:
         )
         mail_text = lxml.html.tostring(cleaner.clean_html(html), encoding="unicode")
         return smart_str(mail_text)
+
+    def _rewrite_links(self, html):
+        """Apply _rewrite_url() to every link of the HTML content.
+
+        Same as lxml's rewrite_links(), which deletes an attribute once
+        for each link it drops: an attribute holding several links, like
+        a style with two url(), then raises a KeyError.
+        """
+        for el, attrib, link, pos in html.iterlinks():
+            new_link = self._rewrite_url(link.strip())
+            if new_link == link:
+                continue
+            if attrib is None:
+                if new_link is None:
+                    el.text = ""
+                else:
+                    el.text = el.text[:pos] + new_link + el.text[pos + len(link) :]
+                continue
+            cur = el.get(attrib)
+            if cur is None:
+                # Already removed for another link of the same attribute
+                continue
+            if new_link is None:
+                del el.attrib[attrib]
+            else:
+                el.set(attrib, cur[:pos] + new_link + cur[pos + len(link) :])
 
     def _rewrite_url(self, url):
         """Decide what becomes of a URL of the HTML content.
