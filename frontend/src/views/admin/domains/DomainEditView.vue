@@ -1,5 +1,5 @@
 <template>
-  <v-toolbar flat>
+  <v-toolbar flat color="transparent">
     <v-toolbar-title>{{ $gettext('Edit domain') }}</v-toolbar-title>
   </v-toolbar>
   <DomainEditForm :domain="domain" />
@@ -24,9 +24,3 @@ domainsApi.getDomain(route.params.id).then((resp) => {
   domain.value = resp.data
 })
 </script>
-
-<style scoped>
-.v-toolbar {
-  background-color: #f7f8fa !important;
-}
-</style>

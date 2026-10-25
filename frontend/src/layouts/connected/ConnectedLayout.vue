@@ -94,9 +94,3 @@ if (props.loadTheme) {
   await enableTheme()
 }
 </script>
-
-<style>
-.v-application {
-  background-color: #f7f8fa !important;
-}
-</style>

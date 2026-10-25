@@ -1,5 +1,5 @@
 <template>
-  <v-toolbar flat>
+  <v-toolbar flat color="transparent">
     <v-toolbar-title>{{ $gettext('Edit account') }}</v-toolbar-title>
   </v-toolbar>
   <AccountEditForm />
@@ -11,9 +11,3 @@ import { useGettext } from 'vue3-gettext'
 
 const { $gettext } = useGettext()
 </script>
-
-<style scoped>
-.v-toolbar {
-  background-color: #f7f8fa !important;
-}
-</style>

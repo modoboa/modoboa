@@ -1,5 +1,5 @@
 <template>
-  <v-toolbar flat>
+  <v-toolbar flat color="transparent">
     <v-toolbar-title>
       {{ $gettext('Account') }} {{ account.username }}
       <v-btn
@@ -106,9 +106,3 @@ if (canSetRole.value) {
 
 refreshAccount()
 </script>
-
-<style scoped>
-.v-toolbar {
-  background-color: #f7f8fa !important;
-}
-</style>

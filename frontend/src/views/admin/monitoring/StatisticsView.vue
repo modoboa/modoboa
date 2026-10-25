@@ -1,5 +1,5 @@
 <template>
-  <v-toolbar flat>
+  <v-toolbar flat color="transparent">
     <v-toolbar-title>{{ $gettext('Statistics') }}</v-toolbar-title>
   </v-toolbar>
   <v-layout class="pa-2">
@@ -29,9 +29,3 @@
 <script setup lang="js">
 import TimeSerieChart from '@/components/tools/TimeSerieChart.vue'
 </script>
-
-<style scoped>
-.v-toolbar {
-  background-color: #f7f8fa !important;
-}
-</style>

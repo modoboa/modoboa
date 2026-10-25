@@ -1,7 +1,7 @@
 <template>
   <LoadingData v-if="!domain" />
   <div v-else>
-    <v-toolbar flat>
+    <v-toolbar flat color="transparent">
       <v-toolbar-title>
         {{ $gettext('Domain') }} {{ domain.name }}
         <v-btn
@@ -181,15 +181,6 @@ limitsConfig.value = resp.data
 
 await refreshDomain()
 </script>
-
-<style scoped>
-.v-toolbar {
-  background-color: #f7f8fa !important;
-}
-.v-tabs-items {
-  background-color: #f7f8fa !important;
-}
-</style>
 
 <style>
 .v-window__container {

@@ -24,10 +24,6 @@
 </script>
 
 <style scoped>
-.v-main {
-  background-color: #f7f8fa;
-}
-
 .connected-container {
   height: 100%;
 }

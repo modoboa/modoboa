@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-toolbar flat>
+    <v-toolbar flat color="transparent">
       <v-toolbar-title>{{ title }}</v-toolbar-title>
     </v-toolbar>
 
@@ -56,12 +56,6 @@ watch(route, (toRoute) => {
 
 loadParams(route.params.app)
 </script>
-
-<style scoped>
-.v-toolbar {
-  background-color: #f7f8fa !important;
-}
-</style>
 
 <style>
 .v-window__container {
