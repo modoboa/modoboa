@@ -1408,6 +1408,23 @@ class AlarmViewSetTestCase(ModoAPITestCase):
         self.assertEqual(resp.status_code, 200)
         self.assertEqual(len(resp.json()["results"]), 1)
 
+    def test_list_filtered_by_status(self):
+        factories.AlarmFactory(
+            domain__name="test.com",
+            mailbox=None,
+            title="Closed alarm",
+            status=constants.ALARM_CLOSED,
+        )
+        url = reverse("v2:alarm-list")
+        for status, title in [
+            (constants.ALARM_OPENED, "Test alarm"),
+            (constants.ALARM_CLOSED, "Closed alarm"),
+        ]:
+            resp = self.client.get(url, {"status": status})
+            self.assertEqual(resp.status_code, 200)
+            results = resp.json()["results"]
+            self.assertEqual([alarm["title"] for alarm in results], [title])
+
     def test_alarm_does_not_expose_domain_secrets(self):
         """The nested domain must expose only pk/name, not sensitive fields.
 
