@@ -9,12 +9,25 @@
         <GlobalStatisticsWidget />
       </DashboardWidget>
       <v-row>
-        <v-col cols="12" md="6">
+        <v-col cols="12" md="8">
           <DashboardWidget>
             <ActionItemsWidget />
           </DashboardWidget>
+          <template v-if="isSuperAdmin">
+            <TimeSerieChart
+              class="mt-4"
+              graphic-set="mailtraffic"
+              graphic-name="averagetraffic"
+            />
+            <DashboardWidget>
+              <RecentActivityWidget class="mt-4" />
+            </DashboardWidget>
+          </template>
         </v-col>
-        <v-col cols="12" md="6">
+        <v-col cols="12" md="4">
+          <DashboardWidget v-if="isSuperAdmin">
+            <SystemStatusWidget class="mb-4" />
+          </DashboardWidget>
           <DashboardWidget>
             <NewsFeedWidget />
           </DashboardWidget>
@@ -33,6 +46,9 @@ import ActionItemsWidget from '@/components/admin/dashboard/ActionItemsWidget'
 import DashboardWidget from '@/components/admin/dashboard/DashboardWidget'
 import GlobalStatisticsWidget from '@/components/admin/dashboard/GlobalStatisticsWidget'
 import NewsFeedWidget from '@/components/admin/dashboard/NewsFeedWidget'
+import RecentActivityWidget from '@/components/admin/dashboard/RecentActivityWidget'
+import SystemStatusWidget from '@/components/admin/dashboard/SystemStatusWidget'
+import TimeSerieChart from '@/components/tools/TimeSerieChart.vue'
 import parametersApi from '@/api/parameters'
 import constants from '@/constants.json'
 
@@ -41,6 +57,9 @@ const authStore = useAuthStore()
 
 const welcomeMsg = ref('')
 const isAdmin = computed(() => authStore.authUser.role !== constants.USER)
+const isSuperAdmin = computed(
+  () => authStore.authUser.role === constants.SUPER_ADMIN
+)
 
 onMounted(async () => {
   const response = await parametersApi.getGlobalApplication('core')
