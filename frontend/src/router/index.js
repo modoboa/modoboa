@@ -313,7 +313,11 @@ const routes = [
         component: () => import('@/views/admin/monitoring/StatisticsView.vue'),
         meta: {
           requiresAuth: true,
-          allowedRoles: [constants.SUPER_ADMIN],
+          allowedRoles: [
+            constants.DOMAIN_ADMIN,
+            constants.RESELLER,
+            constants.SUPER_ADMIN,
+          ],
         },
       },
       {

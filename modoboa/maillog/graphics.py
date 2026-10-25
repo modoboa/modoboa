@@ -239,8 +239,8 @@ class MailTraffic(GraphicSet):
 
         results = list(
             chain(
-                admin_models.Domain.objects.filter(name__startswith=pattern),
-                admin_models.DomainAlias.objects.filter(name__startswith=pattern),
+                admin_models.Domain.objects.filter(name=pattern),
+                admin_models.DomainAlias.objects.filter(name=pattern),
             )
         )
         if len(results) != 1:

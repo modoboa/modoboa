@@ -3,6 +3,7 @@
     <v-toolbar density="compact" elevation="0">
       <v-toolbar-title>{{ title }}</v-toolbar-title>
       <v-spacer />
+      <slot name="actions" />
       <v-menu v-model="menu" location="bottom">
         <template #activator="{ props }">
           <v-btn size="small" v-bind="props" prepend-icon="mdi-calendar">
@@ -70,6 +71,8 @@ const _props = defineProps({
   },
   graphicSet: { type: String, default: null },
   graphicName: { type: String, default: null },
+  // Wait for a domain to be selected before loading anything
+  domainRequired: { type: Boolean, default: false },
 })
 
 const title = computed(() => {
@@ -131,6 +134,9 @@ function setPeriod(newPeriod) {
   }
 }
 function fetchStatistics() {
+  if (_props.domainRequired && !_props.domain) {
+    return
+  }
   const args = {
     graphSet: _props.graphicSet,
     period: period.value,
@@ -151,6 +157,7 @@ function fetchStatistics() {
 onMounted(() => {
   fetchStatistics()
 })
+watch(() => _props.domain, fetchStatistics)
 watch(
   () => _props.graphicName,
   () => {
