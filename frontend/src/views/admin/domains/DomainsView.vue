@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-toolbar flat>
+    <v-toolbar flat color="transparent">
       <v-toolbar-title>{{ $gettext('Domains') }}</v-toolbar-title>
     </v-toolbar>
 
@@ -122,13 +122,3 @@ const closeImportForm = () => {
   domainList.value.reloadDomains()
 }
 </script>
-
-<style scoped>
-.v-toolbar {
-  background-color: #f7f8fa !important;
-}
-
-.v-tabs-items {
-  background-color: #f7f8fa !important;
-}
-</style>

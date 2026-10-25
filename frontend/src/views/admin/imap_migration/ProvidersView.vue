@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-toolbar flat>
+    <v-toolbar flat color="transparent">
       <v-toolbar-title> {{ $gettext('Providers') }} </v-toolbar-title>
     </v-toolbar>
 
@@ -38,13 +38,3 @@ const { $gettext } = useGettext()
 
 const showProviderWizard = ref(false)
 </script>
-
-<style scoped>
-.v-toolbar {
-  background-color: #f7f8fa !important;
-}
-
-.v-tabs-items {
-  background-color: #f7f8fa !important;
-}
-</style>

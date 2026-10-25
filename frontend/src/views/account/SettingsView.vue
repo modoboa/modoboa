@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-toolbar flat>
+    <v-toolbar flat color="transparent">
       <v-toolbar-title>{{ $gettext('Account settings') }}</v-toolbar-title>
     </v-toolbar>
     <div class="pa-4">
@@ -65,12 +65,6 @@ import constants from '@/constants.json'
 const authStore = useAuthStore()
 const tab = ref()
 </script>
-
-<style scoped>
-.v-toolbar {
-  background-color: #f7f8fa !important;
-}
-</style>
 
 <style>
 .v-window__container {

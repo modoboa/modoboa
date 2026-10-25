@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-toolbar flat>
+    <v-toolbar flat color="transparent">
       <v-toolbar-title>{{ $gettext('Information') }}</v-toolbar-title>
     </v-toolbar>
     <v-card v-if="globalStore.adminNotifications.length" class="my-6">
@@ -289,10 +289,6 @@ onMounted(() => {
 </script>
 
 <style scoped lang="scss">
-.v-toolbar {
-  background-color: #f7f8fa !important;
-}
-
 a {
   text-decoration: none;
   color: rgb(var(--v-theme-primary));

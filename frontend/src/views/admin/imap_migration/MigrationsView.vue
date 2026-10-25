@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-toolbar flat>
+    <v-toolbar flat color="transparent">
       <v-toolbar-title>{{ $gettext('Migrations') }}</v-toolbar-title>
       <v-spacer />
     </v-toolbar>
@@ -15,13 +15,3 @@ import MigrationsList from '@/components/admin/imap_migration/MigrationsList.vue
 
 const { $gettext } = useGettext()
 </script>
-
-<style scoped>
-.v-toolbar {
-  background-color: #f7f8fa !important;
-}
-
-.v-tabs-items {
-  background-color: #f7f8fa !important;
-}
-</style>
