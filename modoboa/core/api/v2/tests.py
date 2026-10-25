@@ -649,6 +649,22 @@ class StatisticsAPIViewTestCase(ModoAPITestCase):
         self.assertEqual(stats["account_count"], 5)
         self.assertEqual(stats["alias_count"], 3)
 
+    def test_get_statistics_as_domain_admin(self):
+        dadmin = models.User.objects.get(username="admin@test.com")
+        self.authenticate_user(dadmin)
+        response = self.client.get(reverse("v2:statistics"))
+        self.assertEqual(response.status_code, 200)
+        stats = response.json()
+        self.assertEqual(stats["domain_count"], 1)
+        self.assertEqual(stats["account_count"], 2)
+        self.assertEqual(stats["alias_count"], 3)
+
+    def test_get_statistics_as_simple_user(self):
+        user = models.User.objects.get(username="user@test.com")
+        self.authenticate_user(user)
+        response = self.client.get(reverse("v2:statistics"))
+        self.assertEqual(response.status_code, 403)
+
 
 class SchemaDocumentationTestCase(ModoAPITestCase):
     """Tests for the schema documentation endpoints."""

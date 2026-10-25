@@ -538,7 +538,7 @@ class AlarmFilterSet(dj_filters.FilterSet):
 
     class Meta:
         model = models.Alarm
-        fields = ["created"]
+        fields = ["created", "status"]
 
     def filter_date(self, queryset, name, value):
         return queryset.filter(created__gt=value)
