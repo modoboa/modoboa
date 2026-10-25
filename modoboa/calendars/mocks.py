@@ -59,6 +59,29 @@ END:VEVENT
 END:VCALENDAR
 """
 
+EV_RECURRING_EXCEPTIONS = """BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Example Corp.//CalDAV Client//EN
+BEGIN:VEVENT
+UID:weekly-2
+DTSTAMP:20260901T000000Z
+DTSTART:20260901T080000Z
+DTEND:20260901T090000Z
+RRULE:FREQ=WEEKLY;UNTIL=20261231T235959Z
+EXDATE:20260908T080000Z,20260922T080000Z
+SUMMARY:Weekly meeting
+END:VEVENT
+BEGIN:VEVENT
+UID:weekly-2
+DTSTAMP:20260901T000000Z
+RECURRENCE-ID:20260929T080000Z
+DTSTART:20260929T100000Z
+DTEND:20260929T110000Z
+SUMMARY:Moved meeting
+END:VEVENT
+END:VCALENDAR
+"""
+
 #: Actions performed on the fake CalDAV server, in order
 ACTIONS = []
 
@@ -106,6 +129,7 @@ class Calendar:
         return True
 
     def save_event(self, *args, **kwargs):
+        ACTIONS.append(("save_event", str(self.url), kwargs))
         return True
 
     def event_by_url(self, url):

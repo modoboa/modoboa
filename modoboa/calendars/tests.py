@@ -1435,6 +1435,177 @@ class EventViewSetTestCase(TestDataMixin, ModoAPITestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual([action[0] for action in mocks.ACTIONS], ["delete"])
 
+    def _saved_rrule(self):
+        """Return the RRULE passed to save_event."""
+        saved = [action for action in mocks.ACTIONS if action[0] == "save_event"]
+        self.assertEqual(len(saved), 1)
+        return saved[0][2]["rrule"]
+
+    def test_create_recurring_event(self):
+        url = f"/api/v2/user-calendars/{self.calendar.pk}/events/"
+        data = {
+            "title": "Weekly",
+            "start": "2026-09-01T08:00:00Z",
+            "end": "2026-09-01T09:00:00Z",
+            "calendar": self.calendar.pk,
+            "recurrence": {
+                "frequency": "WEEKLY",
+                "until": "2026-12-31T23:59:59.999+01:00",
+            },
+        }
+        response = self.client.post(url, data=data, format="json")
+        self.assertEqual(response.status_code, 201)
+        self.assertEqual(
+            self._saved_rrule(),
+            {
+                "FREQ": "WEEKLY",
+                "UNTIL": datetime.datetime(
+                    2026, 12, 31, 22, 59, 59, 999000, tzinfo=datetime.timezone.utc
+                ),
+            },
+        )
+
+    def test_create_recurring_all_day_event(self):
+        url = f"/api/v2/user-calendars/{self.calendar.pk}/events/"
+        data = {
+            "title": "Daily",
+            "allDay": True,
+            "start_date": "2026-09-01",
+            "end_date": "2026-09-01",
+            "calendar": self.calendar.pk,
+            "recurrence": {"frequency": "DAILY", "until": "2026-09-10"},
+        }
+        response = self.client.post(url, data=data, format="json")
+        self.assertEqual(response.status_code, 201)
+        self.assertEqual(
+            self._saved_rrule(),
+            {"FREQ": "DAILY", "UNTIL": datetime.date(2026, 9, 10)},
+        )
+
+    def test_create_event_without_recurrence(self):
+        url = f"/api/v2/user-calendars/{self.calendar.pk}/events/"
+        data = {
+            "title": "Once",
+            "start": "2026-09-01T08:00:00Z",
+            "end": "2026-09-01T09:00:00Z",
+            "calendar": self.calendar.pk,
+        }
+        response = self.client.post(url, data=data, format="json")
+        self.assertEqual(response.status_code, 201)
+        self.assertIsNone(self._saved_rrule())
+
+    def test_create_recurring_event_until_before_start(self):
+        url = f"/api/v2/user-calendars/{self.calendar.pk}/events/"
+        data = {
+            "title": "Weekly",
+            "start": "2026-09-01T08:00:00Z",
+            "end": "2026-09-01T09:00:00Z",
+            "calendar": self.calendar.pk,
+            "recurrence": {"frequency": "WEEKLY", "until": "2026-08-31"},
+        }
+        response = self.client.post(url, data=data, format="json")
+        self.assertEqual(response.status_code, 400)
+        self.assertIn("until", response.json()["recurrence"])
+
+    def test_patch_add_recurrence(self):
+        """A simple event becomes recurring."""
+        url = f"/api/v2/user-calendars/{self.calendar.pk}/events/1234/"
+        data = {
+            "start": "2006-07-14T17:00:00Z",
+            "end": "2006-07-15T04:00:00Z",
+            "recurrence": {"frequency": "DAILY", "until": "2006-07-20"},
+        }
+        response = self.client.patch(url, data=data, format="json")
+        self.assertEqual(response.status_code, 200)
+        self.assertIn("RRULE:FREQ=DAILY;UNTIL=20060720T235959Z", self._saved_ics())
+
+    def _patch_series_recurrence(self, recurrence):
+        self.cal_mock.return_value.event_data = mocks.EV_RECURRING_EXCEPTIONS
+        url = f"/api/v2/user-calendars/{self.calendar.pk}/events/weekly-2/"
+        data = {
+            "start": "2026-09-01T08:00:00Z",
+            "end": "2026-09-01T09:00:00Z",
+            "recurrence_id": "2026-09-01T08:00:00+00:00",
+            "scope": "series",
+            "recurrence": recurrence,
+        }
+        response = self.client.patch(url, data=data, format="json")
+        self.assertEqual(response.status_code, 200)
+        return self._saved_ics()
+
+    def test_patch_recurrence_until(self):
+        """Exceptions after the new end of the series are dropped."""
+        ics = self._patch_series_recurrence(
+            {"frequency": "WEEKLY", "until": "2026-09-15T23:59:59+02:00"}
+        )
+        self.assertIn("RRULE:FREQ=WEEKLY;UNTIL=20260915T215959Z", ics)
+        self.assertIn("EXDATE:20260908T080000Z\r\n", ics)
+        self.assertNotIn("20260922T080000Z", ics)
+        self.assertNotIn("RECURRENCE-ID", ics)
+
+    def test_patch_recurrence_without_until(self):
+        """Removing the end of a series keeps its exceptions."""
+        ics = self._patch_series_recurrence({"frequency": "WEEKLY", "until": None})
+        self.assertIn("RRULE:FREQ=WEEKLY\r\n", ics)
+        self.assertIn("EXDATE:20260908T080000Z,20260922T080000Z", ics)
+        self.assertIn("RECURRENCE-ID:20260929T080000Z", ics)
+
+    def test_patch_recurrence_frequency(self):
+        """Exceptions do not match the occurrences of a new frequency."""
+        ics = self._patch_series_recurrence({"frequency": "DAILY"})
+        self.assertIn("RRULE:FREQ=DAILY\r\n", ics)
+        self.assertNotIn("EXDATE", ics)
+        self.assertNotIn("RECURRENCE-ID", ics)
+
+    def test_patch_remove_recurrence(self):
+        ics = self._patch_series_recurrence(None)
+        self.assertNotIn("RRULE", ics)
+        self.assertNotIn("EXDATE", ics)
+        self.assertNotIn("RECURRENCE-ID", ics)
+
+    def test_patch_recurrence_of_occurrence_denied(self):
+        url = f"/api/v2/user-calendars/{self.calendar.pk}/events/weekly-1/"
+        data = {
+            "start": "2026-09-08T08:00:00Z",
+            "end": "2026-09-08T09:00:00Z",
+            "recurrence_id": "2026-09-08T08:00:00+00:00",
+            "scope": "occurrence",
+            "recurrence": {"frequency": "DAILY"},
+        }
+        response = self.client.patch(url, data=data, format="json")
+        self.assertEqual(response.status_code, 400)
+        self.assertIn("recurrence", response.json())
+        self.assertEqual(mocks.ACTIONS, [])
+
+    def test_get_event_recurrence(self):
+        self.cal_mock.return_value.event_data = mocks.EV_RECURRING_EXCEPTIONS
+        url = f"/api/v2/user-calendars/{self.calendar.pk}/events/weekly-2/"
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        # The series is returned, not one of its exceptions
+        self.assertEqual(response.json()["title"], "Weekly meeting")
+        self.assertEqual(
+            response.json()["recurrence"],
+            {
+                "frequency": "WEEKLY",
+                "until": "2026-12-31T23:59:59+00:00",
+                "custom": False,
+            },
+        )
+
+    def test_get_event_custom_recurrence(self):
+        self.cal_mock.return_value.event_data = mocks.EV_RECURRING
+        url = f"/api/v2/user-calendars/{self.calendar.pk}/events/weekly-1/"
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(response.json()["recurrence"]["custom"])
+
+    def test_get_event_without_recurrence(self):
+        url = f"/api/v2/user-calendars/{self.calendar.pk}/events/1234/"
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertIsNone(response.json()["recurrence"])
+
     def test_shared_events_own_domain(self):
         """A simple user can use events of a shared calendar in its domain."""
         url = f"/api/v2/shared-calendars/{self.scalendar.pk}/events/"
