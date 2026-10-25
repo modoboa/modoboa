@@ -13,16 +13,20 @@
           <DashboardWidget>
             <ActionItemsWidget />
           </DashboardWidget>
-          <template v-if="isSuperAdmin">
-            <TimeSerieChart
-              class="mt-4"
-              graphic-set="mailtraffic"
-              graphic-name="averagetraffic"
-            />
-            <DashboardWidget>
-              <RecentActivityWidget class="mt-4" />
-            </DashboardWidget>
-          </template>
+          <TimeSerieChart
+            class="mt-4"
+            :domain="trafficDomain"
+            domain-required
+            graphic-set="mailtraffic"
+            graphic-name="averagetraffic"
+          >
+            <template #actions>
+              <StatisticsDomainSelect v-model="trafficDomain" class="mr-2" />
+            </template>
+          </TimeSerieChart>
+          <DashboardWidget v-if="isSuperAdmin">
+            <RecentActivityWidget class="mt-4" />
+          </DashboardWidget>
         </v-col>
         <v-col cols="12" md="4">
           <DashboardWidget v-if="isSuperAdmin">
@@ -48,6 +52,7 @@ import GlobalStatisticsWidget from '@/components/admin/dashboard/GlobalStatistic
 import NewsFeedWidget from '@/components/admin/dashboard/NewsFeedWidget'
 import RecentActivityWidget from '@/components/admin/dashboard/RecentActivityWidget'
 import SystemStatusWidget from '@/components/admin/dashboard/SystemStatusWidget'
+import StatisticsDomainSelect from '@/components/tools/StatisticsDomainSelect.vue'
 import TimeSerieChart from '@/components/tools/TimeSerieChart.vue'
 import parametersApi from '@/api/parameters'
 import constants from '@/constants.json'
@@ -56,6 +61,7 @@ const { $gettext } = useGettext()
 const authStore = useAuthStore()
 
 const welcomeMsg = ref('')
+const trafficDomain = ref(null)
 const isAdmin = computed(() => authStore.authUser.role !== constants.USER)
 const isSuperAdmin = computed(
   () => authStore.authUser.role === constants.SUPER_ADMIN

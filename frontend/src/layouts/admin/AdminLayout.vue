@@ -105,7 +105,11 @@ const adminMenuItems = computed(() => {
         {
           text: $gettext('Statistics'),
           to: { name: 'Statistics' },
-          roles: [constants.SUPER_ADMIN],
+          roles: [
+            constants.SUPER_ADMIN,
+            constants.RESELLER,
+            constants.DOMAIN_ADMIN,
+          ],
         },
         {
           text: $gettext('Audit trail'),
