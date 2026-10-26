@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-09 15:54+0200\n"
+"POT-Creation-Date: 2026-10-26 09:35+0100\n"
 "PO-Revision-Date: 2011-07-01 08:15+0000\n"
 "Last-Translator: Eli Spizzichino, 2026\n"
 "Language-Team: Italian (http://app.transifex.com/tonio/modoboa/language/"
@@ -67,10 +67,10 @@ msgid "Cannot be greater than domain quota"
 msgstr ""
 "Non può essere maggiore dello spazio massimo definito a livello di dominio"
 
-#: admin/api/v1/serializers.py:185 admin/api/v1/serializers.py:405
-#: admin/api/v1/serializers.py:452 admin/api/v2/serializers.py:402
-#: admin/api/v2/serializers.py:652 admin/api/v2/serializers.py:705
-#: admin/models/alias.py:45 calendars/serializers.py:185
+#: admin/api/v1/serializers.py:185 admin/api/v1/serializers.py:418
+#: admin/api/v1/serializers.py:466 admin/api/v2/serializers.py:402
+#: admin/api/v2/serializers.py:718 admin/api/v2/serializers.py:771
+#: admin/models/alias.py:45 calendars/serializers.py:218
 msgid "Permission denied."
 msgstr "Permesso negato."
 
@@ -88,7 +88,7 @@ msgid ""
 msgstr "Alias di dominio con questo nome già esistente"
 
 #: admin/api/v1/serializers.py:272 admin/api/v2/serializers.py:118
-#: admin/api/v2/serializers.py:573 amavis/serializers.py:39
+#: admin/api/v2/serializers.py:607 amavis/serializers.py:39
 #: core/api/v2/serializers.py:219 core/api/v2/serializers.py:221
 #: core/api/v2/serializers.py:230 transport/backends.py:40
 msgid "This field is required"
@@ -101,37 +101,43 @@ msgstr ""
 "Lista dei domini amministrati (solo per rivenditori e amministratori di "
 "dominio)."
 
-#: admin/api/v1/serializers.py:378 admin/api/v2/serializers.py:634
+#: admin/api/v1/serializers.py:369
+#, fuzzy
+#| msgid "This alias already exists"
+msgid "This username is already used."
+msgstr "Questo alias esiste già"
+
+#: admin/api/v1/serializers.py:385 admin/api/v2/serializers.py:678
 msgid "Not allowed for this role."
 msgstr "Non consentito per questo ruolo."
 
-#: admin/api/v1/serializers.py:396
+#: admin/api/v1/serializers.py:403
 msgid "Must be equal to mailbox full_address"
 msgstr "Deve essere uguale a full_address della casella di posta"
 
-#: admin/api/v1/serializers.py:438 admin/api/v2/serializers.py:686
-#: calendars/serializers.py:264 calendars/serializers.py:333
-#: pdfcredentials/api/v2/serializers.py:91
+#: admin/api/v1/serializers.py:409 admin/api/v1/serializers.py:452
+#: admin/api/v2/serializers.py:752 calendars/serializers.py:316
+#: calendars/serializers.py:385 pdfcredentials/api/v2/serializers.py:91
 msgid "This field is required."
 msgstr "Questo campo è obbligatorio."
 
-#: admin/api/v1/serializers.py:449 admin/api/v2/serializers.py:702
+#: admin/api/v1/serializers.py:463 admin/api/v2/serializers.py:768
 msgid "Local domain {} does not exist"
 msgstr "Il dominio locale {} non esiste"
 
-#: admin/api/v1/serializers.py:545
+#: admin/api/v1/serializers.py:562
 msgid "A list of recipient"
 msgstr "Una lista di destinatari"
 
-#: admin/api/v1/serializers.py:561 admin/api/v2/viewsets.py:438
+#: admin/api/v1/serializers.py:578 admin/api/v2/viewsets.py:469
 msgid "This alias already exists"
 msgstr "Questo alias esiste già"
 
-#: admin/api/v1/serializers.py:597
+#: admin/api/v1/serializers.py:614
 msgid "You don't have access to this domain."
 msgstr "Non hai accesso a questo dominio"
 
-#: admin/api/v1/serializers.py:606
+#: admin/api/v1/serializers.py:623
 msgid "You don't have access to this mailbox."
 msgstr "Non hai accesso a questa casella di posta."
 
@@ -164,7 +170,8 @@ msgstr "Dev'essere un intero positivo"
 msgid "openssl not found, please make sure it is installed."
 msgstr "openssl non trovato, assicurarsi che sia installato."
 
-#: admin/api/v2/serializers.py:339 pdfcredentials/api/v2/serializers.py:84
+#: admin/api/v2/serializers.py:339 maillog/api/v2/serializers.py:98
+#: pdfcredentials/api/v2/serializers.py:84
 msgid "Directory not found."
 msgstr "Cartella non trovata."
 
@@ -181,32 +188,36 @@ msgstr ""
 msgid "Define at least one authorized network / address"
 msgstr "Definire almeno una rete / indirizzo autorizzato"
 
-#: admin/api/v2/serializers.py:669
+#: admin/api/v2/serializers.py:711
+msgid "An account with a mailbox must use an email address as username."
+msgstr ""
+
+#: admin/api/v2/serializers.py:735
 msgid "The left part of an email address can't be more than 64 characters."
 msgstr ""
 "La parte a sinistra di un indirizzo email non può superare i 64 caratteri."
 
-#: admin/api/v2/serializers.py:691
+#: admin/api/v2/serializers.py:757
 msgid "A mailbox is required to create aliases."
 msgstr "È necessaria una casella di posta per creare degli alias."
 
-#: admin/api/v2/serializers.py:905
+#: admin/api/v2/serializers.py:999
 msgid "Unknown status"
 msgstr "Stato sconosciuto"
 
-#: admin/api/v2/viewsets.py:125
+#: admin/api/v2/viewsets.py:127
 msgid "You don't have access to this domain"
 msgstr "Non hai accesso a questo dominio"
 
-#: admin/api/v2/viewsets.py:128 admin/api/v2/viewsets.py:146
+#: admin/api/v2/viewsets.py:130 admin/api/v2/viewsets.py:148
 msgid "You can't delete your own domain"
 msgstr "Non puoi cancellare il tuo dominio"
 
-#: admin/api/v2/viewsets.py:161
+#: admin/api/v2/viewsets.py:163
 msgid "DKIM signing is not enabled for this domain"
 msgstr ""
 
-#: admin/api/v2/viewsets.py:353 core/handlers.py:95
+#: admin/api/v2/viewsets.py:384 core/handlers.py:95
 msgid "You can't delete your own account"
 msgstr "Non puoi cancellare il tuo account"
 
@@ -545,65 +556,71 @@ msgstr "[modoboa] problema(/i) MX per il dominio {}"
 msgid "[modoboa] DNSBL issue(s) for domain {}"
 msgstr "[modoboa] problema(/i) DNSBL per il dominio {}"
 
-#: admin/handlers.py:200
+#: admin/handlers.py:261
 msgid "domain alias"
 msgstr "alias del dominio"
 
-#: admin/handlers.py:248
+#: admin/handlers.py:309
 #, python-format
 msgid "Account import failed (%s): domain does not exist"
 msgstr "Importazione dell'account fallito (%s): il dominio non esiste"
 
-#: admin/handlers.py:267
+#: admin/handlers.py:328
 #, python-format
 msgid "Account import failed (%s): wrong quota value"
 msgstr "Importazione account fallito(%s): valore della quota errato"
 
-#: admin/lib.py:167
+#: admin/jobs.py:36
+#, fuzzy
+#| msgid "Failed to retrieve mailbox location (%s)"
+msgid "Failed to move mailbox folder {} to {} ({})"
+msgstr "Impossibile recuperare la posizione della casella di posta (%s)"
+
+#: admin/lib.py:177
 msgid "You are not allowed to import domains"
 msgstr "Non hai i permessi di importare domini"
 
-#: admin/lib.py:176
+#: admin/lib.py:186
 msgid "You are not allowed to import domain aliases."
 msgstr "Non hai i permessi di importare gli alias dominio"
 
-#: admin/lib.py:268 admin/tests/test_mx.py:139 admin/tests/test_mx.py:152
+#: admin/lib.py:278 admin/tests/test_mx.py:139 admin/tests/test_mx.py:152
 #: admin/tests/test_mx.py:157
 #, python-format
 msgid "No DNS record found for %s"
 msgstr "Nessun record DNS trovato per %s"
 
-#: admin/lib.py:271
+#: admin/lib.py:281
 #, python-format
 msgid "No %(type)s record for %(name)s"
 msgstr "Nessun record %(type)s per %(name)s"
 
-#: admin/lib.py:275 admin/tests/test_mx.py:142
+#: admin/lib.py:285 admin/tests/test_mx.py:142
 msgid "No working name servers found"
 msgstr "Nessun DNS server funzionante trovato"
 
-#: admin/lib.py:278 admin/tests/test_mx.py:146
+#: admin/lib.py:288 admin/tests/test_mx.py:146
 #, python-format
 msgid "DNS resolution timeout, unable to query %s at the moment"
 msgstr ""
 "Timeout nella risoluzione DNS del nome, problema momentaneo nell'interrogare "
 "%s "
 
-#: admin/lib.py:282
+#: admin/lib.py:292
 msgid "DNS name is too long: {}"
 msgstr "Il nome DNS è troppo lungo: {}"
 
-#: admin/lib.py:313
+#: admin/lib.py:323
 #, python-brace-format
 msgid "Invalid IP address format for {domain}; {addr}"
 msgstr "Formato di indirizzo IP non valido per {domain}; {addr}"
 
-#: admin/lib.py:406
+#: admin/lib.py:416
 #, python-format
 msgid "Object already exists: %s"
 msgstr "L'oggetto esiste già: %s"
 
-#: admin/lib.py:410
+#: admin/lib.py:420
 #, python-format
 msgid "%d objects imported successfully"
 msgstr "%d oggetti importati correttamente"
@@ -643,7 +660,7 @@ msgstr "Impossibile generare la chiave pubblica DKIM"
 msgid "Domain not found."
 msgstr "Dominio non trovato."
 
-#: admin/models/alias.py:117 admin/models/mailbox.py:86
+#: admin/models/alias.py:117 admin/models/mailbox.py:123
 msgid "address"
 msgstr "indirizzo"
 
@@ -652,7 +669,7 @@ msgid "The alias address."
 msgstr "Indirizzi Alias."
 
 #: admin/models/alias.py:123 admin/models/domain.py:76
-#: admin/models/domain_alias.py:45 autoreply/models.py:37
+#: admin/models/domain_alias.py:45 autoreply/models.py:26
 msgid "enabled"
 msgstr "Attivato"
 
@@ -702,7 +719,7 @@ msgstr "nome"
 msgid "The domain name"
 msgstr "Il nome del dominio"
 
-#: admin/models/domain.py:70 admin/models/mailbox.py:93
+#: admin/models/domain.py:70 admin/models/mailbox.py:130
 msgid "Message sending limit"
 msgstr "Limite invio messaggi"
 
@@ -789,32 +806,32 @@ msgstr "Il dominio a cui punta questo alias"
 msgid "Unknown domain %s"
 msgstr "Dominio sconosciuto %s"
 
-#: admin/models/mailbox.py:88
+#: admin/models/mailbox.py:125
 msgid "Mailbox address (without the @domain.tld part)"
 msgstr "Indirizzo della casella di posta (senza la parte @dominio.org)"
 
-#: admin/models/mailbox.py:96
+#: admin/models/mailbox.py:133
 msgid "Number of messages this mailbox can send per day"
 msgstr "Numero di messaggi che questa casella di posta può inviare al giorno"
 
-#: admin/models/mailbox.py:157
+#: admin/models/mailbox.py:194
 #, python-format
 msgid "Failed to retrieve mailbox location (%s)"
 msgstr "Impossibile recuperare la posizione della casella di posta (%s)"
 
-#: admin/models/mailbox.py:258
+#: admin/models/mailbox.py:295
 msgid "A quota is required"
 msgstr "È richiesta una quota"
 
-#: admin/models/mailbox.py:265
+#: admin/models/mailbox.py:302
 msgid "{}: domain quota exceeded"
 msgstr "{}: quota dominio superata"
 
-#: admin/models/mailbox.py:321
+#: admin/models/mailbox.py:358
 msgid "Domain does not exist"
 msgstr "Il dominio non esiste"
 
-#: admin/models/mailbox.py:357
+#: admin/models/mailbox.py:394
 msgid "Mailbox {} already exists"
 msgstr "La La casella di posta {} esiste già"
 
@@ -1248,23 +1265,23 @@ msgstr ""
 msgid "Automatic replies"
 msgstr "Risposte automatiche"
 
-#: autoreply/models.py:29
+#: autoreply/models.py:18
 msgid "subject"
 msgstr "oggetto"
 
-#: autoreply/models.py:31
+#: autoreply/models.py:20
 msgid "The subject that will appear in sent emails"
 msgstr "L'oggetto che apparirà nelle mail inviate"
 
-#: autoreply/models.py:34
+#: autoreply/models.py:23
 msgid "content"
 msgstr "contenuto"
 
-#: autoreply/models.py:34
+#: autoreply/models.py:23
 msgid "The content that will appear in sent emails"
 msgstr "Il contenuto che apparirà nelle mail inviate"
 
-#: autoreply/models.py:37
+#: autoreply/models.py:26
 msgid "Activate/Deactivate your auto reply"
 msgstr "Attiva/disattiva la tua risposta automatica"
 
@@ -1351,57 +1368,85 @@ msgid ""
 "%(characters)s"
 msgstr ""
 
-#: calendars/models.py:76 calendars/models.py:93 contacts/models.py:39
+#: calendars/models.py:76 calendars/models.py:93 contacts/models.py:66
 msgid "Server location is not set, please fix it."
 msgstr "La posizione del server non è impostata, per favore correggila."
 
-#: calendars/serializers.py:24
+#: calendars/serializers.py:27
 #, fuzzy
 #| msgid "Invalid code"
 msgid "Invalid color"
 msgstr "Codice non valido"
 
-#: calendars/serializers.py:48
+#: calendars/serializers.py:51
 #, fuzzy
 #| msgid "domain alias with this name already exists"
 msgid "A calendar with this name already exists."
 msgstr "Alias di dominio con questo nome già esistente"
 
-#: calendars/serializers.py:259
+#: calendars/serializers.py:278
+#, fuzzy
+#| msgid "Invalid code"
+msgid "Invalid date"
+msgstr "Codice non valido"
+
+#: calendars/serializers.py:311
 #, fuzzy
 #| msgid "Invalid request"
 msgid "Invalid recurrence id"
 msgstr "Richiesta non valida"
 
-#: calendars/serializers.py:371
+#: calendars/serializers.py:388
+msgid "The recurrence can only be changed for the whole series"
+msgstr ""
+
+#: calendars/serializers.py:401
+msgid "The end of the recurrence must be after the start"
+msgstr ""
+
+#: calendars/serializers.py:442
 #, fuzzy
 #| msgid "Domain not found."
 msgid "Mailbox not found"
 msgstr "Dominio non trovato."
 
-#: calendars/serializers.py:377
+#: calendars/serializers.py:448
 msgid "An access rule already exists for this mailbox"
 msgstr ""
 
-#: calendars/serializers.py:390
+#: calendars/serializers.py:461
 #, fuzzy
 #| msgid "A mailbox is required to create aliases."
 msgid "Read access is required to share a calendar"
 msgstr "È necessaria una casella di posta per creare degli alias."
 
-#: calendars/serializers.py:463
+#: calendars/serializers.py:534
 msgid "End of working hours must be after its start"
 msgstr ""
 
-#: calendars/viewsets.py:181
+#: calendars/subscriptions.py:88
+msgid "The calendar is too big"
+msgstr ""
+
+#: calendars/subscriptions.py:90
+#, fuzzy
+#| msgid "Unable to write to the directory."
+msgid "Unable to fetch the calendar"
+msgstr "Impossibile scrivere nella cartella."
+
+#: calendars/subscriptions.py:104 calendars/subscriptions.py:120
+msgid "The calendar is not a valid iCalendar file"
+msgstr ""
+
+#: calendars/viewsets.py:218
 msgid "An occurrence cannot be moved to another calendar"
 msgstr ""
 
-#: calendars/viewsets.py:265
+#: calendars/viewsets.py:302
 msgid "Uploaded file is too big (max: {} bytes)"
 msgstr "Il file caricato è troppo grande (max: {} byte)"
 
-#: calendars/viewsets.py:302
+#: calendars/viewsets.py:339
 msgid "This calendar is shared with you in read-only mode"
 msgstr ""
 
@@ -1433,39 +1478,45 @@ msgstr "Intervallo in secondi tra 2 richieste di sincronizzazione"
 msgid "Contacts"
 msgstr "Contatti"
 
-#: contacts/constants.py:6 contacts/constants.py:12
+#: contacts/constants.py:14 contacts/constants.py:20
 msgid "Home"
 msgstr "Casa"
 
-#: contacts/constants.py:7 contacts/constants.py:13
+#: contacts/constants.py:15 contacts/constants.py:21
 msgid "Work"
 msgstr "Lavoro"
 
-#: contacts/constants.py:8 contacts/constants.py:14
+#: contacts/constants.py:16 contacts/constants.py:22
 msgid "Other"
 msgstr "Altro"
 
-#: contacts/constants.py:15
+#: contacts/constants.py:23
 msgid "Main"
 msgstr "Principale"
 
-#: contacts/constants.py:16
+#: contacts/constants.py:24
 msgid "Cellular"
 msgstr "Cellulare"
 
-#: contacts/constants.py:17
+#: contacts/constants.py:25
 msgid "Fax"
 msgstr "Fax"
 
-#: contacts/constants.py:18
+#: contacts/constants.py:26
 msgid "Pager"
 msgstr "Cercapersone"
 
-#: contacts/serializers.py:103
+#: contacts/serializers.py:110
 msgid "Name or display name required"
 msgstr "Indirizzo o nome visualizzato richiesto"
 
-#: contacts/serializers.py:235
+#: contacts/serializers.py:126
+#, fuzzy
+#| msgid "Address book"
+msgid "No address book found"
+msgstr "Rubrica"
+
+#: contacts/serializers.py:245
 msgid "Minimum allowed value is 60s"
 msgstr "Il valore minimo consentito è 60s"
 
@@ -1530,7 +1581,7 @@ msgid "Calendar"
 msgstr "Calendario"
 
 #: core/api/v2/viewsets.py:215 core/api/v2/viewsets.py:217
-#: webmail/app_settings.py:327 webmail/app_settings.py:334
+#: webmail/app_settings.py:338 webmail/app_settings.py:345
 msgid "Webmail"
 msgstr "Webmail"
 
@@ -1647,8 +1698,8 @@ msgid "LDAP"
 msgstr "LDAP"
 
 #: core/app_settings.py:157 sievefilters/app_settings.py:18
-#: sievefilters/app_settings.py:51 webmail/app_settings.py:57
-#: webmail/app_settings.py:94 webmail/app_settings.py:140
+#: webmail/app_settings.py:57 webmail/app_settings.py:94
+#: webmail/app_settings.py:140
 msgid "Server address"
 msgstr "Indirizzo del server"
 
@@ -1657,8 +1708,8 @@ msgid "The IP address or the DNS name of the LDAP server"
 msgstr "L'indirizzo IP o il DNS name del server LDAP"
 
 #: core/app_settings.py:166 sievefilters/app_settings.py:25
-#: sievefilters/app_settings.py:67 webmail/app_settings.py:75
-#: webmail/app_settings.py:112 webmail/app_settings.py:158
+#: webmail/app_settings.py:75 webmail/app_settings.py:112
+#: webmail/app_settings.py:158
 msgid "Server port"
 msgstr "Porta del server"
 
@@ -1693,8 +1744,7 @@ msgstr "Porta del server secondaria"
 msgid "The TCP port number used by the LDAP secondary server"
 msgstr "Il numero della porta TCP utilizzata dal server LDAP secondario"
 
-#: core/app_settings.py:207 sievefilters/app_settings.py:58
-#: webmail/app_settings.py:66
+#: core/app_settings.py:207 webmail/app_settings.py:66
 msgid "Use a secured connection"
 msgstr "Usa una connessione sicura"
 
@@ -2494,7 +2544,7 @@ msgid "Not resolved"
 msgstr "Non risolto"
 
 #: dmarc/models.py:10 dmarc/models.py:16 pdfcredentials/constants.py:7
-#: webmail/constants.py:52
+#: webmail/constants.py:90
 msgid "None"
 msgstr "Nessuno"
 
@@ -2750,7 +2800,7 @@ msgstr ""
 msgid "Failed to communicate with public API: %s"
 msgstr "Comunicazione con l'API pubblica fallita: %s"
 
-#: lib/email_utils.py:151 lib/email_utils.py:386
+#: lib/email_utils.py:151 lib/email_utils.py:412
 msgid "unable to determine encoding of string"
 msgstr "impossibile determinare la codifica della stringa"
 
@@ -2968,7 +3018,7 @@ msgstr "Non ti è consentito definire valori non limitati"
 msgid "unlimited"
 msgstr "senza limiti"
 
-#: maillog/api/v2/serializers.py:35
+#: maillog/api/v2/serializers.py:37
 msgid "You must provide start and end dates when period is custom"
 msgstr ""
 "Devi fornire le date di inizio e fine quando il periodo è personalizzato"
@@ -2986,19 +3036,22 @@ msgid "Directory to store RRD files"
 msgstr "Cartella dei file RRD"
 
 #: maillog/apps.py:31
-msgid "Path to directory where RRD files are stored"
-msgstr "Percorso della cartella dove sono memorizzati i file RRD"
+msgid ""
+"Path to an existing directory where persistent RRD archives are stored. The "
+"directory must already exist and be writable by the process that runs "
+"logparser and update_statistics."
+msgstr ""
 
-#: maillog/apps.py:38
+#: maillog/apps.py:41
 msgid "Show greylisted messages"
 msgstr "Mostra messaggi in lista grigia (greylisted)"
 
-#: maillog/apps.py:40
+#: maillog/apps.py:43
 msgid "Differentiate between hard and soft rejects (greylisting)"
 msgstr ""
 "Differenzia tra rifiuti definitivi (hard) e temporanei (soft - greylisting)"
 
-#: maillog/apps.py:60
+#: maillog/apps.py:63
 msgid "Statistics"
 msgstr "Statistiche"
 
@@ -3415,11 +3468,24 @@ msgstr ""
 msgid "Rspamd"
 msgstr "Rspamd"
 
-#: sievefilters/api/v2/serializers.py:35 sievefilters/api/v2/viewsets.py:54
+#: sievefilters/api/v2/serializers.py:30 sievefilters/api/v2/serializers.py:97
+#: sievefilters/api/v2/viewsets.py:55
 msgid "Name contains forbidden characters"
 msgstr ""
 
-#: sievefilters/api/v2/viewsets.py:219
+#: sievefilters/api/v2/serializers.py:99
+#, fuzzy
+#| msgid "This field is required"
+msgid "This name is reserved"
+msgstr "Questo campo è obbligatorio"
+
+#: sievefilters/api/v2/viewsets.py:89
+#, fuzzy
+#| msgid "domain alias with this name already exists"
+msgid "A filter set with this name already exists"
+msgstr "Alias di dominio con questo nome già esistente"
+
+#: sievefilters/api/v2/viewsets.py:217 sievefilters/api/v2/viewsets.py:247
 #, python-format
 msgid "Filter %s already exists"
 msgstr "Il filtro %s esiste già"
@@ -3440,25 +3506,11 @@ msgstr "Porta di ascolto del tuo servere MANAGESIEVE"
 msgid "Connect using STARTTLS"
 msgstr "Connetti utilizzando STARTTLS"
 
-#: sievefilters/app_settings.py:35
-msgid "Use the STARTTLS extension"
-msgstr "Usa l'estensione STARTTLS"
-
-#: sievefilters/app_settings.py:45 webmail/app_settings.py:51
-msgid "IMAP settings"
-msgstr "Impostazioni IMAP"
-
-#: sievefilters/app_settings.py:52 webmail/app_settings.py:59
-msgid "Address of your IMAP server"
-msgstr "Indirizzo del server IMAP"
-
-#: sievefilters/app_settings.py:60 webmail/app_settings.py:68
-msgid "Use a secured connection to access IMAP server"
-msgstr "Utilizza una connessione sicura per l'accesso al server IMAP"
-
-#: sievefilters/app_settings.py:68 webmail/app_settings.py:77
-msgid "Listening port of your IMAP server"
-msgstr "Porta in ascolto del server IMAP"
+#: sievefilters/app_settings.py:36
+msgid ""
+"Use the STARTTLS extension. Without it, credentials are sent in clear, which "
+"is only acceptable when the server is local"
+msgstr ""
 
 #: sievefilters/apps.py:15
 msgid "Sieve filters"
@@ -3516,32 +3568,42 @@ msgstr "è maggiore di"
 msgid "is less than"
 msgstr "è minore di"
 
-#: sievefilters/constants.py:45
+#: sievefilters/constants.py:49
 msgid "Move message to"
 msgstr "Sposta il messaggio in"
 
-#: sievefilters/constants.py:51 sievefilters/constants.py:65
+#: sievefilters/constants.py:55 sievefilters/constants.py:69
 msgid "Keep local copy"
 msgstr "Mantieni copia locale"
 
-#: sievefilters/constants.py:59
+#: sievefilters/constants.py:63
 msgid "Redirect message to"
 msgstr "Ridireziona il messaggio a"
 
-#: sievefilters/constants.py:73
+#: sievefilters/constants.py:77
 msgid "Reject message"
 msgstr "Rifiuta il messaggio"
 
-#: sievefilters/constants.py:76
+#: sievefilters/constants.py:80
 msgid "Stop processing"
 msgstr "Termina l'elaborazione"
 
-#: sievefilters/lib.py:49
+#: sievefilters/lib.py:62
+msgid "ManageSieve server returned an error"
+msgstr ""
+
+#: sievefilters/lib.py:76
 msgid "Connection to MANAGESIEVE server failed, check your configuration"
 msgstr ""
 "Connessione al server MANAGESIEVE fallita, controlla la tua configurazione"
 
-#: sievefilters/lib.py:76
+#: sievefilters/lib.py:98
+#, fuzzy, python-format
+#| msgid "Directory not found."
+msgid "Filter set %s not found"
+msgstr "Cartella non trovata."
+
+#: sievefilters/lib.py:113
 msgid "Not enough space on server"
 msgstr "Non c'è spazio sufficiente nel server"
 
@@ -3754,6 +3816,22 @@ msgstr "Dimensione massima degli allegati"
 msgid "Maximum number of files a message can carry"
 msgstr "Numero massimo di caselle di posta che questo utente può creare"
 
+#: webmail/app_settings.py:51
+msgid "IMAP settings"
+msgstr "Impostazioni IMAP"
+
+#: webmail/app_settings.py:59
+msgid "Address of your IMAP server"
+msgstr "Indirizzo del server IMAP"
+
+#: webmail/app_settings.py:68
+msgid "Use a secured connection to access IMAP server"
+msgstr "Utilizza una connessione sicura per l'accesso al server IMAP"
+
+#: webmail/app_settings.py:77
+msgid "Listening port of your IMAP server"
+msgstr "Porta in ascolto del server IMAP"
+
 #: webmail/app_settings.py:88
 msgid "SMTP settings"
 msgstr "Impostazioni SMTP"
@@ -3891,6 +3969,16 @@ msgstr "Testo signature"
 msgid "Where the signature goes in replies and forwards"
 msgstr ""
 
+#: webmail/app_settings.py:314
+msgid "Undo send delay"
+msgstr ""
+
+#: webmail/app_settings.py:316
+msgid ""
+"Number of seconds during which sending a message can be cancelled (0 to send "
+"at once, 30 at most)"
+msgstr ""
+
 #: webmail/checks.py:18
 msgid ""
 "The webmail attachments cleanup job is not registered: unused attachment "
@@ -3913,25 +4001,25 @@ msgstr ""
 msgid "Run the purge_webmail_legacy_data management command."
 msgstr ""
 
-#: webmail/constants.py:75
+#: webmail/constants.py:113
 #, fuzzy
 #| msgid "bounced messages"
 msgid "Above the quoted message"
 msgstr "messaggi di rimbalzo"
 
-#: webmail/constants.py:76
+#: webmail/constants.py:114
 #, fuzzy
 #| msgid "rejected messages"
 msgid "Below the quoted message"
 msgstr "messaggi respinti"
 
-#: webmail/constants.py:86
+#: webmail/constants.py:124
 #, fuzzy
 #| msgid "All messages"
 msgid "Messages"
 msgstr "Tutti i messaggi"
 
-#: webmail/constants.py:87
+#: webmail/constants.py:125
 #, fuzzy
 #| msgid "Check new versions"
 msgid "Conversations"
@@ -3949,7 +4037,7 @@ msgstr ""
 msgid "Sending was interrupted, please reschedule the message"
 msgstr ""
 
-#: webmail/lib/attachments.py:211
+#: webmail/lib/attachments.py:210
 msgid "Failed to remove attachment: "
 msgstr "Rimozione allegato fallita: "
 
@@ -3971,51 +4059,67 @@ msgstr "Data"
 msgid "Original message"
 msgstr "Messaggio originale"
 
-#: webmail/lib/imaputils.py:75 webmail/viewsets.py:27
+#: webmail/lib/imaputils.py:87 webmail/viewsets.py:30
 msgid "Invalid message identifier"
 msgstr ""
 
-#: webmail/lib/imaputils.py:82 webmail/viewsets.py:41
+#: webmail/lib/imaputils.py:94 webmail/viewsets.py:44
 #, fuzzy
 #| msgid "Invalid rounds number"
 msgid "Invalid part number"
 msgstr "Numero di cicli non valido"
 
-#: webmail/lib/imaputils.py:95 webmail/viewsets.py:48
+#: webmail/lib/imaputils.py:107 webmail/viewsets.py:51
 msgid "Invalid search pattern"
 msgstr ""
 
-#: webmail/lib/imaputils.py:108
+#: webmail/lib/imaputils.py:139
+#, fuzzy
+#| msgid "Listening port of the IMAP server"
+msgid "Unexpected response from the IMAP server"
+msgstr "Porta di ascolto del server IMAP"
+
+#: webmail/lib/imaputils.py:151
+#, fuzzy
+#| msgid "Invalid request"
+msgid "Invalid IMAP argument"
+msgstr "Richiesta non valida"
+
+#: webmail/lib/imaputils.py:165
 #, fuzzy
 #| msgid "Enter a valid domain name"
 msgid "Invalid mailbox name"
 msgstr "Inserisci un nome di dominio valido"
 
-#: webmail/lib/imaputils.py:513
+#: webmail/lib/imaputils.py:570
 msgid "Failed to retrieve hierarchy delimiter"
 msgstr "Impossibile recuperare il delimitatore delle gerarchie"
 
-#: webmail/lib/imaputils.py:989
+#: webmail/lib/imaputils.py:1033
+msgid "Shared with me"
+msgstr ""
+
+#: webmail/lib/imaputils.py:1082
 msgid "Inbox"
 msgstr "In arrivo"
 
-#: webmail/lib/imaputils.py:993
+#: webmail/lib/imaputils.py:1086
 msgid "Drafts"
 msgstr "Bozze"
 
-#: webmail/lib/imaputils.py:998
+#: webmail/lib/imaputils.py:1091
 msgid "Junk"
 msgstr "Indesiderata"
 
-#: webmail/lib/imaputils.py:1003
+#: webmail/lib/imaputils.py:1096
 msgid "Sent"
 msgstr "Inviata"
 
-#: webmail/lib/imaputils.py:1011
+#: webmail/lib/imaputils.py:1104
 msgid "Scheduled"
 msgstr "Pianificati"
 
-#: webmail/lib/imaputils.py:1018
+#: webmail/lib/imaputils.py:1111
 msgid "Trash"
 msgstr "Cestino"
 
@@ -4041,80 +4145,108 @@ msgstr "Il nome del dominio"
 msgid "This address is no longer allowed for this account"
 msgstr ""
 
-#: webmail/serializers.py:310
+#: webmail/serializers.py:157
+#, fuzzy
+#| msgid "Unknown status"
+msgid "Unknown account"
+msgstr "Stato sconosciuto"
+
+#: webmail/serializers.py:169
+#, fuzzy
+#| msgid "Invalid line"
+msgid "Invalid identifier"
+msgstr "Riga non valida"
+
+#: webmail/serializers.py:171
+#, fuzzy
+#| msgid "You can't delete your own domain"
+msgid "You can't remove your own rights"
+msgstr "Non puoi cancellare il tuo dominio"
+
+#: webmail/serializers.py:365
 msgid "Moving scheduled messages is forbidden"
 msgstr "Spostare i messaggi pianificati non è consentito"
 
-#: webmail/serializers.py:342
+#: webmail/serializers.py:397
 msgid "Only datetime in the future is allowed"
 msgstr "È permessa solo una data e ora nel futuro"
 
-#: webmail/serializers.py:347
+#: webmail/serializers.py:402
 msgid "Provived datetime must be one minute in the future at least"
 msgstr "La data e l'ora fornite devono essere almeno un minuto nel futuro"
 
-#: webmail/serializers.py:378
+#: webmail/serializers.py:433
 #, fuzzy
 #| msgid "You are not allowed to import domain aliases."
 msgid "You are not allowed to send from this address"
 msgstr "Non hai i permessi di importare gli alias dominio"
 
-#: webmail/serializers.py:393
+#: webmail/serializers.py:448
 #, fuzzy, python-format
 #| msgid "Invalid address"
 msgid "Invalid addresses: %s"
 msgstr "Indirizzo non valido"
 
-#: webmail/serializers.py:434
+#: webmail/serializers.py:489
 msgid ""
 "original_mailbox, original_mailid and original_action must be provided "
 "together"
 msgstr ""
 
-#: webmail/serializers.py:451
+#: webmail/serializers.py:506
 #, python-format
 msgid ""
 "Ensure this field has no more than %(max_length)s characters to schedule the "
 "message"
 msgstr ""
 
-#: webmail/serializers.py:523
+#: webmail/serializers.py:582
 msgid "forward_mailbox and forward_mailid must be provided together"
 msgstr ""
 
-#: webmail/serializers.py:527
+#: webmail/serializers.py:586
 msgid "A session can't start from a draft and a forwarded message"
 msgstr ""
 
-#: webmail/viewsets.py:34
+#: webmail/viewsets.py:37
 #, fuzzy
 #| msgid "Invalid rounds number"
 msgid "Invalid page number"
 msgstr "Numero di cicli non valido"
 
-#: webmail/viewsets.py:169
+#: webmail/viewsets.py:179
 msgid "This mailbox is used by the webmail and can't be renamed"
 msgstr ""
 
-#: webmail/viewsets.py:210
+#: webmail/viewsets.py:220
 msgid "This mailbox is used by the webmail and can't be deleted"
 msgstr ""
 
-#: webmail/viewsets.py:650
+#: webmail/viewsets.py:249
+msgid "Folder sharing is not available"
+msgstr ""
+
+#: webmail/viewsets.py:709
 #, python-format
 msgid "A message cannot carry more than %s attachments"
 msgstr ""
 
-#: webmail/viewsets.py:662
+#: webmail/viewsets.py:721
 #, python-format
 msgid "Attachment is too big (limit: %s)"
 msgstr "L'allegato è troppo grande (limite: %s)"
 
-#: webmail/viewsets.py:667
+#: webmail/viewsets.py:737
 #, fuzzy, python-format
 #| msgid "Attachment is too big (limit: %s)"
 msgid "Attachments are too big (limit: %s for the whole message)"
 msgstr "L'allegato è troppo grande (limite: %s)"
+
+#~ msgid "Path to directory where RRD files are stored"
+#~ msgstr "Percorso della cartella dove sono memorizzati i file RRD"
+
+#~ msgid "Use the STARTTLS extension"
+#~ msgstr "Usa l'estensione STARTTLS"
 
 #~ msgid "wrote:"
 #~ msgstr "scritto:"

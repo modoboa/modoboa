@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-09 15:54+0200\n"
+"POT-Creation-Date: 2026-10-26 09:35+0100\n"
 "PO-Revision-Date: 2011-07-01 08:15+0000\n"
 "Last-Translator: 미나리나물, 2026\n"
 "Language-Team: Korean (Korea) (http://app.transifex.com/tonio/modoboa/"
@@ -58,10 +58,10 @@ msgstr "유효한 DKIM 레코드가 아닙니다."
 msgid "Cannot be greater than domain quota"
 msgstr "도메인 할당량보다 큰 값을 설정할 수 없습니다."
 
-#: admin/api/v1/serializers.py:185 admin/api/v1/serializers.py:405
-#: admin/api/v1/serializers.py:452 admin/api/v2/serializers.py:402
-#: admin/api/v2/serializers.py:652 admin/api/v2/serializers.py:705
-#: admin/models/alias.py:45 calendars/serializers.py:185
+#: admin/api/v1/serializers.py:185 admin/api/v1/serializers.py:418
+#: admin/api/v1/serializers.py:466 admin/api/v2/serializers.py:402
+#: admin/api/v2/serializers.py:718 admin/api/v2/serializers.py:771
+#: admin/models/alias.py:45 calendars/serializers.py:218
 msgid "Permission denied."
 msgstr "권한이 거부되었습니다."
 
@@ -79,7 +79,7 @@ msgid ""
 msgstr "같은 이름의 도메인 별칭이 이미 존재합니다."
 
 #: admin/api/v1/serializers.py:272 admin/api/v2/serializers.py:118
-#: admin/api/v2/serializers.py:573 amavis/serializers.py:39
+#: admin/api/v2/serializers.py:607 amavis/serializers.py:39
 #: core/api/v2/serializers.py:219 core/api/v2/serializers.py:221
 #: core/api/v2/serializers.py:230 transport/backends.py:40
 msgid "This field is required"
@@ -90,37 +90,43 @@ msgid ""
 "List of administered domains (resellers and domain administrators only)."
 msgstr "관리 중인 도메인 목록 (리셀러 및 도메인 관리자 전용)."
 
-#: admin/api/v1/serializers.py:378 admin/api/v2/serializers.py:634
+#: admin/api/v1/serializers.py:369
+#, fuzzy
+#| msgid "This alias already exists"
+msgid "This username is already used."
+msgstr "이 별칭은 이미 존재합니다."
+
+#: admin/api/v1/serializers.py:385 admin/api/v2/serializers.py:678
 msgid "Not allowed for this role."
 msgstr "이 역할에는 허용되지 않는 작업입니다."
 
-#: admin/api/v1/serializers.py:396
+#: admin/api/v1/serializers.py:403
 msgid "Must be equal to mailbox full_address"
 msgstr "사서함의 전체 주소(full_address)와 일치해야 합니다."
 
-#: admin/api/v1/serializers.py:438 admin/api/v2/serializers.py:686
-#: calendars/serializers.py:264 calendars/serializers.py:333
-#: pdfcredentials/api/v2/serializers.py:91
+#: admin/api/v1/serializers.py:409 admin/api/v1/serializers.py:452
+#: admin/api/v2/serializers.py:752 calendars/serializers.py:316
+#: calendars/serializers.py:385 pdfcredentials/api/v2/serializers.py:91
 msgid "This field is required."
 msgstr "이 필드는 필수 입력 항목입니다."
 
-#: admin/api/v1/serializers.py:449 admin/api/v2/serializers.py:702
+#: admin/api/v1/serializers.py:463 admin/api/v2/serializers.py:768
 msgid "Local domain {} does not exist"
 msgstr "로컬 도메인 {}이(가) 존재하지 않습니다."
 
-#: admin/api/v1/serializers.py:545
+#: admin/api/v1/serializers.py:562
 msgid "A list of recipient"
 msgstr "수신자 목록"
 
-#: admin/api/v1/serializers.py:561 admin/api/v2/viewsets.py:438
+#: admin/api/v1/serializers.py:578 admin/api/v2/viewsets.py:469
 msgid "This alias already exists"
 msgstr "이 별칭은 이미 존재합니다."
 
-#: admin/api/v1/serializers.py:597
+#: admin/api/v1/serializers.py:614
 msgid "You don't have access to this domain."
 msgstr "이 도메인에 대한 접근 권한이 없습니다."
 
-#: admin/api/v1/serializers.py:606
+#: admin/api/v1/serializers.py:623
 msgid "You don't have access to this mailbox."
 msgstr "이 사서함에 대한 접근 권한이 없습니다."
 
@@ -153,7 +159,8 @@ msgstr "양의 정수여야 합니다."
 msgid "openssl not found, please make sure it is installed."
 msgstr "openssl을 찾을 수 없습니다. 설치 여부를 확인해 주세요."
 
-#: admin/api/v2/serializers.py:339 pdfcredentials/api/v2/serializers.py:84
+#: admin/api/v2/serializers.py:339 maillog/api/v2/serializers.py:98
+#: pdfcredentials/api/v2/serializers.py:84
 msgid "Directory not found."
 msgstr "디렉토리를 찾을 수 없습니다."
 
@@ -169,31 +176,35 @@ msgstr "이 옵션을 끄기 전에 IMAP 마이그레이션을 먼저 비활성�
 msgid "Define at least one authorized network / address"
 msgstr "최소 하나 이상의 허용된 네트워크 또는 주소를 정의해야 합니다."
 
-#: admin/api/v2/serializers.py:669
+#: admin/api/v2/serializers.py:711
+msgid "An account with a mailbox must use an email address as username."
+msgstr ""
+
+#: admin/api/v2/serializers.py:735
 msgid "The left part of an email address can't be more than 64 characters."
 msgstr "이메일 주소의 앞부분(ID)은 64자를 초과할 수 없습니다."
 
-#: admin/api/v2/serializers.py:691
+#: admin/api/v2/serializers.py:757
 msgid "A mailbox is required to create aliases."
 msgstr "별칭을 생성하려면 사서함이 지정되어야 합니다."
 
-#: admin/api/v2/serializers.py:905
+#: admin/api/v2/serializers.py:999
 msgid "Unknown status"
 msgstr "알 수 없는 상태"
 
-#: admin/api/v2/viewsets.py:125
+#: admin/api/v2/viewsets.py:127
 msgid "You don't have access to this domain"
 msgstr "이 도메인에 대한 접근 권한이 없습니다."
 
-#: admin/api/v2/viewsets.py:128 admin/api/v2/viewsets.py:146
+#: admin/api/v2/viewsets.py:130 admin/api/v2/viewsets.py:148
 msgid "You can't delete your own domain"
 msgstr "자신의 도메인은 삭제할 수 없습니다."
 
-#: admin/api/v2/viewsets.py:161
+#: admin/api/v2/viewsets.py:163
 msgid "DKIM signing is not enabled for this domain"
 msgstr ""
 
-#: admin/api/v2/viewsets.py:353 core/handlers.py:95
+#: admin/api/v2/viewsets.py:384 core/handlers.py:95
 msgid "You can't delete your own account"
 msgstr "자신의 계정은 삭제할 수 없습니다."
 
@@ -522,63 +533,69 @@ msgstr "[modoboa] 도메인 {}에 대한 MX 관련 문제 발생"
 msgid "[modoboa] DNSBL issue(s) for domain {}"
 msgstr "[modoboa] 도메인 {}에 대한 DNSBL 관련 문제 발생"
 
-#: admin/handlers.py:200
+#: admin/handlers.py:261
 msgid "domain alias"
 msgstr "도메인 별칭"
 
-#: admin/handlers.py:248
+#: admin/handlers.py:309
 #, python-format
 msgid "Account import failed (%s): domain does not exist"
 msgstr "계정 가져오기 실패 (%s): 도메인이 존재하지 않습니다."
 
-#: admin/handlers.py:267
+#: admin/handlers.py:328
 #, python-format
 msgid "Account import failed (%s): wrong quota value"
 msgstr "계정 가져오기 실패 (%s): 잘못된 할당량 값입니다."
 
-#: admin/lib.py:167
+#: admin/jobs.py:36
+#, fuzzy
+#| msgid "Failed to retrieve mailbox location (%s)"
+msgid "Failed to move mailbox folder {} to {} ({})"
+msgstr "사서함 위치를 가져오지 못했습니다 (%s)"
+
+#: admin/lib.py:177
 msgid "You are not allowed to import domains"
 msgstr "도메인을 가져올 권한이 없습니다."
 
-#: admin/lib.py:176
+#: admin/lib.py:186
 msgid "You are not allowed to import domain aliases."
 msgstr "도메인 별칭을 가져올 권한이 없습니다."
 
-#: admin/lib.py:268 admin/tests/test_mx.py:139 admin/tests/test_mx.py:152
+#: admin/lib.py:278 admin/tests/test_mx.py:139 admin/tests/test_mx.py:152
 #: admin/tests/test_mx.py:157
 #, python-format
 msgid "No DNS record found for %s"
 msgstr "%s에 대한 DNS 레코드를 찾을 수 없습니다."
 
-#: admin/lib.py:271
+#: admin/lib.py:281
 #, python-format
 msgid "No %(type)s record for %(name)s"
 msgstr "%(name)s에 대한 %(type)s 레코드가 없습니다."
 
-#: admin/lib.py:275 admin/tests/test_mx.py:142
+#: admin/lib.py:285 admin/tests/test_mx.py:142
 msgid "No working name servers found"
 msgstr "작동 중인 네임 서버를 찾을 수 없습니다."
 
-#: admin/lib.py:278 admin/tests/test_mx.py:146
+#: admin/lib.py:288 admin/tests/test_mx.py:146
 #, python-format
 msgid "DNS resolution timeout, unable to query %s at the moment"
 msgstr "DNS 조회 시간 초과로 현재 %s에 쿼리할 수 없습니다."
 
-#: admin/lib.py:282
+#: admin/lib.py:292
 msgid "DNS name is too long: {}"
 msgstr "DNS 이름이 너무 깁니다: {}"
 
-#: admin/lib.py:313
+#: admin/lib.py:323
 #, python-brace-format
 msgid "Invalid IP address format for {domain}; {addr}"
 msgstr "{domain}의 IP 주소 형식이 잘못되었습니다; {addr}"
 
-#: admin/lib.py:406
+#: admin/lib.py:416
 #, python-format
 msgid "Object already exists: %s"
 msgstr "객체가 이미 존재합니다: %s"
 
-#: admin/lib.py:410
+#: admin/lib.py:420
 #, python-format
 msgid "%d objects imported successfully"
 msgstr "%d개의 객체를 성공적으로 가져왔습니다."
@@ -616,7 +633,7 @@ msgstr "DKIM 공개 키 생성에 실패했습니다."
 msgid "Domain not found."
 msgstr "도메인을 찾을 수 없습니다."
 
-#: admin/models/alias.py:117 admin/models/mailbox.py:86
+#: admin/models/alias.py:117 admin/models/mailbox.py:123
 msgid "address"
 msgstr "주소"
 
@@ -625,7 +642,7 @@ msgid "The alias address."
 msgstr "별칭 주소입니다."
 
 #: admin/models/alias.py:123 admin/models/domain.py:76
-#: admin/models/domain_alias.py:45 autoreply/models.py:37
+#: admin/models/domain_alias.py:45 autoreply/models.py:26
 msgid "enabled"
 msgstr "활성화됨"
 
@@ -675,7 +692,7 @@ msgstr "이름"
 msgid "The domain name"
 msgstr "도메인 이름"
 
-#: admin/models/domain.py:70 admin/models/mailbox.py:93
+#: admin/models/domain.py:70 admin/models/mailbox.py:130
 msgid "Message sending limit"
 msgstr "메시지 발송 제한"
 
@@ -758,32 +775,32 @@ msgstr "이 별칭이 가리키는 도메인"
 msgid "Unknown domain %s"
 msgstr "알 수 없는 도메인 %s"
 
-#: admin/models/mailbox.py:88
+#: admin/models/mailbox.py:125
 msgid "Mailbox address (without the @domain.tld part)"
 msgstr "사서함 주소 (@domain.tld 부분을 제외한 ID)"
 
-#: admin/models/mailbox.py:96
+#: admin/models/mailbox.py:133
 msgid "Number of messages this mailbox can send per day"
 msgstr "이 사서함이 하루에 보낼 수 있는 메시지 수"
 
-#: admin/models/mailbox.py:157
+#: admin/models/mailbox.py:194
 #, python-format
 msgid "Failed to retrieve mailbox location (%s)"
 msgstr "사서함 위치를 가져오지 못했습니다 (%s)"
 
-#: admin/models/mailbox.py:258
+#: admin/models/mailbox.py:295
 msgid "A quota is required"
 msgstr "할당량 설정이 필요합니다."
 
-#: admin/models/mailbox.py:265
+#: admin/models/mailbox.py:302
 msgid "{}: domain quota exceeded"
 msgstr "{}: 도메인 할당량을 초과했습니다."
 
-#: admin/models/mailbox.py:321
+#: admin/models/mailbox.py:358
 msgid "Domain does not exist"
 msgstr "도메인이 존재하지 않습니다."
 
-#: admin/models/mailbox.py:357
+#: admin/models/mailbox.py:394
 msgid "Mailbox {} already exists"
 msgstr "사서함 {}이(가) 이미 존재합니다."
 
@@ -1204,23 +1221,23 @@ msgstr ""
 msgid "Automatic replies"
 msgstr "자동 응답"
 
-#: autoreply/models.py:29
+#: autoreply/models.py:18
 msgid "subject"
 msgstr "제목"
 
-#: autoreply/models.py:31
+#: autoreply/models.py:20
 msgid "The subject that will appear in sent emails"
 msgstr "보낸 이메일에 표시될 제목입니다."
 
-#: autoreply/models.py:34
+#: autoreply/models.py:23
 msgid "content"
 msgstr "내용"
 
-#: autoreply/models.py:34
+#: autoreply/models.py:23
 msgid "The content that will appear in sent emails"
 msgstr "보낸 이메일에 표시될 내용입니다."
 
-#: autoreply/models.py:37
+#: autoreply/models.py:26
 msgid "Activate/Deactivate your auto reply"
 msgstr "자동 응답 활성화/비활성화"
 
@@ -1303,57 +1320,85 @@ msgid ""
 "%(characters)s"
 msgstr ""
 
-#: calendars/models.py:76 calendars/models.py:93 contacts/models.py:39
+#: calendars/models.py:76 calendars/models.py:93 contacts/models.py:66
 msgid "Server location is not set, please fix it."
 msgstr "서버 위치가 설정되지 않았습니다. 설정을 수정해 주세요."
 
-#: calendars/serializers.py:24
+#: calendars/serializers.py:27
 #, fuzzy
 #| msgid "Invalid code"
 msgid "Invalid color"
 msgstr "유효하지 않은 코드"
 
-#: calendars/serializers.py:48
+#: calendars/serializers.py:51
 #, fuzzy
 #| msgid "domain alias with this name already exists"
 msgid "A calendar with this name already exists."
 msgstr "같은 이름의 도메인 별칭이 이미 존재합니다."
 
-#: calendars/serializers.py:259
+#: calendars/serializers.py:278
+#, fuzzy
+#| msgid "Invalid code"
+msgid "Invalid date"
+msgstr "유효하지 않은 코드"
+
+#: calendars/serializers.py:311
 #, fuzzy
 #| msgid "Invalid request"
 msgid "Invalid recurrence id"
 msgstr "유효하지 않은 요청"
 
-#: calendars/serializers.py:371
+#: calendars/serializers.py:388
+msgid "The recurrence can only be changed for the whole series"
+msgstr ""
+
+#: calendars/serializers.py:401
+msgid "The end of the recurrence must be after the start"
+msgstr ""
+
+#: calendars/serializers.py:442
 #, fuzzy
 #| msgid "Domain not found."
 msgid "Mailbox not found"
 msgstr "도메인을 찾을 수 없습니다."
 
-#: calendars/serializers.py:377
+#: calendars/serializers.py:448
 msgid "An access rule already exists for this mailbox"
 msgstr ""
 
-#: calendars/serializers.py:390
+#: calendars/serializers.py:461
 #, fuzzy
 #| msgid "A mailbox is required to create aliases."
 msgid "Read access is required to share a calendar"
 msgstr "별칭을 생성하려면 사서함이 지정되어야 합니다."
 
-#: calendars/serializers.py:463
+#: calendars/serializers.py:534
 msgid "End of working hours must be after its start"
 msgstr ""
 
-#: calendars/viewsets.py:181
+#: calendars/subscriptions.py:88
+msgid "The calendar is too big"
+msgstr ""
+
+#: calendars/subscriptions.py:90
+#, fuzzy
+#| msgid "Unable to write to the directory."
+msgid "Unable to fetch the calendar"
+msgstr "디렉토리에 쓸 수 없습니다."
+
+#: calendars/subscriptions.py:104 calendars/subscriptions.py:120
+msgid "The calendar is not a valid iCalendar file"
+msgstr ""
+
+#: calendars/viewsets.py:218
 msgid "An occurrence cannot be moved to another calendar"
 msgstr ""
 
-#: calendars/viewsets.py:265
+#: calendars/viewsets.py:302
 msgid "Uploaded file is too big (max: {} bytes)"
 msgstr "업로드된 파일이 너무 큽니다 (최대: {} 바이트)."
 
-#: calendars/viewsets.py:302
+#: calendars/viewsets.py:339
 msgid "This calendar is shared with you in read-only mode"
 msgstr ""
 
@@ -1385,39 +1430,45 @@ msgstr "동기화 요청 사이의 간격(초 단위)입니다."
 msgid "Contacts"
 msgstr "연락처"
 
-#: contacts/constants.py:6 contacts/constants.py:12
+#: contacts/constants.py:14 contacts/constants.py:20
 msgid "Home"
 msgstr "집"
 
-#: contacts/constants.py:7 contacts/constants.py:13
+#: contacts/constants.py:15 contacts/constants.py:21
 msgid "Work"
 msgstr "직장"
 
-#: contacts/constants.py:8 contacts/constants.py:14
+#: contacts/constants.py:16 contacts/constants.py:22
 msgid "Other"
 msgstr "기타"
 
-#: contacts/constants.py:15
+#: contacts/constants.py:23
 msgid "Main"
 msgstr "기본"
 
-#: contacts/constants.py:16
+#: contacts/constants.py:24
 msgid "Cellular"
 msgstr "휴대전화"
 
-#: contacts/constants.py:17
+#: contacts/constants.py:25
 msgid "Fax"
 msgstr "팩스"
 
-#: contacts/constants.py:18
+#: contacts/constants.py:26
 msgid "Pager"
 msgstr "호출기"
 
-#: contacts/serializers.py:103
+#: contacts/serializers.py:110
 msgid "Name or display name required"
 msgstr "이름 또는 표시 이름이 필요합니다."
 
-#: contacts/serializers.py:235
+#: contacts/serializers.py:126
+#, fuzzy
+#| msgid "Address book"
+msgid "No address book found"
+msgstr "주소록"
+
+#: contacts/serializers.py:245
 msgid "Minimum allowed value is 60s"
 msgstr "최소 허용 값은 60초입니다."
 
@@ -1482,7 +1533,7 @@ msgid "Calendar"
 msgstr "캘린더"
 
 #: core/api/v2/viewsets.py:215 core/api/v2/viewsets.py:217
-#: webmail/app_settings.py:327 webmail/app_settings.py:334
+#: webmail/app_settings.py:338 webmail/app_settings.py:345
 msgid "Webmail"
 msgstr "웹메일"
 
@@ -1592,8 +1643,8 @@ msgid "LDAP"
 msgstr "LDAP"
 
 #: core/app_settings.py:157 sievefilters/app_settings.py:18
-#: sievefilters/app_settings.py:51 webmail/app_settings.py:57
-#: webmail/app_settings.py:94 webmail/app_settings.py:140
+#: webmail/app_settings.py:57 webmail/app_settings.py:94
+#: webmail/app_settings.py:140
 msgid "Server address"
 msgstr "서버 주소"
 
@@ -1602,8 +1653,8 @@ msgid "The IP address or the DNS name of the LDAP server"
 msgstr "LDAP 서버의 IP 주소 또는 DNS 이름입니다."
 
 #: core/app_settings.py:166 sievefilters/app_settings.py:25
-#: sievefilters/app_settings.py:67 webmail/app_settings.py:75
-#: webmail/app_settings.py:112 webmail/app_settings.py:158
+#: webmail/app_settings.py:75 webmail/app_settings.py:112
+#: webmail/app_settings.py:158
 msgid "Server port"
 msgstr "서버 포트"
 
@@ -1636,8 +1687,7 @@ msgstr "보조 서버 포트"
 msgid "The TCP port number used by the LDAP secondary server"
 msgstr "보조 LDAP 서버에서 사용하는 TCP 포트 번호입니다."
 
-#: core/app_settings.py:207 sievefilters/app_settings.py:58
-#: webmail/app_settings.py:66
+#: core/app_settings.py:207 webmail/app_settings.py:66
 msgid "Use a secured connection"
 msgstr "보안 연결 사용"
 
@@ -2391,7 +2441,7 @@ msgid "Not resolved"
 msgstr "해결되지 않음"
 
 #: dmarc/models.py:10 dmarc/models.py:16 pdfcredentials/constants.py:7
-#: webmail/constants.py:52
+#: webmail/constants.py:90
 msgid "None"
 msgstr "없음"
 
@@ -2643,7 +2693,7 @@ msgstr ""
 msgid "Failed to communicate with public API: %s"
 msgstr "공개 API와의 통신 실패: %s"
 
-#: lib/email_utils.py:151 lib/email_utils.py:386
+#: lib/email_utils.py:151 lib/email_utils.py:412
 msgid "unable to determine encoding of string"
 msgstr "문자열의 인코딩을 확인할 수 없습니다."
 
@@ -2854,7 +2904,7 @@ msgstr "무제한 값을 정의할 권한이 없습니다."
 msgid "unlimited"
 msgstr "무제한"
 
-#: maillog/api/v2/serializers.py:35
+#: maillog/api/v2/serializers.py:37
 msgid "You must provide start and end dates when period is custom"
 msgstr "기간이 '사용자 지정'인 경우 시작일과 종료일을 제공해야 합니다."
 
@@ -2871,19 +2921,22 @@ msgid "Directory to store RRD files"
 msgstr "RRD 파일 저장 디렉토리"
 
 #: maillog/apps.py:31
-msgid "Path to directory where RRD files are stored"
-msgstr "RRD 파일이 저장되는 디렉토리 경로"
+msgid ""
+"Path to an existing directory where persistent RRD archives are stored. The "
+"directory must already exist and be writable by the process that runs "
+"logparser and update_statistics."
+msgstr ""
 
-#: maillog/apps.py:38
+#: maillog/apps.py:41
 msgid "Show greylisted messages"
 msgstr "그레이리스트(Greylisted) 메시지 표시"
 
-#: maillog/apps.py:40
+#: maillog/apps.py:43
 msgid "Differentiate between hard and soft rejects (greylisting)"
 msgstr ""
 "강력 거부(Hard Reject)와 일시 거부(Soft Reject, 그레이리스팅)를 구분합니다."
 
-#: maillog/apps.py:60
+#: maillog/apps.py:63
 msgid "Statistics"
 msgstr "통계"
 
@@ -3288,11 +3341,24 @@ msgstr ""
 msgid "Rspamd"
 msgstr "Rspamd"
 
-#: sievefilters/api/v2/serializers.py:35 sievefilters/api/v2/viewsets.py:54
+#: sievefilters/api/v2/serializers.py:30 sievefilters/api/v2/serializers.py:97
+#: sievefilters/api/v2/viewsets.py:55
 msgid "Name contains forbidden characters"
 msgstr ""
 
-#: sievefilters/api/v2/viewsets.py:219
+#: sievefilters/api/v2/serializers.py:99
+#, fuzzy
+#| msgid "This field is required"
+msgid "This name is reserved"
+msgstr "이 필드는 필수 항목입니다."
+
+#: sievefilters/api/v2/viewsets.py:89
+#, fuzzy
+#| msgid "domain alias with this name already exists"
+msgid "A filter set with this name already exists"
+msgstr "같은 이름의 도메인 별칭이 이미 존재합니다."
+
+#: sievefilters/api/v2/viewsets.py:217 sievefilters/api/v2/viewsets.py:247
 #, python-format
 msgid "Filter %s already exists"
 msgstr "필터 %s이(가) 이미 존재합니다."
@@ -3313,25 +3379,11 @@ msgstr "MANAGESIEVE 서버의 대기 포트"
 msgid "Connect using STARTTLS"
 msgstr "STARTTLS를 사용하여 연결"
 
-#: sievefilters/app_settings.py:35
-msgid "Use the STARTTLS extension"
-msgstr "STARTTLS 확장을 사용합니다."
-
-#: sievefilters/app_settings.py:45 webmail/app_settings.py:51
-msgid "IMAP settings"
-msgstr "IMAP 설정"
-
-#: sievefilters/app_settings.py:52 webmail/app_settings.py:59
-msgid "Address of your IMAP server"
-msgstr "IMAP 서버 주소"
-
-#: sievefilters/app_settings.py:60 webmail/app_settings.py:68
-msgid "Use a secured connection to access IMAP server"
-msgstr "IMAP 서버에 액세스할 때 보안 연결을 사용합니다."
-
-#: sievefilters/app_settings.py:68 webmail/app_settings.py:77
-msgid "Listening port of your IMAP server"
-msgstr "IMAP 서버의 대기 포트"
+#: sievefilters/app_settings.py:36
+msgid ""
+"Use the STARTTLS extension. Without it, credentials are sent in clear, which "
+"is only acceptable when the server is local"
+msgstr ""
 
 #: sievefilters/apps.py:15
 msgid "Sieve filters"
@@ -3389,31 +3441,41 @@ msgstr "다음보다 큼:"
 msgid "is less than"
 msgstr "다음보다 작음:"
 
-#: sievefilters/constants.py:45
+#: sievefilters/constants.py:49
 msgid "Move message to"
 msgstr "메시지를 다음으로 이동:"
 
-#: sievefilters/constants.py:51 sievefilters/constants.py:65
+#: sievefilters/constants.py:55 sievefilters/constants.py:69
 msgid "Keep local copy"
 msgstr "로컬 복사본 유지"
 
-#: sievefilters/constants.py:59
+#: sievefilters/constants.py:63
 msgid "Redirect message to"
 msgstr "메시지 리다이렉트:"
 
-#: sievefilters/constants.py:73
+#: sievefilters/constants.py:77
 msgid "Reject message"
 msgstr "메시지 거부"
 
-#: sievefilters/constants.py:76
+#: sievefilters/constants.py:80
 msgid "Stop processing"
 msgstr "처리 중단"
 
-#: sievefilters/lib.py:49
+#: sievefilters/lib.py:62
+msgid "ManageSieve server returned an error"
+msgstr ""
+
+#: sievefilters/lib.py:76
 msgid "Connection to MANAGESIEVE server failed, check your configuration"
 msgstr "MANAGESIEVE 서버 연결 실패. 설정을 확인하세요."
 
-#: sievefilters/lib.py:76
+#: sievefilters/lib.py:98
+#, fuzzy, python-format
+#| msgid "Directory not found."
+msgid "Filter set %s not found"
+msgstr "디렉토리를 찾을 수 없습니다."
+
+#: sievefilters/lib.py:113
 msgid "Not enough space on server"
 msgstr "서버 용량 부족"
 
@@ -3623,6 +3685,22 @@ msgstr "최대 첨부 파일 크기"
 msgid "Maximum number of files a message can carry"
 msgstr "이 사용자가 생성할 수 있는 최대 사서함 수"
 
+#: webmail/app_settings.py:51
+msgid "IMAP settings"
+msgstr "IMAP 설정"
+
+#: webmail/app_settings.py:59
+msgid "Address of your IMAP server"
+msgstr "IMAP 서버 주소"
+
+#: webmail/app_settings.py:68
+msgid "Use a secured connection to access IMAP server"
+msgstr "IMAP 서버에 액세스할 때 보안 연결을 사용합니다."
+
+#: webmail/app_settings.py:77
+msgid "Listening port of your IMAP server"
+msgstr "IMAP 서버의 대기 포트"
+
 #: webmail/app_settings.py:88
 msgid "SMTP settings"
 msgstr "SMTP 설정"
@@ -3759,6 +3837,16 @@ msgstr "서명 텍스트"
 msgid "Where the signature goes in replies and forwards"
 msgstr ""
 
+#: webmail/app_settings.py:314
+msgid "Undo send delay"
+msgstr ""
+
+#: webmail/app_settings.py:316
+msgid ""
+"Number of seconds during which sending a message can be cancelled (0 to send "
+"at once, 30 at most)"
+msgstr ""
+
 #: webmail/checks.py:18
 msgid ""
 "The webmail attachments cleanup job is not registered: unused attachment "
@@ -3781,25 +3869,25 @@ msgstr ""
 msgid "Run the purge_webmail_legacy_data management command."
 msgstr ""
 
-#: webmail/constants.py:75
+#: webmail/constants.py:113
 #, fuzzy
 #| msgid "bounced messages"
 msgid "Above the quoted message"
 msgstr "반송된 메시지(Bounced)"
 
-#: webmail/constants.py:76
+#: webmail/constants.py:114
 #, fuzzy
 #| msgid "rejected messages"
 msgid "Below the quoted message"
 msgstr "거부된 메시지(Rejected)"
 
-#: webmail/constants.py:86
+#: webmail/constants.py:124
 #, fuzzy
 #| msgid "All messages"
 msgid "Messages"
 msgstr "모든 메시지"
 
-#: webmail/constants.py:87
+#: webmail/constants.py:125
 #, fuzzy
 #| msgid "Check new versions"
 msgid "Conversations"
@@ -3817,7 +3905,7 @@ msgstr ""
 msgid "Sending was interrupted, please reschedule the message"
 msgstr ""
 
-#: webmail/lib/attachments.py:211
+#: webmail/lib/attachments.py:210
 msgid "Failed to remove attachment: "
 msgstr "첨부 파일 삭제 실패: "
 
@@ -3839,51 +3927,67 @@ msgstr "날짜"
 msgid "Original message"
 msgstr "원본 메시지"
 
-#: webmail/lib/imaputils.py:75 webmail/viewsets.py:27
+#: webmail/lib/imaputils.py:87 webmail/viewsets.py:30
 msgid "Invalid message identifier"
 msgstr ""
 
-#: webmail/lib/imaputils.py:82 webmail/viewsets.py:41
+#: webmail/lib/imaputils.py:94 webmail/viewsets.py:44
 #, fuzzy
 #| msgid "Invalid rounds number"
 msgid "Invalid part number"
 msgstr "유효하지 않은 라운드(Rounds) 횟수입니다."
 
-#: webmail/lib/imaputils.py:95 webmail/viewsets.py:48
+#: webmail/lib/imaputils.py:107 webmail/viewsets.py:51
 msgid "Invalid search pattern"
 msgstr ""
 
-#: webmail/lib/imaputils.py:108
+#: webmail/lib/imaputils.py:139
+#, fuzzy
+#| msgid "Listening port of the IMAP server"
+msgid "Unexpected response from the IMAP server"
+msgstr "IMAP 서버의 대기 포트"
+
+#: webmail/lib/imaputils.py:151
+#, fuzzy
+#| msgid "Invalid request"
+msgid "Invalid IMAP argument"
+msgstr "유효하지 않은 요청"
+
+#: webmail/lib/imaputils.py:165
 #, fuzzy
 #| msgid "Enter a valid domain name"
 msgid "Invalid mailbox name"
 msgstr "유효한 도메인 이름을 입력하세요."
 
-#: webmail/lib/imaputils.py:513
+#: webmail/lib/imaputils.py:570
 msgid "Failed to retrieve hierarchy delimiter"
 msgstr "계층 구조 구분 기호를 가져오지 못했습니다."
 
-#: webmail/lib/imaputils.py:989
+#: webmail/lib/imaputils.py:1033
+msgid "Shared with me"
+msgstr ""
+
+#: webmail/lib/imaputils.py:1082
 msgid "Inbox"
 msgstr "받은 편지함"
 
-#: webmail/lib/imaputils.py:993
+#: webmail/lib/imaputils.py:1086
 msgid "Drafts"
 msgstr "임시 보관함"
 
-#: webmail/lib/imaputils.py:998
+#: webmail/lib/imaputils.py:1091
 msgid "Junk"
 msgstr "스팸 메일함"
 
-#: webmail/lib/imaputils.py:1003
+#: webmail/lib/imaputils.py:1096
 msgid "Sent"
 msgstr "보낸 편지함"
 
-#: webmail/lib/imaputils.py:1011
+#: webmail/lib/imaputils.py:1104
 msgid "Scheduled"
 msgstr "예약됨"
 
-#: webmail/lib/imaputils.py:1018
+#: webmail/lib/imaputils.py:1111
 msgid "Trash"
 msgstr "휴지통"
 
@@ -3909,80 +4013,108 @@ msgstr "도메인 이름"
 msgid "This address is no longer allowed for this account"
 msgstr ""
 
-#: webmail/serializers.py:310
+#: webmail/serializers.py:157
+#, fuzzy
+#| msgid "Unknown status"
+msgid "Unknown account"
+msgstr "알 수 없는 상태"
+
+#: webmail/serializers.py:169
+#, fuzzy
+#| msgid "Invalid line"
+msgid "Invalid identifier"
+msgstr "유효하지 않은 행"
+
+#: webmail/serializers.py:171
+#, fuzzy
+#| msgid "You can't delete your own domain"
+msgid "You can't remove your own rights"
+msgstr "자신의 도메인은 삭제할 수 없습니다."
+
+#: webmail/serializers.py:365
 msgid "Moving scheduled messages is forbidden"
 msgstr "예약된 메시지를 이동하는 것은 금지되어 있습니다."
 
-#: webmail/serializers.py:342
+#: webmail/serializers.py:397
 msgid "Only datetime in the future is allowed"
 msgstr "미래의 날짜와 시간만 허용됩니다."
 
-#: webmail/serializers.py:347
+#: webmail/serializers.py:402
 msgid "Provived datetime must be one minute in the future at least"
 msgstr "제공된 시간은 최소 1분 뒤의 미래여야 합니다."
 
-#: webmail/serializers.py:378
+#: webmail/serializers.py:433
 #, fuzzy
 #| msgid "You are not allowed to import domain aliases."
 msgid "You are not allowed to send from this address"
 msgstr "도메인 별칭을 가져올 권한이 없습니다."
 
-#: webmail/serializers.py:393
+#: webmail/serializers.py:448
 #, fuzzy, python-format
 #| msgid "Invalid address"
 msgid "Invalid addresses: %s"
 msgstr "유효하지 않은 주소"
 
-#: webmail/serializers.py:434
+#: webmail/serializers.py:489
 msgid ""
 "original_mailbox, original_mailid and original_action must be provided "
 "together"
 msgstr ""
 
-#: webmail/serializers.py:451
+#: webmail/serializers.py:506
 #, python-format
 msgid ""
 "Ensure this field has no more than %(max_length)s characters to schedule the "
 "message"
 msgstr ""
 
-#: webmail/serializers.py:523
+#: webmail/serializers.py:582
 msgid "forward_mailbox and forward_mailid must be provided together"
 msgstr ""
 
-#: webmail/serializers.py:527
+#: webmail/serializers.py:586
 msgid "A session can't start from a draft and a forwarded message"
 msgstr ""
 
-#: webmail/viewsets.py:34
+#: webmail/viewsets.py:37
 #, fuzzy
 #| msgid "Invalid rounds number"
 msgid "Invalid page number"
 msgstr "유효하지 않은 라운드(Rounds) 횟수입니다."
 
-#: webmail/viewsets.py:169
+#: webmail/viewsets.py:179
 msgid "This mailbox is used by the webmail and can't be renamed"
 msgstr ""
 
-#: webmail/viewsets.py:210
+#: webmail/viewsets.py:220
 msgid "This mailbox is used by the webmail and can't be deleted"
 msgstr ""
 
-#: webmail/viewsets.py:650
+#: webmail/viewsets.py:249
+msgid "Folder sharing is not available"
+msgstr ""
+
+#: webmail/viewsets.py:709
 #, python-format
 msgid "A message cannot carry more than %s attachments"
 msgstr ""
 
-#: webmail/viewsets.py:662
+#: webmail/viewsets.py:721
 #, python-format
 msgid "Attachment is too big (limit: %s)"
 msgstr "첨부 파일이 너무 큽니다 (제한: %s)"
 
-#: webmail/viewsets.py:667
+#: webmail/viewsets.py:737
 #, fuzzy, python-format
 #| msgid "Attachment is too big (limit: %s)"
 msgid "Attachments are too big (limit: %s for the whole message)"
 msgstr "첨부 파일이 너무 큽니다 (제한: %s)"
+
+#~ msgid "Path to directory where RRD files are stored"
+#~ msgstr "RRD 파일이 저장되는 디렉토리 경로"
+
+#~ msgid "Use the STARTTLS extension"
+#~ msgstr "STARTTLS 확장을 사용합니다."
 
 #~ msgid "wrote:"
 #~ msgstr "씀:"
