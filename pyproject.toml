@@ -82,7 +82,7 @@ dependencies = [
 	# User
 	"drf-nested-routers",
 	"vobject",
-	"caldav==3.5.0",
+	"caldav==3.6.0",
 	# Calendar subscriptions (already required by caldav)
 	"icalendar",
 	"recurring-ical-events",
