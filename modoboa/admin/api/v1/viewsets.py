@@ -154,7 +154,7 @@ class AccountViewSet(
         email = request.GET.get("email")
         if not email:
             raise ParseError("email not provided")
-        if not core_models.User.objects.filter(email=email).exists():
+        if not self.get_queryset().filter(email=email).exists():
             data = {"exists": False}
         else:
             data = {"exists": True}
@@ -171,9 +171,9 @@ class AccountViewSet(
             return Response(status=404)
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        user = core_models.User.objects.filter(
-            email=serializer.validated_data["email"]
-        ).first()
+        user = (
+            self.get_queryset().filter(email=serializer.validated_data["email"]).first()
+        )
         if not user or not user.phone_number:
             return Response(status=404)
         backend = sms_backends.get_active_backend(request.localconfig.parameters)
