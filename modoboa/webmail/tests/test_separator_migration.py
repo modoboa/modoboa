@@ -8,6 +8,7 @@ from django.core.management.base import CommandError
 from django.test import SimpleTestCase
 
 from modoboa.admin import factories as admin_factories
+from modoboa.admin import models as admin_models
 from modoboa.core import models as core_models
 from modoboa.lib.dovecot import DoveadmError
 from modoboa.lib.tests import ModoTestCase
@@ -113,6 +114,18 @@ class MigrateImapSeparatorTestCase(ModoTestCase):
         self.assertEqual(
             len(keys), core_models.User.objects.filter(mailbox__isnull=False).count()
         )
+
+    def test_login_is_not_an_address(self):
+        admin = core_models.User.objects.get(username="admin")
+        admin_factories.MailboxFactory(
+            user=admin,
+            address="superadmin",
+            domain=admin_models.Domain.objects.get(name="test.com"),
+        )
+        self._call()
+        users = [c.args[0] for c in self.backend.list_sieve_scripts.call_args_list]
+        self.assertIn("superadmin@test.com", users)
+        self.assertNotIn("admin", users)
 
     def test_doveadm_failure(self):
         self.backend.list_sieve_scripts.side_effect = DoveadmError("boom")

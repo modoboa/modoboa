@@ -96,11 +96,12 @@ class Command(BaseCommand):
         for mailbox in Mailbox.objects.select_related("user"):
             user = mailbox.user
             try:
-                self.migrate_sieve_scripts(backend, user.username, dry_run)
+                # Dovecot knows the address, not the login ('admin' has one)
+                self.migrate_sieve_scripts(backend, mailbox.full_address, dry_run)
             except DoveadmError as err:
                 # Keep going: the command can be run again once fixed
                 failures += 1
-                self.stderr.write(f"{user.username}: {err}")
+                self.stderr.write(f"{mailbox.full_address}: {err}")
             self.migrate_settings(user, dry_run)
             cache_keys.append(
                 server_info_key(
