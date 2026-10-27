@@ -6,6 +6,24 @@
     <slot name="topbar">
       <TopMenu :user="authUser" />
     </slot>
+    <!-- At the bottom: the top menu is fixed in the top right corner -->
+    <v-footer
+      v-if="theme?.theme_banner_message"
+      app
+      color="secondary"
+      class="justify-center text-body-2"
+    >
+      {{ theme.theme_banner_message }}
+      <a
+        v-if="theme.theme_banner_link_url"
+        :href="theme.theme_banner_link_url"
+        target="_blank"
+        rel="noopener"
+        class="ml-2 font-weight-bold text-decoration-underline banner-link"
+      >
+        {{ theme.theme_banner_link_label || theme.theme_banner_link_url }}
+      </a>
+    </v-footer>
     <ConnectedView>
       <template v-if="$slots.header" #header>
         <slot name="header" />
@@ -48,7 +66,7 @@ import TopMenu from '@/components/shared/TopMenu.vue'
 const authStore = useAuthStore()
 const busStore = useBusStore()
 const { $gettext } = useGettext()
-const { enableTheme } = useModoboaTheme()
+const { theme, enableTheme } = useModoboaTheme()
 
 const props = defineProps({
   color: {
@@ -94,3 +112,9 @@ if (props.loadTheme) {
   await enableTheme()
 }
 </script>
+
+<style scoped>
+.banner-link {
+  color: inherit;
+}
+</style>
