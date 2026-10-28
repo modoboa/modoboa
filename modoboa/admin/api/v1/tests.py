@@ -17,6 +17,7 @@ from reversion.models import Version
 
 from modoboa.admin import factories
 from modoboa.admin import models
+from modoboa.admin import signals as admin_signals
 from modoboa.admin.tests import utils
 from modoboa.core import factories as core_factories, models as core_models
 from modoboa.lib.permissions import grant_access_to_object
@@ -893,6 +894,51 @@ class AccountAPITestCase(ModoAPITestCase):
                 core_models.User.objects.get(pk=account.pk).password, account.password
             )
         client_post.assert_not_called()
+
+    @mock.patch("ovh.Client.get")
+    @mock.patch("ovh.Client.post")
+    def test_locked_fields(self, client_post, client_get):
+        """Plugins lock fields of an account (see the signal)."""
+
+        def lock_fields(sender, account, **kwargs):
+            return ["password", "role"] if account.username == "user@test.com" else []
+
+        admin_signals.extra_account_locked_fields.connect(lock_fields)
+        self.addCleanup(
+            admin_signals.extra_account_locked_fields.disconnect, lock_fields
+        )
+        account = core_models.User.objects.get(username="user@test.com")
+        url = reverse("v1:account-detail", args=[account.pk])
+        # Unchanged values are accepted
+        response = self.client.patch(url, {"role": "SimpleUsers"}, format="json")
+        self.assertEqual(response.status_code, 200)
+        for data in [{"role": "DomainAdmins"}, {"password": "Toto12345"}]:
+            response = self.client.patch(url, data, format="json")
+            self.assertEqual(response.status_code, 400)
+            self.assertIn(next(iter(data)), response.json())
+        # No password sent by SMS either
+        self.set_global_parameters(
+            {
+                "sms_password_recovery": True,
+                "sms_provider": "ovh",
+                "sms_ovh_application_key": "key",
+                "sms_ovh_application_secret": "secret",
+                "sms_ovh_consumer_key": "consumer",
+            },
+            app="core",
+        )
+        account.phone_number = "+33612345678"
+        account.save()
+        response = self.client.post(
+            reverse("v1:account-reset-password"),
+            {"email": account.email},
+            format="json",
+        )
+        self.assertEqual(response.status_code, 404)
+        client_post.assert_not_called()
+        self.assertEqual(
+            core_models.User.objects.get(pk=account.pk).password, account.password
+        )
 
     def test_account_exists_unmanaged_account(self):
         """/exists/ only reports accounts the admin can access."""
