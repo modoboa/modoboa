@@ -100,6 +100,10 @@ class ModoExtension:
           ``ManifestStaticFilesStorage``.
 
         ``url`` takes precedence over ``static_path`` if both are set.
+
+        An optional ``translations`` key names the exposed module holding the
+        plugin's compiled vue3-gettext catalog (e.g. ``"./translations"``).
+        The host merges it into its own before rendering plugin components.
         """
         if not self.frontend_remote:
             return None

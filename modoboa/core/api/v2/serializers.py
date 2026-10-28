@@ -535,6 +535,7 @@ class FrontendRemoteSerializer(serializers.Serializer):
         required=False,
         default="esm",
     )
+    translations = serializers.CharField(required=False)
 
 
 class FrontendUIExtensionPositionSerializer(serializers.Serializer):
