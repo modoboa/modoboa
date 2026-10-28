@@ -174,7 +174,11 @@ class AccountViewSet(
         user = (
             self.get_queryset().filter(email=serializer.validated_data["email"]).first()
         )
-        if not user or not user.phone_number:
+        if (
+            not user
+            or not user.phone_number
+            or "password" in lib.get_account_locked_fields(user)
+        ):
             return Response(status=404)
         backend = sms_backends.get_active_backend(request.localconfig.parameters)
         if not backend:

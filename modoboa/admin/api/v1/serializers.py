@@ -376,8 +376,22 @@ class WritableAccountSerializer(AccountSerializer):
             raise serializers.ValidationError("Invalid choice")
         return value
 
+    def check_locked_fields(self, data):
+        """Reject a new value for the fields plugins lock (see the signal)."""
+        if self.instance is None:
+            return
+        for name in lib.get_account_locked_fields(self.instance):
+            # Unchanged values are accepted: forms send the whole account
+            if data.get(name) not in (None, "") and data[name] != getattr(
+                self.instance, name, None
+            ):
+                raise serializers.ValidationError(
+                    {name: _("This field can't be changed for this account.")}
+                )
+
     def validate(self, data):
         """Check constraints."""
+        self.check_locked_fields(data)
         master_user = data.get("master_user", False)
         role = data.get("role")
         if master_user and role != "SuperAdmins":

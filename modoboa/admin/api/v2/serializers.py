@@ -676,15 +676,7 @@ class WritableAccountSerializer(v1_serializers.WritableAccountSerializer):
 
     def validate(self, data):
         """Check constraints."""
-        if self.instance is not None:
-            for name in lib.get_account_locked_fields(self.instance):
-                # Unchanged values are accepted: forms send the whole account
-                if data.get(name) not in (None, "") and data[name] != getattr(
-                    self.instance, name, None
-                ):
-                    raise serializers.ValidationError(
-                        {name: _("This field can't be changed for this account.")}
-                    )
+        self.check_locked_fields(data)
         master_user = data.get("master_user", False)
         role = data.get("role")
         if master_user and role != "SuperAdmins":
