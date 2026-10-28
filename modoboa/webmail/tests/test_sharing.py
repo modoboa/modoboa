@@ -27,6 +27,7 @@ class SharingIMAP4Mock(IMAP4Mock):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.acl_calls = []
+        self.list_responses = LIST_RESPONSES
 
     def _simple_command(self, name, *args, **kwargs):
         if name == "NAMESPACE":
@@ -37,8 +38,10 @@ class SharingIMAP4Mock(IMAP4Mock):
             if isinstance(pattern, bytes):
                 pattern = pattern.decode()
             # No untagged response at all when nothing matches
-            if pattern.strip('"') in LIST_RESPONSES:
-                self.untagged_responses["LIST"] = LIST_RESPONSES[pattern.strip('"')]
+            if pattern.strip('"') in self.list_responses:
+                self.untagged_responses["LIST"] = self.list_responses[
+                    pattern.strip('"')
+                ]
             return "OK", None
         return super()._simple_command(name, *args, **kwargs)
 
@@ -108,11 +111,23 @@ class FolderSharingTestCase(WebmailTestCase):
         owner = response.json()["mailboxes"][0]
         self.assertEqual(owner["label"], "Alice Martin")
         self.assertEqual(owner["owner"], "admin@test.com")
+        # INBOX not shared: the owner level only groups folders
+        self.assertFalse(owner["selectable"])
         response = self.client.get(url, {"mailbox": "shared/admin@test.com"})
         folder = response.json()["mailboxes"][0]
         # Listed although nobody subscribes to shared folders
         self.assertEqual(folder["name"], "shared/admin@test.com/Projets")
         self.assertEqual(folder["owner"], "admin@test.com")
+
+    def test_list_shared_inbox(self):
+        # Dovecot lists a shared INBOX under the name of its owner
+        self.imap.list_responses = {
+            "shared/%": [b'(\\HasChildren) "/" shared/admin@test.com']
+        }
+        response = self.client.get(
+            reverse("v2:webmail-mailbox-list"), {"mailbox": "shared"}
+        )
+        self.assertTrue(response.json()["mailboxes"][0]["selectable"])
 
     def test_list_nothing_shared_anymore(self):
         response = self.client.get(

@@ -1144,13 +1144,9 @@ class IMAPconnector:
             node["label"] = names.get(node["owner"], node["owner"])
 
     def _set_unseen_counters(self, mailboxes: list, compute: bool = True) -> None:
-        """Compute the unseen messages counter of each selectable mailbox.
-
-        The ``selectable`` marker is an internal detail and is always
-        removed, whether or not the counters are actually computed.
-        """
+        """Compute the unseen messages counter of each selectable mailbox."""
         for mb in mailboxes:
-            selectable = mb.pop("selectable", False)
+            selectable = mb.get("selectable", False)
             if mb.get("sub"):
                 self._set_unseen_counters(mb["sub"], compute)
             if not compute or not selectable or mb.get("removed", False):
