@@ -185,7 +185,7 @@ class PasswordResetView(ThrottleViewMixin, auth_views.PasswordResetView):
             .exclude(Q(phone_number__isnull=True) | Q(phone_number=""))
             .first()
         )
-        if not user:
+        if not user or not user.has_usable_password():
             # Fallback to email
             return super().form_valid(form)
         backend = sms_backends.get_active_backend(self.request.localconfig.parameters)
@@ -343,10 +343,12 @@ class FidoAuthenticationEndView(LoginViewMixin, APIView):
             user, fido_state, serializer.validated_data, request.get_host()
         )
         response = self.login(user, self.request.session.pop("rememberme", False))
-        return JsonResponse({
-            "next": response.url,
-            "user": {
-                "name": user.username,
-                "displayName": user.get_full_name(),
-            },
-        })
+        return JsonResponse(
+            {
+                "next": response.url,
+                "user": {
+                    "name": user.username,
+                    "displayName": user.get_full_name(),
+                },
+            }
+        )

@@ -338,6 +338,35 @@ class PasswordResetTestCase(ModoTestCase):
         )
         self.assertEqual(len(mail.outbox), 0)
 
+    @mock.patch("ovh.Client.get")
+    @mock.patch("ovh.Client.post")
+    def test_reset_password_unusable_password(self, client_post, client_get):
+        """Nobody may log into the account: no reset, by email or SMS."""
+        self.account_ok.set_unusable_password()
+        self.account_ok.save()
+        self.client.logout()
+        url = reverse("password_reset")
+        data = {"email": self.account_ok.email}
+        response = self.client.post(url, data, follow=True)
+        self.assertContains(
+            response, "We've emailed you instructions for setting your password"
+        )
+        self.assertEqual(len(mail.outbox), 0)
+        self.set_global_parameters(
+            {
+                "sms_password_recovery": True,
+                "sms_provider": "ovh",
+                "sms_ovh_application_key": "key",
+                "sms_ovh_application_secret": "secret",
+                "sms_ovh_consumer_key": "consumer",
+            }
+        )
+        cache.clear()
+        response = self.client.post(url, data)
+        self.assertNotEqual(response.url, reverse("password_reset_confirm_code"))
+        client_post.assert_not_called()
+        self.assertEqual(len(mail.outbox), 0)
+
     def test_reset_password_announcement(self):
         """Check if announcement is showing."""
         self.client.logout()
