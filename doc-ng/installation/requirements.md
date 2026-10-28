@@ -14,7 +14,7 @@ You will need a Server to perform well with at least:
 - CPU: 4
 - RAM: 4GB
 - Disk: 10GB
-- Python 3.10+
+- Python 3.11+
 - Postgres 14+ or MariaDB 10.5+ or MySQL 8.0.11+ or sqlite3
 
 ::: warning

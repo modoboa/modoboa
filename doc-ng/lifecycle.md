@@ -21,7 +21,7 @@ Modoboa's active development branch relies on the current Django LTS release to 
 ## Current Cycle: Modoboa 2.x
 
 * Target Django Version: Django 5.2 LTS
-* Supported Python Versions: [Python 3.10](https://www.python.org/downloads/), 3.11, 3.12, 3.13, 3.14
+* Supported Python Versions: [Python 3.11](https://www.python.org/downloads/), 3.12, 3.13, 3.14
 * Estimated End of Life (EOL): April 2028 (aligned with Django 5.2 LTS support)
 
 ## Future Cycle: Modoboa 3.0+ (Next LTS)
