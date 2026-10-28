@@ -295,6 +295,7 @@ class FrontendPluginsAPIViewTests(ModoAPITestCase):
                 "name": "test_plugin",
                 "url": "https://localhost:5174/remoteEntry.js",
                 "format": "esm",
+                "translations": "./translations",
             }
             frontend_menu_entries = [
                 {
@@ -344,6 +345,7 @@ class FrontendPluginsAPIViewTests(ModoAPITestCase):
             manifest["remote"]["url"],
             "https://localhost:5174/remoteEntry.js",
         )
+        self.assertEqual(manifest["remote"]["translations"], "./translations")
         self.assertEqual(manifest["menu_entries"][0]["to"], "TestPluginRoute")
         self.assertEqual(manifest["menu_entries"][0]["badge"], "PRO")
         self.assertEqual(manifest["routes"][0]["component"], "./TestPlugin")

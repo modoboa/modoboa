@@ -74,7 +74,9 @@ class LoginViewMixin:
         if not condition:
             nextlocation = "/"
         response = HttpResponseRedirect(nextlocation)
-        response.set_cookie(settings.LANGUAGE_COOKIE_NAME, user.language)
+        # The frontend sends the user's language with each API request, but
+        # LocaleMiddleware favors this cookie, which goes stale
+        response.delete_cookie(settings.LANGUAGE_COOKIE_NAME)
         return response
 
 
