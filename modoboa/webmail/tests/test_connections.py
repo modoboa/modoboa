@@ -1,5 +1,6 @@
 """Tests for the IMAP connection lifetime (one per request)."""
 
+import imaplib
 from unittest import mock
 
 from django.test import SimpleTestCase
@@ -53,6 +54,50 @@ class ConnectorReuseTestCase(SimpleTestCase):
         connector.login.assert_called_once()
         # Closed with the request, not at the end of the block
         connector.logout.assert_not_called()
+
+
+class OAuthBearerFailureIMAP4(imaplib.IMAP4):
+    """Real imaplib client talking to a scripted server rejecting the token."""
+
+    def open(self, host="", port=143, timeout=None):
+        self.sent = []
+        self.lines = [b"* OK ready\r\n"]
+
+    def readline(self):
+        # An empty script means the client waits for a reply that never comes
+        return self.lines.pop(0)
+
+    def send(self, data):
+        self.sent.append(data)
+        if data == b"AQ==":
+            self.lines.append(self.auth_tag + b" NO [AUTHENTICATIONFAILED] failed\r\n")
+            return
+        tag, _, rest = data.partition(b" ")
+        if rest.startswith(b"CAPABILITY"):
+            self.lines += [
+                b"* CAPABILITY IMAP4rev1 AUTH=OAUTHBEARER\r\n",
+                tag + b" OK done\r\n",
+            ]
+        elif rest.startswith(b"AUTHENTICATE"):
+            self.auth_tag = tag
+            self.lines.append(b"+ eyJzdGF0dXMiOiJpbnZhbGlkX3Rva2VuIn0=\r\n")
+
+    def shutdown(self):
+        pass
+
+
+class OAuthBearerFailureTestCase(SimpleTestCase):
+    """A rejected token fails right away instead of waiting for the timeout."""
+
+    @mock.patch("imaplib.IMAP4", OAuthBearerFailureIMAP4)
+    def test_rejected_token(self):
+        connector = imaputils.IMAPconnector.__new__(imaputils.IMAPconnector)
+        connector.conf = {"imap_secured": False}
+        connector.address = "localhost"
+        connector.port = 143
+        with self.assertRaises(imaputils.ImapError):
+            connector.login("user@test.com", "bad-token")
+        self.assertIn(b"AQ==", connector.m.sent)
 
 
 class QuietLogoutTestCase(SimpleTestCase):
