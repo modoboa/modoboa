@@ -633,6 +633,44 @@ GLOBAL_PARAMETERS_STRUCT = collections.OrderedDict(
                                 "widget": "ImageField",
                             },
                         ),
+                        (
+                            "theme_banner_separator",
+                            {
+                                "label": gettext_lazy("Banner"),
+                                "separator": True,
+                            },
+                        ),
+                        (
+                            "theme_banner_message",
+                            {
+                                "label": gettext_lazy("Banner message"),
+                                "help_text": gettext_lazy(
+                                    "A message displayed at the bottom of every "
+                                    "page of the interface. Leave empty to hide "
+                                    "the banner."
+                                ),
+                            },
+                        ),
+                        (
+                            "theme_banner_link_url",
+                            {
+                                "label": gettext_lazy("Banner link URL"),
+                                "help_text": gettext_lazy(
+                                    "An optional link displayed after the "
+                                    "banner message"
+                                ),
+                            },
+                        ),
+                        (
+                            "theme_banner_link_label",
+                            {
+                                "label": gettext_lazy("Banner link label"),
+                                "help_text": gettext_lazy(
+                                    "Text of the banner link (the URL is "
+                                    "displayed when empty)"
+                                ),
+                            },
+                        ),
                     ]
                 ),
             },

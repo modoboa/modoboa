@@ -96,6 +96,9 @@ class ThemeAPIView(APIView):
             "theme_login_logo_url",
             "theme_menu_logo_url",
             "theme_creation_form_logo_url",
+            "theme_banner_message",
+            "theme_banner_link_url",
+            "theme_banner_link_label",
         ]
         for param in params:
             values[param] = request.localconfig.parameters.get_value(param)

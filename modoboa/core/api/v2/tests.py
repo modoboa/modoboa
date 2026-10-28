@@ -442,12 +442,17 @@ class ThemeAPITestCase(ModoAPITestCase):
         self.assertEqual(theme["theme_login_logo_url"], "")
         self.assertEqual(theme["theme_menu_logo_url"], "")
         self.assertEqual(theme["theme_creation_form_logo_url"], "")
+        self.assertEqual(theme["theme_banner_message"], "")
 
         self.set_global_parameter("theme_primary_color", "#FF0000")
+        self.set_global_parameter("theme_banner_message", "Demo instance")
+        self.set_global_parameter("theme_banner_link_url", "https://modoboa.com")
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
         theme = response.json()
         self.assertEqual(theme["theme_primary_color"], "#FF0000")
+        self.assertEqual(theme["theme_banner_message"], "Demo instance")
+        self.assertEqual(theme["theme_banner_link_url"], "https://modoboa.com")
 
     def test_get_theme_parameters_signal(self):
         """Plugin receivers can override theme colors via the signal."""

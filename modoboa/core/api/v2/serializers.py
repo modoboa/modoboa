@@ -141,6 +141,15 @@ class CoreGlobalParametersSerializer(serializers.Serializer):
     theme_creation_form_logo_url = serializers.CharField(
         required=False, allow_blank=True, default=""
     )
+    theme_banner_message = serializers.CharField(
+        required=False, allow_blank=True, default=""
+    )
+    theme_banner_link_url = serializers.URLField(
+        required=False, allow_blank=True, default=""
+    )
+    theme_banner_link_label = serializers.CharField(
+        required=False, allow_blank=True, default=""
+    )
 
     # Notification settings
     sender_address = lib_fields.DRFEmailFieldUTF8(default="noreply@yourdomain.test")
@@ -462,6 +471,9 @@ class ThemeSerializer(serializers.Serializer):
     theme_login_logo_url = serializers.CharField(default="", allow_blank=True)
     theme_menu_logo_url = serializers.CharField(default="", allow_blank=True)
     theme_creation_form_logo_url = serializers.CharField(default="", allow_blank=True)
+    theme_banner_message = serializers.CharField(default="", allow_blank=True)
+    theme_banner_link_url = serializers.CharField(default="", allow_blank=True)
+    theme_banner_link_label = serializers.CharField(default="", allow_blank=True)
 
 
 class ThemeLogoUploadSerializer(serializers.Serializer):
