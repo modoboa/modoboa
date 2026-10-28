@@ -85,6 +85,9 @@ class UserMailboxSerializer(serializers.Serializer):
     owner = serializers.CharField(required=False)
     unseen = serializers.IntegerField(default=0)
     removed = serializers.BooleanField(default=False)
+    # False for the levels of the shared namespace that hold no messages. An
+    # owner level is the shared INBOX when the user has rights on it.
+    selectable = serializers.BooleanField(default=True)
     sub = serializers.SerializerMethodField()
 
     def get_sub(self, obj):

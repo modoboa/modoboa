@@ -105,19 +105,24 @@ const iconByMailboxType = {
   shared: 'mdi-folder-account-outline',
 }
 
-// The levels of the shared namespace (root, then one per owner) hold no
-// messages: they only group the shared folders.
+// The levels of the shared namespace: the root, then one per owner.
 // ponytail: assumes a one-level prefix ("shared/"), as modoboa-installer
 // configures it.
-function isSharedContainer(mailbox) {
+function isSharedLevel(mailbox) {
   return (
     mailbox.type === 'shared' &&
     mailbox.name.split(props.hdelimiter).length <= 2
   )
 }
 
+// They only group the shared folders, except an owner level the user can
+// select: Dovecot lists the shared INBOX under the owner name.
+function isSharedContainer(mailbox) {
+  return isSharedLevel(mailbox) && !mailbox.selectable
+}
+
 function getMailboxIcon(mailbox) {
-  if (isSharedContainer(mailbox)) {
+  if (isSharedLevel(mailbox)) {
     return mailbox.owner
       ? 'mdi-account-outline'
       : 'mdi-account-multiple-outline'
