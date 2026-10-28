@@ -91,6 +91,16 @@ def get_account_badges() -> list[dict]:
     return list(badges.values())
 
 
+def get_account_locked_fields(account) -> list[str]:
+    """Return the fields plugins lock for an account (see the signal)."""
+    fields = set()
+    for _receiver, names in signals.extra_account_locked_fields.send(
+        sender=None, account=account
+    ):
+        fields.update(names or [])
+    return sorted(fields)
+
+
 def get_domains(user, domfilter=None, searchquery=None, **extrafilters):
     """Return all the domains the user can access.
 

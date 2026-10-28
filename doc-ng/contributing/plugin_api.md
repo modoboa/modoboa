@@ -216,10 +216,10 @@ def save_billing_reference(sender, domain, plugin_data, request, **kwargs):
 
 ## Extending the account serializers
 
-Accounts work the same way, with one more signal for badges. The read
-side (list and detail) uses `AccountSerializer` and the write side
-(create and update) `WritableAccountSerializer`: connect each receiver to
-the right sender.
+Accounts work the same way, with two more signals for badges and locked
+fields. The read side (list and detail) uses `AccountSerializer` and the
+write side (create and update) `WritableAccountSerializer`: connect each
+receiver to the right sender.
 
 | Signal | Sender | Provides | Receivers return |
 |---|---|---|---|
@@ -228,6 +228,7 @@ the right sender.
 | `account_post_create_via_api` | `WritableAccountSerializer` | `account`, `plugin_data`, `request` | — (side-effects only). |
 | `account_post_update_via_api` | `WritableAccountSerializer` | `account`, `plugin_data`, `request` | — (side-effects only). |
 | `extra_account_badges` | (none, connect without sender) | (nothing) | `list[dict]` of badges displayed next to accounts in the accounts list, which can be filtered by badge: `name` (unique, prefix it with your plugin: a badge reusing a name already given is ignored), `label`, `filter` (a `Q` object matching the accounts with this badge), and optionally `color` (a Vuetify color, `default` otherwise), `icon` (`mdi-…`) and `title` (tooltip). |
+| `extra_account_locked_fields` | (none, connect without sender) | `account` | `list[str]` of `WritableAccountSerializer` fields administrators can't change for this account (e.g. `password`, `role`). Sending a new value is rejected with a 400, and the account edit form hides them; the read side exposes them as `locked_fields`. |
 
 ## Frontend extension points
 

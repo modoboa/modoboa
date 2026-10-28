@@ -1687,6 +1687,35 @@ class AccountSerializerSignalsTestCase(ModoAPITestCase):
         response = self.client.get(reverse("v2:account-detail", args=[account.pk]))
         self.assertEqual(response.json()["badges"][0]["name"], "myplugin.user")
 
+    def test_locked_fields(self):
+        def lock_fields(sender, account, **kwargs):
+            return ["password", "role"] if account.username == "user@test.com" else []
+
+        admin_signals.extra_account_locked_fields.connect(lock_fields)
+        self.addCleanup(
+            admin_signals.extra_account_locked_fields.disconnect, lock_fields
+        )
+        account = core_models.User.objects.get(username="user@test.com")
+        url = reverse("v2:account-detail", args=[account.pk])
+        response = self.client.get(url)
+        self.assertEqual(response.json()["locked_fields"], ["password", "role"])
+        # Forms send the whole account: unchanged values are accepted
+        response = self.client.patch(
+            url, {"role": "SimpleUsers", "first_name": "Bob"}, format="json"
+        )
+        self.assertEqual(response.status_code, 200)
+        for data in [{"role": "DomainAdmins"}, {"password": "Toto12345"}]:
+            response = self.client.patch(url, data, format="json")
+            self.assertEqual(response.status_code, 400)
+            self.assertIn(next(iter(data)), response.json())
+        other = core_models.User.objects.get(username="user@test2.com")
+        response = self.client.patch(
+            reverse("v2:account-detail", args=[other.pk]),
+            {"password": "Toto12345"},
+            format="json",
+        )
+        self.assertEqual(response.status_code, 200)
+
     def test_extra_data_in_list_and_retrieve(self):
         response = self.client.get(reverse("v2:account-list"))
         for entry in response.json()["results"]:
