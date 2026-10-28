@@ -13,6 +13,7 @@ from oauth2_provider.models import get_application_model
 from django.conf import settings
 from django.core import mail
 from django.core import management
+from django.test import override_settings
 from django.urls import reverse
 from django.utils import timezone
 
@@ -47,10 +48,14 @@ class AuthenticationTestCase(ModoTestCase):
 class ManagementCommandsTestCase(SimpleModoTestCase):
     """Test management commands."""
 
-    def tearDown(self):
-        frontend_dir = pathlib.Path(settings.BASE_DIR) / "frontend"
-        if frontend_dir.exists():
-            shutil.rmtree(frontend_dir)
+    def setUp(self):
+        super().setUp()
+        # load_initial_data replaces BASE_DIR/frontend: never the real one
+        base_dir = tempfile.mkdtemp()
+        self.addCleanup(shutil.rmtree, base_dir)
+        override = override_settings(BASE_DIR=base_dir)
+        override.enable()
+        self.addCleanup(override.disable)
 
     def test_change_default_admin(self):
         """Use dedicated option."""
