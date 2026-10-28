@@ -86,7 +86,7 @@ const PLUGIN_TABS_EXTENSION_POINT = 'account.detail.tabs'
 
 const account = ref({ pk: route.params.id })
 const limitsConfig = ref({})
-const tab = ref(null)
+const tab = ref(0)
 
 const pluginTabs = computed(() =>
   pluginsStore.uiExtensions(PLUGIN_TABS_EXTENSION_POINT)
