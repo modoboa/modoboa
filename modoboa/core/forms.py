@@ -25,11 +25,13 @@ class PasswordResetForm(auth_forms.PasswordResetForm):
 
     def get_users(self, email):
         """Return matching user(s) who should receive a reset."""
-        return (
+        users = (
             get_user_model()
             ._default_manager.filter(email__iexact=email, is_active=True)
             .exclude(Q(secondary_email__isnull=True) | Q(secondary_email=""))
         )
+        # Like Django: an unusable password means nobody may log in
+        return (user for user in users if user.has_usable_password())
 
     def send_mail(
         self,
