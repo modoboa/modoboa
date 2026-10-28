@@ -2,7 +2,11 @@
   <LoadingData v-if="working" />
   <div v-else>
     <v-expansion-panels v-model="panel" :multiple="formErrors">
-      <v-expansion-panel v-if="canSetRole" eager value="roleForm">
+      <v-expansion-panel
+        v-if="canSetRole && !editedAccount.locked_fields?.includes('role')"
+        eager
+        value="roleForm"
+      >
         <v-expansion-panel-title v-slot="{ expanded }">
           <v-row no-gutters>
             <v-col cols="4">

@@ -30,16 +30,18 @@
       density="compact"
     />
 
-    <AccountPasswordSubForm
-      v-if="authStore.authUser.pk !== account.pk"
-      ref="passwordForm"
-      v-model="account"
-      :editing="editing"
-      :form-errors="formErrors"
-    />
-    <v-alert v-else type="info" variant="tonal" class="py-2">
-      {{ $gettext('You can update your password from the Account section') }}
-    </v-alert>
+    <template v-if="!account.locked_fields?.includes('password')">
+      <AccountPasswordSubForm
+        v-if="authStore.authUser.pk !== account.pk"
+        ref="passwordForm"
+        v-model="account"
+        :editing="editing"
+        :form-errors="formErrors"
+      />
+      <v-alert v-else type="info" variant="tonal" class="py-2">
+        {{ $gettext('You can update your password from the Account section') }}
+      </v-alert>
+    </template>
 
     <v-switch
       v-model="account.is_active"
