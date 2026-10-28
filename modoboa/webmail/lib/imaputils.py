@@ -597,6 +597,14 @@ class IMAPconnector:
             return None
         return name[len(prefix) :].split(self.hdelimiter)[0]
 
+    def _oauthbearer_error_response(self, challenge: bytes) -> bytes:
+        """Answer an OAUTHBEARER error challenge.
+
+        Must be a bound method: imaplib only calls back methods, any
+        other value is sent as a literal. Returns base64 encoded %x01.
+        """
+        return b"AQ=="
+
     def login(self, user: str, rawtoken: str) -> None:
         """Custom login method
 
@@ -619,6 +627,9 @@ class IMAPconnector:
         dev_mode = getattr(settings, "WEBMAIL_DEV_MODE", False)
         if not dev_mode:
             token = oauth2.build_oauthbearer_string(user, rawtoken)
+            # On failure, the server sends an error challenge and waits
+            # for the client response before the tagged NO (RFC 7628)
+            self.m.literal = self._oauthbearer_error_response
             data = self._cmd("AUTHENTICATE", b"OAUTHBEARER", token)
         else:
             user = bytes(settings.WEBMAIL_DEV_USERNAME, "utf-8")
