@@ -131,13 +131,17 @@ If you need to rebuild you virtualenv, you can check this [part of the documenta
 
 The section below containt specific migration steps to upgrade Modoboa instance.
 
-## Version 2.12.1
+## Version 2.13.0
 
 ### Client address detection
 
 Modoboa no longer trusts the `X-Forwarded-For` header by default, because
-clients can set it. If you upgrade with the installer, you have nothing to do.
-Otherwise, edit `settings.py`, replace the
+clients can set it, and it does not depend on `django-xforwardedfor-middleware`
+anymore. If you upgrade with the installer, you have nothing to do.
+
+Otherwise, this step is **mandatory**: without it, your instance won't start
+in a new virtualenv, and stays exposed to forged addresses in an existing one.
+Edit `settings.py`, replace the
 `x_forwarded_for.middleware.XForwardedForMiddleware` entry of `MIDDLEWARE`
 with `modoboa.lib.middleware.TrustedProxyMiddleware`, and declare how many
 reverse proxies add to this header in front of Modoboa:
@@ -155,6 +159,12 @@ front of gunicorn. A value too high lets clients forge their address, a value
 too low makes all of them share the same rate limits.
 `python manage.py check` reports the instances still to update
 (`modoboa.core.W003`).
+
+Then, remove the package, which `pip` keeps in existing virtualenvs:
+
+``` bash
+$ pip uninstall django-xforwardedfor-middleware
+```
 
 ### Login rate limiting
 
