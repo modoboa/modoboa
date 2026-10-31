@@ -201,7 +201,7 @@ class ModoTestCase(ParametersMixin, TestCase):
     def setUpTestData(cls):  # noqa
         """Create a default user."""
         super().setUpTestData()
-        management.call_command("load_initial_data", "--no-frontend")
+        management.call_command("load_initial_data", "--no-frontend", "--dev")
 
     def setUp(self, username="admin", password="password"):
         """Initiate test context."""
@@ -240,7 +240,7 @@ class ModoAPITestCase(ParametersMixin, APITestCase):
     def setUpTestData(cls):  # noqa
         """Create a default user."""
         super().setUpTestData()
-        management.call_command("load_initial_data", "--no-frontend")
+        management.call_command("load_initial_data", "--no-frontend", "--dev")
         cls.sadmin = core_models.User.objects.get(username="admin")
         cls.token = Token.objects.create(user=cls.sadmin)
 

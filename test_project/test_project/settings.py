@@ -140,7 +140,7 @@ AUTH_USER_MODEL = "core.User"
 MIDDLEWARE = (
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.locale.LocaleMiddleware",
-    "x_forwarded_for.middleware.XForwardedForMiddleware",
+    "modoboa.lib.middleware.TrustedProxyMiddleware",
     "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -250,6 +250,7 @@ OAUTH2_PROVIDER = {
 # Rest framework settings
 
 REST_FRAMEWORK = {
+    "NUM_PROXIES": 0,
     "DEFAULT_THROTTLE_RATES": {
         "user": "400/minute",
         "ddos": "50/second",

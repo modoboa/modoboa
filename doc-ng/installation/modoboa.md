@@ -203,6 +203,8 @@ like this:
 :::
 
 The command will ask you a few questions, answer them and you\'re done.
+It displays the password generated for the `admin` account: write it down, it
+won\'t be displayed again.
 
 If you need a **silent installation** (e.g. if you\'re using Salt-Stack,
 Ansible or whatever), it's possible to supply the database credentials

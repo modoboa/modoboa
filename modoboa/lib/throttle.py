@@ -1,3 +1,6 @@
+import hashlib
+import unicodedata
+
 from django.shortcuts import render
 from django.urls import resolve
 from django.utils.translation import gettext as _
@@ -47,6 +50,35 @@ class LoginThrottle(SimpleRateThrottle):
     def reset_cache(self, request):
         self.key = self.get_cache_key(request, None)
         self.cache.delete(self.key)
+
+
+class LoginFailureThrottle(LoginThrottle):
+    """Limit failed logins per client address.
+
+    Successful logins neither count, so users sharing an address are not
+    locked out, nor reset the counter, so a valid account cannot clear it.
+    """
+
+    def throttle_success(self):
+        return True
+
+    def record_failure(self, request):
+        self.allow_request(request, None)
+        super().throttle_success()
+
+
+class LoginUsernameThrottle(LoginFailureThrottle):
+    """Limit failed logins per username, for attacks using many addresses."""
+
+    scope = "login_username"
+    # Set here because settings.py of existing instances lack this scope
+    rate = "100/hour"
+
+    def get_cache_key(self, request, view):
+        # Same normalization as the login form, on top of being case insensitive
+        username = unicodedata.normalize("NFKC", request.POST.get("username", ""))
+        ident = hashlib.sha256(username.strip().lower().encode()).hexdigest()
+        return self.cache_format % {"scope": self.scope, "ident": ident}
 
 
 class PasswordResetRequestThrottle(LoginThrottle):

@@ -4,6 +4,7 @@ from django.conf import settings
 from django.utils.translation import gettext as _
 
 from oauth2_provider.models import get_application_model
+from rest_framework.settings import api_settings
 
 from modoboa.core.utils import (
     check_for_deprecated_password_schemes,
@@ -23,6 +24,18 @@ W002 = Warning(
     _("The password scheme you are using is deprecated."),
     hint=_("Upgrade your password scheme to a stronger one"),
     id="modoboa.core.W002",
+)
+W003 = Warning(
+    _(
+        "Client addresses are read from a header clients can forge, which "
+        "defeats rate limits and fail2ban."
+    ),
+    hint=_(
+        "In settings.py, replace XForwardedForMiddleware with "
+        "modoboa.lib.middleware.TrustedProxyMiddleware and set NUM_PROXIES in "
+        "REST_FRAMEWORK. See the upgrade documentation."
+    ),
+    id="modoboa.core.W003",
 )
 
 E001 = Error(
@@ -88,6 +101,15 @@ def check_password_hasher(app_configs, **kwargs):
     if hasher:
         msgs.append(W002)
     return msgs
+
+
+@register()
+def check_client_address_source(app_configs, **kwargs):
+    forgeable = (
+        api_settings.NUM_PROXIES is None
+        or "x_forwarded_for.middleware.XForwardedForMiddleware" in settings.MIDDLEWARE
+    )
+    return [W003] if forgeable else []
 
 
 @register(deploy=True)

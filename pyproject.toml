@@ -32,6 +32,7 @@ dependencies = [
 	"django==5.2.18",
 	"django-phonenumber-field[phonenumbers]==9.0.0",
 	"django-reversion==6.4.0",
+	# ponytail: unused by new instances, removing it crashes settings.py files not yet migrated to TrustedProxyMiddleware (see 2.12.1 upgrade notes). Drop it in the next major version.
 	"django-xforwardedfor-middleware==2.0",
 	"django-otp==1.7.5",
 	"django-filter",

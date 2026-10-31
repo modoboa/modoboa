@@ -131,6 +131,44 @@ If you need to rebuild you virtualenv, you can check this [part of the documenta
 
 The section below containt specific migration steps to upgrade Modoboa instance.
 
+## Version 2.12.1
+
+### Client address detection
+
+Modoboa no longer trusts the `X-Forwarded-For` header by default, because
+clients can set it. If you upgrade with the installer, you have nothing to do.
+Otherwise, edit `settings.py`, replace the
+`x_forwarded_for.middleware.XForwardedForMiddleware` entry of `MIDDLEWARE`
+with `modoboa.lib.middleware.TrustedProxyMiddleware`, and declare how many
+reverse proxies add to this header in front of Modoboa:
+
+``` python
+REST_FRAMEWORK = {
+    'NUM_PROXIES': 0,
+    # ...
+}
+```
+
+Keep `0` with `uwsgi_pass`, Apache `mod_wsgi` or any direct connection, and use
+the number of proxies otherwise, for example `1` for nginx `proxy_pass` in
+front of gunicorn. A value too high lets clients forge their address, a value
+too low makes all of them share the same rate limits.
+`python manage.py check` reports the instances still to update
+(`modoboa.core.W003`).
+
+### Login rate limiting
+
+Failed logins are now limited on `accounts/login/`, per client address (the
+`login` rate of `REST_FRAMEWORK`, 10 per minute by default) and per username
+(100 per hour).
+
+### Initial administrator password
+
+`load_initial_data` and `modoboa-admin.py deploy` now generate a random
+password for the initial administrator and display it once, instead of
+creating `admin:password`. If your instance still uses this default password,
+change it.
+
 ## Version 2.12.0
 
 ### IMAP hierarchy separator
