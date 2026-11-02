@@ -31,7 +31,7 @@
     "filesize": "^10.1.6",
     "js-cookie": "^3.0.5",
     "luxon": "^3.4.4",
-    "minimatch": "^10.2.5",
+    "minimatch": "^11.0.1",
     "oidc-client-ts": "^3.4.1",
     "pinia": "^3.0.4",
     "qrcode.vue": "^3.6.0",
