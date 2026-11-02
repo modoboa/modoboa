@@ -42,13 +42,23 @@ before running the following commands.
 Then, run the following commands:
 
 ``` shell
-$ pip install modoboa==<VERSION>
+$ pip install modoboa==<VERSION> -c https://github.com/modoboa/modoboa/releases/download/<VERSION>/constraints.txt
 $ cd <modoboa_instance_dir>
 $ python manage.py migrate
 $ python manage.py collectstatic
 $ python manage.py check --deploy
 $ python manage.py load_initial_data
 ```
+
+The `constraints.txt` file is available starting with 2.13.0. It pins
+every dependency to the version tested with this release of Modoboa.
+
+::: warning
+Run `migrate` even when you only rebuild your virtual environment or
+container image without changing Modoboa's version: without the
+constraints file, pip may install newer dependencies that come with
+their own database migrations.
+:::
 
 Then when everything has been updated, restart modoboa's services:
 
