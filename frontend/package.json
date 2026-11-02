@@ -54,7 +54,7 @@
     "prettier": "^3.9.10",
     "sass": "^1.106.1",
     "typescript": "^5",
-    "unplugin-fonts": "^1.0.3",
+    "unplugin-fonts": "^2.1.0",
     "vite": "^8",
     "vite-plugin-vuetify": "^2.1.0"
   },
