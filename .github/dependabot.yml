@@ -5,3 +5,17 @@ updates:
   schedule:
     interval: daily
   open-pull-requests-limit: 10
+  cooldown:
+    default-days: 7
+  groups:
+    python-minor-patch:
+      update-types: ["minor", "patch"]
+- package-ecosystem: npm
+  directory: "/frontend"
+  schedule:
+    interval: weekly
+  cooldown:
+    default-days: 7
+  groups:
+    frontend-minor-patch:
+      update-types: ["minor", "patch"]
