@@ -31,7 +31,7 @@ license = {file = "LICENSE"}
 dependencies = [
 	"django==5.2.18",
 	"django-phonenumber-field[phonenumbers]==9.0.0",
-	"django-reversion==6.4.0",
+	"django-reversion==6.5.0",
 	"django-otp==1.7.5",
 	"django-filter",
 	"django-rename-app==0.1.7",
