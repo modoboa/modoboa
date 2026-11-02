@@ -10,23 +10,6 @@ queue_rules:
     merge_conditions:
       - check-success=test (postgres, 3.12)
     merge_method: squash
-  - name: duplicated default from automatic merge for pyUp pull requests
-    queue_conditions:
-      - author=pyup-bot
-      - check-success=test (postgres, 3.12)
-      - label=dependencies
-      - "#approved-reviews-by>=1"
-    merge_conditions:
-      - check-success=test (postgres, 3.12)
-    merge_method: squash
-  - name: duplicated default from automatic merge for dependabot pull requests
-    queue_conditions:
-      - author~=^dependabot(|-preview)\[bot\]$
-      - check-success=test (postgres, 3.12)
-      - label=dependencies
-    merge_conditions:
-      - check-success=test (postgres, 3.12)
-    merge_method: squash
   - name: duplicated default from automatic merge for transifex pull requests
     queue_conditions:
       - author~=^transifex-integration\[bot\]$
@@ -36,13 +19,6 @@ queue_rules:
     merge_method: squash
 
 pull_request_rules:
-  - name: Auto-queue for Dependabot
-    conditions:
-      - author~=^dependabot(|-preview)\[bot\]$
-      - check-success=test (postgres, 3.12)
-      - label=dependencies
-    actions:
-      queue:
   - name: automatic merge for dependabot pull requests + automatic merge for pyUp pull 
       requests + automatic merge for transifex pull requests + automatic merge on CI success 
       and review
@@ -61,18 +37,4 @@ priority_rules:
       - "#commented-reviews-by=0"
       - label=ready-to-merge
     priority: 2750
-    allow_checks_interruption: true
-  - name: priority for queue `duplicated default from automatic merge for pyUp pull requests`
-    conditions:
-      - author=pyup-bot
-      - "#approved-reviews-by>=1"
-    priority: 2500
-    allow_checks_interruption: true
-  - name: priority for queue `duplicated default from automatic merge for dependabot pull 
-      requests`
-    conditions:
-      - author~=^dependabot(|-preview)\[bot\]$
-      - check-success=test (postgres, 3.12)
-      - label=dependencies
-    priority: 2250
     allow_checks_interruption: true
