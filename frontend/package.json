@@ -24,7 +24,7 @@
     "@tiptap/pm": "^3.32.0",
     "@tiptap/starter-kit": "^3.32.0",
     "@tiptap/vue-3": "^3.32.0",
-    "apexcharts": "^5.3.5",
+    "apexcharts": "^8.5.0",
     "axios": "^1.20.0",
     "core-js": "^3.51.0",
     "debounce": "^2.1.0",
