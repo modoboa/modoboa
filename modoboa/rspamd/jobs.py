@@ -3,6 +3,7 @@
 import logging
 
 from modoboa.admin import models
+from modoboa.lib import validators
 from modoboa.parameters import tools as param_tools
 
 logger = logging.getLogger("modoboa.jobs")
@@ -59,8 +60,23 @@ class MapsUpdater:
         domain_name = domain_instance.name
         selector_entry = self.selector_map.get(domain_name)
         dkim_path_entry = self.dkim_path_map.get(domain_name)
+        # An invalid selector could inject map entries (defense-in-depth,
+        # the model already validates it).
+        valid_selector = validators.validate_dkim_selector.regex.search(
+            domain_instance.dkim_key_selector
+        )
+        if not valid_selector:
+            logger.warning(
+                "Invalid DKIM selector for domain %s: %r",
+                domain_name,
+                domain_instance.dkim_key_selector,
+            )
         # Without a private key, rspamd can't sign for this domain
-        if not domain_instance.enable_dkim or not domain_instance.dkim_private_key_path:
+        if (
+            not domain_instance.enable_dkim
+            or not domain_instance.dkim_private_key_path
+            or not valid_selector
+        ):
             if selector_entry is not None:
                 self.selector_map.pop(domain_name)
                 self.modified_selector_file = True
@@ -75,11 +91,7 @@ class MapsUpdater:
             or selector_entry != domain_instance.dkim_key_selector
         )
         if condition:
-            # Strip newlines to prevent injecting extra entries into the map
-            # file (defense-in-depth against a crafted dkim_key_selector).
-            self.selector_map[domain_name] = domain_instance.dkim_key_selector.replace(
-                "\n", ""
-            )
+            self.selector_map[domain_name] = domain_instance.dkim_key_selector
             self.modified_selector_file = True
 
         # modify dkim path map

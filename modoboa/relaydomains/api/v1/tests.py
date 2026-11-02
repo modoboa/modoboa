@@ -97,6 +97,24 @@ class RelayDomainAPITestCase(DataMixin, ModoAPITestCase):
             admin_models.Domain.objects.filter(name__iexact="dalias.test").exists()
         )
 
+    def test_create_dkim_selector_constraints(self):
+        """The DKIM selector must reject values that could inject map lines."""
+        url = reverse("api:relaydomain-list")
+        settings = {"relay_target_host": "1.2.3.4", "relay_target_port": 25}
+        for selector in ["a\rvictim.com evilsel", "a\nb", "a b"]:
+            data = {
+                "name": "test3.com",
+                "enable_dkim": True,
+                "dkim_key_selector": selector,
+                "transport": {"service": "relay", "_settings": json.dumps(settings)},
+            }
+            response = self.client.post(url, data, format="json")
+            self.assertEqual(response.status_code, 400)
+            self.assertEqual(
+                response.data["dkim_key_selector"], ["Enter a valid DKIM selector"]
+            )
+        self.assertFalse(admin_models.Domain.objects.filter(name="test3.com").exists())
+
     def test_update(self):
         """Test update service."""
         url = reverse("api:relaydomain-detail", args=[self.domain1.pk])
