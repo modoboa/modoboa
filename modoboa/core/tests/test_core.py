@@ -59,8 +59,18 @@ class ManagementCommandsTestCase(SimpleModoTestCase):
 
     def test_change_default_admin(self):
         """Use dedicated option."""
-        management.call_command("load_initial_data", "--admin-username", "modoadmin")
+        management.call_command(
+            "load_initial_data", "--admin-username", "modoadmin", "--dev"
+        )
         self.assertTrue(self.client.login(username="modoadmin", password="password"))
+
+    def test_random_admin_password(self):
+        """Only the dev environment gets a well-known password."""
+        out = StringIO()
+        management.call_command("load_initial_data", stdout=out)
+        password = out.getvalue().split("Initial password for admin: ")[1].split()[0]
+        self.assertNotEqual(password, "password")
+        self.assertTrue(self.client.login(username="admin", password=password))
 
     def test_init_data_non_duplicate_client_creation(self):
         """Test that the load_initial_data command does not create duplicates

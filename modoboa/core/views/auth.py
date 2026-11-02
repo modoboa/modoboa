@@ -28,6 +28,8 @@ from modoboa.core.api.v2 import serializers
 from modoboa.core.password_hashers import get_password_hasher
 from modoboa.lib import cryptutils
 from modoboa.lib.throttle import (
+    LoginFailureThrottle,
+    LoginUsernameThrottle,
     PasswordResetApplyThrottle,
     PasswordResetRequestThrottle,
     PasswordResetTotpThrottle,
@@ -80,11 +82,12 @@ class LoginViewMixin:
         return response
 
 
-class LoginView(LoginViewMixin, auth_views.LoginView):
+class LoginView(ThrottleViewMixin, LoginViewMixin, auth_views.LoginView):
     """Login view with 2FA support."""
 
     form_class = forms.AuthenticationForm
     template_name = "registration/login.html"
+    throttle_classes = [LoginFailureThrottle, LoginUsernameThrottle]
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -145,6 +148,8 @@ class LoginView(LoginViewMixin, auth_views.LoginView):
         return self.login(user, form.cleaned_data["rememberme"])
 
     def form_invalid(self, form):
+        for throttle in self.get_throttles():
+            throttle.record_failure(self.request)
         # FIXME: should we return a 401 as before ?
         self.logger.warning(
             "Failed connection attempt from '{addr}' as user '{user}'".format(

@@ -149,6 +149,7 @@ class DeployCommand(Command):
                     file=sys.stderr,
                 )
             print(f"{cmd} failed, check your configuration", file=sys.stderr)
+        return output
 
     def ask_db_info(self, name="default"):
         """Prompt the user for database information
@@ -310,12 +311,15 @@ class DeployCommand(Command):
         if isfile(f"{path}/settings.pyc"):
             os.unlink(f"{path}/settings.pyc")
         self._exec_django_command("migrate", parsed_args.name, "--noinput")
-        self._exec_django_command(
+        output = self._exec_django_command(
             "load_initial_data",
             parsed_args.name,
             "--admin-username",
             parsed_args.admin_username,
         )
+        if output:
+            # The generated admin password is only available here
+            print(output[0].decode())
         if parsed_args.collectstatic:
             self._exec_django_command("collectstatic", parsed_args.name, "--noinput")
         self._exec_django_command("set_default_site", parsed_args.name, allowed_host)

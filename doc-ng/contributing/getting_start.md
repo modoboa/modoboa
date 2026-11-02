@@ -86,7 +86,7 @@ $ modoboa-admin.py deploy --dburl default:<database url> --domain localhost --de
 $ python manage.py runserver
 ```
 
-You're ready to go! You should be able to access Modoboa at `http://localhost:8000` using `admin:password` as credentials.
+You're ready to go! You should be able to access Modoboa at `http://localhost:8000` as `admin`, using the password displayed by the `deploy` command.
 
 ## Frontend
 

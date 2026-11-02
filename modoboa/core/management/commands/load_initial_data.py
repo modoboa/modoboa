@@ -8,6 +8,7 @@ A management command to load Modoboa initial data.
 
 from functools import reduce
 import os
+import secrets
 import shutil
 import uuid
 
@@ -70,11 +71,15 @@ class Command(BaseCommand):
 
         if not models.User.objects.filter(is_superuser=True).count():
             admin = models.User(username=options["admin_username"], is_superuser=True)
-            admin.set_password("password")
+            password = "password" if options["dev"] else secrets.token_urlsafe(16)
+            admin.set_password(password)
             admin.save()
             models.ObjectAccess.objects.create(
                 user=admin, content_object=admin, is_owner=True
             )
+            if not options["dev"]:
+                # The installer parses this line
+                self.stdout.write(f"Initial password for {admin.username}: {password}")
 
         groups = list(constants.PERMISSIONS.keys())
         for groupname in groups:

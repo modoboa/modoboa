@@ -4,6 +4,9 @@ from django.http import JsonResponse
 from django.utils.deprecation import MiddlewareMixin
 from django.utils.encoding import smart_str
 
+from rest_framework.settings import api_settings
+from rest_framework.throttling import BaseThrottle
+
 from modoboa.lib import signals as lib_signals
 from modoboa.lib.exceptions import ModoboaException
 from modoboa.lib.web_utils import _render_error
@@ -11,6 +14,18 @@ from modoboa.lib.web_utils import _render_error
 
 def is_ajax(request):
     return request.META.get("HTTP_X_REQUESTED_WITH") == "XMLHttpRequest"
+
+
+class TrustedProxyMiddleware(MiddlewareMixin):
+    """Set REMOTE_ADDR to the client address reported by trusted proxies.
+
+    X-Forwarded-For is client-controlled except for the NUM_PROXIES last
+    entries, the address is picked as rate limits do.
+    """
+
+    def process_request(self, request):
+        if api_settings.NUM_PROXIES:
+            request.META["REMOTE_ADDR"] = BaseThrottle().get_ident(request)
 
 
 class CommonExceptionCatcher(MiddlewareMixin):

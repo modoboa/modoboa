@@ -350,6 +350,10 @@ server {
 }
 ```
 
+With this `proxy_pass` setup, set `'NUM_PROXIES': 1` in the `REST_FRAMEWORK`
+section of `settings.py`, otherwise Modoboa sees every client with the address
+of nginx and they all share the same rate limits.
+
 If you do not plan to use SSL then change the listen directive to `listen 80;` 
 and delete each of the following directives:
 

@@ -5,9 +5,10 @@ import smtplib
 import time
 from unittest import mock, skipIf, skipUnless
 
-from django.core import mail
+from django.conf import settings
+from django.core import checks, mail
 from django.core.cache import cache
-from django.test import override_settings
+from django.test import SimpleTestCase, override_settings
 from django.urls import reverse
 
 try:
@@ -23,11 +24,105 @@ from modoboa.core import constants, signals as core_signals, sms_backends
 from modoboa.core.context_processors import theme
 from modoboa.core.password_hashers import get_password_hasher
 from modoboa.core.password_hashers.utils import get_dovecot_schemes
-from modoboa.lib import cryptutils
+from modoboa.lib import cryptutils, throttle
 from modoboa.lib.tests import NO_SMTP, ModoTestCase
 from .. import factories, models
+from ..checks import W003, check_client_address_source
 
 DOVEADM_TEST_PATH = f"{os.path.dirname(__file__)}/doveadm"
+FAILED_LOGINS_PER_MINUTE = 10
+
+
+class LoginThrottleTestCase(ModoTestCase):
+    """Validate the protection against password guessing."""
+
+    def setUp(self):
+        super().setUp()
+        cache.clear()
+        self.client.logout()
+
+    def login(self, password="wrong", username="admin", **extra):
+        data = {"username": username, "password": password}
+        return self.client.post(reverse("core:login"), data, **extra)
+
+    def exhaust_address_limit(self, **extra):
+        for _attempt in range(FAILED_LOGINS_PER_MINUTE):
+            self.assertEqual(self.login(**extra).status_code, 401)
+
+    def test_failures_are_limited(self):
+        self.exhaust_address_limit()
+        response = self.login(password="password")
+        self.assertEqual(response.status_code, 429)
+        self.assertIn("Retry-After", response)
+
+    def test_successes_do_not_count(self):
+        for _attempt in range(FAILED_LOGINS_PER_MINUTE + 1):
+            self.assertEqual(self.login(password="password").status_code, 302)
+            self.client.logout()
+
+    def test_success_does_not_reset_counter(self):
+        for _attempt in range(FAILED_LOGINS_PER_MINUTE - 1):
+            self.login()
+        self.assertEqual(self.login(password="password").status_code, 302)
+        self.client.logout()
+        self.assertEqual(self.login().status_code, 401)
+        self.assertEqual(self.login().status_code, 429)
+
+    def test_forged_header_is_ignored(self):
+        for attempt in range(FAILED_LOGINS_PER_MINUTE):
+            self.login(HTTP_X_FORWARDED_FOR=f"10.0.0.{attempt}")
+        response = self.login(HTTP_X_FORWARDED_FOR="10.0.1.1")
+        self.assertEqual(response.status_code, 429)
+        with self.assertLogs("modoboa.auth", "WARNING") as logs:
+            self.login(
+                username="other",
+                REMOTE_ADDR="192.0.2.1",
+                HTTP_X_FORWARDED_FOR="10.0.1.1",
+            )
+        self.assertIn("'192.0.2.1'", logs.output[0])
+
+    @override_settings(REST_FRAMEWORK={**settings.REST_FRAMEWORK, "NUM_PROXIES": 1})
+    def test_address_set_by_trusted_proxy(self):
+        for attempt in range(FAILED_LOGINS_PER_MINUTE):
+            self.login(HTTP_X_FORWARDED_FOR=f"10.0.0.{attempt}, 192.0.2.1")
+        response = self.login(HTTP_X_FORWARDED_FOR="10.0.1.1, 192.0.2.1")
+        self.assertEqual(response.status_code, 429)
+        with self.assertLogs("modoboa.auth", "WARNING") as logs:
+            self.login(HTTP_X_FORWARDED_FOR="10.0.1.1, 192.0.2.2")
+        self.assertIn("'192.0.2.2'", logs.output[0])
+
+    @mock.patch.object(throttle.LoginUsernameThrottle, "rate", "2/hour")
+    def test_username_limit_spans_addresses(self):
+        self.assertEqual(self.login(REMOTE_ADDR="192.0.2.1").status_code, 401)
+        response = self.login(username=" ADMIN", REMOTE_ADDR="192.0.2.2")
+        self.assertEqual(response.status_code, 401)
+        response = self.login(password="password", REMOTE_ADDR="192.0.2.3")
+        self.assertEqual(response.status_code, 429)
+        response = self.login(username="other", REMOTE_ADDR="192.0.2.4")
+        self.assertEqual(response.status_code, 401)
+
+
+class ClientAddressCheckTestCase(SimpleTestCase):
+    """Validate the warning about forgeable client addresses."""
+
+    def test_safe_configuration(self):
+        self.assertEqual(check_client_address_source(None), [])
+
+    def test_legacy_middleware(self):
+        middleware = ("x_forwarded_for.middleware.XForwardedForMiddleware",)
+        with override_settings(MIDDLEWARE=middleware):
+            self.assertEqual(check_client_address_source(None), [W003])
+
+    def test_unset_num_proxies(self):
+        rest_framework = dict(settings.REST_FRAMEWORK)
+        del rest_framework["NUM_PROXIES"]
+        with override_settings(REST_FRAMEWORK=rest_framework):
+            self.assertEqual(check_client_address_source(None), [W003])
+
+    def test_warning_is_registered(self):
+        self.assertIn(
+            check_client_address_source, checks.registry.registry.get_checks()
+        )
 
 
 class MockedAttestedCredentialData:

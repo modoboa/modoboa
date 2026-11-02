@@ -128,7 +128,7 @@ AUTH_USER_MODEL = 'core.User'
 MIDDLEWARE = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.locale.LocaleMiddleware',
-    'x_forwarded_for.middleware.XForwardedForMiddleware',
+    'modoboa.lib.middleware.TrustedProxyMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -240,6 +240,9 @@ OAUTH2_PROVIDER = {
 # Rest framework settings
 
 REST_FRAMEWORK = {
+    # Reverse proxies adding to X-Forwarded-For in front of Modoboa, so 1 with
+    # nginx proxy_pass. Keep 0 with uwsgi_pass: the header is then client-made.
+    'NUM_PROXIES': 0,
     'DEFAULT_THROTTLE_RATES': {
         'user': '300/minute',
         'ddos': '5/second',
