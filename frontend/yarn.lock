@@ -1169,10 +1169,10 @@ fdir@^6.5.0:
   dependencies:
     flat-cache "^6.1.23"
 
-filesize@^10.1.6:
-  version "10.1.6"
-  resolved "https://registry.yarnpkg.com/filesize/-/filesize-10.1.6.tgz#31194da825ac58689c0bce3948f33ce83aabd361"
-  integrity sha512-sJslQKU2uM33qH5nqewAwVB2QgR6w1aMNsYUp3aN5rMRyXEwJGmZvaWzeJFNTOXWlHQyBFCWrdj3fV/fsTOX8w==
+filesize@^11.0.29:
+  version "11.0.29"
+  resolved "https://registry.yarnpkg.com/filesize/-/filesize-11.0.29.tgz#29aea3e00c12ed90cf295b0286aa5dc40a08235a"
+  integrity sha512-+Mkmp8keoklLzAnvP/RQGDUEWEpjGmhvm4d4U739C1ZnkqxqoSqdLHnjv9/4QX6lltKSRk6qzQI7+94JVDtuCA==
 
 find-replace@^5.0.2:
   version "5.0.2"
