@@ -831,10 +831,17 @@ ajv@^6.14.0:
     json-schema-traverse "^0.4.1"
     uri-js "^4.2.2"
 
-apexcharts@^5.3.5:
-  version "5.16.0"
-  resolved "https://registry.yarnpkg.com/apexcharts/-/apexcharts-5.16.0.tgz#f54348162bec24ab8acfb0744a38c2dd0c784502"
-  integrity sha512-ULO3Gqrm0/26uwBcYz49u181uIp8Fy6BQQgg9QUDajs+JAs/EbXxiAmdc6BLy1JY29/JXroM7P0j0t2JPDApdg==
+apex-commons@^0.8.3:
+  version "0.8.4"
+  resolved "https://registry.yarnpkg.com/apex-commons/-/apex-commons-0.8.4.tgz#ca2ed6946d10f941017c05bb27f1099709dbba76"
+  integrity sha512-RRv31MAzpSW3Dmjx/hLuuOZFCstFnBnhkIoQ7iodaZY3WSZKCXzQ41ypBhMcvy+6LxENt/rTANvTqt5NR+trTA==
+
+apexcharts@^8.5.0:
+  version "8.5.0"
+  resolved "https://registry.yarnpkg.com/apexcharts/-/apexcharts-8.5.0.tgz#7967cc40ec776c7462feef1b2299afed69b14487"
+  integrity sha512-mH9QiOwIeRGg635OzAc2mznuwrK9XHr9S1RcC26GNNOU6fUPe64cMc7hXGcM9bXz92nO4Ax7P6uxSYaTA7gBDw==
+  dependencies:
+    apex-commons "^0.8.3"
 
 array-back@^6.2.3:
   version "6.2.3"
