@@ -58,7 +58,7 @@ dependencies = [
 	"ovh",
 	"oath",
 	"packaging",
-	"redis>=7.1.0",
+	"redis>=7.1.0,<9",
 	"rrdtool-bindings>=0.2.0",
 	"qrcode",
 	"aiosmtplib",
@@ -73,8 +73,10 @@ dependencies = [
 	# django-rq's DjangoCronScheduler.register() did not accept before
 	# 4.2, breaking `manage.py rqcron` (see rq/django-rq#818). Require
 	# the fixed django-rq release instead of capping rq.
-	"rq>=2.7.0",
-	"django-rq>=4.2",
+	# rq 3 changes CronScheduler timezone handling and worker internals:
+	# stay on rq 2 until it has been validated.
+	"rq>=2.7.0,<3",
+	"django-rq>=4.2,<5",
 	# Sieve
 	"sievelib>=1.6.0",
 	# User
