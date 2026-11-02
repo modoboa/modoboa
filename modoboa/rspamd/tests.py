@@ -120,6 +120,28 @@ class ManagementCommandTestCase(ModoAPITestCase):
         with open(self.key_map_path) as fp:
             self.assertEqual(fp.read(), "ok.com /path/ok.com.pem\ntest.com xxx\n")
 
+    def test_job_invalid_selector(self):
+        """An invalid selector must not be written to maps."""
+        self.configure()
+        domain = admin_models.Domain.objects.get(name="test.com")
+        # Bypass model validation, as a value stored before the fix would
+        admin_models.Domain.objects.filter(pk=domain.pk).update(
+            enable_dkim=True,
+            dkim_private_key_path="xxx",
+            dkim_key_selector="a\rvictim.com evilsel",
+        )
+        with LogCapture("modoboa.jobs") as log:
+            jobs.update_rspamd_maps([domain.id])
+        log.check(
+            (
+                "modoboa.jobs",
+                "WARNING",
+                "Invalid DKIM selector for domain test.com: 'a\\rvictim.com evilsel'",
+            )
+        )
+        self.assertFalse(os.path.exists(self.selector_map_path))
+        self.assertFalse(os.path.exists(self.key_map_path))
+
     def test_signal_handler(self):
         self.set_global_parameter("dkim_keys_storage_dir", self.workdir, app="admin")
         self.configure()

@@ -3,7 +3,7 @@
 import re
 
 from django.core.exceptions import ValidationError
-from django.core.validators import EmailValidator, URLValidator
+from django.core.validators import EmailValidator, RegexValidator, URLValidator
 from django.utils.translation import gettext_lazy
 
 
@@ -63,3 +63,10 @@ class UTF8AndEmptyUserEmailValidator(UTF8EmailValidator):
 
 
 validate_utf8_and_empty_user_email = UTF8AndEmptyUserEmailValidator()
+
+
+# The selector is written verbatim into the rspamd DKIM selector map, so
+# anything else (whitespace, CR, LF) could inject extra map entries.
+validate_dkim_selector = RegexValidator(
+    r"\A[A-Za-z0-9._-]+\Z", gettext_lazy("Enter a valid DKIM selector")
+)

@@ -97,7 +97,9 @@ class Domain(mixins.MessageLimitMixin, AdminObject):
         ),
         default=False,
     )
-    dkim_key_selector = models.CharField(max_length=30, default="modoboa")
+    dkim_key_selector = models.CharField(
+        max_length=30, default="modoboa", validators=[validators.validate_dkim_selector]
+    )
     dkim_key_length = models.PositiveIntegerField(
         gettext_lazy("Key length"),
         choices=constants.DKIM_KEY_LENGTHS,
