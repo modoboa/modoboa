@@ -270,17 +270,11 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: ./coverage.xml,./coverage-sentinel.xml
 
-  release:
+  # Runs alongside the tests: only publishing has to wait for them
+  build:
     if: github.event_name != 'pull_request'
-    needs: coverage
+    needs: constraints
     runs-on: ubuntu-latest
-    permissions:
-      id-token: write
-      # Attach constraints.txt to the GitHub release
-      contents: write
-    environment:
-      name: pypi
-      url: https://pypi.org/p/modoboa
     steps:
       - uses: actions/checkout@v7
         with:
@@ -292,6 +286,8 @@ jobs:
         uses: actions/setup-python@v7
         with:
           python-version: '3.13'
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v10.2.0
       - name: Build frontend
         shell: bash -l {0}
         run: |
@@ -303,20 +299,43 @@ jobs:
           yarn build
           cd ..
       - name: Build packages
+        # compilemessages only needs Django
         run: |
-          sudo apt-get install librrd-dev rrdtool libssl-dev
-          python -m pip install --upgrade "pip<26" build pip-tools
-          pip-compile -o requirements.txt pyproject.toml
-          pip install -r requirements.txt
+          uv pip install --system django -c constraints.txt
           cd modoboa
           django-admin compilemessages
           cd ..
-          python -m build
+          uv build
+      - uses: actions/upload-artifact@v7
+        with:
+          name: dist
+          path: dist/
+
+  release:
+    if: github.event_name != 'pull_request'
+    needs: [build, coverage]
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      # Attach constraints.txt to the GitHub release
+      contents: write
+    environment:
+      name: pypi
+      url: https://pypi.org/p/modoboa
+    steps:
+      - uses: actions/download-artifact@v8
+        with:
+          name: constraints
+      - uses: actions/download-artifact@v8
+        with:
+          name: dist
+          path: dist/
       - name: Attach constraints to the release
         if: github.event_name == 'release'
         run: gh release upload "${{ github.event.release.tag_name }}" constraints.txt --clobber
         env:
           GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
       - name: Publish to Test PyPI
         if: endsWith(github.event.ref, '/master')
         uses: pypa/gh-action-pypi-publish@release/v1
