@@ -46,7 +46,7 @@
   "devDependencies": {
     "@module-federation/runtime": "^2.8.1",
     "@module-federation/vite": "^1.23.5",
-    "@vitejs/plugin-basic-ssl": "^1.1.0",
+    "@vitejs/plugin-basic-ssl": "^2.3.0",
     "@vitejs/plugin-vue": "^5.0.5",
     "eslint": "^10.13.0",
     "eslint-config-prettier": "^10.1.8",
