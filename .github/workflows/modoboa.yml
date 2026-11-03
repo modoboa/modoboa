@@ -36,7 +36,23 @@ env:
   POSTGRES_HOST: localhost
 
 jobs:
+  # Pins the runtime dependencies once per run: the tests install them
+  # and the release publishes the same file, so users get what was tested
+  constraints:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v10.2.0
+      - name: Compile constraints
+        run: uv pip compile pyproject.toml --universal --extra postgresql --extra mysql --extra ldap -o constraints.txt
+      - uses: actions/upload-artifact@v7
+        with:
+          name: constraints
+          path: constraints.txt
+
   test:
+    needs: constraints
     runs-on: ubuntu-latest
     environment: test
     services:
@@ -97,6 +113,9 @@ jobs:
 
     steps:
       - uses: actions/checkout@v7
+      - uses: actions/download-artifact@v8
+        with:
+          name: constraints
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v7
         with:
@@ -115,7 +134,7 @@ jobs:
           version: 1.0
       - name: Install Python dependencies
         run: |
-          uv pip install --system -e ".[ldap,test,dev,${{ matrix.database == 'postgres' && 'postgresql' || 'mysql' }}]" coverage
+          uv pip install --system -e ".[ldap,test,dev,${{ matrix.database == 'postgres' && 'postgresql' || 'mysql' }}]" coverage -c constraints.txt
       - name: Configure mysqldump
         if: ${{ matrix.database == 'mysql' }}
         # The parallel test runner clones the test database with the
@@ -170,6 +189,7 @@ jobs:
 
   # Runs alongside the test matrix instead of lengthening its slowest job
   test-sentinel:
+    needs: constraints
     runs-on: ubuntu-latest
     environment: test
     services:
@@ -188,6 +208,9 @@ jobs:
 
     steps:
       - uses: actions/checkout@v7
+      - uses: actions/download-artifact@v8
+        with:
+          name: constraints
       - name: Set up Python 3.14
         uses: actions/setup-python@v7
         with:
@@ -204,7 +227,7 @@ jobs:
           version: 1.0
       - name: Install Python dependencies
         run: |
-          uv pip install --system -e ".[ldap,test,dev,postgresql]" coverage
+          uv pip install --system -e ".[ldap,test,dev,postgresql]" coverage -c constraints.txt
 
       - name: Start redis sentinel
         uses: hoverkraft-tech/compose-action@v3.2.0
@@ -247,23 +270,24 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: ./coverage.xml,./coverage-sentinel.xml
 
-  release:
+  # Runs alongside the tests: only publishing has to wait for them
+  build:
     if: github.event_name != 'pull_request'
-    needs: coverage
+    needs: constraints
     runs-on: ubuntu-latest
-    permissions:
-      id-token: write
-    environment:
-      name: pypi
-      url: https://pypi.org/p/modoboa
     steps:
       - uses: actions/checkout@v7
         with:
           fetch-depth: 0
+      - uses: actions/download-artifact@v8
+        with:
+          name: constraints
       - name: Set up Python 3.13
         uses: actions/setup-python@v7
         with:
           python-version: '3.13'
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v10.2.0
       - name: Build frontend
         shell: bash -l {0}
         run: |
@@ -275,15 +299,43 @@ jobs:
           yarn build
           cd ..
       - name: Build packages
+        # compilemessages only needs Django
         run: |
-          sudo apt-get install librrd-dev rrdtool libssl-dev
-          python -m pip install --upgrade "pip<26" build pip-tools
-          pip-compile -o requirements.txt pyproject.toml
-          pip install -r requirements.txt
+          uv pip install --system django -c constraints.txt
           cd modoboa
           django-admin compilemessages
           cd ..
-          python -m build
+          uv build
+      - uses: actions/upload-artifact@v7
+        with:
+          name: dist
+          path: dist/
+
+  release:
+    if: github.event_name != 'pull_request'
+    needs: [build, coverage]
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      # Attach constraints.txt to the GitHub release
+      contents: write
+    environment:
+      name: pypi
+      url: https://pypi.org/p/modoboa
+    steps:
+      - uses: actions/download-artifact@v8
+        with:
+          name: constraints
+      - uses: actions/download-artifact@v8
+        with:
+          name: dist
+          path: dist/
+      - name: Attach constraints to the release
+        if: github.event_name == 'release'
+        run: gh release upload "${{ github.event.release.tag_name }}" constraints.txt --clobber
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
       - name: Publish to Test PyPI
         if: endsWith(github.event.ref, '/master')
         uses: pypa/gh-action-pypi-publish@release/v1

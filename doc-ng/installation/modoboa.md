@@ -81,8 +81,16 @@ Modoboa dependencies which require compilation
 Then, install Modoboa by running:
 
 ``` console
-(env)$ pip install modoboa
+(env)$ pip install modoboa==<VERSION> -c https://github.com/modoboa/modoboa/releases/download/<VERSION>/constraints.txt
 ```
+
+::: tip
+Starting with 2.13.0, each release ships a `constraints.txt` file that
+pins every dependency to the version it was tested with. Without it,
+pip installs the latest version of each dependency, which may not work
+with the version of Modoboa you install. Pass the same `-c` option to
+the other `pip install` commands of this page.
+:::
 
 ## Database
 
