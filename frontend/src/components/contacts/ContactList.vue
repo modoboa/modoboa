@@ -15,68 +15,64 @@
         @update:options="fetchContacts"
       >
         <template #top>
-          <v-toolbar color="white" flat>
-            <v-text-field
-              v-model="search"
-              prepend-inner-icon="mdi-magnify"
-              :placeholder="$gettext('Search')"
-              variant="outlined"
-              single-line
-              flat
-              hide-details
-              density="compact"
-              class="flex-grow-0 w-33 mr-4"
-            ></v-text-field>
-            <v-btn color="primary" variant="outlined" @click="showForm = true">
-              {{ $gettext('Add') }}
-            </v-btn>
-            <template v-if="preferences.enable_carddav_sync">
-              <v-btn class="ml-2" variant="tonal" icon size="small">
-                <v-icon icon="mdi-cog" />
-                <v-menu activator="parent">
-                  <v-list density="compact">
-                    <v-list-item
-                      v-if="!addressBook.last_sync"
-                      color="success"
-                      :title="
-                        $gettext('Synchronize contacts with address book')
-                      "
-                      prepend-icon="mdi-sync"
-                      @click="syncToAddressBook"
-                    />
-                    <v-list-item
-                      :title="$gettext('Synchronize')"
-                      prepend-icon="mdi-sync"
-                      :disabled="addressBook.syncing"
-                      @click="syncFromAddressBook(true)"
-                    />
-                  </v-list>
-                </v-menu>
-              </v-btn>
+          <ListToolbar v-model:search="search">
+            <template #actions>
+              <v-progress-circular
+                v-if="addressBook.syncing"
+                color="primary"
+                indeterminate
+              ></v-progress-circular>
               <v-btn
-                icon="mdi-information-outline"
-                :title="$gettext('Display address book information')"
-                @click="showAddressBookInfo = true"
-              />
+                color="primary"
+                variant="outlined"
+                prepend-icon="mdi-plus"
+                @click="showForm = true"
+              >
+                {{ $gettext('Add') }}
+              </v-btn>
+              <template v-if="preferences.enable_carddav_sync">
+                <v-btn variant="tonal" icon size="small">
+                  <v-icon icon="mdi-cog" />
+                  <v-menu activator="parent">
+                    <v-list density="compact">
+                      <v-list-item
+                        v-if="!addressBook.last_sync"
+                        color="success"
+                        :title="
+                          $gettext('Synchronize contacts with address book')
+                        "
+                        prepend-icon="mdi-sync"
+                        @click="syncToAddressBook"
+                      />
+                      <v-list-item
+                        :title="$gettext('Synchronize')"
+                        prepend-icon="mdi-sync"
+                        :disabled="addressBook.syncing"
+                        @click="syncFromAddressBook(true)"
+                      />
+                    </v-list>
+                  </v-menu>
+                </v-btn>
+                <v-btn
+                  icon="mdi-information-outline"
+                  :title="$gettext('Display address book information')"
+                  @click="showAddressBookInfo = true"
+                />
+              </template>
             </template>
-            <v-chip
-              v-if="$route.params.category"
-              class="my-2 mx-4"
-              label
-              size="small"
-              color="green"
-              prepend-icon="mdi-label"
-              @click="editCategory"
-            >
-              {{ $route.params.category }}
-            </v-chip>
-            <v-spacer></v-spacer>
-            <v-progress-circular
-              v-if="addressBook.syncing"
-              color="primary"
-              indeterminate
-            ></v-progress-circular>
-          </v-toolbar>
+            <template #filters>
+              <v-chip
+                v-if="$route.params.category"
+                label
+                size="small"
+                color="green"
+                prepend-icon="mdi-label"
+                @click="editCategory"
+              >
+                {{ $route.params.category }}
+              </v-chip>
+            </template>
+          </ListToolbar>
         </template>
         <template
           #[`item.data-table-expand`]="{
@@ -185,6 +181,7 @@
 
 <script setup>
 import { onBeforeUnmount, ref, watch } from 'vue'
+import ListToolbar from '@/components/tools/ListToolbar.vue'
 import { useRoute } from 'vue-router'
 import { useGettext } from 'vue3-gettext'
 import { useBusStore } from '@/stores'

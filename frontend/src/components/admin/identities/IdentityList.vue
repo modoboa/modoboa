@@ -18,82 +18,83 @@
       @update:options="updatedOptions"
     >
       <template #top>
-        <v-toolbar flat color="white">
-          <v-text-field
-            v-model="search"
-            prepend-inner-icon="mdi-magnify"
-            :placeholder="$gettext('Search')"
-            variant="outlined"
-            hide-details
-            single-line
-            flat
-            density="compact"
-            class="flex-grow-0 w-33 mr-4"
-          ></v-text-field>
-          <slot name="extraActions" />
-          <v-btn
-            variant="text"
-            icon="mdi-format-columns"
-            :title="$gettext('Customize displayed columns')"
-            @click="showColumnsForm = true"
-          ></v-btn>
-          <v-menu v-if="selected.length > 1" location="bottom">
-            <template #activator="{ props }">
-              <v-btn
-                append-icon="mdi-chevron-down"
-                v-bind="props"
-                size="small"
-                variant="flat"
-                :disabled="deletingIds.length > 0"
-              >
-                {{ $gettext('Actions') }}
-              </v-btn>
-            </template>
-            <v-list density="compact">
-              <MenuItems :items="getActionMenuItems()" />
-            </v-list>
-          </v-menu>
-          <v-btn
-            variant="text"
-            icon="mdi-reload"
-            @click="fetchIdentities"
-          ></v-btn>
-
-          <template #extension>
-            <v-radio-group
+        <ListToolbar v-model:search="search">
+          <template #start>
+            <!-- pointer-events instead of disabled: no flicker on each load -->
+            <v-btn-toggle
               v-model="identityType"
-              inline
-              :readonly="loading"
-              hide-details
+              :class="{ 'pointer-events-none': loading }"
+              variant="outlined"
+              density="compact"
+              divided
+              mandatory
               @update:model-value="updateType"
             >
-              <v-radio
-                color="primary"
-                :label="$gettext('Accounts')"
-                value="account"
-              ></v-radio>
-              <v-radio
-                color="primary"
-                :label="$gettext('Alias')"
-                value="alias"
-              ></v-radio>
-              <!-- Set by clicking on the badge of an account; inside the
-                   group to stay next to the radios -->
-              <v-chip
-                v-if="badgeFilter"
-                :color="badgeFilter.color"
-                :prepend-icon="badgeFilter.icon"
-                class="ml-4 align-self-center"
-                label
-                size="small"
-                closable
-                @click:close="filterByBadge(null)"
-              >
-                {{ badgeFilter.label }}
-              </v-chip>
-            </v-radio-group>
+              <v-btn value="account">{{ $gettext('Accounts') }}</v-btn>
+              <v-btn value="alias">{{ $gettext('Alias') }}</v-btn>
+            </v-btn-toggle>
           </template>
-        </v-toolbar>
+          <template #actions>
+            <slot name="extraActions" />
+          </template>
+          <template #filters>
+            <v-autocomplete
+              v-model="domainFilter"
+              :items="domainsStore.domains"
+              item-title="name"
+              return-object
+              clearable
+              :label="$gettext('Domain')"
+              variant="outlined"
+              hide-details
+              density="compact"
+              style="flex: 0 1 220px; min-width: 180px"
+              @update:model-value="filterByDomain"
+            />
+            <!-- Set by clicking on the badge of an account -->
+            <v-chip
+              v-if="badgeFilter"
+              :color="badgeFilter.color"
+              :prepend-icon="badgeFilter.icon"
+              label
+              size="small"
+              closable
+              @click:close="filterByBadge(null)"
+            >
+              {{ badgeFilter.label }}
+            </v-chip>
+          </template>
+          <template #tools>
+            <v-menu location="bottom">
+              <template #activator="{ props }">
+                <v-btn
+                  append-icon="mdi-chevron-down"
+                  v-bind="props"
+                  size="small"
+                  variant="flat"
+                  :disabled="selected.length < 2 || deletingIds.length > 0"
+                >
+                  {{ $gettext('Actions') }}
+                </v-btn>
+              </template>
+              <v-list density="compact">
+                <MenuItems :items="getActionMenuItems()" />
+              </v-list>
+            </v-menu>
+            <v-btn
+              variant="text"
+              icon="mdi-format-columns"
+              :title="$gettext('Customize displayed columns')"
+              @click="showColumnsForm = true"
+            ></v-btn>
+            <v-btn
+              variant="text"
+              icon="mdi-reload"
+              :title="$gettext('Reload')"
+              @click="fetchIdentities"
+            ></v-btn>
+          </template>
+        </ListToolbar>
       </template>
       <template #[`item.username`]="{ item }">
         <router-link :to="{ name: 'AccountDetail', params: { id: item.pk } }">
@@ -261,10 +262,11 @@
 import { ref, onMounted, computed } from 'vue'
 import { useGettext } from 'vue3-gettext'
 import MenuItems from '@/components/tools/MenuItems.vue'
+import ListToolbar from '@/components/tools/ListToolbar.vue'
 import ConfirmDialog from '@/components/tools/ConfirmDialog.vue'
 import ChooseColumnsForm from '@/components/tools/ChooseColumnsForm.vue'
 import { useRouter } from 'vue-router'
-import { useBusStore } from '@/stores'
+import { useBusStore, useDomainsStore } from '@/stores'
 import accountsApi from '@/api/accounts'
 import aliasesApi from '@/api/aliases'
 import debounce from 'debounce'
@@ -272,6 +274,7 @@ import debounce from 'debounce'
 const { $gettext } = useGettext()
 const router = useRouter()
 const { displayNotification } = useBusStore()
+const domainsStore = useDomainsStore()
 
 const availableAliasesColumns = {
   address: { title: $gettext('Address'), key: 'address' },
@@ -382,6 +385,8 @@ const columns = ref(defaultAccountsColumns)
 const showColumnsForm = ref(false)
 // Badge (provided by a plugin) the accounts are filtered by
 const badgeFilter = ref(null)
+// Kept when switching between accounts and aliases
+const domainFilter = ref(null)
 const deletingIds = ref([])
 
 const headers = computed(() => {
@@ -447,6 +452,13 @@ async function fetchIdentities() {
   }
   if (identityType.value === 'account' && badgeFilter.value) {
     params.badge = badgeFilter.value.name
+  }
+  if (domainFilter.value) {
+    // The accounts filter expects the domain pk, the aliases one its name
+    params.domain =
+      identityType.value === 'account'
+        ? domainFilter.value.pk
+        : domainFilter.value.name
   }
   try {
     const resp =
@@ -660,7 +672,15 @@ function filterByBadge(badge) {
   fetchIdentities()
 }
 
+function filterByDomain() {
+  currentPage.value = 1
+  fetchIdentities()
+}
+
 onMounted(() => {
+  if (!domainsStore.domainsLoaded) {
+    domainsStore.getDomains()
+  }
   fetchIdentities()
 })
 
