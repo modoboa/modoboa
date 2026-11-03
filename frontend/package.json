@@ -27,7 +27,7 @@
     "apexcharts": "^8.5.0",
     "axios": "^1.21.0",
     "core-js": "^3.51.0",
-    "debounce": "^2.1.0",
+    "debounce": "^3.0.0",
     "filesize": "^11.0.29",
     "js-cookie": "^3.0.5",
     "luxon": "^3.4.4",
