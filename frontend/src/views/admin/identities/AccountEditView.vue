@@ -1,8 +1,10 @@
 <template>
-  <v-toolbar flat color="transparent">
-    <v-toolbar-title>{{ $gettext('Edit account') }}</v-toolbar-title>
-  </v-toolbar>
-  <AccountEditForm />
+  <div>
+    <v-toolbar flat color="transparent">
+      <v-toolbar-title>{{ $gettext('Edit account') }}</v-toolbar-title>
+    </v-toolbar>
+    <AccountEditForm />
+  </div>
 </template>
 
 <script setup lang="js">

@@ -32,7 +32,8 @@
       </v-tab>
     </v-tabs>
 
-    <v-tabs-window v-model="tab">
+    <!-- v-window clips overflow: keep room for the cards border/shadow -->
+    <v-tabs-window v-model="tab" class="pa-1">
       <v-tabs-window-item>
         <v-row>
           <v-col cols="12" md="6">

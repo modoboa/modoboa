@@ -10,17 +10,7 @@
       @update:options="fetchLogs"
     >
       <template #top>
-        <v-toolbar flat color="white">
-          <v-text-field
-            v-model="search"
-            prepend-inner-icon="mdi-magnify"
-            :placeholder="$gettext('Search')"
-            variant="outlined"
-            hide-details
-            density="compact"
-            class="flex-grow-0 w-33"
-          />
-        </v-toolbar>
+        <ListToolbar v-model:search="search" />
       </template>
       <template #[`item.level`]="{ item }">
         <v-chip
@@ -37,6 +27,7 @@
 
 <script setup lang="js">
 import { ref } from 'vue'
+import ListToolbar from '@/components/tools/ListToolbar.vue'
 import { useGettext } from 'vue3-gettext'
 import logsApi from '@/api/logs'
 import debounce from 'debounce'

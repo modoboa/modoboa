@@ -13,7 +13,6 @@
               variant="outlined"
               v-bind="props"
               prepend-icon="mdi-plus"
-              class="mr-4"
             >
               {{ $pgettext('male', 'New') }}
             </v-btn>
@@ -29,14 +28,12 @@
         </v-menu>
 
         <v-btn
-          class="mr-2"
           :title="$gettext('Import accounts and aliases from CSV file')"
           variant="flat"
           icon="mdi-file-import-outline"
           @click="showImportForm = true"
         ></v-btn>
         <v-btn
-          class="mr-2"
           :title="$gettext('Export accounts and aliases to CSV')"
           icon="mdi-file-export-outline"
           variant="flat"

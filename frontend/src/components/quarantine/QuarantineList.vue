@@ -21,124 +21,125 @@
       @click:row="openMessage"
     >
       <template #top>
-        <div class="d-flex my-4">
-          <v-text-field
-            v-model="search"
-            :placeholder="$gettext('Search in messages')"
-            variant="outlined"
-            single-line
-            hide-details
-            class="flex-grow-0 w-33 mr-4"
-            clearable
-            density="compact"
-            @click:clear="fetchContent"
-            @keyup.enter="fetchContent"
-          >
-            <template #prepend-inner>
-              <v-btn icon variant="flat" size="small">
-                <v-icon icon="mdi-magnify"></v-icon>
-                <v-menu activator="parent">
-                  <v-card>
-                    <v-card-text>
-                      <v-radio-group v-model="searchCriteria">
-                        <v-radio
-                          :label="$gettext('From address')"
-                          value="from_addr"
-                        ></v-radio>
-                        <v-radio
-                          :label="$gettext('Subject')"
-                          value="subject"
-                        ></v-radio>
-                        <v-radio :label="$gettext('To')" value="to"></v-radio>
-                        <v-radio
-                          :label="$gettext('both')"
-                          value="both"
-                        ></v-radio>
-                      </v-radio-group>
-                    </v-card-text>
-                  </v-card>
-                </v-menu>
-              </v-btn>
-            </template>
-          </v-text-field>
-
-          <v-btn
-            class="ml-2"
-            color="success"
-            variant="tonal"
-            icon="mdi-check"
-            size="small"
-            :disabled="selected.length === 0"
-            :title="$gettext('Release selection')"
-            :loading="loading"
-            @click="releaseSelection"
-          >
-          </v-btn>
-          <v-btn
-            class="ml-2"
-            color="error"
-            variant="tonal"
-            icon="mdi-trash-can"
-            size="small"
-            :disabled="selected.length === 0"
-            :title="$gettext('Delete selection')"
-            :loading="loading"
-            @click="deleteSelection"
-          >
-          </v-btn>
-          <v-btn
-            v-if="manualLearningEnabled"
-            class="ml-2"
-            size="small"
-            variant="tonal"
-            icon
-            :disabled="selected.length === 0"
-          >
-            <v-icon icon="mdi-cog" />
-            <v-menu activator="parent">
-              <v-list>
-                <v-list-item
-                  :title="$gettext('Mark as spam')"
-                  @click="markSelectionAsSpam"
-                />
-                <v-list-item
-                  :title="$gettext('Mark as not spam')"
-                  @click="markSelectionAsHam"
-                />
-              </v-list>
-            </v-menu>
-          </v-btn>
-
-          <v-select
-            v-model="typeFilter"
-            variant="outlined"
-            :items="messageTypes"
-            class="ml-2 flex-grow-0"
-            density="compact"
-            item-title="label"
-            item-value="key"
-            chips
-            hide-details
-            @update:model-value="fetchContent"
-          >
-            <template #chip="{ props, internalItem }">
-              <span class="mr-2">{{ $gettext('Display') }}</span>
-              <v-chip
-                v-bind="props"
-                :color="internalItem.raw.color"
-                :text="internalItem.raw.label"
-                label
-              ></v-chip>
-            </template>
-            <template #item="{ props, internalItem }">
-              <v-list-item v-bind="props" title="">
-                <v-chip :color="internalItem.raw.color" label>
-                  {{ internalItem.raw.label }}
-                </v-chip>
-              </v-list-item>
-            </template>
-          </v-select>
-        </div>
+        <ListToolbar>
+          <template #search>
+            <v-text-field
+              v-model="search"
+              :placeholder="$gettext('Search in messages')"
+              variant="outlined"
+              single-line
+              hide-details
+              style="flex: 1 1 240px"
+              clearable
+              density="compact"
+              @click:clear="fetchContent"
+              @keyup.enter="fetchContent"
+            >
+              <template #prepend-inner>
+                <v-btn icon variant="flat" size="small">
+                  <v-icon icon="mdi-magnify"></v-icon>
+                  <v-menu activator="parent">
+                    <v-card>
+                      <v-card-text>
+                        <v-radio-group v-model="searchCriteria">
+                          <v-radio
+                            :label="$gettext('From address')"
+                            value="from_addr"
+                          ></v-radio>
+                          <v-radio
+                            :label="$gettext('Subject')"
+                            value="subject"
+                          ></v-radio>
+                          <v-radio :label="$gettext('To')" value="to"></v-radio>
+                          <v-radio
+                            :label="$gettext('both')"
+                            value="both"
+                          ></v-radio>
+                        </v-radio-group>
+                      </v-card-text>
+                    </v-card>
+                  </v-menu>
+                </v-btn>
+              </template>
+            </v-text-field>
+          </template>
+          <template #filters>
+            <v-select
+              v-model="typeFilter"
+              variant="outlined"
+              :items="messageTypes"
+              class="flex-grow-0"
+              density="compact"
+              item-title="label"
+              item-value="key"
+              chips
+              hide-details
+              @update:model-value="fetchContent"
+            >
+              <template #chip="{ props, internalItem }">
+                <span class="mr-2">{{ $gettext('Display') }}</span>
+                <v-chip
+                  v-bind="props"
+                  :color="internalItem.raw.color"
+                  :text="internalItem.raw.label"
+                  label
+                ></v-chip>
+              </template>
+              <template #item="{ props, internalItem }">
+                <v-list-item v-bind="props" title="">
+                  <v-chip :color="internalItem.raw.color" label>
+                    {{ internalItem.raw.label }}
+                  </v-chip>
+                </v-list-item>
+              </template>
+            </v-select>
+          </template>
+          <template #tools>
+            <v-btn
+              color="success"
+              variant="tonal"
+              icon="mdi-check"
+              size="small"
+              :disabled="selected.length === 0"
+              :title="$gettext('Release selection')"
+              :loading="loading"
+              @click="releaseSelection"
+            >
+            </v-btn>
+            <v-btn
+              color="error"
+              variant="tonal"
+              icon="mdi-trash-can"
+              size="small"
+              :disabled="selected.length === 0"
+              :title="$gettext('Delete selection')"
+              :loading="loading"
+              @click="deleteSelection"
+            >
+            </v-btn>
+            <v-btn
+              v-if="manualLearningEnabled"
+              size="small"
+              variant="tonal"
+              icon
+              :disabled="selected.length === 0"
+            >
+              <v-icon icon="mdi-cog" />
+              <v-menu activator="parent">
+                <v-list>
+                  <v-list-item
+                    :title="$gettext('Mark as spam')"
+                    @click="markSelectionAsSpam"
+                  />
+                  <v-list-item
+                    :title="$gettext('Mark as not spam')"
+                    @click="markSelectionAsHam"
+                  />
+                </v-list>
+              </v-menu>
+            </v-btn>
+          </template>
+        </ListToolbar>
       </template>
       <template #[`item.type`]="{ item }">
         <v-chip :color="getTypeColor(item.type)" size="small" label>
@@ -183,6 +184,7 @@
 
 <script setup>
 import { ref, watch } from 'vue'
+import ListToolbar from '@/components/tools/ListToolbar.vue'
 import { useGettext } from 'vue3-gettext'
 import { useRoute, useRouter } from 'vue-router'
 import debounce from 'debounce'

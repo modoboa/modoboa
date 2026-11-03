@@ -1,8 +1,10 @@
 <template>
-  <v-toolbar flat color="transparent">
-    <v-toolbar-title>{{ $gettext('Edit alias') }}</v-toolbar-title>
-  </v-toolbar>
-  <AliasEditForm />
+  <div>
+    <v-toolbar flat color="transparent">
+      <v-toolbar-title>{{ $gettext('Edit alias') }}</v-toolbar-title>
+    </v-toolbar>
+    <AliasEditForm />
+  </div>
 </template>
 
 <script setup lang="js">

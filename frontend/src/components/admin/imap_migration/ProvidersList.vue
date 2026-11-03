@@ -13,38 +13,19 @@
       @click:row="expandRow"
     >
       <template #top>
-        <v-toolbar color="white" flat>
-          <v-text-field
-            v-model="search"
-            prepend-inner-icon="mdi-magnify"
-            :placeholder="$gettext('Search')"
-            single-line
-            variant="outlined"
-            hide-details
-            density="compact"
-            class="flex-grow-0 w-33 mr-4"
-          />
-          <slot name="extraActions" />
-          <v-menu location="bottom">
-            <template #activator="{ props }">
-              <v-btn
-                v-bind="props"
-                variant="flat"
-                append-icon="mdi-chevron-down"
-                size="small"
-              >
-                {{ $gettext('Actions') }}
-              </v-btn>
-            </template>
-            <v-list density="compact"> </v-list>
-          </v-menu>
-          <v-btn
-            variant="text"
-            icon="mdi-reload"
-            @click="providersStore.getProviders()"
-          ></v-btn>
-          <v-spacer></v-spacer>
-        </v-toolbar>
+        <ListToolbar v-model:search="search">
+          <template #actions>
+            <slot name="extraActions" />
+          </template>
+          <template #tools>
+            <v-btn
+              variant="text"
+              icon="mdi-reload"
+              :title="$gettext('Reload')"
+              @click="providersStore.getProviders()"
+            ></v-btn>
+          </template>
+        </ListToolbar>
       </template>
 
       <template #[`item.secured`]="{ item }">
@@ -97,6 +78,7 @@
 
 <script setup>
 import { useDomainsStore, useProvidersStore } from '@/stores'
+import ListToolbar from '@/components/tools/ListToolbar.vue'
 import MenuItems from '@/components/tools/MenuItems'
 import { useGettext } from 'vue3-gettext'
 import { computed, ref } from 'vue'

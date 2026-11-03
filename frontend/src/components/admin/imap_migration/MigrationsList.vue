@@ -11,38 +11,16 @@
       show-select
     >
       <template #top>
-        <v-toolbar color="white" flat>
-          <v-text-field
-            v-model="search"
-            prepend-inner-icon="mdi-magnify"
-            placeholder="Search"
-            filled
-            variant="outlined"
-            density="compact"
-            hide-details
-            class="flex-grow-0 w-33 mr-4"
-          ></v-text-field>
-
-          <v-menu location="bottom">
-            <template #activator="{ props }">
-              <v-btn
-                v-bind="props"
-                variant="flat"
-                append-icon="mdi-chevron-down"
-                size="small"
-              >
-                {{ $gettext('Actions') }}
-              </v-btn>
-            </template>
-            <v-list density="compact"> </v-list>
-          </v-menu>
-          <v-btn
-            variant="text"
-            icon="mdi-reload"
-            @click="getMigrations()"
-          ></v-btn>
-          <v-spacer></v-spacer>
-        </v-toolbar>
+        <ListToolbar v-model:search="search">
+          <template #tools>
+            <v-btn
+              variant="text"
+              icon="mdi-reload"
+              :title="$gettext('Reload')"
+              @click="getMigrations()"
+            ></v-btn>
+          </template>
+        </ListToolbar>
       </template>
       <template #[`item.mailbox`]="{ item }">
         <router-link
@@ -73,6 +51,7 @@
 
 <script setup>
 import migrationApi from '@/api/imap_migration/migrations'
+import ListToolbar from '@/components/tools/ListToolbar.vue'
 import MenuItems from '@/components/tools/MenuItems'
 import { useBusStore } from '@/stores'
 import { ref } from 'vue'

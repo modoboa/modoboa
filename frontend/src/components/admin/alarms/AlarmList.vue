@@ -15,30 +15,32 @@
       @update:options="fetchAlarms"
     >
       <template #top>
-        <v-toolbar color="white" flat>
-          <v-text-field
-            v-model="search"
-            prepend-inner-icon="mdi-magnify"
-            :placeholder="$gettext('Search')"
-            density="compact"
-            variant="outlined"
-            hide-details
-            flat
-            single-line
-            class="flex-grow-0 w-33 mr-4"
-          ></v-text-field>
-          <v-menu location="bottom">
-            <template #activator="{ props }">
-              <v-btn v-bind="props" size="small">
-                {{ $gettext('Actions') }}
-                <v-icon right>mdi-chevron-down</v-icon>
-              </v-btn>
-            </template>
-            <v-list density="compact">
-              <MenuItems :items="getActionMenuItems()" />
-            </v-list>
-          </v-menu>
-        </v-toolbar>
+        <ListToolbar v-model:search="search">
+          <template #tools>
+            <v-menu location="bottom">
+              <template #activator="{ props }">
+                <v-btn
+                  append-icon="mdi-chevron-down"
+                  v-bind="props"
+                  size="small"
+                  variant="flat"
+                  :disabled="!selected.length"
+                >
+                  {{ $gettext('Actions') }}
+                </v-btn>
+              </template>
+              <v-list density="compact">
+                <MenuItems :items="getActionMenuItems()" />
+              </v-list>
+            </v-menu>
+            <v-btn
+              variant="text"
+              icon="mdi-reload"
+              :title="$gettext('Reload')"
+              @click="fetchAlarms"
+            ></v-btn>
+          </template>
+        </ListToolbar>
       </template>
       <template #[`item.status`]="{ item }">
         <v-chip v-if="item.status === 1" color="warning" size="small">
@@ -74,6 +76,7 @@
 
 <script setup>
 import { ref } from 'vue'
+import ListToolbar from '@/components/tools/ListToolbar.vue'
 import debounce from 'debounce'
 import { useGettext } from 'vue3-gettext'
 import { useRoute } from 'vue-router'
@@ -119,21 +122,14 @@ const itemsPerPageOptions = [
 ]
 
 function getActionMenuItems() {
-  const result = []
-  if (selected.value.length > 0) {
-    result.push({
+  return [
+    {
       label: $gettext('Delete'),
       icon: 'mdi-delete-outline',
       onClick: deleteAlarms,
       color: 'red',
-    })
-  }
-  result.push({
-    label: $gettext('Reload'),
-    icon: 'mdi-reload',
-    onClick: fetchAlarms,
-  })
-  return result
+    },
+  ]
 }
 
 function getMenuItems(item) {

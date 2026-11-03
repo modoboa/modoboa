@@ -17,42 +17,35 @@
       @update:options="optionsUpdated"
     >
       <template #top>
-        <v-toolbar color="white" flat>
-          <v-text-field
-            v-model="search"
-            prepend-inner-icon="mdi-magnify"
-            :placeholder="$gettext('Search')"
-            variant="outlined"
-            single-line
-            hide-details
-            density="compact"
-            class="flex-grow-0 w-33 mr-4"
-          ></v-text-field>
-          <slot name="extraActions" />
-          <v-menu
-            v-if="canDeleteDomain && selected.length > 1"
-            location="bottom"
-          >
-            <template #activator="{ props }">
-              <v-btn
-                variant="flat"
-                append-icon="mdi-chevron-down"
-                v-bind="props"
-                size="small"
-              >
-                {{ $gettext('Actions') }}
-              </v-btn>
-            </template>
-            <v-list density="compact">
-              <MenuItems :items="getActionMenuItems()" />
-            </v-list>
-          </v-menu>
-          <v-btn
-            variant="text"
-            icon="mdi-reload"
-            @click="reloadDomains"
-          ></v-btn>
-        </v-toolbar>
+        <ListToolbar v-model:search="search">
+          <template #actions>
+            <slot name="extraActions" />
+          </template>
+          <template #tools>
+            <v-menu v-if="canDeleteDomain" location="bottom">
+              <template #activator="{ props }">
+                <v-btn
+                  append-icon="mdi-chevron-down"
+                  v-bind="props"
+                  size="small"
+                  variant="flat"
+                  :disabled="selected.length < 2"
+                >
+                  {{ $gettext('Actions') }}
+                </v-btn>
+              </template>
+              <v-list density="compact">
+                <MenuItems :items="getActionMenuItems()" />
+              </v-list>
+            </v-menu>
+            <v-btn
+              variant="text"
+              icon="mdi-reload"
+              :title="$gettext('Reload')"
+              @click="reloadDomains"
+            ></v-btn>
+          </template>
+        </ListToolbar>
       </template>
       <template #[`item.name`]="{ item }">
         <router-link
@@ -193,6 +186,7 @@
 
 <script setup lang="js">
 import { useBusStore } from '@/stores'
+import ListToolbar from '@/components/tools/ListToolbar.vue'
 import { useGettext } from 'vue3-gettext'
 import { useRouter } from 'vue-router'
 import { usePermissions } from '@/composables/permissions'

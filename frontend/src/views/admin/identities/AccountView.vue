@@ -1,67 +1,70 @@
 <template>
-  <v-toolbar flat color="transparent">
-    <v-toolbar-title>
-      {{ $gettext('Account') }} {{ account.username }}
-      <v-btn
-        color="primary"
-        icon="mdi-circle-edit-outline"
-        :to="{ name: 'AccountEdit', params: { id: account.pk } }"
-      />
-      <v-btn color="primary" icon="mdi-reload" @click="refreshAccount" />
-    </v-toolbar-title>
-  </v-toolbar>
-  <!-- Without plugin tabs, the general content is displayed alone -->
-  <v-tabs v-if="pluginTabs.length" v-model="tab" class="mb-4" color="primary">
-    <v-tab>
-      {{ $gettext('General') }}
-    </v-tab>
-    <v-tab v-for="extraTab in pluginTabs" :key="extraTab.name">
-      {{ extraTab.title }}
-    </v-tab>
-  </v-tabs>
-  <v-tabs-window v-model="tab">
-    <v-tabs-window-item>
-      <v-row>
-        <v-col cols="6">
-          <AccountSummary :account="account" />
-          <DomainAdminDomains
-            v-if="account.role === constants.DOMAIN_ADMIN"
-            class="mt-2"
-            :account="account"
-          />
-        </v-col>
-        <v-col cols="6">
-          <ResourcesView
-            v-if="
-              limitsConfig.params &&
-              limitsConfig.params.enable_admin_limits &&
-              account.role !== constants.USER &&
-              account.role !== constants.SUPER_ADMIN
-            "
-            :resources="account.resources"
-          />
-          <AccountAliases
-            v-if="account.aliases"
-            class="mt-2"
-            :account="account"
-          />
-          <AccountSenderAddresses
-            v-if="account.mailbox"
-            class="mt-2"
-            :account="account"
-          />
-        </v-col>
-      </v-row>
-    </v-tabs-window-item>
-    <v-tabs-window-item v-for="extraTab in pluginTabs" :key="extraTab.name">
-      <component
-        :is="extraTab.component"
-        :account="account"
-        v-bind="extraTab.props || {}"
-        @refresh="refreshAccount"
-      />
-    </v-tabs-window-item>
-  </v-tabs-window>
+  <div>
+    <v-toolbar flat color="transparent">
+      <v-toolbar-title>
+        {{ $gettext('Account') }} {{ account.username }}
+        <v-btn
+          color="primary"
+          icon="mdi-circle-edit-outline"
+          :to="{ name: 'AccountEdit', params: { id: account.pk } }"
+        />
+        <v-btn color="primary" icon="mdi-reload" @click="refreshAccount" />
+      </v-toolbar-title>
+    </v-toolbar>
+    <!-- Without plugin tabs, the general content is displayed alone -->
+    <v-tabs v-if="pluginTabs.length" v-model="tab" class="mb-4" color="primary">
+      <v-tab>
+        {{ $gettext('General') }}
+      </v-tab>
+      <v-tab v-for="extraTab in pluginTabs" :key="extraTab.name">
+        {{ extraTab.title }}
+      </v-tab>
+    </v-tabs>
+    <!-- v-window clips overflow: keep room for the cards border/shadow -->
+    <v-tabs-window v-model="tab" class="pa-1">
+      <v-tabs-window-item>
+        <v-row>
+          <v-col cols="6">
+            <AccountSummary :account="account" />
+            <DomainAdminDomains
+              v-if="account.role === constants.DOMAIN_ADMIN"
+              class="mt-2"
+              :account="account"
+            />
+          </v-col>
+          <v-col cols="6">
+            <ResourcesView
+              v-if="
+                limitsConfig.params &&
+                limitsConfig.params.enable_admin_limits &&
+                account.role !== constants.USER &&
+                account.role !== constants.SUPER_ADMIN
+              "
+              :resources="account.resources"
+            />
+            <AccountAliases
+              v-if="account.aliases"
+              class="mt-2"
+              :account="account"
+            />
+            <AccountSenderAddresses
+              v-if="account.mailbox"
+              class="mt-2"
+              :account="account"
+            />
+          </v-col>
+        </v-row>
+      </v-tabs-window-item>
+      <v-tabs-window-item v-for="extraTab in pluginTabs" :key="extraTab.name">
+        <component
+          :is="extraTab.component"
+          :account="account"
+          v-bind="extraTab.props || {}"
+          @refresh="refreshAccount"
+        />
+      </v-tabs-window-item>
+    </v-tabs-window>
+  </div>
 </template>
 
 <script setup lang="js">
