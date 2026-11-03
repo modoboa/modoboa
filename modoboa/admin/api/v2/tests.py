@@ -460,6 +460,22 @@ class AccountViewSetTestCase(ModoAPITestCase):
         )
         self.assertEqual(entry["mailbox"]["quota_usage"], 50)
 
+    def test_list_filter_by_domain(self):
+        domain = models.Domain.objects.get(name="test.com")
+        url = reverse("v2:account-list")
+        resp = self.client.get(url, {"domain": domain.pk})
+        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(
+            {a["username"] for a in resp.json()["results"]},
+            {"admin@test.com", "user@test.com"},
+        )
+
+    def test_list_filter_by_non_owned_domain(self):
+        domain = models.Domain.objects.get(name="test2.com")
+        self.authenticate_user(core_models.User.objects.get(username="admin@test.com"))
+        resp = self.client.get(reverse("v2:account-list"), {"domain": domain.pk})
+        self.assertEqual(resp.status_code, 400)
+
     def test_list_quota_usage_large_quota(self):
         """Quotas above 2047MB must not overflow (quota * 1048576 > 2^31)."""
         mb = models.Mailbox.objects.get(user__username="user@test.com")
@@ -1326,6 +1342,25 @@ class AliasViewSetTestCase(ModoAPITestCase):
         data = {"address": "alias2@test.com"}
         resp = self.client.post(url, data, format="json")
         self.assertEqual(resp.status_code, 204)
+
+    def test_list_filter_by_domain(self):
+        url = reverse("v2:alias-list")
+        resp = self.client.get(url, {"domain": "test.com"})
+        self.assertEqual(resp.status_code, 200)
+        addresses = [a["address"] for a in resp.json()["results"]]
+        self.assertIn("alias@test.com", addresses)
+        self.assertTrue(all(a.endswith("@test.com") for a in addresses))
+
+        resp = self.client.get(url, {"domain": "test2.com"})
+        self.assertEqual(resp.status_code, 200)
+        self.assertNotIn(
+            "alias@test.com", [a["address"] for a in resp.json()["results"]]
+        )
+
+    def test_list_filter_by_non_owned_domain(self):
+        self.authenticate_user(core_models.User.objects.get(username="admin@test.com"))
+        resp = self.client.get(reverse("v2:alias-list"), {"domain": "test2.com"})
+        self.assertEqual(resp.status_code, 400)
 
     def test_random_address(self):
         url = reverse("v2:alias-random-address")
