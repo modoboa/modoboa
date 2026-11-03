@@ -146,21 +146,21 @@
       @show="enableImages = true"
     />
     <EmailMessageBody :body="email?.body" :enable-images="enableImages" />
+    <v-dialog v-model="showEmailSource" max-width="1200">
+      <v-card :title="$gettext('Message source')">
+        <v-card-text class="text-body-small overflow-x-auto">
+          <pre>{{ emailSource }}</pre>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            :text="$gettext('Close')"
+            @click="showEmailSource = false"
+          ></v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </div>
-  <v-dialog v-model="showEmailSource" max-width="1200">
-    <v-card :title="$gettext('Message source')">
-      <v-card-text class="text-body-small overflow-x-auto">
-        <pre>{{ emailSource }}</pre>
-      </v-card-text>
-      <v-card-actions>
-        <v-spacer></v-spacer>
-        <v-btn
-          :text="$gettext('Close')"
-          @click="showEmailSource = false"
-        ></v-btn>
-      </v-card-actions>
-    </v-card>
-  </v-dialog>
 </template>
 
 <script setup>

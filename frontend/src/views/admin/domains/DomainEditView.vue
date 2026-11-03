@@ -1,8 +1,10 @@
 <template>
-  <v-toolbar flat color="transparent">
-    <v-toolbar-title>{{ $gettext('Edit domain') }}</v-toolbar-title>
-  </v-toolbar>
-  <DomainEditForm :domain="domain" />
+  <div>
+    <v-toolbar flat color="transparent">
+      <v-toolbar-title>{{ $gettext('Edit domain') }}</v-toolbar-title>
+    </v-toolbar>
+    <DomainEditForm :domain="domain" />
+  </div>
 </template>
 
 <script setup lang="js">
