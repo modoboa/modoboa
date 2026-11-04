@@ -5,7 +5,7 @@
         <v-list-item
           v-for="(log, index) in logs"
           :key="index"
-          :title="log.action_label || log.message"
+          :title="getTitle(log)"
           :subtitle="getSubtitle(log)"
           :prepend-icon="getLevelIcon(log.level)"
           :base-color="getLevelColor(log.level)"
@@ -23,6 +23,7 @@
 <script setup>
 import { ref } from 'vue'
 import logsApi from '@/api/logs'
+import { getAuditDetails } from '@/utils/audit'
 
 const logs = ref([])
 
@@ -36,13 +37,15 @@ function getLevelColor(level) {
   return undefined
 }
 
-function getSubtitle(log) {
-  if (!log.action) {
-    return `${log.date_created} · ${log.logger}`
-  }
-  return [log.object_repr, log.actor_name, log.date_created]
+function getTitle(log) {
+  return [log.date_created, log.action_label, log.actor_name]
     .filter(Boolean)
     .join(' · ')
+}
+
+function getSubtitle(log) {
+  // Entries written before structured fields existed only have a message
+  return log.action ? getAuditDetails(log) : log.message
 }
 
 function getLevelIcon(level) {
