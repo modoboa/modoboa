@@ -186,6 +186,8 @@ class QuarantineViewSetTestCase(TestDataMixin, ModoAPITestCase):
         self.assertEqual(response.status_code, 204)
         self.msgrcpt.refresh_from_db()
         self.assertEqual(self.msgrcpt.rs, "D")
+        log = core_models.Log.objects.get(action="amavis.quarantine.deleted")
+        self.assertEqual(log.extra["mailids"], [mail_id])
 
     def test_delete_selfservice(self):
         self.client.logout()

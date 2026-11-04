@@ -9,11 +9,13 @@ from rest_framework import filters, permissions, response, viewsets, mixins
 from rest_framework.authtoken.models import Token
 from rest_framework.decorators import action
 from rest_framework.exceptions import PermissionDenied
+from reversion import revisions as reversion
 
 from modoboa.admin.api.v1 import serializers as admin_v1_serializers
 from modoboa.admin.api.v2 import serializers as admin_v2_serializers
 from modoboa.core.api.v1 import serializers as core_v1_serializers
 from modoboa.core.api.v1 import viewsets as core_v1_viewsets
+from modoboa.core.api.v1.viewsets import log_account_event
 from modoboa.core.extensions import exts_pool
 from modoboa.lib import pagination
 from modoboa.lib.permissions import IsSuperUser
@@ -60,7 +62,9 @@ class AccountViewSet(core_v1_viewsets.AccountViewSet):
                 data=request.data, instance=request.user
             )
             serializer.is_valid(raise_exception=True)
-            instance = serializer.save()
+            # Logged as a regular user modification (secondary email, phone...)
+            with reversion.create_revision():
+                instance = serializer.save()
             serializer = admin_v1_serializers.AccountSerializer(instance)
         else:
             serializer = admin_v1_serializers.AccountSerializer(request.user)
@@ -92,6 +96,7 @@ class AccountViewSet(core_v1_viewsets.AccountViewSet):
         )
         serializer.is_valid(raise_exception=True)
         serializer.save()
+        log_account_event(request, "core.password.changed", "changed their password")
         return response.Response()
 
     @extend_schema(
@@ -115,13 +120,20 @@ class AccountViewSet(core_v1_viewsets.AccountViewSet):
         if not request.user.is_superuser:
             raise PermissionDenied("Only super administrators can have API tokens")
         if request.method == "DELETE":
-            Token.objects.filter(user=request.user).delete()
+            deleted, _details = Token.objects.filter(user=request.user).delete()
+            if deleted:
+                log_account_event(
+                    request, "core.api_token.deleted", "deleted their API token"
+                )
             return response.Response(status=204)
         status = 200
         if request.method == "POST":
             token, created = Token.objects.get_or_create(user=request.user)
             if created:
                 status = 201
+                log_account_event(
+                    request, "core.api_token.created", "created an API token"
+                )
         else:
             if hasattr(request.user, "auth_token"):
                 token = request.user.auth_token
@@ -156,6 +168,7 @@ class AccountViewSet(core_v1_viewsets.AccountViewSet):
         # Set enable flag to True so we can't go here anymore
         request.user.totp_enabled = True
         request.user.save()
+        log_account_event(request, "core.tfa.totp_enabled", "enabled TOTP")
         if tokens is None:
             return response.Response(status=204)
         return response.Response({"tokens": tokens})
@@ -276,6 +289,14 @@ class FIDOViewSet(
             return models.UserFidoKey.objects.filter(user=self.request.user)
         return None
 
+    def perform_destroy(self, instance):
+        super().perform_destroy(instance)
+        log_account_event(
+            self.request,
+            "core.tfa.fido_key_removed",
+            f"removed security key '{instance.name}'",
+        )
+
     def destroy(self, request, *args, **kwargs):
         super().destroy(request, *args, **kwargs)
         queryset = self.get_queryset()
@@ -302,10 +323,13 @@ class FIDOViewSet(
         serializer = serializers.FidoRegistrationSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         credential_data = f2_auth.end_registration(request)
-        models.UserFidoKey.objects.create(
+        key = models.UserFidoKey.objects.create(
             name=request.data["name"],
             credential_data=credential_data,
             user=request.user,
+        )
+        log_account_event(
+            request, "core.tfa.fido_key_added", f"added security key '{key.name}'"
         )
         if not request.user.webauthn_enabled:
             request.user.webauthn_enabled = True

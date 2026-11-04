@@ -1,5 +1,7 @@
 """Admin API v2 viewsets."""
 
+import logging
+
 from django.utils.translation import gettext as _
 
 from django.contrib.contenttypes.models import ContentType
@@ -33,6 +35,7 @@ from rest_framework.exceptions import PermissionDenied
 
 from modoboa.admin.api.v1 import viewsets as v1_viewsets
 from modoboa.core import constants as core_constants, models as core_models
+from modoboa.core.loggers import audit
 from modoboa.lib import permissions as lib_permissions
 from modoboa.lib import pagination
 from modoboa.lib import renderers as lib_renderers
@@ -45,6 +48,8 @@ from ... import lib
 from ... import models
 from ... import constants
 from . import serializers
+
+logger = logging.getLogger("modoboa.admin")
 
 
 @extend_schema_view(
@@ -168,6 +173,11 @@ class DomainViewSet(
                 status=status.HTTP_400_BAD_REQUEST,
             )
         domain.generate_dkim_key(force=True)
+        logger.info(
+            f"DKIM key generation for domain '{domain.name}' requested by user "
+            f"{request.user.username}",
+            extra=audit("admin.domain.dkim_key_generated", request, obj=domain),
+        )
         return response.Response(status=status.HTTP_202_ACCEPTED)
 
     @action(methods=["get"], detail=True)
@@ -185,7 +195,18 @@ class DomainViewSet(
         context["domain"] = domain
         serializer = self.get_serializer(data=request.data, context=context)
         serializer.is_valid(raise_exception=True)
-        domain.add_admin(serializer.validated_data["account"])
+        account = serializer.validated_data["account"]
+        domain.add_admin(account)
+        logger.info(
+            f"User {account.username} made administrator of domain '{domain.name}' "
+            f"by user {request.user.username}",
+            extra=audit(
+                "admin.domain.admin_added",
+                request,
+                obj=domain,
+                account=account.username,
+            ),
+        )
         return response.Response()
 
     @action(methods=["post"], detail=True, url_path="administrators/remove")
@@ -196,7 +217,18 @@ class DomainViewSet(
         context["domain"] = domain
         serializer = self.get_serializer(data=request.data, context=context)
         serializer.is_valid(raise_exception=True)
-        domain.remove_admin(serializer.validated_data["account"])
+        account = serializer.validated_data["account"]
+        domain.remove_admin(account)
+        logger.info(
+            f"User {account.username} removed from administrators of domain "
+            f"'{domain.name}' by user {request.user.username}",
+            extra=audit(
+                "admin.domain.admin_removed",
+                request,
+                obj=domain,
+                account=account.username,
+            ),
+        )
         return response.Response()
 
     @action(
@@ -489,7 +521,9 @@ class AliasViewSet(v1_viewsets.AliasViewSet):
         return response.Response({"address": models.Alias.generate_random_address()})
 
 
-class UserAccountViewSet(GetThrottleViewsetMixin, viewsets.ViewSet):
+class UserAccountViewSet(
+    GetThrottleViewsetMixin, lib_viewsets.RevisionModelMixin, viewsets.ViewSet
+):
     """Viewset for current user operations."""
 
     permission_classes = (permissions.IsAuthenticated, lib_viewsets.HasMailbox)
@@ -559,6 +593,7 @@ class AlarmFilterSet(dj_filters.FilterSet):
 
 class AlarmViewSet(
     GetThrottleViewsetMixin,
+    lib_viewsets.RevisionModelMixin,
     mixins.DestroyModelMixin,
     mixins.ListModelMixin,
     mixins.RetrieveModelMixin,

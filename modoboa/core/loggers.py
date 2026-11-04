@@ -37,12 +37,27 @@ def get_audit_actions() -> dict[str, str]:
     return actions
 
 
-register_audit_action("core.login.succeeded", gettext_lazy("Login succeeded"))
-register_audit_action("core.login.failed", gettext_lazy("Login failed"))
-register_audit_action(
-    "core.tfa_settings.password_failed",
-    gettext_lazy("Wrong password while editing 2FA settings"),
-)
+for _code, _label in (
+    ("core.login.succeeded", gettext_lazy("Login succeeded")),
+    ("core.login.failed", gettext_lazy("Login failed")),
+    ("core.login.tfa_failed", gettext_lazy("Two-factor authentication failed")),
+    (
+        "core.tfa_settings.password_failed",
+        gettext_lazy("Wrong password while editing 2FA settings"),
+    ),
+    ("core.password.changed", gettext_lazy("Password changed")),
+    ("core.password.reset_requested", gettext_lazy("Password reset requested")),
+    ("core.password.reset", gettext_lazy("Password reset")),
+    ("core.tfa.totp_enabled", gettext_lazy("Authenticator app enabled")),
+    ("core.tfa.totp_disabled", gettext_lazy("Authenticator app disabled")),
+    ("core.tfa.recovery_codes_reset", gettext_lazy("Recovery codes regenerated")),
+    ("core.tfa.fido_key_added", gettext_lazy("Security key added")),
+    ("core.tfa.fido_key_removed", gettext_lazy("Security key removed")),
+    ("core.api_token.created", gettext_lazy("API token created")),
+    ("core.api_token.deleted", gettext_lazy("API token deleted")),
+    ("core.parameters.modified", gettext_lazy("Global parameters modified")),
+):
+    register_audit_action(_code, _label)
 
 
 class SQLHandler(logging.Handler):
@@ -103,8 +118,10 @@ def audit(
     The action code must be declared with register_audit_action().
     """
     if request is not None:
-        if actor is None and request.user.is_authenticated:
-            actor = request.user
+        # No user on some self-service requests (quarantine links)
+        user = getattr(request, "user", None)
+        if actor is None and user is not None and user.is_authenticated:
+            actor = user
         ip = ip or request.META.get("REMOTE_ADDR")
     data = {"action": action, "ip_address": ip, "extra": extra}
     if actor is not None:

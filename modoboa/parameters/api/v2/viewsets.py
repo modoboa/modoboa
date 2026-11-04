@@ -1,9 +1,12 @@
 """Parameters viewsets."""
 
+import logging
+
 from drf_spectacular.utils import extend_schema, OpenApiParameter
 from rest_framework import permissions, response, viewsets
 from rest_framework.decorators import action
 
+from modoboa.core.loggers import audit
 from modoboa.lib.permissions import IsPrivilegedUser, IsSuperUser
 from modoboa.lib.throttle import GetThrottleViewsetMixin
 
@@ -116,8 +119,19 @@ class GlobalParametersViewSet(BaseParametersViewSet):
         return data
 
     def _save_parameter_values(self, request, app: str, data: dict) -> None:
+        previous = request.localconfig.parameters.get_values_dict(app)
         request.localconfig.parameters.set_values(data, app=app)
         request.localconfig.save(update_fields=["_parameters"])
+        # Names only: values may be secrets (LDAP, SMS credentials...)
+        changed = sorted(name for name in data if previous.get(name) != data[name])
+        if changed:
+            logging.getLogger("modoboa.admin").info(
+                f"Global parameters of '{app}' modified by user "
+                f"{request.user.username}: {', '.join(changed)}",
+                extra=audit(
+                    "core.parameters.modified", request, app=app, changed=changed
+                ),
+            )
 
 
 class UserParametersViewSet(BaseParametersViewSet):
