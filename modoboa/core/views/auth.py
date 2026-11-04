@@ -25,6 +25,7 @@ from rest_framework.views import APIView
 
 from modoboa.core import constants, fido2_auth, forms, models
 from modoboa.core.api.v2 import serializers
+from modoboa.core.loggers import audit
 from modoboa.core.password_hashers import get_password_hasher
 from modoboa.lib import cryptutils
 from modoboa.lib.throttle import (
@@ -68,7 +69,10 @@ class LoginViewMixin:
 
         translation.activate(user.language)
 
-        self.logger.info(_("User '%s' successfully logged in") % user.username)
+        self.logger.info(
+            _("User '%s' successfully logged in") % user.username,
+            extra=audit("core.login.succeeded", self.request),
+        )
         nextlocation = self.request.POST.get("next", self.request.GET.get("next"))
         condition = nextlocation and url_has_allowed_host_and_scheme(
             nextlocation, self.request.get_host()
@@ -155,7 +159,12 @@ class LoginView(ThrottleViewMixin, LoginViewMixin, auth_views.LoginView):
             "Failed connection attempt from '{addr}' as user '{user}'".format(
                 addr=self.request.META["REMOTE_ADDR"],
                 user=escape(form.cleaned_data["username"]),
-            )
+            ),
+            extra=audit(
+                "core.login.failed",
+                self.request,
+                actor_name=form.cleaned_data["username"],
+            ),
         )
         return self.render_to_response(self.get_context_data(form=form), status=401)
 

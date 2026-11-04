@@ -10,6 +10,7 @@ from django.utils.translation import gettext as _
 from rest_framework import serializers
 
 from modoboa.core import models
+from modoboa.core.loggers import audit
 from modoboa.parameters import tools as param_tools
 
 logger = logging.getLogger("modoboa.auth")
@@ -89,6 +90,13 @@ class CheckPasswordTFASerializer(serializers.Serializer):
                 "addr": self.context["remote_addr"],
                 "user": escape(user.username),
             }
-            logger.warning(msg)
+            logger.warning(
+                msg,
+                extra=audit(
+                    "core.tfa_settings.password_failed",
+                    actor=user,
+                    ip=self.context["remote_addr"],
+                ),
+            )
             raise serializers.ValidationError(_("Invalid password"))
         return value

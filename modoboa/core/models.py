@@ -512,10 +512,25 @@ class ObjectAccess(models.Model):
 class Log(models.Model):
     """Simple log in database."""
 
-    date_created = models.DateTimeField(auto_now_add=True)
+    date_created = models.DateTimeField(auto_now_add=True, db_index=True)
     message = models.TextField()
     level = models.CharField(max_length=15)
     logger = models.CharField(max_length=30)
+
+    # Structured audit fields: empty for plain log records.
+    action = models.CharField(max_length=64, blank=True, db_index=True)
+    actor = models.ForeignKey(
+        User, null=True, blank=True, on_delete=models.SET_NULL, related_name="+"
+    )
+    # Names are copied so entries stay readable once the actor/domain is gone
+    actor_name = models.CharField(max_length=254, blank=True)
+    ip_address = models.GenericIPAddressField(null=True, blank=True)
+    content_type = models.ForeignKey(
+        ContentType, null=True, blank=True, on_delete=models.SET_NULL
+    )
+    object_id = models.PositiveIntegerField(null=True, blank=True)
+    domain = models.CharField(max_length=253, blank=True, db_index=True)
+    extra = models.JSONField(default=dict, blank=True, encoder=DjangoJSONEncoder)
 
 
 class LocalConfig(models.Model):
