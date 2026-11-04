@@ -164,6 +164,8 @@ class LoginView(ThrottleViewMixin, LoginViewMixin, auth_views.LoginView):
                 "core.login.failed",
                 self.request,
                 actor_name=form.cleaned_data["username"],
+                # Lets the targeted domain's administrators see the attempt
+                domain=form.cleaned_data["username"].rpartition("@")[2],
             ),
         )
         return self.render_to_response(self.get_context_data(form=form), status=401)
@@ -193,7 +195,10 @@ class PasswordResetView(ThrottleViewMixin, auth_views.PasswordResetView):
         logger.info(
             f"Password reset requested for '{email}'",
             extra=audit(
-                "core.password.reset_requested", self.request, actor_name=email
+                "core.password.reset_requested",
+                self.request,
+                actor_name=email,
+                domain=email.rpartition("@")[2],
             ),
         )
         sms_password_recovery = self.request.localconfig.parameters.get_value(

@@ -326,3 +326,74 @@ class AuditFiltersTestCase(ModoAPITestCase):
         self.client.credentials()
         resp = self.client.get(reverse("v2:log-actions"))
         self.assertEqual(resp.status_code, 401)
+
+
+class DomainAdminAuditTestCase(ModoAPITestCase):
+    """Domain administrators only see the entries of their domains."""
+
+    @classmethod
+    def setUpTestData(cls):  # NOQA:N802
+        super().setUpTestData()
+        admin_factories.populate_database()
+
+    def setUp(self):
+        super().setUp()
+        logger = logging.getLogger("modoboa.admin")
+        for message, domain in (
+            ("own", "test.com"),
+            ("other", "test2.com"),
+            ("global", ""),
+        ):
+            logger.info(
+                message,
+                extra=audit(
+                    "core.parameters.modified", actor_name="admin", domain=domain
+                ),
+            )
+        self.authenticate_user(models.User.objects.get(username="admin@test.com"))
+
+    def get_messages(self, **params):
+        resp = self.client.get(reverse("v2:log-list"), params)
+        self.assertEqual(resp.status_code, 200)
+        return [entry["message"] for entry in resp.json()["results"]]
+
+    def test_list_is_restricted(self):
+        self.assertEqual(self.get_messages(), ["own"])
+        # Filters and search can't reach other domains
+        self.assertEqual(self.get_messages(domain="test2.com"), [])
+        self.assertEqual(self.get_messages(search="other"), [])
+        self.assertEqual(self.get_messages(search="global"), [])
+
+    def test_detail_is_restricted(self):
+        for message in ("other", "global"):
+            log = models.Log.objects.get(message=message)
+            resp = self.client.get(reverse("v2:log-detail", args=[log.pk]))
+            self.assertEqual(resp.status_code, 404)
+        log = models.Log.objects.get(message="own")
+        resp = self.client.get(reverse("v2:log-detail", args=[log.pk]))
+        self.assertEqual(resp.status_code, 200)
+
+    def test_superadmin_sees_everything(self):
+        self.authenticate_user(models.User.objects.get(username="admin"))
+        self.assertEqual(sorted(self.get_messages()), ["global", "other", "own"])
+
+    def test_simple_user_is_refused(self):
+        self.authenticate_user(models.User.objects.get(username="user@test.com"))
+        resp = self.client.get(reverse("v2:log-list"))
+        self.assertEqual(resp.status_code, 403)
+        resp = self.client.get(reverse("v2:log-actions"))
+        self.assertEqual(resp.status_code, 403)
+
+    def test_login_entries_have_a_domain(self):
+        self.client.logout()
+        self.client.post(
+            reverse("core:login"), {"username": "user@test.com", "password": "toto"}
+        )
+        self.client.logout()
+        self.client.post(
+            reverse("core:login"), {"username": "user@test2.com", "password": "bad"}
+        )
+        log = models.Log.objects.get(action="core.login.succeeded")
+        self.assertEqual(log.domain, "test.com")
+        log = models.Log.objects.get(action="core.login.failed")
+        self.assertEqual(log.domain, "test2.com")

@@ -110,12 +110,16 @@ def audit(
     actor_name: str = "",
     ip: str | None = None,
     obj=None,
+    domain: str = "",
     **extra,
 ) -> dict:
     """Build the `extra` argument that turns a log call into an audit entry.
 
     Usage: logger.info(msg, extra=audit("core.login.succeeded", request))
     The action code must be declared with register_audit_action().
+
+    The domain decides which domain administrators see the entry: it
+    comes from the object, else from the actor's mailbox, unless given.
     """
     if request is not None:
         # No user on some self-service requests (quarantine links)
@@ -136,5 +140,9 @@ def audit(
         data["content_type"] = ContentType.objects.get_for_model(obj)
         data["object_id"] = obj.pk
         data["object_repr"] = str(obj)[:255]
-        data["domain"] = get_domain_name(obj)
+        domain = get_domain_name(obj)
+    elif not domain and actor is not None:
+        domain = get_domain_name(actor)
+    # May come from user input (failed login): fit the column
+    data["domain"] = domain[:253]
     return {"audit": data}
