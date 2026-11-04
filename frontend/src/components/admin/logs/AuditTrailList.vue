@@ -18,15 +18,12 @@
         <div class="d-flex align-center py-2">
           <span class="d-sr-only">{{ item.level }}</span>
           <div class="audit-cell">
-            <template v-if="item.action_label">
+            <div v-if="item.action_label" :title="item.message">
               <div class="font-weight-medium">{{ item.action_label }}</div>
-              <div
-                class="text-caption text-medium-emphasis text-truncate"
-                :title="item.message"
-              >
-                {{ item.message }}
+              <div class="text-caption text-medium-emphasis text-truncate">
+                {{ item.object_repr }}
               </div>
-            </template>
+            </div>
             <!-- Entries written before structured fields existed -->
             <div v-else class="text-truncate" :title="item.message">
               {{ item.message }}
@@ -70,8 +67,8 @@ const itemsPerPageOptions = [
   { value: 100, title: '100' },
 ]
 
+// INFO is the common case: only flag what deserves attention
 const levelClasses = {
-  INFO: 'audit-row audit-row--info',
   WARNING: 'audit-row audit-row--warning',
   ERROR: 'audit-row audit-row--error',
   CRITICAL: 'audit-row audit-row--error',
@@ -108,9 +105,6 @@ fetchLogs = debounce(fetchLogs, 500)
   /* Lets text-truncate work in narrow cells */
   min-width: 0;
   max-width: 480px;
-}
-:deep(.audit-row--info) {
-  --audit-level-color: var(--v-theme-primary);
 }
 :deep(.audit-row--warning) {
   --audit-level-color: var(--v-theme-warning);

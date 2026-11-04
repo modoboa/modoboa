@@ -5,8 +5,8 @@
         <v-list-item
           v-for="(log, index) in logs"
           :key="index"
-          :title="log.message"
-          :subtitle="`${log.date_created} · ${log.logger}`"
+          :title="log.action_label || log.message"
+          :subtitle="getSubtitle(log)"
           :prepend-icon="getLevelIcon(log.level)"
           :base-color="getLevelColor(log.level)"
         />
@@ -34,6 +34,15 @@ function getLevelColor(level) {
     return 'error'
   }
   return undefined
+}
+
+function getSubtitle(log) {
+  if (!log.action) {
+    return `${log.date_created} · ${log.logger}`
+  }
+  return [log.object_repr, log.actor_name, log.date_created]
+    .filter(Boolean)
+    .join(' · ')
 }
 
 function getLevelIcon(level) {
