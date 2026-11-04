@@ -1,5 +1,6 @@
 """Tests for core application."""
 
+import importlib
 from io import StringIO
 import json
 import pathlib
@@ -9,7 +10,10 @@ import tempfile
 import httmock
 from dateutil.relativedelta import relativedelta
 from oauth2_provider.models import get_application_model
+from reversion import revisions as reversion
+from reversion.models import Version
 
+from django.apps import apps
 from django.conf import settings
 from django.core import mail
 from django.core import management
@@ -291,3 +295,32 @@ class APICommunicationTestCase(ModoTestCase):
         ):
             management.call_command("communicate_with_public_api")
         self.assertEqual(len(mail.outbox), 1)
+
+
+class RevisionPasswordTestCase(ModoTestCase):
+    """Password hashes must never be stored in revision history."""
+
+    def test_password_not_stored(self):
+        user = factories.UserFactory(username="history@test.com")
+        with reversion.create_revision():
+            user.save()
+        version = Version.objects.get_for_object(user).get()
+        self.assertNotIn("password", version.field_dict)
+
+    def test_migration_removes_existing_hashes(self):
+        migration = importlib.import_module(
+            "modoboa.core.migrations.0033_remove_password_from_revisions"
+        )
+        user = factories.UserFactory(username="legacy@test.com")
+        with reversion.create_revision():
+            user.save()
+        version = Version.objects.get_for_object(user).get()
+        # Simulate a version recorded before the password was excluded
+        data = json.loads(version.serialized_data)
+        data[0]["fields"]["password"] = "{MD5}legacy"
+        version.serialized_data = json.dumps(data)
+        version.save()
+
+        migration.remove_password_from_revisions(apps, None)
+        version.refresh_from_db()
+        self.assertNotIn("password", json.loads(version.serialized_data)[0]["fields"])

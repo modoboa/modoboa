@@ -19,6 +19,9 @@ def clean_logs():
     logger.info(f"Deleting logs older than {log_maximum_age} days...")
     limit = timezone.now() - datetime.timedelta(log_maximum_age)
     Log.objects.filter(date_created__lt=limit).delete()
+    # keep=1: audit handlers need the last version to tell "added" from
+    # "modified" and to name deleted objects.
+    call_command("deleterevisions", days=log_maximum_age, keep=1, verbosity=0)
 
     message_history_maximum_age = param_tools.get_global_parameter(
         "message_history_maximum_age"
