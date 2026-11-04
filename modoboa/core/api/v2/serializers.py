@@ -406,6 +406,7 @@ class LogSerializer(serializers.ModelSerializer):
             "domain",
             "object_type",
             "object_id",
+            "object_repr",
             "extra",
         )
 

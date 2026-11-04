@@ -9,7 +9,8 @@ from requests.exceptions import RequestException
 
 from django.utils.translation import gettext as _
 
-logger = logging.getLogger("modoboa.admin")
+# Operational errors, not audit events
+logger = logging.getLogger("modoboa.jobs")
 
 
 class ModoAPIClient:

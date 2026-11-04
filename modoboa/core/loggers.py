@@ -118,5 +118,6 @@ def audit(
 
         data["content_type"] = ContentType.objects.get_for_model(obj)
         data["object_id"] = obj.pk
+        data["object_repr"] = str(obj)[:255]
         data["domain"] = get_domain_name(obj)
     return {"audit": data}

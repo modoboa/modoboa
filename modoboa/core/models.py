@@ -529,6 +529,7 @@ class Log(models.Model):
         ContentType, null=True, blank=True, on_delete=models.SET_NULL
     )
     object_id = models.PositiveIntegerField(null=True, blank=True)
+    object_repr = models.CharField(max_length=255, blank=True)
     domain = models.CharField(max_length=253, blank=True, db_index=True)
     extra = models.JSONField(default=dict, blank=True, encoder=DjangoJSONEncoder)
 
