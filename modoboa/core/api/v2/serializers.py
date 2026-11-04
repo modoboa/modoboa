@@ -4,10 +4,12 @@ import django_otp
 
 from django.conf import settings
 
+from django.contrib.contenttypes.models import ContentType
 from django.contrib.auth import authenticate, password_validation
 
 
 from django.utils import formats
+from django.utils.functional import cached_property
 from django.utils.translation import gettext_lazy, gettext as _
 
 from rest_framework import serializers
@@ -18,6 +20,7 @@ from modoboa.core import (
     sms_backends,
     app_settings,
 )
+from modoboa.core.loggers import get_audit_actions
 from modoboa.lib import fields as lib_fields
 from modoboa.parameters import tools as param_tools
 
@@ -386,13 +389,45 @@ class LogSerializer(serializers.ModelSerializer):
     """Log serializer."""
 
     date_created = serializers.SerializerMethodField()
+    action_label = serializers.SerializerMethodField()
+    object_type = serializers.SerializerMethodField()
 
     class Meta:
         model = models.Log
-        fields = ("date_created", "message", "level", "logger")
+        fields = (
+            "date_created",
+            "message",
+            "level",
+            "logger",
+            "action",
+            "action_label",
+            "actor_name",
+            "ip_address",
+            "domain",
+            "object_type",
+            "object_id",
+            "extra",
+        )
 
     def get_date_created(self, log) -> str:
         return formats.date_format(log.date_created, "SHORT_DATETIME_FORMAT")
+
+    @cached_property
+    def _action_labels(self) -> dict[str, str]:
+        # Built once per response (the list child serializer is shared)
+        return get_audit_actions()
+
+    def get_action_label(self, log) -> str | None:
+        if not log.action:
+            return None
+        return self._action_labels.get(log.action, log.action)
+
+    def get_object_type(self, log) -> str | None:
+        if log.content_type_id is None:
+            return None
+        # get_for_id is cached: no query per row
+        ct = ContentType.objects.get_for_id(log.content_type_id)
+        return f"{ct.app_label}.{ct.model}"
 
 
 class VerifyTFACodeSerializer(serializers.Serializer):

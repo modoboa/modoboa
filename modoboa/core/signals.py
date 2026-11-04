@@ -7,6 +7,9 @@ account_exported = django.dispatch.Signal()  # Provides account
 account_imported = django.dispatch.Signal()  # Provides user, account, row
 account_deleted = django.dispatch.Signal()  # Provides user
 account_role_changed = django.dispatch.Signal()  # Provides account, role
+# Provides log. Sent inside the current transaction: defer side effects
+# (webhooks, mails) with transaction.on_commit.
+audit_event_created = django.dispatch.Signal()
 account_password_updated = django.dispatch.Signal()  # Provides account password created
 allow_password_change = django.dispatch.Signal()  # Provides user
 can_create_object = (

@@ -15,6 +15,11 @@ from modoboa.core.utils import check_for_deprecated_password_schemes
 from modoboa.lib import exceptions, permissions
 from modoboa.lib.signals import get_request
 from . import models, signals as core_signals, utils
+from .loggers import audit
+
+
+def _action_code(version, verb: str) -> str:
+    return f"{version.content_type.app_label}.{version.content_type.model}.{verb}"
 
 
 @receiver(reversion.post_revision_commit)
@@ -39,16 +44,21 @@ def post_revision_commit(sender, **kwargs):
         if prev_revisions.count() == 1:
             action = _("added")
             level = "info"
+            code = "created"
         else:
             action = _("modified")
             level = "warning"
+            code = "modified"
         message = template % {
             "object": smart_str(version.content_type).capitalize(),
             "name": version.object_repr,
             "action": action,
             "user": request.user.username if request else "",
         }
-        getattr(logger, level)(message)
+        getattr(logger, level)(
+            message,
+            extra=audit(_action_code(version, code), request, obj=version.object),
+        )
 
 
 @receiver(signals.post_delete)
@@ -75,7 +85,9 @@ def log_object_removal(sender, instance, **kwargs):
         msg += _("user {}").format(request.user.username)
     else:
         msg += _("management command")
-    logger.critical(msg)
+    logger.critical(
+        msg, extra=audit(_action_code(version, "deleted"), request, obj=instance)
+    )
 
 
 def create_local_config(sender, **kwargs):

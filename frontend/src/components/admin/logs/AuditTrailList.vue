@@ -7,19 +7,38 @@
       class="elevation-0"
       :items-length="total"
       :items-per-page-options="itemsPerPageOptions"
+      mobile-breakpoint="md"
+      :row-props="rowProps"
       @update:options="fetchLogs"
     >
       <template #top>
         <ListToolbar v-model:search="search" />
       </template>
-      <template #[`item.level`]="{ item }">
-        <v-chip
-          :color="getLevelColor(item.level)"
-          text-color="white"
-          size="small"
-        >
-          {{ item.level }}
-        </v-chip>
+      <template #[`item.action`]="{ item }">
+        <div class="d-flex align-center py-2">
+          <span class="d-sr-only">{{ item.level }}</span>
+          <div class="audit-cell">
+            <template v-if="item.action_label">
+              <div class="font-weight-medium">{{ item.action_label }}</div>
+              <div
+                class="text-caption text-medium-emphasis text-truncate"
+                :title="item.message"
+              >
+                {{ item.message }}
+              </div>
+            </template>
+            <!-- Entries written before structured fields existed -->
+            <div v-else class="text-truncate" :title="item.message">
+              {{ item.message }}
+            </div>
+          </div>
+        </div>
+      </template>
+      <template #[`item.actor_name`]="{ item }">
+        <div>{{ item.actor_name }}</div>
+        <div v-if="item.ip_address" class="text-caption text-medium-emphasis">
+          {{ item.ip_address }}
+        </div>
       </template>
     </v-data-table-server>
   </v-card>
@@ -39,10 +58,10 @@ const search = ref('')
 const total = ref(0)
 
 const headers = [
-  { title: $gettext('Date'), key: 'date_created' },
-  { title: $gettext('Level'), key: 'level' },
-  { title: $gettext('Logger'), key: 'logger' },
-  { title: $gettext('Message'), key: 'message' },
+  { title: $gettext('Date'), key: 'date_created', nowrap: true },
+  { title: $gettext('Action'), key: 'action' },
+  { title: $gettext('Actor'), key: 'actor_name' },
+  { title: $gettext('Domain'), key: 'domain' },
 ]
 const itemsPerPageOptions = [
   { value: 10, title: '10' },
@@ -51,17 +70,15 @@ const itemsPerPageOptions = [
   { value: 100, title: '100' },
 ]
 
-function getLevelColor(level) {
-  if (level === 'INFO') {
-    return 'primary'
-  }
-  if (level === 'WARNING') {
-    return 'orange'
-  }
-  if (level === 'CRITICAL' || level === 'ERROR') {
-    return 'red'
-  }
-  return ''
+const levelClasses = {
+  INFO: 'audit-row audit-row--info',
+  WARNING: 'audit-row audit-row--warning',
+  ERROR: 'audit-row audit-row--error',
+  CRITICAL: 'audit-row audit-row--error',
+}
+
+function rowProps({ item }) {
+  return { class: levelClasses[item.level] }
 }
 
 function fetchLogs({ page, itemsPerPage, sortBy, search }) {
@@ -85,3 +102,25 @@ function fetchLogs({ page, itemsPerPage, sortBy, search }) {
 
 fetchLogs = debounce(fetchLogs, 500)
 </script>
+
+<style scoped>
+.audit-cell {
+  /* Lets text-truncate work in narrow cells */
+  min-width: 0;
+  max-width: 480px;
+}
+:deep(.audit-row--info) {
+  --audit-level-color: var(--v-theme-primary);
+}
+:deep(.audit-row--warning) {
+  --audit-level-color: var(--v-theme-warning);
+}
+:deep(.audit-row--error) {
+  --audit-level-color: var(--v-theme-error);
+}
+/* Mobile rows stack their cells: color them all to get a continuous bar */
+:deep(.audit-row > td:first-child),
+:deep(.v-data-table__tr--mobile.audit-row > td) {
+  box-shadow: inset 4px 0 0 rgb(var(--audit-level-color));
+}
+</style>
