@@ -2,6 +2,8 @@
 
 import logging
 
+from django.core.cache import cache
+from django.test import override_settings
 from django.urls import reverse
 
 from modoboa.admin import (
@@ -9,7 +11,7 @@ from modoboa.admin import (
     factories as admin_factories,
     models as admin_models,
 )
-from modoboa.core.api.v2.tests import CORE_SETTINGS
+from modoboa.core.api.v2.tests import CORE_SETTINGS, DOVEADM_TEST_PATH, DOVECOT_USER
 from modoboa.core import loggers, models, signals
 from modoboa.core.loggers import audit, get_audit_actions, register_audit_action
 from modoboa.lib.tests import ModoAPITestCase, ModoTestCase
@@ -229,7 +231,14 @@ class CoverageAuditTestCase(ModoAPITestCase):
         log = models.Log.objects.get(action="admin.alias.created")
         self.assertEqual(log.actor, account)
 
+    # Without doveadm (CI), only weak schemes are valid and the
+    # sha512crypt of CORE_SETTINGS is refused: use the fake doveadm.
+    @override_settings(
+        DOVEADM_LOOKUP_PATH=[DOVEADM_TEST_PATH], DOVECOT_USER=DOVECOT_USER
+    )
     def test_global_parameters(self):
+        # Schemes may have been cached by another test of the process
+        cache.delete("password_scheme_choice")
         url = reverse("v2:parameter-global-detail", args=["core"])
         data = dict(CORE_SETTINGS, log_maximum_age=123)
         resp = self.client.put(url, data, format="json")
