@@ -1,9 +1,12 @@
 """Structured audit trail tests."""
 
+import logging
+
 from django.urls import reverse
 
 from modoboa.admin import factories as admin_factories, models as admin_models
-from modoboa.core import models
+from modoboa.core import loggers, models, signals
+from modoboa.core.loggers import audit, get_audit_actions, register_audit_action
 from modoboa.lib.tests import ModoAPITestCase, ModoTestCase
 
 
@@ -79,4 +82,71 @@ class AdminAuditTestCase(ModoAPITestCase):
             models.Log.objects.filter(
                 action__startswith="core.user.", domain="test.com"
             ).exists()
+        )
+
+
+class AuditCatalogTestCase(ModoAPITestCase):
+
+    @classmethod
+    def setUpTestData(cls):  # NOQA:N802
+        super().setUpTestData()
+        admin_factories.populate_database()
+
+    def test_emitted_actions_are_declared(self):
+        self.client.post(reverse("v2:domain-list"), {"name": "cat.tld"}, format="json")
+        domain = admin_models.Domain.objects.get(name="cat.tld")
+        self.client.post(reverse("v2:domain-delete", args=[domain.pk]))
+        self.client.logout()
+        self.client.post(reverse("core:login"), {"username": "admin", "password": "x"})
+        actions = get_audit_actions()
+        emitted = set(
+            models.Log.objects.exclude(action="").values_list("action", flat=True)
+        )
+        self.assertIn("admin.domain.deleted", emitted)
+        self.assertIn("core.login.failed", emitted)
+        self.assertEqual(emitted - actions.keys(), set())
+
+    def test_extension_action_label(self):
+        register_audit_action("test.thing.done", "Thing done")
+        self.addCleanup(loggers._AUDIT_ACTIONS.pop, "test.thing.done")
+        logging.getLogger("modoboa.admin").info(
+            "done", extra=audit("test.thing.done", actor_name="bot")
+        )
+        resp = self.client.get(reverse("v2:log-list"))
+        entry = next(
+            e for e in resp.json()["results"] if e["action"] == "test.thing.done"
+        )
+        self.assertEqual(entry["action_label"], "Thing done")
+
+
+class AuditSignalTestCase(ModoTestCase):
+
+    def test_signal_sent_for_audit_entries_only(self):
+        received = []
+
+        def receiver(sender, log, **kwargs):
+            received.append(log)
+
+        signals.audit_event_created.connect(receiver)
+        self.addCleanup(signals.audit_event_created.disconnect, receiver)
+        logger = logging.getLogger("modoboa.admin")
+        logger.info("plain message")
+        logger.info("audited", extra=audit("core.login.failed", actor_name="bob"))
+        self.assertEqual([log.action for log in received], ["core.login.failed"])
+        self.assertEqual(received[0].actor_name, "bob")
+
+    def test_failing_receiver_does_not_break_operation(self):
+        def receiver(sender, log, **kwargs):
+            raise RuntimeError("boom")
+
+        signals.audit_event_created.connect(receiver)
+        self.addCleanup(signals.audit_event_created.disconnect, receiver)
+        self.client.logout()
+        with self.assertLogs("modoboa.audit", level="ERROR"):
+            response = self.client.post(
+                reverse("core:login"), {"username": "admin", "password": "password"}
+            )
+        self.assertEqual(response.status_code, 302)
+        self.assertTrue(
+            models.Log.objects.filter(action="core.login.succeeded").exists()
         )
