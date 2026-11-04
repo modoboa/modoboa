@@ -114,7 +114,12 @@ const adminMenuItems = computed(() => {
         {
           text: $gettext('Audit trail'),
           to: { name: 'AuditTrail' },
-          roles: [constants.SUPER_ADMIN],
+          // Restricted to their domains by the API
+          roles: [
+            constants.SUPER_ADMIN,
+            constants.RESELLER,
+            constants.DOMAIN_ADMIN,
+          ],
         },
         {
           text: $gettext('Messages'),
