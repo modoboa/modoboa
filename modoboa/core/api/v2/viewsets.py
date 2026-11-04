@@ -236,7 +236,14 @@ class LogViewSet(GetThrottleViewsetMixin, viewsets.ReadOnlyModelViewSet):
         IsSuperUser,
     )
     queryset = models.Log.objects.all()
-    search_fields = ["logger", "level", "message"]
+    search_fields = [
+        "logger",
+        "level",
+        "message",
+        "actor_name",
+        "domain",
+        "object_repr",
+    ]
     serializer_class = serializers.LogSerializer
 
 

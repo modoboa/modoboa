@@ -59,6 +59,9 @@ class AdminAuditTestCase(ModoAPITestCase):
         # The name survives the domain removal
         self.assertEqual(log.domain, "audit.tld")
         self.assertEqual(log.object_id, domain.pk)
+        self.assertEqual(log.object_repr, "audit.tld")
+        # A deletion is a normal operation, not an incident
+        self.assertEqual(log.level, "INFO")
 
         resp = self.client.get(reverse("v2:log-list"))
         entry = next(
@@ -66,6 +69,18 @@ class AdminAuditTestCase(ModoAPITestCase):
         )
         self.assertEqual(entry["object_type"], "admin.domain")
         self.assertEqual(entry["domain"], "audit.tld")
+
+    def test_message_is_not_translated(self):
+        """Messages are written in English whatever the admin language."""
+        resp = self.client.post(
+            reverse("v2:domain-list"),
+            {"name": "fr.tld"},
+            format="json",
+            HTTP_ACCEPT_LANGUAGE="fr",
+        )
+        self.assertEqual(resp.status_code, 201)
+        log = models.Log.objects.get(action="admin.domain.created")
+        self.assertEqual(log.message, "Domain 'fr.tld' created by user admin")
 
     def test_mailbox_domain(self):
         mailbox = admin_models.Mailbox.objects.get(

@@ -70,7 +70,7 @@ class LoginViewMixin:
         translation.activate(user.language)
 
         self.logger.info(
-            _("User '%s' successfully logged in") % user.username,
+            f"User '{user.username}' successfully logged in",
             extra=audit("core.login.succeeded", self.request),
         )
         nextlocation = self.request.POST.get("next", self.request.GET.get("next"))

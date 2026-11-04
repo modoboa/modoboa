@@ -84,12 +84,9 @@ class CheckPasswordTFASerializer(serializers.Serializer):
     def validate_password(self, value: str) -> str:
         user: models.User = self.context["user"]
         if not authenticate(username=user.username, password=value):
-            msg = _(
-                "Failed TFA settings editing attempt from '%(addr)s' as user '%(user)s'"
-            ) % {
-                "addr": self.context["remote_addr"],
-                "user": escape(user.username),
-            }
+            msg = (
+                "Failed TFA settings editing attempt from '{addr}' as user '{user}'"
+            ).format(addr=self.context["remote_addr"], user=escape(user.username))
             logger.warning(
                 msg,
                 extra=audit(

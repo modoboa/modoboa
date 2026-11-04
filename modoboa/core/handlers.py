@@ -8,7 +8,8 @@ from reversion.models import Version
 from django.contrib.sites import models as sites_models
 from django.db.models import signals
 from django.dispatch import receiver
-from django.utils.encoding import smart_str
+from django.utils import translation
+from django.utils.text import capfirst
 from django.utils.translation import gettext as _
 
 from modoboa.core.utils import check_for_deprecated_password_schemes
@@ -18,8 +19,20 @@ from . import models, signals as core_signals, utils
 from .loggers import audit
 
 
-def _action_code(version, verb: str) -> str:
-    return f"{version.content_type.app_label}.{version.content_type.model}.{verb}"
+def _log_version(version, verb: str, request, obj) -> None:
+    """Log a change of an object tracked by reversion.
+
+    The message is always written in English (syslog, mixed-language
+    admins): the translated label comes from the action catalog at display.
+    """
+    with translation.override("en"):
+        object_type = capfirst(version.content_type.name)
+    author = f"user {request.user.username}" if request else "management command"
+    ct = version.content_type
+    logging.getLogger("modoboa.admin").info(
+        f"{object_type} '{version.object_repr}' {verb} by {author}",
+        extra=audit(f"{ct.app_label}.{ct.model}.{verb}", request, obj=obj),
+    )
 
 
 @receiver(reversion.post_revision_commit)
@@ -32,32 +45,12 @@ def post_revision_commit(sender, **kwargs):
 
     """
     request = get_request()
-    if request:
-        template = _("%(object)s '%(name)s' %(action)s by user %(user)s")
-    else:
-        template = _("%(object)s '%(name)s' %(action)s by management command")
-    logger = logging.getLogger("modoboa.admin")
     for version in kwargs["versions"]:
         if version.object is None:
             continue
-        prev_revisions = Version.objects.get_for_object(version.object)
-        if prev_revisions.count() == 1:
-            action = _("added")
-            level = "info"
-            code = "created"
-        else:
-            action = _("modified")
-            level = "warning"
-            code = "modified"
-        message = template % {
-            "object": smart_str(version.content_type).capitalize(),
-            "name": version.object_repr,
-            "action": action,
-            "user": request.user.username if request else "",
-        }
-        getattr(logger, level)(
-            message,
-            extra=audit(_action_code(version, code), request, obj=version.object),
+        count = Version.objects.get_for_object(version.object).count()
+        _log_version(
+            version, "created" if count == 1 else "modified", request, version.object
         )
 
 
@@ -74,20 +67,7 @@ def log_object_removal(sender, instance, **kwargs):
         version = del_list.get(object_id=instance.id)
     except Version.DoesNotExist:
         return
-    logger = logging.getLogger("modoboa.admin")
-    msg = _("%(object)s '%(name)s' %(action)s by ") % {
-        "object": smart_str(version.content_type).capitalize(),
-        "name": version.object_repr,
-        "action": _("deleted"),
-    }
-    request = get_request()
-    if request:
-        msg += _("user {}").format(request.user.username)
-    else:
-        msg += _("management command")
-    logger.critical(
-        msg, extra=audit(_action_code(version, "deleted"), request, obj=instance)
-    )
+    _log_version(version, "deleted", get_request(), instance)
 
 
 def create_local_config(sender, **kwargs):
