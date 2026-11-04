@@ -3,6 +3,7 @@
 from django.conf import settings
 from django.utils.translation import gettext as _
 
+from django_filters import rest_framework as dj_filters
 from django_otp.plugins.otp_static.models import StaticDevice, StaticToken
 from drf_spectacular.utils import extend_schema
 from rest_framework import filters, permissions, response, viewsets, mixins
@@ -17,6 +18,7 @@ from modoboa.core.api.v1 import serializers as core_v1_serializers
 from modoboa.core.api.v1 import viewsets as core_v1_viewsets
 from modoboa.core.api.v1.viewsets import log_account_event
 from modoboa.core.extensions import exts_pool
+from modoboa.core.loggers import get_audit_actions
 from modoboa.lib import pagination
 from modoboa.lib.permissions import IsSuperUser
 from modoboa.lib.throttle import GetThrottleViewsetMixin
@@ -237,10 +239,28 @@ class AccountViewSet(core_v1_viewsets.AccountViewSet):
         return response.Response(serializer.data)
 
 
+class LogFilterSet(dj_filters.FilterSet):
+    """Audit trail filters. Dates are inclusive, in the server timezone."""
+
+    date_from = dj_filters.DateFilter(
+        field_name="date_created", lookup_expr="date__gte"
+    )
+    date_to = dj_filters.DateFilter(field_name="date_created", lookup_expr="date__lte")
+
+    class Meta:
+        model = models.Log
+        fields = ["action", "actor_name", "domain", "level"]
+
+
 class LogViewSet(GetThrottleViewsetMixin, viewsets.ReadOnlyModelViewSet):
     """Log viewset."""
 
-    filter_backends = [filters.OrderingFilter, filters.SearchFilter]
+    filter_backends = [
+        filters.OrderingFilter,
+        filters.SearchFilter,
+        dj_filters.DjangoFilterBackend,
+    ]
+    filterset_class = LogFilterSet
     ordering = ["-date_created"]
     ordering_fields = "__all__"
     pagination_class = pagination.CustomPageNumberPagination
@@ -258,6 +278,17 @@ class LogViewSet(GetThrottleViewsetMixin, viewsets.ReadOnlyModelViewSet):
         "object_repr",
     ]
     serializer_class = serializers.LogSerializer
+
+    @extend_schema(responses=serializers.AuditActionSerializer(many=True))
+    @action(methods=["get"], detail=False, pagination_class=None)
+    def actions(self, request):
+        """Return the catalog of audit actions, to build filters."""
+        actions = [
+            {"code": code, "label": label}
+            for code, label in get_audit_actions().items()
+        ]
+        actions.sort(key=lambda item: item["label"])
+        return response.Response(actions)
 
 
 class LanguageViewSet(GetThrottleViewsetMixin, viewsets.ViewSet):

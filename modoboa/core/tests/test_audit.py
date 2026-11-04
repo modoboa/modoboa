@@ -1,10 +1,12 @@
 """Structured audit trail tests."""
 
+import datetime
 import logging
 
 from django.core.cache import cache
 from django.test import override_settings
 from django.urls import reverse
+from django.utils import timezone
 
 from modoboa.admin import (
     constants as admin_constants,
@@ -274,3 +276,53 @@ class CoverageAuditTestCase(ModoAPITestCase):
         self.assertEqual(self.client.post(url).status_code, 201)
         self.assertTrue(models.Log.objects.filter(action="core.api_token.created"))
         self.assertTrue(models.Log.objects.filter(action="core.api_token.deleted"))
+
+
+class AuditFiltersTestCase(ModoAPITestCase):
+
+    def setUp(self):
+        super().setUp()
+        logger = logging.getLogger("modoboa.admin")
+        logger.info("a", extra=audit("core.login.failed", actor_name="bob"))
+        logger.info("b", extra=audit("core.login.succeeded", actor_name="alice"))
+        old = models.Log.objects.get(message="a")
+        old.date_created = timezone.now() - datetime.timedelta(days=10)
+        old.save(update_fields=["date_created"])
+        models.Log.objects.filter(message="b").update(domain="test.com")
+
+    def get_messages(self, **params):
+        resp = self.client.get(reverse("v2:log-list"), params)
+        self.assertEqual(resp.status_code, 200)
+        return sorted(entry["message"] for entry in resp.json()["results"])
+
+    def test_filters(self):
+        self.assertEqual(self.get_messages(action="core.login.failed"), ["a"])
+        self.assertEqual(self.get_messages(actor_name="alice"), ["b"])
+        self.assertEqual(self.get_messages(domain="test.com"), ["b"])
+        week_ago = (timezone.localdate() - datetime.timedelta(days=7)).isoformat()
+        self.assertNotIn("a", self.get_messages(date_from=week_ago))
+        self.assertEqual(self.get_messages(date_to=week_ago), ["a"])
+        # Bounds are inclusive
+        today = timezone.localdate().isoformat()
+        self.assertIn("b", self.get_messages(date_from=today, date_to=today))
+
+    def test_iso_date(self):
+        resp = self.client.get(reverse("v2:log-list"))
+        entry = resp.json()["results"][0]
+        # Parsed back without error: ISO 8601 with timezone
+        self.assertIsNotNone(datetime.datetime.fromisoformat(entry["date_created"]))
+
+    def test_actions_catalog(self):
+        resp = self.client.get(reverse("v2:log-actions"))
+        self.assertEqual(resp.status_code, 200)
+        actions = resp.json()
+        codes = [action["code"] for action in actions]
+        self.assertIn("core.login.failed", codes)
+        self.assertIn("admin.domain.deleted", codes)
+        labels = [action["label"] for action in actions]
+        self.assertEqual(labels, sorted(labels))
+
+    def test_actions_catalog_requires_authentication(self):
+        self.client.credentials()
+        resp = self.client.get(reverse("v2:log-actions"))
+        self.assertEqual(resp.status_code, 401)

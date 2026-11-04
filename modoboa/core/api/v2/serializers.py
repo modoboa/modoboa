@@ -8,7 +8,6 @@ from django.contrib.contenttypes.models import ContentType
 from django.contrib.auth import authenticate, password_validation
 
 
-from django.utils import formats
 from django.utils.functional import cached_property
 from django.utils.translation import gettext_lazy, gettext as _
 
@@ -388,7 +387,6 @@ class FidoAuthenticationSerializer(serializers.Serializer):
 class LogSerializer(serializers.ModelSerializer):
     """Log serializer."""
 
-    date_created = serializers.SerializerMethodField()
     action_label = serializers.SerializerMethodField()
     object_type = serializers.SerializerMethodField()
 
@@ -410,9 +408,6 @@ class LogSerializer(serializers.ModelSerializer):
             "extra",
         )
 
-    def get_date_created(self, log) -> str:
-        return formats.date_format(log.date_created, "SHORT_DATETIME_FORMAT")
-
     @cached_property
     def _action_labels(self) -> dict[str, str]:
         # Built once per response (the list child serializer is shared)
@@ -429,6 +424,13 @@ class LogSerializer(serializers.ModelSerializer):
         # get_for_id is cached: no query per row
         ct = ContentType.objects.get_for_id(log.content_type_id)
         return f"{ct.app_label}.{ct.model}"
+
+
+class AuditActionSerializer(serializers.Serializer):
+    """An audit action code and its label."""
+
+    code = serializers.CharField()
+    label = serializers.CharField()
 
 
 class VerifyTFACodeSerializer(serializers.Serializer):
