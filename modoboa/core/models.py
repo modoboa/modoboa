@@ -455,7 +455,8 @@ class User(AbstractUser):
         csvwriter.writerow(self.to_csv_row())
 
 
-reversion.register(User)
+# Revision history must never hold password hashes.
+reversion.register(User, exclude=["password"])
 
 
 class UserFidoKey(models.Model):

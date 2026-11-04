@@ -26,7 +26,11 @@ def post_revision_commit(sender, **kwargs):
     django-reversion for that.
 
     """
-    current_user = get_request().user.username
+    request = get_request()
+    if request:
+        template = _("%(object)s '%(name)s' %(action)s by user %(user)s")
+    else:
+        template = _("%(object)s '%(name)s' %(action)s by management command")
     logger = logging.getLogger("modoboa.admin")
     for version in kwargs["versions"]:
         if version.object is None:
@@ -38,11 +42,11 @@ def post_revision_commit(sender, **kwargs):
         else:
             action = _("modified")
             level = "warning"
-        message = _("%(object)s '%(name)s' %(action)s by user %(user)s") % {
+        message = template % {
             "object": smart_str(version.content_type).capitalize(),
             "name": version.object_repr,
             "action": action,
-            "user": current_user,
+            "user": request.user.username if request else "",
         }
         getattr(logger, level)(message)
 
