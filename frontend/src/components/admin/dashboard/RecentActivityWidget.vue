@@ -23,6 +23,7 @@
 <script setup>
 import { ref } from 'vue'
 import logsApi from '@/api/logs'
+import { formatDate } from '@/plugins/filters'
 import { getAuditDetails } from '@/utils/audit'
 
 const logs = ref([])
@@ -38,7 +39,7 @@ function getLevelColor(level) {
 }
 
 function getTitle(log) {
-  return [log.date_created, log.action_label, log.actor_name]
+  return [formatDate(log.date_created), log.action_label, log.actor_name]
     .filter(Boolean)
     .join(' · ')
 }
