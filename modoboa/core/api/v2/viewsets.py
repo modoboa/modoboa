@@ -4,6 +4,7 @@ import json
 
 from django.conf import settings
 from django.core.serializers.json import DjangoJSONEncoder
+from django.db.models import Q
 from django.utils.translation import gettext as _
 
 from django_filters import rest_framework as dj_filters
@@ -54,8 +55,29 @@ def create_static_tokens(request):
     return tokens
 
 
+LOGIN_ACTIONS = ("core.login.succeeded", "core.login.failed", "core.login.tfa_failed")
+LOGIN_HISTORY_SIZE = 20
+
+
 class AccountViewSet(core_v1_viewsets.AccountViewSet):
     """Account viewset."""
+
+    @extend_schema(responses=serializers.LoginHistorySerializer(many=True))
+    @action(methods=["get"], detail=False, url_path="login_history")
+    def login_history(self, request):
+        """Return the latest login attempts on the current account."""
+        user = request.user
+        logs = (
+            models.Log.objects.filter(action__in=LOGIN_ACTIONS)
+            # Failed attempts have no authenticated actor: match the
+            # username typed in the login form
+            .filter(
+                Q(actor=user) | Q(actor__isnull=True, actor_name=user.username)
+            ).order_by("-date_created", "-pk")[:LOGIN_HISTORY_SIZE]
+        )
+        return response.Response(
+            serializers.LoginHistorySerializer(logs, many=True).data
+        )
 
     @extend_schema(
         responses=admin_v2_serializers.AccountMeSerializer,
