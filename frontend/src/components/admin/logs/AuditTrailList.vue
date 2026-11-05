@@ -15,6 +15,15 @@
     >
       <template #top>
         <ListToolbar v-model:search="search">
+          <template #actions>
+            <v-btn
+              :title="$gettext('Export the filtered entries to CSV')"
+              variant="flat"
+              icon="mdi-file-export-outline"
+              :loading="exporting"
+              @click="exportLogs"
+            ></v-btn>
+          </template>
           <template #filters>
             <v-autocomplete
               v-model="filters.action"
@@ -92,11 +101,14 @@ import ListToolbar from '@/components/tools/ListToolbar.vue'
 import { useGettext } from 'vue3-gettext'
 import logsApi from '@/api/logs'
 import { useDomainsStore } from '@/stores'
+import { importExportMixin } from '@/mixins/importExport'
 import { getAuditDetails } from '@/utils/audit'
 import debounce from 'debounce'
 import { DateTime } from 'luxon'
 
 const { $gettext } = useGettext()
+const { exportContent } = importExportMixin()
+const exporting = ref(false)
 const loading = ref(false)
 const logs = ref([])
 const search = ref('')
@@ -144,8 +156,10 @@ function updateOptions(newOptions) {
   fetchLogs()
 }
 
-function fetchLogs() {
-  const { page, itemsPerPage, sortBy, search } = options
+// Filters, search and ordering: shared by the list and the export
+function getQueryParams() {
+  // options is null until the table sends its first state
+  const sortBy = options?.sortBy || []
   let order
   if (sortBy.length) {
     order = (sortBy[0].order === 'desc' ? '-' : '') + sortBy[0].key
@@ -153,12 +167,24 @@ function fetchLogs() {
   const activeFilters = Object.fromEntries(
     Object.entries(filters).filter(([, value]) => value)
   )
+  return { ordering: order, search: search.value, ...activeFilters }
+}
+
+async function exportLogs() {
+  exporting.value = true
+  try {
+    const resp = await logsApi.exportAuditTrail(getQueryParams())
+    exportContent(resp.data, 'audit-trail', $gettext)
+  } finally {
+    exporting.value = false
+  }
+}
+
+function fetchLogs() {
   const params = {
-    ordering: order,
-    page: page,
-    page_size: itemsPerPage,
-    search: search,
-    ...activeFilters,
+    ...getQueryParams(),
+    page: options.page,
+    page_size: options.itemsPerPage,
   }
   loading.value = true
   logsApi.getAuditTrail(params).then((response) => {
