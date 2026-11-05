@@ -1,9 +1,9 @@
 """Modoboa core signal handlers."""
 
 import logging
+import threading
 
 from reversion import revisions as reversion
-from reversion.models import Version
 
 from django.contrib.sites import models as sites_models
 from django.db.models import signals
@@ -19,20 +19,34 @@ from . import models, signals as core_signals, utils
 from .loggers import audit
 
 
-def _log_version(version, verb: str, request, obj) -> None:
+def _log_change(obj, verb: str, request) -> None:
     """Log a change of an object tracked by reversion.
 
     The message is always written in English (syslog, mixed-language
     admins): the translated label comes from the action catalog at display.
     """
     with translation.override("en"):
-        object_type = capfirst(version.content_type.name)
+        object_type = capfirst(obj._meta.verbose_name)
     author = f"user {request.user.username}" if request else "management command"
-    ct = version.content_type
+    meta = obj._meta
     logging.getLogger("modoboa.admin").info(
-        f"{object_type} '{version.object_repr}' {verb} by {author}",
-        extra=audit(f"{ct.app_label}.{ct.model}.{verb}", request, obj=obj),
+        f"{object_type} '{obj}' {verb} by {author}",
+        extra=audit(f"{meta.app_label}.{meta.model_name}.{verb}", request, obj=obj),
     )
+
+
+# Objects created inside the current revision block. Counting versions is
+# not enough: objects created outside of any revision (jobs, imports) have
+# no version yet when they are first modified.
+_created_objects = threading.local()
+
+
+@receiver(signals.post_save)
+def track_object_creation(sender, instance, created, **kwargs):
+    if created and reversion.is_active() and reversion.is_registered(sender):
+        if not hasattr(_created_objects, "keys"):
+            _created_objects.keys = set()
+        _created_objects.keys.add((sender, instance.pk))
 
 
 @receiver(reversion.post_revision_commit)
@@ -45,29 +59,27 @@ def post_revision_commit(sender, **kwargs):
 
     """
     request = get_request()
+    created = getattr(_created_objects, "keys", set())
+    # ponytail: keys left by a rolled back revision are only dropped here;
+    # harmless unless a pk is reused by the next revision of the thread.
+    _created_objects.keys = set()
     for version in kwargs["versions"]:
-        if version.object is None:
+        obj = version.object
+        if obj is None:
             continue
-        count = Version.objects.get_for_object(version.object).count()
-        _log_version(
-            version, "created" if count == 1 else "modified", request, version.object
-        )
+        verb = "created" if (obj.__class__, obj.pk) in created else "modified"
+        _log_change(obj, verb, request)
 
 
 @receiver(signals.post_delete)
 def log_object_removal(sender, instance, **kwargs):
     """Custom post-delete hook.
 
-    We want to know who was responsible for an object deletion.
+    We want to know who was responsible for an object deletion, even when
+    the object never had a version (created by a job, for example).
     """
-    if not reversion.is_registered(sender):
-        return
-    del_list = Version.objects.get_deleted(sender)
-    try:
-        version = del_list.get(object_id=instance.id)
-    except Version.DoesNotExist:
-        return
-    _log_version(version, "deleted", get_request(), instance)
+    if reversion.is_registered(sender):
+        _log_change(instance, "deleted", get_request())
 
 
 def create_local_config(sender, **kwargs):

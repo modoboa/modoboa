@@ -1,5 +1,7 @@
 """Amavis viewsets."""
 
+import logging
+
 from django.db.models import Q
 from django.http import Http404
 from django.shortcuts import get_object_or_404
@@ -10,6 +12,7 @@ from rest_framework import filters, mixins, permissions, response, viewsets
 from rest_framework.decorators import action
 
 from modoboa.amavis.sql_connector import SQLconnector
+from modoboa.core.loggers import audit
 from modoboa.lib.paginator import Paginator
 from modoboa.lib.permissions import CanViewDomain
 
@@ -27,6 +30,16 @@ from modoboa.parameters import tools as param_tools
 
 
 SELFSERVICE_ACTIONS = ["retrieve", "headers", "delete", "release"]
+
+
+def log_quarantine_action(request, action: str, what: str, mailids, **extra):
+    """Log an operation on quarantined messages (one entry per request)."""
+    user = getattr(request, "user", None)
+    author = user.username if user and user.is_authenticated else "self-service"
+    logging.getLogger("modoboa.admin").info(
+        f"{len(mailids)} quarantined message(s) {what} by {author}",
+        extra=audit(action, request, actor_name=author, mailids=mailids, **extra),
+    )
 
 
 class QuarantineViewSet(viewsets.GenericViewSet):
@@ -196,10 +209,17 @@ class QuarantineViewSet(viewsets.GenericViewSet):
         ) and not param_tools.get_global_parameter("user_can_release"):
             for i, msgrcpt in msgrcpts:
                 connector.set_msgrcpt_status(smart_str(msgrcpt.rid.email), i, "p")
+            log_quarantine_action(
+                request,
+                "amavis.quarantine.release_requested",
+                "release requested",
+                [i for i, _msgrcpt in msgrcpts],
+            )
             return response.Response({"status": "pending"})
 
         amr = AMrelease()
         error = None
+        released = []
         for mid, rcpt in msgrcpts:
             # we can't use the .mail relation on rcpt because it leads to
             # an error on Postgres (memoryview pickle error).
@@ -207,10 +227,15 @@ class QuarantineViewSet(viewsets.GenericViewSet):
             result = amr.sendreq(mid, mail.secret_id, rcpt.rid.email)
             if result:
                 connector.set_msgrcpt_status(smart_str(rcpt.rid.email), mid, "R")
+                released.append(mid)
             else:
                 error = result
                 break
 
+        if released:
+            log_quarantine_action(
+                request, "amavis.quarantine.released", "released", released
+            )
         if error:
             return response.Response({"status": error})
 
@@ -233,6 +258,12 @@ class QuarantineViewSet(viewsets.GenericViewSet):
         for item in selection:
             self._check_message_access(request, item["mailid"], item["rcpt"])
             connector.set_msgrcpt_status(item["rcpt"], item["mailid"], "D")
+        log_quarantine_action(
+            request,
+            "amavis.quarantine.deleted",
+            "deleted",
+            [item["mailid"] for item in selection],
+        )
         return response.Response(status=204)
 
     @action(methods=["post"], detail=False)
@@ -265,6 +296,13 @@ class QuarantineViewSet(viewsets.GenericViewSet):
             serializer.validated_data["type"],
             serializer.validated_data["selection"],
             recipient_db,
+        )
+        log_quarantine_action(
+            request,
+            "amavis.quarantine.marked",
+            f"marked as {serializer.validated_data['type']}",
+            [item["mailid"] for item in serializer.validated_data["selection"]],
+            type=serializer.validated_data["type"],
         )
         return response.Response(status=204)
 

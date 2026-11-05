@@ -1,5 +1,7 @@
 """Core API viewsets."""
 
+import logging
+
 from django.utils.translation import gettext as _
 
 from django_otp.plugins.otp_static.models import StaticToken
@@ -10,9 +12,20 @@ from rest_framework.decorators import action
 
 from drf_spectacular.utils import extend_schema
 
+from modoboa.core.loggers import audit
 from modoboa.lib.throttle import GetThrottleViewsetMixin
 
 from . import serializers
+
+logger = logging.getLogger("modoboa.auth")
+
+
+def log_account_event(request, action: str, what: str, **extra) -> None:
+    """Log a security-relevant change made by a user on their own account."""
+    logger.info(
+        f"User '{request.user.username}' {what}",
+        extra=audit(action, request, obj=request.user, **extra),
+    )
 
 
 class AccountViewSet(GetThrottleViewsetMixin, viewsets.ViewSet):
@@ -48,6 +61,7 @@ class AccountViewSet(GetThrottleViewsetMixin, viewsets.ViewSet):
         if not request.user.tfa_enabled:
             request.user.staticdevice_set.all().delete()
         request.user.save()
+        log_account_event(request, "core.tfa.totp_disabled", "disabled TOTP")
         return response.Response()
 
     @extend_schema(tags=["account"])
@@ -66,6 +80,9 @@ class AccountViewSet(GetThrottleViewsetMixin, viewsets.ViewSet):
         for _cpt in range(10):
             token = StaticToken.random_token()
             device.token_set.create(token=token)
+        log_account_event(
+            request, "core.tfa.recovery_codes_reset", "regenerated recovery codes"
+        )
         return response.Response(
             {"tokens": device.token_set.all().values_list("token", flat=True)}
         )

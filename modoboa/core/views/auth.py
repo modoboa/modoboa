@@ -189,6 +189,13 @@ class PasswordResetView(ThrottleViewMixin, auth_views.PasswordResetView):
 
     def form_valid(self, form):
         """Redirect to code verification page if needed."""
+        email = form.cleaned_data["email"]
+        logger.info(
+            f"Password reset requested for '{email}'",
+            extra=audit(
+                "core.password.reset_requested", self.request, actor_name=email
+            ),
+        )
         sms_password_recovery = self.request.localconfig.parameters.get_value(
             "sms_password_recovery"
         )
@@ -293,6 +300,14 @@ class PasswordResetConfirmView(ThrottleViewMixin, auth_views.PasswordResetConfir
 
     throttle_classes = [PasswordResetApplyThrottle]
 
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        logger.info(
+            f"Password reset for user '{self.user.username}'",
+            extra=audit("core.password.reset", self.request, actor=self.user),
+        )
+        return response
+
 
 class TwoFactorCodeVerifyView(LoginViewMixin, generic.FormView):
     """View to verify a 2FA code after login."""
@@ -325,6 +340,13 @@ class TwoFactorCodeVerifyView(LoginViewMixin, generic.FormView):
         if context["nextlocation"] is None:
             context.pop("nextlocation")
         return context
+
+    def form_invalid(self, form):
+        self.logger.warning(
+            f"Failed 2FA verification for user '{self.user.username}'",
+            extra=audit("core.login.tfa_failed", self.request, actor=self.user),
+        )
+        return super().form_invalid(form)
 
     def form_valid(self, form):
         """Login user."""

@@ -20,8 +20,9 @@
           <div class="audit-cell">
             <div v-if="item.action_label" :title="item.message">
               <div class="font-weight-medium">{{ item.action_label }}</div>
-              <div class="text-caption text-medium-emphasis text-truncate">
-                {{ item.object_repr }}
+              <!-- Not truncated: lists are capped, the "+N" count must stay visible -->
+              <div class="text-caption text-medium-emphasis">
+                {{ getAuditDetails(item) }}
               </div>
             </div>
             <!-- Entries written before structured fields existed -->
@@ -46,6 +47,7 @@ import { ref } from 'vue'
 import ListToolbar from '@/components/tools/ListToolbar.vue'
 import { useGettext } from 'vue3-gettext'
 import logsApi from '@/api/logs'
+import { getAuditDetails } from '@/utils/audit'
 import debounce from 'debounce'
 
 const { $gettext } = useGettext()

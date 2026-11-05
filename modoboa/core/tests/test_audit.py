@@ -2,9 +2,16 @@
 
 import logging
 
+from django.core.cache import cache
+from django.test import override_settings
 from django.urls import reverse
 
-from modoboa.admin import factories as admin_factories, models as admin_models
+from modoboa.admin import (
+    constants as admin_constants,
+    factories as admin_factories,
+    models as admin_models,
+)
+from modoboa.core.api.v2.tests import CORE_SETTINGS, DOVEADM_TEST_PATH, DOVECOT_USER
 from modoboa.core import loggers, models, signals
 from modoboa.core.loggers import audit, get_audit_actions, register_audit_action
 from modoboa.lib.tests import ModoAPITestCase, ModoTestCase
@@ -165,3 +172,105 @@ class AuditSignalTestCase(ModoTestCase):
         self.assertTrue(
             models.Log.objects.filter(action="core.login.succeeded").exists()
         )
+
+
+class CoverageAuditTestCase(ModoAPITestCase):
+    """Operations that were missing from the audit trail."""
+
+    @classmethod
+    def setUpTestData(cls):  # NOQA:N802
+        super().setUpTestData()
+        admin_factories.populate_database()
+
+    def test_alarm_changes(self):
+        # Alarms are created by jobs, outside of any revision
+        alarm = admin_models.Alarm.objects.create(
+            domain=admin_models.Domain.objects.get(name="test.com"),
+            mailbox=None,
+            title="Alarm",
+        )
+        resp = self.client.patch(
+            reverse("v2:alarm-switch", args=[alarm.pk]),
+            {"status": admin_constants.ALARM_CLOSED},
+        )
+        self.assertEqual(resp.status_code, 204)
+        # A first change of an object without version is not a creation
+        self.assertFalse(models.Log.objects.filter(action="admin.alarm.created"))
+        self.assertTrue(models.Log.objects.filter(action="admin.alarm.modified"))
+
+        resp = self.client.post(
+            reverse("v2:alarm-bulk-delete"), {"ids": [alarm.pk]}, format="json"
+        )
+        self.assertEqual(resp.status_code, 204)
+        log = models.Log.objects.get(action="admin.alarm.deleted")
+        self.assertEqual(log.domain, "test.com")
+
+    def test_domain_administrators(self):
+        domain = admin_models.Domain.objects.get(name="test.com")
+        account = models.User.objects.get(username="admin@test2.com")
+        for name, code in (("add", "admin_added"), ("remove", "admin_removed")):
+            resp = self.client.post(
+                reverse(f"v2:domain-{name}-administrator", args=[domain.pk]),
+                {"account": account.pk},
+                format="json",
+            )
+            self.assertEqual(resp.status_code, 200)
+            log = models.Log.objects.get(action=f"admin.domain.{code}")
+            self.assertEqual(log.domain, "test.com")
+            self.assertEqual(log.extra, {"account": "admin@test2.com"})
+
+    def test_forward(self):
+        account = models.User.objects.get(username="user@test.com")
+        self.authenticate_user(account)
+        resp = self.client.post(
+            reverse("v2:user_account-forward"),
+            {"recipients": "dest@ext.com"},
+            format="json",
+        )
+        self.assertEqual(resp.status_code, 200)
+        log = models.Log.objects.get(action="admin.alias.created")
+        self.assertEqual(log.actor, account)
+
+    # Without doveadm (CI), only weak schemes are valid and the
+    # sha512crypt of CORE_SETTINGS is refused: use the fake doveadm.
+    @override_settings(
+        DOVEADM_LOOKUP_PATH=[DOVEADM_TEST_PATH], DOVECOT_USER=DOVECOT_USER
+    )
+    def test_global_parameters(self):
+        # Schemes may have been cached by another test of the process
+        cache.delete("password_scheme_choice")
+        url = reverse("v2:parameter-global-detail", args=["core"])
+        data = dict(CORE_SETTINGS, log_maximum_age=123)
+        resp = self.client.put(url, data, format="json")
+        self.assertEqual(resp.status_code, 200)
+        log = models.Log.objects.get(action="core.parameters.modified")
+        self.assertEqual(log.extra["app"], "core")
+        self.assertIn("log_maximum_age", log.extra["changed"])
+        # Names only, never values
+        self.assertNotIn("123", log.message)
+
+        models.Log.objects.all().delete()
+        resp = self.client.put(url, data, format="json")
+        self.assertFalse(models.Log.objects.filter(action="core.parameters.modified"))
+
+    def test_account_security_events(self):
+        account = models.User.objects.get(username="user@test.com")
+        self.authenticate_user(account)
+        resp = self.client.post(
+            reverse("v2:account-set-me-password"),
+            {"password": "toto", "new_password": "Toto1234"},
+            format="json",
+        )
+        self.assertEqual(resp.status_code, 200)
+        log = models.Log.objects.get(action="core.password.changed")
+        self.assertEqual(log.actor, account)
+        self.assertEqual(log.logger, "modoboa.auth")
+
+        self.authenticate_user(models.User.objects.get(username="admin"))
+        url = reverse("v2:account-manage-api-token")
+        # The test case already gave a token to admin
+        self.assertEqual(self.client.delete(url).status_code, 204)
+        self.client.force_authenticate(models.User.objects.get(username="admin"))
+        self.assertEqual(self.client.post(url).status_code, 201)
+        self.assertTrue(models.Log.objects.filter(action="core.api_token.created"))
+        self.assertTrue(models.Log.objects.filter(action="core.api_token.deleted"))
