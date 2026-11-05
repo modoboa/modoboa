@@ -6,6 +6,9 @@ export default {
   getAuditTrail(params) {
     return repository.get(`/${resource}/audit-trail/`, { params })
   },
+  exportAuditTrail(params) {
+    return repository.get(`/${resource}/audit-trail/export/`, { params })
+  },
   getAuditActions() {
     return repository.get(`/${resource}/audit-trail/actions/`)
   },
