@@ -117,4 +117,7 @@ export default {
   getAvailableApplications() {
     return repository.get(`${resource}/available_applications/`)
   },
+  getLoginHistory() {
+    return repository.get(`/${resource}/login_history/`)
+  },
 }

@@ -426,6 +426,13 @@ class LogSerializer(serializers.ModelSerializer):
         return f"{ct.app_label}.{ct.model}"
 
 
+class LoginHistorySerializer(LogSerializer):
+    """A login attempt of the current user, without internal details."""
+
+    class Meta(LogSerializer.Meta):
+        fields = ("date_created", "action", "action_label", "ip_address")
+
+
 class AuditActionSerializer(serializers.Serializer):
     """An audit action code and its label."""
 

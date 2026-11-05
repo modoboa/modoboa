@@ -393,6 +393,15 @@ const routes = [
         },
       },
       {
+        // Declared before ':tab?', which would match it
+        path: 'logins',
+        name: 'AccountLoginHistory',
+        component: () => import('@/views/account/LoginHistoryView.vue'),
+        meta: {
+          requiresAuth: true,
+        },
+      },
+      {
         path: ':tab?',
         name: 'AccountSettings',
         component: () => import('@/views/account/SettingsView.vue'),

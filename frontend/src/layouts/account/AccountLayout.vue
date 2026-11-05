@@ -31,6 +31,11 @@ const userSettingsMenuItems = computed(() => {
     to: { name: 'AccountSettings' },
     icon: 'mdi-cog',
   })
+  result.push({
+    text: $gettext('Recent logins'),
+    to: { name: 'AccountLoginHistory' },
+    icon: 'mdi-history',
+  })
   if (authUser.value.mailbox) {
     result.push({
       text: $gettext('Filters'),
