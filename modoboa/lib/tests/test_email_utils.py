@@ -58,10 +58,10 @@ class EmailTests(SimpleTestCase):
         with self.assertRaises(TypeError) as cm:
             EmailTestImplementation("text_plain", links="0")
 
-            ex_message = cm.exception.messages
-            self.assertEqual(
-                ex_message, 'links == "0" is not valid, did you mean True or False?'
-            )
+        self.assertEqual(
+            str(cm.exception),
+            'links == "0" is not valid, did you mean True or False?',
+        )
 
     def test_links_value_for_webmail(self):
         """modoboa-webmail sets links = 0 or 1
