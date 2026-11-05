@@ -92,6 +92,10 @@ def get_domain_name(obj) -> str:
     label = obj._meta.label
     if label == "admin.Domain":
         return obj.name
+    if label == "core.User" and obj.is_superuser:
+        # A super admin owning a mailbox must not expose its activity
+        # (logins, API tokens...) to the administrators of that domain
+        return ""
     # Related rows may already be gone when logging a cascade deletion
     try:
         if label in ("core.User", "admin.SenderAddress"):

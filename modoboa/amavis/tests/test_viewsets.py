@@ -188,6 +188,10 @@ class QuarantineViewSetTestCase(TestDataMixin, ModoAPITestCase):
         self.assertEqual(self.msgrcpt.rs, "D")
         log = core_models.Log.objects.get(action="amavis.quarantine.deleted")
         self.assertEqual(log.extra["mailids"], [mail_id])
+        # Filed under the recipient domain, whoever acted
+        self.assertEqual(
+            log.domain, smart_str(self.msgrcpt.rid.email).rpartition("@")[2]
+        )
 
     def test_delete_selfservice(self):
         self.client.logout()

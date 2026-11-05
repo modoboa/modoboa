@@ -62,11 +62,12 @@ class AdminAuditTestCase(ModoAPITestCase):
         self.assertEqual(log.object_id, domain.pk)
         self.assertEqual(log.content_type.model, "domain")
 
-        resp = self.client.post(reverse("v2:domain-delete", args=[domain.pk]))
+        with self.captureOnCommitCallbacks(execute=True):
+            resp = self.client.post(reverse("v2:domain-delete", args=[domain.pk]))
         self.assertEqual(resp.status_code, 204)
         log = models.Log.objects.get(action="admin.domain.deleted")
-        # The name survives the domain removal
-        self.assertEqual(log.domain, "audit.tld")
+        # Hidden from a future domain with the same name, still readable
+        self.assertEqual(log.domain, "")
         self.assertEqual(log.object_id, domain.pk)
         self.assertEqual(log.object_repr, "audit.tld")
         # A deletion is a normal operation, not an incident
@@ -77,7 +78,7 @@ class AdminAuditTestCase(ModoAPITestCase):
             e for e in resp.json()["results"] if e["action"] == "admin.domain.deleted"
         )
         self.assertEqual(entry["object_type"], "admin.domain")
-        self.assertEqual(entry["domain"], "audit.tld")
+        self.assertEqual(entry["object_repr"], "audit.tld")
 
     def test_message_is_not_translated(self):
         """Messages are written in English whatever the admin language."""
@@ -397,3 +398,58 @@ class DomainAdminAuditTestCase(ModoAPITestCase):
         self.assertEqual(log.domain, "test.com")
         log = models.Log.objects.get(action="core.login.failed")
         self.assertEqual(log.domain, "test2.com")
+
+    def test_superadmin_with_mailbox_stays_private(self):
+        domain = admin_models.Domain.objects.get(name="test.com")
+        boss = admin_factories.MailboxFactory(
+            address="boss", domain=domain, user__username="boss@test.com"
+        ).user
+        boss.is_superuser = True
+        boss.save()
+        logging.getLogger("modoboa.auth").info(
+            "boss logged in", extra=audit("core.login.succeeded", actor=boss)
+        )
+        logging.getLogger("modoboa.auth").info(
+            "boss token", extra=audit("core.api_token.created", actor=boss, obj=boss)
+        )
+        self.assertEqual(
+            list(
+                models.Log.objects.filter(actor=boss).values_list("domain", flat=True)
+            ),
+            ["", ""],
+        )
+        self.assertEqual(self.get_messages(), ["own"])
+
+    def test_renamed_domain_keeps_its_history(self):
+        domain = admin_models.Domain.objects.get(name="test.com")
+        domain.name = "renamed.com"
+        domain.save()
+        self.assertTrue(models.Log.objects.filter(message="own", domain="renamed.com"))
+        self.assertIn("own", self.get_messages())
+
+    def test_deleted_domain_history_is_hidden(self):
+        domain = admin_models.Domain.objects.get(name="test2.com")
+        with self.captureOnCommitCallbacks(execute=True):
+            domain.delete(models.User.objects.get(username="admin"))
+        self.assertEqual(models.Log.objects.get(message="other").domain, "")
+        # A new domain with the same name doesn't inherit it
+        new = admin_factories.DomainFactory(name="test2.com")
+        account = models.User.objects.get(username="admin@test.com")
+        new.add_admin(account)
+        self.assertNotIn("other", self.get_messages())
+
+    def test_quarantine_entries_follow_the_recipient_domain(self):
+        from modoboa.amavis.viewsets import log_quarantine_action
+
+        request = self.client.get(reverse("v2:log-list")).wsgi_request
+        log_quarantine_action(
+            request,
+            "amavis.quarantine.deleted",
+            "deleted",
+            [("m1", "a@test.com"), ("m2", "b@test2.com"), ("m3", "c@test.com")],
+        )
+        entries = {
+            log.domain: log.extra["mailids"]
+            for log in models.Log.objects.filter(action="amavis.quarantine.deleted")
+        }
+        self.assertEqual(entries, {"test.com": ["m1", "m3"], "test2.com": ["m2"]})

@@ -15,6 +15,26 @@ from modoboa.parameters import tools as param_tools
 from . import jobs, lib, models, postfix_maps, signals as admin_signals
 
 
+# The audit trail is filtered by domain name for domain administrators:
+# keep the history of a renamed domain, hide the one of a deleted domain
+# from whoever creates a domain with the same name later.
+@receiver(signals.post_save, sender=models.Domain)
+def rename_domain_in_audit_trail(sender, instance, **kwargs):
+    if kwargs.get("created") or instance.oldname == instance.name:
+        return
+    core_models.Log.objects.filter(domain=instance.oldname).update(domain=instance.name)
+
+
+@receiver(signals.post_delete, sender=models.Domain)
+def hide_audit_trail_of_deleted_domain(sender, instance, **kwargs):
+    name = instance.name
+    # On commit: entries written during the deletion (cascade, the domain
+    # itself) must be hidden too. Entries stay readable by super admins.
+    transaction.on_commit(
+        lambda: core_models.Log.objects.filter(domain=name).update(domain="")
+    )
+
+
 @receiver(signals.post_save, sender=models.Domain)
 def update_domain_mxs_and_mailboxes(sender, instance, **kwargs):
     """Update associated MXs and mailboxes."""
