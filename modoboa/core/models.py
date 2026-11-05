@@ -522,7 +522,9 @@ class Log(models.Model):
     actor = models.ForeignKey(
         User, null=True, blank=True, on_delete=models.SET_NULL, related_name="+"
     )
-    # Names are copied so entries stay readable once the actor/domain is gone
+    # Names are copied so entries stay readable once the actor is gone. The
+    # domain decides who sees the entry: it follows renames and is cleared
+    # when the domain is deleted (see admin handlers).
     actor_name = models.CharField(max_length=254, blank=True)
     ip_address = models.GenericIPAddressField(null=True, blank=True)
     content_type = models.ForeignKey(

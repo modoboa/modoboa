@@ -24,7 +24,7 @@
               <StatisticsDomainSelect v-model="trafficDomain" class="mr-2" />
             </template>
           </TimeSerieChart>
-          <DashboardWidget v-if="isSuperAdmin">
+          <DashboardWidget>
             <RecentActivityWidget class="mt-4" />
           </DashboardWidget>
         </v-col>

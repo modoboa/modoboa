@@ -14,13 +14,14 @@ from reversion import revisions as reversion
 
 from modoboa.admin.api.v1 import serializers as admin_v1_serializers
 from modoboa.admin.api.v2 import serializers as admin_v2_serializers
+from modoboa.admin.models import Domain
 from modoboa.core.api.v1 import serializers as core_v1_serializers
 from modoboa.core.api.v1 import viewsets as core_v1_viewsets
 from modoboa.core.api.v1.viewsets import log_account_event
 from modoboa.core.extensions import exts_pool
 from modoboa.core.loggers import get_audit_actions
 from modoboa.lib import pagination
-from modoboa.lib.permissions import IsSuperUser
+from modoboa.lib.permissions import IsPrivilegedUser
 from modoboa.lib.throttle import GetThrottleViewsetMixin
 
 import base64
@@ -264,10 +265,8 @@ class LogViewSet(GetThrottleViewsetMixin, viewsets.ReadOnlyModelViewSet):
     ordering = ["-date_created"]
     ordering_fields = "__all__"
     pagination_class = pagination.CustomPageNumberPagination
-    permission_classes = (
-        permissions.IsAuthenticated,
-        IsSuperUser,
-    )
+    permission_classes = (permissions.IsAuthenticated, IsPrivilegedUser)
+    # Only used by the router for URL names: see get_queryset()
     queryset = models.Log.objects.all()
     search_fields = [
         "logger",
@@ -278,6 +277,15 @@ class LogViewSet(GetThrottleViewsetMixin, viewsets.ReadOnlyModelViewSet):
         "object_repr",
     ]
     serializer_class = serializers.LogSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        if user.is_superuser:
+            return models.Log.objects.all()
+        # Entries without domain (global parameters, superadmin logins...)
+        # stay private to super administrators
+        domains = Domain.objects.get_for_admin(user).values("name")
+        return models.Log.objects.filter(domain__in=domains)
 
     @extend_schema(responses=serializers.AuditActionSerializer(many=True))
     @action(methods=["get"], detail=False, pagination_class=None)

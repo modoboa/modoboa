@@ -32,14 +32,29 @@ from modoboa.parameters import tools as param_tools
 SELFSERVICE_ACTIONS = ["retrieve", "headers", "delete", "release"]
 
 
-def log_quarantine_action(request, action: str, what: str, mailids, **extra):
-    """Log an operation on quarantined messages (one entry per request)."""
+def log_quarantine_action(request, action: str, what: str, messages, **extra):
+    """Log an operation on quarantined messages.
+
+    :param messages: (mailid, recipient) pairs; one entry is written per
+                     recipient domain, so each domain only sees its messages
+    """
     user = getattr(request, "user", None)
     author = user.username if user and user.is_authenticated else "self-service"
-    logging.getLogger("modoboa.admin").info(
-        f"{len(mailids)} quarantined message(s) {what} by {author}",
-        extra=audit(action, request, actor_name=author, mailids=mailids, **extra),
-    )
+    by_domain = {}
+    for mailid, rcpt in messages:
+        by_domain.setdefault(rcpt.rpartition("@")[2], []).append(mailid)
+    for domain, mailids in by_domain.items():
+        logging.getLogger("modoboa.admin").info(
+            f"{len(mailids)} quarantined message(s) {what} by {author}",
+            extra=audit(
+                action,
+                request,
+                actor_name=author,
+                domain=domain,
+                mailids=mailids,
+                **extra,
+            ),
+        )
 
 
 class QuarantineViewSet(viewsets.GenericViewSet):
@@ -213,7 +228,7 @@ class QuarantineViewSet(viewsets.GenericViewSet):
                 request,
                 "amavis.quarantine.release_requested",
                 "release requested",
-                [i for i, _msgrcpt in msgrcpts],
+                [(i, smart_str(msgrcpt.rid.email)) for i, msgrcpt in msgrcpts],
             )
             return response.Response({"status": "pending"})
 
@@ -227,7 +242,7 @@ class QuarantineViewSet(viewsets.GenericViewSet):
             result = amr.sendreq(mid, mail.secret_id, rcpt.rid.email)
             if result:
                 connector.set_msgrcpt_status(smart_str(rcpt.rid.email), mid, "R")
-                released.append(mid)
+                released.append((mid, smart_str(rcpt.rid.email)))
             else:
                 error = result
                 break
@@ -262,7 +277,7 @@ class QuarantineViewSet(viewsets.GenericViewSet):
             request,
             "amavis.quarantine.deleted",
             "deleted",
-            [item["mailid"] for item in selection],
+            [(item["mailid"], item["rcpt"]) for item in selection],
         )
         return response.Response(status=204)
 
@@ -301,7 +316,10 @@ class QuarantineViewSet(viewsets.GenericViewSet):
             request,
             "amavis.quarantine.marked",
             f"marked as {serializer.validated_data['type']}",
-            [item["mailid"] for item in serializer.validated_data["selection"]],
+            [
+                (item["mailid"], item["rcpt"])
+                for item in serializer.validated_data["selection"]
+            ],
             type=serializer.validated_data["type"],
         )
         return response.Response(status=204)

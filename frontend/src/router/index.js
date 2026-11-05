@@ -326,7 +326,11 @@ const routes = [
         component: () => import('@/views/admin/monitoring/AuditTrailView.vue'),
         meta: {
           requiresAuth: true,
-          allowedRoles: [constants.SUPER_ADMIN],
+          allowedRoles: [
+            constants.SUPER_ADMIN,
+            constants.RESELLER,
+            constants.DOMAIN_ADMIN,
+          ],
         },
       },
       {
