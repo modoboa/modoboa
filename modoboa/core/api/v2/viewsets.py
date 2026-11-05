@@ -1,6 +1,9 @@
 """Core API v2 viewsets."""
 
+import json
+
 from django.conf import settings
+from django.core.serializers.json import DjangoJSONEncoder
 from django.utils.translation import gettext as _
 
 from django_filters import rest_framework as dj_filters
@@ -21,6 +24,7 @@ from modoboa.core.api.v1.viewsets import log_account_event
 from modoboa.core.extensions import exts_pool
 from modoboa.core.loggers import get_audit_actions
 from modoboa.lib import pagination
+from modoboa.lib import renderers as lib_renderers
 from modoboa.lib.permissions import IsPrivilegedUser
 from modoboa.lib.throttle import GetThrottleViewsetMixin
 
@@ -286,6 +290,55 @@ class LogViewSet(GetThrottleViewsetMixin, viewsets.ReadOnlyModelViewSet):
         # stay private to super administrators
         domains = Domain.objects.get_for_admin(user).values("name")
         return models.Log.objects.filter(domain__in=domains)
+
+    @extend_schema(responses={(200, "text/csv"): str})
+    @action(
+        methods=["get"],
+        detail=False,
+        pagination_class=None,
+        renderer_classes=(lib_renderers.CSVRenderer,),
+    )
+    def export(self, request):
+        """Export the entries matching the filters, search and ordering."""
+        labels = get_audit_actions()
+        rows = [
+            [
+                "date",
+                "level",
+                "action",
+                "label",
+                "actor",
+                "ip_address",
+                "domain",
+                "object_type",
+                "object",
+                "message",
+                "details",
+            ]
+        ]
+        queryset = self.filter_queryset(self.get_queryset()).select_related(
+            "content_type"
+        )
+        # ponytail: the whole file is built in memory, like the other CSV
+        # exports; switch to a StreamingHttpResponse if exports get too big.
+        for log in queryset.iterator():
+            ct = log.content_type
+            rows.append(
+                [
+                    log.date_created.isoformat(),
+                    log.level,
+                    log.action,
+                    labels.get(log.action, "") if log.action else "",
+                    log.actor_name,
+                    log.ip_address or "",
+                    log.domain,
+                    f"{ct.app_label}.{ct.model}" if ct else "",
+                    log.object_repr,
+                    log.message,
+                    json.dumps(log.extra, cls=DjangoJSONEncoder) if log.extra else "",
+                ]
+            )
+        return response.Response(rows)
 
     @extend_schema(responses=serializers.AuditActionSerializer(many=True))
     @action(methods=["get"], detail=False, pagination_class=None)

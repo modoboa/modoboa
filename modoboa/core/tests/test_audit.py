@@ -1,6 +1,8 @@
 """Structured audit trail tests."""
 
+import csv
 import datetime
+import io
 import logging
 
 from django.core.cache import cache
@@ -453,3 +455,61 @@ class DomainAdminAuditTestCase(ModoAPITestCase):
             for log in models.Log.objects.filter(action="amavis.quarantine.deleted")
         }
         self.assertEqual(entries, {"test.com": ["m1", "m3"], "test2.com": ["m2"]})
+
+
+class AuditExportTestCase(ModoAPITestCase):
+
+    @classmethod
+    def setUpTestData(cls):  # NOQA:N802
+        super().setUpTestData()
+        admin_factories.populate_database()
+
+    def setUp(self):
+        super().setUp()
+        logger = logging.getLogger("modoboa.auth")
+        for actor, domain in (
+            ("bob@test.com", "test.com"),
+            ("eve@test2.com", "test2.com"),
+        ):
+            logger.warning(
+                f"failed {actor}",
+                extra=audit("core.login.failed", actor_name=actor, domain=domain),
+            )
+        # A typed username is attacker-controlled
+        logger.warning(
+            "formula",
+            extra=audit(
+                "core.login.failed", actor_name="=HYPERLINK(1)", domain="test.com"
+            ),
+        )
+
+    def export(self, **params):
+        resp = self.client.get(reverse("v2:log-export"), params)
+        self.assertEqual(resp.status_code, 200)
+        self.assertTrue(resp["Content-Type"].startswith("text/csv"))
+        return list(csv.reader(io.StringIO(resp.content.decode())))
+
+    def test_export(self):
+        rows = self.export()
+        self.assertEqual(rows[0][:3], ["date", "level", "action"])
+        actors = [row[4] for row in rows[1:]]
+        self.assertIn("bob@test.com", actors)
+        self.assertIn("eve@test2.com", actors)
+        # Formula triggers are neutralized
+        self.assertIn("'=HYPERLINK(1)", actors)
+        self.assertNotIn("=HYPERLINK(1)", actors)
+        self.assertEqual(rows[1][3], "Login failed")
+
+    def test_export_applies_filters_and_search(self):
+        rows = self.export(domain="test2.com")
+        self.assertEqual([row[4] for row in rows[1:]], ["eve@test2.com"])
+        rows = self.export(search="bob")
+        self.assertEqual([row[4] for row in rows[1:]], ["bob@test.com"])
+
+    def test_export_is_restricted_for_domain_admins(self):
+        self.authenticate_user(models.User.objects.get(username="admin@test.com"))
+        rows = self.export()
+        self.assertEqual({row[6] for row in rows[1:]}, {"test.com"})
+        self.authenticate_user(models.User.objects.get(username="user@test.com"))
+        resp = self.client.get(reverse("v2:log-export"))
+        self.assertEqual(resp.status_code, 403)
