@@ -204,7 +204,9 @@ class FilterSetViewSet(viewsets.ViewSet):
         """Create a new filter."""
         sclient = self.get_sieve_client(request)
         fset = sclient.getscript(pk, format="fset")
-        serializer = serializers.FilterSerializer(data=request.data)
+        serializer = serializers.FilterSerializer(
+            data=request.data, context={"request": request}
+        )
         serializer.is_valid(raise_exception=True)
         match_type, conditions, actions = serializer.to_filter()
         fltname = serializer.validated_data["name"]
@@ -234,7 +236,9 @@ class FilterSetViewSet(viewsets.ViewSet):
     def update_filter(self, request, pk, filter: str):
         sclient = self.get_sieve_client(request)
         fset = sclient.getscript(pk, format="fset")
-        serializer = serializers.FilterSerializer(data=request.data)
+        serializer = serializers.FilterSerializer(
+            data=request.data, context={"request": request}
+        )
         serializer.is_valid(raise_exception=True)
         match_type, conditions, actions = serializer.to_filter()
         name = serializer.validated_data["name"]

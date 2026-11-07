@@ -19,6 +19,7 @@ from modoboa.lib.tests import ModoAPITestCase
 from modoboa.sievefilters import mocks
 from modoboa.sievefilters.api.v2.serializers import FilterSerializer
 from modoboa.webmail.mocks import IMAP4Mock
+from modoboa.webmail.models import Tag
 
 Application = get_application_model()
 AccessToken = get_access_token_model()
@@ -164,8 +165,13 @@ class FilterSetViewSetTestCase(PatcherMixin, ModoAPITestCase):
         resp = self.client.get(url)
         self.assertEqual(resp.status_code, 200)
         actions = resp.json()
-        self.assertEqual(len(actions), 4)
+        self.assertEqual(len(actions), 5)
         self.assertIn("choices", actions[0]["args"][0])
+        # The webmail tags, created from the defaults on first use
+        addflag = next(action for action in actions if action["name"] == "addflag")
+        self.assertEqual(
+            addflag["args"][0]["choices"][0], {"name": "$label1", "label": "Important"}
+        )
 
     def test_retrieve_action_templates_with_subfolders(self):
         # Sub-folders must be handled with the server hierarchy delimiter
@@ -230,6 +236,36 @@ class FilterSetViewSetTestCase(PatcherMixin, ModoAPITestCase):
         url = reverse("v2:filterset-get-filters", args=["main_script"])
         resp = self.client.post(url, data, format="json")
         self.assertEqual(resp.status_code, 201)
+
+    def test_add_tag_filter(self):
+        self.authenticate()
+        Tag.objects.create(
+            account=self.user, keyword="$label1", label="Important", color="#ff0000"
+        )
+        url = reverse("v2:filterset-get-filters", args=["main_script"])
+        data = {
+            "name": "Tagged",
+            "enabled": True,
+            "match_type": "anyof",
+            "conditions": [{"name": "From", "operator": "is", "value": "boss@x.com"}],
+            "actions": [{"name": "addflag", "args": {"list-of-flags": "$label1"}}],
+        }
+        resp = self.client.post(url, data, format="json")
+        self.assertEqual(resp.status_code, 201)
+        script = self.mock_client.return_value.scripts["main_script"]
+        self.assertIn('addflag "$label1";', script)
+        self.assertIn('"imap4flags"', script)
+        # Read back as a tag action, not as an unsupported filter
+        resp = self.client.get(url)
+        self.assertEqual(resp.status_code, 200)
+        tagged = next(item for item in resp.json() if item["name"] == "Tagged")
+        self.assertEqual(tagged["actions"], data["actions"])
+
+        # Only the user's tags
+        data["name"] = "Other"
+        data["actions"][0]["args"]["list-of-flags"] = "\\Deleted"
+        resp = self.client.post(url, data, format="json")
+        self.assertEqual(resp.status_code, 400)
 
     def test_update_filter(self):
         self.authenticate()
