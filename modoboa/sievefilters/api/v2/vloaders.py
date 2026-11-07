@@ -3,6 +3,7 @@
 from typing import TypedDict
 
 from modoboa.webmail.lib import imaputils
+from modoboa.webmail.models import Tag
 
 
 class UserMailbox(TypedDict):
@@ -42,3 +43,18 @@ def user_mailboxes(request) -> list[UserMailbox]:
         ret = mbc.getmboxes(request.user, unseen_messages=False)
         folders = __build_folders_list(ret, request.user, mbc)
     return folders
+
+
+class UserTag(TypedDict):
+    """Type definition for user tag."""
+
+    name: str
+    label: str
+
+
+def user_tags(request) -> list[UserTag]:
+    """Retrieve the tags of the user, as used by the webmail."""
+    return [
+        {"name": tag.keyword, "label": tag.label}
+        for tag in Tag.objects.for_account(request.user)
+    ]

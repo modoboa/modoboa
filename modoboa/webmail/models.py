@@ -119,6 +119,51 @@ class ScheduledMessage(models.Model):
         return result
 
 
+class TagManager(models.Manager):
+    def for_account(self, account):
+        """Return the tags of an account, created from the defaults if none.
+
+        ponytail: deleting every tag brings the defaults back; add a
+        "defaults created" marker if users complain.
+        """
+        qset = self.filter(account=account)
+        if not qset.exists():
+            self.bulk_create(
+                Tag(account=account, keyword=keyword, label=str(label), color=color)
+                for keyword, label, color in constants.DEFAULT_TAGS
+            )
+        return qset
+
+
+class Tag(models.Model):
+    """A tag the user can put on messages.
+
+    Messages carry the keyword, which never changes: renaming a tag or
+    changing its color doesn't touch them.
+    """
+
+    account = models.ForeignKey("core.User", on_delete=models.CASCADE)
+    keyword = models.CharField(max_length=64)
+    label = models.CharField(max_length=64)
+    color = models.CharField(max_length=7)
+
+    objects = TagManager()
+
+    class Meta:
+        ordering = ["pk"]
+        constraints = [
+            models.UniqueConstraint(
+                fields=["account", "keyword"], name="webmail_tag_unique_keyword"
+            ),
+            models.UniqueConstraint(
+                fields=["account", "label"], name="webmail_tag_unique_label"
+            ),
+        ]
+
+    def __str__(self):
+        return self.label
+
+
 class MessageAttachment(models.Model):
     message = models.ForeignKey(
         ScheduledMessage, on_delete=models.CASCADE, related_name="attachments"

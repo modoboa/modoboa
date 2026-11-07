@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
+import api from '@/api/webmail'
 
 const MAX_CACHED_CONTENTS = 20
 
@@ -39,6 +40,11 @@ export const useWebmailStore = defineStore('webmail', () => {
   // State of the compose form of a message whose sending was cancelled,
   // displayed again by the form
   const cancelledMessage = ref(null)
+  // The tags of the user, null until read
+  const tags = ref(null)
+  const tagsByKeyword = computed(() =>
+    Object.fromEntries((tags.value || []).map((tag) => [tag.keyword, tag]))
+  )
 
   const $reset = async () => {
     selection.value = []
@@ -54,6 +60,15 @@ export const useWebmailStore = defineStore('webmail', () => {
     unseenCounters.value = {}
     contents.clear()
     cancelledMessage.value = null
+    tags.value = null
+  }
+
+  async function loadTags(force = false) {
+    if (tags.value === null || force) {
+      const resp = await api.getTags()
+      tags.value = resp.data
+    }
+    return tags.value
   }
 
   /**
@@ -223,6 +238,29 @@ export const useWebmailStore = defineStore('webmail', () => {
     }
   }
 
+  // Same thing for tags: action is 'add' or 'remove'
+  function tagInListing(mailbox, ids, keyword, action) {
+    const listing = listingOf(mailbox)
+    if (!listing) {
+      return
+    }
+    const tagged = new Set(ids.map(String))
+    for (const item of listing.data.results) {
+      const uids = listing.threaded ? item.uids : [item.imapid]
+      const matched = uids.filter((uid) => tagged.has(String(uid))).length
+      if (!matched) {
+        continue
+      }
+      const current = (item.tags || []).filter((tag) => tag !== keyword)
+      if (action === 'add') {
+        item.tags = [...current, keyword]
+      } else if (matched === uids.length) {
+        // Other messages of the thread may still carry it
+        item.tags = current
+      }
+    }
+  }
+
   // The preferences changed: read them again, and the listing they shape
   function forgetPreferences() {
     preferences.value = null
@@ -233,12 +271,22 @@ export const useWebmailStore = defineStore('webmail', () => {
   // Opening a message marks it as read: one that is unread again must be
   // requested, not taken from the cache
   function forgetContent(mailbox, mailid) {
-    for (const key of [...contents.keys()]) {
+    contentKeysOf(mailbox, mailid).forEach((key) => contents.delete(key))
+  }
+
+  // The tags of a message changed: every cached content of it (one per
+  // display option) follows
+  function setContentTags(mailbox, mailid, tags) {
+    contentKeysOf(mailbox, mailid).forEach((key) => {
+      contents.get(key).tags = tags
+    })
+  }
+
+  function contentKeysOf(mailbox, mailid) {
+    return [...contents.keys()].filter((key) => {
       const [cachedMailbox, cachedId] = JSON.parse(key)
-      if (cachedMailbox === mailbox && cachedId === String(mailid)) {
-        contents.delete(key)
-      }
-    }
+      return cachedMailbox === mailbox && cachedId === String(mailid)
+    })
   }
 
   return {
@@ -262,8 +310,13 @@ export const useWebmailStore = defineStore('webmail', () => {
     getContent,
     setContent,
     forgetContent,
+    setContentTags,
     removeFromListing,
     flagInListing,
+    tagInListing,
+    tags,
+    tagsByKeyword,
+    loadTags,
     forgetPreferences,
     cancelledMessage,
     delaySending,

@@ -67,9 +67,12 @@ def server_info_key(address: str, port: int, user: str, name: str) -> str:
 
 
 # A message UID set: one or more positive integers separated by commas.
-UID_RE = re.compile(r"^[0-9]+(?:,[0-9]+)*$")
+# \Z, not $: "$" also matches before a trailing newline
+UID_RE = re.compile(r"^[0-9]+(?:,[0-9]+)*\Z")
 # A MIME part number: dot-separated positive integers (e.g. "1", "2.1").
-PARTNUM_RE = re.compile(r"^[0-9]+(?:\.[0-9]+)*$")
+PARTNUM_RE = re.compile(r"^[0-9]+(?:\.[0-9]+)*\Z")
+# A keyword (tag) created by the webmail: a slug or "$labelN"
+KEYWORD_RE = re.compile(r"^\$?[A-Za-z0-9_-]{1,63}\Z")
 
 # A THREAD response only contains UIDs, parenthesis and spaces.
 THREAD_RESPONSE_RE = re.compile(r"^[0-9() ]*$")
@@ -93,6 +96,18 @@ def validate_imap_partnum(value):
     if value is None or not PARTNUM_RE.match(str(value)):
         raise InvalidImapArgument(_("Invalid part number"))
     return str(value)
+
+
+def validate_imap_keyword(value):
+    """Ensure a keyword is safe to pass to imaplib."""
+    if value is None or not KEYWORD_RE.match(str(value)):
+        raise InvalidImapArgument(_("Invalid tag"))
+    return str(value)
+
+
+def get_keywords(flags: list[str]) -> list[str]:
+    """Return the keywords of a FLAGS list, system flags left out."""
+    return [flag for flag in flags if not flag.startswith("\\")]
 
 
 def escape_search_pattern(pattern: str) -> str:
@@ -738,6 +753,11 @@ class IMAPconnector:
 
         self.criterions = [bytearray(criterions, "utf8")]
 
+    def filter_by_keyword(self, keyword: str) -> None:
+        """Only list the messages carrying the given keyword."""
+        keyword = validate_imap_keyword(keyword)
+        self.criterions.append(f"KEYWORD {keyword}".encode())
+
     @property
     def has_sort(self) -> bool:
         """Does the server support the SORT extension (RFC 5256)?"""
@@ -1222,6 +1242,14 @@ class IMAPconnector:
         """
         self._remove_flag(mbox, msgset, r"(\Flagged)")
 
+    def add_keyword(self, mbox: str, msgset: list[str], keyword: str) -> None:
+        """Put a keyword (tag) on a set of messages."""
+        self._add_flag(mbox, msgset, f"({validate_imap_keyword(keyword)})")
+
+    def remove_keyword(self, mbox: str, msgset: list[str], keyword: str) -> None:
+        """Remove a keyword (tag) from a set of messages."""
+        self._remove_flag(mbox, msgset, f"({validate_imap_keyword(keyword)})")
+
     def msg_forwarded(self, mailbox: str, mailid: str) -> None:
         """Add the $Forwarded flag to this email."""
         # _add_flag expects a list: joining a plain string would flag
@@ -1547,6 +1575,7 @@ class IMAPconnector:
                 msg["forwarded"] = True
             if r"\Flagged" in msg_data["FLAGS"]:
                 msg["flagged"] = True
+            msg["tags"] = get_keywords(msg_data["FLAGS"])
             bstruct = BodyStructure(msg_data["BODYSTRUCTURE"])
             if bstruct.has_attachments():
                 msg["attachments"] = True
@@ -1601,6 +1630,7 @@ class IMAPconnector:
                         1 for msg in msgs if msg.get("style") == "unseen"
                     ),
                     "flagged": any(msg.get("flagged") for msg in msgs),
+                    "tags": sorted({tag for msg in msgs for tag in msg["tags"]}),
                     "attachments": any(msg.get("attachments") for msg in msgs),
                     "participants": list(participants.values()),
                     "uids": [str(msg["imapid"]) for msg in msgs],
@@ -1632,7 +1662,7 @@ class IMAPconnector:
             to_fetch = "(BODY[])"
         else:
             bcmd = "BODY.PEEK" if readonly else "BODY"
-            to_fetch = f"(BODYSTRUCTURE {bcmd}[HEADER.FIELDS ({what})])"
+            to_fetch = f"(FLAGS BODYSTRUCTURE {bcmd}[HEADER.FIELDS ({what})])"
         data = self._cmd("FETCH", mailid, to_fetch)
         if int(mailid) not in data:
             raise ImapError(f"Message with UID {mailid} not found in {mbox} folder")

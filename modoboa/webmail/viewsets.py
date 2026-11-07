@@ -319,6 +319,8 @@ class UserEmailViewSet(ImapConnectionMixin, viewsets.GenericViewSet):
             return serializers.MoveSelectionSerializer
         if self.action == "flag":
             return serializers.FlagSelectionSerializer
+        if self.action == "tag":
+            return serializers.TagSelectionSerializer
         return serializers.EmailSerializer
 
     def list(self, request):
@@ -332,6 +334,8 @@ class UserEmailViewSet(ImapConnectionMixin, viewsets.GenericViewSet):
                 # The single search field of the interface looks for the
                 # pattern in the headers and in the body
                 imapc.parse_search_parameters("all", search)
+            if request.GET.get("tag"):
+                imapc.filter_by_keyword(request.GET["tag"])
             total = imapc.messages_count(mbox=mailbox)
             messages_per_page = request.user.parameters.get_value("messages_per_page")
             paginator = Paginator(total, messages_per_page)
@@ -387,6 +391,8 @@ class UserEmailViewSet(ImapConnectionMixin, viewsets.GenericViewSet):
                 # The single search field of the interface looks for the
                 # pattern in the headers and in the body
                 imapc.parse_search_parameters("all", search)
+            if request.GET.get("tag"):
+                imapc.filter_by_keyword(request.GET["tag"])
             total = imapc.threads_count(mbox=mailbox)
             paginator = Paginator(total, messages_per_page)
             page = paginator.getpage(page_num)
@@ -518,6 +524,21 @@ class UserEmailViewSet(ImapConnectionMixin, viewsets.GenericViewSet):
                 serializer.validated_data["selection"],
             )
         return response.Response({"count": len(serializer.validated_data["selection"])})
+
+    @action(
+        methods=["post"],
+        detail=False,
+        serializer_class=serializers.TagSelectionSerializer,
+    )
+    def tag(self, request):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        data = serializer.validated_data
+        with lib.get_imapconnector(request) as imapc:
+            getattr(imapc, f"{data['action']}_keyword")(
+                data["mailbox"], data["selection"], data["tag"]
+            )
+        return response.Response({"count": len(data["selection"])})
 
     @action(methods=["get"], detail=False)
     def content(self, request):
@@ -827,6 +848,26 @@ class ComposeSessionViewSet(ImapConnectionMixin, viewsets.GenericViewSet):
         except ImapError:
             # The message is already sent: a leftover draft is not an error
             pass
+
+
+class TagViewSet(viewsets.ModelViewSet):
+    """The tags of the user.
+
+    Deleting a tag leaves its keyword on the messages: removing it would
+    mean going through every folder. It shows again if a tag with the
+    same name is created.
+    """
+
+    permission_classes = (IsAuthenticated, HasMailbox)
+    serializer_class = serializers.TagSerializer
+    pagination_class = None
+
+    def get_queryset(self):
+        return models.Tag.objects.filter(account=self.request.user)
+
+    def list(self, request, *args, **kwargs):
+        models.Tag.objects.for_account(request.user)
+        return super().list(request, *args, **kwargs)
 
 
 class ScheduledMessageViewSet(

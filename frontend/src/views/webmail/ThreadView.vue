@@ -74,6 +74,12 @@
           :title="$gettext('Mark the conversation as not junk')"
           @click="markThreadAsNotJunk"
         />
+        <TagMenu
+          :title="$gettext('Tag the whole conversation')"
+          :active="commonTags(messages)"
+          :disabled="!webmailStore.hasRights('w')"
+          @toggle="(keyword, add) => tagMessages(messages, keyword, add)"
+        />
       </template>
     </v-toolbar>
 
@@ -116,6 +122,7 @@
               </span>
             </span>
             <span class="thread-flags">
+              <TagChips :keywords="message.tags" compact />
               <v-icon
                 v-if="message.answered"
                 icon="mdi-reply-outline"
@@ -158,6 +165,12 @@
               >
                 {{ $gettext('Open') }}
               </v-btn>
+              <TagMenu
+                :title="$gettext('Tag')"
+                :active="message.tags || []"
+                :disabled="!webmailStore.hasRights('w')"
+                @toggle="(keyword, add) => tagMessages([message], keyword, add)"
+              />
             </div>
             <v-progress-linear v-if="!contents[message.imapid]" indeterminate />
             <template v-else>
@@ -211,6 +224,8 @@ import ComposeEmailForm from '@/components/webmail/ComposeEmailForm.vue'
 import EmailMessageBody from '@/components/webmail/EmailMessageBody.vue'
 import MessageHeader from '@/components/webmail/MessageHeader.vue'
 import RemoteContentBanner from '@/components/webmail/RemoteContentBanner.vue'
+import TagChips from '@/components/webmail/TagChips.vue'
+import TagMenu from '@/components/webmail/TagMenu.vue'
 
 const { $gettext, $ngettext } = useGettext()
 const { displayNotification, reloadMailboxCounters } = useBusStore()
@@ -425,6 +440,26 @@ const markThreadAsNotJunk = () =>
     $gettext('Conversation marked as not junk')
   )
 
+// The tags carried by every given message, checked in the menu
+const commonTags = (list) =>
+  list.reduce(
+    (common, message) =>
+      common.filter((tag) => (message.tags || []).includes(tag)),
+    list[0]?.tags || []
+  )
+
+const tagMessages = async (targets, keyword, add) => {
+  const action = add ? 'add' : 'remove'
+  const ids = targets.map((message) => message.imapid)
+  await api.tagSelection(mailbox.value, ids, keyword, action)
+  for (const message of targets) {
+    const tags = (message.tags || []).filter((tag) => tag !== keyword)
+    message.tags = add ? [...tags, keyword] : tags
+    webmailStore.setContentTags(mailbox.value, message.imapid, message.tags)
+  }
+  webmailStore.tagInListing(mailbox.value, ids, keyword, action)
+}
+
 // The bodies to load follow the panels that are open, which is the
 // model of the accordion itself: one source of truth, whether a panel
 // was opened by the reader or expanded on arrival
@@ -441,5 +476,9 @@ watch([replyMailid, replyAll], ([value]) => {
   }
 })
 
-onMounted(fetchThread)
+onMounted(() => {
+  fetchThread()
+  // Errors are notified: the conversation is displayed without tags
+  webmailStore.loadTags().catch(() => {})
+})
 </script>

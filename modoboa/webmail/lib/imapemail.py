@@ -18,7 +18,12 @@ from modoboa.lib.email_utils import Email
 from modoboa.webmail import constants
 
 from . import imapheader
-from .imaputils import get_imapconnector, validate_imap_uid, BodyStructure
+from .imaputils import (
+    get_imapconnector,
+    get_keywords,
+    validate_imap_uid,
+    BodyStructure,
+)
 from . import flowed
 from .utils import decode_payload, html2plaintext
 
@@ -100,6 +105,7 @@ class ImapEmail(Email):
         headers = next(
             value for key, value in msg.items() if key.startswith("BODY[HEADER.FIELDS")
         )
+        self.tags = get_keywords(msg.get("FLAGS", []))
         self.fetch_body_structure(msg)
         msg = email.message_from_string(headers)
         for hdr in requested_headers:

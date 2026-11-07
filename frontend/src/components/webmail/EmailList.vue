@@ -60,6 +60,13 @@
             @click="markSelectionAsNotJunk"
           />
         </template>
+        <TagMenu
+          v-if="!inScheduledView"
+          :title="$gettext('Tag')"
+          :active="selectionTags"
+          :disabled="!webmailStore.hasRights('w')"
+          @toggle="tagSelection"
+        />
         <v-btn
           icon
           variant="text"
@@ -99,21 +106,28 @@
       </div>
     </template>
 
-    <v-text-field
-      v-else
-      v-model="search"
-      prepend-inner-icon="mdi-magnify"
-      :placeholder="$gettext('Search in messages')"
-      class="mail-search"
-      variant="solo-filled"
-      single-line
-      flat
-      hide-details
-      density="compact"
-      clearable
-      @click:clear="fetchEmails"
-      @keyup.enter="submitSearch"
-    ></v-text-field>
+    <template v-else>
+      <v-text-field
+        v-model="search"
+        prepend-inner-icon="mdi-magnify"
+        :placeholder="$gettext('Search in messages')"
+        class="mail-search"
+        variant="solo-filled"
+        single-line
+        flat
+        hide-details
+        density="compact"
+        clearable
+        @click:clear="fetchEmails"
+        @keyup.enter="submitSearch"
+      ></v-text-field>
+      <TagMenu
+        v-if="!inScheduledView"
+        :title="$gettext('Show the messages with a tag')"
+        :active="tagFilter ? [tagFilter] : []"
+        @toggle="filterByTag"
+      />
+    </template>
 
     <div class="mail-toolbar-spacer" />
 
@@ -322,6 +336,7 @@ import { useSpecialFolders } from '@/composables/webmail'
 import EmailListItem from './EmailListItem.vue'
 import EmailSchedulingForm from './EmailSchedulingForm.vue'
 import ThreadListItem from './ThreadListItem.vue'
+import TagMenu from './TagMenu.vue'
 import api from '@/api/webmail'
 import parametersApi from '@/api/parameters'
 
@@ -355,6 +370,8 @@ const emails = ref(cachedListing?.data || {})
 const page = ref(cachedListing?.page || 1)
 const schedulingError = ref('')
 const search = ref(cachedListing?.search || '')
+// Only the messages carrying this keyword are listed
+const tagFilter = ref(cachedListing?.tag || '')
 const selectAll = ref(false)
 const showSchedulingError = ref(false)
 const showSchedulingForm = ref(false)
@@ -552,7 +569,11 @@ const fetchEmails = ({ silent = false } = {}) => {
   if (!silent) {
     startLoading()
   }
-  const options = { page: page.value, search: search.value }
+  const options = {
+    page: page.value,
+    search: search.value,
+    tag: tagFilter.value,
+  }
   const threaded = threadedMode.value
   lastFetchWasThreaded = threaded
   const request = threaded
@@ -581,6 +602,7 @@ const fetchEmails = ({ silent = false } = {}) => {
         mailbox: props.mailbox,
         page: options.page,
         search: options.search,
+        tag: options.tag,
         threaded,
         threadingSupported: threadingSupported.value,
         data: emails.value,
@@ -685,6 +707,44 @@ const flagSelection = (status) =>
     }
   )
 
+// The tags carried by every selected message, checked in the menu
+const selectionTags = computed(() => {
+  const selected = new Set(webmailStore.selection.map(String))
+  const items = (emails.value.results || []).filter((item) =>
+    (displayThreads.value ? item.uids : [item.imapid]).some((uid) =>
+      selected.has(String(uid))
+    )
+  )
+  if (!items.length) {
+    return []
+  }
+  return items.reduce(
+    (common, item) => common.filter((tag) => (item.tags || []).includes(tag)),
+    items[0].tags || []
+  )
+})
+
+const tagSelection = (keyword, add) => {
+  const action = add ? 'add' : 'remove'
+  runOnSelection(
+    (mailbox, selection) =>
+      api.tagSelection(mailbox, selection, keyword, action),
+    add ? $gettext('Tag added') : $gettext('Tag removed'),
+    (mailbox, selection) =>
+      webmailStore.tagInListing(mailbox, selection, keyword, action)
+  )
+}
+
+const filterByTag = (keyword, checked) => {
+  tagFilter.value = checked ? keyword : ''
+  if (page.value !== 1) {
+    // The page watcher fetches the listing
+    page.value = 1
+    return
+  }
+  fetchEmails()
+}
+
 const emptyMailbox = () => {
   startLoading()
   api.emptyUserMailbox(currentMailbox.value).then(() => {
@@ -752,6 +812,8 @@ const loadPreferences = async () => {
 }
 
 onMounted(async () => {
+  // Errors are notified: the listing works without tags
+  webmailStore.loadTags().catch(() => {})
   if (cachedListing) {
     autoRefreshContent()
   } else if (webmailStore.listingModeLoaded) {
@@ -781,6 +843,7 @@ watch(
   () => {
     webmailStore.selection = []
     search.value = ''
+    tagFilter.value = ''
     // The messages of the previous mailbox mustn't linger meanwhile
     emails.value = {}
     if (page.value !== 1) {

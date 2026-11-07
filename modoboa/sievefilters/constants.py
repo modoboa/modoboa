@@ -77,5 +77,11 @@ ACTION_TEMPLATES = [
         "label": _("Reject message"),
         "args": [{"name": "text", "type": "string"}],
     },
+    {
+        # imap4flags: the webmail displays the keyword as a tag
+        "name": "addflag",
+        "label": _("Add tag"),
+        "args": [{"name": "list-of-flags", "type": "list", "vloader": "user_tags"}],
+    },
     {"name": "stop", "label": _("Stop processing")},
 ]
