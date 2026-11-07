@@ -124,3 +124,21 @@ LISTING_MODES = [
     (ListingMode.FLAT.value, _("Messages")),
     (ListingMode.THREADED.value, _("Conversations")),
 ]
+
+# Tags are stored on the messages as IMAP keywords. Dovecot's maildir
+# format accepts 26 keywords per folder, some of which are taken by
+# other flags ($Forwarded, $MDNSent, junk...).
+MAX_TAGS_PER_USER = 20
+
+# Keywords other clients and servers give a meaning to: a tag can't use them
+RESERVED_KEYWORDS = ("junk", "nonjunk", "notjunk", "phishing")
+
+# Created for users who have no tag yet: the keywords and colors of
+# Thunderbird's default tags, so that both clients agree.
+DEFAULT_TAGS = (
+    ("$label1", _("Important"), "#ff0000"),
+    ("$label2", _("Work"), "#ff9900"),
+    ("$label3", _("Personal"), "#009900"),
+    ("$label4", _("To do"), "#3333ff"),
+    ("$label5", _("Later"), "#993399"),
+)
