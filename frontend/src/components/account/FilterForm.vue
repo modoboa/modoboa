@@ -99,6 +99,7 @@
                   v-model="action.args[arg.name]"
                   :items="arg.choices"
                   :item-title="(item) => buildItemTitle(arg.name, item)"
+                  item-value="name"
                   density="compact"
                   variant="outlined"
                   :rules="[rules.required]"
