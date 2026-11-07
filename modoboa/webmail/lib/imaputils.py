@@ -67,11 +67,12 @@ def server_info_key(address: str, port: int, user: str, name: str) -> str:
 
 
 # A message UID set: one or more positive integers separated by commas.
-UID_RE = re.compile(r"^[0-9]+(?:,[0-9]+)*$")
+# \Z, not $: "$" also matches before a trailing newline
+UID_RE = re.compile(r"^[0-9]+(?:,[0-9]+)*\Z")
 # A MIME part number: dot-separated positive integers (e.g. "1", "2.1").
-PARTNUM_RE = re.compile(r"^[0-9]+(?:\.[0-9]+)*$")
+PARTNUM_RE = re.compile(r"^[0-9]+(?:\.[0-9]+)*\Z")
 # A keyword (tag) created by the webmail: a slug or "$labelN"
-KEYWORD_RE = re.compile(r"^\$?[A-Za-z0-9_-]{1,63}$")
+KEYWORD_RE = re.compile(r"^\$?[A-Za-z0-9_-]{1,63}\Z")
 
 # A THREAD response only contains UIDs, parenthesis and spaces.
 THREAD_RESPONSE_RE = re.compile(r"^[0-9() ]*$")

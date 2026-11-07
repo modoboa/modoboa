@@ -9,7 +9,12 @@ from modoboa.webmail import constants, models
 from modoboa.webmail.exceptions import InvalidImapArgument
 from modoboa.webmail.mocks import IMAP4Mock
 from modoboa.webmail.serializers import generate_keyword
-from modoboa.webmail.lib.imaputils import IMAPconnector
+from modoboa.webmail.lib.imaputils import (
+    IMAPconnector,
+    validate_imap_keyword,
+    validate_imap_partnum,
+    validate_imap_uid,
+)
 from modoboa.webmail.tests.test_viewsets import WebmailTestCase
 
 ADD_FLAG = "modoboa.webmail.lib.imaputils.IMAPconnector._add_flag"
@@ -38,6 +43,19 @@ class KeywordCommandsTestCase(SimpleTestCase):
         for value in ["\\Deleted", "a b", "x)\r\nA1 LOGOUT", ""]:
             with self.assertRaises(InvalidImapArgument):
                 imapc.add_keyword("INBOX", ["1"], value)
+
+
+class TrailingNewlineTestCase(SimpleTestCase):
+    def test_trailing_newline_is_rejected(self):
+        """A "$" anchor would let a final newline reach the IMAP command."""
+        for validate, value in [
+            (validate_imap_uid, "12"),
+            (validate_imap_partnum, "1.2"),
+            (validate_imap_keyword, "$label1"),
+        ]:
+            self.assertEqual(validate(value), value)
+            with self.assertRaises(InvalidImapArgument):
+                validate(f"{value}\n")
 
 
 class TagViewSetTestCase(WebmailTestCase):
