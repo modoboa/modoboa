@@ -138,11 +138,9 @@ const headers = computed(() => {
 const selfServiceMode = computed(() => {
   return route.query?.secret_id !== undefined
 })
-if (selfServiceMode.value) {
-  const manualLearningEnabled = ref(false)
-} else {
-  const { manualLearningEnabled } = await useAmavis()
-}
+const { manualLearningEnabled, learningRecipients } = selfServiceMode.value
+  ? { manualLearningEnabled: ref(false), learningRecipients: ref([]) }
+  : await useAmavis()
 
 const close = () => {
   router.go(-1)
@@ -212,8 +210,7 @@ const mark = async (mtype, msg) => {
     manualLearningEnabled.value &&
     authStore.authUser.role !== constants.USER
   ) {
-    learningDatabase.value =
-      authStore.authUser.role === constants.SUPER_ADMIN ? 'global' : 'domain'
+    learningDatabase.value = learningRecipients.value[0]?.value
     await learningRecipientRef.value.open(
       $gettext('Learning database'),
       $gettext('Which database should be used for this learning:'),

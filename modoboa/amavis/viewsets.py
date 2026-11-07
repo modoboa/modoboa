@@ -8,7 +8,14 @@ from django.shortcuts import get_object_or_404
 from django.utils.translation import gettext as _
 
 import django_rq
-from rest_framework import filters, mixins, permissions, response, viewsets
+from rest_framework import (
+    exceptions,
+    filters,
+    mixins,
+    permissions,
+    response,
+    viewsets,
+)
 from rest_framework.decorators import action
 
 from modoboa.amavis.sql_connector import SQLconnector
@@ -301,9 +308,26 @@ class QuarantineViewSet(viewsets.GenericViewSet):
             self._check_message_access(request, item["mailid"], item["rcpt"])
         if not manual_learning_enabled(request.user):
             return response.Response({"status": "ok"})
-        recipient_db = serializer.validated_data.get("database")
-        if not recipient_db:
-            recipient_db = "user" if request.user.role == "SimpleUsers" else "global"
+        if request.user.role == "SimpleUsers":
+            # SpamassassinClient always uses the user's own database here
+            recipient_db = "user"
+        else:
+            conf = dict(param_tools.get_global_parameters("amavis"))
+            allowed = [
+                db
+                for db, enabled in (
+                    ("global", request.user.role == "SuperAdmins"),
+                    ("domain", conf["domain_level_learning"]),
+                    ("user", conf["user_level_learning"]),
+                )
+                if enabled
+            ]
+            # never empty: manual_learning_enabled() checked above
+            recipient_db = serializer.validated_data.get("database") or allowed[0]
+            if recipient_db not in allowed:
+                raise exceptions.ValidationError(
+                    {"database": _("You are not allowed to use this database")}
+                )
         queue = django_rq.get_queue("modoboa")
         queue.enqueue(
             tasks.manual_learning,
