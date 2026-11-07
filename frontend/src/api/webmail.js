@@ -146,6 +146,27 @@ export default {
     }
     return repository.post('/webmail/emails/flag/', body)
   },
+  // action: 'add' or 'remove'
+  tagSelection(mailbox, selection, tag, action) {
+    return repository.post('/webmail/emails/tag/', {
+      mailbox,
+      selection,
+      tag,
+      action,
+    })
+  },
+  getTags() {
+    return repository.get('/webmail/tags/')
+  },
+  createTag(body) {
+    return repository.post('/webmail/tags/', body)
+  },
+  updateTag(pk, body) {
+    return repository.patch(`/webmail/tags/${pk}/`, body)
+  },
+  deleteTag(pk) {
+    return repository.delete(`/webmail/tags/${pk}/`)
+  },
   sendEmailFromComposeSession(uid, body) {
     return repository.post(`/webmail/compose-sessions/${uid}/send/`, body)
   },
