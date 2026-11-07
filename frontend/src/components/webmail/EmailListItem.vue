@@ -40,6 +40,7 @@
 
     <span class="cell-sender" :title="senderTitle">{{ senderName }}</span>
     <span class="cell-subject" @click="$emit('open', email.imapid)">
+      <TagChips :keywords="email.tags" compact />
       {{ email.subject || $gettext('(no subject)') }}
     </span>
     <span class="cell-flags">
@@ -64,6 +65,7 @@ import { useGettext } from 'vue3-gettext'
 import { DateTime } from 'luxon'
 import { useWebmailStore } from '@/stores'
 import MenuItems from '@/components/tools/MenuItems.vue'
+import TagChips from './TagChips.vue'
 
 const props = defineProps({
   email: {

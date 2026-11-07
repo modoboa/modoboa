@@ -17,6 +17,7 @@
       <h2 class="mail-subject" :title="email?.subject">
         {{ email?.subject }}
       </h2>
+      <TagChips :keywords="email?.tags" />
       <template #extension>
         <v-btn
           variant="text"
@@ -84,6 +85,12 @@
             :disabled="!webmailStore.hasRights('te')"
             :title="$gettext('Mark as not junk')"
             @click="markEmailAsNotJunk"
+          />
+          <TagMenu
+            :title="$gettext('Tag')"
+            :active="email?.tags || []"
+            :disabled="!webmailStore.hasRights('w')"
+            @toggle="toggleTag"
           />
         </template>
         <v-btn
@@ -174,6 +181,8 @@ import { downloadBlob } from '@/utils'
 import EmailMessageBody from '@/components/webmail/EmailMessageBody.vue'
 import MessageHeader from '@/components/webmail/MessageHeader.vue'
 import RemoteContentBanner from '@/components/webmail/RemoteContentBanner.vue'
+import TagChips from '@/components/webmail/TagChips.vue'
+import TagMenu from '@/components/webmail/TagMenu.vue'
 
 const { $gettext } = useGettext()
 const { displayNotification, reloadMailboxCounters } = useBusStore()
@@ -194,6 +203,8 @@ const working = ref(false)
 
 onMounted(() => {
   fetchMailContent()
+  // Errors are notified: the message is displayed without tags
+  webmailStore.loadTags().catch(() => {})
 })
 
 watch([enableLinks, enableImages], () => {
@@ -285,6 +296,17 @@ const markEmailAsNotJunk = () => {
       })
       displayNotification({ msg: $gettext('Message marked as not junk') })
     })
+}
+
+const toggleTag = async (keyword, add) => {
+  const action = add ? 'add' : 'remove'
+  const { mailbox, mailid } = route.query
+  await api.tagSelection(mailbox, [mailid], keyword, action)
+  const tags = (email.value.tags || []).filter((tag) => tag !== keyword)
+  email.value.tags = add ? [...tags, keyword] : tags
+  // The other display options of this message are cached too
+  webmailStore.setContentTags(mailbox, mailid, email.value.tags)
+  webmailStore.tagInListing(mailbox, [mailid], keyword, action)
 }
 
 const openEmailSourceDialog = async () => {

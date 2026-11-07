@@ -4,6 +4,7 @@ import logging
 
 from django.utils.translation import gettext as _
 from django.utils import timezone
+from django.utils.text import slugify
 
 from drf_spectacular.utils import extend_schema_field
 from rest_framework import serializers
@@ -12,7 +13,7 @@ from modoboa.admin import models as admin_models
 from modoboa.webmail import constants, models
 from modoboa.webmail.exceptions import ImapError
 from modoboa.webmail.lib import imapheader, signature
-from modoboa.webmail.lib.imaputils import get_imapconnector
+from modoboa.webmail.lib.imaputils import KEYWORD_RE, get_imapconnector
 from modoboa.webmail.lib.utils import (
     allowed_sender_addresses,
     create_message,
@@ -231,6 +232,7 @@ class EmailHeadersSerializer(serializers.Serializer):
     attachments = serializers.BooleanField(default=False)
     forwarded = serializers.BooleanField(default=False)
     flagged = serializers.BooleanField(default=False)
+    tags = serializers.ListField(child=serializers.CharField(), required=False)
     # Described from the body structure the listing already fetches, so
     # a message can name its files without its body being loaded
     attachment_list = AttachmentSerializer(many=True, required=False)
@@ -293,6 +295,7 @@ class ThreadSummarySerializer(serializers.Serializer):
     count = serializers.IntegerField()
     unseen_count = serializers.IntegerField()
     flagged = serializers.BooleanField(default=False)
+    tags = serializers.ListField(child=serializers.CharField(), required=False)
     attachments = serializers.BooleanField(default=False)
     participants = EmailAddressSerializer(many=True)
     uids = serializers.ListField(child=serializers.CharField())
@@ -339,6 +342,7 @@ class EmailSerializer(serializers.Serializer):
     # Reply-To may contain several addresses (parsed as a list)
     reply_to = EmailAddressSerializer(source="Reply_To", many=True, required=False)
     attachments = serializers.SerializerMethodField()
+    tags = serializers.ListField(child=serializers.CharField(), required=False)
     # Remote images and other resources were dropped from the body: the
     # reader can ask for them
     remote_content_blocked = serializers.BooleanField(read_only=True)
@@ -387,6 +391,78 @@ class FlagSelectionSerializer(serializers.Serializer):
 
     def validate_selection(self, value):
         return [item for item in value if item.isdigit()]
+
+
+class TagSerializer(serializers.ModelSerializer):
+    color = serializers.RegexField(r"^#[0-9a-fA-F]{6}$")
+
+    class Meta:
+        model = models.Tag
+        fields = ("pk", "keyword", "label", "color")
+        read_only_fields = ("pk", "keyword")
+
+    def validate_label(self, value):
+        account = self.context["request"].user
+        qset = models.Tag.objects.filter(account=account, label__iexact=value)
+        if self.instance:
+            qset = qset.exclude(pk=self.instance.pk)
+        if qset.exists():
+            raise serializers.ValidationError(_("A tag with this name already exists"))
+        return value
+
+    def create(self, validated_data):
+        account = self.context["request"].user
+        used = set(
+            models.Tag.objects.filter(account=account).values_list("keyword", flat=True)
+        )
+        if len(used) >= constants.MAX_TAGS_PER_USER:
+            raise serializers.ValidationError(
+                _("You can't create more than %(count)d tags")
+                % {"count": constants.MAX_TAGS_PER_USER}
+            )
+        return models.Tag.objects.create(
+            account=account,
+            keyword=generate_keyword(validated_data["label"], used),
+            **validated_data,
+        )
+
+
+def generate_keyword(label: str, used: set[str]) -> str:
+    """Return the IMAP keyword of a new tag.
+
+    The label, lowercased, as Thunderbird does when possible: both
+    clients then agree on tags of the same name. Otherwise (non ASCII
+    label, keyword taken), the next free "$labelN".
+    """
+    keyword = slugify(label)[:63]
+    if (
+        keyword
+        and keyword not in used
+        and keyword not in constants.RESERVED_KEYWORDS
+        and KEYWORD_RE.match(keyword)
+    ):
+        return keyword
+    number = 1
+    while f"$label{number}" in used:
+        number += 1
+    return f"$label{number}"
+
+
+class TagSelectionSerializer(serializers.Serializer):
+    mailbox = serializers.CharField()
+    selection = serializers.ListField(child=serializers.CharField())
+    tag = serializers.CharField()
+    action = serializers.ChoiceField(choices=[("add", "Add"), ("remove", "Remove")])
+
+    def validate_selection(self, value):
+        return [item for item in value if item.isdigit()]
+
+    def validate_tag(self, value):
+        # Only the user's tags: the endpoint can't set any other flag
+        account = self.context["request"].user
+        if not models.Tag.objects.filter(account=account, keyword=value).exists():
+            raise serializers.ValidationError(_("Unknown tag"))
+        return value
 
 
 class ScheduledDatetimeMixin:

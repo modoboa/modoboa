@@ -9,6 +9,7 @@ from rest_framework import serializers
 
 from modoboa.sievefilters import constants, lib
 from modoboa.sievefilters.api.v2 import vloaders
+from modoboa.webmail.models import Tag
 
 
 class SievefiltersSettingsSerializer(serializers.Serializer):
@@ -53,6 +54,20 @@ class ActionSerializer(serializers.Serializer):
         choices=[tpl["name"] for tpl in constants.ACTION_TEMPLATES]
     )
     args = serializers.DictField(child=serializers.CharField())
+
+    def validate(self, data):
+        if data["name"] == "addflag":
+            # Only the user's tags: any other keyword would be invisible
+            request = self.context.get("request")
+            keyword = data["args"].get("list-of-flags")
+            if (
+                request is None
+                or not Tag.objects.filter(
+                    account=request.user, keyword=keyword
+                ).exists()
+            ):
+                raise serializers.ValidationError({"args": _("Unknown tag")})
+        return data
 
 
 def condition_from_test(test: commands.Command) -> dict:
@@ -139,10 +154,18 @@ class FilterSerializer(serializers.Serializer):
                 action = {"name": c.name, "args": {}}
                 tpl = lib.find_action_template(c.name)
                 for argtpl in tpl.get("args", []):
-                    if argtpl["name"] not in c:
+                    name = argtpl["name"]
+                    if name == "list-of-flags" and name not in c:
+                        # sievelib reads a lone flag as the optional variable
+                        name = "variable-name"
+                    if name not in c:
                         continue
-                    value = tools.unquote(c[argtpl["name"]])
-                    action["args"][argtpl["name"]] = value
+                    if not isinstance(c[name], str):
+                        # A list of flags, for example
+                        raise lib.UnsupportedSieveFilter(
+                            f"unsupported {argtpl['name']} argument"
+                        )
+                    action["args"][argtpl["name"]] = tools.unquote(c[name])
                 item["actions"] += [action]
             result.append(item)
         return FilterSerializer(result, many=True)

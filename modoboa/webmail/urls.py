@@ -13,6 +13,7 @@ router.register(
     viewsets.ComposeSessionViewSet,
     basename="webmail-compose-session",
 )
+router.register("tags", viewsets.TagViewSet, basename="webmail-tag")
 router.register(
     "scheduled-messages",
     viewsets.ScheduledMessageViewSet,

@@ -48,6 +48,7 @@
       </button>
     </span>
     <span class="cell-subject" @click="openThread">
+      <TagChips :keywords="thread.tags" compact />
       {{ thread.subject || $gettext('(no subject)') }}
     </span>
     <span class="cell-flags">
@@ -83,6 +84,7 @@ import { computed, ref } from 'vue'
 import { useGettext } from 'vue3-gettext'
 import { useWebmailStore } from '@/stores'
 import api from '@/api/webmail'
+import TagChips from './TagChips.vue'
 
 const props = defineProps({
   thread: {
