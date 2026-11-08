@@ -471,6 +471,47 @@ class QuarantineViewSetTestCase(TestDataMixin, ModoAPITestCase):
         self.set_global_parameter("user_level_learning", True)
         self._test_mark_selection("ham", "H")
 
+    @mock.patch("modoboa.amavis.viewsets.django_rq.get_queue")
+    def test_manual_learning_database_as_domain_admin(self, get_queue):
+        """A domain admin must not be able to train the global database."""
+        admin = core_models.User.objects.get(username="admin@test.com")
+        self.client.force_authenticate(admin)
+        url = reverse("v2:amavis-quarantine-mark-selection")
+        data = {
+            "selection": [
+                {
+                    "mailid": smart_str(self.msgrcpt.mail.mail_id),
+                    "rcpt": smart_str(self.msgrcpt.rid.email),
+                }
+            ],
+            "type": "ham",
+        }
+
+        def check(database, status, queued=None):
+            get_queue.reset_mock()
+            payload = dict(data, database=database) if database else data
+            response = self.client.post(url, payload, format="json")
+            self.assertEqual(response.status_code, status)
+            enqueue = get_queue.return_value.enqueue
+            if queued is None:
+                enqueue.assert_not_called()
+            else:
+                self.assertEqual(enqueue.call_args.args[-1], queued)
+
+        self.set_global_parameter("domain_level_learning", True)
+        check(None, 204, "domain")
+        check("domain", 204, "domain")
+        check("global", 400)
+        check("user", 400)
+        check("whatever", 400)
+
+        self.set_global_parameter("domain_level_learning", False)
+        self.set_global_parameter("user_level_learning", True)
+        check(None, 204, "user")
+        check("user", 204, "user")
+        check("global", 400)
+        check("domain", 400)
+
 
 class PolicyViewSetTestCase(ModoAPITestCase):
 

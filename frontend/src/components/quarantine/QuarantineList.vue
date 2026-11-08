@@ -384,8 +384,7 @@ const markSelection = async (mtype) => {
     manualLearningEnabled.value &&
     authStore.authUser.role !== constants.USER
   ) {
-    learningDatabase.value =
-      authStore.authUser.role === constants.SUPER_ADMIN ? 'global' : 'domain'
+    learningDatabase.value = learningRecipients.value[0]?.value
     await learningRecipientRef.value.open(
       $gettext('Learning database'),
       $gettext('Which database should be used for this learning:'),
