@@ -278,8 +278,8 @@ dómain; dómªin2.com; 1000; 100; True
             mock_isfile.return_value = False
             with self.assertRaises(CommandError) as cm:
                 call_command("modo", "import", "test.csv")
-                ex_message = cm.exception.messages
-                self.assertEqual(ex_message, "File not found")
+            ex_message = str(cm.exception)
+            self.assertEqual(ex_message, "File not found")
 
     def test_import_command(self):
         test_file = os.path.join(
@@ -315,8 +315,8 @@ dómain; dómªin2.com; 1000; 100; True
         )
         with self.assertRaises(CommandError) as cm:
             call_command("modo", "import", test_file)
-            ex_message = cm.exception.messages
-            self.assertTrue(ex_message.startswith("Object already exists: "))
+        ex_message = str(cm.exception)
+        self.assertTrue(ex_message.startswith("Object already exists at line "))
 
     def test_import_command_duplicates_continue(self):
         test_file = os.path.join(
@@ -358,8 +358,8 @@ alias; alias1@test.com; True; user1@test.com
         )
         with self.assertRaises(CommandError) as cm:
             call_command("modo", "import", test_file)
-            ex_message = cm.exception.messages
-            self.assertTrue(ex_message.startswith("Object already exists"))
+        ex_message = str(cm.exception)
+        self.assertTrue(ex_message.startswith("Object already exists"))
 
         call_command("modo", "import", "--continue-if-exists", test_file)
 
