@@ -216,3 +216,19 @@ class AccountARMessageViewSetTestCase(PatcherMixin, ModoAPITestCase):
         self.assertEqual(response.status_code, 200)
         armessage = models.ARmessage.objects.get(mbox=self.account.mailbox)
         self.assertTrue(armessage.enabled)
+
+    def test_set_armessage_without_access_token(self):
+        """No access token to forward must not crash (#4397)."""
+        self.client.logout()
+        self.client.force_authenticate(self.account)
+        url = reverse("api:account_armessage-armessage")
+        fromdate = timezone.now()
+        data = {
+            "enabled": True,
+            "subject": "Je suis absent",
+            "content": "Je reviendrai",
+            "fromdate": fromdate.isoformat(),
+            "untildate": (fromdate + relativedelta(days=4)).isoformat(),
+        }
+        response = self.client.put(url, data, format="json")
+        self.assertEqual(response.status_code, 400)

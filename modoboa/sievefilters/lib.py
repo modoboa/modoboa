@@ -42,14 +42,16 @@ class SieveClient:
 
     msc: managesieve.Client
 
-    def __init__(self, user: str | None = None, password: str | None = None):
-        if user and password:
-            try:
-                ret, msg = self.login(user, password)
-            except managesieve.Error as e:
-                raise SieveClientError(str(e)) from None
-            if not ret:
-                raise SieveClientError(msg)
+    def __init__(self, user: str | None, password: str | None):
+        if not user or not password:
+            # An empty access token used to leave the client unconnected (#4397)
+            raise SieveClientError(_("Missing credentials for MANAGESIEVE server"))
+        try:
+            ret, msg = self.login(user, password)
+        except managesieve.Error as e:
+            raise SieveClientError(str(e)) from None
+        if not ret:
+            raise SieveClientError(msg)
 
     def __enter__(self):
         return self
