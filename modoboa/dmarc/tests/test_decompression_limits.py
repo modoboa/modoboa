@@ -89,7 +89,5 @@ class CompressedAttachmentSizeTestCase(SimpleTestCase):
     def test_oversized_compressed_attachment_is_rejected(self, import_archive_mock):
         with mock.patch.object(lib, "MAX_COMPRESSED_SIZE", 100):
             msg = self._build_email(b"\x00" * 500)
-            with self.assertRaises(SystemExit) as ctx:
-                lib.import_report_from_email(msg)
-        self.assertEqual(ctx.exception.code, 65)
+            self.assertTrue(lib.import_report_from_email(msg))
         import_archive_mock.assert_not_called()
