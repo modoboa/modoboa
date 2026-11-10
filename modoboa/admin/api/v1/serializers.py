@@ -535,6 +535,7 @@ class WritableAccountSerializer(AccountSerializer):
             setattr(instance, key, value)
         if password:
             instance.set_password(password)
+            instance.revoke_oauth2_tokens(keep=self.context["request"].auth)
         if mailbox_data:
             creator = self.context["request"].user
             if hasattr(instance, "mailbox"):
