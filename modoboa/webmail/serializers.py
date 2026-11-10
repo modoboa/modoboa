@@ -63,6 +63,7 @@ class UserPreferencesSerializer(serializers.Serializer):
     sent_folder = serializers.CharField(default="Sent")
     drafts_folder = serializers.CharField(default="Drafts")
     junk_folder = serializers.CharField(default="Junk")
+    subscribed_folders_only = serializers.BooleanField(default=True)
 
     editor = serializers.ChoiceField(
         default=constants.DisplayMode.PLAIN.value, choices=constants.DISPLAY_MODES
