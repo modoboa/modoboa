@@ -113,7 +113,13 @@ class UserMailboxViewSet(ImapConnectionMixin, viewsets.GenericViewSet):
     def list(self, request):
         parent_mailbox = request.GET.get("mailbox")
         with lib.get_imapconnector(request) as imapc:
-            mboxes = imapc.getmboxes(request.user, parent_mailbox, subscribed_only=True)
+            mboxes = imapc.getmboxes(
+                request.user,
+                parent_mailbox,
+                subscribed_only=request.user.parameters.get_value(
+                    "subscribed_folders_only"
+                ),
+            )
         serializer = self.get_serializer(
             {
                 "mailboxes": mboxes,
