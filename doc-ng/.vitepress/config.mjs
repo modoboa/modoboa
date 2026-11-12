@@ -22,6 +22,11 @@ export default defineConfig({
   srcExclude: ['public/**/*.md'],
   ignoreDeadLinks: [/^https?:\/\/localhost:*/],
   metaChunk: true,
+  vite: {
+    ssr: {
+      noExternal: ['vitepress-openapi'],
+    },
+  },
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
     nav: [
