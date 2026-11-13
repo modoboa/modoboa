@@ -348,6 +348,11 @@ class WritableAccountSerializer(AccountSerializer):
     def validate_username(self, value):
         """Lower case username."""
         value = value.lower()
+        # Usernames name files on disk (PDF credentials)
+        if ("/" in value or "\\" in value) and (
+            not self.instance or value != self.instance.username
+        ):
+            raise serializers.ValidationError(_("Invalid character in username."))
         # The unique validator runs before lower casing
         qset = core_models.User.objects.filter(username__iexact=value)
         if self.instance:

@@ -1021,6 +1021,15 @@ class AccountViewSetTestCase(ModoAPITestCase):
         self.assertEqual(resp.status_code, 400)
         self.assertIn("username", resp.json())
 
+    def test_rename_with_path_separator(self):
+        account, domain = self._create_domain_admin_without_mailbox()
+        url = reverse("v2:account-detail", args=[account.pk])
+        for username in ("x/../user@test.com", "x\\..\\user@test.com"):
+            data = {"username": username, "role": "DomainAdmins"}
+            resp = self.client.patch(url, data, format="json")
+            self.assertEqual(resp.status_code, 400)
+            self.assertIn("username", resp.json())
+
     def test_rename_to_existing_username_other_case(self):
         account, domain = self._create_domain_admin_without_mailbox()
         url = reverse("v2:account-detail", args=[account.pk])

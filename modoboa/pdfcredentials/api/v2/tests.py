@@ -12,7 +12,6 @@ from modoboa.lib.tests import ModoAPITestCase
 
 
 class PDFCredentialViewTestCase(ModoAPITestCase):
-
     @classmethod
     def setUpTestData(cls):  # NOQA:N802
         """Create test data."""
@@ -162,6 +161,20 @@ class PDFCredentialViewTestCase(ModoAPITestCase):
         url = reverse("v2:account-delete", args=[account.pk])
         self.client.post(url)
         self.assertFalse(os.path.exists(fname))
+
+    def test_download_other_account_document_via_username(self):
+        """An account can't alias another account's document."""
+        self._create_account("leon@test.com")
+        fname = os.path.join(self.workdir, "leon@test.com.pdf")
+        account = core_models.User.objects.get(username="admin")
+        account.username = "x/../leon@test.com"
+        account.save(update_fields=["username"])
+        response = self.client.get(reverse("v2:get-credentials", args=[account.pk]))
+        self.assertNotEqual(response.status_code, 200)
+        self.assertTrue(os.path.exists(fname))
+        # The identities list must not break on such a username
+        response = self.client.get(reverse("v2:identities-list"))
+        self.assertEqual(response.status_code, 200)
 
     # FIXME: Why does it no fail on Github ???
     # def test_storage_dir_creation(self):
