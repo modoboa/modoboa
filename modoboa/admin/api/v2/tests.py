@@ -944,6 +944,25 @@ class AccountViewSetTestCase(ModoAPITestCase):
             RefreshToken.objects.filter(user=account, revoked__isnull=True).exists()
         )
 
+    def test_disable_account_revokes_sessions(self):
+        account = core_models.User.objects.get(username="user@test.com")
+        session = self.authenticate_user_with_oauth(account)
+        self._create_oauth_session(account, session.application, "browser")
+        self.authenticate_user(self.sadmin)
+        response = self.client.patch(
+            reverse("v2:account-detail", args=[account.pk]),
+            {"is_active": False},
+            format="json",
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertFalse(AccessToken.objects.filter(user=account).exists())
+        self.assertFalse(
+            RefreshToken.objects.filter(user=account, revoked__isnull=True).exists()
+        )
+        self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {session.token}")
+        response = self.client.get(reverse("v2:account-me"))
+        self.assertEqual(response.status_code, 401)
+
     def test_rename(self):
         account = core_models.User.objects.get(username="user@test.com")
         url = reverse("v2:account-detail", args=[account.pk])

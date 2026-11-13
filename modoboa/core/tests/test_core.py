@@ -9,7 +9,7 @@ import tempfile
 
 import httmock
 from dateutil.relativedelta import relativedelta
-from oauth2_provider.models import get_application_model
+from oauth2_provider.models import get_access_token_model, get_application_model
 from reversion import revisions as reversion
 from reversion.models import Version
 
@@ -212,9 +212,15 @@ class ManagementCommandsTestCase(SimpleModoTestCase):
         self.assertIn("Inactive accounts detection is disabled.", out.getvalue())
 
         self.set_global_parameter("enable_inactive_accounts", True)
+        get_access_token_model().objects.create(
+            user=account,
+            token="access-token",
+            expires=timezone.now() + relativedelta(hours=1),
+        )
         management.call_command("clean_inactive_accounts", "--silent")
         account.refresh_from_db()
         self.assertFalse(account.is_active)
+        self.assertFalse(get_access_token_model().objects.filter(user=account).exists())
 
         account.is_active = True
         account.save(update_fields=["is_active"])

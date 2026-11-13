@@ -49,6 +49,12 @@ def track_object_creation(sender, instance, created, **kwargs):
         _created_objects.keys.add((sender, instance.pk))
 
 
+@receiver(signals.post_save, sender=models.User)
+def revoke_tokens_of_disabled_account(sender, instance, **kwargs):
+    if not instance.is_active:
+        instance.revoke_oauth2_tokens()
+
+
 @receiver(reversion.post_revision_commit)
 def post_revision_commit(sender, **kwargs):
     """Custom post-revision hook.

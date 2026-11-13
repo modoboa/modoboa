@@ -76,6 +76,8 @@ class Command(BaseCommand):
             if not answer.lower().startswith("y"):
                 return
         if action == "disable":
+            for account in qset:
+                account.revoke_oauth2_tokens()
             qset.update(is_active=False)
         else:
             qset.delete()
