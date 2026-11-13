@@ -106,6 +106,27 @@ class UserMailboxViewSetTestCase(WebmailTestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.json()["mailboxes"]), 5)
 
+    def test_list_subscribed_folders_only_preference(self):
+        class IMAP4MockWithUnsubscribed(IMAP4Mock):
+            def _simple_command(self, name, *args, **kwargs):
+                if name == "LIST":
+                    self.untagged_responses["LIST"] = [
+                        b'(\\Subscribed \\HasNoChildren) "." "INBOX"',
+                        b'(\\HasNoChildren) "." "Hidden"',
+                    ]
+                    return "OK", None
+                return super()._simple_command(name, *args, **kwargs)
+
+        self.mock_imap4.return_value = IMAP4MockWithUnsubscribed()
+        self.authenticate()
+        url = reverse("v2:webmail-mailbox-list")
+        names = [mb["name"] for mb in self.client.get(url).json()["mailboxes"]]
+        self.assertNotIn("Hidden", names)
+        self.user.parameters.set_value("subscribed_folders_only", False)
+        self.user.save()
+        names = [mb["name"] for mb in self.client.get(url).json()["mailboxes"]]
+        self.assertIn("Hidden", names)
+
     def test_quota(self):
         self.authenticate()
         url = reverse("v2:webmail-mailbox-quota")

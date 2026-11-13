@@ -192,6 +192,7 @@ class AccountViewSet(
             body = {"status": "ok"}
             user.set_password(password)
             user.save(update_fields=["password"])
+            user.revoke_oauth2_tokens()
         return Response(body)
 
 

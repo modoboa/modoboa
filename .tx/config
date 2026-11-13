@@ -1,11 +1,6 @@
 [main]
 host = https://www.transifex.com
 
-[o:tonio:p:modoboa:r:4a510eeff6e480919e943d31202948bd]
-file_filter = modoboa/locale/<lang>/LC_MESSAGES/djangojs.po
-source_file = modoboa/locale/en/LC_MESSAGES/djangojs.po
-source_lang = en
-type        = PO
 
 [o:tonio:p:modoboa:r:5d93982e9fd6dab991db4faf93ce9ded]
 file_filter = modoboa/locale/<lang>/LC_MESSAGES/django.po

@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-26 09:35+0100\n"
+"POT-Creation-Date: 2026-11-13 14:54+0100\n"
 "PO-Revision-Date: 2024-07-17 11:46+0200\n"
 "Last-Translator: J Rosier <vertalen@tagora.nl>\n"
 "Language-Team: Dutch (Netherlands) (http://www.transifex.com/tonio/modoboa/"
@@ -30,7 +30,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: admin/api/v1/serializers.py:41
+#: admin/api/v1/serializers.py:39
 msgid ""
 "Quota shared between mailboxes. Can be expressed in KB, MB (default) or GB. "
 "A value of 0 means no quota."
@@ -38,110 +38,114 @@ msgstr ""
 "Quota gedeeld tussen mailboxen. Kan uitgedrukt worden in kB, MB (standaard) "
 "of GB. Een waarde van 0 betekent geen quota."
 
-#: admin/api/v1/serializers.py:48
+#: admin/api/v1/serializers.py:46
 msgid "Default quota in MB applied to mailboxes. A value of 0 means no quota."
 msgstr "Standaard quotum in MB per mailbox. 0 betekent geen quotum."
 
-#: admin/api/v1/serializers.py:98 admin/api/v1/serializers.py:194
+#: admin/api/v1/serializers.py:96 admin/api/v1/serializers.py:181
 #: lib/validators.py:13 relaydomains/api/v1/serializers.py:63
 msgid "Enter a valid domain name"
 msgstr "Vul een geldige domeinnaam in"
 
-#: admin/api/v1/serializers.py:101 relaydomains/api/v1/serializers.py:66
+#: admin/api/v1/serializers.py:99 relaydomains/api/v1/serializers.py:66
 #, fuzzy
 #| msgid "An alias with this name already exists."
 msgid "domain alias with this name already exists"
 msgstr "Een alias met deze naam bestaat al."
 
-#: admin/api/v1/serializers.py:110
+#: admin/api/v1/serializers.py:108
 msgid "No authorized MX record found for this domain"
 msgstr "Geen geauthoriseerd MX record gevonden voor dit domein"
 
-#: admin/api/v1/serializers.py:122
-#, fuzzy
-#| msgid "Not a valid DKIM record"
-msgid "Enter a valid DKIM selector"
-msgstr "Ongeldig DKIM record"
-
-#: admin/api/v1/serializers.py:139
+#: admin/api/v1/serializers.py:126
 msgid "Cannot be greater than domain quota"
 msgstr "Kan niet groter zijn dan domeinquotum"
 
-#: admin/api/v1/serializers.py:185 admin/api/v1/serializers.py:418
-#: admin/api/v1/serializers.py:466 admin/api/v2/serializers.py:402
-#: admin/api/v2/serializers.py:718 admin/api/v2/serializers.py:771
+#: admin/api/v1/serializers.py:172 admin/api/v1/serializers.py:424
+#: admin/api/v1/serializers.py:472 admin/api/v2/serializers.py:402
+#: admin/api/v2/serializers.py:724 admin/api/v2/serializers.py:777
 #: admin/models/alias.py:45 calendars/serializers.py:218
 msgid "Permission denied."
 msgstr "Toegang geweigerd."
 
-#: admin/api/v1/serializers.py:196
+#: admin/api/v1/serializers.py:183
 #, fuzzy
 #| msgid "An alias with this name already exists."
 msgid "domain with this name already exists"
 msgstr "Een alias met deze naam bestaat al."
 
-#: admin/api/v1/serializers.py:209
+#: admin/api/v1/serializers.py:196
 #, fuzzy
 #| msgid "An alias with this name already exists."
 msgid ""
 "domain with this name already exists, rename or delete this domain alias"
 msgstr "Een alias met deze naam bestaat al."
 
-#: admin/api/v1/serializers.py:272 admin/api/v2/serializers.py:118
-#: admin/api/v2/serializers.py:607 amavis/serializers.py:39
-#: core/api/v2/serializers.py:219 core/api/v2/serializers.py:221
-#: core/api/v2/serializers.py:230 transport/backends.py:40
+#: admin/api/v1/serializers.py:259 admin/api/v2/serializers.py:118
+#: admin/api/v2/serializers.py:612 amavis/serializers.py:39
+#: core/api/v2/serializers.py:230 core/api/v2/serializers.py:232
+#: core/api/v2/serializers.py:241 transport/backends.py:40
 msgid "This field is required"
 msgstr "Dit veld is verplicht"
 
-#: admin/api/v1/serializers.py:284
+#: admin/api/v1/serializers.py:271
 msgid ""
 "List of administered domains (resellers and domain administrators only)."
 msgstr "Lijst van beheerde domeinen (alleen resellers en domeinbeheerders)."
 
-#: admin/api/v1/serializers.py:369
+#: admin/api/v1/serializers.py:355
+#, fuzzy
+#| msgid "Enter a valid domain name"
+msgid "Invalid character in username."
+msgstr "Vul een geldige domeinnaam in"
+
+#: admin/api/v1/serializers.py:361
 #, fuzzy
 #| msgid "User '%s' already exists"
 msgid "This username is already used."
 msgstr "Gebruiker '%s' bestaat al"
 
-#: admin/api/v1/serializers.py:385 admin/api/v2/serializers.py:678
+#: admin/api/v1/serializers.py:381
+msgid "This field can't be changed for this account."
+msgstr ""
+
+#: admin/api/v1/serializers.py:391 admin/api/v2/serializers.py:684
 msgid "Not allowed for this role."
 msgstr "Niet toegestaan voor deze rol."
 
-#: admin/api/v1/serializers.py:403
+#: admin/api/v1/serializers.py:409
 msgid "Must be equal to mailbox full_address"
 msgstr "Moet gelijk zijn aan de mailbox full_address"
 
-#: admin/api/v1/serializers.py:409 admin/api/v1/serializers.py:452
-#: admin/api/v2/serializers.py:752 calendars/serializers.py:316
+#: admin/api/v1/serializers.py:415 admin/api/v1/serializers.py:458
+#: admin/api/v2/serializers.py:758 calendars/serializers.py:316
 #: calendars/serializers.py:385 pdfcredentials/api/v2/serializers.py:91
 msgid "This field is required."
 msgstr "Dit veld is verplicht."
 
-#: admin/api/v1/serializers.py:463 admin/api/v2/serializers.py:768
+#: admin/api/v1/serializers.py:469 admin/api/v2/serializers.py:774
 msgid "Local domain {} does not exist"
 msgstr "Lokaal domein {} bestaat niet"
 
-#: admin/api/v1/serializers.py:562
+#: admin/api/v1/serializers.py:569
 msgid "A list of recipient"
 msgstr "Lijst ontvangers."
 
-#: admin/api/v1/serializers.py:578 admin/api/v2/viewsets.py:469
+#: admin/api/v1/serializers.py:585 admin/api/v2/viewsets.py:514
 #, fuzzy
 #| msgid "User '%s' already exists"
 msgid "This alias already exists"
 msgstr "Gebruiker '%s' bestaat al"
 
-#: admin/api/v1/serializers.py:614
+#: admin/api/v1/serializers.py:621
 msgid "You don't have access to this domain."
 msgstr "Je hebt geen toegang tot dit domein."
 
-#: admin/api/v1/serializers.py:623
+#: admin/api/v1/serializers.py:630
 msgid "You don't have access to this mailbox."
 msgstr "Je hebt geen toegang tot deze mailbox."
 
-#: admin/api/v1/viewsets.py:183
+#: admin/api/v1/viewsets.py:187
 msgid "Here is your new Modoboa password: {}"
 msgstr "Hier is je nieuwe Modoboa wachtwoord:{}"
 
@@ -187,37 +191,37 @@ msgstr ""
 msgid "Define at least one authorized network / address"
 msgstr "Definieer ten minste 1 geautoriseerd netwerk / adres"
 
-#: admin/api/v2/serializers.py:711
+#: admin/api/v2/serializers.py:717
 msgid "An account with a mailbox must use an email address as username."
 msgstr ""
 
-#: admin/api/v2/serializers.py:735
+#: admin/api/v2/serializers.py:741
 msgid "The left part of an email address can't be more than 64 characters."
 msgstr ""
 
-#: admin/api/v2/serializers.py:757
+#: admin/api/v2/serializers.py:763
 msgid "A mailbox is required to create aliases."
 msgstr "Er is een mailbox vereist om een alias te creëren"
 
-#: admin/api/v2/serializers.py:999
+#: admin/api/v2/serializers.py:1006
 #, fuzzy
 #| msgid "Unknown tag {}"
 msgid "Unknown status"
 msgstr "Onbekende tag {}"
 
-#: admin/api/v2/viewsets.py:127
+#: admin/api/v2/viewsets.py:136
 msgid "You don't have access to this domain"
 msgstr "Je hebt geen toegang tot dit domein"
 
-#: admin/api/v2/viewsets.py:130 admin/api/v2/viewsets.py:148
+#: admin/api/v2/viewsets.py:139 admin/api/v2/viewsets.py:157
 msgid "You can't delete your own domain"
 msgstr "Je kunt je eigen domein niet verwijderen"
 
-#: admin/api/v2/viewsets.py:163
+#: admin/api/v2/viewsets.py:172
 msgid "DKIM signing is not enabled for this domain"
 msgstr ""
 
-#: admin/api/v2/viewsets.py:384 core/handlers.py:95
+#: admin/api/v2/viewsets.py:429 core/handlers.py:109
 msgid "You can't delete your own account"
 msgstr "U kunt uw eigen account niet verwijderen"
 
@@ -479,9 +483,27 @@ msgstr ""
 msgid "A list of domains that aliases can target (comma separated)."
 msgstr ""
 
-#: admin/app_settings.py:356 core/api/v2/viewsets.py:174
+#: admin/app_settings.py:356 core/api/v2/viewsets.py:216
 msgid "Administration"
 msgstr "Beheer"
+
+#: admin/apps.py:23
+#, fuzzy
+#| msgid "Domain administrator"
+msgid "Domain administrator added"
+msgstr "Domeinbeheerder"
+
+#: admin/apps.py:26
+#, fuzzy
+#| msgid "Domain administrator"
+msgid "Domain administrator removed"
+msgstr "Domeinbeheerder"
+
+#: admin/apps.py:29
+#, fuzzy
+#| msgid "DKIM keys storage directory"
+msgid "DKIM key generation"
+msgstr "DKIM Key opslagdirectory"
 
 #: admin/checks.py:7
 msgid "Run `python manage.py modo repair --dry-run` for details."
@@ -552,16 +574,16 @@ msgstr "[modoboa] MX problemen voor domein {}"
 msgid "[modoboa] DNSBL issue(s) for domain {}"
 msgstr "[modoboa] DNSBL problemen voor domein {}"
 
-#: admin/handlers.py:261
+#: admin/handlers.py:281
 msgid "domain alias"
 msgstr "domeinalias"
 
-#: admin/handlers.py:309
+#: admin/handlers.py:329
 #, python-format
 msgid "Account import failed (%s): domain does not exist"
 msgstr "Accounts importeren mislukt (%s): domein bestaat niet"
 
-#: admin/handlers.py:328
+#: admin/handlers.py:348
 #, python-format
 msgid "Account import failed (%s): wrong quota value"
 msgstr "Account import is mislukt (%s): verkeerde quotumwaarde"
@@ -572,51 +594,51 @@ msgstr "Account import is mislukt (%s): verkeerde quotumwaarde"
 msgid "Failed to move mailbox folder {} to {} ({})"
 msgstr "Mislukt om de mailbox locatie te verkijgen (%s)"
 
-#: admin/lib.py:177
+#: admin/lib.py:187
 msgid "You are not allowed to import domains"
 msgstr "Je mag geen domeinen importeren"
 
-#: admin/lib.py:186
+#: admin/lib.py:196
 msgid "You are not allowed to import domain aliases."
 msgstr "Je hebt geen rechten om domeinaliassen te importeren."
 
-#: admin/lib.py:278 admin/tests/test_mx.py:139 admin/tests/test_mx.py:152
+#: admin/lib.py:288 admin/tests/test_mx.py:139 admin/tests/test_mx.py:152
 #: admin/tests/test_mx.py:157
 #, python-format
 msgid "No DNS record found for %s"
 msgstr "Geen DNS record gevonden voor %s "
 
-#: admin/lib.py:281
+#: admin/lib.py:291
 #, python-format
 msgid "No %(type)s record for %(name)s"
 msgstr "Geen %(type)s record voor %(name)s"
 
-#: admin/lib.py:285 admin/tests/test_mx.py:142
+#: admin/lib.py:295 admin/tests/test_mx.py:142
 msgid "No working name servers found"
 msgstr "Geen werkende nameservers gevonden"
 
-#: admin/lib.py:288 admin/tests/test_mx.py:146
+#: admin/lib.py:298 admin/tests/test_mx.py:146
 #, python-format
 msgid "DNS resolution timeout, unable to query %s at the moment"
 msgstr "DNS timeout, het was niet mogelijk om %s op te zoeken"
 
-#: admin/lib.py:292
+#: admin/lib.py:302
 #, fuzzy
 #| msgid "DNS name is too long: %s"
 msgid "DNS name is too long: {}"
 msgstr "DNS naam is te lang: %s"
 
-#: admin/lib.py:323
+#: admin/lib.py:333
 #, python-brace-format
 msgid "Invalid IP address format for {domain}; {addr}"
 msgstr "Ongeldig IP-adres format voor {domain}; {addr}"
 
-#: admin/lib.py:416
+#: admin/lib.py:426
 #, python-format
 msgid "Object already exists: %s"
 msgstr "Object bestaat al: %s"
 
-#: admin/lib.py:420
+#: admin/lib.py:430
 #, python-format
 msgid "%d objects imported successfully"
 msgstr "%d objecten succesvol geïmporteerd"
@@ -750,40 +772,40 @@ msgstr ""
 "Als je deze functie aanzet, zal er een DKIM key gegenereerd worden voor dit "
 "domein."
 
-#: admin/models/domain.py:102
+#: admin/models/domain.py:104
 msgid "Key length"
 msgstr "Sleutellengte"
 
-#: admin/models/domain.py:394 admin/models/domain_alias.py:104
-#: core/models.py:377 relaydomains/lib.py:21
+#: admin/models/domain.py:396 admin/models/domain_alias.py:104
+#: core/models.py:400 relaydomains/lib.py:21
 msgid "Invalid line"
 msgstr "Onjuiste regel"
 
-#: admin/models/domain.py:399
+#: admin/models/domain.py:401
 #, fuzzy
 #| msgid "Enter a valid domain name"
 msgid "Invalid domain name"
 msgstr "Vul een geldige domeinnaam in"
 
-#: admin/models/domain.py:403 relaydomains/lib.py:26
+#: admin/models/domain.py:405 relaydomains/lib.py:26
 #, fuzzy
 #| msgid "Enter a valid domain name"
 msgid "{}: invalid domain name"
 msgstr "Vul een geldige domeinnaam in"
 
-#: admin/models/domain.py:413
+#: admin/models/domain.py:415
 msgid "{}: no authorized MX record found for domain"
 msgstr "{}: geen goedgekeurd MX record gevonden voor dit domein"
 
-#: admin/models/domain.py:419
+#: admin/models/domain.py:421
 msgid "{}: invalid quota value for domain"
 msgstr "{}: ongeldige quotumwaarde voor dit domein"
 
-#: admin/models/domain.py:425
+#: admin/models/domain.py:427
 msgid "{}: invalid default mailbox quota value for domain"
 msgstr "{}: ongeldige standaard quotumwaarde voor dit domein"
 
-#: admin/models/domain.py:432
+#: admin/models/domain.py:434
 msgid "{}: default mailbox quota cannot be greater than domain quota"
 msgstr "{}: standaard mailboxquotum kan niet groter zijn dan domeinquotum"
 
@@ -1098,6 +1120,24 @@ msgstr "Stelt het maximum aantal weergegeven berichten per pagina in"
 msgid "Amavis"
 msgstr ""
 
+#: amavis/apps.py:26
+msgid "Quarantined messages released"
+msgstr ""
+
+#: amavis/apps.py:30
+msgid "Quarantined messages release requested"
+msgstr ""
+
+#: amavis/apps.py:32
+msgid "Quarantined messages deleted"
+msgstr ""
+
+#: amavis/apps.py:33
+#, fuzzy
+#| msgid "Quarantine"
+msgid "Quarantined messages marked"
+msgstr "Quarantaine"
+
 #: amavis/checks/settings_checks.py:8
 msgid ""
 "AMAVIS_DEFAULT_DATABASE_ENCODING does not match the character encoding used "
@@ -1243,11 +1283,17 @@ msgstr "verstuurde berichten"
 msgid "Please visit %(listingurl)s for a full listing."
 msgstr ""
 
-#: amavis/viewsets.py:160
+#: amavis/viewsets.py:195
 #, fuzzy
 #| msgid "Invalid address"
 msgid "Invalid request"
 msgstr "Ongeldig adres"
+
+#: amavis/viewsets.py:329
+#, fuzzy
+#| msgid "You are not allowed to import domain aliases."
+msgid "You are not allowed to use this database"
+msgstr "Je hebt geen rechten om domeinaliassen te importeren."
 
 #: autoreply/api/v2/serializers.py:28
 msgid "Value can't be less than 1 day"
@@ -1376,7 +1422,7 @@ msgstr "Domeinbeheerder"
 msgid "Allow domain administrators to manage user calendars (read and write)"
 msgstr "Sta deze beheerder toe om mailboxen van gebruikers te benaderen"
 
-#: calendars/app_settings.py:60 core/app_settings.py:724
+#: calendars/app_settings.py:60 core/app_settings.py:762
 #: rspamd/app_settings.py:45
 msgid "Miscellaneous"
 msgstr "Diversen"
@@ -1409,7 +1455,7 @@ msgid "Hours outside working hours are greyed out"
 msgstr ""
 
 #: calendars/app_settings.py:123 calendars/app_settings.py:130
-#: core/api/v2/viewsets.py:205
+#: core/api/v2/viewsets.py:247
 msgid "Calendars"
 msgstr ""
 
@@ -1526,7 +1572,7 @@ msgstr "LDAP synchronisatie-instellingen"
 msgid "Interval in seconds between 2 synchronization requests"
 msgstr ""
 
-#: contacts/app_settings.py:51 core/api/v2/viewsets.py:195
+#: contacts/app_settings.py:51 core/api/v2/viewsets.py:237
 #, fuzzy
 #| msgid "Domains"
 msgid "Contacts"
@@ -1536,7 +1582,7 @@ msgstr "bevat"
 msgid "Home"
 msgstr ""
 
-#: contacts/constants.py:15 contacts/constants.py:21
+#: contacts/constants.py:15 contacts/constants.py:21 webmail/constants.py:140
 msgid "Work"
 msgstr ""
 
@@ -1576,76 +1622,71 @@ msgstr "Adres"
 msgid "Minimum allowed value is 60s"
 msgstr ""
 
-#: core/api/v1/serializers.py:68
+#: core/api/v1/serializers.py:70
 #, fuzzy
 #| msgid "Invalid code"
 msgid "Invalid PIN code"
 msgstr "Ongeldige code"
 
-#: core/api/v1/serializers.py:74
+#: core/api/v1/serializers.py:76
 msgid "2FA is already enabled"
 msgstr ""
 
-#: core/api/v1/serializers.py:87
-#, python-format
-msgid "Failed TFA settings editing attempt from '%(addr)s' as user '%(user)s'"
-msgstr ""
-
-#: core/api/v1/serializers.py:93 core/api/v2/serializers.py:409
+#: core/api/v1/serializers.py:99 core/api/v2/serializers.py:463
 #, fuzzy
 #| msgid "Old password"
 msgid "Invalid password"
 msgstr "Oud wachtwoord"
 
-#: core/api/v1/viewsets.py:45 core/api/v1/viewsets.py:64
+#: core/api/v1/viewsets.py:58 core/api/v1/viewsets.py:78
 msgid "2FA is not enabled"
 msgstr ""
 
-#: core/api/v2/serializers.py:30
+#: core/api/v2/serializers.py:32
 msgid "Local"
 msgstr "Lokaal"
 
-#: core/api/v2/serializers.py:177 core/api/v2/serializers.py:185
-#: core/api/v2/serializers.py:192
+#: core/api/v2/serializers.py:188 core/api/v2/serializers.py:196
+#: core/api/v2/serializers.py:203
 msgid "Invalid syntax"
 msgstr "Ongeldige zinsbouw"
 
-#: core/api/v2/serializers.py:197
+#: core/api/v2/serializers.py:208
 msgid "Invalid rounds number"
 msgstr "Ongeldig nummer van rondes"
 
-#: core/api/v2/serializers.py:397 core/forms.py:84
+#: core/api/v2/serializers.py:451 core/forms.py:86
 msgid "This code is invalid"
 msgstr ""
 
-#: core/api/v2/viewsets.py:176
+#: core/api/v2/viewsets.py:218
 #, fuzzy
 #| msgid "Administration"
 msgid "Administration console"
 msgstr "Beheer"
 
-#: core/api/v2/viewsets.py:184 dmarc/models.py:11
+#: core/api/v2/viewsets.py:226 dmarc/models.py:11
 msgid "Quarantine"
 msgstr "Quarantaine"
 
-#: core/api/v2/viewsets.py:186
+#: core/api/v2/viewsets.py:228
 #, fuzzy
 #| msgid "Quarantine"
 msgid "Amavis quarantine"
 msgstr "Quarantaine"
 
-#: core/api/v2/viewsets.py:197
+#: core/api/v2/viewsets.py:239
 #, fuzzy
 #| msgid "Address"
 msgid "Address book"
 msgstr "Adres"
 
-#: core/api/v2/viewsets.py:207
+#: core/api/v2/viewsets.py:249
 msgid "Calendar"
 msgstr ""
 
-#: core/api/v2/viewsets.py:215 core/api/v2/viewsets.py:217
-#: webmail/app_settings.py:338 webmail/app_settings.py:345
+#: core/api/v2/viewsets.py:257 core/api/v2/viewsets.py:259
+#: webmail/app_settings.py:348 webmail/app_settings.py:355
 #, fuzzy
 #| msgid "E-mail"
 msgid "Webmail"
@@ -2140,77 +2181,113 @@ msgid ""
 "it to use the default Modoboa logo."
 msgstr ""
 
-#: core/app_settings.py:643
+#: core/app_settings.py:639
+#, fuzzy
+#| msgid "Search filter"
+msgid "Banner"
+msgstr "Zoekfilter"
+
+#: core/app_settings.py:646
+#, fuzzy
+#| msgid "sent messages"
+msgid "Banner message"
+msgstr "verstuurde berichten"
+
+#: core/app_settings.py:648
+msgid ""
+"A message displayed at the bottom of every page of the interface. Leave "
+"empty to hide the banner."
+msgstr ""
+
+#: core/app_settings.py:657
+msgid "Banner link URL"
+msgstr ""
+
+#: core/app_settings.py:659
+msgid "An optional link displayed after the banner message"
+msgstr ""
+
+#: core/app_settings.py:667
+#, fuzzy
+#| msgid "Search filter"
+msgid "Banner link label"
+msgstr "Zoekfilter"
+
+#: core/app_settings.py:669
+msgid "Text of the banner link (the URL is displayed when empty)"
+msgstr ""
+
+#: core/app_settings.py:681
 msgid "Notifications"
 msgstr "Notificaties"
 
-#: core/app_settings.py:649
+#: core/app_settings.py:687
 msgid "Sender address"
 msgstr "Afzenderadres"
 
-#: core/app_settings.py:651
+#: core/app_settings.py:689
 msgid "Email address used to send notifications."
 msgstr "E-mailadres dat gebruikt wordt om notificaties te versturen"
 
-#: core/app_settings.py:662
+#: core/app_settings.py:700
 msgid "Public API"
 msgstr "Publieke API"
 
-#: core/app_settings.py:668
+#: core/app_settings.py:706
 msgid "Enable communication"
 msgstr "Communicatie toestaan"
 
-#: core/app_settings.py:670 core/app_settings.py:680
+#: core/app_settings.py:708 core/app_settings.py:718
 msgid "Automatically checks if a newer version is available"
 msgstr "Controleert automatisch of een nieuwere versie beschikbaar is"
 
-#: core/app_settings.py:677
+#: core/app_settings.py:715
 msgid "Check new versions"
 msgstr "Controleer of er een nieuwe versie beschikbaar is"
 
-#: core/app_settings.py:688
+#: core/app_settings.py:726
 msgid "Send an email when new versions are found"
 msgstr "Stuur een e-mail als er nieuwe versies worden gevonden"
 
-#: core/app_settings.py:692
+#: core/app_settings.py:730
 msgid "Send an email to notify admins about new versions"
 msgstr "Stuur een e-mail naar administrators over nieuwe versies"
 
-#: core/app_settings.py:699 sievefilters/constants.py:30
+#: core/app_settings.py:737 sievefilters/constants.py:30
 msgid "Recipient"
 msgstr "Ontvanger"
 
-#: core/app_settings.py:702
+#: core/app_settings.py:740
 msgid "Recipient of new versions notification emails."
 msgstr "Ontvanger van notificatiemails over nieuwe versies"
 
-#: core/app_settings.py:709
+#: core/app_settings.py:747
 msgid "Send statistics"
 msgstr "Verstuur statistieken"
 
-#: core/app_settings.py:712
+#: core/app_settings.py:750
 msgid "Send statistics to Modoboa public API (counters and used extensions)"
 msgstr ""
 "Verstuur statistieken naar de publieke Modoboa API (statistieken en "
 "gebruikte extenties)"
 
-#: core/app_settings.py:731
+#: core/app_settings.py:769
 #, fuzzy
 #| msgid "Inactive account threshold"
 msgid "Enable inactive account tracking"
 msgstr "Drempelwaarde inactieve gebruikers"
 
-#: core/app_settings.py:734
+#: core/app_settings.py:772
 msgid ""
 "Allow the administrator to set a threshold (in days) beyond which an account "
 "is considered inactive if the user hasn't logged in"
 msgstr ""
 
-#: core/app_settings.py:743
+#: core/app_settings.py:781
 msgid "Inactive account threshold"
 msgstr "Drempelwaarde inactieve gebruikers"
 
-#: core/app_settings.py:746
+#: core/app_settings.py:784
 msgid ""
 "An account with a last login date greater than this threshold (in days) will "
 "be considered as inactive"
@@ -2218,39 +2295,39 @@ msgstr ""
 "Een gebruiker die langer dan dit aantal dagen niet ingelogd is, wordt op "
 "inactief gezet."
 
-#: core/app_settings.py:755
+#: core/app_settings.py:793
 msgid "Top notifications check interval"
 msgstr "Top notificaties controle interval"
 
-#: core/app_settings.py:758
+#: core/app_settings.py:796
 msgid "Interval between two top notification checks (in seconds)"
 msgstr "Interval tussen twee notificatiecontroles (in seconden)"
 
-#: core/app_settings.py:765
+#: core/app_settings.py:803
 msgid "Maximum log record age"
 msgstr "Maximum bewaartijd van logs"
 
-#: core/app_settings.py:767
+#: core/app_settings.py:805
 msgid "The maximum age in days of a log record"
 msgstr "De maximum bewaartijd in dagen van een log record"
 
-#: core/app_settings.py:775
+#: core/app_settings.py:813
 msgid "Retention time in message history"
 msgstr ""
 
-#: core/app_settings.py:778
+#: core/app_settings.py:816
 msgid "Retention time (in days) of a message in the message history section"
 msgstr ""
 
-#: core/app_settings.py:785
+#: core/app_settings.py:823
 msgid "Items per page"
 msgstr "Items per pagina"
 
-#: core/app_settings.py:787
+#: core/app_settings.py:825
 msgid "Number of displayed items per page"
 msgstr "Aantal getoonde items per pagina"
 
-#: core/checks.py:15
+#: core/checks.py:18
 msgid ""
 "You have USE_TZ set to False, this may result in issues during transitions "
 "between summer/winter time (ie the same local time occuring twice due to "
@@ -2260,39 +2337,63 @@ msgstr ""
 "tussen zomer- en wintertijd (bijv. dezelfde locale tijd komt twee keer voor "
 "door de tijdsverandering)"
 
-#: core/checks.py:19
+#: core/checks.py:22
 msgid "Set `USE_TZ = True` in settings.py"
 msgstr "Zet 'USE_TZ = TRUE' in settings.py"
 
-#: core/checks.py:23
+#: core/checks.py:26
 msgid "The password scheme you are using is deprecated."
 msgstr ""
 
-#: core/checks.py:24
+#: core/checks.py:27
 #, fuzzy
 #| msgid "Update password scheme at login"
 msgid "Upgrade your password scheme to a stronger one"
 msgstr "Update wachtwoordschema bij inloggen"
 
-#: core/checks.py:30
+#: core/checks.py:32
+msgid ""
+"Client addresses are read from a header clients can forge, which defeats "
+"rate limits and fail2ban."
+msgstr ""
+
+#: core/checks.py:36
+msgid ""
+"In settings.py, replace XForwardedForMiddleware with "
+"modoboa.lib.middleware.TrustedProxyMiddleware and set NUM_PROXIES in "
+"REST_FRAMEWORK. See the upgrade documentation."
+msgstr ""
+
+#: core/checks.py:43
+msgid "OAuth2 tokens of disabled accounts are still accepted."
+msgstr ""
+
+#: core/checks.py:45
+msgid ""
+"In settings.py, set 'OAUTH2_VALIDATOR_CLASS' to "
+"'modoboa.core.oauth2_validators.OAuth2Validator' in OAUTH2_PROVIDER. See the "
+"upgrade documentation."
+msgstr ""
+
+#: core/checks.py:54
 msgid ""
 "Oauth2 application for dovecot has not been found. Webmail and some other "
 "features won't be available."
 msgstr ""
 
-#: core/checks.py:34
+#: core/checks.py:58
 msgid ""
 "Visit : https://modoboa.readthedocs.io/en/latest/manual_installation/"
 "dovecot.html#dovecot-oauth2"
 msgstr ""
 
-#: core/checks.py:41
+#: core/checks.py:65
 msgid ""
 "Oauth2 application for radicale has not been found. Calendar and some other "
 "features won't be available."
 msgstr ""
 
-#: core/checks.py:45
+#: core/checks.py:69
 msgid ""
 "Visit :  https://modoboa.readthedocs.io/en/latest/manual_installation/"
 "radicale.html#radicale-oauth2"
@@ -2334,114 +2435,172 @@ msgstr "Kies een provider"
 msgid "Dummy"
 msgstr "Dummy"
 
-#: core/forms.py:59
+#: core/forms.py:61
 msgid "Verification code"
 msgstr "Verificatiecode"
 
-#: core/forms.py:70
+#: core/forms.py:72
 msgid "Invalid code"
 msgstr "Ongeldige code"
 
-#: core/handlers.py:36
-msgid "added"
-msgstr "toegevoegd"
-
-#: core/handlers.py:39
-msgid "modified"
-msgstr "veranderd"
-
-#: core/handlers.py:41
-#, python-format
-msgid "%(object)s '%(name)s' %(action)s by user %(user)s"
-msgstr "%(object)s '%(name)s' %(action)s door gebruiker %(user)s"
-
-#: core/handlers.py:64
-#, python-format
-msgid "%(object)s '%(name)s' %(action)s by "
-msgstr "%(object)s '%(name)s' %(action)s door "
-
-#: core/handlers.py:67
-msgid "deleted"
-msgstr "verwijderd"
-
-#: core/handlers.py:71
-msgid "user {}"
-msgstr "gebruiker {}"
-
-#: core/handlers.py:73
-msgid "management command"
-msgstr "beheeropdracht"
-
-#: core/handlers.py:126
+#: core/handlers.py:140
 msgid "One or more updates are available"
 msgstr "Er zijn een of meer updates beschikbaar"
 
-#: core/handlers.py:139
+#: core/handlers.py:153
 #, python-format
 msgid "You are still using a deprecated password scheme (%s)"
+msgstr ""
+
+#: core/loggers.py:26
+#, python-format
+msgid "%(model)s created"
+msgstr ""
+
+#: core/loggers.py:27
+#, fuzzy, python-format
+#| msgid "modified"
+msgid "%(model)s modified"
+msgstr "veranderd"
+
+#: core/loggers.py:28
+#, python-format
+msgid "%(model)s deleted"
+msgstr ""
+
+#: core/loggers.py:41
+msgid "Login succeeded"
+msgstr ""
+
+#: core/loggers.py:42
+msgid "Login failed"
+msgstr ""
+
+#: core/loggers.py:43
+#, fuzzy
+#| msgid "Authentication method"
+msgid "Two-factor authentication failed"
+msgstr "Authenticatie vereist"
+
+#: core/loggers.py:46
+msgid "Wrong password while editing 2FA settings"
+msgstr ""
+
+#: core/loggers.py:48
+#, fuzzy
+#| msgid "Password"
+msgid "Password changed"
+msgstr "Wachtwoord"
+
+#: core/loggers.py:49
+#, fuzzy
+#| msgid "Password attribute"
+msgid "Password reset requested"
+msgstr "Wachtwoord attribuut"
+
+#: core/loggers.py:50
+#, fuzzy
+#| msgid "Password"
+msgid "Password reset"
+msgstr "Wachtwoord"
+
+#: core/loggers.py:51
+#, fuzzy
+#| msgid "Authentication type"
+msgid "Authenticator app enabled"
+msgstr "Authenticatie type"
+
+#: core/loggers.py:52
+#, fuzzy
+#| msgid "Authentication type"
+msgid "Authenticator app disabled"
+msgstr "Authenticatie type"
+
+#: core/loggers.py:53
+msgid "Recovery codes regenerated"
+msgstr ""
+
+#: core/loggers.py:54
+msgid "Security key added"
+msgstr ""
+
+#: core/loggers.py:55
+msgid "Security key removed"
+msgstr ""
+
+#: core/loggers.py:56
+msgid "API token created"
+msgstr ""
+
+#: core/loggers.py:57
+msgid "API token deleted"
+msgstr ""
+
+#: core/loggers.py:58
+msgid "Global parameters modified"
 msgstr ""
 
 #: core/management/commands/communicate_with_public_api.py:42
 msgid "[modoboa] Update(s) available"
 msgstr "[modoboa] update(s) beschikbaar"
 
-#: core/models.py:71
+#: core/models.py:72
 msgid "Allow mailboxes access"
 msgstr "Sta mailboxtoegang toe"
 
-#: core/models.py:73
+#: core/models.py:74
 msgid "Allow this administrator to access user mailboxes"
 msgstr "Sta deze beheerder toe om mailboxen van gebruikers te benaderen"
 
-#: core/models.py:75
+#: core/models.py:76
 msgid "password"
 msgstr "wachtwoord"
 
-#: core/models.py:78
+#: core/models.py:79
 msgid "language"
 msgstr "taal"
 
-#: core/models.py:82
+#: core/models.py:83
 msgid "Prefered language to display pages."
 msgstr "Voorkeurstaal om pagina's weer te geven"
 
-#: core/models.py:84
+#: core/models.py:85
 msgid "Phone number"
 msgstr "Telefoonnummer"
 
-#: core/models.py:86
+#: core/models.py:87
 msgid "Secondary email"
 msgstr "Tweede e-mailadres"
 
-#: core/models.py:91
+#: core/models.py:92
 msgid "An alternative e-mail address, can be used for recovery needs."
 msgstr ""
 "Een alternatief e-mailadres, dit kan gebruikt worden voor herstel "
 "mogelijkheden."
 
-#: core/models.py:150
+#: core/models.py:151
 msgid "Failed to update password: LDAP module not installed"
 msgstr "Mislukt om wachtwoord aan te passen: LDAP-module niet geinstalleerd"
 
-#: core/models.py:185 policyd/core.py:123
+#: core/models.py:208 policyd/core.py:123
 msgid "account"
 msgstr "account"
 
-#: core/models.py:342
+#: core/models.py:365
 msgid "Unknown"
 msgstr "Onbekend"
 
-#: core/models.py:385
+#: core/models.py:408
 msgid "You can't import an account with a role greater than yours"
 msgstr "U kunt geen accounts importeren met hogere rechten dan die van uzelf"
 
-#: core/models.py:400
+#: core/models.py:423
 #, fuzzy
 #| msgid "The simple user '%s' must have a valid email address"
 msgid "The simple user '{}' must have a valid email address"
 msgstr "De gebruiker '%s' moet een geldig e-mailadres hebben"
 
-#: core/models.py:408
+#: core/models.py:431
 #, fuzzy
 #| msgid "username and email fields must not differ for '%s'"
 msgid "username and email fields must not differ for '{}'"
@@ -2543,22 +2702,17 @@ msgstr[1] ""
 msgid "The core part of Modoboa"
 msgstr "Het hoofdonderdeel van Modoboa"
 
-#: core/views/auth.py:69
-#, python-format
-msgid "User '%s' successfully logged in"
-msgstr "Gebruiker '%s' successvol aangemeld"
-
-#: core/views/auth.py:118
+#: core/views/auth.py:127
 #, python-format
 msgid "Password scheme mismatch. Updating %s password"
 msgstr "Wachtwoord schema matcht niet. Updating %s wachtwoord"
 
-#: core/views/auth.py:125
+#: core/views/auth.py:134
 #, python-format
 msgid "Password hash parameter missmatch. Updating %s password"
 msgstr "Hashparameter van het wachtwoord klopt niet. Wachtwoord  %s wijzigen"
 
-#: core/views/auth.py:195 core/views/auth.py:265
+#: core/views/auth.py:223 core/views/auth.py:293
 msgid "Please use the following code to recover your Modoboa password: {}"
 msgstr "Gebruik de volgende code om het Modoboa wachtwoord te herstellen: {}"
 
@@ -2841,8 +2995,8 @@ msgstr ""
 msgid "LDAP bind DN and password cannot contain quote characters"
 msgstr ""
 
-#: lib/api_client.py:35 lib/api_client.py:67 lib/api_client.py:81
-#: lib/api_client.py:85
+#: lib/api_client.py:36 lib/api_client.py:68 lib/api_client.py:82
+#: lib/api_client.py:86
 #, fuzzy, python-format
 #| msgid "Enable communication with Modoboa public API"
 msgid "Failed to communicate with public API: %s"
@@ -2876,9 +3030,15 @@ msgstr "Aanpassen van wachtwoord mislukt: {}"
 msgid "You don't have ownership on this mailbox"
 msgstr "Je hebt geen toegang tot deze mailbox."
 
-#: lib/throttle.py:94
+#: lib/throttle.py:126
 msgid "Too many attempts, please try again later."
 msgstr ""
+
+#: lib/validators.py:71
+#, fuzzy
+#| msgid "Not a valid DKIM record"
+msgid "Enter a valid DKIM selector"
+msgstr "Ongeldig DKIM record"
 
 #: limits/app_settings.py:13
 #, fuzzy
@@ -3398,7 +3558,7 @@ msgid ""
 "the path."
 msgstr ""
 
-#: pdfcredentials/handlers.py:64
+#: pdfcredentials/handlers.py:67
 #, fuzzy
 #| msgid "PDF credentials"
 msgid "Download PDF credentials"
@@ -3415,13 +3575,13 @@ msgstr "Het aanmaken van de map voor de PDF documenten is mislukt (%s)"
 msgid "Failed to create the directory that will contain PDF documents (%s)"
 msgstr "Het aanmaken van de map voor de PDF documenten is mislukt (%s)"
 
-#: pdfcredentials/lib.py:52
+#: pdfcredentials/lib.py:51
 #, fuzzy, python-format
 #| msgid "Invalid rounds number"
 msgid "Invalid account name: %s"
 msgstr "Ongeldig nummer van rondes"
 
-#: pdfcredentials/lib.py:99
+#: pdfcredentials/lib.py:98
 msgid ""
 "Failed to create PDF_credentials file. Please check the permissions or the "
 "path."
@@ -3541,12 +3701,18 @@ msgstr ""
 msgid "Rspamd"
 msgstr ""
 
-#: sievefilters/api/v2/serializers.py:30 sievefilters/api/v2/serializers.py:97
+#: sievefilters/api/v2/serializers.py:31 sievefilters/api/v2/serializers.py:112
 #: sievefilters/api/v2/viewsets.py:55
 msgid "Name contains forbidden characters"
 msgstr ""
 
-#: sievefilters/api/v2/serializers.py:99
+#: sievefilters/api/v2/serializers.py:69 webmail/serializers.py:465
+#, fuzzy
+#| msgid "Unknown tag {}"
+msgid "Unknown tag"
+msgstr "Onbekende tag {}"
+
+#: sievefilters/api/v2/serializers.py:114
 #, fuzzy
 #| msgid "This field is required"
 msgid "This name is reserved"
@@ -3558,7 +3724,7 @@ msgstr "Dit veld is verplicht"
 msgid "A filter set with this name already exists"
 msgstr "Een alias met deze naam bestaat al."
 
-#: sievefilters/api/v2/viewsets.py:217 sievefilters/api/v2/viewsets.py:247
+#: sievefilters/api/v2/viewsets.py:219 sievefilters/api/v2/viewsets.py:251
 #, fuzzy, python-format
 #| msgid "User '%s' already exists"
 msgid "Filter %s already exists"
@@ -3630,7 +3796,7 @@ msgstr "is"
 msgid "is not"
 msgstr "is niet"
 
-#: sievefilters/constants.py:28 webmail/lib/imapemail.py:470
+#: sievefilters/constants.py:28 webmail/lib/imapemail.py:476
 msgid "Subject"
 msgstr "Onderwerp"
 
@@ -3682,27 +3848,37 @@ msgstr "Bericht doorsturen naar"
 msgid "Reject message"
 msgstr "Bericht doorsturen naar"
 
-#: sievefilters/constants.py:80
+#: sievefilters/constants.py:83
+msgid "Add tag"
+msgstr ""
+
+#: sievefilters/constants.py:86
 msgid "Stop processing"
 msgstr ""
 
-#: sievefilters/lib.py:62
+#: sievefilters/lib.py:48
+#, fuzzy
+#| msgid "Listening port of your IMAP server"
+msgid "Missing credentials for MANAGESIEVE server"
+msgstr "Poort van uw MANAGESIEVE server"
+
+#: sievefilters/lib.py:64
 msgid "ManageSieve server returned an error"
 msgstr ""
 
-#: sievefilters/lib.py:76
+#: sievefilters/lib.py:78
 #, fuzzy
 #| msgid "Connection to IMAP server failed: %s"
 msgid "Connection to MANAGESIEVE server failed, check your configuration"
 msgstr "Verbinding naar MANAGESIEVE server mislukt, controleer uw configuratie"
 
-#: sievefilters/lib.py:98
+#: sievefilters/lib.py:100
 #, fuzzy, python-format
 #| msgid "Directory not found."
 msgid "Filter set %s not found"
 msgstr "Map niet gevonden."
 
-#: sievefilters/lib.py:113
+#: sievefilters/lib.py:115
 #, fuzzy
 #| msgid "Not enough resources"
 msgid "Not enough space on server"
@@ -4063,47 +4239,55 @@ msgstr "Ongewenste e-mail map"
 msgid "Folder where junk messages should go"
 msgstr "Map voor ongewenste e-mail"
 
-#: webmail/app_settings.py:279
+#: webmail/app_settings.py:275
+msgid "Show only subscribed folders"
+msgstr ""
+
+#: webmail/app_settings.py:277
+msgid "Only display the folders you are subscribed to in the folder list"
+msgstr ""
+
+#: webmail/app_settings.py:289
 #, fuzzy
 #| msgid "sent messages"
 msgid "Composing messages"
 msgstr "Berichten opstellen"
 
-#: webmail/app_settings.py:285
+#: webmail/app_settings.py:295
 #, fuzzy
 #| msgid "Default top redirection"
 msgid "Default editor"
 msgstr "Standaard editor"
 
-#: webmail/app_settings.py:287
+#: webmail/app_settings.py:297
 #, fuzzy
 #| msgid "The default redirection used when no application is specified"
 msgid "The default editor to use when composing a message"
 msgstr "De standaard editor voor het schrijven van een bericht"
 
-#: webmail/app_settings.py:294
+#: webmail/app_settings.py:304
 msgid "Signature text"
 msgstr "Handtekeningtekst"
 
-#: webmail/app_settings.py:296
+#: webmail/app_settings.py:306
 msgid "User defined email signature"
 msgstr "Door gebruiker opgegeven e-mailhandtekening"
 
-#: webmail/app_settings.py:304
+#: webmail/app_settings.py:314
 #, fuzzy
 #| msgid "Signature text"
 msgid "Signature position"
 msgstr "Handtekeningtekst"
 
-#: webmail/app_settings.py:306
+#: webmail/app_settings.py:316
 msgid "Where the signature goes in replies and forwards"
 msgstr ""
 
-#: webmail/app_settings.py:314
+#: webmail/app_settings.py:324
 msgid "Undo send delay"
 msgstr ""
 
-#: webmail/app_settings.py:316
+#: webmail/app_settings.py:326
 msgid ""
 "Number of seconds during which sending a message can be cancelled (0 to send "
 "at once, 30 at most)"
@@ -4155,6 +4339,22 @@ msgstr "Alle berichten"
 msgid "Conversations"
 msgstr "Controleer of er een nieuwe versie beschikbaar is"
 
+#: webmail/constants.py:139
+msgid "Important"
+msgstr ""
+
+#: webmail/constants.py:141
+msgid "Personal"
+msgstr ""
+
+#: webmail/constants.py:142
+msgid "To do"
+msgstr ""
+
+#: webmail/constants.py:143
+msgid "Later"
+msgstr ""
+
 #: webmail/exceptions.py:23
 #, fuzzy
 #| msgid "Server address"
@@ -4175,87 +4375,93 @@ msgstr ""
 msgid "Failed to remove attachment: "
 msgstr "Bijlage verwijderen is mislukt:"
 
-#: webmail/lib/imapemail.py:420
+#: webmail/lib/imapemail.py:426
 #, python-format
 msgid "On %(date)s, %(sender)s wrote:"
 msgstr ""
 
-#: webmail/lib/imapemail.py:425
+#: webmail/lib/imapemail.py:431
 #, python-format
 msgid "%(sender)s wrote:"
 msgstr ""
 
-#: webmail/lib/imapemail.py:473
+#: webmail/lib/imapemail.py:479
 msgid "Date"
 msgstr "Datum"
 
-#: webmail/lib/imapemail.py:490 webmail/lib/imapemail.py:493
+#: webmail/lib/imapemail.py:496 webmail/lib/imapemail.py:499
 #, fuzzy
 #| msgid "sent messages"
 msgid "Original message"
 msgstr "Alle berichten"
 
-#: webmail/lib/imaputils.py:87 webmail/viewsets.py:30
+#: webmail/lib/imaputils.py:90 webmail/viewsets.py:30
 msgid "Invalid message identifier"
 msgstr ""
 
-#: webmail/lib/imaputils.py:94 webmail/viewsets.py:44
+#: webmail/lib/imaputils.py:97 webmail/viewsets.py:44
 #, fuzzy
 #| msgid "Invalid rounds number"
 msgid "Invalid part number"
 msgstr "Ongeldig nummer van rondes"
 
-#: webmail/lib/imaputils.py:107 webmail/viewsets.py:51
+#: webmail/lib/imaputils.py:104
+#, fuzzy
+#| msgid "Invalid tag {}"
+msgid "Invalid tag"
+msgstr "Ongeldige tag {}"
+
+#: webmail/lib/imaputils.py:122 webmail/viewsets.py:51
 msgid "Invalid search pattern"
 msgstr ""
 
-#: webmail/lib/imaputils.py:139
+#: webmail/lib/imaputils.py:154
 #, fuzzy
 #| msgid "Use a secured connection to access IMAP server"
 msgid "Unexpected response from the IMAP server"
 msgstr "Gebruik een beveiligde verbinding met de IMAP-server"
 
-#: webmail/lib/imaputils.py:151
+#: webmail/lib/imaputils.py:166
 #, fuzzy
 #| msgid "Invalid address"
 msgid "Invalid IMAP argument"
 msgstr "Ongeldig adres"
 
-#: webmail/lib/imaputils.py:165
+#: webmail/lib/imaputils.py:180
 #, fuzzy
 #| msgid "Enter a valid domain name"
 msgid "Invalid mailbox name"
 msgstr "Vul een geldige domeinnaam in"
 
-#: webmail/lib/imaputils.py:570
+#: webmail/lib/imaputils.py:585
 msgid "Failed to retrieve hierarchy delimiter"
 msgstr "Mislukt om het hiërarchische scheidingsteken te verkrijgen"
 
-#: webmail/lib/imaputils.py:1033
+#: webmail/lib/imaputils.py:1064
 msgid "Shared with me"
 msgstr ""
 
-#: webmail/lib/imaputils.py:1082
+#: webmail/lib/imaputils.py:1113
 msgid "Inbox"
 msgstr "Postvak in"
 
-#: webmail/lib/imaputils.py:1086
+#: webmail/lib/imaputils.py:1117
 msgid "Drafts"
 msgstr "Concepten"
 
-#: webmail/lib/imaputils.py:1091
+#: webmail/lib/imaputils.py:1122
 msgid "Junk"
 msgstr "Ongewenste e-mail"
 
-#: webmail/lib/imaputils.py:1096
+#: webmail/lib/imaputils.py:1127
 msgid "Sent"
 msgstr "Verzonden items"
 
-#: webmail/lib/imaputils.py:1104
+#: webmail/lib/imaputils.py:1135
 msgid "Scheduled"
 msgstr ""
 
-#: webmail/lib/imaputils.py:1111
+#: webmail/lib/imaputils.py:1142
 msgid "Trash"
 msgstr "Prullenbak"
 
@@ -4279,66 +4485,78 @@ msgstr "De domeinnaam"
 msgid "This address is no longer allowed for this account"
 msgstr ""
 
-#: webmail/serializers.py:157
+#: webmail/serializers.py:162
 #, fuzzy
 #| msgid "Unknown tag {}"
 msgid "Unknown account"
 msgstr "Onbekende tag {}"
 
-#: webmail/serializers.py:169
+#: webmail/serializers.py:174
 #, fuzzy
 #| msgid "Invalid line"
 msgid "Invalid identifier"
 msgstr "Onjuiste regel"
 
-#: webmail/serializers.py:171
+#: webmail/serializers.py:176
 #, fuzzy
 #| msgid "You can't delete your own domain"
 msgid "You can't remove your own rights"
 msgstr "Je kunt je eigen domein niet verwijderen"
 
-#: webmail/serializers.py:365
+#: webmail/serializers.py:373
 msgid "Moving scheduled messages is forbidden"
 msgstr ""
 
-#: webmail/serializers.py:397
+#: webmail/serializers.py:411
+#, fuzzy
+#| msgid "An alias with this name already exists."
+msgid "A tag with this name already exists"
+msgstr "Een alias met deze naam bestaat al."
+
+#: webmail/serializers.py:421
+#, fuzzy, python-format
+#| msgid "You can't delete your own account"
+msgid "You can't create more than %(count)d tags"
+msgstr "U kunt uw eigen account niet verwijderen"
+
+#: webmail/serializers.py:477
 msgid "Only datetime in the future is allowed"
 msgstr ""
 
-#: webmail/serializers.py:402
+#: webmail/serializers.py:482
 msgid "Provived datetime must be one minute in the future at least"
 msgstr ""
 
-#: webmail/serializers.py:433
+#: webmail/serializers.py:513
 #, fuzzy
 #| msgid "You are not allowed to import domain aliases."
 msgid "You are not allowed to send from this address"
 msgstr "Je hebt geen rechten om domeinaliassen te importeren."
 
-#: webmail/serializers.py:448
+#: webmail/serializers.py:528
 #, fuzzy, python-format
 #| msgid "Invalid address"
 msgid "Invalid addresses: %s"
 msgstr "Ongeldig adres"
 
-#: webmail/serializers.py:489
+#: webmail/serializers.py:569
 msgid ""
 "original_mailbox, original_mailid and original_action must be provided "
 "together"
 msgstr ""
 
-#: webmail/serializers.py:506
+#: webmail/serializers.py:586
 #, python-format
 msgid ""
 "Ensure this field has no more than %(max_length)s characters to schedule the "
 "message"
 msgstr ""
 
-#: webmail/serializers.py:582
+#: webmail/serializers.py:662
 msgid "forward_mailbox and forward_mailid must be provided together"
 msgstr ""
 
-#: webmail/serializers.py:586
+#: webmail/serializers.py:666
 msgid "A session can't start from a draft and a forwarded message"
 msgstr ""
 
@@ -4348,33 +4566,57 @@ msgstr ""
 msgid "Invalid page number"
 msgstr "Ongeldig nummer van rondes"
 
-#: webmail/viewsets.py:179
+#: webmail/viewsets.py:185
 msgid "This mailbox is used by the webmail and can't be renamed"
 msgstr ""
 
-#: webmail/viewsets.py:220
+#: webmail/viewsets.py:226
 msgid "This mailbox is used by the webmail and can't be deleted"
 msgstr ""
 
-#: webmail/viewsets.py:249
+#: webmail/viewsets.py:255
 msgid "Folder sharing is not available"
 msgstr ""
 
-#: webmail/viewsets.py:709
+#: webmail/viewsets.py:736
 #, python-format
 msgid "A message cannot carry more than %s attachments"
 msgstr ""
 
-#: webmail/viewsets.py:721
+#: webmail/viewsets.py:748
 #, python-format
 msgid "Attachment is too big (limit: %s)"
 msgstr "Bijlage is te groot (maximaal toegestane grootte: %s)"
 
-#: webmail/viewsets.py:737
+#: webmail/viewsets.py:764
 #, fuzzy, python-format
 #| msgid "Attachment is too big (limit: %s)"
 msgid "Attachments are too big (limit: %s for the whole message)"
 msgstr "Bijlage is te groot (maximaal toegestane grootte: %s)"
+
+#~ msgid "added"
+#~ msgstr "toegevoegd"
+
+#, python-format
+#~ msgid "%(object)s '%(name)s' %(action)s by user %(user)s"
+#~ msgstr "%(object)s '%(name)s' %(action)s door gebruiker %(user)s"
+
+#, python-format
+#~ msgid "%(object)s '%(name)s' %(action)s by "
+#~ msgstr "%(object)s '%(name)s' %(action)s door "
+
+#~ msgid "deleted"
+#~ msgstr "verwijderd"
+
+#~ msgid "user {}"
+#~ msgstr "gebruiker {}"
+
+#~ msgid "management command"
+#~ msgstr "beheeropdracht"
+
+#, python-format
+#~ msgid "User '%s' successfully logged in"
+#~ msgstr "Gebruiker '%s' successvol aangemeld"
 
 #~ msgid "Path to directory where RRD files are stored"
 #~ msgstr "Locatie van map waar RRD bestanden staan"

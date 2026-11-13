@@ -234,6 +234,7 @@ dTnvCVtA59ne4LEVie/PMH/odQWY0SxVm/76uBZv/1vY
 -----END RSA PRIVATE KEY-----"""  # DEV ONLY
 
 OAUTH2_PROVIDER = {
+    "OAUTH2_VALIDATOR_CLASS": "modoboa.core.oauth2_validators.OAuth2Validator",
     "OIDC_ENABLED": True,
     "OIDC_RP_INITIATED_LOGOUT_ENABLED": True,
     "OIDC_RP_INITIATED_LOGOUT_ALWAYS_PROMPT": False,

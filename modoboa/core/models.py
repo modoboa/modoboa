@@ -8,6 +8,7 @@ from django.conf import settings
 from django.db import models
 from django.urls import reverse
 from django.utils.encoding import force_str, smart_bytes, smart_str
+from django.utils import timezone
 from django.utils.functional import cached_property
 from django.utils.translation import gettext as _, gettext_lazy
 
@@ -167,6 +168,28 @@ class User(AbstractUser):
         val2 = match.group(2)
         hasher = get_password_hasher(scheme)
         return hasher().verify(raw_value, val2)
+
+    def revoke_oauth2_tokens(self, keep=None) -> None:
+        """Revoke this account's OAuth2 tokens, e.g. after a password change.
+
+        :param keep: the access token of the current request (if any), so the
+                     session that made the change stays logged in
+        """
+        from oauth2_provider.models import (
+            get_access_token_model,
+            get_refresh_token_model,
+        )
+
+        AccessToken = get_access_token_model()
+        access_tokens = AccessToken.objects.filter(user=self)
+        refresh_tokens = get_refresh_token_model().objects.filter(
+            user=self, revoked__isnull=True
+        )
+        if isinstance(keep, AccessToken):
+            access_tokens = access_tokens.exclude(pk=keep.pk)
+            refresh_tokens = refresh_tokens.exclude(access_token=keep)
+        refresh_tokens.update(revoked=timezone.now())
+        access_tokens.delete()
 
     def __str__(self):
         return smart_str(self.get_username())

@@ -1,12 +1,16 @@
 """API v2 tests."""
 
+import datetime
 from unittest import mock
 
 from django.contrib.auth.models import Group, Permission
 from django.core.files.base import ContentFile
 from django.db.models import Q
 from django.urls import reverse
+from django.utils import timezone
 from django.utils.encoding import force_str
+
+from oauth2_provider.models import get_access_token_model, get_refresh_token_model
 
 from rest_framework import serializers as drf_serializers
 from rest_framework.authtoken.models import Token
@@ -17,6 +21,9 @@ from modoboa.admin.api.v2 import serializers
 from modoboa.core import factories as core_factories, models as core_models
 from modoboa.lib.permissions import grant_access_to_object
 from modoboa.lib.tests import ModoAPITestCase
+
+AccessToken = get_access_token_model()
+RefreshToken = get_refresh_token_model()
 
 
 class DomainViewSetTestCase(ModoAPITestCase):
@@ -878,6 +885,84 @@ class AccountViewSetTestCase(ModoAPITestCase):
         )
         self.assertEqual(response.status_code, 200)
 
+    def _create_oauth_session(self, user, application, name):
+        """Simulate a browser session: an access token and its refresh token."""
+        access_token = AccessToken.objects.create(
+            user=user,
+            application=application,
+            scope="read write",
+            expires=timezone.now() + datetime.timedelta(hours=1),
+            token=f"access-{name}",
+        )
+        RefreshToken.objects.create(
+            user=user,
+            application=application,
+            access_token=access_token,
+            token=f"refresh-{name}",
+        )
+        return access_token
+
+    def test_user_updates_password_revokes_other_sessions(self):
+        account = core_models.User.objects.get(username="user@test.com")
+        current = self.authenticate_user_with_oauth(account)
+        RefreshToken.objects.create(
+            user=account,
+            application=current.application,
+            access_token=current,
+            token="refresh-current",
+        )
+        other = self._create_oauth_session(account, current.application, "other")
+        response = self.client.post(
+            reverse("v2:account-set-me-password"),
+            {"password": "toto", "new_password": "Toto1234"},
+            format="json",
+        )
+        self.assertEqual(response.status_code, 200)
+        # The session which changed the password is kept...
+        self.assertTrue(AccessToken.objects.filter(pk=current.pk).exists())
+        self.assertIsNone(RefreshToken.objects.get(token="refresh-current").revoked)
+        # ...the other one is revoked
+        self.assertFalse(AccessToken.objects.filter(pk=other.pk).exists())
+        self.assertIsNotNone(RefreshToken.objects.get(token="refresh-other").revoked)
+        self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {other.token}")
+        response = self.client.get(reverse("v2:account-me"))
+        self.assertEqual(response.status_code, 401)
+
+    def test_admin_updates_password_revokes_sessions(self):
+        account = core_models.User.objects.get(username="user@test.com")
+        application = self.authenticate_user_with_oauth(account).application
+        self._create_oauth_session(account, application, "browser")
+        self.authenticate_user(self.sadmin)
+        response = self.client.patch(
+            reverse("v2:account-detail", args=[account.pk]),
+            {"password": "Toto12345"},
+            format="json",
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertFalse(AccessToken.objects.filter(user=account).exists())
+        self.assertFalse(
+            RefreshToken.objects.filter(user=account, revoked__isnull=True).exists()
+        )
+
+    def test_disable_account_revokes_sessions(self):
+        account = core_models.User.objects.get(username="user@test.com")
+        session = self.authenticate_user_with_oauth(account)
+        self._create_oauth_session(account, session.application, "browser")
+        self.authenticate_user(self.sadmin)
+        response = self.client.patch(
+            reverse("v2:account-detail", args=[account.pk]),
+            {"is_active": False},
+            format="json",
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertFalse(AccessToken.objects.filter(user=account).exists())
+        self.assertFalse(
+            RefreshToken.objects.filter(user=account, revoked__isnull=True).exists()
+        )
+        self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {session.token}")
+        response = self.client.get(reverse("v2:account-me"))
+        self.assertEqual(response.status_code, 401)
+
     def test_rename(self):
         account = core_models.User.objects.get(username="user@test.com")
         url = reverse("v2:account-detail", args=[account.pk])
@@ -954,6 +1039,15 @@ class AccountViewSetTestCase(ModoAPITestCase):
         resp = self.client.patch(url, data, format="json")
         self.assertEqual(resp.status_code, 400)
         self.assertIn("username", resp.json())
+
+    def test_rename_with_path_separator(self):
+        account, domain = self._create_domain_admin_without_mailbox()
+        url = reverse("v2:account-detail", args=[account.pk])
+        for username in ("x/../user@test.com", "x\\..\\user@test.com"):
+            data = {"username": username, "role": "DomainAdmins"}
+            resp = self.client.patch(url, data, format="json")
+            self.assertEqual(resp.status_code, 400)
+            self.assertIn("username", resp.json())
 
     def test_rename_to_existing_username_other_case(self):
         account, domain = self._create_domain_admin_without_mailbox()

@@ -86,8 +86,10 @@ class ARmessage(models.Model):
                 active_script = "DefaultScript"
                 client.pushscript(active_script, "# Empty script", True)
             fset = client.getscript(active_script, format="fset")
+            # Disable rather than remove so the position chosen by the user is kept
             if self.enabled:
                 self.update_sieve_rule(request, fset)
+                fset.enablefilter("autoreply")
             else:
-                fset.removefilter("autoreply")
+                fset.disablefilter("autoreply")
             client.pushscript(fset.name, str(fset))

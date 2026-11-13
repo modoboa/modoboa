@@ -29,9 +29,9 @@ classifiers = [
 keywords = ["email"]
 license = {file = "LICENSE"}
 dependencies = [
-	"django==5.2.18",
+	"django==5.2.19",
 	"django-phonenumber-field[phonenumbers]==9.0.0",
-	"django-reversion==6.5.0",
+	"django-reversion==6.5.1",
 	"django-otp==1.7.5",
 	"django-filter",
 	"django-rename-app==0.1.7",
@@ -45,7 +45,7 @@ dependencies = [
 	"libpass>=1.9.3",
 	"bcrypt~=5.0", # Requires libffi-dev and python-dev
 	"asgiref",
-	"dnspython==2.9.1",
+	"dnspython==2.9.2",
 	"feedparser==6.0.14",
 	"fido2==2.2.1",
 	"progressbar33==2.4",

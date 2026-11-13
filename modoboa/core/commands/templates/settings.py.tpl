@@ -221,6 +221,7 @@ WEBMAIL_ATTACHMENTS_ROOT = os.path.join(BASE_DIR, 'webmail_attachments')
 # oAuth2 settings
 
 OAUTH2_PROVIDER = {
+    'OAUTH2_VALIDATOR_CLASS': 'modoboa.core.oauth2_validators.OAuth2Validator',
     'OIDC_ENABLED': True,
     'OIDC_RP_INITIATED_LOGOUT_ENABLED': True,
     'OIDC_RP_INITIATED_LOGOUT_ALWAYS_PROMPT': False,

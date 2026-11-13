@@ -41,17 +41,16 @@ def init_storage_dir():
 def get_creds_filename(account):
     """Return the full path of a document.
 
-    The username is user-controlled (quoted-string email addresses may
-    contain ``/`` or ``..``): reject any name whose resulting path would
-    escape the storage directory.
+    The username is user-controlled (email addresses may contain ``/``):
+    reject any separator, otherwise ``x/../victim`` would point to
+    another account's document inside the storage directory.
     """
     storage_dir = os.path.abspath(param_tools.get_global_parameter("storage_dir"))
-    fname = os.path.abspath(os.path.join(storage_dir, account.username + ".pdf"))
-    if os.path.dirname(fname) != storage_dir:
+    if "/" in account.username or "\\" in account.username:
         raise InternalError(
             _("Invalid account name: %s") % account.username,
         )
-    return fname
+    return os.path.join(storage_dir, account.username + ".pdf")
 
 
 def delete_credentials(account):

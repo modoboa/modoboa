@@ -66,11 +66,11 @@ msgstr "Kont krouet"
 #: src/components/account/APISetupForm.vue:94
 #: src/components/account/FidoAuthForm.vue:189
 #: src/components/admin/domains/DNSDetail.vue:268
-#: src/components/admin/domains/DomainList.vue:305
-#: src/components/admin/domains/DomainList.vue:332
-#: src/components/admin/identities/IdentityList.vue:558
-#: src/components/admin/identities/IdentityList.vue:598
-#: src/components/admin/identities/IdentityList.vue:627
+#: src/components/admin/domains/DomainList.vue:299
+#: src/components/admin/domains/DomainList.vue:326
+#: src/components/admin/identities/IdentityList.vue:570
+#: src/components/admin/identities/IdentityList.vue:610
+#: src/components/admin/identities/IdentityList.vue:639
 #: src/components/tools/CreationForm.vue:135
 #: src/layouts/webmail/WebmailLayout.vue:316
 #: src/views/calendars/CalendarView.vue:511
@@ -84,16 +84,17 @@ msgstr ""
 
 #: src/components/account/APISetupForm.vue:98
 #: src/components/account/FidoAuthForm.vue:215
-#: src/components/account/FilterForm.vue:147
+#: src/components/account/FilterForm.vue:148
 #: src/components/account/FilterSetForm.vue:24
 #: src/components/admin/domains/DomainEditForm.vue:183
 #: src/components/admin/domains/DomainPolicyForm.vue:93
-#: src/components/admin/identities/AccountEditForm.vue:234
+#: src/components/admin/identities/AccountEditForm.vue:238
 #: src/components/admin/identities/AliasEditForm.vue:69
 #: src/components/admin/imap_migration/ProviderForm.vue:58
 #: src/components/calendars/RecurrenceScopeDialog.vue:14
 #: src/components/tools/ConfirmDialog.vue:55
 #: src/components/webmail/SubscriptionsDialog.vue:77
+#: src/components/webmail/TagsForm.vue:46
 msgid "Cancel"
 msgstr ""
 
@@ -108,26 +109,26 @@ msgstr "Deiziad krouidigezh"
 
 #: src/components/account/AutoReplyForm.vue:7
 #: src/components/admin/domains/DomainCreationForm.vue:226
-#: src/components/admin/domains/DomainList.vue:217
+#: src/components/admin/domains/DomainList.vue:211
 #: src/components/admin/domains/DomainSummary.vue:68
 #: src/components/admin/domains/form_steps/DomainGeneralForm.vue:20
 #: src/components/admin/identities/AccountCreationForm.vue:112
-#: src/components/admin/identities/AccountEditForm.vue:45
+#: src/components/admin/identities/AccountEditForm.vue:49
 #: src/components/admin/identities/AccountSummary.vue:41
 #: src/components/admin/identities/AliasEditForm.vue:21
 #: src/components/admin/identities/AliasSummary.vue:16
-#: src/components/admin/identities/form_steps/AccountGeneralForm.vue:46
+#: src/components/admin/identities/form_steps/AccountGeneralForm.vue:48
 #: src/components/admin/identities/form_steps/AliasGeneralForm.vue:53
-#: src/components/admin/identities/IdentityList.vue:278
-#: src/components/admin/identities/IdentityList.vue:317
+#: src/components/admin/identities/IdentityList.vue:281
+#: src/components/admin/identities/IdentityList.vue:320
 msgid "Enabled"
 msgstr "Enaouet"
 
 #: src/components/account/AutoReplyForm.vue:12
-#: src/components/quarantine/QuarantineList.vue:49
-#: src/components/quarantine/QuarantineList.vue:235
+#: src/components/quarantine/QuarantineList.vue:50
+#: src/components/quarantine/QuarantineList.vue:237
 #: src/components/webmail/ComposeEmailForm.vue:200
-#: src/components/webmail/EmailList.vue:254
+#: src/components/webmail/EmailList.vue:268
 msgid "Subject"
 msgstr ""
 
@@ -143,9 +144,9 @@ msgid ""
 msgstr ""
 
 #: src/components/account/AutoReplyForm.vue:36
-#: src/components/admin/logs/MessageList.vue:50
+#: src/components/admin/logs/MessageList.vue:41
 #: src/components/calendars/EventForm.vue:73
-#: src/components/quarantine/QuarantineList.vue:234
+#: src/components/quarantine/QuarantineList.vue:236
 #: src/components/tools/TimeSerieChart.vue:20
 #: src/components/webmail/ComposeEmailForm.vue:129
 msgid "From"
@@ -245,16 +246,16 @@ msgstr "Anv implier"
 #: src/components/admin/domains/DomainAdminList.vue:112
 #: src/components/admin/domains/DomainAliasForm.vue:8
 #: src/components/admin/domains/DomainCreationForm.vue:223
-#: src/components/admin/domains/DomainList.vue:216
+#: src/components/admin/domains/DomainList.vue:210
 #: src/components/admin/domains/form_steps/DomainOptionsForm.vue:11
-#: src/components/admin/identities/IdentityList.vue:308
+#: src/components/admin/identities/IdentityList.vue:311
 #: src/components/admin/imap_migration/ProviderCreationForm.vue:53
-#: src/components/admin/imap_migration/ProvidersList.vue:114
+#: src/components/admin/imap_migration/ProvidersList.vue:96
 #: src/components/calendars/CalendarForm.vue:15
 #: src/components/calendars/CalendarSubscriptionForm.vue:25
 #: src/components/contacts/CategoryForm.vue:10
 #: src/components/webmail/MailboxForm.vue:7
-#: src/views/account/FiltersView.vue:149
+#: src/components/webmail/TagsForm.vue:36 src/views/account/FiltersView.vue:152
 #: src/views/admin/InformationView.vue:228
 msgid "Name"
 msgstr "Anv"
@@ -274,17 +275,15 @@ msgstr "Kont nevez"
 
 #: src/components/account/FidoAuthForm.vue:134
 #: src/components/account/FilterForm.vue:76
-#: src/components/admin/alarms/AlarmList.vue:33
-#: src/components/admin/alarms/AlarmList.vue:108
-#: src/components/admin/domains/DomainList.vue:43
-#: src/components/admin/domains/DomainList.vue:240
-#: src/components/admin/identities/IdentityList.vue:49
-#: src/components/admin/identities/IdentityList.vue:391
-#: src/components/admin/imap_migration/MigrationsList.vue:34
-#: src/components/admin/imap_migration/MigrationsList.vue:90
-#: src/components/admin/imap_migration/ProvidersList.vue:36
-#: src/components/admin/imap_migration/ProvidersList.vue:120
-#: src/components/contacts/ContactList.vue:223
+#: src/components/admin/alarms/AlarmList.vue:29
+#: src/components/admin/alarms/AlarmList.vue:111
+#: src/components/admin/domains/DomainList.vue:34
+#: src/components/admin/domains/DomainList.vue:234
+#: src/components/admin/identities/IdentityList.vue:77
+#: src/components/admin/identities/IdentityList.vue:396
+#: src/components/admin/imap_migration/MigrationsList.vue:69
+#: src/components/admin/imap_migration/ProvidersList.vue:102
+#: src/components/contacts/ContactList.vue:220
 msgid "Actions"
 msgstr "Oberioù"
 
@@ -298,11 +297,11 @@ msgstr ""
 
 #: src/components/account/FidoAuthForm.vue:193
 #: src/components/admin/domains/DNSDetail.vue:270
-#: src/components/admin/domains/DomainList.vue:311
-#: src/components/admin/domains/DomainList.vue:336
-#: src/components/admin/identities/IdentityList.vue:563
-#: src/components/admin/identities/IdentityList.vue:603
-#: src/components/admin/identities/IdentityList.vue:632
+#: src/components/admin/domains/DomainList.vue:305
+#: src/components/admin/domains/DomainList.vue:330
+#: src/components/admin/identities/IdentityList.vue:575
+#: src/components/admin/identities/IdentityList.vue:615
+#: src/components/admin/identities/IdentityList.vue:644
 #: src/components/tools/CreationForm.vue:142
 #: src/layouts/webmail/WebmailLayout.vue:321
 msgid "No"
@@ -310,11 +309,11 @@ msgstr ""
 
 #: src/components/account/FidoAuthForm.vue:194
 #: src/components/admin/domains/DNSDetail.vue:271
-#: src/components/admin/domains/DomainList.vue:312
-#: src/components/admin/domains/DomainList.vue:337
-#: src/components/admin/identities/IdentityList.vue:562
-#: src/components/admin/identities/IdentityList.vue:602
-#: src/components/admin/identities/IdentityList.vue:631
+#: src/components/admin/domains/DomainList.vue:306
+#: src/components/admin/domains/DomainList.vue:331
+#: src/components/admin/identities/IdentityList.vue:574
+#: src/components/admin/identities/IdentityList.vue:614
+#: src/components/admin/identities/IdentityList.vue:643
 #: src/components/tools/CreationForm.vue:141
 #: src/layouts/webmail/WebmailLayout.vue:320
 msgid "Yes"
@@ -332,12 +331,12 @@ msgstr "Chomlec'h postel"
 
 #: src/components/account/FidoAuthForm.vue:216
 #: src/components/admin/domains/DomainEditForm.vue:192
-#: src/components/admin/identities/AccountEditForm.vue:243
+#: src/components/admin/identities/AccountEditForm.vue:247
 #: src/components/admin/identities/AliasEditForm.vue:78
 #: src/components/admin/imap_migration/ProviderForm.vue:66
 #: src/components/calendars/EventForm.vue:192
 #: src/components/webmail/MailboxShareDialog.vue:41
-#: src/views/account/FiltersView.vue:100
+#: src/views/account/FiltersView.vue:103
 msgid "Save"
 msgstr "Enrollañ"
 
@@ -385,26 +384,26 @@ msgstr ""
 msgid "Choose an action"
 msgstr ""
 
-#: src/components/account/FilterForm.vue:127
+#: src/components/account/FilterForm.vue:128
 #, fuzzy
 msgid "Add action"
 msgstr "Oberioù"
 
-#: src/components/account/FilterForm.vue:135
+#: src/components/account/FilterForm.vue:136
 msgid "Remove action"
 msgstr ""
 
-#: src/components/account/FilterForm.vue:192
+#: src/components/account/FilterForm.vue:193
 #, fuzzy
 msgid "Edit filter"
 msgstr "Chomlec'h postel"
 
-#: src/components/account/FilterForm.vue:192
+#: src/components/account/FilterForm.vue:193
 #, fuzzy
 msgid "New filter"
 msgstr "Chomlec'h postel"
 
-#: src/components/account/FilterForm.vue:195
+#: src/components/account/FilterForm.vue:196
 #: src/components/account/ForwardForm.vue:25
 #: src/components/admin/domains/DomainAliasForm.vue:75
 #: src/components/calendars/CalendarForm.vue:80
@@ -414,10 +413,11 @@ msgstr "Chomlec'h postel"
 #: src/components/contacts/ContactCategoriesForm.vue:24
 #: src/components/contacts/ContactForm.vue:185
 #: src/components/webmail/MailboxForm.vue:80
+#: src/components/webmail/TagsForm.vue:56
 msgid "Update"
 msgstr "Hizivaat"
 
-#: src/components/account/FilterForm.vue:195
+#: src/components/account/FilterForm.vue:196
 #: src/components/account/FilterSetForm.vue:30
 #: src/components/calendars/CalendarForm.vue:82
 #: src/components/webmail/MailboxForm.vue:80
@@ -425,11 +425,11 @@ msgstr "Hizivaat"
 msgid "Create"
 msgstr "Deiziad krouidigezh"
 
-#: src/components/account/FilterForm.vue:308
+#: src/components/account/FilterForm.vue:309
 msgid "Filter added"
 msgstr ""
 
-#: src/components/account/FilterForm.vue:311
+#: src/components/account/FilterForm.vue:312
 #, fuzzy
 msgid "Filter updated"
 msgstr "Profil hizivaet"
@@ -439,7 +439,7 @@ msgid "Create a new filter set"
 msgstr ""
 
 #: src/components/account/FilterSetForm.vue:14
-#: src/views/account/FiltersView.vue:150
+#: src/views/account/FiltersView.vue:153
 #, fuzzy
 msgid "Active"
 msgstr "Oberioù"
@@ -470,6 +470,33 @@ msgstr ""
 msgid "Forward updated"
 msgstr "Treuzkas hizivaet"
 
+#: src/components/account/LoginHistory.vue:6
+msgid ""
+"The latest sign-ins and failed attempts on your account. If you do not "
+"recognize one of them, change your password."
+msgstr ""
+
+#: src/components/account/LoginHistory.vue:15
+msgid "No login recorded yet"
+msgstr ""
+
+#: src/components/account/LoginHistory.vue:54
+#: src/components/admin/logs/AuditTrailList.vue:131
+#: src/components/admin/logs/MessageList.vue:38
+#: src/components/quarantine/QuarantineList.vue:238
+#: src/components/webmail/EmailList.vue:269
+msgid "Date"
+msgstr ""
+
+#: src/components/account/LoginHistory.vue:55
+msgid "Result"
+msgstr ""
+
+#: src/components/account/LoginHistory.vue:56
+#, fuzzy
+msgid "IP address"
+msgstr "Chomlec'h postel"
+
 #: src/components/account/ProfileForm.vue:5
 #, fuzzy
 msgid "General settings"
@@ -478,9 +505,9 @@ msgstr "Hollek"
 #: src/components/account/ProfileForm.vue:9
 #: src/components/admin/identities/AccountCreationForm.vue:101
 #: src/components/admin/identities/form_steps/AccountGeneralForm.vue:18
-#: src/components/admin/identities/IdentityList.vue:310
+#: src/components/admin/identities/IdentityList.vue:313
 #: src/components/contacts/ContactForm.vue:12
-#: src/components/contacts/ContactList.vue:220
+#: src/components/contacts/ContactList.vue:217
 #, fuzzy
 msgid "First name"
 msgstr "Anv bihan"
@@ -489,14 +516,14 @@ msgstr "Anv bihan"
 #: src/components/admin/identities/AccountCreationForm.vue:104
 #: src/components/admin/identities/form_steps/AccountGeneralForm.vue:25
 #: src/components/contacts/ContactForm.vue:22
-#: src/components/contacts/ContactList.vue:221
+#: src/components/contacts/ContactList.vue:218
 msgid "Last name"
 msgstr "Anv familh"
 
 #: src/components/account/ProfileForm.vue:22
 #: src/components/admin/identities/AccountSummary.vue:27
 #: src/components/admin/identities/form_steps/AccountProfileForm.vue:3
-#: src/components/admin/identities/IdentityList.vue:324
+#: src/components/admin/identities/IdentityList.vue:327
 msgid "Language"
 msgstr ""
 
@@ -516,7 +543,7 @@ msgstr ""
 #: src/components/account/ProfileForm.vue:50
 #: src/components/admin/identities/AccountSummary.vue:37
 #: src/components/admin/identities/form_steps/AccountProfileForm.vue:13
-#: src/components/admin/identities/IdentityList.vue:326
+#: src/components/admin/identities/IdentityList.vue:329
 #: src/components/contacts/PhoneNumberField.vue:5
 msgid "Phone number"
 msgstr "Niverenn pellgomz"
@@ -524,7 +551,7 @@ msgstr "Niverenn pellgomz"
 #: src/components/account/ProfileForm.vue:54
 #: src/components/admin/identities/AccountSummary.vue:33
 #: src/components/admin/identities/form_steps/AccountProfileForm.vue:19
-#: src/components/admin/identities/IdentityList.vue:330
+#: src/components/admin/identities/IdentityList.vue:333
 msgid "Secondary email"
 msgstr "Eil chomlec'h postel"
 
@@ -583,12 +610,13 @@ msgstr ""
 #: src/components/contacts/ContactForm.vue:148
 #: src/components/tools/ImportForm.vue:51
 #: src/components/webmail/ComposeEmailForm.vue:120
-#: src/components/webmail/EmailList.vue:308
+#: src/components/webmail/EmailList.vue:322
 #: src/components/webmail/EmailSchedulingForm.vue:28
 #: src/components/webmail/MailboxForm.vue:30
 #: src/components/webmail/MailboxShareDialog.vue:88
-#: src/layouts/connected/ConnectedLayout.vue:32
-#: src/views/webmail/EmailView.vue:158
+#: src/components/webmail/TagsForm.vue:48
+#: src/layouts/connected/ConnectedLayout.vue:50
+#: src/views/webmail/EmailView.vue:164
 msgid "Close"
 msgstr "Serriñ"
 
@@ -643,103 +671,99 @@ msgstr ""
 msgid "Register authenticator"
 msgstr "O vezañ anavezet"
 
-#: src/components/admin/alarms/AlarmList.vue:22
-#: src/components/admin/domains/DomainList.vue:24
-#: src/components/admin/identities/IdentityList.vue:25
-#: src/components/admin/imap_migration/ProvidersList.vue:20
-#: src/components/admin/logs/AuditTrailList.vue:17
-#: src/components/admin/logs/MessageList.vue:17
-#: src/components/contacts/ContactList.vue:22
-msgid "Search"
-msgstr "Klask"
+#: src/components/admin/alarms/AlarmList.vue:39
+#: src/components/admin/domains/DomainList.vue:44
+#: src/components/admin/identities/IdentityList.vue:93
+#: src/components/admin/imap_migration/MigrationsList.vue:19
+#: src/components/admin/imap_migration/ProvidersList.vue:24
+msgid "Reload"
+msgstr ""
 
-#: src/components/admin/alarms/AlarmList.vue:45
+#: src/components/admin/alarms/AlarmList.vue:47
 msgid "Opened"
 msgstr ""
 
-#: src/components/admin/alarms/AlarmList.vue:48
+#: src/components/admin/alarms/AlarmList.vue:50
 msgid "Closed"
 msgstr "Serriñ"
 
-#: src/components/admin/alarms/AlarmList.vue:102
+#: src/components/admin/alarms/AlarmList.vue:105
 msgid "Triggered"
 msgstr ""
 
-#: src/components/admin/alarms/AlarmList.vue:103
-#: src/components/admin/logs/MessageList.vue:48
+#: src/components/admin/alarms/AlarmList.vue:106
+#: src/components/admin/logs/MessageList.vue:39
 msgid "Status"
 msgstr "Statud"
 
-#: src/components/admin/alarms/AlarmList.vue:104
+#: src/components/admin/alarms/AlarmList.vue:107
 #: src/components/admin/domains/form_steps/DomainGeneralForm.vue:61
 #: src/components/admin/identities/form_steps/AliasGeneralForm.vue:21
+#: src/components/admin/identities/IdentityList.vue:47
+#: src/components/admin/logs/AuditTrailList.vue:46
+#: src/components/admin/logs/AuditTrailList.vue:134
 #: src/components/tools/StatisticsDomainSelect.vue:11
-#: src/views/admin/domains/DomainsView.vue:23
+#: src/views/admin/domains/DomainsView.vue:22
 #: src/views/admin/domains/DomainView.vue:6
 msgid "Domain"
 msgstr "Domani"
 
-#: src/components/admin/alarms/AlarmList.vue:105
+#: src/components/admin/alarms/AlarmList.vue:108
 #: src/components/admin/identities/AccountCreationForm.vue:122
 #: src/components/admin/identities/AccountCreationForm.vue:176
-#: src/components/admin/identities/AccountEditForm.vue:98
+#: src/components/admin/identities/AccountEditForm.vue:102
 msgid "Mailbox"
 msgstr "Boest-posteloù"
 
-#: src/components/admin/alarms/AlarmList.vue:106
-#: src/components/admin/logs/AuditTrailList.vue:54
+#: src/components/admin/alarms/AlarmList.vue:109
 msgid "Message"
 msgstr "Implij"
 
-#: src/components/admin/alarms/AlarmList.vue:125
-#: src/components/admin/alarms/AlarmList.vue:142
+#: src/components/admin/alarms/AlarmList.vue:127
+#: src/components/admin/alarms/AlarmList.vue:138
 #: src/components/admin/domains/DomainAliasForm.vue:41
-#: src/components/admin/domains/DomainList.vue:361
-#: src/components/admin/domains/DomainList.vue:406
-#: src/components/admin/identities/IdentityList.vue:518
+#: src/components/admin/domains/DomainList.vue:355
+#: src/components/admin/domains/DomainList.vue:400
 #: src/components/admin/identities/IdentityList.vue:530
-#: src/components/admin/identities/IdentityList.vue:543
-#: src/components/admin/imap_migration/MigrationsList.vue:130
-#: src/components/admin/imap_migration/ProvidersList.vue:146
+#: src/components/admin/identities/IdentityList.vue:542
+#: src/components/admin/identities/IdentityList.vue:555
+#: src/components/admin/imap_migration/MigrationsList.vue:109
+#: src/components/admin/imap_migration/ProvidersList.vue:128
 #: src/components/calendars/EventForm.vue:182
 #: src/components/contacts/CategoryForm.vue:18
-#: src/components/contacts/ContactList.vue:238
+#: src/components/contacts/ContactList.vue:235
 #: src/components/webmail/EmailList.vue:36
-#: src/components/webmail/EmailListItem.vue:130
-#: src/views/account/FiltersView.vue:342
+#: src/components/webmail/EmailListItem.vue:132
+#: src/components/webmail/TagsForm.vue:27 src/views/account/FiltersView.vue:345
 #: src/views/calendars/CalendarView.vue:262
-#: src/views/calendars/CalendarView.vue:337 src/views/webmail/EmailView.vue:63
+#: src/views/calendars/CalendarView.vue:337 src/views/webmail/EmailView.vue:64
 msgid "Delete"
 msgstr ""
 
-#: src/components/admin/alarms/AlarmList.vue:132
-msgid "Reload"
-msgstr ""
-
-#: src/components/admin/alarms/AlarmList.vue:149
+#: src/components/admin/alarms/AlarmList.vue:145
 #, fuzzy
 msgid "Close alarm"
 msgstr "Serriñ"
 
-#: src/components/admin/alarms/AlarmList.vue:156
+#: src/components/admin/alarms/AlarmList.vue:152
 #, fuzzy
 msgid "Reopen alarm"
 msgstr "Serriñ"
 
-#: src/components/admin/alarms/AlarmList.vue:189
+#: src/components/admin/alarms/AlarmList.vue:185
 #, fuzzy
 msgid "Alarm deleted"
 msgstr "Deiziad krouidigezh"
 
-#: src/components/admin/alarms/AlarmList.vue:196
+#: src/components/admin/alarms/AlarmList.vue:192
 msgid "Alarms deleted"
 msgstr ""
 
-#: src/components/admin/alarms/AlarmList.vue:204
+#: src/components/admin/alarms/AlarmList.vue:200
 msgid "Alarm closed"
 msgstr ""
 
-#: src/components/admin/alarms/AlarmList.vue:212
+#: src/components/admin/alarms/AlarmList.vue:208
 msgid "Alarm re-opened"
 msgstr ""
 
@@ -776,13 +800,13 @@ msgid "Domain aliases"
 msgstr "Implijout un dalvoudegezh domani dre-ziouer"
 
 #: src/components/admin/dashboard/GlobalStatisticsWidget.vue:46
-#: src/components/admin/identities/IdentityList.vue:72
+#: src/components/admin/identities/IdentityList.vue:33
 #, fuzzy
 msgid "Accounts"
 msgstr "Kont"
 
 #: src/components/admin/dashboard/GlobalStatisticsWidget.vue:52
-#: src/components/admin/domains/DomainList.vue:218
+#: src/components/admin/domains/DomainList.vue:212
 #: src/components/admin/domains/DomainSummary.vue:64
 #: src/components/admin/identities/AccountAliases.vue:4
 #: src/components/admin/identities/AccountCreationForm.vue:146
@@ -796,12 +820,12 @@ msgstr "Aliasoù"
 msgid "Latest news"
 msgstr "Stumm staliet"
 
-#: src/components/admin/dashboard/NewsFeedWidget.vue:24
+#: src/components/admin/dashboard/NewsFeedWidget.vue:23
 #: src/views/account/FiltersView.vue:62
 msgid "New"
 msgstr ""
 
-#: src/components/admin/dashboard/NewsFeedWidget.vue:35
+#: src/components/admin/dashboard/NewsFeedWidget.vue:32
 msgid "Visit the official weblog for more information"
 msgstr ""
 
@@ -990,9 +1014,9 @@ msgstr "Neket ganet"
 #: src/components/admin/identities/AccountSenderAddresses.vue:73
 #: src/components/admin/identities/AliasCreationForm.vue:60
 #: src/components/admin/identities/AliasEditForm.vue:16
-#: src/components/admin/identities/IdentityList.vue:277
+#: src/components/admin/identities/IdentityList.vue:280
 #: src/components/admin/imap_migration/ProviderCreationForm.vue:54
-#: src/components/admin/imap_migration/ProvidersList.vue:115
+#: src/components/admin/imap_migration/ProvidersList.vue:97
 #: src/components/contacts/ContactForm.vue:85
 msgid "Address"
 msgstr "Chomlec'h"
@@ -1042,7 +1066,7 @@ msgid "Administrators of"
 msgstr "Merourien"
 
 #: src/components/admin/domains/DomainAdminList.vue:9
-#: src/components/admin/domains/DomainList.vue:396
+#: src/components/admin/domains/DomainList.vue:390
 msgid "Administrators"
 msgstr "Merourien"
 
@@ -1080,6 +1104,7 @@ msgstr ""
 #: src/components/contacts/CategoryForm.vue:60
 #: src/components/contacts/ContactForm.vue:185
 #: src/components/contacts/ContactList.vue:31
+#: src/components/webmail/TagsForm.vue:56
 msgid "Add"
 msgstr "Ouzhpennañ"
 
@@ -1125,7 +1150,7 @@ msgstr ""
 #: src/components/admin/imap_migration/ProviderForm.vue:7
 #: src/components/admin/information/ProPromotion.vue:95
 #: src/views/admin/domains/DomainView.vue:22
-#: src/views/admin/identities/AccountView.vue:16
+#: src/views/admin/identities/AccountView.vue:17
 msgid "General"
 msgstr "Hollek"
 
@@ -1173,13 +1198,13 @@ msgid "Enable DKIM signing"
 msgstr "Enaouiñ ar sinadur DKIM"
 
 #: src/components/admin/domains/DomainCreationForm.vue:250
-#: src/components/admin/domains/DomainList.vue:226
+#: src/components/admin/domains/DomainList.vue:220
 #: src/components/admin/domains/DomainSummary.vue:16
 #: src/components/admin/domains/form_steps/DomainLimitationsForm.vue:5
 #: src/components/admin/identities/AccountCreationForm.vue:129
 #: src/components/admin/identities/AccountSummary.vue:52
 #: src/components/admin/identities/form_steps/AccountMailboxForm.vue:3
-#: src/components/admin/identities/IdentityList.vue:319
+#: src/components/admin/identities/IdentityList.vue:322
 msgid "Quota"
 msgstr "Kota"
 
@@ -1295,8 +1320,8 @@ msgid "DKIM signing"
 msgstr ""
 
 #: src/components/admin/domains/DomainEditForm.vue:81
-#: src/components/admin/identities/AccountEditForm.vue:110
-#: src/components/admin/identities/AccountEditForm.vue:116
+#: src/components/admin/identities/AccountEditForm.vue:114
+#: src/components/admin/identities/AccountEditForm.vue:120
 #, fuzzy
 msgid "Quota: "
 msgstr "Kota"
@@ -1314,69 +1339,69 @@ msgid "Service: "
 msgstr ""
 
 #: src/components/admin/domains/DomainEditForm.vue:150
-#: src/components/admin/identities/AccountEditForm.vue:172
+#: src/components/admin/identities/AccountEditForm.vue:176
 msgid "Resources"
 msgstr "Mammennoù"
 
-#: src/components/admin/domains/DomainList.vue:72
+#: src/components/admin/domains/DomainList.vue:65
 msgid "Relay"
 msgstr ""
 
-#: src/components/admin/domains/DomainList.vue:112
-#: src/components/admin/domains/DomainList.vue:123
+#: src/components/admin/domains/DomainList.vue:105
+#: src/components/admin/domains/DomainList.vue:116
 #: src/components/admin/domains/DomainSummary.vue:18
 #: src/components/admin/domains/DomainSummary.vue:25
 #: src/components/admin/domains/DomainSummary.vue:56
 #: src/components/admin/identities/AccountSummary.vue:54
-#: src/components/admin/identities/IdentityList.vue:168
-#: src/components/admin/identities/IdentityList.vue:197
+#: src/components/admin/identities/IdentityList.vue:169
+#: src/components/admin/identities/IdentityList.vue:198
 #: src/components/tools/ResourcesView.vue:9
 #, fuzzy
 msgid "Unlimited"
 msgstr "divevennet"
 
-#: src/components/admin/domains/DomainList.vue:173
+#: src/components/admin/domains/DomainList.vue:166
 msgid "Do not delete domain folder"
 msgstr ""
 
-#: src/components/admin/domains/DomainList.vue:220
+#: src/components/admin/domains/DomainList.vue:214
 msgid "DNS status"
 msgstr "Statud DNS"
 
-#: src/components/admin/domains/DomainList.vue:224
+#: src/components/admin/domains/DomainList.vue:218
 msgid "Sending limit"
 msgstr ""
 
-#: src/components/admin/domains/DomainList.vue:306
+#: src/components/admin/domains/DomainList.vue:300
 msgid "Do you really want to delete the domain %{ domain }?"
 msgstr ""
 
-#: src/components/admin/domains/DomainList.vue:323
+#: src/components/admin/domains/DomainList.vue:317
 msgid "Domain deleted"
 msgstr ""
 
-#: src/components/admin/domains/DomainList.vue:333
+#: src/components/admin/domains/DomainList.vue:327
 msgid "Do you really want to delete the selected domains?"
 msgstr ""
 
-#: src/components/admin/domains/DomainList.vue:352
+#: src/components/admin/domains/DomainList.vue:346
 #, fuzzy
 msgid "Domains deleted"
 msgstr "Domani krouet"
 
-#: src/components/admin/domains/DomainList.vue:401
-#: src/components/admin/identities/IdentityList.vue:513
+#: src/components/admin/domains/DomainList.vue:395
 #: src/components/admin/identities/IdentityList.vue:525
-#: src/components/admin/imap_migration/ProvidersList.vue:152
-#: src/components/contacts/ContactList.vue:233
+#: src/components/admin/identities/IdentityList.vue:537
+#: src/components/admin/imap_migration/ProvidersList.vue:134
+#: src/components/contacts/ContactList.vue:230
 #: src/components/webmail/MailboxShareDialog.vue:70
-#: src/views/account/FiltersView.vue:337
+#: src/components/webmail/TagsForm.vue:19 src/views/account/FiltersView.vue:340
 #: src/views/calendars/CalendarView.vue:252
-#: src/views/calendars/CalendarView.vue:332 src/views/webmail/EmailView.vue:53
+#: src/views/calendars/CalendarView.vue:332 src/views/webmail/EmailView.vue:54
 msgid "Edit"
 msgstr ""
 
-#: src/components/admin/domains/DomainList.vue:414
+#: src/components/admin/domains/DomainList.vue:408
 #: src/layouts/admin/AdminLayout.vue:92
 msgid "Alarms"
 msgstr ""
@@ -1482,8 +1507,8 @@ msgstr ""
 #: src/components/admin/domains/DomainSummary.vue:8
 #: src/components/admin/identities/AccountSummary.vue:8
 #: src/components/admin/identities/AliasSummary.vue:8
-#: src/components/admin/identities/IdentityList.vue:292
-#: src/components/admin/identities/IdentityList.vue:346
+#: src/components/admin/identities/IdentityList.vue:295
+#: src/components/admin/identities/IdentityList.vue:349
 msgid "Creation date"
 msgstr "Deiziad krouidigezh"
 
@@ -1503,7 +1528,7 @@ msgstr ""
 
 #: src/components/admin/domains/DomainSummary.vue:38
 #: src/components/admin/identities/AccountSummary.vue:79
-#: src/components/admin/identities/IdentityList.vue:193
+#: src/components/admin/identities/IdentityList.vue:194
 msgid "Sending forbidden"
 msgstr ""
 
@@ -1567,16 +1592,16 @@ msgid "Create standard aliases for the domain."
 msgstr ""
 
 #: src/components/admin/identities/AccountCreationForm.vue:4
-#: src/components/admin/imap_migration/MigrationsList.vue:88
+#: src/components/admin/imap_migration/MigrationsList.vue:67
 msgid "New account"
 msgstr "Kont nevez"
 
 #: src/components/admin/identities/AccountCreationForm.vue:93
 #: src/components/admin/identities/AccountCreationForm.vue:94
 #: src/components/admin/identities/AccountCreationForm.vue:165
-#: src/components/admin/identities/AccountEditForm.vue:9
+#: src/components/admin/identities/AccountEditForm.vue:13
 #: src/components/admin/identities/AccountSummary.vue:23
-#: src/components/admin/identities/IdentityList.vue:318
+#: src/components/admin/identities/IdentityList.vue:321
 msgid "Role"
 msgstr "Rol"
 
@@ -1605,62 +1630,62 @@ msgstr "Kont nevez"
 msgid "Account created"
 msgstr "Kont krouet"
 
-#: src/components/admin/identities/AccountEditForm.vue:31
+#: src/components/admin/identities/AccountEditForm.vue:35
 #: src/components/calendars/CalendarAccessRulesForm.vue:45
 #: src/components/shared/TopMenu.vue:130
 #: src/components/webmail/MailboxShareDialog.vue:14
 #: src/components/webmail/MailboxShareDialog.vue:50
-#: src/views/admin/identities/AccountView.vue:4
-#: src/views/admin/identities/IdentitiesView.vue:23
+#: src/views/admin/identities/AccountView.vue:5
+#: src/views/admin/identities/IdentitiesView.vue:22
 msgid "Account"
 msgstr "Kont"
 
-#: src/components/admin/identities/AccountEditForm.vue:39
+#: src/components/admin/identities/AccountEditForm.vue:43
 #, fuzzy
 msgid "Username:"
 msgstr "Anv implier"
 
-#: src/components/admin/identities/AccountEditForm.vue:70
+#: src/components/admin/identities/AccountEditForm.vue:74
 #: src/views/account/SettingsView.vue:9
 msgid "Profile"
 msgstr "Profil"
 
-#: src/components/admin/identities/AccountEditForm.vue:78
+#: src/components/admin/identities/AccountEditForm.vue:82
 msgid "Language:"
 msgstr ""
 
-#: src/components/admin/identities/AccountEditForm.vue:111
+#: src/components/admin/identities/AccountEditForm.vue:115
 #, fuzzy
 msgid "domain's default value"
 msgstr "Implijout un dalvoudegezh domani dre-ziouer"
 
-#: src/components/admin/identities/AccountEditForm.vue:122
+#: src/components/admin/identities/AccountEditForm.vue:126
 #, fuzzy
 msgid "Send only"
 msgstr "Kont nevez"
 
-#: src/components/admin/identities/AccountEditForm.vue:145
-#: src/components/admin/identities/IdentityList.vue:77
-#: src/views/admin/domains/DomainsView.vue:26
+#: src/components/admin/identities/AccountEditForm.vue:149
+#: src/components/admin/identities/IdentityList.vue:34
+#: src/views/admin/domains/DomainsView.vue:25
 #: src/views/admin/identities/AliasView.vue:5
-#: src/views/admin/identities/IdentitiesView.vue:26
+#: src/views/admin/identities/IdentitiesView.vue:25
 msgid "Alias"
 msgstr "Alias"
 
-#: src/components/admin/identities/AccountEditForm.vue:154
+#: src/components/admin/identities/AccountEditForm.vue:158
 msgid "Number of associated alias:"
 msgstr ""
 
-#: src/components/admin/identities/AccountEditForm.vue:186
+#: src/components/admin/identities/AccountEditForm.vue:190
 msgid "Number of allowed mailboxes:"
 msgstr ""
 
-#: src/components/admin/identities/AccountEditForm.vue:192
+#: src/components/admin/identities/AccountEditForm.vue:196
 #, fuzzy
 msgid "Number of allowed mailbox aliases:"
 msgstr "Boest-posteloù"
 
-#: src/components/admin/identities/AccountEditForm.vue:396
+#: src/components/admin/identities/AccountEditForm.vue:400
 #, fuzzy
 msgid "Account updated"
 msgstr "Kont krouet"
@@ -1700,7 +1725,7 @@ msgid "Last login date"
 msgstr ""
 
 #: src/components/admin/identities/AccountSummary.vue:16
-#: src/components/admin/identities/IdentityList.vue:152
+#: src/components/admin/identities/IdentityList.vue:153
 msgid "Never logged-in"
 msgstr ""
 
@@ -1720,14 +1745,14 @@ msgstr "Chomlec'h dre-zegouezh"
 #: src/components/admin/identities/AliasCreationForm.vue:66
 #: src/components/admin/identities/AliasSummary.vue:26
 #: src/components/admin/identities/form_steps/AliasGeneralForm.vue:56
-#: src/components/admin/identities/IdentityList.vue:284
+#: src/components/admin/identities/IdentityList.vue:287
 msgid "Expire at"
 msgstr "Diamzeriet da"
 
 #: src/components/admin/identities/AliasCreationForm.vue:72
 #: src/components/admin/identities/AliasSummary.vue:30
 #: src/components/admin/identities/form_steps/AliasGeneralForm.vue:58
-#: src/components/admin/identities/IdentityList.vue:288
+#: src/components/admin/identities/IdentityList.vue:291
 #: src/components/calendars/EventForm.vue:161
 #: src/views/admin/InformationView.vue:231
 msgid "Description"
@@ -1738,8 +1763,8 @@ msgstr "Deskrivadur"
 #: src/components/admin/identities/AliasCreationForm.vue:97
 #: src/components/admin/identities/AliasEditForm.vue:41
 #: src/components/admin/identities/AliasRecipientsSummary.vue:4
-#: src/components/admin/identities/IdentityList.vue:280
-#: src/components/webmail/EmailList.vue:252
+#: src/components/admin/identities/IdentityList.vue:283
+#: src/components/webmail/EmailList.vue:266
 msgid "Recipients"
 msgstr "Reseverien"
 
@@ -1790,16 +1815,16 @@ msgstr ""
 msgid "Alias already added"
 msgstr "Alias krouet"
 
-#: src/components/admin/identities/form_steps/AccountGeneralForm.vue:41
+#: src/components/admin/identities/form_steps/AccountGeneralForm.vue:42
 msgid "You can update your password from the Account section"
 msgstr ""
 
-#: src/components/admin/identities/form_steps/AccountGeneralForm.vue:77
+#: src/components/admin/identities/form_steps/AccountGeneralForm.vue:79
 #, fuzzy
 msgid "Enter an email address"
 msgstr "Chomlec'h postel"
 
-#: src/components/admin/identities/form_steps/AccountGeneralForm.vue:79
+#: src/components/admin/identities/form_steps/AccountGeneralForm.vue:81
 msgid "Enter a simple username or an email address"
 msgstr ""
 
@@ -1912,81 +1937,81 @@ msgstr "Chomlec'hioù ar c'haser"
 msgid "Please add at least one recipient."
 msgstr ""
 
-#: src/components/admin/identities/IdentityList.vue:37
+#: src/components/admin/identities/IdentityList.vue:87
 msgid "Customize displayed columns"
 msgstr ""
 
-#: src/components/admin/identities/IdentityList.vue:172
-#: src/components/admin/identities/IdentityList.vue:201
+#: src/components/admin/identities/IdentityList.vue:173
+#: src/components/admin/identities/IdentityList.vue:202
 #, fuzzy
 msgid "No mailbox"
 msgstr "Gant ur voest-posteloù"
 
-#: src/components/admin/identities/IdentityList.vue:209
+#: src/components/admin/identities/IdentityList.vue:210
 msgid "Deleting..."
 msgstr ""
 
-#: src/components/admin/identities/IdentityList.vue:245
+#: src/components/admin/identities/IdentityList.vue:246
 msgid "Do not delete account folder"
 msgstr ""
 
-#: src/components/admin/identities/IdentityList.vue:296
+#: src/components/admin/identities/IdentityList.vue:299
 #, fuzzy
 msgid "Last modification"
 msgstr "Deiziad aozañ diwezhañ"
 
-#: src/components/admin/identities/IdentityList.vue:314
+#: src/components/admin/identities/IdentityList.vue:317
 #, fuzzy
 msgid "Last Name"
 msgstr "Anv familh"
 
-#: src/components/admin/identities/IdentityList.vue:321
+#: src/components/admin/identities/IdentityList.vue:324
 #, fuzzy
 msgid "Message limit"
 msgstr "Implij"
 
-#: src/components/admin/identities/IdentityList.vue:334
+#: src/components/admin/identities/IdentityList.vue:337
 #, fuzzy
 msgid "TFA enabled"
 msgstr "Enaouet"
 
-#: src/components/admin/identities/IdentityList.vue:338
+#: src/components/admin/identities/IdentityList.vue:341
 #, fuzzy
 msgid "TOTP enabled"
 msgstr "Enaouet"
 
-#: src/components/admin/identities/IdentityList.vue:342
+#: src/components/admin/identities/IdentityList.vue:345
 msgid "WebAutn enabled"
 msgstr ""
 
-#: src/components/admin/identities/IdentityList.vue:350
+#: src/components/admin/identities/IdentityList.vue:353
 #, fuzzy
 msgid "Last login"
 msgstr "Anv familh"
 
-#: src/components/admin/identities/IdentityList.vue:559
+#: src/components/admin/identities/IdentityList.vue:571
 msgid "Are you sure you want to delete this identity ?"
 msgstr ""
 
-#: src/components/admin/identities/IdentityList.vue:575
+#: src/components/admin/identities/IdentityList.vue:587
 #, fuzzy
 msgid "Account deleted"
 msgstr "Kont krouet"
 
-#: src/components/admin/identities/IdentityList.vue:599
+#: src/components/admin/identities/IdentityList.vue:611
 msgid "Are you sure you want to delete the selected accounts?"
 msgstr ""
 
-#: src/components/admin/identities/IdentityList.vue:618
+#: src/components/admin/identities/IdentityList.vue:630
 #, fuzzy
 msgid "Accounts deleted"
 msgstr "Kont krouet"
 
-#: src/components/admin/identities/IdentityList.vue:628
+#: src/components/admin/identities/IdentityList.vue:640
 msgid "Are you sure you want to delete this alias?"
 msgstr ""
 
-#: src/components/admin/identities/IdentityList.vue:643
+#: src/components/admin/identities/IdentityList.vue:655
 #, fuzzy
 msgid "Alias deleted"
 msgstr "Deiziad krouidigezh"
@@ -2018,7 +2043,7 @@ msgstr ""
 
 #: src/components/admin/imap_migration/form_steps/ProviderGeneralForm.vue:27
 #: src/components/admin/imap_migration/ProviderCreationForm.vue:57
-#: src/components/admin/imap_migration/ProvidersList.vue:117
+#: src/components/admin/imap_migration/ProvidersList.vue:99
 msgid "Secured"
 msgstr ""
 
@@ -2030,17 +2055,17 @@ msgstr ""
 msgid "Check connection:"
 msgstr ""
 
-#: src/components/admin/imap_migration/MigrationsList.vue:86
+#: src/components/admin/imap_migration/MigrationsList.vue:65
 #, fuzzy
 msgid "Provider"
 msgstr "Domani krouet"
 
-#: src/components/admin/imap_migration/MigrationsList.vue:87
+#: src/components/admin/imap_migration/MigrationsList.vue:66
 #, fuzzy
 msgid "Old account"
 msgstr "Kont nevez"
 
-#: src/components/admin/imap_migration/MigrationsList.vue:105
+#: src/components/admin/imap_migration/MigrationsList.vue:84
 #, fuzzy
 msgid "Migration deleted"
 msgstr "Deiziad krouidigezh"
@@ -2060,14 +2085,14 @@ msgid "Associated domain"
 msgstr "Domanioù meret"
 
 #: src/components/admin/imap_migration/ProviderCreationForm.vue:55
-#: src/components/admin/imap_migration/ProvidersList.vue:116
+#: src/components/admin/imap_migration/ProvidersList.vue:98
 msgid "Port"
 msgstr ""
 
 #: src/components/admin/imap_migration/ProviderCreationForm.vue:64
 #: src/components/admin/imap_migration/ProviderCreationForm.vue:72
 #: src/components/admin/imap_migration/ProviderForm.vue:30
-#: src/components/admin/imap_migration/ProvidersList.vue:118
+#: src/components/admin/imap_migration/ProvidersList.vue:100
 #, fuzzy
 msgid "Associated domains"
 msgstr "Domanioù meret"
@@ -2097,14 +2122,14 @@ msgstr "Domanioù meret"
 msgid "Provider updated"
 msgstr "Profil hizivaet"
 
-#: src/components/admin/imap_migration/ProvidersList.vue:57
+#: src/components/admin/imap_migration/ProvidersList.vue:38
 #, fuzzy
 msgid "%{count} associated domain"
 msgid_plural "%{count} associated domains"
 msgstr[0] "Domanioù meret"
 msgstr[1] "Domanioù meret"
 
-#: src/components/admin/imap_migration/ProvidersList.vue:65
+#: src/components/admin/imap_migration/ProvidersList.vue:46
 #, fuzzy
 msgid "No associated domain"
 msgstr "Domanioù meret"
@@ -2157,7 +2182,7 @@ msgstr ""
 
 #: src/components/admin/information/ProPromotion.vue:95
 #: src/layouts/account/AccountLayout.vue:30
-#: src/layouts/admin/AdminLayout.vue:165
+#: src/layouts/admin/AdminLayout.vue:170
 msgid "Settings"
 msgstr "Arventennoù"
 
@@ -2205,29 +2230,33 @@ msgid ""
 "levels."
 msgstr ""
 
-#: src/components/admin/logs/AuditTrailList.vue:51
-#: src/components/admin/logs/MessageList.vue:47
-#: src/components/quarantine/QuarantineList.vue:236
-#: src/components/webmail/EmailList.vue:255
-msgid "Date"
+#: src/components/admin/logs/AuditTrailList.vue:20
+msgid "Export the filtered entries to CSV"
 msgstr ""
 
-#: src/components/admin/logs/AuditTrailList.vue:52
-msgid "Level"
-msgstr "Live"
+#: src/components/admin/logs/AuditTrailList.vue:34
+#: src/components/admin/logs/AuditTrailList.vue:132
+#, fuzzy
+msgid "Action"
+msgstr "Oberioù"
 
-#: src/components/admin/logs/AuditTrailList.vue:53
-msgid "Logger"
-msgstr "Enroller"
+#: src/components/admin/logs/AuditTrailList.vue:56
+#: src/components/tools/TimeSerieChart.vue:10
+msgid "Period"
+msgstr ""
 
-#: src/components/admin/logs/MessageList.vue:46
+#: src/components/admin/logs/AuditTrailList.vue:133
+msgid "Actor"
+msgstr ""
+
+#: src/components/admin/logs/MessageList.vue:37
 msgid "Queue ID"
 msgstr ""
 
-#: src/components/admin/logs/MessageList.vue:49
+#: src/components/admin/logs/MessageList.vue:40
 #: src/components/calendars/EventForm.vue:88
-#: src/components/quarantine/QuarantineList.vue:52
-#: src/components/quarantine/QuarantineList.vue:233
+#: src/components/quarantine/QuarantineList.vue:53
+#: src/components/quarantine/QuarantineList.vue:235
 #: src/components/tools/TimeSerieChart.vue:21
 #: src/components/webmail/ComposeEmailForm.vue:146
 #: src/components/webmail/MessageHeader.vue:108
@@ -2514,13 +2543,13 @@ msgid "Category deleted"
 msgstr "Deiziad krouidigezh"
 
 #: src/components/contacts/ContactCategoriesForm.vue:5
-#: src/components/contacts/ContactList.vue:228
+#: src/components/contacts/ContactList.vue:225
 #: src/views/contacts/AddressBook.vue:45
 msgid "Categories"
 msgstr "Rummadoù"
 
 #: src/components/contacts/ContactForm.vue:31
-#: src/components/contacts/ContactList.vue:219
+#: src/components/contacts/ContactList.vue:216
 #, fuzzy
 msgid "Display name"
 msgstr "Diskouez an anv"
@@ -2589,108 +2618,108 @@ msgstr ""
 msgid "Display address book information"
 msgstr ""
 
-#: src/components/contacts/ContactList.vue:120
+#: src/components/contacts/ContactList.vue:116
 #, fuzzy
 msgid "Email addresses"
 msgstr "Chomlec'h postel"
 
-#: src/components/contacts/ContactList.vue:138
+#: src/components/contacts/ContactList.vue:134
 #, fuzzy
 msgid "Phone numbers"
 msgstr "Niverenn pellgomz"
 
-#: src/components/contacts/ContactList.vue:281
+#: src/components/contacts/ContactList.vue:278
 #, fuzzy
 msgid "Contact removed"
 msgstr "Darempredoù"
 
-#: src/components/contacts/ContactList.vue:350
+#: src/components/contacts/ContactList.vue:347
 msgid "Synchronization started"
 msgstr ""
 
-#: src/components/quarantine/QuarantineList.vue:27
-#: src/components/webmail/EmailList.vue:106
+#: src/components/quarantine/QuarantineList.vue:28
+#: src/components/webmail/EmailList.vue:113
 #, fuzzy
 msgid "Search in messages"
 msgstr "Emporzhiañ domanioù"
 
-#: src/components/quarantine/QuarantineList.vue:45
+#: src/components/quarantine/QuarantineList.vue:46
 #, fuzzy
 msgid "From address"
 msgstr "Chomlec'h dre-zegouezh"
 
-#: src/components/quarantine/QuarantineList.vue:54
+#: src/components/quarantine/QuarantineList.vue:55
 msgid "both"
 msgstr ""
 
-#: src/components/quarantine/QuarantineList.vue:72
-msgid "Release selection"
-msgstr ""
-
-#: src/components/quarantine/QuarantineList.vue:84
-msgid "Delete selection"
-msgstr ""
-
-#: src/components/quarantine/QuarantineList.vue:101
-#: src/views/quarantine/MessageView.vue:49
-msgid "Mark as spam"
-msgstr ""
-
-#: src/components/quarantine/QuarantineList.vue:105
-msgid "Mark as not spam"
-msgstr ""
-
-#: src/components/quarantine/QuarantineList.vue:125
+#: src/components/quarantine/QuarantineList.vue:80
 #, fuzzy
 msgid "Display"
 msgstr "Diskouez an anv"
 
-#: src/components/quarantine/QuarantineList.vue:232
+#: src/components/quarantine/QuarantineList.vue:104
+msgid "Release selection"
+msgstr ""
+
+#: src/components/quarantine/QuarantineList.vue:115
+msgid "Delete selection"
+msgstr ""
+
+#: src/components/quarantine/QuarantineList.vue:131
+#: src/views/quarantine/MessageView.vue:49
+msgid "Mark as spam"
+msgstr ""
+
+#: src/components/quarantine/QuarantineList.vue:135
+msgid "Mark as not spam"
+msgstr ""
+
+#: src/components/quarantine/QuarantineList.vue:234
 msgid "Score"
 msgstr ""
 
-#: src/components/quarantine/QuarantineList.vue:284
-#: src/views/quarantine/MessageView.vue:183
+#: src/components/quarantine/QuarantineList.vue:286
+#: src/views/quarantine/MessageView.vue:181
 #, fuzzy
 msgid "Message released"
 msgstr "Implij"
 
-#: src/components/quarantine/QuarantineList.vue:287
-#: src/views/quarantine/MessageView.vue:241
+#: src/components/quarantine/QuarantineList.vue:289
+#: src/views/quarantine/MessageView.vue:238
 msgid "Message marked as spam"
 msgstr ""
 
-#: src/components/quarantine/QuarantineList.vue:290
-#: src/views/quarantine/MessageView.vue:245
+#: src/components/quarantine/QuarantineList.vue:292
+#: src/views/quarantine/MessageView.vue:242
 msgid "Message marked as non-spam"
 msgstr ""
 
-#: src/components/quarantine/QuarantineList.vue:358
+#: src/components/quarantine/QuarantineList.vue:360
 #, fuzzy
 msgid "Selection deleted"
 msgstr "Deiziad krouidigezh"
 
-#: src/components/quarantine/QuarantineList.vue:371
-#: src/views/quarantine/MessageView.vue:181
+#: src/components/quarantine/QuarantineList.vue:373
+#: src/views/quarantine/MessageView.vue:179
 msgid "Release request sent"
 msgstr ""
 
-#: src/components/quarantine/QuarantineList.vue:373
+#: src/components/quarantine/QuarantineList.vue:375
 msgid "Selection released"
 msgstr ""
 
-#: src/components/quarantine/QuarantineList.vue:388
-#: src/views/quarantine/MessageView.vue:218
+#: src/components/quarantine/QuarantineList.vue:389
+#: src/views/quarantine/MessageView.vue:215
 #, fuzzy
 msgid "Learning database"
 msgstr "Deiziad krouidigezh"
 
-#: src/components/quarantine/QuarantineList.vue:389
-#: src/views/quarantine/MessageView.vue:219
+#: src/components/quarantine/QuarantineList.vue:390
+#: src/views/quarantine/MessageView.vue:216
 msgid "Which database should be used for this learning:"
 msgstr ""
 
-#: src/components/quarantine/QuarantineList.vue:401
+#: src/components/quarantine/QuarantineList.vue:402
 msgid "Selection is being processed..."
 msgstr ""
 
@@ -2799,6 +2828,10 @@ msgstr ""
 msgid "Import"
 msgstr "Emporzhiañ"
 
+#: src/components/tools/ListToolbar.vue:18
+msgid "Search"
+msgstr "Klask"
+
 #: src/components/tools/ParametersForm.vue:227
 #, fuzzy
 msgid "Parameters updated"
@@ -2824,10 +2857,6 @@ msgstr "Deiziad krouidigezh"
 
 #: src/components/tools/StatisticsDomainSelect.vue:38
 msgid "Global"
-msgstr ""
-
-#: src/components/tools/TimeSerieChart.vue:10
-msgid "Period"
 msgstr ""
 
 #: src/components/tools/TimeSerieChart.vue:18
@@ -2860,11 +2889,11 @@ msgstr ""
 msgid "Year"
 msgstr ""
 
-#: src/components/tools/YesNoDefaultField.vue:3 src/plugins/filters.js:11
+#: src/components/tools/YesNoDefaultField.vue:3 src/plugins/filters.js:17
 msgid "yes"
 msgstr ""
 
-#: src/components/tools/YesNoDefaultField.vue:4 src/plugins/filters.js:11
+#: src/components/tools/YesNoDefaultField.vue:4 src/plugins/filters.js:17
 msgid "no"
 msgstr ""
 
@@ -2974,7 +3003,7 @@ msgid "Message not sent"
 msgstr "Implij"
 
 #: src/components/webmail/ComposeEmailForm.vue:640
-#: src/views/webmail/ThreadView.vue:159
+#: src/views/webmail/ThreadView.vue:166
 msgid "Open"
 msgstr ""
 
@@ -3057,127 +3086,146 @@ msgstr ""
 msgid "Select every message of the page"
 msgstr ""
 
-#: src/components/webmail/EmailList.vue:48 src/views/webmail/EmailView.vue:74
+#: src/components/webmail/EmailList.vue:48 src/views/webmail/EmailView.vue:75
 msgid "Mark as junk"
 msgstr ""
 
-#: src/components/webmail/EmailList.vue:59 src/views/webmail/EmailView.vue:85
+#: src/components/webmail/EmailList.vue:59 src/views/webmail/EmailView.vue:86
 msgid "Mark as not junk"
 msgstr ""
 
-#: src/components/webmail/EmailList.vue:67
+#: src/components/webmail/EmailList.vue:65 src/views/webmail/EmailView.vue:90
+#: src/views/webmail/ThreadView.vue:169
+#, fuzzy
+msgid "Tag"
+msgstr "Balizoù"
+
+#: src/components/webmail/EmailList.vue:74
 #, fuzzy
 msgid "More actions"
 msgstr "Kadarnadur"
 
-#: src/components/webmail/EmailList.vue:73
+#: src/components/webmail/EmailList.vue:80
 msgid "Mark as read"
 msgstr ""
 
-#: src/components/webmail/EmailList.vue:79
+#: src/components/webmail/EmailList.vue:86
 msgid "Mark as unread"
 msgstr ""
 
-#: src/components/webmail/EmailList.vue:85
+#: src/components/webmail/EmailList.vue:92
 msgid "Mark as followed"
 msgstr ""
 
-#: src/components/webmail/EmailList.vue:91
+#: src/components/webmail/EmailList.vue:98
 msgid "Mark as unfollowed"
 msgstr ""
 
 #: src/components/webmail/EmailList.vue:126
+msgid "Show the messages with a tag"
+msgstr ""
+
+#: src/components/webmail/EmailList.vue:140
 #, fuzzy
 msgid "Empty mailbox"
 msgstr "Gant ur voest-posteloù"
 
-#: src/components/webmail/EmailList.vue:138
+#: src/components/webmail/EmailList.vue:152
 #, fuzzy
 msgid "Display mode"
 msgstr "Diskouez an anv"
 
-#: src/components/webmail/EmailList.vue:146
+#: src/components/webmail/EmailList.vue:160
 #, fuzzy
 msgid "Messages one by one"
 msgstr "Implij"
 
-#: src/components/webmail/EmailList.vue:157
+#: src/components/webmail/EmailList.vue:171
 #, fuzzy
 msgid "Conversations"
 msgstr "Kadarnadur"
 
-#: src/components/webmail/EmailList.vue:161
+#: src/components/webmail/EmailList.vue:175
 msgid "Not available in this folder"
 msgstr ""
 
-#: src/components/webmail/EmailList.vue:178
+#: src/components/webmail/EmailList.vue:192
 msgid "on"
 msgstr ""
 
-#: src/components/webmail/EmailList.vue:186
+#: src/components/webmail/EmailList.vue:200
 msgid "Previous page"
 msgstr ""
 
-#: src/components/webmail/EmailList.vue:194
+#: src/components/webmail/EmailList.vue:208
 #, fuzzy
 msgid "Next page"
 msgstr "Da-heul"
 
-#: src/components/webmail/EmailList.vue:216
+#: src/components/webmail/EmailList.vue:230
 msgid ""
 "Scheduled messages will be sent at the specified date and time. (visible on "
 "the right)"
 msgstr ""
 
-#: src/components/webmail/EmailList.vue:252
+#: src/components/webmail/EmailList.vue:266
 #, fuzzy
 msgid "Sender"
 msgstr "Kont nevez"
 
-#: src/components/webmail/EmailList.vue:288
+#: src/components/webmail/EmailList.vue:302
 msgid "No message yet in this mailbox"
 msgstr ""
 
-#: src/components/webmail/EmailList.vue:303
+#: src/components/webmail/EmailList.vue:317
 msgid "Sending failure"
 msgstr ""
 
-#: src/components/webmail/EmailList.vue:423
+#: src/components/webmail/EmailList.vue:440
 #, fuzzy
 msgid "%{count} message selected"
 msgid_plural "%{count} messages selected"
 msgstr[0] "Emporzhiañ domanioù"
 msgstr[1] "Emporzhiañ domanioù"
 
-#: src/components/webmail/EmailList.vue:488
+#: src/components/webmail/EmailList.vue:505
 #, fuzzy
 msgid "Scheduling updated"
 msgstr "Kont krouet"
 
-#: src/components/webmail/EmailList.vue:499
+#: src/components/webmail/EmailList.vue:516
 msgid "Scheduled canceled and message moved to trash folder"
 msgstr ""
 
-#: src/components/webmail/EmailList.vue:662
+#: src/components/webmail/EmailList.vue:684
 #, fuzzy
 msgid "Message(s) deleted"
 msgstr "Implij"
 
-#: src/components/webmail/EmailList.vue:667
+#: src/components/webmail/EmailList.vue:689
 msgid "Message(s) marked as junk"
 msgstr ""
 
-#: src/components/webmail/EmailList.vue:673
+#: src/components/webmail/EmailList.vue:695
 msgid "Message(s) marked as not junk"
 msgstr ""
 
-#: src/components/webmail/EmailList.vue:679
+#: src/components/webmail/EmailList.vue:701
 #, fuzzy
 msgid "Message(s) flagged"
 msgstr "Implij"
 
-#: src/components/webmail/EmailList.vue:710
-#: src/views/webmail/ThreadView.vue:260
+#: src/components/webmail/EmailList.vue:732
+msgid "Tag added"
+msgstr ""
+
+#: src/components/webmail/EmailList.vue:732
+#, fuzzy
+msgid "Tag removed"
+msgstr "Darempredoù"
+
+#: src/components/webmail/EmailList.vue:770
+#: src/views/webmail/ThreadView.vue:275
 #, fuzzy
 msgid "%{count} message"
 msgid_plural "%{count} messages"
@@ -3189,12 +3237,12 @@ msgstr[1] "Emporzhiañ domanioù"
 msgid "Follow up"
 msgstr ""
 
-#: src/components/webmail/EmailListItem.vue:43
-#: src/components/webmail/ThreadListItem.vue:51
+#: src/components/webmail/EmailListItem.vue:44
+#: src/components/webmail/ThreadListItem.vue:52
 msgid "(no subject)"
 msgstr ""
 
-#: src/components/webmail/EmailListItem.vue:125
+#: src/components/webmail/EmailListItem.vue:127
 msgid "Reschedule"
 msgstr ""
 
@@ -3240,7 +3288,7 @@ msgstr "Boest-posteloù"
 msgid "Mailbox created"
 msgstr "Domani krouet"
 
-#: src/components/webmail/MailboxList.vue:189
+#: src/components/webmail/MailboxList.vue:194
 msgid "Moving selection..."
 msgstr ""
 
@@ -3306,7 +3354,7 @@ msgid "Remote images have been blocked to protect your privacy."
 msgstr ""
 
 #: src/components/webmail/RemoteContentBanner.vue:16
-#: src/views/webmail/EmailView.vue:110
+#: src/views/webmail/EmailView.vue:117
 #, fuzzy
 msgid "Display images"
 msgstr "Diskouez an anv"
@@ -3346,6 +3394,29 @@ msgstr ""
 msgid "Subscriptions updated"
 msgstr "Kont krouet"
 
+#: src/components/webmail/TagMenu.vue:29
+msgid "Manage tags"
+msgstr ""
+
+#: src/components/webmail/TagsForm.vue:2
+msgid "Tags"
+msgstr "Balizoù"
+
+#: src/components/webmail/TagsForm.vue:103
+#, fuzzy
+msgid "Tag updated"
+msgstr "Alias krouet"
+
+#: src/components/webmail/TagsForm.vue:103
+#, fuzzy
+msgid "Tag created"
+msgstr "Alias krouet"
+
+#: src/components/webmail/TagsForm.vue:123
+#, fuzzy
+msgid "Tag deleted"
+msgstr "Implij"
+
 #: src/components/webmail/ThreadListItem.vue:37
 msgid "Hide the messages of this conversation"
 msgstr ""
@@ -3367,7 +3438,13 @@ msgstr "Implijout un dalvoudegezh domani dre-ziouer"
 msgid "User's database"
 msgstr ""
 
-#: src/layouts/account/AccountLayout.vue:36
+#: src/layouts/account/AccountLayout.vue:35
+#: src/views/account/LoginHistoryView.vue:4
+#, fuzzy
+msgid "Recent logins"
+msgstr "Anv familh"
+
+#: src/layouts/account/AccountLayout.vue:41
 msgid "Filters"
 msgstr ""
 
@@ -3390,36 +3467,36 @@ msgstr ""
 
 #: src/layouts/admin/AdminLayout.vue:106
 #: src/views/admin/domains/DomainView.vue:25
-#: src/views/admin/monitoring/StatisticsView.vue:3
+#: src/views/admin/monitoring/StatisticsView.vue:4
 #, fuzzy
 msgid "Statistics"
 msgstr "Statud"
 
 #: src/layouts/admin/AdminLayout.vue:115
-#: src/views/admin/monitoring/AuditTrailView.vue:3
+#: src/views/admin/monitoring/AuditTrailView.vue:4
 msgid "Audit trail"
 msgstr ""
 
-#: src/layouts/admin/AdminLayout.vue:120
+#: src/layouts/admin/AdminLayout.vue:125
 msgid "Messages"
 msgstr ""
 
-#: src/layouts/admin/AdminLayout.vue:132
+#: src/layouts/admin/AdminLayout.vue:137
 msgid "IMAP Migration"
 msgstr ""
 
-#: src/layouts/admin/AdminLayout.vue:137
+#: src/layouts/admin/AdminLayout.vue:142
 #, fuzzy
 msgid "Email providers"
 msgstr "Chomlec'h postel"
 
-#: src/layouts/admin/AdminLayout.vue:142
+#: src/layouts/admin/AdminLayout.vue:147
 #: src/views/admin/imap_migration/MigrationsView.vue:4
 #, fuzzy
 msgid "Migrations"
 msgstr "Kadarnadur"
 
-#: src/layouts/admin/AdminLayout.vue:178 src/views/admin/InformationView.vue:4
+#: src/layouts/admin/AdminLayout.vue:183 src/views/admin/InformationView.vue:4
 #: src/views/calendars/CalendarView.vue:247
 #: src/views/calendars/CalendarView.vue:283
 msgid "Information"
@@ -3530,72 +3607,77 @@ msgstr ""
 msgid "Add new filter"
 msgstr ""
 
-#: src/views/account/FiltersView.vue:240
+#: src/views/account/FiltersView.vue:71
+#, fuzzy
+msgid "Auto-reply"
+msgstr "Ger-tremen"
+
+#: src/views/account/FiltersView.vue:243
 msgid "Failed to display template. Using raw mode"
 msgstr ""
 
-#: src/views/account/FiltersView.vue:255
+#: src/views/account/FiltersView.vue:258
 msgid "Filter enabled"
 msgstr ""
 
-#: src/views/account/FiltersView.vue:264
+#: src/views/account/FiltersView.vue:267
 #, fuzzy
 msgid "Filter disabled"
 msgstr "(lazhet)"
 
-#: src/views/account/FiltersView.vue:270
+#: src/views/account/FiltersView.vue:273
 msgid "Filter removed"
 msgstr ""
 
-#: src/views/account/FiltersView.vue:288
+#: src/views/account/FiltersView.vue:291
 msgid "Filter set activated"
 msgstr ""
 
-#: src/views/account/FiltersView.vue:295
+#: src/views/account/FiltersView.vue:298
 #, fuzzy
 msgid "Active filter set deactivated"
 msgstr "Domani krouet"
 
-#: src/views/account/FiltersView.vue:301
+#: src/views/account/FiltersView.vue:304
 msgid "Filter set removed"
 msgstr ""
 
-#: src/views/account/FiltersView.vue:315
+#: src/views/account/FiltersView.vue:318
 #, fuzzy
 msgid "Filter set updated"
 msgstr "Profil hizivaet"
 
-#: src/views/account/FiltersView.vue:353
+#: src/views/account/FiltersView.vue:360
 #, fuzzy
 msgid "Disable"
 msgstr "Lazhet"
 
-#: src/views/account/FiltersView.vue:360
+#: src/views/account/FiltersView.vue:367
 #, fuzzy
 msgid "Enable"
 msgstr "Enaouet"
 
-#: src/views/account/FiltersView.vue:368
+#: src/views/account/FiltersView.vue:375
 msgid "Move down"
 msgstr ""
 
-#: src/views/account/FiltersView.vue:375
+#: src/views/account/FiltersView.vue:382
 msgid "Move up"
 msgstr ""
 
-#: src/views/account/FiltersView.vue:385
+#: src/views/account/FiltersView.vue:392
 msgid "Download filter set"
 msgstr ""
 
-#: src/views/account/FiltersView.vue:390
+#: src/views/account/FiltersView.vue:397
 msgid "Delete filter set"
 msgstr ""
 
-#: src/views/account/FiltersView.vue:401
+#: src/views/account/FiltersView.vue:408
 msgid "Activate filter set"
 msgstr ""
 
-#: src/views/account/FiltersView.vue:408
+#: src/views/account/FiltersView.vue:415
 #, fuzzy
 msgid "Deactivate filter set"
 msgstr "Implij"
@@ -3616,8 +3698,8 @@ msgstr "Arventennoù"
 msgid "Two-factor auth"
 msgstr "O vezañ anavezet"
 
-#: src/views/account/SettingsView.vue:15 src/views/webmail/EmailView.vue:43
-#: src/views/webmail/ThreadView.vue:42 src/views/webmail/ThreadView.vue:151
+#: src/views/account/SettingsView.vue:15 src/views/webmail/EmailView.vue:44
+#: src/views/webmail/ThreadView.vue:42 src/views/webmail/ThreadView.vue:158
 msgid "Forward"
 msgstr "Treuzkas"
 
@@ -3633,26 +3715,26 @@ msgstr "API moned"
 msgid "Opened alarms"
 msgstr ""
 
-#: src/views/admin/domains/DomainEditView.vue:3
+#: src/views/admin/domains/DomainEditView.vue:4
 msgid "Edit domain"
 msgstr ""
 
-#: src/views/admin/domains/DomainsView.vue:18
-#: src/views/admin/identities/IdentitiesView.vue:18
+#: src/views/admin/domains/DomainsView.vue:17
+#: src/views/admin/identities/IdentitiesView.vue:17
 #: src/views/admin/imap_migration/ProvidersView.vue:15
 msgctxt "male"
 msgid "New"
 msgstr ""
 
-#: src/views/admin/domains/DomainsView.vue:33
+#: src/views/admin/domains/DomainsView.vue:31
 msgid "Import domains and aliases from CSV file"
 msgstr ""
 
-#: src/views/admin/domains/DomainsView.vue:40
+#: src/views/admin/domains/DomainsView.vue:37
 msgid "Export domains and aliases to CSV"
 msgstr ""
 
-#: src/views/admin/domains/DomainsView.vue:57
+#: src/views/admin/domains/DomainsView.vue:54
 msgid "Import domains"
 msgstr "Emporzhiañ domanioù"
 
@@ -3660,33 +3742,33 @@ msgstr "Emporzhiañ domanioù"
 msgid "DMARC"
 msgstr ""
 
-#: src/views/admin/identities/AccountEditView.vue:3
+#: src/views/admin/identities/AccountEditView.vue:4
 #, fuzzy
 msgid "Edit account"
 msgstr "Kont nevez"
 
-#: src/views/admin/identities/AliasEditView.vue:3
+#: src/views/admin/identities/AliasEditView.vue:4
 #, fuzzy
 msgid "Edit alias"
 msgstr "Alias nevez"
 
-#: src/views/admin/identities/IdentitiesView.vue:33
+#: src/views/admin/identities/IdentitiesView.vue:31
 msgid "Import accounts and aliases from CSV file"
 msgstr ""
 
-#: src/views/admin/identities/IdentitiesView.vue:40
+#: src/views/admin/identities/IdentitiesView.vue:37
 msgid "Export accounts and aliases to CSV"
 msgstr ""
 
-#: src/views/admin/identities/IdentitiesView.vue:69
+#: src/views/admin/identities/IdentitiesView.vue:66
 msgid "Import identities"
 msgstr "Emporzhiañ identelezhioù"
 
-#: src/views/admin/identities/IdentitiesView.vue:91
+#: src/views/admin/identities/IdentitiesView.vue:88
 msgid "Crypt passwords"
 msgstr "Kriptañ ar gerioù-tremen"
 
-#: src/views/admin/identities/IdentitiesView.vue:95
+#: src/views/admin/identities/IdentitiesView.vue:92
 msgid "Check this option if passwords contained in your file are not crypted"
 msgstr ""
 "Kochit an dibarzh ma ne vez ket kriptet ar gerioù-tremen endalc'het en ho "
@@ -3793,7 +3875,7 @@ msgstr "Stumm staliet"
 msgid "Virtual hosts, automatic HTTPS and per-customer branding"
 msgstr ""
 
-#: src/views/admin/monitoring/MessagesView.vue:3
+#: src/views/admin/monitoring/MessagesView.vue:4
 #, fuzzy
 msgid "Message history"
 msgstr "Implij"
@@ -3910,7 +3992,7 @@ msgstr ""
 msgid "Hide full headers"
 msgstr ""
 
-#: src/views/quarantine/MessageView.vue:201 src/views/webmail/EmailView.vue:256
+#: src/views/quarantine/MessageView.vue:199 src/views/webmail/EmailView.vue:267
 #, fuzzy
 msgid "Message deleted"
 msgstr "Implij"
@@ -3928,55 +4010,55 @@ msgstr ""
 msgid "Back to the mailbox"
 msgstr "Gant ur voest-posteloù"
 
-#: src/views/webmail/EmailView.vue:27 src/views/webmail/ThreadView.vue:26
-#: src/views/webmail/ThreadView.vue:135
+#: src/views/webmail/EmailView.vue:28 src/views/webmail/ThreadView.vue:26
+#: src/views/webmail/ThreadView.vue:142
 msgid "Reply"
 msgstr ""
 
-#: src/views/webmail/EmailView.vue:35 src/views/webmail/ThreadView.vue:34
-#: src/views/webmail/ThreadView.vue:143
+#: src/views/webmail/EmailView.vue:36 src/views/webmail/ThreadView.vue:34
+#: src/views/webmail/ThreadView.vue:150
 msgid "Reply all"
 msgstr ""
 
-#: src/views/webmail/EmailView.vue:93
+#: src/views/webmail/EmailView.vue:100
 #, fuzzy
 msgid "Display options"
 msgstr "Diskouez an anv"
 
-#: src/views/webmail/EmailView.vue:100
+#: src/views/webmail/EmailView.vue:107
 #, fuzzy
 msgid "Enable links"
 msgstr "Enaouet"
 
-#: src/views/webmail/EmailView.vue:105
+#: src/views/webmail/EmailView.vue:112
 #, fuzzy
 msgid "Disable links"
 msgstr "Lazhet"
 
-#: src/views/webmail/EmailView.vue:115
+#: src/views/webmail/EmailView.vue:122
 msgid "Hide images"
 msgstr ""
 
-#: src/views/webmail/EmailView.vue:119
+#: src/views/webmail/EmailView.vue:126
 #, fuzzy
 msgid "Display source"
 msgstr "Diskouez an anv"
 
-#: src/views/webmail/EmailView.vue:141
+#: src/views/webmail/EmailView.vue:148
 #, fuzzy
 msgid "Message scheduled at:"
 msgstr "Implij"
 
-#: src/views/webmail/EmailView.vue:151
+#: src/views/webmail/EmailView.vue:157
 #, fuzzy
 msgid "Message source"
 msgstr "Implij"
 
-#: src/views/webmail/EmailView.vue:271
+#: src/views/webmail/EmailView.vue:282
 msgid "Message marked as junk"
 msgstr ""
 
-#: src/views/webmail/EmailView.vue:286
+#: src/views/webmail/EmailView.vue:297
 msgid "Message marked as not junk"
 msgstr ""
 
@@ -3992,18 +4074,28 @@ msgstr ""
 msgid "Mark the conversation as not junk"
 msgstr ""
 
-#: src/views/webmail/ThreadView.vue:417
+#: src/views/webmail/ThreadView.vue:78
+msgid "Tag the whole conversation"
+msgstr ""
+
+#: src/views/webmail/ThreadView.vue:432
 #, fuzzy
 msgid "Conversation deleted"
 msgstr "Deiziad krouidigezh"
 
-#: src/views/webmail/ThreadView.vue:420
+#: src/views/webmail/ThreadView.vue:435
 msgid "Conversation marked as junk"
 msgstr ""
 
-#: src/views/webmail/ThreadView.vue:425
+#: src/views/webmail/ThreadView.vue:440
 msgid "Conversation marked as not junk"
 msgstr ""
+
+#~ msgid "Level"
+#~ msgstr "Live"
+
+#~ msgid "Logger"
+#~ msgstr "Enroller"
 
 #, fuzzy
 #~ msgid "Domain count"
@@ -4023,9 +4115,6 @@ msgstr ""
 #, fuzzy
 #~ msgid "inactive"
 #~ msgstr "Oberioù"
-
-#~ msgid "Tags"
-#~ msgstr "Balizoù"
 
 #, fuzzy
 #~ msgctxt "female"

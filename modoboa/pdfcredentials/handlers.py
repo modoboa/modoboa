@@ -53,7 +53,10 @@ def extra_identities_actions(sender, account, **kwargs):
     """
     if not param_tools.get_global_parameter("enabled_pdfcredentials"):
         return []
-    fname = get_creds_filename(account)
+    try:
+        fname = get_creds_filename(account)
+    except InternalError:
+        return []
     if not os.path.exists(fname):
         return []
     url = reverse("v2:get-credentials", args=[account.pk])

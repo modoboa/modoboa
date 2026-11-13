@@ -123,6 +123,16 @@ class FilterSerializer(serializers.Serializer):
         result = []
         for fobj in filters:
             if fobj["name"] == "autoreply":
+                # Managed by the autoreply app: only listed so it can be moved
+                result.append(
+                    {
+                        "name": fobj["name"],
+                        "enabled": fobj["enabled"],
+                        "match_type": constants.MATCH_TYPE_ALLOF,
+                        "conditions": [],
+                        "actions": [],
+                    }
+                )
                 continue
             test = (
                 fobj["content"].children[0] if not fobj["enabled"] else fobj["content"]

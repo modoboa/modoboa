@@ -216,3 +216,57 @@ class AccountARMessageViewSetTestCase(PatcherMixin, ModoAPITestCase):
         self.assertEqual(response.status_code, 200)
         armessage = models.ARmessage.objects.get(mbox=self.account.mailbox)
         self.assertTrue(armessage.enabled)
+
+    def test_armessage_rule_position_kept(self):
+        """Disabling then enabling keeps the rule where the user moved it."""
+        self.client.logout()
+        self.authenticate_user_with_oauth(self.account)
+        url = reverse("api:account_armessage-armessage")
+        fromdate = timezone.now()
+        data = {
+            "enabled": True,
+            "subject": "Je suis absent",
+            "content": "Je reviendrai",
+            "fromdate": fromdate.isoformat(),
+            "untildate": (fromdate + relativedelta(days=4)).isoformat(),
+        }
+        response = self.client.put(url, data, format="json")
+        self.assertEqual(response.status_code, 200)
+
+        # Listed in the filters so it can be moved
+        response = self.client.get(
+            reverse("v2:filterset-get-filters", args=["main_script"])
+        )
+        self.assertEqual(response.json()[-1]["name"], "autoreply")
+        response = self.client.post(
+            reverse("v2:filterset-move-filter-up", args=["main_script", "autoreply"])
+        )
+        self.assertEqual(response.status_code, 204)
+
+        scripts = self.mock_client.return_value.scripts
+        for enabled in (False, True):
+            data["enabled"] = enabled
+            response = self.client.put(url, data, format="json")
+            self.assertEqual(response.status_code, 200)
+            script = scripts["main_script"]
+            self.assertLess(
+                script.index("Filter: autoreply"),
+                script.index("Filter: user@example.com"),
+            )
+            self.assertEqual("if false" in script, not enabled)
+
+    def test_set_armessage_without_access_token(self):
+        """No access token to forward must not crash (#4397)."""
+        self.client.logout()
+        self.client.force_authenticate(self.account)
+        url = reverse("api:account_armessage-armessage")
+        fromdate = timezone.now()
+        data = {
+            "enabled": True,
+            "subject": "Je suis absent",
+            "content": "Je reviendrai",
+            "fromdate": fromdate.isoformat(),
+            "untildate": (fromdate + relativedelta(days=4)).isoformat(),
+        }
+        response = self.client.put(url, data, format="json")
+        self.assertEqual(response.status_code, 400)

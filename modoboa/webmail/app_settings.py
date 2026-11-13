@@ -269,6 +269,16 @@ USER_PREFERENCES_STRUCT = collections.OrderedDict(
                                 ),
                             },
                         ),
+                        (
+                            "subscribed_folders_only",
+                            {
+                                "label": gettext_lazy("Show only subscribed folders"),
+                                "help_text": gettext_lazy(
+                                    "Only display the folders you are "
+                                    "subscribed to in the folder list"
+                                ),
+                            },
+                        ),
                     ]
                 ),
             },

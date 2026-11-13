@@ -55,6 +55,7 @@ class AccountPasswordSerializer(serializers.ModelSerializer):
         """Set new password."""
         instance.set_password(validated_data["new_password"])
         instance.save()
+        instance.revoke_oauth2_tokens(keep=self.context["request"].auth)
         return instance
 
 

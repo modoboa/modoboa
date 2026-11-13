@@ -836,6 +836,7 @@ class WritableAccountSerializer(v1_serializers.WritableAccountSerializer):
             setattr(instance, key, value)
         if password:
             instance.set_password(password)
+            instance.revoke_oauth2_tokens(keep=self.context["request"].auth)
         if hasattr(instance, "mailbox"):
             # The mailbox follows the username, even if no mailbox data is sent
             mailbox_data = mailbox_data or {}

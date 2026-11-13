@@ -4,8 +4,10 @@ from django.conf import settings
 from django.utils.translation import gettext as _
 
 from oauth2_provider.models import get_application_model
+from oauth2_provider.settings import oauth2_settings
 from rest_framework.settings import api_settings
 
+from modoboa.core.oauth2_validators import OAuth2Validator
 from modoboa.core.utils import (
     check_for_deprecated_password_schemes,
     generate_rsa_private_key,
@@ -36,6 +38,15 @@ W003 = Warning(
         "REST_FRAMEWORK. See the upgrade documentation."
     ),
     id="modoboa.core.W003",
+)
+W004 = Warning(
+    _("OAuth2 tokens of disabled accounts are still accepted."),
+    hint=_(
+        "In settings.py, set 'OAUTH2_VALIDATOR_CLASS' to "
+        "'modoboa.core.oauth2_validators.OAuth2Validator' in OAUTH2_PROVIDER. "
+        "See the upgrade documentation."
+    ),
+    id="modoboa.core.W004",
 )
 
 E001 = Error(
@@ -110,6 +121,13 @@ def check_client_address_source(app_configs, **kwargs):
         or "x_forwarded_for.middleware.XForwardedForMiddleware" in settings.MIDDLEWARE
     )
     return [W003] if forgeable else []
+
+
+@register()
+def check_oauth2_validator(app_configs, **kwargs):
+    if issubclass(oauth2_settings.OAUTH2_VALIDATOR_CLASS, OAuth2Validator):
+        return []
+    return [W004]
 
 
 @register(deploy=True)

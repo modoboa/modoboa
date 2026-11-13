@@ -307,6 +307,7 @@ class PasswordResetConfirmView(ThrottleViewMixin, auth_views.PasswordResetConfir
 
     def form_valid(self, form):
         response = super().form_valid(form)
+        self.user.revoke_oauth2_tokens()
         logger.info(
             f"Password reset for user '{self.user.username}'",
             extra=audit("core.password.reset", self.request, actor=self.user),
