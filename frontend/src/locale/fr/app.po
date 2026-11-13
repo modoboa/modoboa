@@ -466,10 +466,12 @@ msgid ""
 "The latest sign-ins and failed attempts on your account. If you do not "
 "recognize one of them, change your password."
 msgstr ""
+"Les dernières connexions et tentatives échouées sur votre compte. Si vous ne "
+"reconnaissez pas l'une d'entre elles, changez votre mot de passe."
 
 #: src/components/account/LoginHistory.vue:15
 msgid "No login recorded yet"
-msgstr ""
+msgstr "Aucune connexion enregistrée pour le moment"
 
 #: src/components/account/LoginHistory.vue:54
 #: src/components/admin/logs/AuditTrailList.vue:131
@@ -481,12 +483,11 @@ msgstr "Date"
 
 #: src/components/account/LoginHistory.vue:55
 msgid "Result"
-msgstr ""
+msgstr "Résultat"
 
 #: src/components/account/LoginHistory.vue:56
-#, fuzzy
 msgid "IP address"
-msgstr "Adresse complète"
+msgstr "Adresse IP"
 
 #: src/components/account/ProfileForm.vue:5
 msgid "General settings"
@@ -2198,15 +2199,13 @@ msgstr ""
 "comptes, avec niveaux d'accès."
 
 #: src/components/admin/logs/AuditTrailList.vue:20
-#, fuzzy
 msgid "Export the filtered entries to CSV"
-msgstr "Exporter les comptes et les alias au format CSV"
+msgstr "Exporter les entrées filtrées au format CSV"
 
 #: src/components/admin/logs/AuditTrailList.vue:34
 #: src/components/admin/logs/AuditTrailList.vue:132
-#, fuzzy
 msgid "Action"
-msgstr "Actions"
+msgstr "Action"
 
 #: src/components/admin/logs/AuditTrailList.vue:56
 #: src/components/tools/TimeSerieChart.vue:10
@@ -2215,7 +2214,7 @@ msgstr "Période"
 
 #: src/components/admin/logs/AuditTrailList.vue:133
 msgid "Actor"
-msgstr ""
+msgstr "Auteur"
 
 #: src/components/admin/logs/MessageList.vue:37
 msgid "Queue ID"
@@ -3032,7 +3031,7 @@ msgstr "Marquer comme acceptable"
 #: src/components/webmail/EmailList.vue:65 src/views/webmail/EmailView.vue:90
 #: src/views/webmail/ThreadView.vue:169
 msgid "Tag"
-msgstr ""
+msgstr "Étiquette"
 
 #: src/components/webmail/EmailList.vue:74
 msgid "More actions"
@@ -3055,9 +3054,8 @@ msgid "Mark as unfollowed"
 msgstr "Marqué comme non suivi"
 
 #: src/components/webmail/EmailList.vue:126
-#, fuzzy
 msgid "Show the messages with a tag"
-msgstr "Afficher les messages de cette conversation"
+msgstr "Afficher les messages ayant une étiquette"
 
 #: src/components/webmail/EmailList.vue:140
 msgid "Empty mailbox"
@@ -3143,14 +3141,12 @@ msgid "Message(s) flagged"
 msgstr "Message(s) marqué(s)"
 
 #: src/components/webmail/EmailList.vue:732
-#, fuzzy
 msgid "Tag added"
-msgstr "Evènement ajouté"
+msgstr "Étiquette ajoutée"
 
 #: src/components/webmail/EmailList.vue:732
-#, fuzzy
 msgid "Tag removed"
-msgstr "Image supprimée"
+msgstr "Étiquette retirée"
 
 #: src/components/webmail/EmailList.vue:770
 #: src/views/webmail/ThreadView.vue:275
@@ -3312,26 +3308,23 @@ msgstr "Abonnements mis à jour"
 
 #: src/components/webmail/TagMenu.vue:29
 msgid "Manage tags"
-msgstr ""
+msgstr "Gérer les étiquettes"
 
 #: src/components/webmail/TagsForm.vue:2
 msgid "Tags"
-msgstr ""
+msgstr "Étiquettes"
 
 #: src/components/webmail/TagsForm.vue:103
-#, fuzzy
 msgid "Tag updated"
-msgstr "Alias mis à jour"
+msgstr "Étiquette mise à jour"
 
 #: src/components/webmail/TagsForm.vue:103
-#, fuzzy
 msgid "Tag created"
-msgstr "Alias créé"
+msgstr "Étiquette créée"
 
 #: src/components/webmail/TagsForm.vue:123
-#, fuzzy
 msgid "Tag deleted"
-msgstr "Marquer comme supprimé"
+msgstr "Étiquette supprimée"
 
 #: src/components/webmail/ThreadListItem.vue:37
 msgid "Hide the messages of this conversation"
@@ -3355,9 +3348,8 @@ msgstr "Base de l'utilisateur"
 
 #: src/layouts/account/AccountLayout.vue:35
 #: src/views/account/LoginHistoryView.vue:4
-#, fuzzy
 msgid "Recent logins"
-msgstr "Dernière connexion"
+msgstr "Connexions récentes"
 
 #: src/layouts/account/AccountLayout.vue:41
 msgid "Filters"
@@ -3955,9 +3947,8 @@ msgid "Mark the conversation as not junk"
 msgstr "Marquer la conversation comme acceptable"
 
 #: src/views/webmail/ThreadView.vue:78
-#, fuzzy
 msgid "Tag the whole conversation"
-msgstr "Supprimer toute la conversation"
+msgstr "Étiqueter toute la conversation"
 
 #: src/views/webmail/ThreadView.vue:432
 msgid "Conversation deleted"

@@ -90,20 +90,16 @@ msgstr ""
 "seulement)."
 
 #: admin/api/v1/serializers.py:355
-#, fuzzy
-#| msgid "Invalid domain name"
 msgid "Invalid character in username."
-msgstr "Nom de domaine incorrect"
+msgstr "Caractère invalide dans le nom d'utilisateur."
 
 #: admin/api/v1/serializers.py:361
 msgid "This username is already used."
 msgstr "Ce nom d'utilisateur est déjà pris."
 
 #: admin/api/v1/serializers.py:381
-#, fuzzy
-#| msgid "This address is no longer allowed for this account"
 msgid "This field can't be changed for this account."
-msgstr "Cette adresse n'est plus autorisée pour ce compte"
+msgstr "Ce champ ne peut pas être modifié pour ce compte."
 
 #: admin/api/v1/serializers.py:391 admin/api/v2/serializers.py:684
 msgid "Not allowed for this role."
@@ -499,22 +495,16 @@ msgid "Administration"
 msgstr "Administration"
 
 #: admin/apps.py:23
-#, fuzzy
-#| msgid "Domain administrator"
 msgid "Domain administrator added"
-msgstr "Administrateur de domaine"
+msgstr "Administrateur de domaine ajouté"
 
 #: admin/apps.py:26
-#, fuzzy
-#| msgid "Domain administrator"
 msgid "Domain administrator removed"
-msgstr "Administrateur de domaine"
+msgstr "Administrateur de domaine retiré"
 
 #: admin/apps.py:29
-#, fuzzy
-#| msgid "DKIM keys storage directory"
 msgid "DKIM key generation"
-msgstr "Répertoire de stockage des clés DKIM"
+msgstr "Génération de clé DKIM"
 
 #: admin/checks.py:7
 msgid "Run `python manage.py modo repair --dry-run` for details."
@@ -1100,21 +1090,19 @@ msgstr "Amavis"
 
 #: amavis/apps.py:26
 msgid "Quarantined messages released"
-msgstr ""
+msgstr "Messages en quarantaine libérés"
 
 #: amavis/apps.py:30
 msgid "Quarantined messages release requested"
-msgstr ""
+msgstr "Libération de messages en quarantaine demandée"
 
 #: amavis/apps.py:32
 msgid "Quarantined messages deleted"
-msgstr ""
+msgstr "Messages en quarantaine supprimés"
 
 #: amavis/apps.py:33
-#, fuzzy
-#| msgid "Quarantine settings"
 msgid "Quarantined messages marked"
-msgstr "Paramètres de quarantaine"
+msgstr "Messages en quarantaine marqués"
 
 #: amavis/checks/settings_checks.py:8
 msgid ""
@@ -1263,10 +1251,8 @@ msgid "Invalid request"
 msgstr "Requête invalide"
 
 #: amavis/viewsets.py:329
-#, fuzzy
-#| msgid "You are not allowed to send from this address"
 msgid "You are not allowed to use this database"
-msgstr "Vous n'êtes pas autorisé à envoyer depuis cette adresse"
+msgstr "Vous n'êtes pas autorisé à utiliser cette base de données"
 
 #: autoreply/api/v2/serializers.py:28
 msgid "Value can't be less than 1 day"
@@ -2135,40 +2121,36 @@ msgstr ""
 "supprimer pour utiliser le logo par défaut de Modoboa."
 
 #: core/app_settings.py:639
-#, fuzzy
-#| msgid "Banned filter"
 msgid "Banner"
-msgstr "Filtrage des messages bannis"
+msgstr "Bandeau"
 
 #: core/app_settings.py:646
-#, fuzzy
-#| msgid "sent messages"
 msgid "Banner message"
-msgstr "messages envoyés"
+msgstr "Message du bandeau"
 
 #: core/app_settings.py:648
 msgid ""
 "A message displayed at the bottom of every page of the interface. Leave "
 "empty to hide the banner."
 msgstr ""
+"Un message affiché en bas de chaque page de l'interface. Laisser vide pour "
+"masquer le bandeau."
 
 #: core/app_settings.py:657
 msgid "Banner link URL"
-msgstr ""
+msgstr "URL du lien du bandeau"
 
 #: core/app_settings.py:659
 msgid "An optional link displayed after the banner message"
-msgstr ""
+msgstr "Un lien optionnel affiché après le message du bandeau"
 
 #: core/app_settings.py:667
-#, fuzzy
-#| msgid "Banned filter"
 msgid "Banner link label"
-msgstr "Filtrage des messages bannis"
+msgstr "Libellé du lien du bandeau"
 
 #: core/app_settings.py:669
 msgid "Text of the banner link (the URL is displayed when empty)"
-msgstr ""
+msgstr "Texte du lien du bandeau (l'URL est affichée si vide)"
 
 #: core/app_settings.py:681
 msgid "Notifications"
@@ -2311,6 +2293,8 @@ msgid ""
 "Client addresses are read from a header clients can forge, which defeats "
 "rate limits and fail2ban."
 msgstr ""
+"Les adresses des clients sont lues depuis un en-tête qu'ils peuvent "
+"falsifier, ce qui rend inefficaces les limites de débit et fail2ban."
 
 #: core/checks.py:36
 msgid ""
@@ -2318,10 +2302,13 @@ msgid ""
 "modoboa.lib.middleware.TrustedProxyMiddleware and set NUM_PROXIES in "
 "REST_FRAMEWORK. See the upgrade documentation."
 msgstr ""
+"Dans settings.py, remplacez XForwardedForMiddleware par "
+"modoboa.lib.middleware.TrustedProxyMiddleware et définissez NUM_PROXIES dans "
+"REST_FRAMEWORK. Consultez la documentation de mise à jour."
 
 #: core/checks.py:43
 msgid "OAuth2 tokens of disabled accounts are still accepted."
-msgstr ""
+msgstr "Les jetons OAuth2 des comptes désactivés sont toujours acceptés."
 
 #: core/checks.py:45
 msgid ""
@@ -2329,6 +2316,9 @@ msgid ""
 "'modoboa.core.oauth2_validators.OAuth2Validator' in OAUTH2_PROVIDER. See the "
 "upgrade documentation."
 msgstr ""
+"Dans settings.py, définissez 'OAUTH2_VALIDATOR_CLASS' à "
+"'modoboa.core.oauth2_validators.OAuth2Validator' dans OAUTH2_PROVIDER. "
+"Consultez la documentation de mise à jour."
 
 #: core/checks.py:54
 msgid ""
@@ -2419,90 +2409,77 @@ msgstr ""
 #: core/loggers.py:26
 #, python-format
 msgid "%(model)s created"
-msgstr ""
+msgstr "%(model)s créé(e)"
 
 #: core/loggers.py:27
-#, fuzzy, python-format
-#| msgid "modified"
+#, python-format
 msgid "%(model)s modified"
-msgstr "modifié"
+msgstr "%(model)s modifié(e)"
 
 #: core/loggers.py:28
 #, python-format
 msgid "%(model)s deleted"
-msgstr ""
+msgstr "%(model)s supprimé(e)"
 
 #: core/loggers.py:41
 msgid "Login succeeded"
-msgstr ""
+msgstr "Connexion réussie"
 
 #: core/loggers.py:42
 msgid "Login failed"
-msgstr ""
+msgstr "Échec de connexion"
 
 #: core/loggers.py:43
-#, fuzzy
-#| msgid "Authentication required"
 msgid "Two-factor authentication failed"
-msgstr "Authentification requise"
+msgstr "Échec de l'authentification à deux facteurs"
 
 #: core/loggers.py:46
 msgid "Wrong password while editing 2FA settings"
-msgstr ""
+msgstr "Mot de passe incorrect lors de la modification des paramètres 2FA"
 
 #: core/loggers.py:48
-#, fuzzy
-#| msgid "Password"
 msgid "Password changed"
-msgstr "Mot de passe"
+msgstr "Mot de passe modifié"
 
 #: core/loggers.py:49
-#, fuzzy
-#| msgid "Password attribute"
 msgid "Password reset requested"
-msgstr "Attribut 'mot de passe'"
+msgstr "Réinitialisation du mot de passe demandée"
 
 #: core/loggers.py:50
-#, fuzzy
-#| msgid "Password"
 msgid "Password reset"
-msgstr "Mot de passe"
+msgstr "Mot de passe réinitialisé"
 
 #: core/loggers.py:51
-#, fuzzy
-#| msgid "Authentication type"
 msgid "Authenticator app enabled"
-msgstr "Type d'authentification"
+msgstr "Application d'authentification activée"
 
 #: core/loggers.py:52
-#, fuzzy
-#| msgid "Authentication type"
 msgid "Authenticator app disabled"
-msgstr "Type d'authentification"
+msgstr "Application d'authentification désactivée"
 
 #: core/loggers.py:53
 msgid "Recovery codes regenerated"
-msgstr ""
+msgstr "Codes de récupération régénérés"
 
 #: core/loggers.py:54
 msgid "Security key added"
-msgstr ""
+msgstr "Clé de sécurité ajoutée"
 
 #: core/loggers.py:55
 msgid "Security key removed"
-msgstr ""
+msgstr "Clé de sécurité supprimée"
 
 #: core/loggers.py:56
 msgid "API token created"
-msgstr ""
+msgstr "Jeton API créé"
 
 #: core/loggers.py:57
 msgid "API token deleted"
-msgstr ""
+msgstr "Jeton API supprimé"
 
 #: core/loggers.py:58
 msgid "Global parameters modified"
-msgstr ""
+msgstr "Paramètres globaux modifiés"
 
 #: core/management/commands/communicate_with_public_api.py:42
 msgid "[modoboa] Update(s) available"
@@ -3643,10 +3620,8 @@ msgid "Name contains forbidden characters"
 msgstr "Le nom contient des caractères interdits"
 
 #: sievefilters/api/v2/serializers.py:69 webmail/serializers.py:465
-#, fuzzy
-#| msgid "Unknown tag {}"
 msgid "Unknown tag"
-msgstr "Tag inconnu {}"
+msgstr "Étiquette inconnue"
 
 #: sievefilters/api/v2/serializers.py:114
 msgid "This name is reserved"
@@ -3759,17 +3734,15 @@ msgstr "Rejeter le message"
 
 #: sievefilters/constants.py:83
 msgid "Add tag"
-msgstr ""
+msgstr "Ajouter une étiquette"
 
 #: sievefilters/constants.py:86
 msgid "Stop processing"
 msgstr "Arrêter le traitement"
 
 #: sievefilters/lib.py:48
-#, fuzzy
-#| msgid "Listening port of your MANAGESIEVE server"
 msgid "Missing credentials for MANAGESIEVE server"
-msgstr "Port d'écoute de votre serveur MANAGESIEVE"
+msgstr "Identifiants manquants pour le serveur MANAGESIEVE"
 
 #: sievefilters/lib.py:64
 msgid "ManageSieve server returned an error"
@@ -4116,11 +4089,13 @@ msgstr "Dossier dans lequel les messages indésirables doivent aller"
 
 #: webmail/app_settings.py:275
 msgid "Show only subscribed folders"
-msgstr ""
+msgstr "Afficher uniquement les dossiers abonnés"
 
 #: webmail/app_settings.py:277
 msgid "Only display the folders you are subscribed to in the folder list"
 msgstr ""
+"N'afficher que les dossiers auxquels vous êtes abonné dans la liste des "
+"dossiers"
 
 #: webmail/app_settings.py:289
 msgid "Composing messages"
@@ -4210,19 +4185,19 @@ msgstr "Conversations"
 
 #: webmail/constants.py:139
 msgid "Important"
-msgstr ""
+msgstr "Important"
 
 #: webmail/constants.py:141
 msgid "Personal"
-msgstr ""
+msgstr "Personnel"
 
 #: webmail/constants.py:142
 msgid "To do"
-msgstr ""
+msgstr "À faire"
 
 #: webmail/constants.py:143
 msgid "Later"
-msgstr ""
+msgstr "Plus tard"
 
 #: webmail/exceptions.py:23
 msgid "Server response"
@@ -4267,10 +4242,8 @@ msgid "Invalid part number"
 msgstr "Numéro de partie incorrect"
 
 #: webmail/lib/imaputils.py:104
-#, fuzzy
-#| msgid "Invalid tag {}"
 msgid "Invalid tag"
-msgstr "Tag incorrect {}"
+msgstr "Étiquette invalide"
 
 #: webmail/lib/imaputils.py:122 webmail/viewsets.py:51
 msgid "Invalid search pattern"
@@ -4353,16 +4326,13 @@ msgid "Moving scheduled messages is forbidden"
 msgstr "Déplacer des messages planifiés n'est pas autorisé"
 
 #: webmail/serializers.py:411
-#, fuzzy
-#| msgid "domain with this name already exists"
 msgid "A tag with this name already exists"
-msgstr "un domaine avec ce nom existe déjà"
+msgstr "Une étiquette avec ce nom existe déjà"
 
 #: webmail/serializers.py:421
-#, fuzzy, python-format
-#| msgid "You can't delete your own account"
+#, python-format
 msgid "You can't create more than %(count)d tags"
-msgstr "Vous ne pouvez pas supprimer votre propre compte"
+msgstr "Vous ne pouvez pas créer plus de %(count)d étiquettes"
 
 #: webmail/serializers.py:477
 msgid "Only datetime in the future is allowed"
