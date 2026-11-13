@@ -20,7 +20,6 @@ import modoboa.pdfcredentials.lib as lib
 
 
 class PDFCredentialsLibTestCase(ModoAPITestCase):
-
     @classmethod
     def setUpTestData(cls):  # NOQA:N802
         """Create test data."""
@@ -129,6 +128,10 @@ class PDFCredentialsLibTestCase(ModoAPITestCase):
             lib.get_creds_filename(FakeAccount())
         # Deletion must stay silent for such accounts
         self.assertIsNone(lib.delete_credentials(FakeAccount()))
+        # Nor point to a sibling document
+        FakeAccount.username = "x/../victim@test.com"
+        with self.assertRaises(InternalError):
+            lib.get_creds_filename(FakeAccount())
 
     def test_pdf_decryption(self):
         """Test that PDFs are decrypted."""
