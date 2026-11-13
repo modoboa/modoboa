@@ -262,7 +262,7 @@ msgstr "nome"
 #: src/components/calendars/CalendarSubscriptionForm.vue:25
 #: src/components/contacts/CategoryForm.vue:10
 #: src/components/webmail/MailboxForm.vue:7
-#: src/components/webmail/TagsForm.vue:36 src/views/account/FiltersView.vue:149
+#: src/components/webmail/TagsForm.vue:36 src/views/account/FiltersView.vue:152
 #: src/views/admin/InformationView.vue:228
 msgid "Name"
 msgstr "Nome"
@@ -340,7 +340,7 @@ msgstr "Modifica il tuo dispositivo"
 #: src/components/admin/imap_migration/ProviderForm.vue:66
 #: src/components/calendars/EventForm.vue:192
 #: src/components/webmail/MailboxShareDialog.vue:41
-#: src/views/account/FiltersView.vue:100
+#: src/views/account/FiltersView.vue:103
 msgid "Save"
 msgstr "Salva"
 
@@ -434,7 +434,7 @@ msgid "Create a new filter set"
 msgstr "Crea un nuovo set di filtri"
 
 #: src/components/account/FilterSetForm.vue:14
-#: src/views/account/FiltersView.vue:150
+#: src/views/account/FiltersView.vue:153
 msgid "Active"
 msgstr "Attivo"
 
@@ -731,7 +731,7 @@ msgstr "Messaggio"
 #: src/components/contacts/ContactList.vue:235
 #: src/components/webmail/EmailList.vue:36
 #: src/components/webmail/EmailListItem.vue:132
-#: src/components/webmail/TagsForm.vue:27 src/views/account/FiltersView.vue:342
+#: src/components/webmail/TagsForm.vue:27 src/views/account/FiltersView.vue:345
 #: src/views/calendars/CalendarView.vue:262
 #: src/views/calendars/CalendarView.vue:337 src/views/webmail/EmailView.vue:64
 msgid "Delete"
@@ -1392,7 +1392,7 @@ msgstr "Dominio eliminato"
 #: src/components/admin/imap_migration/ProvidersList.vue:134
 #: src/components/contacts/ContactList.vue:230
 #: src/components/webmail/MailboxShareDialog.vue:70
-#: src/components/webmail/TagsForm.vue:19 src/views/account/FiltersView.vue:337
+#: src/components/webmail/TagsForm.vue:19 src/views/account/FiltersView.vue:340
 #: src/views/calendars/CalendarView.vue:252
 #: src/views/calendars/CalendarView.vue:332 src/views/webmail/EmailView.vue:54
 msgid "Edit"
@@ -3538,67 +3538,72 @@ msgstr "Modalità grezza"
 msgid "Add new filter"
 msgstr "Aggiungi nuovo filtro"
 
-#: src/views/account/FiltersView.vue:240
+#: src/views/account/FiltersView.vue:71
+#, fuzzy
+msgid "Auto-reply"
+msgstr "Messaggio di risposta automatica"
+
+#: src/views/account/FiltersView.vue:243
 msgid "Failed to display template. Using raw mode"
 msgstr "Impossibile visualizzare il modello. Utilizzo della modalità grezza"
 
-#: src/views/account/FiltersView.vue:255
+#: src/views/account/FiltersView.vue:258
 msgid "Filter enabled"
 msgstr "Filtro abilitato"
 
-#: src/views/account/FiltersView.vue:264
+#: src/views/account/FiltersView.vue:267
 msgid "Filter disabled"
 msgstr "Filtro disabilitato"
 
-#: src/views/account/FiltersView.vue:270
+#: src/views/account/FiltersView.vue:273
 msgid "Filter removed"
 msgstr "Filtro rimosso"
 
-#: src/views/account/FiltersView.vue:288
+#: src/views/account/FiltersView.vue:291
 msgid "Filter set activated"
 msgstr "Set di filtri attivato"
 
-#: src/views/account/FiltersView.vue:295
+#: src/views/account/FiltersView.vue:298
 msgid "Active filter set deactivated"
 msgstr "Set di filtri attivo disattivato"
 
-#: src/views/account/FiltersView.vue:301
+#: src/views/account/FiltersView.vue:304
 msgid "Filter set removed"
 msgstr "Set di filtri rimosso"
 
-#: src/views/account/FiltersView.vue:315
+#: src/views/account/FiltersView.vue:318
 msgid "Filter set updated"
 msgstr "Set di filtri aggiornato"
 
-#: src/views/account/FiltersView.vue:353
+#: src/views/account/FiltersView.vue:360
 msgid "Disable"
 msgstr "Disabilita"
 
-#: src/views/account/FiltersView.vue:360
+#: src/views/account/FiltersView.vue:367
 msgid "Enable"
 msgstr "Abilita"
 
-#: src/views/account/FiltersView.vue:368
+#: src/views/account/FiltersView.vue:375
 msgid "Move down"
 msgstr "Sposta giù"
 
-#: src/views/account/FiltersView.vue:375
+#: src/views/account/FiltersView.vue:382
 msgid "Move up"
 msgstr "Sposta su"
 
-#: src/views/account/FiltersView.vue:385
+#: src/views/account/FiltersView.vue:392
 msgid "Download filter set"
 msgstr "Scarica set di filtri"
 
-#: src/views/account/FiltersView.vue:390
+#: src/views/account/FiltersView.vue:397
 msgid "Delete filter set"
 msgstr "Elimina set di filtri"
 
-#: src/views/account/FiltersView.vue:401
+#: src/views/account/FiltersView.vue:408
 msgid "Activate filter set"
 msgstr "Attiva set di filtri"
 
-#: src/views/account/FiltersView.vue:408
+#: src/views/account/FiltersView.vue:415
 msgid "Deactivate filter set"
 msgstr "Disattiva set di filtri"
 

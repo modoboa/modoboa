@@ -251,7 +251,7 @@ msgstr ""
 #: src/components/calendars/CalendarSubscriptionForm.vue:25
 #: src/components/contacts/CategoryForm.vue:10
 #: src/components/webmail/MailboxForm.vue:7
-#: src/components/webmail/TagsForm.vue:36 src/views/account/FiltersView.vue:149
+#: src/components/webmail/TagsForm.vue:36 src/views/account/FiltersView.vue:152
 #: src/views/admin/InformationView.vue:228
 msgid "Name"
 msgstr ""
@@ -329,7 +329,7 @@ msgstr ""
 #: src/components/admin/imap_migration/ProviderForm.vue:66
 #: src/components/calendars/EventForm.vue:192
 #: src/components/webmail/MailboxShareDialog.vue:41
-#: src/views/account/FiltersView.vue:100
+#: src/views/account/FiltersView.vue:103
 msgid "Save"
 msgstr ""
 
@@ -423,7 +423,7 @@ msgid "Create a new filter set"
 msgstr ""
 
 #: src/components/account/FilterSetForm.vue:14
-#: src/views/account/FiltersView.vue:150
+#: src/views/account/FiltersView.vue:153
 msgid "Active"
 msgstr ""
 
@@ -706,7 +706,7 @@ msgstr ""
 #: src/components/contacts/ContactList.vue:235
 #: src/components/webmail/EmailList.vue:36
 #: src/components/webmail/EmailListItem.vue:132
-#: src/components/webmail/TagsForm.vue:27 src/views/account/FiltersView.vue:342
+#: src/components/webmail/TagsForm.vue:27 src/views/account/FiltersView.vue:345
 #: src/views/calendars/CalendarView.vue:262
 #: src/views/calendars/CalendarView.vue:337 src/views/webmail/EmailView.vue:64
 msgid "Delete"
@@ -1348,7 +1348,7 @@ msgstr ""
 #: src/components/admin/imap_migration/ProvidersList.vue:134
 #: src/components/contacts/ContactList.vue:230
 #: src/components/webmail/MailboxShareDialog.vue:70
-#: src/components/webmail/TagsForm.vue:19 src/views/account/FiltersView.vue:337
+#: src/components/webmail/TagsForm.vue:19 src/views/account/FiltersView.vue:340
 #: src/views/calendars/CalendarView.vue:252
 #: src/views/calendars/CalendarView.vue:332 src/views/webmail/EmailView.vue:54
 msgid "Edit"
@@ -3389,67 +3389,71 @@ msgstr ""
 msgid "Add new filter"
 msgstr ""
 
-#: src/views/account/FiltersView.vue:240
+#: src/views/account/FiltersView.vue:71
+msgid "Auto-reply"
+msgstr ""
+
+#: src/views/account/FiltersView.vue:243
 msgid "Failed to display template. Using raw mode"
 msgstr ""
 
-#: src/views/account/FiltersView.vue:255
+#: src/views/account/FiltersView.vue:258
 msgid "Filter enabled"
 msgstr ""
 
-#: src/views/account/FiltersView.vue:264
+#: src/views/account/FiltersView.vue:267
 msgid "Filter disabled"
 msgstr ""
 
-#: src/views/account/FiltersView.vue:270
+#: src/views/account/FiltersView.vue:273
 msgid "Filter removed"
 msgstr ""
 
-#: src/views/account/FiltersView.vue:288
+#: src/views/account/FiltersView.vue:291
 msgid "Filter set activated"
 msgstr ""
 
-#: src/views/account/FiltersView.vue:295
+#: src/views/account/FiltersView.vue:298
 msgid "Active filter set deactivated"
 msgstr ""
 
-#: src/views/account/FiltersView.vue:301
+#: src/views/account/FiltersView.vue:304
 msgid "Filter set removed"
 msgstr ""
 
-#: src/views/account/FiltersView.vue:315
+#: src/views/account/FiltersView.vue:318
 msgid "Filter set updated"
 msgstr ""
 
-#: src/views/account/FiltersView.vue:353
+#: src/views/account/FiltersView.vue:360
 msgid "Disable"
 msgstr ""
 
-#: src/views/account/FiltersView.vue:360
+#: src/views/account/FiltersView.vue:367
 msgid "Enable"
 msgstr ""
 
-#: src/views/account/FiltersView.vue:368
+#: src/views/account/FiltersView.vue:375
 msgid "Move down"
 msgstr ""
 
-#: src/views/account/FiltersView.vue:375
+#: src/views/account/FiltersView.vue:382
 msgid "Move up"
 msgstr ""
 
-#: src/views/account/FiltersView.vue:385
+#: src/views/account/FiltersView.vue:392
 msgid "Download filter set"
 msgstr ""
 
-#: src/views/account/FiltersView.vue:390
+#: src/views/account/FiltersView.vue:397
 msgid "Delete filter set"
 msgstr ""
 
-#: src/views/account/FiltersView.vue:401
+#: src/views/account/FiltersView.vue:408
 msgid "Activate filter set"
 msgstr ""
 
-#: src/views/account/FiltersView.vue:408
+#: src/views/account/FiltersView.vue:415
 msgid "Deactivate filter set"
 msgstr ""
 
