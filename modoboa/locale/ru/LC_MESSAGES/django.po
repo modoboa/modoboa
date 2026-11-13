@@ -39,7 +39,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-26 09:35+0100\n"
+"POT-Creation-Date: 2026-11-13 14:54+0100\n"
 "PO-Revision-Date: 2011-07-01 08:15+0000\n"
 "Last-Translator: Николай Грищенков, 2025\n"
 "Language-Team: Russian (http://app.transifex.com/tonio/modoboa/language/"
@@ -52,7 +52,7 @@ msgstr ""
 "n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || "
 "(n%100>=11 && n%100<=14)? 2 : 3);\n"
 
-#: admin/api/v1/serializers.py:41
+#: admin/api/v1/serializers.py:39
 msgid ""
 "Quota shared between mailboxes. Can be expressed in KB, MB (default) or GB. "
 "A value of 0 means no quota."
@@ -60,110 +60,114 @@ msgstr ""
 "Квота, распределяемая между почтовыми ящиками. Может задаваться в КБ, МБ (по "
 "умолчанию) или ГБ. Значение 0 означает отсутствие квоты."
 
-#: admin/api/v1/serializers.py:48
+#: admin/api/v1/serializers.py:46
 msgid "Default quota in MB applied to mailboxes. A value of 0 means no quota."
 msgstr ""
 "Квота по умолчанию в МБ, применяемая к почтовым ящикам. Значение 0 означает "
 "отсутствие квоты."
 
-#: admin/api/v1/serializers.py:98 admin/api/v1/serializers.py:194
+#: admin/api/v1/serializers.py:96 admin/api/v1/serializers.py:181
 #: lib/validators.py:13 relaydomains/api/v1/serializers.py:63
 msgid "Enter a valid domain name"
 msgstr "Введите корректное имя домена"
 
-#: admin/api/v1/serializers.py:101 relaydomains/api/v1/serializers.py:66
+#: admin/api/v1/serializers.py:99 relaydomains/api/v1/serializers.py:66
 msgid "domain alias with this name already exists"
 msgstr "Псевдоним домена с таким именем уже существует."
 
-#: admin/api/v1/serializers.py:110
+#: admin/api/v1/serializers.py:108
 msgid "No authorized MX record found for this domain"
 msgstr "Для этого домена не найдена разрешённая MX-запись."
 
-#: admin/api/v1/serializers.py:122
-#, fuzzy
-#| msgid "Not a valid DKIM record"
-msgid "Enter a valid DKIM selector"
-msgstr "Некорректная DKIM-запись"
-
-#: admin/api/v1/serializers.py:139
+#: admin/api/v1/serializers.py:126
 msgid "Cannot be greater than domain quota"
 msgstr "Не может быть больше, чем квота домена."
 
-#: admin/api/v1/serializers.py:185 admin/api/v1/serializers.py:418
-#: admin/api/v1/serializers.py:466 admin/api/v2/serializers.py:402
-#: admin/api/v2/serializers.py:718 admin/api/v2/serializers.py:771
+#: admin/api/v1/serializers.py:172 admin/api/v1/serializers.py:424
+#: admin/api/v1/serializers.py:472 admin/api/v2/serializers.py:402
+#: admin/api/v2/serializers.py:724 admin/api/v2/serializers.py:777
 #: admin/models/alias.py:45 calendars/serializers.py:218
 msgid "Permission denied."
 msgstr "Доступ запрещён."
 
-#: admin/api/v1/serializers.py:196
+#: admin/api/v1/serializers.py:183
 #, fuzzy
 #| msgid "domain alias with this name already exists"
 msgid "domain with this name already exists"
 msgstr "Псевдоним домена с таким именем уже существует."
 
-#: admin/api/v1/serializers.py:209
+#: admin/api/v1/serializers.py:196
 #, fuzzy
 #| msgid "domain alias with this name already exists"
 msgid ""
 "domain with this name already exists, rename or delete this domain alias"
 msgstr "Псевдоним домена с таким именем уже существует."
 
-#: admin/api/v1/serializers.py:272 admin/api/v2/serializers.py:118
-#: admin/api/v2/serializers.py:607 amavis/serializers.py:39
-#: core/api/v2/serializers.py:219 core/api/v2/serializers.py:221
-#: core/api/v2/serializers.py:230 transport/backends.py:40
+#: admin/api/v1/serializers.py:259 admin/api/v2/serializers.py:118
+#: admin/api/v2/serializers.py:612 amavis/serializers.py:39
+#: core/api/v2/serializers.py:230 core/api/v2/serializers.py:232
+#: core/api/v2/serializers.py:241 transport/backends.py:40
 msgid "This field is required"
 msgstr "Это поле обязательно для заполнения."
 
-#: admin/api/v1/serializers.py:284
+#: admin/api/v1/serializers.py:271
 msgid ""
 "List of administered domains (resellers and domain administrators only)."
 msgstr ""
 "Список администрируемых доменов (только для реселлеров и администраторов "
 "доменов)."
 
-#: admin/api/v1/serializers.py:369
+#: admin/api/v1/serializers.py:355
+#, fuzzy
+#| msgid "Enter a valid domain name"
+msgid "Invalid character in username."
+msgstr "Введите корректное имя домена"
+
+#: admin/api/v1/serializers.py:361
 #, fuzzy
 #| msgid "This alias already exists"
 msgid "This username is already used."
 msgstr "Этот псевдоним уже существует."
 
-#: admin/api/v1/serializers.py:385 admin/api/v2/serializers.py:678
+#: admin/api/v1/serializers.py:381
+msgid "This field can't be changed for this account."
+msgstr ""
+
+#: admin/api/v1/serializers.py:391 admin/api/v2/serializers.py:684
 msgid "Not allowed for this role."
 msgstr "Недоступно для данной роли."
 
-#: admin/api/v1/serializers.py:403
+#: admin/api/v1/serializers.py:409
 msgid "Must be equal to mailbox full_address"
 msgstr "Должен совпадать с полным адресом почтового ящика."
 
-#: admin/api/v1/serializers.py:409 admin/api/v1/serializers.py:452
-#: admin/api/v2/serializers.py:752 calendars/serializers.py:316
+#: admin/api/v1/serializers.py:415 admin/api/v1/serializers.py:458
+#: admin/api/v2/serializers.py:758 calendars/serializers.py:316
 #: calendars/serializers.py:385 pdfcredentials/api/v2/serializers.py:91
 msgid "This field is required."
 msgstr "Это поле обязательно для заполнения."
 
-#: admin/api/v1/serializers.py:463 admin/api/v2/serializers.py:768
+#: admin/api/v1/serializers.py:469 admin/api/v2/serializers.py:774
 msgid "Local domain {} does not exist"
 msgstr "Локальный домен {} не существует."
 
-#: admin/api/v1/serializers.py:562
+#: admin/api/v1/serializers.py:569
 msgid "A list of recipient"
 msgstr "Список получателей."
 
-#: admin/api/v1/serializers.py:578 admin/api/v2/viewsets.py:469
+#: admin/api/v1/serializers.py:585 admin/api/v2/viewsets.py:514
 msgid "This alias already exists"
 msgstr "Этот псевдоним уже существует."
 
-#: admin/api/v1/serializers.py:614
+#: admin/api/v1/serializers.py:621
 msgid "You don't have access to this domain."
 msgstr "У вас нет доступа к этому домену."
 
-#: admin/api/v1/serializers.py:623
+#: admin/api/v1/serializers.py:630
 msgid "You don't have access to this mailbox."
 msgstr "У вас нет доступа к этому почтовому ящику."
 
-#: admin/api/v1/viewsets.py:183
+#: admin/api/v1/viewsets.py:187
 msgid "Here is your new Modoboa password: {}"
 msgstr "Ваш новый пароль Modoboa: {}"
 
@@ -209,36 +213,36 @@ msgstr "Пожалуйста, отключите миграцию IMAP, преж
 msgid "Define at least one authorized network / address"
 msgstr "Укажите хотя бы одну разрешённую сеть или адрес."
 
-#: admin/api/v2/serializers.py:711
+#: admin/api/v2/serializers.py:717
 msgid "An account with a mailbox must use an email address as username."
 msgstr ""
 
-#: admin/api/v2/serializers.py:735
+#: admin/api/v2/serializers.py:741
 msgid "The left part of an email address can't be more than 64 characters."
 msgstr ""
 "Локальная часть адреса электронной почты не может превышать 64 символов."
 
-#: admin/api/v2/serializers.py:757
+#: admin/api/v2/serializers.py:763
 msgid "A mailbox is required to create aliases."
 msgstr "Для создания псевдонимов необходим почтовый ящик."
 
-#: admin/api/v2/serializers.py:999
+#: admin/api/v2/serializers.py:1006
 msgid "Unknown status"
 msgstr "Неизвестный статус."
 
-#: admin/api/v2/viewsets.py:127
+#: admin/api/v2/viewsets.py:136
 msgid "You don't have access to this domain"
 msgstr "У вас нет доступа к этому домену."
 
-#: admin/api/v2/viewsets.py:130 admin/api/v2/viewsets.py:148
+#: admin/api/v2/viewsets.py:139 admin/api/v2/viewsets.py:157
 msgid "You can't delete your own domain"
 msgstr "Вы не можете удалить собственный домен."
 
-#: admin/api/v2/viewsets.py:163
+#: admin/api/v2/viewsets.py:172
 msgid "DKIM signing is not enabled for this domain"
 msgstr ""
 
-#: admin/api/v2/viewsets.py:384 core/handlers.py:95
+#: admin/api/v2/viewsets.py:429 core/handlers.py:109
 msgid "You can't delete your own account"
 msgstr "Вы не можете удалить свою учётную запись"
 
@@ -500,9 +504,27 @@ msgstr "Список разрешённых доменов для псевдон
 msgid "A list of domains that aliases can target (comma separated)."
 msgstr "Список доменов, на которые могут ссылаться псевдонимы (через запятую)."
 
-#: admin/app_settings.py:356 core/api/v2/viewsets.py:174
+#: admin/app_settings.py:356 core/api/v2/viewsets.py:216
 msgid "Administration"
 msgstr "Администрирование"
+
+#: admin/apps.py:23
+#, fuzzy
+#| msgid "Domain administrator"
+msgid "Domain administrator added"
+msgstr "Администратор домена"
+
+#: admin/apps.py:26
+#, fuzzy
+#| msgid "Domain administrator"
+msgid "Domain administrator removed"
+msgstr "Администратор домена"
+
+#: admin/apps.py:29
+#, fuzzy
+#| msgid "DKIM keys storage directory"
+msgid "DKIM key generation"
+msgstr "Каталог для хранения ключей DKIM"
 
 #: admin/checks.py:7
 msgid "Run `python manage.py modo repair --dry-run` for details."
@@ -573,16 +595,16 @@ msgstr "[modoboa] Проблемы с MX для домена {}"
 msgid "[modoboa] DNSBL issue(s) for domain {}"
 msgstr "[modoboa] Проблемы с DNSBL для домена {}"
 
-#: admin/handlers.py:261
+#: admin/handlers.py:281
 msgid "domain alias"
 msgstr "псевдоним домена"
 
-#: admin/handlers.py:309
+#: admin/handlers.py:329
 #, python-format
 msgid "Account import failed (%s): domain does not exist"
 msgstr "Ошибка импорта учётной записи (%s): домен не существует"
 
-#: admin/handlers.py:328
+#: admin/handlers.py:348
 #, python-format
 msgid "Account import failed (%s): wrong quota value"
 msgstr "Ошибка импорта учётной записи (%s): неверное значение квоты"
@@ -593,49 +615,49 @@ msgstr "Ошибка импорта учётной записи (%s): невер
 msgid "Failed to move mailbox folder {} to {} ({})"
 msgstr "Ошибка получения расположения почтового ящика (%s)"
 
-#: admin/lib.py:177
+#: admin/lib.py:187
 msgid "You are not allowed to import domains"
 msgstr "У вас нет прав на импорт доменов"
 
-#: admin/lib.py:186
+#: admin/lib.py:196
 msgid "You are not allowed to import domain aliases."
 msgstr "У вас нет прав на импорт псевдонимов доменов."
 
-#: admin/lib.py:278 admin/tests/test_mx.py:139 admin/tests/test_mx.py:152
+#: admin/lib.py:288 admin/tests/test_mx.py:139 admin/tests/test_mx.py:152
 #: admin/tests/test_mx.py:157
 #, python-format
 msgid "No DNS record found for %s"
 msgstr "Не найдена DNS-запись для %s"
 
-#: admin/lib.py:281
+#: admin/lib.py:291
 #, python-format
 msgid "No %(type)s record for %(name)s"
 msgstr "Нет %(type)s-записи для %(name)s"
 
-#: admin/lib.py:285 admin/tests/test_mx.py:142
+#: admin/lib.py:295 admin/tests/test_mx.py:142
 msgid "No working name servers found"
 msgstr "Не найдены доступные серверы имён"
 
-#: admin/lib.py:288 admin/tests/test_mx.py:146
+#: admin/lib.py:298 admin/tests/test_mx.py:146
 #, python-format
 msgid "DNS resolution timeout, unable to query %s at the moment"
 msgstr "Тайм-аут DNS-запроса, невозможно проверить %s в данный момент"
 
-#: admin/lib.py:292
+#: admin/lib.py:302
 msgid "DNS name is too long: {}"
 msgstr "Слишком длинное DNS-имя: {}"
 
-#: admin/lib.py:323
+#: admin/lib.py:333
 #, python-brace-format
 msgid "Invalid IP address format for {domain}; {addr}"
 msgstr "Неверный формат IP-адреса для {domain}: {addr}"
 
-#: admin/lib.py:416
+#: admin/lib.py:426
 #, python-format
 msgid "Object already exists: %s"
 msgstr "Объект уже существует: %s"
 
-#: admin/lib.py:420
+#: admin/lib.py:430
 #, python-format
 msgid "%d objects imported successfully"
 msgstr "%d объектов импортировано"
@@ -764,41 +786,41 @@ msgid ""
 msgstr ""
 "Если вы включите эту функцию, для этого домена будет сгенерирован DKIM-ключ."
 
-#: admin/models/domain.py:102
+#: admin/models/domain.py:104
 msgid "Key length"
 msgstr "Длина ключа"
 
-#: admin/models/domain.py:394 admin/models/domain_alias.py:104
-#: core/models.py:377 relaydomains/lib.py:21
+#: admin/models/domain.py:396 admin/models/domain_alias.py:104
+#: core/models.py:400 relaydomains/lib.py:21
 msgid "Invalid line"
 msgstr "Некорректная строка"
 
-#: admin/models/domain.py:399
+#: admin/models/domain.py:401
 #, fuzzy
 #| msgid "Enter a valid domain name"
 msgid "Invalid domain name"
 msgstr "Введите корректное имя домена"
 
-#: admin/models/domain.py:403 relaydomains/lib.py:26
+#: admin/models/domain.py:405 relaydomains/lib.py:26
 #, fuzzy
 #| msgid "Enter a valid domain name"
 msgid "{}: invalid domain name"
 msgstr "Введите корректное имя домена"
 
-#: admin/models/domain.py:413
+#: admin/models/domain.py:415
 msgid "{}: no authorized MX record found for domain"
 msgstr "{}: не найдено ни одной разрешённой MX-записи для домена"
 
-#: admin/models/domain.py:419
+#: admin/models/domain.py:421
 msgid "{}: invalid quota value for domain"
 msgstr "{}: недопустимое значение квоты для домена"
 
-#: admin/models/domain.py:425
+#: admin/models/domain.py:427
 msgid "{}: invalid default mailbox quota value for domain"
 msgstr ""
 "{}: недопустимое значение квоты почтового ящика по умолчанию для домена"
 
-#: admin/models/domain.py:432
+#: admin/models/domain.py:434
 msgid "{}: default mailbox quota cannot be greater than domain quota"
 msgstr ""
 "{}: квота почтового ящика по умолчанию не может быть больше квоты домена"
@@ -1078,6 +1100,24 @@ msgstr "Установить максимальное количество со�
 msgid "Amavis"
 msgstr "Amavis"
 
+#: amavis/apps.py:26
+msgid "Quarantined messages released"
+msgstr ""
+
+#: amavis/apps.py:30
+msgid "Quarantined messages release requested"
+msgstr ""
+
+#: amavis/apps.py:32
+msgid "Quarantined messages deleted"
+msgstr ""
+
+#: amavis/apps.py:33
+#, fuzzy
+#| msgid "Quarantine settings"
+msgid "Quarantined messages marked"
+msgstr "Настройки карантина"
+
 #: amavis/checks/settings_checks.py:8
 msgid ""
 "AMAVIS_DEFAULT_DATABASE_ENCODING does not match the character encoding used "
@@ -1220,9 +1260,15 @@ msgstr "Действия с этим письмом:"
 msgid "Please visit %(listingurl)s for a full listing."
 msgstr "Для просмотра полного списка посетите %(listingurl)s."
 
-#: amavis/viewsets.py:160
+#: amavis/viewsets.py:195
 msgid "Invalid request"
 msgstr "Неверный запрос"
+
+#: amavis/viewsets.py:329
+#, fuzzy
+#| msgid "You are not allowed to import domain aliases."
+msgid "You are not allowed to use this database"
+msgstr "У вас нет прав на импорт псевдонимов доменов."
 
 #: autoreply/api/v2/serializers.py:28
 msgid "Value can't be less than 1 day"
@@ -1331,7 +1377,7 @@ msgstr ""
 "Разрешить администраторам доменов управлять календарями пользователей "
 "(чтение и запись)"
 
-#: calendars/app_settings.py:60 core/app_settings.py:724
+#: calendars/app_settings.py:60 core/app_settings.py:762
 #: rspamd/app_settings.py:45
 msgid "Miscellaneous"
 msgstr "Прочее"
@@ -1366,7 +1412,7 @@ msgid "Hours outside working hours are greyed out"
 msgstr ""
 
 #: calendars/app_settings.py:123 calendars/app_settings.py:130
-#: core/api/v2/viewsets.py:205
+#: core/api/v2/viewsets.py:247
 msgid "Calendars"
 msgstr "Календари"
 
@@ -1481,7 +1527,7 @@ msgstr "Частота синхронизации"
 msgid "Interval in seconds between 2 synchronization requests"
 msgstr "Интервал между двумя запросами синхронизации (в секундах)"
 
-#: contacts/app_settings.py:51 core/api/v2/viewsets.py:195
+#: contacts/app_settings.py:51 core/api/v2/viewsets.py:237
 msgid "Contacts"
 msgstr "Контакты"
 
@@ -1489,7 +1535,7 @@ msgstr "Контакты"
 msgid "Home"
 msgstr "Домашний"
 
-#: contacts/constants.py:15 contacts/constants.py:21
+#: contacts/constants.py:15 contacts/constants.py:21 webmail/constants.py:140
 msgid "Work"
 msgstr "Рабочий"
 
@@ -1527,68 +1573,61 @@ msgstr "Адресная книга"
 msgid "Minimum allowed value is 60s"
 msgstr "Минимально допустимое значение — 60 с"
 
-#: core/api/v1/serializers.py:68
+#: core/api/v1/serializers.py:70
 msgid "Invalid PIN code"
 msgstr "Неверный PIN-код"
 
-#: core/api/v1/serializers.py:74
+#: core/api/v1/serializers.py:76
 msgid "2FA is already enabled"
 msgstr "Двухфакторная аутентификация уже включена"
 
-#: core/api/v1/serializers.py:87
-#, python-format
-msgid "Failed TFA settings editing attempt from '%(addr)s' as user '%(user)s'"
-msgstr ""
-"Неудачная попытка изменения настроек двухфакторной аутентификации от "
-"%(addr)s от имени пользователя %(user)s"
-
-#: core/api/v1/serializers.py:93 core/api/v2/serializers.py:409
+#: core/api/v1/serializers.py:99 core/api/v2/serializers.py:463
 msgid "Invalid password"
 msgstr "Неверный пароль"
 
-#: core/api/v1/viewsets.py:45 core/api/v1/viewsets.py:64
+#: core/api/v1/viewsets.py:58 core/api/v1/viewsets.py:78
 msgid "2FA is not enabled"
 msgstr "Двухфакторная аутентификация не включена"
 
-#: core/api/v2/serializers.py:30
+#: core/api/v2/serializers.py:32
 msgid "Local"
 msgstr "Локальный"
 
-#: core/api/v2/serializers.py:177 core/api/v2/serializers.py:185
-#: core/api/v2/serializers.py:192
+#: core/api/v2/serializers.py:188 core/api/v2/serializers.py:196
+#: core/api/v2/serializers.py:203
 msgid "Invalid syntax"
 msgstr "Неверный синтаксис"
 
-#: core/api/v2/serializers.py:197
+#: core/api/v2/serializers.py:208
 msgid "Invalid rounds number"
 msgstr "Неверное количество циклов"
 
-#: core/api/v2/serializers.py:397 core/forms.py:84
+#: core/api/v2/serializers.py:451 core/forms.py:86
 msgid "This code is invalid"
 msgstr "Этот код недействителен"
 
-#: core/api/v2/viewsets.py:176
+#: core/api/v2/viewsets.py:218
 msgid "Administration console"
 msgstr "Консоль администратора"
 
-#: core/api/v2/viewsets.py:184 dmarc/models.py:11
+#: core/api/v2/viewsets.py:226 dmarc/models.py:11
 msgid "Quarantine"
 msgstr "Карантин"
 
-#: core/api/v2/viewsets.py:186
+#: core/api/v2/viewsets.py:228
 msgid "Amavis quarantine"
 msgstr "Карантин Amavis"
 
-#: core/api/v2/viewsets.py:197
+#: core/api/v2/viewsets.py:239
 msgid "Address book"
 msgstr "Адресная книга"
 
-#: core/api/v2/viewsets.py:207
+#: core/api/v2/viewsets.py:249
 msgid "Calendar"
 msgstr "Календарь"
 
-#: core/api/v2/viewsets.py:215 core/api/v2/viewsets.py:217
-#: webmail/app_settings.py:338 webmail/app_settings.py:345
+#: core/api/v2/viewsets.py:257 core/api/v2/viewsets.py:259
+#: webmail/app_settings.py:348 webmail/app_settings.py:355
 msgid "Webmail"
 msgstr "Веб-почта"
 
@@ -2086,65 +2125,101 @@ msgstr ""
 "Логотип, отображаемый в верхней части форм создания объектов. Загрузите "
 "изображение или очистите, чтобы использовать стандартный логотип Modoboa."
 
-#: core/app_settings.py:643
+#: core/app_settings.py:639
+#, fuzzy
+#| msgid "Banned filter"
+msgid "Banner"
+msgstr "Фильтр блокировки"
+
+#: core/app_settings.py:646
+#, fuzzy
+#| msgid "sent messages"
+msgid "Banner message"
+msgstr "отправленные письма"
+
+#: core/app_settings.py:648
+msgid ""
+"A message displayed at the bottom of every page of the interface. Leave "
+"empty to hide the banner."
+msgstr ""
+
+#: core/app_settings.py:657
+msgid "Banner link URL"
+msgstr ""
+
+#: core/app_settings.py:659
+msgid "An optional link displayed after the banner message"
+msgstr ""
+
+#: core/app_settings.py:667
+#, fuzzy
+#| msgid "Banned filter"
+msgid "Banner link label"
+msgstr "Фильтр блокировки"
+
+#: core/app_settings.py:669
+msgid "Text of the banner link (the URL is displayed when empty)"
+msgstr ""
+
+#: core/app_settings.py:681
 msgid "Notifications"
 msgstr "Уведомления"
 
-#: core/app_settings.py:649
+#: core/app_settings.py:687
 msgid "Sender address"
 msgstr "Адрес отправителя"
 
-#: core/app_settings.py:651
+#: core/app_settings.py:689
 msgid "Email address used to send notifications."
 msgstr "Адрес электронной почты, используемый для отправки уведомлений."
 
-#: core/app_settings.py:662
+#: core/app_settings.py:700
 msgid "Public API"
 msgstr "Публичный API"
 
-#: core/app_settings.py:668
+#: core/app_settings.py:706
 msgid "Enable communication"
 msgstr "Включить связь"
 
-#: core/app_settings.py:670 core/app_settings.py:680
+#: core/app_settings.py:708 core/app_settings.py:718
 msgid "Automatically checks if a newer version is available"
 msgstr "Автоматически проверять наличие новых версий"
 
-#: core/app_settings.py:677
+#: core/app_settings.py:715
 msgid "Check new versions"
 msgstr "Проверять новые версии"
 
-#: core/app_settings.py:688
+#: core/app_settings.py:726
 msgid "Send an email when new versions are found"
 msgstr "Отправлять письмо при обнаружении новых версий"
 
-#: core/app_settings.py:692
+#: core/app_settings.py:730
 msgid "Send an email to notify admins about new versions"
 msgstr "Отправлять письмо для уведомления администраторов о новых версиях"
 
-#: core/app_settings.py:699 sievefilters/constants.py:30
+#: core/app_settings.py:737 sievefilters/constants.py:30
 msgid "Recipient"
 msgstr "Получатель"
 
-#: core/app_settings.py:702
+#: core/app_settings.py:740
 msgid "Recipient of new versions notification emails."
 msgstr "Получатель уведомлений о новых версиях."
 
-#: core/app_settings.py:709
+#: core/app_settings.py:747
 msgid "Send statistics"
 msgstr "Отправлять статистику"
 
-#: core/app_settings.py:712
+#: core/app_settings.py:750
 msgid "Send statistics to Modoboa public API (counters and used extensions)"
 msgstr ""
 "Отправлять статистику в публичный API Modoboa (счётчики и используемые "
 "расширения)"
 
-#: core/app_settings.py:731
+#: core/app_settings.py:769
 msgid "Enable inactive account tracking"
 msgstr "Включить отслеживание неактивных учётных записей"
 
-#: core/app_settings.py:734
+#: core/app_settings.py:772
 msgid ""
 "Allow the administrator to set a threshold (in days) beyond which an account "
 "is considered inactive if the user hasn't logged in"
@@ -2152,11 +2227,11 @@ msgstr ""
 "Позволяет администратору задать порог (в днях), после которого учётная "
 "запись считается неактивной, если пользователь не входил в систему"
 
-#: core/app_settings.py:743
+#: core/app_settings.py:781
 msgid "Inactive account threshold"
 msgstr "Порог неактивности учётной записи"
 
-#: core/app_settings.py:746
+#: core/app_settings.py:784
 msgid ""
 "An account with a last login date greater than this threshold (in days) will "
 "be considered as inactive"
@@ -2164,39 +2239,39 @@ msgstr ""
 "Учётная запись с датой последнего входа, превышающей этот порог (в днях), "
 "будет считаться неактивной"
 
-#: core/app_settings.py:755
+#: core/app_settings.py:793
 msgid "Top notifications check interval"
 msgstr "Интервал проверки верхних уведомлений"
 
-#: core/app_settings.py:758
+#: core/app_settings.py:796
 msgid "Interval between two top notification checks (in seconds)"
 msgstr "Интервал между двумя проверками верхних уведомлений (в секундах)"
 
-#: core/app_settings.py:765
+#: core/app_settings.py:803
 msgid "Maximum log record age"
 msgstr "Максимальный срок хранения записей журнала"
 
-#: core/app_settings.py:767
+#: core/app_settings.py:805
 msgid "The maximum age in days of a log record"
 msgstr "Максимальный срок хранения записи журнала (в днях)"
 
-#: core/app_settings.py:775
+#: core/app_settings.py:813
 msgid "Retention time in message history"
 msgstr "Срок хранения в истории сообщений"
 
-#: core/app_settings.py:778
+#: core/app_settings.py:816
 msgid "Retention time (in days) of a message in the message history section"
 msgstr "Срок хранения сообщения (в днях) в разделе истории сообщений"
 
-#: core/app_settings.py:785
+#: core/app_settings.py:823
 msgid "Items per page"
 msgstr "Элементов на странице"
 
-#: core/app_settings.py:787
+#: core/app_settings.py:825
 msgid "Number of displayed items per page"
 msgstr "Количество отображаемых элементов на странице"
 
-#: core/checks.py:15
+#: core/checks.py:18
 msgid ""
 "You have USE_TZ set to False, this may result in issues during transitions "
 "between summer/winter time (ie the same local time occuring twice due to "
@@ -2206,19 +2281,43 @@ msgstr ""
 "при переходе между летним и зимним временем (т.е. одно и то же локальное "
 "время повторяется дважды из-за перевода часов)."
 
-#: core/checks.py:19
+#: core/checks.py:22
 msgid "Set `USE_TZ = True` in settings.py"
 msgstr "Установите `USE_TZ = True` в settings.py"
 
-#: core/checks.py:23
+#: core/checks.py:26
 msgid "The password scheme you are using is deprecated."
 msgstr "Используемая вами схема паролей устарела."
 
-#: core/checks.py:24
+#: core/checks.py:27
 msgid "Upgrade your password scheme to a stronger one"
 msgstr "Обновите схему паролей на более надёжную."
 
-#: core/checks.py:30
+#: core/checks.py:32
+msgid ""
+"Client addresses are read from a header clients can forge, which defeats "
+"rate limits and fail2ban."
+msgstr ""
+
+#: core/checks.py:36
+msgid ""
+"In settings.py, replace XForwardedForMiddleware with "
+"modoboa.lib.middleware.TrustedProxyMiddleware and set NUM_PROXIES in "
+"REST_FRAMEWORK. See the upgrade documentation."
+msgstr ""
+
+#: core/checks.py:43
+msgid "OAuth2 tokens of disabled accounts are still accepted."
+msgstr ""
+
+#: core/checks.py:45
+msgid ""
+"In settings.py, set 'OAUTH2_VALIDATOR_CLASS' to "
+"'modoboa.core.oauth2_validators.OAuth2Validator' in OAUTH2_PROVIDER. See the "
+"upgrade documentation."
+msgstr ""
+
+#: core/checks.py:54
 msgid ""
 "Oauth2 application for dovecot has not been found. Webmail and some other "
 "features won't be available."
@@ -2226,7 +2325,7 @@ msgstr ""
 "Приложение OAuth2 для Dovecot не найдено. Веб-почта и некоторые другие "
 "функции будут недоступны."
 
-#: core/checks.py:34
+#: core/checks.py:58
 msgid ""
 "Visit : https://modoboa.readthedocs.io/en/latest/manual_installation/"
 "dovecot.html#dovecot-oauth2"
@@ -2234,7 +2333,7 @@ msgstr ""
 "Посетите: https://modoboa.readthedocs.io/en/latest/manual_installation/"
 "dovecot.html#dovecot-oauth2"
 
-#: core/checks.py:41
+#: core/checks.py:65
 msgid ""
 "Oauth2 application for radicale has not been found. Calendar and some other "
 "features won't be available."
@@ -2242,7 +2341,7 @@ msgstr ""
 "Приложение OAuth2 для Radicale не найдено. Календарь и некоторые другие "
 "функции будут недоступны."
 
-#: core/checks.py:45
+#: core/checks.py:69
 msgid ""
 "Visit :  https://modoboa.readthedocs.io/en/latest/manual_installation/"
 "radicale.html#radicale-oauth2"
@@ -2286,113 +2385,171 @@ msgstr "Выберите поставщика"
 msgid "Dummy"
 msgstr "Заглушка"
 
-#: core/forms.py:59
+#: core/forms.py:61
 msgid "Verification code"
 msgstr "Проверочный код"
 
-#: core/forms.py:70
+#: core/forms.py:72
 msgid "Invalid code"
 msgstr "Неверный код"
 
-#: core/handlers.py:36
-msgid "added"
-msgstr "добавлен"
-
-#: core/handlers.py:39
-msgid "modified"
-msgstr "изменён"
-
-#: core/handlers.py:41
-#, python-format
-msgid "%(object)s '%(name)s' %(action)s by user %(user)s"
-msgstr "%(object)s '%(name)s' %(action)s пользователем %(user)s"
-
-#: core/handlers.py:64
-#, python-format
-msgid "%(object)s '%(name)s' %(action)s by "
-msgstr "%(object)s '%(name)s' %(action)s пользователем "
-
-#: core/handlers.py:67
-msgid "deleted"
-msgstr "удалён"
-
-#: core/handlers.py:71
-msgid "user {}"
-msgstr "пользователь {}"
-
-#: core/handlers.py:73
-msgid "management command"
-msgstr "команда управления"
-
-#: core/handlers.py:126
+#: core/handlers.py:140
 msgid "One or more updates are available"
 msgstr "Доступны одно или несколько обновлений."
 
-#: core/handlers.py:139
+#: core/handlers.py:153
 #, python-format
 msgid "You are still using a deprecated password scheme (%s)"
 msgstr "Вы всё ещё используете устаревшую схему паролей (%s)"
+
+#: core/loggers.py:26
+#, python-format
+msgid "%(model)s created"
+msgstr ""
+
+#: core/loggers.py:27
+#, fuzzy, python-format
+#| msgid "modified"
+msgid "%(model)s modified"
+msgstr "изменён"
+
+#: core/loggers.py:28
+#, python-format
+msgid "%(model)s deleted"
+msgstr ""
+
+#: core/loggers.py:41
+msgid "Login succeeded"
+msgstr ""
+
+#: core/loggers.py:42
+msgid "Login failed"
+msgstr ""
+
+#: core/loggers.py:43
+#, fuzzy
+#| msgid "Authentication required"
+msgid "Two-factor authentication failed"
+msgstr "Требуется аутентификация"
+
+#: core/loggers.py:46
+msgid "Wrong password while editing 2FA settings"
+msgstr ""
+
+#: core/loggers.py:48
+#, fuzzy
+#| msgid "Password"
+msgid "Password changed"
+msgstr "Пароль"
+
+#: core/loggers.py:49
+#, fuzzy
+#| msgid "Password attribute"
+msgid "Password reset requested"
+msgstr "Атрибут пароля"
+
+#: core/loggers.py:50
+#, fuzzy
+#| msgid "Password"
+msgid "Password reset"
+msgstr "Пароль"
+
+#: core/loggers.py:51
+#, fuzzy
+#| msgid "Authentication type"
+msgid "Authenticator app enabled"
+msgstr "Тип аутентификации"
+
+#: core/loggers.py:52
+#, fuzzy
+#| msgid "Authentication type"
+msgid "Authenticator app disabled"
+msgstr "Тип аутентификации"
+
+#: core/loggers.py:53
+msgid "Recovery codes regenerated"
+msgstr ""
+
+#: core/loggers.py:54
+msgid "Security key added"
+msgstr ""
+
+#: core/loggers.py:55
+msgid "Security key removed"
+msgstr ""
+
+#: core/loggers.py:56
+msgid "API token created"
+msgstr ""
+
+#: core/loggers.py:57
+msgid "API token deleted"
+msgstr ""
+
+#: core/loggers.py:58
+msgid "Global parameters modified"
+msgstr ""
 
 #: core/management/commands/communicate_with_public_api.py:42
 msgid "[modoboa] Update(s) available"
 msgstr "[modoboa] Доступны обновления"
 
-#: core/models.py:71
+#: core/models.py:72
 msgid "Allow mailboxes access"
 msgstr "Разрешить доступ к почтовым ящикам"
 
-#: core/models.py:73
+#: core/models.py:74
 msgid "Allow this administrator to access user mailboxes"
 msgstr "Разрешить этому администратору доступ к почтовым ящикам пользователей"
 
-#: core/models.py:75
+#: core/models.py:76
 msgid "password"
 msgstr "пароль"
 
-#: core/models.py:78
+#: core/models.py:79
 msgid "language"
 msgstr "язык"
 
-#: core/models.py:82
+#: core/models.py:83
 msgid "Prefered language to display pages."
 msgstr "Предпочитаемый язык для отображения страниц."
 
-#: core/models.py:84
+#: core/models.py:85
 msgid "Phone number"
 msgstr "Номер телефона"
 
-#: core/models.py:86
+#: core/models.py:87
 msgid "Secondary email"
 msgstr "Дополнительный адрес электронной почты"
 
-#: core/models.py:91
+#: core/models.py:92
 msgid "An alternative e-mail address, can be used for recovery needs."
 msgstr ""
 "Альтернативный адрес электронной почты, может использоваться для "
 "восстановления."
 
-#: core/models.py:150
+#: core/models.py:151
 msgid "Failed to update password: LDAP module not installed"
 msgstr "Не удалось обновить пароль: модуль LDAP не установлен"
 
-#: core/models.py:185 policyd/core.py:123
+#: core/models.py:208 policyd/core.py:123
 msgid "account"
 msgstr "учётная запись"
 
-#: core/models.py:342
+#: core/models.py:365
 msgid "Unknown"
 msgstr "Неизвестно"
 
-#: core/models.py:385
+#: core/models.py:408
 msgid "You can't import an account with a role greater than yours"
 msgstr "Вы не можете импортировать учётную запись с ролью выше вашей"
 
-#: core/models.py:400
+#: core/models.py:423
 msgid "The simple user '{}' must have a valid email address"
 msgstr ""
 "Обычный пользователь '{}' должен иметь корректный адрес электронной почты"
 
-#: core/models.py:408
+#: core/models.py:431
 msgid "username and email fields must not differ for '{}'"
 msgstr "Поля имени пользователя и email не должны различаться для '{}'"
 
@@ -2504,22 +2661,17 @@ msgstr[3] ""
 msgid "The core part of Modoboa"
 msgstr "Основная часть Modoboa"
 
-#: core/views/auth.py:69
-#, python-format
-msgid "User '%s' successfully logged in"
-msgstr "Пользователь '%s' успешно вошёл в систему"
-
-#: core/views/auth.py:118
+#: core/views/auth.py:127
 #, python-format
 msgid "Password scheme mismatch. Updating %s password"
 msgstr "Несоответствие схемы паролей. Обновление пароля %s"
 
-#: core/views/auth.py:125
+#: core/views/auth.py:134
 #, python-format
 msgid "Password hash parameter missmatch. Updating %s password"
 msgstr "Несоответствие параметров хеша пароля. Обновление пароля %s"
 
-#: core/views/auth.py:195 core/views/auth.py:265
+#: core/views/auth.py:223 core/views/auth.py:293
 msgid "Please use the following code to recover your Modoboa password: {}"
 msgstr "Используйте следующий код для восстановления пароля Modoboa: {}"
 
@@ -2797,8 +2949,8 @@ msgstr ""
 msgid "LDAP bind DN and password cannot contain quote characters"
 msgstr ""
 
-#: lib/api_client.py:35 lib/api_client.py:67 lib/api_client.py:81
-#: lib/api_client.py:85
+#: lib/api_client.py:36 lib/api_client.py:68 lib/api_client.py:82
+#: lib/api_client.py:86
 #, python-format
 msgid "Failed to communicate with public API: %s"
 msgstr "Не удалось связаться с публичным API: %s"
@@ -2827,9 +2979,15 @@ msgstr "Не удалось обновить пароль: {}"
 msgid "You don't have ownership on this mailbox"
 msgstr "У вас нет прав владения на этот почтовый ящик"
 
-#: lib/throttle.py:94
+#: lib/throttle.py:126
 msgid "Too many attempts, please try again later."
 msgstr ""
+
+#: lib/validators.py:71
+#, fuzzy
+#| msgid "Not a valid DKIM record"
+msgid "Enter a valid DKIM selector"
+msgstr "Некорректная DKIM-запись"
 
 #: limits/app_settings.py:13
 msgid "Default per-admin limits"
@@ -3337,7 +3495,7 @@ msgid ""
 msgstr ""
 "Не удалось создать каталог PDF_credentials. Проверьте права доступа или путь."
 
-#: pdfcredentials/handlers.py:64
+#: pdfcredentials/handlers.py:67
 msgid "Download PDF credentials"
 msgstr "Скачать PDF Credentials"
 
@@ -3350,13 +3508,13 @@ msgstr "Нет прав на запись в выбранный каталог �
 msgid "Failed to create the directory that will contain PDF documents (%s)"
 msgstr "Не удалось создать каталог для PDF-документов (%s)"
 
-#: pdfcredentials/lib.py:52
+#: pdfcredentials/lib.py:51
 #, fuzzy, python-format
 #| msgid "Invalid rounds number"
 msgid "Invalid account name: %s"
 msgstr "Неверное количество циклов"
 
-#: pdfcredentials/lib.py:99
+#: pdfcredentials/lib.py:98
 msgid ""
 "Failed to create PDF_credentials file. Please check the permissions or the "
 "path."
@@ -3473,12 +3631,18 @@ msgstr ""
 msgid "Rspamd"
 msgstr "Rspamd"
 
-#: sievefilters/api/v2/serializers.py:30 sievefilters/api/v2/serializers.py:97
+#: sievefilters/api/v2/serializers.py:31 sievefilters/api/v2/serializers.py:112
 #: sievefilters/api/v2/viewsets.py:55
 msgid "Name contains forbidden characters"
 msgstr "Имя содержит запрещённые символы"
 
-#: sievefilters/api/v2/serializers.py:99
+#: sievefilters/api/v2/serializers.py:69 webmail/serializers.py:465
+#, fuzzy
+#| msgid "Unknown tag {}"
+msgid "Unknown tag"
+msgstr "Неизвестный тег {}"
+
+#: sievefilters/api/v2/serializers.py:114
 #, fuzzy
 #| msgid "This field is required"
 msgid "This name is reserved"
@@ -3490,7 +3654,7 @@ msgstr "Это поле обязательно для заполнения."
 msgid "A filter set with this name already exists"
 msgstr "Псевдоним домена с таким именем уже существует."
 
-#: sievefilters/api/v2/viewsets.py:217 sievefilters/api/v2/viewsets.py:247
+#: sievefilters/api/v2/viewsets.py:219 sievefilters/api/v2/viewsets.py:251
 #, python-format
 msgid "Filter %s already exists"
 msgstr "Фильтр %s уже существует"
@@ -3549,7 +3713,7 @@ msgstr "равно"
 msgid "is not"
 msgstr "не равно"
 
-#: sievefilters/constants.py:28 webmail/lib/imapemail.py:470
+#: sievefilters/constants.py:28 webmail/lib/imapemail.py:476
 msgid "Subject"
 msgstr "Тема"
 
@@ -3589,25 +3753,35 @@ msgstr "Перенаправить сообщение на"
 msgid "Reject message"
 msgstr "Отклонить сообщение"
 
-#: sievefilters/constants.py:80
+#: sievefilters/constants.py:83
+msgid "Add tag"
+msgstr ""
+
+#: sievefilters/constants.py:86
 msgid "Stop processing"
 msgstr "Остановить обработку"
 
-#: sievefilters/lib.py:62
+#: sievefilters/lib.py:48
+#, fuzzy
+#| msgid "Listening port of your MANAGESIEVE server"
+msgid "Missing credentials for MANAGESIEVE server"
+msgstr "Порт вашего сервера ManageSieve"
+
+#: sievefilters/lib.py:64
 msgid "ManageSieve server returned an error"
 msgstr ""
 
-#: sievefilters/lib.py:76
+#: sievefilters/lib.py:78
 msgid "Connection to MANAGESIEVE server failed, check your configuration"
 msgstr "Не удалось подключиться к серверу ManageSieve, проверьте конфигурацию"
 
-#: sievefilters/lib.py:98
+#: sievefilters/lib.py:100
 #, fuzzy, python-format
 #| msgid "Directory not found."
 msgid "Filter set %s not found"
 msgstr "Каталог не найден."
 
-#: sievefilters/lib.py:113
+#: sievefilters/lib.py:115
 msgid "Not enough space on server"
 msgstr "Недостаточно места на сервере"
 
@@ -3943,41 +4117,49 @@ msgstr "Спам"
 msgid "Folder where junk messages should go"
 msgstr "Папка для спам-сообщений"
 
-#: webmail/app_settings.py:279
+#: webmail/app_settings.py:275
+msgid "Show only subscribed folders"
+msgstr ""
+
+#: webmail/app_settings.py:277
+msgid "Only display the folders you are subscribed to in the folder list"
+msgstr ""
+
+#: webmail/app_settings.py:289
 msgid "Composing messages"
 msgstr "Создание сообщения"
 
-#: webmail/app_settings.py:285
+#: webmail/app_settings.py:295
 msgid "Default editor"
 msgstr "Редактор по умолчанию"
 
-#: webmail/app_settings.py:287
+#: webmail/app_settings.py:297
 msgid "The default editor to use when composing a message"
 msgstr "Редактор, используемый по умолчанию при создании сообщения"
 
-#: webmail/app_settings.py:294
+#: webmail/app_settings.py:304
 msgid "Signature text"
 msgstr "Текст подписи"
 
-#: webmail/app_settings.py:296
+#: webmail/app_settings.py:306
 msgid "User defined email signature"
 msgstr "Пользовательская подпись"
 
-#: webmail/app_settings.py:304
+#: webmail/app_settings.py:314
 #, fuzzy
 #| msgid "Signature text"
 msgid "Signature position"
 msgstr "Текст подписи"
 
-#: webmail/app_settings.py:306
+#: webmail/app_settings.py:316
 msgid "Where the signature goes in replies and forwards"
 msgstr ""
 
-#: webmail/app_settings.py:314
+#: webmail/app_settings.py:324
 msgid "Undo send delay"
 msgstr ""
 
-#: webmail/app_settings.py:316
+#: webmail/app_settings.py:326
 msgid ""
 "Number of seconds during which sending a message can be cancelled (0 to send "
 "at once, 30 at most)"
@@ -4029,6 +4211,22 @@ msgstr "Все сообщения"
 msgid "Conversations"
 msgstr "Проверять новые версии"
 
+#: webmail/constants.py:139
+msgid "Important"
+msgstr ""
+
+#: webmail/constants.py:141
+msgid "Personal"
+msgstr ""
+
+#: webmail/constants.py:142
+msgid "To do"
+msgstr ""
+
+#: webmail/constants.py:143
+msgid "Later"
+msgstr ""
+
 #: webmail/exceptions.py:23
 msgid "Server response"
 msgstr "Ответ сервера"
@@ -4045,85 +4243,91 @@ msgstr ""
 msgid "Failed to remove attachment: "
 msgstr "Не удалось удалить вложение: "
 
-#: webmail/lib/imapemail.py:420
+#: webmail/lib/imapemail.py:426
 #, python-format
 msgid "On %(date)s, %(sender)s wrote:"
 msgstr ""
 
-#: webmail/lib/imapemail.py:425
+#: webmail/lib/imapemail.py:431
 #, python-format
 msgid "%(sender)s wrote:"
 msgstr ""
 
-#: webmail/lib/imapemail.py:473
+#: webmail/lib/imapemail.py:479
 msgid "Date"
 msgstr "Дата"
 
-#: webmail/lib/imapemail.py:490 webmail/lib/imapemail.py:493
+#: webmail/lib/imapemail.py:496 webmail/lib/imapemail.py:499
 msgid "Original message"
 msgstr "Исходное сообщение"
 
-#: webmail/lib/imaputils.py:87 webmail/viewsets.py:30
+#: webmail/lib/imaputils.py:90 webmail/viewsets.py:30
 msgid "Invalid message identifier"
 msgstr ""
 
-#: webmail/lib/imaputils.py:94 webmail/viewsets.py:44
+#: webmail/lib/imaputils.py:97 webmail/viewsets.py:44
 #, fuzzy
 #| msgid "Invalid rounds number"
 msgid "Invalid part number"
 msgstr "Неверное количество циклов"
 
-#: webmail/lib/imaputils.py:107 webmail/viewsets.py:51
+#: webmail/lib/imaputils.py:104
+#, fuzzy
+#| msgid "Invalid tag {}"
+msgid "Invalid tag"
+msgstr "Некорректный тег {}"
+
+#: webmail/lib/imaputils.py:122 webmail/viewsets.py:51
 msgid "Invalid search pattern"
 msgstr ""
 
-#: webmail/lib/imaputils.py:139
+#: webmail/lib/imaputils.py:154
 #, fuzzy
 #| msgid "Listening port of the IMAP server"
 msgid "Unexpected response from the IMAP server"
 msgstr "Порт, который слушает IMAP-сервер"
 
-#: webmail/lib/imaputils.py:151
+#: webmail/lib/imaputils.py:166
 #, fuzzy
 #| msgid "Invalid request"
 msgid "Invalid IMAP argument"
 msgstr "Неверный запрос"
 
-#: webmail/lib/imaputils.py:165
+#: webmail/lib/imaputils.py:180
 #, fuzzy
 #| msgid "Enter a valid domain name"
 msgid "Invalid mailbox name"
 msgstr "Введите корректное имя домена"
 
-#: webmail/lib/imaputils.py:570
+#: webmail/lib/imaputils.py:585
 msgid "Failed to retrieve hierarchy delimiter"
 msgstr "Не удалось получить разделитель уровней иерархии"
 
-#: webmail/lib/imaputils.py:1033
+#: webmail/lib/imaputils.py:1064
 msgid "Shared with me"
 msgstr ""
 
-#: webmail/lib/imaputils.py:1082
+#: webmail/lib/imaputils.py:1113
 msgid "Inbox"
 msgstr "Входящие"
 
-#: webmail/lib/imaputils.py:1086
+#: webmail/lib/imaputils.py:1117
 msgid "Drafts"
 msgstr "Черновики"
 
-#: webmail/lib/imaputils.py:1091
+#: webmail/lib/imaputils.py:1122
 msgid "Junk"
 msgstr "Спам"
 
-#: webmail/lib/imaputils.py:1096
+#: webmail/lib/imaputils.py:1127
 msgid "Sent"
 msgstr "Отправленные"
 
-#: webmail/lib/imaputils.py:1104
+#: webmail/lib/imaputils.py:1135
 msgid "Scheduled"
 msgstr "Запланированные"
 
-#: webmail/lib/imaputils.py:1111
+#: webmail/lib/imaputils.py:1142
 msgid "Trash"
 msgstr "Корзина"
 
@@ -4149,66 +4353,78 @@ msgstr "Имя домена"
 msgid "This address is no longer allowed for this account"
 msgstr ""
 
-#: webmail/serializers.py:157
+#: webmail/serializers.py:162
 #, fuzzy
 #| msgid "Unknown status"
 msgid "Unknown account"
 msgstr "Неизвестный статус."
 
-#: webmail/serializers.py:169
+#: webmail/serializers.py:174
 #, fuzzy
 #| msgid "Invalid line"
 msgid "Invalid identifier"
 msgstr "Некорректная строка"
 
-#: webmail/serializers.py:171
+#: webmail/serializers.py:176
 #, fuzzy
 #| msgid "You can't delete your own domain"
 msgid "You can't remove your own rights"
 msgstr "Вы не можете удалить собственный домен."
 
-#: webmail/serializers.py:365
+#: webmail/serializers.py:373
 msgid "Moving scheduled messages is forbidden"
 msgstr "Перемещение запланированных сообщений запрещено"
 
-#: webmail/serializers.py:397
+#: webmail/serializers.py:411
+#, fuzzy
+#| msgid "domain alias with this name already exists"
+msgid "A tag with this name already exists"
+msgstr "Псевдоним домена с таким именем уже существует."
+
+#: webmail/serializers.py:421
+#, fuzzy, python-format
+#| msgid "You can't delete your own account"
+msgid "You can't create more than %(count)d tags"
+msgstr "Вы не можете удалить свою учётную запись"
+
+#: webmail/serializers.py:477
 msgid "Only datetime in the future is allowed"
 msgstr "Допустима только дата и время в будущем"
 
-#: webmail/serializers.py:402
+#: webmail/serializers.py:482
 msgid "Provived datetime must be one minute in the future at least"
 msgstr "Указанное время должно быть хотя бы на минуту в будущем"
 
-#: webmail/serializers.py:433
+#: webmail/serializers.py:513
 #, fuzzy
 #| msgid "You are not allowed to import domain aliases."
 msgid "You are not allowed to send from this address"
 msgstr "У вас нет прав на импорт псевдонимов доменов."
 
-#: webmail/serializers.py:448
+#: webmail/serializers.py:528
 #, fuzzy, python-format
 #| msgid "Invalid address"
 msgid "Invalid addresses: %s"
 msgstr "Неверный адрес"
 
-#: webmail/serializers.py:489
+#: webmail/serializers.py:569
 msgid ""
 "original_mailbox, original_mailid and original_action must be provided "
 "together"
 msgstr ""
 
-#: webmail/serializers.py:506
+#: webmail/serializers.py:586
 #, python-format
 msgid ""
 "Ensure this field has no more than %(max_length)s characters to schedule the "
 "message"
 msgstr ""
 
-#: webmail/serializers.py:582
+#: webmail/serializers.py:662
 msgid "forward_mailbox and forward_mailid must be provided together"
 msgstr ""
 
-#: webmail/serializers.py:586
+#: webmail/serializers.py:666
 msgid "A session can't start from a draft and a forwarded message"
 msgstr ""
 
@@ -4218,33 +4434,64 @@ msgstr ""
 msgid "Invalid page number"
 msgstr "Неверное количество циклов"
 
-#: webmail/viewsets.py:179
+#: webmail/viewsets.py:185
 msgid "This mailbox is used by the webmail and can't be renamed"
 msgstr ""
 
-#: webmail/viewsets.py:220
+#: webmail/viewsets.py:226
 msgid "This mailbox is used by the webmail and can't be deleted"
 msgstr ""
 
-#: webmail/viewsets.py:249
+#: webmail/viewsets.py:255
 msgid "Folder sharing is not available"
 msgstr ""
 
-#: webmail/viewsets.py:709
+#: webmail/viewsets.py:736
 #, python-format
 msgid "A message cannot carry more than %s attachments"
 msgstr ""
 
-#: webmail/viewsets.py:721
+#: webmail/viewsets.py:748
 #, python-format
 msgid "Attachment is too big (limit: %s)"
 msgstr "Вложение слишком велико (лимит: %s)"
 
-#: webmail/viewsets.py:737
+#: webmail/viewsets.py:764
 #, fuzzy, python-format
 #| msgid "Attachment is too big (limit: %s)"
 msgid "Attachments are too big (limit: %s for the whole message)"
 msgstr "Вложение слишком велико (лимит: %s)"
+
+#, python-format
+#~ msgid ""
+#~ "Failed TFA settings editing attempt from '%(addr)s' as user '%(user)s'"
+#~ msgstr ""
+#~ "Неудачная попытка изменения настроек двухфакторной аутентификации от "
+#~ "%(addr)s от имени пользователя %(user)s"
+
+#~ msgid "added"
+#~ msgstr "добавлен"
+
+#, python-format
+#~ msgid "%(object)s '%(name)s' %(action)s by user %(user)s"
+#~ msgstr "%(object)s '%(name)s' %(action)s пользователем %(user)s"
+
+#, python-format
+#~ msgid "%(object)s '%(name)s' %(action)s by "
+#~ msgstr "%(object)s '%(name)s' %(action)s пользователем "
+
+#~ msgid "deleted"
+#~ msgstr "удалён"
+
+#~ msgid "user {}"
+#~ msgstr "пользователь {}"
+
+#~ msgid "management command"
+#~ msgstr "команда управления"
+
+#, python-format
+#~ msgid "User '%s' successfully logged in"
+#~ msgstr "Пользователь '%s' успешно вошёл в систему"
 
 #~ msgid "Path to directory where RRD files are stored"
 #~ msgstr "Путь к каталогу, в котором хранятся RRD-файлы"

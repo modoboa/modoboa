@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Modoboa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-26 09:35+0100\n"
+"POT-Creation-Date: 2026-11-13 14:54+0100\n"
 "PO-Revision-Date: 2020-05-06 11:16+0000\n"
 "Last-Translator: Antoine Nguyen <tonio@ngyn.org>\n"
 "Language-Team: Breton (http://www.transifex.com/tonio/modoboa/language/br/)\n"
@@ -23,7 +23,7 @@ msgstr ""
 "> 19) && (n%100 < 70 || n%100 > 79) && (n%100 < 90 || n%100 > 99) ? 2 :(n != "
 "0 && n % 1000000 == 0) ? 3 : 4);\n"
 
-#: admin/api/v1/serializers.py:41
+#: admin/api/v1/serializers.py:39
 msgid ""
 "Quota shared between mailboxes. Can be expressed in KB, MB (default) or GB. "
 "A value of 0 means no quota."
@@ -31,109 +31,113 @@ msgstr ""
 "Kota rannet kenetre ar boestoù-postel. Gellout a ra bezañ ezpleget e Ko, Mo "
 "(diouer) pe Go c'hoazh. Un dalvoudegezh \"0\" a dalvez kota ebet."
 
-#: admin/api/v1/serializers.py:48
+#: admin/api/v1/serializers.py:46
 msgid "Default quota in MB applied to mailboxes. A value of 0 means no quota."
 msgstr ""
 "Kota dre-ziouer e Mo arloet d'ar boestoù-postel. Un dalvoudegezh \"0\" a "
 "dalvez kota ebet."
 
-#: admin/api/v1/serializers.py:98 admin/api/v1/serializers.py:194
+#: admin/api/v1/serializers.py:96 admin/api/v1/serializers.py:181
 #: lib/validators.py:13 relaydomains/api/v1/serializers.py:63
 msgid "Enter a valid domain name"
 msgstr "Ebarzhiñ un anv domani reizh"
 
-#: admin/api/v1/serializers.py:101 relaydomains/api/v1/serializers.py:66
+#: admin/api/v1/serializers.py:99 relaydomains/api/v1/serializers.py:66
 #, fuzzy
 msgid "domain alias with this name already exists"
 msgstr "Un alias gant an anv-mañ zo anezhañ dija"
 
-#: admin/api/v1/serializers.py:110
+#: admin/api/v1/serializers.py:108
 msgid "No authorized MX record found for this domain"
 msgstr "Enrolladenn MX aotreet ebet kavet evit an domani-mañ"
 
-#: admin/api/v1/serializers.py:122
-#, fuzzy
-#| msgid "Enter a valid email address."
-msgid "Enter a valid DKIM selector"
-msgstr "Ebarzhit ur chomlec'h postel reizh."
-
-#: admin/api/v1/serializers.py:139
+#: admin/api/v1/serializers.py:126
 msgid "Cannot be greater than domain quota"
 msgstr "N'hall ket bezañ brasoc'h evit kota an domani"
 
-#: admin/api/v1/serializers.py:185 admin/api/v1/serializers.py:418
-#: admin/api/v1/serializers.py:466 admin/api/v2/serializers.py:402
-#: admin/api/v2/serializers.py:718 admin/api/v2/serializers.py:771
+#: admin/api/v1/serializers.py:172 admin/api/v1/serializers.py:424
+#: admin/api/v1/serializers.py:472 admin/api/v2/serializers.py:402
+#: admin/api/v2/serializers.py:724 admin/api/v2/serializers.py:777
 #: admin/models/alias.py:45 calendars/serializers.py:218
 msgid "Permission denied."
 msgstr "Aotreadur nac'het"
 
-#: admin/api/v1/serializers.py:196
+#: admin/api/v1/serializers.py:183
 #, fuzzy
 msgid "domain with this name already exists"
 msgstr "Un alias gant an anv-mañ zo anezhañ dija"
 
-#: admin/api/v1/serializers.py:209
+#: admin/api/v1/serializers.py:196
 #, fuzzy
 msgid ""
 "domain with this name already exists, rename or delete this domain alias"
 msgstr "Un alias gant an anv-mañ zo anezhañ dija"
 
-#: admin/api/v1/serializers.py:272 admin/api/v2/serializers.py:118
-#: admin/api/v2/serializers.py:607 amavis/serializers.py:39
-#: core/api/v2/serializers.py:219 core/api/v2/serializers.py:221
-#: core/api/v2/serializers.py:230 transport/backends.py:40
+#: admin/api/v1/serializers.py:259 admin/api/v2/serializers.py:118
+#: admin/api/v2/serializers.py:612 amavis/serializers.py:39
+#: core/api/v2/serializers.py:230 core/api/v2/serializers.py:232
+#: core/api/v2/serializers.py:241 transport/backends.py:40
 msgid "This field is required"
 msgstr "Rekis eo leuniañ ar vaezienn"
 
-#: admin/api/v1/serializers.py:284
+#: admin/api/v1/serializers.py:271
 msgid ""
 "List of administered domains (resellers and domain administrators only)."
 msgstr "Listenn domanioù meret (eilgwerzherien ha merourien zomani hepken)."
 
-#: admin/api/v1/serializers.py:369
+#: admin/api/v1/serializers.py:355
+#, fuzzy
+#| msgid "Enter a valid domain name"
+msgid "Invalid character in username."
+msgstr "Ebarzhiñ un anv domani reizh"
+
+#: admin/api/v1/serializers.py:361
 #, fuzzy
 #| msgid "User '%s' already exists"
 msgid "This username is already used."
 msgstr "An implijer \"%s\" a zo anezhañ endeo"
 
-#: admin/api/v1/serializers.py:385 admin/api/v2/serializers.py:678
+#: admin/api/v1/serializers.py:381
+msgid "This field can't be changed for this account."
+msgstr ""
+
+#: admin/api/v1/serializers.py:391 admin/api/v2/serializers.py:684
 msgid "Not allowed for this role."
 msgstr "Neket aotreet evit ar rol-mañ."
 
-#: admin/api/v1/serializers.py:403
+#: admin/api/v1/serializers.py:409
 msgid "Must be equal to mailbox full_address"
 msgstr "Rankout a ra bezañ par ouzh boest-postell chomlec'h_klok"
 
-#: admin/api/v1/serializers.py:409 admin/api/v1/serializers.py:452
-#: admin/api/v2/serializers.py:752 calendars/serializers.py:316
+#: admin/api/v1/serializers.py:415 admin/api/v1/serializers.py:458
+#: admin/api/v2/serializers.py:758 calendars/serializers.py:316
 #: calendars/serializers.py:385 pdfcredentials/api/v2/serializers.py:91
 msgid "This field is required."
 msgstr "Ar vaezienn-mañ a zo rekiset."
 
-#: admin/api/v1/serializers.py:463 admin/api/v2/serializers.py:768
+#: admin/api/v1/serializers.py:469 admin/api/v2/serializers.py:774
 msgid "Local domain {} does not exist"
 msgstr "N'eus ket eus an domani lec'hel {}"
 
-#: admin/api/v1/serializers.py:562
+#: admin/api/v1/serializers.py:569
 msgid "A list of recipient"
 msgstr "Ul listenn resevourien"
 
-#: admin/api/v1/serializers.py:578 admin/api/v2/viewsets.py:469
+#: admin/api/v1/serializers.py:585 admin/api/v2/viewsets.py:514
 #, fuzzy
 #| msgid "User '%s' already exists"
 msgid "This alias already exists"
 msgstr "An implijer \"%s\" a zo anezhañ endeo"
 
-#: admin/api/v1/serializers.py:614
+#: admin/api/v1/serializers.py:621
 msgid "You don't have access to this domain."
 msgstr "N'ho peus moned ebet d'an domani-mañ."
 
-#: admin/api/v1/serializers.py:623
+#: admin/api/v1/serializers.py:630
 msgid "You don't have access to this mailbox."
 msgstr "N'ho peus moned ebet d'ar voest-posteloù-mañ."
 
-#: admin/api/v1/viewsets.py:183
+#: admin/api/v1/viewsets.py:187
 msgid "Here is your new Modoboa password: {}"
 msgstr ""
 
@@ -179,39 +183,39 @@ msgstr ""
 msgid "Define at least one authorized network / address"
 msgstr "Termeniñ da vihanañ ur rouedad / chomlec'h aotreet"
 
-#: admin/api/v2/serializers.py:711
+#: admin/api/v2/serializers.py:717
 msgid "An account with a mailbox must use an email address as username."
 msgstr ""
 
-#: admin/api/v2/serializers.py:735
+#: admin/api/v2/serializers.py:741
 msgid "The left part of an email address can't be more than 64 characters."
 msgstr ""
 
-#: admin/api/v2/serializers.py:757
+#: admin/api/v2/serializers.py:763
 #, fuzzy
 #| msgid "A mailbox is required"
 msgid "A mailbox is required to create aliases."
 msgstr "Ur voest-posteloù a zo rekiset"
 
-#: admin/api/v2/serializers.py:999
+#: admin/api/v2/serializers.py:1006
 #, fuzzy
 #| msgid "Unknown"
 msgid "Unknown status"
 msgstr "Dizanv"
 
-#: admin/api/v2/viewsets.py:127
+#: admin/api/v2/viewsets.py:136
 msgid "You don't have access to this domain"
 msgstr "N'ho peus moned ebet d'an domani-mañ"
 
-#: admin/api/v2/viewsets.py:130 admin/api/v2/viewsets.py:148
+#: admin/api/v2/viewsets.py:139 admin/api/v2/viewsets.py:157
 msgid "You can't delete your own domain"
 msgstr "N'hallit ket dilemel ho tomani deoc'h-c'hwi hoc'h-unan"
 
-#: admin/api/v2/viewsets.py:163
+#: admin/api/v2/viewsets.py:172
 msgid "DKIM signing is not enabled for this domain"
 msgstr ""
 
-#: admin/api/v2/viewsets.py:384 core/handlers.py:95
+#: admin/api/v2/viewsets.py:429 core/handlers.py:109
 msgid "You can't delete your own account"
 msgstr "N'hallit ket diverkañ ho kont deoc'h-c'hwi hoc'h-unan"
 
@@ -493,9 +497,27 @@ msgstr ""
 msgid "A list of domains that aliases can target (comma separated)."
 msgstr ""
 
-#: admin/app_settings.py:356 core/api/v2/viewsets.py:174
+#: admin/app_settings.py:356 core/api/v2/viewsets.py:216
 msgid "Administration"
 msgstr "Melestradurezh"
+
+#: admin/apps.py:23
+#, fuzzy
+#| msgid "Domain administrator"
+msgid "Domain administrator added"
+msgstr "Merour an domani"
+
+#: admin/apps.py:26
+#, fuzzy
+#| msgid "Domain administrator"
+msgid "Domain administrator removed"
+msgstr "Merour an domani"
+
+#: admin/apps.py:29
+#, fuzzy
+#| msgid "DKIM keys storage directory"
+msgid "DKIM key generation"
+msgstr "Kavlec'h stokiñ an alc'hwezioù DKIM"
 
 #: admin/checks.py:7
 msgid "Run `python manage.py modo repair --dry-run` for details."
@@ -572,16 +594,16 @@ msgstr "[modoboa] kudenn(où) MX evit an domani {}"
 msgid "[modoboa] DNSBL issue(s) for domain {}"
 msgstr "[modoboa] Kudenn(où) DNSBL gant an domani {}"
 
-#: admin/handlers.py:261
+#: admin/handlers.py:281
 msgid "domain alias"
 msgstr "alias an domani"
 
-#: admin/handlers.py:309
+#: admin/handlers.py:329
 #, python-format
 msgid "Account import failed (%s): domain does not exist"
 msgstr "Enporzhiadur kont c'hwitet (%s): n'eus ket eus an domani"
 
-#: admin/handlers.py:328
+#: admin/handlers.py:348
 #, python-format
 msgid "Account import failed (%s): wrong quota value"
 msgstr "Enporzhiadur kont c'hwitet (%s): talvoudegezh kota fall"
@@ -592,52 +614,52 @@ msgstr "Enporzhiadur kont c'hwitet (%s): talvoudegezh kota fall"
 msgid "Failed to move mailbox folder {} to {} ({})"
 msgstr "N'heller ket adsevel lec'hiadur ar voest-posteloù (%s)"
 
-#: admin/lib.py:177
+#: admin/lib.py:187
 msgid "You are not allowed to import domains"
 msgstr "N'hoc'h ket aotreet da emporzhiañ domanioù"
 
-#: admin/lib.py:186
+#: admin/lib.py:196
 msgid "You are not allowed to import domain aliases."
 msgstr "N'hoc'h ket aotreet da emporzhiañ aliasoù domani."
 
-#: admin/lib.py:278 admin/tests/test_mx.py:139 admin/tests/test_mx.py:152
+#: admin/lib.py:288 admin/tests/test_mx.py:139 admin/tests/test_mx.py:152
 #: admin/tests/test_mx.py:157
 #, fuzzy, python-format
 #| msgid "No DNS records found for %s"
 msgid "No DNS record found for %s"
 msgstr "Enrolladenn DNS ebet kavet evit %s"
 
-#: admin/lib.py:281
+#: admin/lib.py:291
 #, fuzzy, python-format
 #| msgid "No MX record for %s"
 msgid "No %(type)s record for %(name)s"
 msgstr "Enrolladenn MX ebet evit %s"
 
-#: admin/lib.py:285 admin/tests/test_mx.py:142
+#: admin/lib.py:295 admin/tests/test_mx.py:142
 msgid "No working name servers found"
 msgstr "N'eus bet kavet anv servijer ebet hag az afe en-dro"
 
-#: admin/lib.py:288 admin/tests/test_mx.py:146
+#: admin/lib.py:298 admin/tests/test_mx.py:146
 #, python-format
 msgid "DNS resolution timeout, unable to query %s at the moment"
 msgstr ""
 "Prantad gortoz spister DNS, n'heller ket sevel ar reked %s evit ar mare"
 
-#: admin/lib.py:292
+#: admin/lib.py:302
 msgid "DNS name is too long: {}"
 msgstr ""
 
-#: admin/lib.py:323
+#: admin/lib.py:333
 #, python-brace-format
 msgid "Invalid IP address format for {domain}; {addr}"
 msgstr "Stumm chomlec'h IP direizh evit {domain}; {addr}"
 
-#: admin/lib.py:416
+#: admin/lib.py:426
 #, python-format
 msgid "Object already exists: %s"
 msgstr "Objed a zo anezhañ dija: %s"
 
-#: admin/lib.py:420
+#: admin/lib.py:430
 #, python-format
 msgid "%d objects imported successfully"
 msgstr "%d objed emporzhiet gant berzh"
@@ -772,46 +794,46 @@ msgstr ""
 "Ma enaouit an arc'hweladur-mañ, un alc'hwez DKIM a vo ganet evit an domani-"
 "mañ."
 
-#: admin/models/domain.py:102
+#: admin/models/domain.py:104
 msgid "Key length"
 msgstr "Padelezh an alc'hwez"
 
-#: admin/models/domain.py:394 admin/models/domain_alias.py:104
-#: core/models.py:377 relaydomains/lib.py:21
+#: admin/models/domain.py:396 admin/models/domain_alias.py:104
+#: core/models.py:400 relaydomains/lib.py:21
 msgid "Invalid line"
 msgstr "Linenn direizh"
 
-#: admin/models/domain.py:399
+#: admin/models/domain.py:401
 #, fuzzy
 #| msgid "Enter a valid domain name"
 msgid "Invalid domain name"
 msgstr "Ebarzhiñ un anv domani reizh"
 
-#: admin/models/domain.py:403 relaydomains/lib.py:26
+#: admin/models/domain.py:405 relaydomains/lib.py:26
 #, fuzzy
 #| msgid "Enter a valid domain name"
 msgid "{}: invalid domain name"
 msgstr "Ebarzhiñ un anv domani reizh"
 
-#: admin/models/domain.py:413
+#: admin/models/domain.py:415
 #, fuzzy
 #| msgid "No authorized MX record found for domain {}"
 msgid "{}: no authorized MX record found for domain"
 msgstr "Enrolladenn MX aotreet ebet kavet evit an domani {}"
 
-#: admin/models/domain.py:419
+#: admin/models/domain.py:421
 #, fuzzy
 #| msgid "Invalid quota value for domain '{}'"
 msgid "{}: invalid quota value for domain"
 msgstr "Talvoudegezh kota direizh evit an domani \"{}\""
 
-#: admin/models/domain.py:425
+#: admin/models/domain.py:427
 #, fuzzy
 #| msgid "Invalid default mailbox quota value for domain '{}'"
 msgid "{}: invalid default mailbox quota value for domain"
 msgstr "Talvoudegezh kota direizh evit boest-posteloù an domani \"{}\""
 
-#: admin/models/domain.py:432
+#: admin/models/domain.py:434
 #, fuzzy
 #| msgid "Default mailbox quota cannot be greater than domain quota"
 msgid "{}: default mailbox quota cannot be greater than domain quota"
@@ -1130,6 +1152,24 @@ msgstr ""
 msgid "Amavis"
 msgstr ""
 
+#: amavis/apps.py:26
+msgid "Quarantined messages released"
+msgstr ""
+
+#: amavis/apps.py:30
+msgid "Quarantined messages release requested"
+msgstr ""
+
+#: amavis/apps.py:32
+msgid "Quarantined messages deleted"
+msgstr ""
+
+#: amavis/apps.py:33
+#, fuzzy
+#| msgid "Quarantine"
+msgid "Quarantined messages marked"
+msgstr "Dispell"
+
 #: amavis/checks/settings_checks.py:8
 msgid ""
 "AMAVIS_DEFAULT_DATABASE_ENCODING does not match the character encoding used "
@@ -1278,11 +1318,17 @@ msgstr "Kemennadenn"
 msgid "Please visit %(listingurl)s for a full listing."
 msgstr ""
 
-#: amavis/viewsets.py:160
+#: amavis/viewsets.py:195
 #, fuzzy
 #| msgid "Invalid address"
 msgid "Invalid request"
 msgstr "Chomlec'h direizh"
+
+#: amavis/viewsets.py:329
+#, fuzzy
+#| msgid "You are not allowed to import domain aliases."
+msgid "You are not allowed to use this database"
+msgstr "N'hoc'h ket aotreet da emporzhiañ aliasoù domani."
 
 #: autoreply/api/v2/serializers.py:28
 msgid "Value can't be less than 1 day"
@@ -1400,7 +1446,7 @@ msgstr "Merour an domani"
 msgid "Allow domain administrators to manage user calendars (read and write)"
 msgstr "Aotren an implijer-mañ da vont e boestoù-post an implijerien"
 
-#: calendars/app_settings.py:60 core/app_settings.py:724
+#: calendars/app_settings.py:60 core/app_settings.py:762
 #: rspamd/app_settings.py:45
 msgid "Miscellaneous"
 msgstr "A-bep seurt"
@@ -1433,7 +1479,7 @@ msgid "Hours outside working hours are greyed out"
 msgstr ""
 
 #: calendars/app_settings.py:123 calendars/app_settings.py:130
-#: core/api/v2/viewsets.py:205
+#: core/api/v2/viewsets.py:247
 msgid "Calendars"
 msgstr ""
 
@@ -1547,7 +1593,7 @@ msgstr "Frekañs sinkroneladur"
 msgid "Interval in seconds between 2 synchronization requests"
 msgstr "Padelezh en eilennoù etre 2 reked sinkroneladur"
 
-#: contacts/app_settings.py:51 core/api/v2/viewsets.py:195
+#: contacts/app_settings.py:51 core/api/v2/viewsets.py:237
 #, fuzzy
 #| msgid "Domains"
 msgid "Contacts"
@@ -1557,7 +1603,7 @@ msgstr "Darempredoù"
 msgid "Home"
 msgstr "Ti"
 
-#: contacts/constants.py:15 contacts/constants.py:21
+#: contacts/constants.py:15 contacts/constants.py:21 webmail/constants.py:140
 msgid "Work"
 msgstr "Labour"
 
@@ -1597,76 +1643,71 @@ msgstr "Levr chomlec'hioù"
 msgid "Minimum allowed value is 60s"
 msgstr "Talvoudegezh bihanañ aotreet a zo 60eil"
 
-#: core/api/v1/serializers.py:68
+#: core/api/v1/serializers.py:70
 #, fuzzy
 #| msgid "MX records of {}"
 msgid "Invalid PIN code"
 msgstr "Enrolladennoù MX eus {}"
 
-#: core/api/v1/serializers.py:74
+#: core/api/v1/serializers.py:76
 msgid "2FA is already enabled"
 msgstr ""
 
-#: core/api/v1/serializers.py:87
-#, python-format
-msgid "Failed TFA settings editing attempt from '%(addr)s' as user '%(user)s'"
-msgstr ""
-
-#: core/api/v1/serializers.py:93 core/api/v2/serializers.py:409
+#: core/api/v1/serializers.py:99 core/api/v2/serializers.py:463
 #, fuzzy
 #| msgid "Old password"
 msgid "Invalid password"
 msgstr "Ger-tremen kozh"
 
-#: core/api/v1/viewsets.py:45 core/api/v1/viewsets.py:64
+#: core/api/v1/viewsets.py:58 core/api/v1/viewsets.py:78
 msgid "2FA is not enabled"
 msgstr ""
 
-#: core/api/v2/serializers.py:30
+#: core/api/v2/serializers.py:32
 msgid "Local"
 msgstr "Lec'hel"
 
-#: core/api/v2/serializers.py:177 core/api/v2/serializers.py:185
-#: core/api/v2/serializers.py:192
+#: core/api/v2/serializers.py:188 core/api/v2/serializers.py:196
+#: core/api/v2/serializers.py:203
 msgid "Invalid syntax"
 msgstr "Sintaks direizh"
 
-#: core/api/v2/serializers.py:197
+#: core/api/v2/serializers.py:208
 msgid "Invalid rounds number"
 msgstr "Niveroù ront direizh"
 
-#: core/api/v2/serializers.py:397 core/forms.py:84
+#: core/api/v2/serializers.py:451 core/forms.py:86
 msgid "This code is invalid"
 msgstr ""
 
-#: core/api/v2/viewsets.py:176
+#: core/api/v2/viewsets.py:218
 #, fuzzy
 #| msgid "Administration"
 msgid "Administration console"
 msgstr "Melestradurezh"
 
-#: core/api/v2/viewsets.py:184 dmarc/models.py:11
+#: core/api/v2/viewsets.py:226 dmarc/models.py:11
 msgid "Quarantine"
 msgstr "Dispell"
 
-#: core/api/v2/viewsets.py:186
+#: core/api/v2/viewsets.py:228
 #, fuzzy
 #| msgid "Quarantine"
 msgid "Amavis quarantine"
 msgstr "Dispell"
 
-#: core/api/v2/viewsets.py:197
+#: core/api/v2/viewsets.py:239
 #, fuzzy
 #| msgid "Address"
 msgid "Address book"
 msgstr "Levr chomlec'hioù"
 
-#: core/api/v2/viewsets.py:207
+#: core/api/v2/viewsets.py:249
 msgid "Calendar"
 msgstr ""
 
-#: core/api/v2/viewsets.py:215 core/api/v2/viewsets.py:217
-#: webmail/app_settings.py:338 webmail/app_settings.py:345
+#: core/api/v2/viewsets.py:257 core/api/v2/viewsets.py:259
+#: webmail/app_settings.py:348 webmail/app_settings.py:355
 #, fuzzy
 #| msgid "E-mail"
 msgid "Webmail"
@@ -2151,77 +2192,113 @@ msgid ""
 "it to use the default Modoboa logo."
 msgstr ""
 
-#: core/app_settings.py:643
+#: core/app_settings.py:639
+#, fuzzy
+#| msgid "Search filter"
+msgid "Banner"
+msgstr "Sil klask"
+
+#: core/app_settings.py:646
+#, fuzzy
+#| msgid "Message"
+msgid "Banner message"
+msgstr "Kemennadenn"
+
+#: core/app_settings.py:648
+msgid ""
+"A message displayed at the bottom of every page of the interface. Leave "
+"empty to hide the banner."
+msgstr ""
+
+#: core/app_settings.py:657
+msgid "Banner link URL"
+msgstr ""
+
+#: core/app_settings.py:659
+msgid "An optional link displayed after the banner message"
+msgstr ""
+
+#: core/app_settings.py:667
+#, fuzzy
+#| msgid "Search filter"
+msgid "Banner link label"
+msgstr "Sil klask"
+
+#: core/app_settings.py:669
+msgid "Text of the banner link (the URL is displayed when empty)"
+msgstr ""
+
+#: core/app_settings.py:681
 msgid "Notifications"
 msgstr "Kemennadennoù"
 
-#: core/app_settings.py:649
+#: core/app_settings.py:687
 msgid "Sender address"
 msgstr "Chomlec'h ar c'haser"
 
-#: core/app_settings.py:651
+#: core/app_settings.py:689
 msgid "Email address used to send notifications."
 msgstr "Chomlec'h postel implijet da gas kemmennoù."
 
-#: core/app_settings.py:662
+#: core/app_settings.py:700
 msgid "Public API"
 msgstr "API foran"
 
-#: core/app_settings.py:668
+#: core/app_settings.py:706
 msgid "Enable communication"
 msgstr "Enaouiñ ar c'hehentiñ"
 
-#: core/app_settings.py:670 core/app_settings.py:680
+#: core/app_settings.py:708 core/app_settings.py:718
 msgid "Automatically checks if a newer version is available"
 msgstr "Em-wiriañ ma vez ur stumm nevez hegerz"
 
-#: core/app_settings.py:677
+#: core/app_settings.py:715
 msgid "Check new versions"
 msgstr "Klask stummoù nevez"
 
-#: core/app_settings.py:688
+#: core/app_settings.py:726
 msgid "Send an email when new versions are found"
 msgstr ""
 
-#: core/app_settings.py:692
+#: core/app_settings.py:730
 msgid "Send an email to notify admins about new versions"
 msgstr ""
 
-#: core/app_settings.py:699 sievefilters/constants.py:30
+#: core/app_settings.py:737 sievefilters/constants.py:30
 msgid "Recipient"
 msgstr ""
 
-#: core/app_settings.py:702
+#: core/app_settings.py:740
 msgid "Recipient of new versions notification emails."
 msgstr ""
 
-#: core/app_settings.py:709
+#: core/app_settings.py:747
 msgid "Send statistics"
 msgstr "Kas statistikoù"
 
-#: core/app_settings.py:712
+#: core/app_settings.py:750
 msgid "Send statistics to Modoboa public API (counters and used extensions)"
 msgstr ""
 "Kas ar statistikoù da API foran Modoboa (kontourioù hag an astennoù "
 "impliljet)"
 
-#: core/app_settings.py:731
+#: core/app_settings.py:769
 #, fuzzy
 #| msgid "Inactive account threshold"
 msgid "Enable inactive account tracking"
 msgstr "Treuzoù ar c'hontoù dioberiant"
 
-#: core/app_settings.py:734
+#: core/app_settings.py:772
 msgid ""
 "Allow the administrator to set a threshold (in days) beyond which an account "
 "is considered inactive if the user hasn't logged in"
 msgstr ""
 
-#: core/app_settings.py:743
+#: core/app_settings.py:781
 msgid "Inactive account threshold"
 msgstr "Treuzoù ar c'hontoù dioberiant"
 
-#: core/app_settings.py:746
+#: core/app_settings.py:784
 msgid ""
 "An account with a last login date greater than this threshold (in days) will "
 "be considered as inactive"
@@ -2229,39 +2306,39 @@ msgstr ""
 "Ur gont gant un deiziad kevreañ koshoc'h evit an treuzoù-se (e devezhioù) a "
 "vo kontet evel bezañ dioberiant"
 
-#: core/app_settings.py:755
+#: core/app_settings.py:793
 msgid "Top notifications check interval"
 msgstr "Padelezh etre ar c'hemennoù gwiriañ pennañ"
 
-#: core/app_settings.py:758
+#: core/app_settings.py:796
 msgid "Interval between two top notification checks (in seconds)"
 msgstr "Padelezh etre div gwiriadenn gemennoù pennañ (en eilennoù)"
 
-#: core/app_settings.py:765
+#: core/app_settings.py:803
 msgid "Maximum log record age"
 msgstr "Oad enrollañ maksimom ar marilhoù"
 
-#: core/app_settings.py:767
+#: core/app_settings.py:805
 msgid "The maximum age in days of a log record"
 msgstr "Oad brasañ e devezhioù un enrollodenn renabl"
 
-#: core/app_settings.py:775
+#: core/app_settings.py:813
 msgid "Retention time in message history"
 msgstr ""
 
-#: core/app_settings.py:778
+#: core/app_settings.py:816
 msgid "Retention time (in days) of a message in the message history section"
 msgstr ""
 
-#: core/app_settings.py:785
+#: core/app_settings.py:823
 msgid "Items per page"
 msgstr "Elfennoù dre bajenn"
 
-#: core/app_settings.py:787
+#: core/app_settings.py:825
 msgid "Number of displayed items per page"
 msgstr "Niver a elfennoù diskouezet dre bajenn"
 
-#: core/checks.py:15
+#: core/checks.py:18
 msgid ""
 "You have USE_TZ set to False, this may result in issues during transitions "
 "between summer/winter time (ie the same local time occuring twice due to "
@@ -2271,37 +2348,61 @@ msgstr ""
 "tremennadennoù eurvezh hañv/eurvezh goañv (d.l.e ar memes eurvezh lec'hel a "
 "c'hoarvez div wech abalamour d'ur cheñchamant horolaj)."
 
-#: core/checks.py:19
+#: core/checks.py:22
 msgid "Set `USE_TZ = True` in settings.py"
 msgstr "Lakaat `USE_TZ = Gwir e-barzh`arventennoù.py"
 
-#: core/checks.py:23
+#: core/checks.py:26
 msgid "The password scheme you are using is deprecated."
 msgstr ""
 
-#: core/checks.py:24
+#: core/checks.py:27
 msgid "Upgrade your password scheme to a stronger one"
 msgstr ""
 
-#: core/checks.py:30
+#: core/checks.py:32
+msgid ""
+"Client addresses are read from a header clients can forge, which defeats "
+"rate limits and fail2ban."
+msgstr ""
+
+#: core/checks.py:36
+msgid ""
+"In settings.py, replace XForwardedForMiddleware with "
+"modoboa.lib.middleware.TrustedProxyMiddleware and set NUM_PROXIES in "
+"REST_FRAMEWORK. See the upgrade documentation."
+msgstr ""
+
+#: core/checks.py:43
+msgid "OAuth2 tokens of disabled accounts are still accepted."
+msgstr ""
+
+#: core/checks.py:45
+msgid ""
+"In settings.py, set 'OAUTH2_VALIDATOR_CLASS' to "
+"'modoboa.core.oauth2_validators.OAuth2Validator' in OAUTH2_PROVIDER. See the "
+"upgrade documentation."
+msgstr ""
+
+#: core/checks.py:54
 msgid ""
 "Oauth2 application for dovecot has not been found. Webmail and some other "
 "features won't be available."
 msgstr ""
 
-#: core/checks.py:34
+#: core/checks.py:58
 msgid ""
 "Visit : https://modoboa.readthedocs.io/en/latest/manual_installation/"
 "dovecot.html#dovecot-oauth2"
 msgstr ""
 
-#: core/checks.py:41
+#: core/checks.py:65
 msgid ""
 "Oauth2 application for radicale has not been found. Calendar and some other "
 "features won't be available."
 msgstr ""
 
-#: core/checks.py:45
+#: core/checks.py:69
 msgid ""
 "Visit :  https://modoboa.readthedocs.io/en/latest/manual_installation/"
 "radicale.html#radicale-oauth2"
@@ -2343,115 +2444,173 @@ msgstr ""
 msgid "Dummy"
 msgstr ""
 
-#: core/forms.py:59
+#: core/forms.py:61
 msgid "Verification code"
 msgstr ""
 
-#: core/forms.py:70
+#: core/forms.py:72
 msgid "Invalid code"
 msgstr ""
 
-#: core/handlers.py:36
-msgid "added"
-msgstr "ouzhpennet"
-
-#: core/handlers.py:39
-msgid "modified"
-msgstr "kemmet"
-
-#: core/handlers.py:41
-#, python-format
-msgid "%(object)s '%(name)s' %(action)s by user %(user)s"
-msgstr "%(object)s '%(name)s' %(action)s gant an implijer %(user)s"
-
-#: core/handlers.py:64
-#, python-format
-msgid "%(object)s '%(name)s' %(action)s by "
-msgstr "%(object)s '%(name)s' %(action)s gant "
-
-#: core/handlers.py:67
-msgid "deleted"
-msgstr "diverket"
-
-#: core/handlers.py:71
-msgid "user {}"
-msgstr "implijer {}"
-
-#: core/handlers.py:73
-msgid "management command"
-msgstr "meradur an urzhiad"
-
-#: core/handlers.py:126
+#: core/handlers.py:140
 msgid "One or more updates are available"
 msgstr "Hegerz ez eus un hizivadenn pe muioc'h"
 
-#: core/handlers.py:139
+#: core/handlers.py:153
 #, python-format
 msgid "You are still using a deprecated password scheme (%s)"
+msgstr ""
+
+#: core/loggers.py:26
+#, python-format
+msgid "%(model)s created"
+msgstr ""
+
+#: core/loggers.py:27
+#, fuzzy, python-format
+#| msgid "modified"
+msgid "%(model)s modified"
+msgstr "kemmet"
+
+#: core/loggers.py:28
+#, python-format
+msgid "%(model)s deleted"
+msgstr ""
+
+#: core/loggers.py:41
+msgid "Login succeeded"
+msgstr ""
+
+#: core/loggers.py:42
+msgid "Login failed"
+msgstr ""
+
+#: core/loggers.py:43
+#, fuzzy
+#| msgid "Authentication method"
+msgid "Two-factor authentication failed"
+msgstr "Doare dilesañ"
+
+#: core/loggers.py:46
+msgid "Wrong password while editing 2FA settings"
+msgstr ""
+
+#: core/loggers.py:48
+#, fuzzy
+#| msgid "Password"
+msgid "Password changed"
+msgstr "Ger-tremen"
+
+#: core/loggers.py:49
+#, fuzzy
+#| msgid "Password attribute"
+msgid "Password reset requested"
+msgstr "Perzhioù ar ger-tremen"
+
+#: core/loggers.py:50
+#, fuzzy
+#| msgid "Password"
+msgid "Password reset"
+msgstr "Ger-tremen"
+
+#: core/loggers.py:51
+#, fuzzy
+#| msgid "Authentication type"
+msgid "Authenticator app enabled"
+msgstr "Doare anavezadur"
+
+#: core/loggers.py:52
+#, fuzzy
+#| msgid "Authentication type"
+msgid "Authenticator app disabled"
+msgstr "Doare anavezadur"
+
+#: core/loggers.py:53
+msgid "Recovery codes regenerated"
+msgstr ""
+
+#: core/loggers.py:54
+msgid "Security key added"
+msgstr ""
+
+#: core/loggers.py:55
+msgid "Security key removed"
+msgstr ""
+
+#: core/loggers.py:56
+msgid "API token created"
+msgstr ""
+
+#: core/loggers.py:57
+msgid "API token deleted"
+msgstr ""
+
+#: core/loggers.py:58
+msgid "Global parameters modified"
 msgstr ""
 
 #: core/management/commands/communicate_with_public_api.py:42
 msgid "[modoboa] Update(s) available"
 msgstr ""
 
-#: core/models.py:71
+#: core/models.py:72
 msgid "Allow mailboxes access"
 msgstr "Aotren ar moned d'ar boestoù-post"
 
-#: core/models.py:73
+#: core/models.py:74
 msgid "Allow this administrator to access user mailboxes"
 msgstr "Aotren an implijer-mañ da vont e boestoù-post an implijerien"
 
-#: core/models.py:75
+#: core/models.py:76
 msgid "password"
 msgstr "Ger-tremen"
 
-#: core/models.py:78
+#: core/models.py:79
 msgid "language"
 msgstr "yezh"
 
-#: core/models.py:82
+#: core/models.py:83
 msgid "Prefered language to display pages."
 msgstr "Yezh karetañ evit diskwel ar pajenoù"
 
-#: core/models.py:84
+#: core/models.py:85
 msgid "Phone number"
 msgstr "Niverenn bellgomz"
 
-#: core/models.py:86
+#: core/models.py:87
 msgid "Secondary email"
 msgstr "Eil chomlec'h postel"
 
-#: core/models.py:91
+#: core/models.py:92
 msgid "An alternative e-mail address, can be used for recovery needs."
 msgstr ""
 "Gallout a reer ober gant un eil chomlec'h postel evit ezhommoù adtapout"
 
-#: core/models.py:150
+#: core/models.py:151
 msgid "Failed to update password: LDAP module not installed"
 msgstr "Hizivadur ger-tremen c'hwitet: modulenn LDAP nann-staliet"
 
-#: core/models.py:185 policyd/core.py:123
+#: core/models.py:208 policyd/core.py:123
 msgid "account"
 msgstr "kont"
 
-#: core/models.py:342
+#: core/models.py:365
 msgid "Unknown"
 msgstr "Dizanv"
 
-#: core/models.py:385
+#: core/models.py:408
 msgid "You can't import an account with a role greater than yours"
 msgstr ""
 "N'hallit ket emporzhiañ ur gont gant ur rol pouezusoc'h evit hoc'h hini "
 "deoc'h-c'hwi"
 
-#: core/models.py:400
+#: core/models.py:423
 #, fuzzy
 #| msgid "The simple user '%s' must have a valid email address"
 msgid "The simple user '{}' must have a valid email address"
 msgstr "An implijer eeun '%s' a rank kaout ur chomlec'h postel reizh"
 
-#: core/models.py:408
+#: core/models.py:431
 #, fuzzy
 #| msgid "username and email fields must not differ for '%s'"
 msgid "username and email fields must not differ for '{}'"
@@ -2566,22 +2725,17 @@ msgstr[4] ""
 msgid "The core part of Modoboa"
 msgstr "Lodenn greiz Modoboa"
 
-#: core/views/auth.py:69
-#, python-format
-msgid "User '%s' successfully logged in"
-msgstr "Implijer '%s' kevreet gant berzh"
-
-#: core/views/auth.py:118
+#: core/views/auth.py:127
 #, python-format
 msgid "Password scheme mismatch. Updating %s password"
 msgstr "Dizemglev gant brastres ar ger-tremen. Oc'h hizivat ar ger-tremen %s"
 
-#: core/views/auth.py:125
+#: core/views/auth.py:134
 #, python-format
 msgid "Password hash parameter missmatch. Updating %s password"
 msgstr ""
 
-#: core/views/auth.py:195 core/views/auth.py:265
+#: core/views/auth.py:223 core/views/auth.py:293
 msgid "Please use the following code to recover your Modoboa password: {}"
 msgstr ""
 
@@ -2861,8 +3015,8 @@ msgstr ""
 msgid "LDAP bind DN and password cannot contain quote characters"
 msgstr ""
 
-#: lib/api_client.py:35 lib/api_client.py:67 lib/api_client.py:81
-#: lib/api_client.py:85
+#: lib/api_client.py:36 lib/api_client.py:68 lib/api_client.py:82
+#: lib/api_client.py:86
 #, fuzzy, python-format
 #| msgid "Enable communication with Modoboa public API"
 msgid "Failed to communicate with public API: %s"
@@ -2896,9 +3050,15 @@ msgstr "C'hwitet ez eus bet war hizivadur ar ger-tremen: {}"
 msgid "You don't have ownership on this mailbox"
 msgstr "N'ho peus moned ebet d'ar voest-posteloù-mañ."
 
-#: lib/throttle.py:94
+#: lib/throttle.py:126
 msgid "Too many attempts, please try again later."
 msgstr ""
+
+#: lib/validators.py:71
+#, fuzzy
+#| msgid "Enter a valid email address."
+msgid "Enter a valid DKIM selector"
+msgstr "Ebarzhit ur chomlec'h postel reizh."
 
 #: limits/app_settings.py:13
 msgid "Default per-admin limits"
@@ -3412,7 +3572,7 @@ msgid ""
 "the path."
 msgstr ""
 
-#: pdfcredentials/handlers.py:64
+#: pdfcredentials/handlers.py:67
 msgid "Download PDF credentials"
 msgstr ""
 
@@ -3425,13 +3585,13 @@ msgstr ""
 msgid "Failed to create the directory that will contain PDF documents (%s)"
 msgstr ""
 
-#: pdfcredentials/lib.py:52
+#: pdfcredentials/lib.py:51
 #, fuzzy, python-format
 #| msgid "Invalid rounds number"
 msgid "Invalid account name: %s"
 msgstr "Niveroù ront direizh"
 
-#: pdfcredentials/lib.py:99
+#: pdfcredentials/lib.py:98
 msgid ""
 "Failed to create PDF_credentials file. Please check the permissions or the "
 "path."
@@ -3547,12 +3707,18 @@ msgstr ""
 msgid "Rspamd"
 msgstr ""
 
-#: sievefilters/api/v2/serializers.py:30 sievefilters/api/v2/serializers.py:97
+#: sievefilters/api/v2/serializers.py:31 sievefilters/api/v2/serializers.py:112
 #: sievefilters/api/v2/viewsets.py:55
 msgid "Name contains forbidden characters"
 msgstr ""
 
-#: sievefilters/api/v2/serializers.py:99
+#: sievefilters/api/v2/serializers.py:69 webmail/serializers.py:465
+#, fuzzy
+#| msgid "Unknown"
+msgid "Unknown tag"
+msgstr "Dizanv"
+
+#: sievefilters/api/v2/serializers.py:114
 #, fuzzy
 #| msgid "This field is required"
 msgid "This name is reserved"
@@ -3563,7 +3729,7 @@ msgstr "Rekis eo leuniañ ar vaezienn"
 msgid "A filter set with this name already exists"
 msgstr "Un alias gant an anv-mañ zo anezhañ dija"
 
-#: sievefilters/api/v2/viewsets.py:217 sievefilters/api/v2/viewsets.py:247
+#: sievefilters/api/v2/viewsets.py:219 sievefilters/api/v2/viewsets.py:251
 #, fuzzy, python-format
 #| msgid "User '%s' already exists"
 msgid "Filter %s already exists"
@@ -3631,7 +3797,7 @@ msgstr ""
 msgid "is not"
 msgstr ""
 
-#: sievefilters/constants.py:28 webmail/lib/imapemail.py:470
+#: sievefilters/constants.py:28 webmail/lib/imapemail.py:476
 msgid "Subject"
 msgstr "Sujed"
 
@@ -3683,25 +3849,33 @@ msgstr "Kemennadenn"
 msgid "Reject message"
 msgstr "Kemennadenn"
 
-#: sievefilters/constants.py:80
+#: sievefilters/constants.py:83
+msgid "Add tag"
+msgstr ""
+
+#: sievefilters/constants.py:86
 msgid "Stop processing"
 msgstr ""
 
-#: sievefilters/lib.py:62
+#: sievefilters/lib.py:48
+msgid "Missing credentials for MANAGESIEVE server"
+msgstr ""
+
+#: sievefilters/lib.py:64
 msgid "ManageSieve server returned an error"
 msgstr ""
 
-#: sievefilters/lib.py:76
+#: sievefilters/lib.py:78
 msgid "Connection to MANAGESIEVE server failed, check your configuration"
 msgstr ""
 
-#: sievefilters/lib.py:98
+#: sievefilters/lib.py:100
 #, fuzzy, python-format
 #| msgid "Directory not found."
 msgid "Filter set %s not found"
 msgstr "Neket bet kavet an domani."
 
-#: sievefilters/lib.py:113
+#: sievefilters/lib.py:115
 #, fuzzy
 #| msgid "Not enough resources"
 msgid "Not enough space on server"
@@ -4068,45 +4242,53 @@ msgstr "Krouiñ aliasoù"
 msgid "Folder where junk messages should go"
 msgstr ""
 
-#: webmail/app_settings.py:279
+#: webmail/app_settings.py:275
+msgid "Show only subscribed folders"
+msgstr ""
+
+#: webmail/app_settings.py:277
+msgid "Only display the folders you are subscribed to in the folder list"
+msgstr ""
+
+#: webmail/app_settings.py:289
 #, fuzzy
 #| msgid "Message"
 msgid "Composing messages"
 msgstr "Kemennadenn"
 
-#: webmail/app_settings.py:285
+#: webmail/app_settings.py:295
 #, fuzzy
 #| msgid "Default top redirection"
 msgid "Default editor"
 msgstr "Adhenchañ pennañ dre-ziouer"
 
-#: webmail/app_settings.py:287
+#: webmail/app_settings.py:297
 #, fuzzy
 #| msgid "The default redirection used when no application is specified"
 msgid "The default editor to use when composing a message"
 msgstr "An adheñchañ dre-ziouer implijet pa n'eus arload ebet spisaet"
 
-#: webmail/app_settings.py:294
+#: webmail/app_settings.py:304
 msgid "Signature text"
 msgstr ""
 
-#: webmail/app_settings.py:296
+#: webmail/app_settings.py:306
 msgid "User defined email signature"
 msgstr ""
 
-#: webmail/app_settings.py:304
+#: webmail/app_settings.py:314
 msgid "Signature position"
 msgstr ""
 
-#: webmail/app_settings.py:306
+#: webmail/app_settings.py:316
 msgid "Where the signature goes in replies and forwards"
 msgstr ""
 
-#: webmail/app_settings.py:314
+#: webmail/app_settings.py:324
 msgid "Undo send delay"
 msgstr ""
 
-#: webmail/app_settings.py:316
+#: webmail/app_settings.py:326
 msgid ""
 "Number of seconds during which sending a message can be cancelled (0 to send "
 "at once, 30 at most)"
@@ -4154,6 +4336,22 @@ msgstr "Kemennadenn"
 msgid "Conversations"
 msgstr "Klask stummoù nevez"
 
+#: webmail/constants.py:139
+msgid "Important"
+msgstr ""
+
+#: webmail/constants.py:141
+msgid "Personal"
+msgstr ""
+
+#: webmail/constants.py:142
+msgid "To do"
+msgstr ""
+
+#: webmail/constants.py:143
+msgid "Later"
+msgstr ""
+
 #: webmail/exceptions.py:23
 #, fuzzy
 #| msgid "Server address"
@@ -4173,90 +4371,96 @@ msgstr ""
 msgid "Failed to remove attachment: "
 msgstr "N'heller ket adsevel lec'hiadur ar voest-posteloù (%s)"
 
-#: webmail/lib/imapemail.py:420
+#: webmail/lib/imapemail.py:426
 #, python-format
 msgid "On %(date)s, %(sender)s wrote:"
 msgstr ""
 
-#: webmail/lib/imapemail.py:425
+#: webmail/lib/imapemail.py:431
 #, python-format
 msgid "%(sender)s wrote:"
 msgstr ""
 
-#: webmail/lib/imapemail.py:473
+#: webmail/lib/imapemail.py:479
 msgid "Date"
 msgstr "Deiziad"
 
-#: webmail/lib/imapemail.py:490 webmail/lib/imapemail.py:493
+#: webmail/lib/imapemail.py:496 webmail/lib/imapemail.py:499
 #, fuzzy
 #| msgid "Message"
 msgid "Original message"
 msgstr "Kemennadenn"
 
-#: webmail/lib/imaputils.py:87 webmail/viewsets.py:30
+#: webmail/lib/imaputils.py:90 webmail/viewsets.py:30
 msgid "Invalid message identifier"
 msgstr ""
 
-#: webmail/lib/imaputils.py:94 webmail/viewsets.py:44
+#: webmail/lib/imaputils.py:97 webmail/viewsets.py:44
 #, fuzzy
 #| msgid "Invalid rounds number"
 msgid "Invalid part number"
 msgstr "Niveroù ront direizh"
 
-#: webmail/lib/imaputils.py:107 webmail/viewsets.py:51
+#: webmail/lib/imaputils.py:104
+#, fuzzy
+#| msgid "Invalid syntax"
+msgid "Invalid tag"
+msgstr "Sintaks direizh"
+
+#: webmail/lib/imaputils.py:122 webmail/viewsets.py:51
 msgid "Invalid search pattern"
 msgstr ""
 
-#: webmail/lib/imaputils.py:139
+#: webmail/lib/imaputils.py:154
 #, fuzzy
 #| msgid "Use an SSL/STARTTLS connection to access the LDAP server"
 msgid "Unexpected response from the IMAP server"
 msgstr ""
 "Implijit ur gevreadenn SSL/STARTTLS evit gellet tizhout ar servijer LDAP"
 
-#: webmail/lib/imaputils.py:151
+#: webmail/lib/imaputils.py:166
 #, fuzzy
 #| msgid "Invalid address"
 msgid "Invalid IMAP argument"
 msgstr "Chomlec'h direizh"
 
-#: webmail/lib/imaputils.py:165
+#: webmail/lib/imaputils.py:180
 #, fuzzy
 #| msgid "Enter a valid domain name"
 msgid "Invalid mailbox name"
 msgstr "Ebarzhiñ un anv domani reizh"
 
-#: webmail/lib/imaputils.py:570
+#: webmail/lib/imaputils.py:585
 msgid "Failed to retrieve hierarchy delimiter"
 msgstr ""
 
-#: webmail/lib/imaputils.py:1033
+#: webmail/lib/imaputils.py:1064
 msgid "Shared with me"
 msgstr ""
 
-#: webmail/lib/imaputils.py:1082
+#: webmail/lib/imaputils.py:1113
 msgid "Inbox"
 msgstr ""
 
-#: webmail/lib/imaputils.py:1086
+#: webmail/lib/imaputils.py:1117
 #, fuzzy
 #| msgid "Create aliases"
 msgid "Drafts"
 msgstr "Krouiñ aliasoù"
 
-#: webmail/lib/imaputils.py:1091
+#: webmail/lib/imaputils.py:1122
 msgid "Junk"
 msgstr ""
 
-#: webmail/lib/imaputils.py:1096
+#: webmail/lib/imaputils.py:1127
 msgid "Sent"
 msgstr ""
 
-#: webmail/lib/imaputils.py:1104
+#: webmail/lib/imaputils.py:1135
 msgid "Scheduled"
 msgstr ""
 
-#: webmail/lib/imaputils.py:1111
+#: webmail/lib/imaputils.py:1142
 msgid "Trash"
 msgstr ""
 
@@ -4280,66 +4484,77 @@ msgstr "Anv an domani"
 msgid "This address is no longer allowed for this account"
 msgstr ""
 
-#: webmail/serializers.py:157
+#: webmail/serializers.py:162
 #, fuzzy
 #| msgid "Unknown"
 msgid "Unknown account"
 msgstr "Dizanv"
 
-#: webmail/serializers.py:169
+#: webmail/serializers.py:174
 #, fuzzy
 #| msgid "Invalid line"
 msgid "Invalid identifier"
 msgstr "Linenn direizh"
 
-#: webmail/serializers.py:171
+#: webmail/serializers.py:176
 #, fuzzy
 #| msgid "You can't delete your own domain"
 msgid "You can't remove your own rights"
 msgstr "N'hallit ket dilemel ho tomani deoc'h-c'hwi hoc'h-unan"
 
-#: webmail/serializers.py:365
+#: webmail/serializers.py:373
 msgid "Moving scheduled messages is forbidden"
 msgstr ""
 
-#: webmail/serializers.py:397
+#: webmail/serializers.py:411
+#, fuzzy
+msgid "A tag with this name already exists"
+msgstr "Un alias gant an anv-mañ zo anezhañ dija"
+
+#: webmail/serializers.py:421
+#, fuzzy, python-format
+#| msgid "You can't delete your own account"
+msgid "You can't create more than %(count)d tags"
+msgstr "N'hallit ket diverkañ ho kont deoc'h-c'hwi hoc'h-unan"
+
+#: webmail/serializers.py:477
 msgid "Only datetime in the future is allowed"
 msgstr ""
 
-#: webmail/serializers.py:402
+#: webmail/serializers.py:482
 msgid "Provived datetime must be one minute in the future at least"
 msgstr ""
 
-#: webmail/serializers.py:433
+#: webmail/serializers.py:513
 #, fuzzy
 #| msgid "You are not allowed to import domain aliases."
 msgid "You are not allowed to send from this address"
 msgstr "N'hoc'h ket aotreet da emporzhiañ aliasoù domani."
 
-#: webmail/serializers.py:448
+#: webmail/serializers.py:528
 #, fuzzy, python-format
 #| msgid "Invalid address"
 msgid "Invalid addresses: %s"
 msgstr "Chomlec'h direizh"
 
-#: webmail/serializers.py:489
+#: webmail/serializers.py:569
 msgid ""
 "original_mailbox, original_mailid and original_action must be provided "
 "together"
 msgstr ""
 
-#: webmail/serializers.py:506
+#: webmail/serializers.py:586
 #, python-format
 msgid ""
 "Ensure this field has no more than %(max_length)s characters to schedule the "
 "message"
 msgstr ""
 
-#: webmail/serializers.py:582
+#: webmail/serializers.py:662
 msgid "forward_mailbox and forward_mailid must be provided together"
 msgstr ""
 
-#: webmail/serializers.py:586
+#: webmail/serializers.py:666
 msgid "A session can't start from a draft and a forwarded message"
 msgstr ""
 
@@ -4349,32 +4564,56 @@ msgstr ""
 msgid "Invalid page number"
 msgstr "Niveroù ront direizh"
 
-#: webmail/viewsets.py:179
+#: webmail/viewsets.py:185
 msgid "This mailbox is used by the webmail and can't be renamed"
 msgstr ""
 
-#: webmail/viewsets.py:220
+#: webmail/viewsets.py:226
 msgid "This mailbox is used by the webmail and can't be deleted"
 msgstr ""
 
-#: webmail/viewsets.py:249
+#: webmail/viewsets.py:255
 msgid "Folder sharing is not available"
 msgstr ""
 
-#: webmail/viewsets.py:709
+#: webmail/viewsets.py:736
 #, python-format
 msgid "A message cannot carry more than %s attachments"
 msgstr ""
 
-#: webmail/viewsets.py:721
+#: webmail/viewsets.py:748
 #, python-format
 msgid "Attachment is too big (limit: %s)"
 msgstr ""
 
-#: webmail/viewsets.py:737
+#: webmail/viewsets.py:764
 #, python-format
 msgid "Attachments are too big (limit: %s for the whole message)"
 msgstr ""
+
+#~ msgid "added"
+#~ msgstr "ouzhpennet"
+
+#, python-format
+#~ msgid "%(object)s '%(name)s' %(action)s by user %(user)s"
+#~ msgstr "%(object)s '%(name)s' %(action)s gant an implijer %(user)s"
+
+#, python-format
+#~ msgid "%(object)s '%(name)s' %(action)s by "
+#~ msgstr "%(object)s '%(name)s' %(action)s gant "
+
+#~ msgid "deleted"
+#~ msgstr "diverket"
+
+#~ msgid "user {}"
+#~ msgstr "implijer {}"
+
+#~ msgid "management command"
+#~ msgstr "meradur an urzhiad"
+
+#, python-format
+#~ msgid "User '%s' successfully logged in"
+#~ msgstr "Implijer '%s' kevreet gant berzh"
 
 #~ msgid "User '{}' successfully logged out"
 #~ msgstr "Implijer '{}' digevreet gant berzh"
