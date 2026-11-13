@@ -67,6 +67,9 @@
           :items="filters"
           :loading="loadingFilters"
         >
+          <template #[`item.name`]="{ item }">
+            {{ item.name === 'autoreply' ? $gettext('Auto-reply') : item.name }}
+          </template>
           <template #[`item.enabled`]="{ item }">
             {{ $yesno(item.enabled) }}
           </template>
@@ -347,8 +350,12 @@ const filterActions = [
 ]
 
 function getFilterActions(filter, index) {
-  const result = [...filterActions]
-  if (filter.enabled) {
+  // The auto-reply rule is managed from the account settings, it can only be moved
+  const isAutoreply = filter.name === 'autoreply'
+  const result = isAutoreply ? [] : [...filterActions]
+  if (isAutoreply) {
+    // Enabled and edited from the account settings
+  } else if (filter.enabled) {
     result.push({
       label: $gettext('Disable'),
       icon: 'mdi-stop',
