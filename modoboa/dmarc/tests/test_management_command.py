@@ -1,5 +1,14 @@
 """Management command tests."""
 
+import io
+import os
+import sys
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+from unittest import mock
+
+from django.core.management import call_command
+
 from modoboa.admin import factories as admin_factories
 from modoboa.lib.tests import ModoTestCase
 
@@ -135,3 +144,60 @@ class ManagementCommandTestCase(mixins.CallCommandMixin, ModoTestCase):
         spf_result2 = results2.get(type="spf")
         self.assertEqual(spf_result2.domain, "ngyn.org")
         self.assertEqual(spf_result2.result, "pass")
+
+
+def _report_email(xml: bytes) -> bytes:
+    msg = MIMEMultipart()
+    msg.attach(MIMEText(xml.decode(), "xml"))
+    return msg.as_bytes()
+
+
+MALFORMED_REPORTS = [
+    # Truncated XML -> ParseError (a SyntaxError, not a ValueError)
+    b'<?xml version="1.0" encoding="UTF-8" ?>\n<feedback><report_metadata>',
+    # Well-formed but no <report_metadata> -> AttributeError
+    b'<?xml version="1.0" encoding="UTF-8" ?>\n<feedback><record/></feedback>',
+]
+
+
+class MalformedReportTestCase(mixins.CallCommandMixin, ModoTestCase):
+    """Malformed reports must be skipped, not crash the importer."""
+
+    @classmethod
+    def setUpTestData(cls):
+        super().setUpTestData()
+        cls.domain = admin_factories.DomainFactory(name="ngyn.org")
+
+    def test_pipe_malformed_report_exits_with_dataerr(self):
+        for xml in MALFORMED_REPORTS:
+            with self.subTest(xml=xml):
+                sys.stdin = io.StringIO(_report_email(xml).decode())
+                with self.assertRaisesMessage(SystemExit, "65"):
+                    call_command(
+                        "import_aggregated_report", "--pipe", stdout=io.StringIO()
+                    )
+
+    @mock.patch("modoboa.dmarc.lib.getpass.getpass", return_value="password")
+    @mock.patch("builtins.input", return_value="user")
+    @mock.patch("modoboa.dmarc.lib.imaplib.IMAP4")
+    def test_imap_malformed_report_does_not_block_batch(self, imap_mock, *args):
+        path = os.path.join(
+            os.path.dirname(__file__),
+            "reports",
+            "Report_Domain_ngyn.org_Submitter_fastmail.com_Report-ID_2015.06.23.5672770.eml",
+        )
+        with open(path, "rb") as fp:
+            good = fp.read()
+        messages = [_report_email(xml) for xml in MALFORMED_REPORTS] + [good]
+        conn = imap_mock.return_value
+        conn.search.return_value = (
+            "OK",
+            [b" ".join(b"%d" % (i + 1) for i in range(len(messages)))],
+        )
+        conn.fetch.side_effect = [
+            ("OK", [(b"%d (RFC822)" % (i + 1), msg), b")"])
+            for i, msg in enumerate(messages)
+        ]
+        call_command("import_aggregated_report", "--imap", stdout=io.StringIO())
+        self.assertEqual(conn.fetch.call_count, len(messages))
+        self.assertTrue(models.Report.objects.filter(report_id="5672770").exists())

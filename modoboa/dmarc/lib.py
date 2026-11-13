@@ -224,16 +224,16 @@ def import_report_from_email(content):
             fpo.seek(0)
             if file_type in FILE_TYPES:
                 import_archive(fpo, content_type=part.get_content_type())
-        except (OSError, ValueError, zipfile.BadZipFile):
-            print("Error: the attachment does not match the mimetype")
+        except Exception as exc:
+            # Reports come from untrusted senders: any malformed content
+            # (bad XML, missing elements, invalid values...) must only skip
+            # this attachment. import_report is atomic, so nothing partial is
+            # kept.
+            print(f"Error: invalid report attachment ({exc!r})")
             err = True
         else:
             fpo.close()
-    if err:
-        # Return EX_DATAERR code <data format error> available
-        # at sysexits.h file
-        # (see http://www.postfix.org/pipe.8.html)
-        sys.exit(65)
+    return err
 
 
 def import_report_from_stdin():
@@ -245,7 +245,11 @@ def import_report_from_stdin():
 
     if not content:
         return
-    import_report_from_email(content)
+    if import_report_from_email(content):
+        # Return EX_DATAERR code <data format error> available
+        # at sysexits.h file
+        # (see http://www.postfix.org/pipe.8.html)
+        sys.exit(65)
 
 
 def import_from_imap(options):
