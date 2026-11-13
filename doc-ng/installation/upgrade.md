@@ -176,6 +176,24 @@ Then, remove the package, which `pip` keeps in existing virtualenvs:
 $ pip uninstall django-xforwardedfor-middleware
 ```
 
+### OAuth2 tokens of disabled accounts
+
+Disabling an account now revokes its OAuth2 tokens, and the migration
+revokes those of the accounts already disabled. To also reject the
+tokens of an account disabled by other means (a direct database update
+for example), edit `settings.py` and add the following line to
+`OAUTH2_PROVIDER`:
+
+``` python
+OAUTH2_PROVIDER = {
+    'OAUTH2_VALIDATOR_CLASS': 'modoboa.core.oauth2_validators.OAuth2Validator',
+    # ...
+}
+```
+
+`python manage.py check` reports the instances still to update
+(`modoboa.core.W004`).
+
 ### Login rate limiting
 
 Failed logins are now limited on `accounts/login/`, per client address (the

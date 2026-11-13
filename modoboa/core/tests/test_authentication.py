@@ -19,16 +19,18 @@ except ImportError:
 from django.template import Context, Template
 
 import oath
+from oauth2_provider.models import get_refresh_token_model
 
 from modoboa.core import constants, signals as core_signals, sms_backends
 from modoboa.core.context_processors import theme
 from modoboa.core.password_hashers import get_password_hasher
 from modoboa.core.password_hashers.utils import get_dovecot_schemes
 from modoboa.lib import cryptutils, throttle
-from modoboa.lib.tests import NO_SMTP, ModoTestCase
+from modoboa.lib.tests import NO_SMTP, ModoAPITestCase, ModoTestCase
 from .. import factories, models
-from ..checks import W003, check_client_address_source
+from ..checks import W003, W004, check_client_address_source, check_oauth2_validator
 
+RefreshToken = get_refresh_token_model()
 DOVEADM_TEST_PATH = f"{os.path.dirname(__file__)}/doveadm"
 FAILED_LOGINS_PER_MINUTE = 10
 
@@ -100,6 +102,59 @@ class LoginThrottleTestCase(ModoTestCase):
         self.assertEqual(response.status_code, 429)
         response = self.login(username="other", REMOTE_ADDR="192.0.2.4")
         self.assertEqual(response.status_code, 401)
+
+
+class DisabledAccountOAuth2TestCase(ModoAPITestCase):
+    """Validate that tokens of disabled accounts are rejected."""
+
+    def setUp(self):
+        super().setUp()
+        self.account = factories.UserFactory(
+            username="user@test.com", groups=("SimpleUsers",)
+        )
+        self.access_token = self.authenticate_user_with_oauth(self.account)
+        RefreshToken.objects.create(
+            user=self.account,
+            application=self.access_token.application,
+            access_token=self.access_token,
+            token="refresh-token",
+        )
+        # No signal: tokens are left untouched, the validator must reject them
+        models.User.objects.filter(pk=self.account.pk).update(is_active=False)
+
+    def test_bearer_token_rejected(self):
+        response = self.client.get(reverse("v2:account-me"))
+        self.assertEqual(response.status_code, 401)
+
+    def test_refresh_token_rejected(self):
+        response = self.client.post(
+            reverse("oauth2_provider:token"),
+            {
+                "grant_type": "refresh_token",
+                "refresh_token": "refresh-token",
+                "client_id": self.access_token.application.client_id,
+            },
+        )
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.json()["error"], "invalid_grant")
+
+    def test_active_account_accepted(self):
+        models.User.objects.filter(pk=self.account.pk).update(is_active=True)
+        response = self.client.get(reverse("v2:account-me"))
+        self.assertEqual(response.status_code, 200)
+
+
+class OAuth2ValidatorCheckTestCase(SimpleTestCase):
+    """Validate the warning about the OAuth2 validator."""
+
+    def test_modoboa_validator(self):
+        self.assertEqual(check_oauth2_validator(None), [])
+
+    def test_default_validator(self):
+        oauth2_provider = dict(settings.OAUTH2_PROVIDER)
+        del oauth2_provider["OAUTH2_VALIDATOR_CLASS"]
+        with override_settings(OAUTH2_PROVIDER=oauth2_provider):
+            self.assertEqual(check_oauth2_validator(None), [W004])
 
 
 class ClientAddressCheckTestCase(SimpleTestCase):
