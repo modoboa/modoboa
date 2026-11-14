@@ -75,7 +75,7 @@ dependencies = [
 	# the fixed django-rq release instead of capping rq.
 	# rq 3 changes CronScheduler timezone handling and worker internals:
 	# stay on rq 2 until it has been validated.
-	"rq>=2.7.0,<3",
+	"rq>=2.7.0,<4",
 	"django-rq>=4.2,<5",
 	# Sieve
 	"sievelib>=1.6.0",
