@@ -38,6 +38,17 @@
       <MenuItems :items="scheduledMessageActions" :obj="email" />
     </v-menu>
 
+    <!-- On narrow screens the subject is the primary, full-width tap target. -->
+    <button
+      type="button"
+      class="mail-mobile-open"
+      :aria-label="`${email.subject || $gettext('(no subject)')}. ${senderName}`"
+      @click="$emit('open', email.imapid)"
+    >
+      <span class="mail-mobile-subject">{{ email.subject || $gettext('(no subject)') }}</span>
+      <span class="mail-mobile-sender">{{ senderName }}</span>
+      <span class="mail-mobile-date">{{ date }}</span>
+    </button>
     <span class="cell-sender" :title="senderTitle">{{ senderName }}</span>
     <span class="cell-subject" @click="$emit('open', email.imapid)">
       <TagChips :keywords="email.tags" compact />
