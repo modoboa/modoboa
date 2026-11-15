@@ -24,6 +24,17 @@
       @click="$emit('toggleFollow', thread.latest)"
     />
 
+    <!-- Subject-first, accessible mobile conversation target. -->
+    <button
+      type="button"
+      class="mail-mobile-open"
+      :aria-label="`${thread.subject || $gettext('(no subject)')}. ${participantsLabel}`"
+      @click="openThread"
+    >
+      <span class="mail-mobile-subject">{{ thread.subject || $gettext('(no subject)') }}</span>
+      <span class="mail-mobile-sender">{{ participantsLabel }}</span>
+      <span class="mail-mobile-date">{{ thread.latest.date }}</span>
+    </button>
     <span class="cell-sender" :title="participantsTitle">
       {{ participantsLabel }}
     </span>
@@ -69,6 +80,16 @@
       :class="{ unread: message.style === 'unseen' }"
       @click="$emit('open', message.imapid)"
     >
+      <button
+        type="button"
+        class="mail-mobile-open"
+        :aria-label="`${message.subject || $gettext('(no subject)')}. ${senderName(message)}`"
+        @click.stop="$emit('open', message.imapid)"
+      >
+        <span class="mail-mobile-subject">{{ message.subject || $gettext('(no subject)') }}</span>
+        <span class="mail-mobile-sender">{{ senderName(message) }}</span>
+        <span class="mail-mobile-date">{{ message.date }}</span>
+      </button>
       <span class="cell-sender">{{ senderName(message) }}</span>
       <span class="cell-subject">{{ message.subject }}</span>
       <span class="cell-flags">
