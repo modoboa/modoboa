@@ -100,11 +100,11 @@ export default defineConfig({
       // negotiates these correctly across host and plugin even when the
       // installed minor versions differ.
       shared: {
-        vue: { singleton: true, requiredVersion: '^3.4.0' },
-        'vue-router': { singleton: true, requiredVersion: '^4.0.0' },
-        pinia: { singleton: true, requiredVersion: '^3.0.0' },
-        vuetify: { singleton: true, requiredVersion: '^4.0.0' },
-        'vue3-gettext': { singleton: true, requiredVersion: '^4.0.0-beta.1' },
+        vue: { singleton: true, requiredVersion: '^3.5.44' },
+        'vue-router': { singleton: true, requiredVersion: '^5.4.0' },
+        pinia: { singleton: true, requiredVersion: '^3.0.4' },
+        vuetify: { singleton: true, requiredVersion: '^4.3.1' },
+        'vue3-gettext': { singleton: true, requiredVersion: '^4.0.1' },
       },
     }),
     relocateMfBootstrap(),
