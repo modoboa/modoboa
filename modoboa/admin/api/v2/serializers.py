@@ -664,10 +664,18 @@ class WritableAccountSerializer(v1_serializers.WritableAccountSerializer):
             if self.instance and hasattr(self.instance, "mailbox")
             else []
         )
+        user = self.context["request"].user
         for alias in value:
+            if alias in existing_aliases:
+                alias_obj = models.Alias.objects.filter(
+                    address=alias, internal=False
+                ).first()
+                if alias_obj and not user.can_access(alias_obj):
+                    # Managed by another administrator: left untouched by update()
+                    continue
             localpart, domain = models.validate_alias_address(
                 alias,
-                self.context["request"].user,
+                user,
                 ignore_existing=True,
                 check_limits=alias not in existing_aliases,
             )
@@ -758,7 +766,7 @@ class WritableAccountSerializer(v1_serializers.WritableAccountSerializer):
                     {"password": _("This field is required.")}
                 )
         aliases = data.get("aliases")
-        if aliases and "mailbox" not in data:
+        if aliases and "mailbox" not in data and not hasattr(self.instance, "mailbox"):
             raise serializers.ValidationError(
                 {"aliases": _("A mailbox is required to create aliases.")}
             )
@@ -871,9 +879,11 @@ class WritableAccountSerializer(v1_serializers.WritableAccountSerializer):
             for alias_address in alias_recipients:
                 alias = models.Alias.objects.filter(
                     address=alias_address, internal=False
-                )
-                if alias.exists():
-                    alias.first().remove_recipient_or_delete(recipient)
+                ).first()
+                # Aliases the user can't access (e.g. owned by another domain)
+                # must not be modified or deleted
+                if alias and creator.can_access(alias):
+                    alias.remove_recipient_or_delete(recipient)
         instance.save()
         resources = validated_data.get("resources")
         if resources:

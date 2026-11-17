@@ -1177,6 +1177,51 @@ class AccountViewSetTestCase(ModoAPITestCase):
         )
         self.assertEqual(alias_recipients, ["toto@test.com"])
 
+    def test_update_aliases_ignores_inaccessible_aliases(self):
+        """A domain admin can't alter another domain's aliases via an account."""
+        admin = core_models.User.objects.get(username="admin@test.com")
+        admin2 = core_models.User.objects.get(username="admin@test2.com")
+        domain2 = models.Domain.objects.get(name="test2.com")
+        models.Alias.objects.create(
+            creator=admin2,
+            domain=domain2,
+            address="forward@test2.com",
+            recipients=["user@test.com"],
+        )
+        models.Alias.objects.create(
+            creator=admin2,
+            domain=domain2,
+            address="multi@test2.com",
+            recipients=["user@test.com", "user@test2.com"],
+        )
+        models.Alias.objects.create(
+            creator=admin,
+            domain=models.Domain.objects.get(name="test.com"),
+            address="owned@test.com",
+            recipients=["user@test.com"],
+        )
+        self.authenticate_user(admin)
+        account = core_models.User.objects.get(username="user@test.com")
+        url = reverse("v2:account-detail", args=[account.pk])
+
+        # Sending back the aliases as returned by the API must work
+        aliases = self.client.get(url).json()["aliases"]
+        self.assertIn("forward@test2.com", aliases)
+        resp = self.client.patch(url, {"aliases": aliases}, format="json")
+        self.assertEqual(resp.status_code, 200)
+
+        resp = self.client.patch(url, {"aliases": []}, format="json")
+        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(
+            list(models.Alias.objects.get(address="forward@test2.com").recipients),
+            ["user@test.com"],
+        )
+        self.assertCountEqual(
+            models.Alias.objects.get(address="multi@test2.com").recipients,
+            ["user@test.com", "user@test2.com"],
+        )
+        self.assertFalse(models.Alias.objects.filter(address="owned@test.com").exists())
+
     def test_update_admin(self):
         account = core_models.User.objects.get(username="admin")
         url = reverse("v2:account-detail", args=[account.pk])
