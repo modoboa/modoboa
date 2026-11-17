@@ -100,7 +100,7 @@ dev = [
 	"Werkzeug",
 	"pyOpenSSL"
 ]
-mysql = ["mysqlclient<2.3.1"]
+mysql = ["mysqlclient<2.3.2"]
 postgresql = [
 	"psycopg[binary]>=3.1; platform_system != 'FreeBSD'",
 	"psycopg[c]>=3.1; platform_system == 'FreeBSD'"
