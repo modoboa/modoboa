@@ -393,6 +393,7 @@ class LogSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Log
         fields = (
+            "id",
             "date_created",
             "message",
             "level",

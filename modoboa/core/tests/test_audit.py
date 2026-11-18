@@ -314,6 +314,8 @@ class AuditFiltersTestCase(ModoAPITestCase):
         entry = resp.json()["results"][0]
         # Parsed back without error: ISO 8601 with timezone
         self.assertIsNotNone(datetime.datetime.fromisoformat(entry["date_created"]))
+        # Extensions fetch details about an entry by its id
+        self.assertTrue(models.Log.objects.filter(pk=entry["id"]).exists())
 
     def test_actions_catalog(self):
         resp = self.client.get(reverse("v2:log-actions"))

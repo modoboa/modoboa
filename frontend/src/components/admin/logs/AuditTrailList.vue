@@ -91,6 +91,16 @@
           {{ item.ip_address }}
         </div>
       </template>
+      <template #[`item.extensions`]="{ item }">
+        <div class="d-flex justify-end">
+          <component
+            :is="extension.component"
+            v-for="extension in rowExtensions"
+            :key="extension.name"
+            :log="item"
+          />
+        </div>
+      </template>
     </v-data-table-server>
   </v-card>
 </template>
@@ -100,7 +110,7 @@ import { onMounted, reactive, ref, watch } from 'vue'
 import ListToolbar from '@/components/tools/ListToolbar.vue'
 import { useGettext } from 'vue3-gettext'
 import logsApi from '@/api/logs'
-import { useDomainsStore } from '@/stores'
+import { useDomainsStore, usePluginsStore } from '@/stores'
 import { importExportMixin } from '@/mixins/importExport'
 import { getAuditDetails } from '@/utils/audit'
 import debounce from 'debounce'
@@ -124,6 +134,10 @@ const filters = reactive({
 // Dates of the selected range, from VDateInput
 const period = ref(null)
 const domainsStore = useDomainsStore()
+// Plugin components shown on each row, given the entry as `log`
+const rowExtensions = usePluginsStore().uiExtensions(
+  'audit_trail.entry.actions'
+)
 // Last pagination/sorting state sent by the table
 let options = null
 
@@ -132,6 +146,9 @@ const headers = [
   { title: $gettext('Action'), key: 'action' },
   { title: $gettext('Actor'), key: 'actor_name' },
   { title: $gettext('Domain'), key: 'domain' },
+  ...(rowExtensions.length
+    ? [{ title: '', key: 'extensions', sortable: false, align: 'end' }]
+    : []),
 ]
 const itemsPerPageOptions = [
   { value: 10, title: '10' },
