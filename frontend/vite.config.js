@@ -95,6 +95,7 @@ export default defineConfig({
         './MenuItems': './src/components/tools/MenuItems.vue',
         './ConfirmDialog': './src/components/tools/ConfirmDialog.vue',
         './ColorField': './src/components/tools/ColorField.vue',
+        './ListToolbar': './src/components/tools/ListToolbar.vue',
       },
       // Pinned majors for version-skew protection. @module-federation/vite
       // negotiates these correctly across host and plugin even when the
