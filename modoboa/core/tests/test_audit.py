@@ -210,6 +210,22 @@ class CoverageAuditTestCase(ModoAPITestCase):
         log = models.Log.objects.get(action="admin.alarm.deleted")
         self.assertEqual(log.domain, "test.com")
 
+    def test_role_change(self):
+        account = models.User.objects.get(username="user@test.com")
+        resp = self.client.patch(
+            reverse("v2:account-detail", args=[account.pk]),
+            {"role": "SuperAdmins"},
+            format="json",
+        )
+        self.assertEqual(resp.status_code, 200)
+        log = models.Log.objects.get(action="core.user.role_changed")
+        self.assertEqual(
+            log.extra, {"role": "SuperAdmins", "previous_role": "SimpleUsers"}
+        )
+        self.assertEqual(log.actor_name, "admin")
+        # Super administrators' activity stays private to super administrators
+        self.assertEqual(log.domain, "")
+
     def test_domain_administrators(self):
         domain = admin_models.Domain.objects.get(name="test.com")
         account = models.User.objects.get(username="admin@test2.com")

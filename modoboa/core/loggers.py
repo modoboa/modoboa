@@ -56,6 +56,7 @@ for _code, _label in (
     ("core.api_token.created", gettext_lazy("API token created")),
     ("core.api_token.deleted", gettext_lazy("API token deleted")),
     ("core.parameters.modified", gettext_lazy("Global parameters modified")),
+    ("core.user.role_changed", gettext_lazy("Role changed")),
 ):
     register_audit_action(_code, _label)
 

@@ -98,6 +98,28 @@ def create_local_config(sender, **kwargs):
     models.LocalConfig.objects.create(site=sites_models.Site.objects.get_current())
 
 
+@receiver(core_signals.account_role_changed)
+def log_role_change(sender, account, role, **kwargs):
+    """Log role changes: a new super administrator must not go unnoticed."""
+    request = get_request()
+    author = f"user {request.user.username}" if request else "management command"
+    # Sent before the change: account.role is still the previous role
+    extra = audit(
+        "core.user.role_changed",
+        request,
+        obj=account,
+        role=role,
+        previous_role=account.role,
+    )
+    if role == "SuperAdmins":
+        # Not a super administrator yet: keep it private like their activity
+        extra["audit"]["domain"] = ""
+    logging.getLogger("modoboa.admin").info(
+        f"Role of '{account}' changed from {account.role} to {role} by {author}",
+        extra=extra,
+    )
+
+
 @receiver(signals.pre_delete, sender=models.User)
 def update_permissions(sender, instance, **kwargs):
     """Permissions cleanup."""
