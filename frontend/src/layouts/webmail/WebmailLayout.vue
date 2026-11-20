@@ -3,16 +3,18 @@
     <template #navbar>
       <v-navigation-drawer
         v-model="drawer"
-        :rail="rail"
+        :rail="!xs && rail"
         :width="drawerWidth"
-        permanent
+        :permanent="!xs"
+        :temporary="xs"
         color="primary"
       >
-        <div class="resize-handle" @mousedown="startResize" />
+        <div v-if="!xs" class="resize-handle" @mousedown="startResize" />
         <template #prepend>
           <div class="d-flex align-center">
             <v-img :src="menuLogoPath" max-width="190" class="logo" />
             <v-btn
+              v-if="!xs"
               :icon="rail ? 'mdi-chevron-right' : 'mdi-chevron-left'"
               variant="text"
               @click.stop="rail = !rail"
@@ -44,7 +46,7 @@
           :mailboxes="userMailboxes"
           :hdelimiter="hdelimiter"
           class="mr-2"
-          :rail="rail"
+          :rail="!xs && rail"
           @update:model-value="openMailbox"
         />
         <template #append>
@@ -106,8 +108,16 @@
          keeps them clear of the top menu and in the same place from
          the listing to a message -->
     <template #header>
-      <div class="text-headline-medium ml-4 mb-4 flex-0-0">
-        {{ $gettext('Webmail') }}
+      <div class="d-flex align-center ml-4 mb-4 flex-0-0">
+        <v-btn
+          v-if="xs"
+          icon="mdi-menu"
+          variant="text"
+          :aria-label="$gettext('Open mailboxes')"
+          class="mr-2"
+          @click="drawer = true"
+        />
+        <div class="text-headline-medium">{{ $gettext('Webmail') }}</div>
       </div>
     </template>
   </ConnectedLayout>
@@ -138,6 +148,7 @@
 
 <script setup>
 import { computed, ref, watch } from 'vue'
+import { useDisplay } from 'vuetify'
 import { useRoute, useRouter } from 'vue-router'
 import { useGettext } from 'vue3-gettext'
 import { useBusStore, useWebmailStore } from '@/stores'
@@ -158,10 +169,17 @@ const webmailStore = useWebmailStore()
 const { menuLogoPath } = useLogos()
 
 const confirm = ref()
-const drawer = ref(true)
+const { xs } = useDisplay()
+const drawer = ref(!xs.value)
 const rail = ref(false)
 const drawerWidth = ref(256)
 const isResizing = ref(false)
+
+// On phones, mailboxes open as an overlay rather than taking up reading space.
+watch(xs, (isPhone) => {
+  drawer.value = !isPhone
+  if (isPhone) rail.value = false
+})
 
 function startResize(e) {
   e.preventDefault()
@@ -245,6 +263,7 @@ function refreshMailboxUnseen(mailbox) {
 }
 
 function openMailbox(mailbox) {
+  if (xs.value) drawer.value = false
   router.push({
     name: 'MailboxView',
     query: { mailbox },
@@ -280,6 +299,7 @@ async function fetchMailboxRights(mailbox) {
 }
 
 const openComposeForm = () => {
+  if (xs.value) drawer.value = false
   router.push({ name: 'ComposeEmailView' })
 }
 

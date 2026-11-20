@@ -714,3 +714,160 @@ h6 {
     color: rgb(var(--v-theme-primary));
   }
 }
+
+
+/**
+ * Mobile webmail listing
+ *
+ * A subject-first card layout replaces the wide desktop columns. Keep the
+ * checkbox and follow-up action independent of the large open-message target.
+ * These selectors use existing Vuetify theme tokens (no custom brand colours).
+ */
+.mail-mobile-open {
+  display: none;
+}
+
+@media (max-width: 600px) {
+  .mail-list-header {
+    display: none;
+  }
+
+  .mail-row {
+    position: relative;
+    display: grid;
+    grid-template-columns: 36px minmax(0, 1fr) 36px;
+    gap: 4px;
+    min-width: 0;
+    height: auto;
+    min-height: 88px;
+    padding: 8px 6px;
+    align-items: center;
+
+    .accent {
+      position: absolute;
+      inset: 0 auto 0 0;
+      width: 3px;
+    }
+
+    .cell-check {
+      grid-column: 1;
+      grid-row: 1;
+      min-width: 0;
+      align-self: center;
+      justify-self: center;
+    }
+
+    .cell-icon {
+      grid-column: 3;
+      grid-row: 1;
+      min-width: 0;
+      justify-self: center;
+    }
+
+    .cell-sender,
+    .cell-subject,
+    .cell-date,
+    .cell-flags {
+      display: none;
+    }
+
+    .mail-mobile-open {
+      grid-column: 2;
+      grid-row: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 3px;
+      width: 100%;
+      min-width: 0;
+      padding: 8px 4px;
+      border: 0;
+      border-radius: 6px;
+      background: transparent;
+      color: inherit;
+      text-align: start;
+      cursor: pointer;
+
+      &:focus-visible {
+        outline: 2px solid rgb(var(--v-theme-primary));
+        outline-offset: 1px;
+      }
+    }
+
+    .mail-mobile-subject,
+    .mail-mobile-sender,
+    .mail-mobile-date {
+      display: block;
+      min-width: 0;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+    .mail-mobile-subject {
+      font-size: 0.9375rem;
+      font-weight: 600;
+      color: rgb(var(--v-theme-on-surface));
+    }
+
+    .mail-mobile-sender {
+      font-size: 0.8125rem;
+      color: rgba(var(--v-theme-on-surface), 0.75);
+    }
+
+    .mail-mobile-date {
+      font-size: 0.75rem;
+      color: rgba(var(--v-theme-on-surface), 0.6);
+    }
+
+    .cell-expand {
+      grid-column: 3;
+      grid-row: 2;
+      min-width: 0;
+      justify-self: center;
+    }
+
+    &.mail-row-child {
+      min-height: 72px;
+      padding: 6px 10px 6px 18px;
+
+      .mail-mobile-open {
+        grid-column: 1 / -1;
+      }
+    }
+
+    &.mail-row-ghost {
+      .cell-sender,
+      .cell-subject {
+        display: block;
+        grid-column: 2;
+        min-width: 0;
+      }
+
+      .cell-subject {
+        grid-row: 1;
+      }
+
+      .cell-sender {
+        grid-row: 2;
+      }
+    }
+  }
+
+  .mail-toolbar {
+    .v-toolbar__content {
+      gap: 2px;
+      padding-inline: 4px;
+    }
+
+    .mail-search {
+      min-width: 0;
+      margin-right: 0;
+    }
+
+    .mail-range,
+    .mail-toolbar-separator {
+      display: none;
+    }
+  }
+}
